@@ -1,4 +1,4 @@
-﻿using Avalonia.Threading;
+using Avalonia.Threading;
 using ChastiMaid.Core.Helpers;
 using ChastiMaid.Core.Models;
 using ChastiMaid.Core.Services;
@@ -9,8 +9,7 @@ using System.Linq;
 
 namespace ChastiMaid.UI.ViewModels;
 
-// Deve ereditare da ViewModelBase per funzionare con il template Avalonia 11
-public partial class MainWindowViewModel : ViewModelBase
+public partial class DashboardViewModel : ViewModelBase
 {
     private GameEngine? _gameEngine;
     private readonly DatabaseService _dbService;
@@ -46,9 +45,9 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public MainWindowViewModel()
+    public DashboardViewModel(DatabaseService dbService)
     {
-        _dbService = new DatabaseService("password");
+        _dbService = dbService;
         _uiTimer = new DispatcherTimer();
         _uiTimer.Interval = TimeSpan.FromSeconds(1);
         _uiTimer.Tick += (s, e) => UpdateTimerDisplay();

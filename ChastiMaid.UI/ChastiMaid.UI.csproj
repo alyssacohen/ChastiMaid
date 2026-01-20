@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Assets\Fonts\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +32,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChastiMaid.Core\ChastiMaid.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\DashboardView.axaml.cs">
+      <DependentUpon>DashboardView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\IntroView.axaml.cs">
+      <DependentUpon>IntroView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SettingsView.axaml.cs">
+      <DependentUpon>SettingsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\WardrobeView.axaml.cs">
+      <DependentUpon>WardrobeView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

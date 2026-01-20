@@ -9,23 +9,15 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         if (DataContext == null)
-            DataContext = new MainWindowViewModel();
-
-        PointerPressed += (s, e) =>
-        {
-            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-            {
-                BeginMoveDrag(e);
-            }
-        };
+            DataContext = new MainViewModel();
     }
 
     // Override the closing event
     protected override void OnClosing(WindowClosingEventArgs e)
     {
-        if (DataContext is MainWindowViewModel vm)
+        if (DataContext is MainViewModel vm)
         {
-            vm.SaveAndExit(); // Logic we wrote before
+            vm.ExitApp(); // Save and exit
         }
         base.OnClosing(e);
     }

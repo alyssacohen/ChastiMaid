@@ -1,75 +1,52 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:ChastiMaid.UI.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ChastiMaid.UI.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Title="ChastiMaid"
-        TransparencyLevelHint="AcrylicBlur"
-        Background="Transparent"
-        ExtendClientAreaToDecorationsHint="True"
-        WindowStartupLocation="CenterScreen"
-        Width="450" Height="700">
+        x:DataType="vm:MainViewModel"
+        WindowState="FullScreen"
+        SystemDecorations="None"
+        CanResize="False">
 
     <Panel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="Black"
-                    TintOpacity="0.6"
-                    MaterialOpacity="0.70" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
 
-        <ScrollViewer Margin="{Binding $parent[Window].OffScreenMargin}">
-            <StackPanel Margin="30" Spacing="20">
-                <StackPanel Background="Transparent" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Text="THE CHORES APP"
-                           FontSize="28"
-                           FontWeight="Heavy"
-                           HorizontalAlignment="Center"
-                           LetterSpacing="5"/>
-                    <Border Width="0" HorizontalAlignment="Stretch" />
+        <TransitioningContentControl Content="{Binding CurrentPage}">
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:0:0.5" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
 
-                    <Button Content="&#x2699;" HorizontalAlignment="Right" Height="32"
-                            Command="{Binding OpenWardrobeCommand}" />
-                </StackPanel>
+        <Panel IsVisible="{Binding ShowConfirmOverlay}">
+            <ExperimentalAcrylicBorder IsHitTestVisible="True">
+                <ExperimentalAcrylicBorder.Material>
+                    <ExperimentalAcrylicMaterial
+                        BackgroundSource="None"
+                        TintColor="Black"
+                        TintOpacity="0.6"
+                        MaterialOpacity="0.85" />
+                </ExperimentalAcrylicBorder.Material>
+            </ExperimentalAcrylicBorder>
 
+            <Border Classes="GlassPanel"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="400"
+                    Padding="30">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="WARNING"
+                               Classes="Header"
+                               Foreground="{StaticResource DangerBrush}"
+                               HorizontalAlignment="Center"/>
 
-                <Border Background="#22FFFFFF" CornerRadius="15" Padding="20">
-                    <StackPanel Spacing="10">
-                        <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Center" Opacity="0.7"/>
-                        <TextBlock Text="{Binding ElapsedTimeDisplay}"
-                                   FontSize="42"
-                                   FontWeight="SemiBold"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding PlayerLevelDisplay}"
-                                   HorizontalAlignment="Center"
-                                   FontWeight="Light"/>
-                    </StackPanel>
-                </Border>
-                <Grid ColumnDefinitions ="*,auto">
-                    <TextBlock Text="OUTFIT OF THE DAY" FontWeight="Bold" Margin="0,10,0,0" Grid.Column="0"/>
-                    <Button Content="REGENERATE" Grid.Column="1" Command="{Binding RegenerateOutfitCommand}"/>
-                </Grid>
-                <Border Background="#11FFFFFF" CornerRadius="10" Padding="15">
-                    <TextBlock Text="{Binding DailyOutfitDescription}"
+                    <TextBlock Text="Starting a new session will reset all current progress. Your wardrobe will remain intact. Continue?"
                                TextWrapping="Wrap"
-                               FontStyle="Italic"
-                               LineHeight="25"/>
-                </Border>
+                               TextAlignment="Center"/>
 
-                <Button Content="START SESSION"
-                        Command="{Binding StartActivityCommand}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Padding="15"
-                        Background="{DynamicResource SystemAccentColor}"
-                        CornerRadius="20"/>
-            </StackPanel>
-        </ScrollViewer>
+                    <Grid ColumnDefinitions="*, *">
+                        <Button Grid.Column="0" Content="CANCEL" Classes="KioskButton" Command="{Binding CancelNewSessionCommand}" Margin="5"/>
+                        <Button Grid.Column="1" Content="YES, RESET" Classes="KioskButton" Command="{Binding ConfirmNewSessionCommand}" Background="{StaticResource DangerBrush}" Margin="5"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Panel>
     </Panel>
 </Window>

@@ -2,14 +2,90 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="ChastiMaid.UI.App"
              xmlns:local="using:ChastiMaid.UI"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
+
+    <Application.Resources>
+        <Color x:Key="MainAccentColor">#C239B3</Color>
+        <Color x:Key="DangerColor">#E74C3C</Color>
+        <Color x:Key="GlassColor">#1AFFFFFF</Color>
+        <Color x:Key="GlassBorderColor">#4DFFFFFF</Color>
+
+        <SolidColorBrush x:Key="MainAccentBrush" Color="{StaticResource MainAccentColor}"/>
+        <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+        <SolidColorBrush x:Key="GlassBackgroundBrush" Color="{StaticResource GlassColor}"/>
+        <SolidColorBrush x:Key="GlassBorderBrush" Color="{StaticResource GlassBorderColor}" />
+
+        <StaticResource x:Key="GlassBackground" ResourceKey="GlassBackgroundBrush" />
+        <FontFamily x:Key="AppFont">avares://ChastiMaid.UI/Assets/Fonts#Inter.ttf#Inter</FontFamily>
+        <FontFamily x:Key="HeaderFont">avares://ChastiMaid.UI/Assets/Fonts#Playfair Display</FontFamily>
+        <FontFamily x:Key="ButtonFont">avares://ChastiMaid.UI/Assets/Fonts#Inter.ttf#Inter</FontFamily>
+        <FontFamily x:Key="FontAwesome">avares://ChastiMaid.UI/Assets/Fonts/FontAwesome.otf#Font Awesome 6 Free Solid</FontFamily>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />
+    <FluentTheme />
+
+<Style Selector="Button.KioskButton">
+        <Setter Property="FontFamily" Value="{StaticResource ButtonFont}" />
+        <Setter Property="Background" Value="{StaticResource GlassBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="15,10"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.KioskButton.Primary">
+        <Setter Property="BorderBrush" Value="{StaticResource MainAccentBrush}" />
+    </Style>
+
+    <Style Selector="Button.KioskButton:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.KioskButton:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#4DFFFFFF" />
+        <Setter Property="BorderBrush" Value="{Binding $parent[Button].BorderBrush}" />
+    </Style>
+
+    <Style Selector="Button.KioskButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.98)" />
+    </Style>
+
+    <Style Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+        <Setter Property="FontWeight" Value="ExtraLight"/>
+    </Style>
+
+    <Style Selector="TextBlock.Header">
+        <Setter Property="FontFamily" Value="{StaticResource HeaderFont}" />
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <Style Selector="TextBlock.Icon">
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button.KioskButton">
+        <Setter Property="FontFamily" Value="{StaticResource ButtonFont}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="15,10"/>
+        <Setter Property="CornerRadius" Value="8"/>
+    </Style>
     </Application.Styles>
 </Application>

@@ -1,8 +1,8 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using ChastiMaid.UI.ViewModels;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ChastiMaid.UI
 {
@@ -19,7 +19,7 @@ namespace ChastiMaid.UI
             if (param is null)
                 return null;
 
-            var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+            var name = param.GetType().FullName!.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
             if (type != null)
