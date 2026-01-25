@@ -3,9 +3,9 @@
         xmlns:vm="using:ChastiMaid.UI.ViewModels"
         x:Class="ChastiMaid.UI.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        WindowState="FullScreen"
-        SystemDecorations="None"
-        CanResize="False">
+        WindowState="Normal"
+        SystemDecorations="Full"
+        CanResize="True">
 
     <Panel>
 
@@ -18,11 +18,10 @@
         <Panel IsVisible="{Binding ShowConfirmOverlay}">
             <ExperimentalAcrylicBorder IsHitTestVisible="True">
                 <ExperimentalAcrylicBorder.Material>
-                    <ExperimentalAcrylicMaterial
-                        BackgroundSource="None"
-                        TintColor="Black"
-                        TintOpacity="0.6"
-                        MaterialOpacity="0.85" />
+                    <ExperimentalAcrylicMaterial BackgroundSource="None"
+                                                 TintColor="Black"
+                                                 TintOpacity="0.6"
+                                                 MaterialOpacity="0.85" />
                 </ExperimentalAcrylicBorder.Material>
             </ExperimentalAcrylicBorder>
 
@@ -35,15 +34,25 @@
                     <TextBlock Text="WARNING"
                                Classes="Header"
                                Foreground="{StaticResource DangerBrush}"
-                               HorizontalAlignment="Center"/>
+                               HorizontalAlignment="Center" />
 
-                    <TextBlock Text="Starting a new session will reset all current progress. Your wardrobe will remain intact. Continue?"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"/>
+                    <TextBlock
+                        Text="Starting a new session will reset all current progress. Your wardrobe will remain intact. Continue?"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center" />
 
                     <Grid ColumnDefinitions="*, *">
-                        <Button Grid.Column="0" Content="CANCEL" Classes="KioskButton" Command="{Binding CancelNewSessionCommand}" Margin="5"/>
-                        <Button Grid.Column="1" Content="YES, RESET" Classes="KioskButton" Command="{Binding ConfirmNewSessionCommand}" Background="{StaticResource DangerBrush}" Margin="5"/>
+                        <Button Grid.Column="0"
+                                Content="CANCEL"
+                                Classes="KioskButton"
+                                Command="{Binding CancelNewSessionCommand}"
+                                Margin="5" />
+                        <Button Grid.Column="1"
+                                Content="YES, RESET"
+                                Classes="KioskButton"
+                                Command="{Binding ConfirmNewSessionCommand}"
+                                Background="{StaticResource DangerBrush}"
+                                Margin="5" />
                     </Grid>
                 </StackPanel>
             </Border>

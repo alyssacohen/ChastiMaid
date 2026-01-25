@@ -1,127 +1,288 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.UI.ViewModels"
-             x:Class="ChastiMaid.UI.WardrobeView"
+             x:Class="ChastiMaid.UI.Views.WardrobeView"
              x:DataType="vm:WardrobeViewModel">
 
     <Panel>
+        <!-- Acrylic Background -->
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="0.8" MaterialOpacity="0.9" />
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="0.6"
+                    MaterialOpacity="0.70" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
 
-        <Grid ColumnDefinitions="300, *" Margin="20,50,20,20">
-            <DockPanel Grid.Column="0">
-                <StackPanel DockPanel.Dock="Bottom" Spacing="10" Margin="0,10,10,0">
-                    <Button Content="ADD NEW ITEM" Command="{Binding AddNewItemCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                    <Button Content="SAVE ALL CHANGES" Command="{Binding SaveChangesCommand}" Background="#2ECC71" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                    <Button Content="DELETE SELECTED" Command="{Binding DeleteItemCommand}" Background="#E74C3C" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+        <ScrollViewer Margin="{Binding $parent[Window].OffScreenMargin}">
+            <DockPanel Margin="30" LastChildFill="True">
+
+                <!-- Header with Back Button -->
+                <StackPanel DockPanel.Dock="Top" Spacing="20" Margin="0,0,0,30">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Button Grid.Column="0"
+                                Content="← BACK"
+                                Command="{Binding BackToDashboardCommand}"
+                                Classes="KioskButton"
+                                Padding="20,10"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Text="WARDROBE MANAGER"
+                                   Classes="Header"
+                                   FontSize="28"
+                                   FontWeight="Heavy"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   LetterSpacing="5"/>
+                    </Grid>
+
+                    <TextBlock Text="Manage your clothing items, layers, and compatibility rules"
+                               HorizontalAlignment="Center"
+                               Opacity="0.7"
+                               FontSize="14"/>
                 </StackPanel>
 
-                <ListBox ItemsSource="{Binding Items}"
-                         SelectedItem="{Binding SelectedItem}"
-                         Background="#11FFFFFF" CornerRadius="8" Margin="0,0,10,0">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="5"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DockPanel>
+                <!-- Main Content Grid -->
+                <Grid ColumnDefinitions="300,*" ColumnSpacing="20">
 
-            <Border Grid.Column="1" Background="#11FFFFFF" CornerRadius="8" Padding="25">
-                <ScrollViewer>
-                    <StackPanel Spacing="10"
-                                IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" >
+                    <!-- Left Panel: Items List -->
+                    <Border Grid.Column="0"
+                            Classes="GlassPanel"
+                            Padding="15">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top"
+                                       Text="CLOTHING ITEMS"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       Margin="0,0,0,15"/>
 
-                        <TextBlock Text="ITEM DETAILS" FontSize="20" FontWeight="Bold"/>
-                        <StackPanel DataContext="{Binding SelectedItem}">
-                            <Label Content="Item Name:"/>
-                            <TextBox Text="{Binding Name}"/>
+                            <!-- Action Buttons -->
+                            <StackPanel DockPanel.Dock="Bottom" Spacing="10" Margin="0,15,0,0">
+                                <Button Content="+ ADD NEW ITEM"
+                                        Command="{Binding AddNewItemCommand}"
+                                        Classes="KioskButton"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="10"/>
 
-                            <Grid ColumnDefinitions="*,*">
-                                <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                                    <Label Content="Weight:"/>
-                                    <NumericUpDown Value="{Binding Weight}" Minimum="1" Maximum="100" FormatString="0" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                                    <Label Content="Multiplier:"/>
-                                    <NumericUpDown Value="{Binding Multiplier}" Increment="0.05" FormatString="0.00" />
-                                </StackPanel>
-                            </Grid>
+                                <Button Content="💾 SAVE ALL CHANGES"
+                                        Command="{Binding SaveChangesCommand}"
+                                        Classes="KioskButton Primary"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="10"/>
 
-                            <Label Content="Tags (comma separated):"/>
-                            <TextBox Text="{Binding TagsText}" Watermark="e.g. leather, formal, restrictive"/>
-                        </StackPanel>
-                        <Separator Margin="0,10" Background="#22FFFFFF"/>
+                                <Button Content="🗑️ DELETE SELECTED"
+                                        Command="{Binding DeleteItemCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="10"
+                                        Background="{DynamicResource DangerBrush}"
+                                        Foreground="White"/>
+                            </StackPanel>
 
-                        <TextBlock Text="Compatible layers" FontWeight="Bold"/>
-                        <ItemsControl ItemsSource="{Binding LayerOptions}">
-
-                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate><CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Margin="0,0,10,0"/></DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <TextBlock Text="Occupied slots" FontWeight="Bold" Margin="0,10,0,0"/>
-                        <ItemsControl ItemsSource="{Binding SlotOptions}">
-                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate><CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Margin="0,0,10,0"/></DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <Separator Margin="0,15" Background="#22FFFFFF"/>
-
-                        <TextBlock Text="Rules &amp; conditions" FontWeight="Bold" FontSize="16"/>
-                        <TextBlock Text="Define what items must or cannot be worn with this." FontSize="10" Opacity="0.6" Margin="0,0,0,10"/>
-
-                        <Grid ColumnDefinitions="*, *, Auto" Margin="0,0,0,10">
-                            <ComboBox Grid.Column="0" ItemsSource="{Binding RuleTypes}"
-                                      SelectedItem="{Binding NewRuleType}"
-                                      HorizontalAlignment="Stretch"
-                                      Margin="0,0,5,0"
-                                      Padding="5"/>
-
-                            <ComboBox Grid.Column="1"
-                                      ItemsSource="{Binding AvailableTargets}"
-                                      SelectedItem="{Binding NewRuleTarget}"
-                                      HorizontalAlignment="Stretch"
-                                      Margin="0,0,5,0">
-                                <ComboBox.ItemTemplate>
+                            <!-- Items ListBox -->
+                            <ListBox ItemsSource="{Binding Items}"
+                                     SelectedItem="{Binding SelectedItem}"
+                                     Background="#11FFFFFF"
+                                     CornerRadius="8"
+                                     Padding="5">
+                                <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Name, FallbackValue='Unknown'}"
+                                        <TextBlock Text="{Binding Name}"
                                                    VerticalAlignment="Center"
-                                                   Padding="5"
-                                                   IsHitTestVisible="False" />
+                                                   Padding="8,5"/>
                                     </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                    </Border>
 
-                            <Button Grid.Column="2" Content="✔" Command="{Binding AddRuleCommand}" HotKey="Enter"/>
-                        </Grid>
+                    <!-- Right Panel: Item Details -->
+                    <Border Grid.Column="1"
+                            Classes="GlassPanel"
+                            Padding="25">
+                        <ScrollViewer>
+                            <StackPanel Spacing="20"
+                                        IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
 
-                        <ItemsControl ItemsSource="{Binding CurrentRules}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="#22000000" CornerRadius="4" Padding="8,4" Margin="0,0,0,5">
-                                        <Grid ColumnDefinitions="*, Auto">
-                                            <TextBlock Text="{Binding Description}" VerticalAlignment="Center"/>
-                                            <Button Grid.Column="1" Content="✘"
-                                                    Command="{Binding $parent[Window].((vm:WardrobeViewModel)DataContext).DeleteRuleCommand}"
-                                                    CommandParameter="{Binding}"
-                                                    Background="Transparent" Foreground="#E74C3C"/>
+                                <!-- Basic Info Section -->
+                                <TextBlock Text="ITEM DETAILS"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           LetterSpacing="2"/>
+
+                                <StackPanel DataContext="{Binding SelectedItem}" Spacing="10">
+                                    <TextBlock Text="Item Name" Opacity="0.7" FontSize="12"/>
+                                    <TextBox Text="{Binding Name}"
+                                             Watermark="Enter item name..."
+                                             FontSize="16"/>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15" Margin="0,10,0,0">
+                                        <StackPanel Grid.Column="0" Spacing="5">
+                                            <TextBlock Text="Weight (Selection Priority)" Opacity="0.7" FontSize="12"/>
+                                            <NumericUpDown Value="{Binding Weight}"
+                                                         Minimum="1"
+                                                         Maximum="100"
+                                                         FormatString="0"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Spacing="5">
+                                            <TextBlock Text="Multiplier (Game Effect)" Opacity="0.7" FontSize="12"/>
+                                            <NumericUpDown Value="{Binding Multiplier}"
+                                                         Increment="0.1"
+                                                         FormatString="0.0"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="Tags (comma separated)" Opacity="0.7" FontSize="12" Margin="0,10,0,0"/>
+                                    <TextBox Text="{Binding SelectedItemTagsText}" Watermark="e.g. leather, formal, restrictive"/>
+                                </StackPanel>
+
+                                <!-- Separator -->
+                                <Border Height="1" Background="#22FFFFFF" Margin="0,10"/>
+
+                                <!-- Layers Section -->
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="COMPATIBLE LAYERS"
+                                               FontWeight="Bold"
+                                               FontSize="14"/>
+                                    <TextBlock Text="Select which clothing layers this item can be worn on"
+                                               Opacity="0.6"
+                                               FontSize="11"/>
+
+                                    <ItemsControl ItemsSource="{Binding LayerOptions}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Name}"
+                                                         IsChecked="{Binding IsSelected}"
+                                                         Margin="0,0,15,5"
+                                                         FontSize="14"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <!-- Slots Section -->
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="OCCUPIED BODY SLOTS"
+                                               FontWeight="Bold"
+                                               FontSize="14"/>
+                                    <TextBlock Text="Select which body parts this item covers"
+                                               Opacity="0.6"
+                                               FontSize="11"/>
+
+                                    <ItemsControl ItemsSource="{Binding SlotOptions}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Name}"
+                                                         IsChecked="{Binding IsSelected}"
+                                                         Margin="0,0,15,5"
+                                                         FontSize="14"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <!-- Separator -->
+                                <Border Height="1" Background="#22FFFFFF" Margin="0,10"/>
+
+                                <!-- Rules Section -->
+                                <StackPanel Spacing="15">
+                                    <TextBlock Text="COMPATIBILITY RULES"
+                                               FontWeight="Bold"
+                                               FontSize="16"
+                                               LetterSpacing="2"/>
+                                    <TextBlock Text="Define which items must or cannot be worn together with this item"
+                                               Opacity="0.6"
+                                               FontSize="11"
+                                               TextWrapping="Wrap"/>
+
+                                    <!-- Add Rule Form -->
+                                    <Border Background="#11FFFFFF" CornerRadius="8" Padding="15">
+                                        <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="10">
+                                            <ComboBox Grid.Column="0"
+                                                     ItemsSource="{Binding RuleTypes}"
+                                                     SelectedItem="{Binding NewRuleType}"
+                                                     HorizontalAlignment="Stretch"/>
+
+                                            <ComboBox Grid.Column="1"
+                                                     ItemsSource="{Binding AvailableTargets}"
+                                                     SelectedItem="{Binding NewRuleTarget}"
+                                                     HorizontalAlignment="Stretch">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name, FallbackValue='Unknown'}"
+                                                                   VerticalAlignment="Center"
+                                                                   Padding="5"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+
+                                            <Button Grid.Column="2"
+                                                   Content="+ ADD"
+                                                   Command="{Binding AddRuleCommand}"
+                                                   Classes="KioskButton Primary"
+                                                   Padding="15,5"/>
                                         </Grid>
                                     </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
-        </Grid>
+
+                                    <!-- Current Rules List -->
+                                    <ItemsControl ItemsSource="{Binding CurrentRules}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="#22000000"
+                                                       CornerRadius="6"
+                                                       Padding="12,8"
+                                                       Margin="0,0,0,8">
+                                                    <Grid ColumnDefinitions="*,Auto">
+                                                        <TextBlock Grid.Column="0"
+                                                                   Text="{Binding Description}"
+                                                                   VerticalAlignment="Center"
+                                                                   FontSize="13"/>
+                                                        <Button Grid.Column="1"
+                                                               Content="✕"
+                                                               Command="{Binding $parent[ItemsControl].((vm:WardrobeViewModel)DataContext).DeleteRuleCommand}"
+                                                               CommandParameter="{Binding}"
+                                                               Background="Transparent"
+                                                               Foreground="{DynamicResource DangerBrush}"
+                                                               FontSize="16"
+                                                               Padding="8,4"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- Empty State -->
+                                    <TextBlock Text="No rules defined for this item"
+                                               Opacity="0.4"
+                                               FontStyle="Italic"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,20,0,0"
+                                               IsVisible="{Binding CurrentRules.Count, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=0}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                </Grid>
+
+            </DockPanel>
+        </ScrollViewer>
     </Panel>
 
 </UserControl>

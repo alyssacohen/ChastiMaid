@@ -1,33 +1,67 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using System.Reactive;
+using System.Collections.ObjectModel;
+using ChastiMaid.Core.Services;
+using ChastiMaid.Core.Models;
 
 namespace ChastiMaid.UI.ViewModels;
 
+/// <summary>
+/// View model for configuring a new game session.
+/// Settings configured here are locked once the session begins.
+/// </summary>
 public partial class SettingsViewModel : ViewModelBase
 {
     private readonly MainViewModel _mainVM;
+    private readonly DatabaseService _dbService;
+    private readonly SessionManager _sessionManager;
 
-    [ObservableProperty] private WardrobeViewModel _wardrobeVM;
-    [ObservableProperty] private bool _isWardrobeOpen;
+    [Reactive] private DifficultyLevel _selectedDifficulty = DifficultyLevel.Normal;
+    [Reactive] private bool _allowOutfitRegeneration = true;
+    [Reactive] private int _maxDailyRegenerations = 3;
+    [Reactive] private bool _allowWardrobeAccess = true;
 
-    public SettingsViewModel(MainViewModel mainVM)
+    public SettingsViewModel(MainViewModel mainVM, DatabaseService dbService, SessionManager sessionManager)
     {
         _mainVM = mainVM;
-        _wardrobeVM = new WardrobeViewModel(_mainVM.DbService());
+        _dbService = dbService;
+        _sessionManager = sessionManager;
     }
 
-    [RelayCommand]
-    private void OpenWardrobe() => IsWardrobeOpen = true;
+    /// <summary>
+    /// Available difficulty levels for selection.
+    /// </summary>
+    public ObservableCollection<DifficultyLevel> DifficultyLevels { get; } = new()
+    {
+        DifficultyLevel.Easy,
+        DifficultyLevel.Normal,
+        DifficultyLevel.Hard
+    };
 
-    [RelayCommand]
-    private void CloseWardrobe() => IsWardrobeOpen = false;
+    [ReactiveCommand]
+    private void StartSession()
+    {
+        // Create session settings from current configuration
+        var settings = new SessionSettings
+        {
+            Difficulty = SelectedDifficulty,
+            AllowOutfitRegeneration = AllowOutfitRegeneration,
+            MaxDailyRegenerations = MaxDailyRegenerations,
+            AllowWardrobeAccess = AllowWardrobeAccess
+        };
 
-    [RelayCommand]
-    private void BackToIntro() => _mainVM.NavigateTo(new IntroViewModel(_mainVM));
+        // Create new session with these settings
+        _sessionManager.CreateNewSession(settings);
 
-    [RelayCommand]
-    private void StartDashboard() => _mainVM.NavigateTo(new DashboardViewModel(_mainVM.DbService()));
+        // Navigate to dashboard
+        _mainVM.NavigateTo(new DashboardViewModel(_mainVM, _dbService, _sessionManager));
+    }
 
-
+    [ReactiveCommand]
+    private void Cancel()
+    {
+        // Return to intro screen
+        _mainVM.NavigateTo(new IntroViewModel(_mainVM, _sessionManager));
+    }
 }
-

@@ -1,85 +1,127 @@
 using Avalonia.Threading;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using System;
+using System.Linq;
+using System.Reactive;
 using ChastiMaid.Core.Helpers;
 using ChastiMaid.Core.Models;
 using ChastiMaid.Core.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Linq;
 
 namespace ChastiMaid.UI.ViewModels;
 
-public partial class DashboardViewModel : ViewModelBase
+/// <summary>
+/// View model for the main dashboard where gameplay occurs.
+/// Displays session info, outfit, timer, and provides gameplay actions.
+/// </summary>
+public partial class DashboardViewModel : ViewModelBase, IDisposable
 {
-    private GameEngine? _gameEngine;
+    private readonly MainViewModel _mainVM;
     private readonly DatabaseService _dbService;
+    private readonly SessionManager _sessionManager;
+    private readonly WardrobeService _wardrobeService;
+    private GameEngine? _gameEngine;
     private readonly DispatcherTimer _uiTimer;
+    private int _regenerationCount = 0;
 
-    [ObservableProperty] private string _elapsedTimeDisplay = "00:00:00";
-    [ObservableProperty] private string _statusMessage = "Ready";
-    [ObservableProperty] private string _dailyOutfitDescription = "Loading...";
-    [ObservableProperty] private string _playerLevelDisplay = "Level: 1";
+    [Reactive] private string _elapsedTimeDisplay = "00:00:00";
+    [Reactive] private string _statusMessage = "Ready";
+    [Reactive] private string _dailyOutfitDescription = "Loading...";
+    [Reactive] private string _playerLevelDisplay = "Level: 1";
+    [Reactive] private string _sessionInfoDisplay = "";
+    [Reactive] private bool _canRegenerate = true;
+    [Reactive] private bool _canOpenWardrobe = true;
 
-    private int _playerLevel;
-
-    public int PlayerLevel
+    public DashboardViewModel(MainViewModel mainVM, DatabaseService dbService, SessionManager sessionManager)
     {
-        get => _playerLevel;
-        set
-        {
-            if (SetProperty(ref _playerLevel, value))
-            {
-                // Update the display string automatically
-                PlayerLevelDisplay = $"Level: {value}";
-            }
-        }
-    }
-
-    private void UpdateTimerDisplay()
-    {
-        if (_gameEngine != null)
-        {
-            _gameEngine.UpdateTotalTime();
-            var currentTime = _gameEngine.GetDisplayTime();
-            ElapsedTimeDisplay = currentTime.ToString(@"hh\:mm\:ss");
-        }
-    }
-
-    public DashboardViewModel(DatabaseService dbService)
-    {
+        _mainVM = mainVM;
         _dbService = dbService;
-        _uiTimer = new DispatcherTimer();
-        _uiTimer.Interval = TimeSpan.FromSeconds(1);
+        _sessionManager = sessionManager;
+        _wardrobeService = new WardrobeService(_dbService);
+
+        _uiTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(1)
+        };
         _uiTimer.Tick += (s, e) => UpdateTimerDisplay();
-        InitializeApp();
+
+        // Initialize conditional commands
+        InitializeConditionalCommands();
+
+        InitializeSession();
     }
 
-    private void InitializeApp()
+    /// <summary>
+    /// Initializes commands that require WhenAnyValue conditions.
+    /// The [ReactiveCommand] attribute doesn't support these yet.
+    /// </summary>
+    private void InitializeConditionalCommands()
     {
-        DataSeeder.EnsureSeedData(_dbService);
-        var wardrobeService = new WardrobeService(_dbService);
+        RegenerateOutfitCommand = ReactiveCommand.Create(
+            RegenerateOutfit,
+            this.WhenAnyValue(x => x.CanRegenerate)
+        );
 
-        using (var db = _dbService.GetDatabase())
+        OpenWardrobeCommand = ReactiveCommand.Create(
+            OpenWardrobe,
+            this.WhenAnyValue(x => x.CanOpenWardrobe)
+        );
+    }
+
+    // Commands with conditions (manual initialization required)
+    public ReactiveCommand<Unit, Unit> RegenerateOutfitCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit> OpenWardrobeCommand { get; private set; }
+
+    /// <summary>
+    /// Initializes the dashboard with the current session data.
+    /// </summary>
+    private void InitializeSession()
+    {
+        var session = _sessionManager.CurrentSession;
+        if (session == null)
         {
-            var stateCol = db.GetCollection<GameState>("game_state");
-            var savedState = stateCol.FindAll().FirstOrDefault();
-
-            if (savedState == null)
-            {
-                savedState = new GameState { TotalPlayTime = TimeSpan.Zero, Level = 1 };
-            }
-            _gameEngine = new GameEngine(savedState);
-
-            PlayerLevelDisplay = $"Level: {_gameEngine.GetCurrentState().Level}";
-            ElapsedTimeDisplay = _gameEngine.GetCurrentState().TotalPlayTime.ToString(@"hh\:mm\:ss");
+            StatusMessage = "Error: No active session";
+            return;
         }
 
+        // Seed data if needed
+        DataSeeder.EnsureSeedData(_dbService);
+
+        // Initialize game engine with session state
+        _gameEngine = new GameEngine(session.State);
+
+        // Update UI with session info
+        UpdateSessionInfo(session);
+
+        // Apply session settings
+        CanRegenerate = session.Settings.AllowOutfitRegeneration;
+        CanOpenWardrobe = session.Settings.AllowWardrobeAccess;
+
+        // Load today's outfit
+        LoadTodaysOutfit();
+
+        StatusMessage = "Welcome back!";
+    }
+
+    /// <summary>
+    /// Updates the session info display with difficulty and settings.
+    /// </summary>
+    private void UpdateSessionInfo(GameSession session)
+    {
+        PlayerLevelDisplay = $"Level: {session.State.Level}";
+        ElapsedTimeDisplay = session.State.TotalPlayTime.ToString(@"hh\:mm\:ss");
+        SessionInfoDisplay = $"Difficulty: {session.Settings.Difficulty}";
+    }
+
+    /// <summary>
+    /// Loads and displays today's outfit.
+    /// </summary>
+    private void LoadTodaysOutfit()
+    {
         try
         {
-            var outfit = wardrobeService.GetTodaysOutfit();
+            var outfit = _wardrobeService.GetTodaysOutfit();
             DailyOutfitDescription = FormatOutfitForDisplay(outfit);
-            StatusMessage = "Welcome back!";
-
         }
         catch (Exception ex)
         {
@@ -87,12 +129,15 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Formats outfit items for display, ordered by layer.
+    /// </summary>
     private string FormatOutfitForDisplay(Outfit outfit)
     {
         if (outfit == null || !outfit.Items.Any())
             return "No items in today's outfit.";
 
-        // Ordiniamo gli oggetti per layer per una lettura naturale (dal basso verso l'alto)
+        // Order items by layer for natural reading (bottom to top)
         var sortedItems = outfit.Items
             .OrderBy(i => GetLayerOrder(i.Layers.FirstOrDefault() ?? ""));
 
@@ -103,6 +148,9 @@ public partial class DashboardViewModel : ViewModelBase
         }));
     }
 
+    /// <summary>
+    /// Determines the display order for clothing layers.
+    /// </summary>
     private static int GetLayerOrder(string layer)
     {
         return layer switch
@@ -114,7 +162,20 @@ public partial class DashboardViewModel : ViewModelBase
         };
     }
 
-    [RelayCommand]
+    /// <summary>
+    /// Updates the timer display with current session time.
+    /// </summary>
+    private void UpdateTimerDisplay()
+    {
+        if (_gameEngine != null)
+        {
+            _gameEngine.UpdateTotalTime();
+            var currentTime = _gameEngine.GetDisplayTime();
+            ElapsedTimeDisplay = currentTime.ToString(@"hh\:mm\:ss");
+        }
+    }
+
+    [ReactiveCommand]
     private void StartActivity()
     {
         if (_gameEngine == null) return;
@@ -124,36 +185,63 @@ public partial class DashboardViewModel : ViewModelBase
         _uiTimer.Start();
     }
 
-    [RelayCommand]
     private void RegenerateOutfit()
     {
-        var wardrobeService = new WardrobeService(_dbService);
-        var newOutfit = wardrobeService.ForceRegenerate(DateTime.Today);
+        var session = _sessionManager.CurrentSession;
+        if (session == null || !CanRegenerate) return;
 
+        // Check regeneration limit
+        if (session.Settings.MaxDailyRegenerations > 0)
+        {
+            if (_regenerationCount >= session.Settings.MaxDailyRegenerations)
+            {
+                StatusMessage = "Daily regeneration limit reached!";
+                return;
+            }
+            _regenerationCount++;
+        }
+
+        var newOutfit = _wardrobeService.ForceRegenerate(DateTime.Today);
         DailyOutfitDescription = FormatOutfitForDisplay(newOutfit);
+
+        StatusMessage = $"Outfit regenerated! ({_regenerationCount}/{session.Settings.MaxDailyRegenerations})";
     }
-    [RelayCommand]
+
     private void OpenWardrobe()
     {
-        var wardrobeWindow = new Views.WardrobeWindow()
-        {
-            DataContext = new WardrobeViewModel(_dbService)
-        };
-        wardrobeWindow.Show();
+        if (!CanOpenWardrobe) return;
+
+        // Navigate to wardrobe view with navigation context
+        _mainVM.NavigateTo(new WardrobeViewModel(_dbService, _mainVM, _sessionManager));
     }
 
+    [ReactiveCommand]
+    private void ReturnToMenu()
+    {
+        SaveAndExit();
+        _mainVM.NavigateTo(new IntroViewModel(_mainVM, _sessionManager));
+    }
+
+    /// <summary>
+    /// Saves the current session state before exiting.
+    /// </summary>
     public void SaveAndExit()
     {
         if (_gameEngine == null) return;
-        // 1. Stop and update the final time
+
+        _uiTimer.Stop();
         _gameEngine.UpdateTotalTime();
+
         var state = _gameEngine.GetCurrentState();
         state.LastSessionDate = DateTime.Now;
 
-        using (var db = _dbService.GetDatabase())
-        {
-            var collection = db.GetCollection<GameState>("game_state");
-            collection.Upsert(state);
-        }
+        _sessionManager.UpdateGameState(state);
+        _sessionManager.SaveSession();
+    }
+
+    public void Dispose()
+    {
+        _uiTimer.Stop();
+        SaveAndExit();
     }
 }
