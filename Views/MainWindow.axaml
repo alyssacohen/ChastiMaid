@@ -1,6 +1,4 @@
-<sukiUi:SukiWindow
-        xmlns="https://github.com/avaloniaui"
-        xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,57 +6,17 @@
         x:Class="ChastiMaid.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         xmlns:vm="using:ChastiMaid.ViewModels"
-        BackgroundStyle="Gradient"
         WindowState="FullScreen"
         Title="ChastiMaid">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-<Panel>
+
     <TransitioningContentControl Content="{Binding CurrentPage}">
         <TransitioningContentControl.PageTransition>
-            <CrossFade Duration="0:0:0.5" />
+            <PageSlide Duration="0:00:00.300" Orientation="Horizontal" />
         </TransitioningContentControl.PageTransition>
     </TransitioningContentControl>
 
-    <!--
-    <Panel IsVisible="{Binding ShowConfirmOverlay}">
-        <ExperimentalAcrylicBorder IsHitTestVisible="True">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="None"
-                    TintColor="Black"
-                    TintOpacity="0.6"
-                    MaterialOpacity="0.85" />
-                </ExperimentalAcrylicBorder.Material>
-            </ExperimentalAcrylicBorder>
-
-            <Border Classes="GlassPanel"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="400"
-                    Padding="30">
-                <StackPanel Spacing="20">
-                    <TextBlock Text="WARNING"
-                               Classes="Header"
-                               Foreground="{StaticResource DangerBrush}"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock Text="Starting a new session will reset all current progress. Your wardrobe will remain intact. Continue?"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"/>
-
-                    <Grid ColumnDefinitions="*, *">
-                        <Button Grid.Column="0" Content="CANCEL" Classes="KioskButton" Command="{Binding CancelNewSessionCommand}" Margin="5"/>
-                        <Button Grid.Column="1" Content="YES, RESET" Classes="KioskButton" Command="{Binding ConfirmNewSessionCommand}" Background="{StaticResource DangerBrush}" Margin="5"/>
-                    </Grid>
-                </StackPanel>
-            </Border>
-        </Panel>
-        -->
-    </Panel>
-
-</sukiUi:SukiWindow>
+</Window>

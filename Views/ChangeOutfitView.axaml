@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:ChangeOutfitViewModel"
+             x:Class="ChastiMaid.Views.ChangeOutfitView">
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24">
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    Spacing="6"
+                    Margin="0,0,0,16">
+            <TextBlock Text="Change Outfit"
+                       Classes="h1"
+                       HorizontalAlignment="Center" />
+            <TextBlock Text="Select the clothes you would like to wear. I will choose the remaining clothes to complete the outfit."
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       Opacity="0.7" />
+        </StackPanel>
+
+        <!-- Two columns -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,16,*">
+
+            <!-- Proposed outfit -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Text="Proposed outfit"
+                           FontSize="13"
+                           Opacity="0.6"
+                           Margin="0,0,0,6" />
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding ProposedItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:OutfitItemViewModel">
+                                <CheckBox IsChecked="{Binding IsSelected}"
+                                          Content="{Binding Name}"
+                                          Padding="4,6"
+                                          FontSize="16" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Separator -->
+            <Border Grid.Column="1"
+                    Width="1"
+                    Background="#33FFFFFF"
+                    HorizontalAlignment="Center" />
+
+            <!-- Other items -->
+            <Grid Grid.Column="2" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Text="Other available clothings"
+                           FontSize="13"
+                           Opacity="0.6"
+                           Margin="0,0,0,6" />
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding OtherItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:OutfitItemViewModel">
+                                <CheckBox IsChecked="{Binding IsSelected}"
+                                          Content="{Binding Name}"
+                                          Padding="4,6"
+                                          FontSize="16" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+        </Grid>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Spacing="16"
+                    Margin="0,16,0,0">
+            <Button Content="Regenerate"
+                    Command="{Binding RegenerateCommand}"
+                    Padding="24,12" />
+            <Button Content="Confirm"
+                    Command="{Binding ConfirmCommand}"
+                    Padding="24,12" />
+            <Button Content="Back"
+                    Command="{Binding BackCommand}"
+                    Padding="24,12" />
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

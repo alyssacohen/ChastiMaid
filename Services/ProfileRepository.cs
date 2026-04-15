@@ -1,0 +1,34 @@
+using ChastiMaid.Models;
+using LiteDB;
+
+namespace ChastiMaid.Services;
+
+public class ProfileRepository(LiteDatabase db)
+{
+    private ILiteCollection<ClothingItem> Wardrobe => db.GetCollection<ClothingItem>("wardrobe");
+    private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
+    private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
+    private ILiteCollection<PunishmentTemplate> PunishmentTemplates => db.GetCollection<PunishmentTemplate>("punishment_templates");
+    private ILiteCollection<PlayerProfile> Profiles => db.GetCollection<PlayerProfile>("profile");
+
+    public List<ClothingItem> GetWardrobe() => Wardrobe.FindAll().ToList();
+    public void SaveClothingItem(ClothingItem item) => Wardrobe.Upsert(item);
+    public void DeleteClothingItem(int id) => Wardrobe.Delete(id);
+
+    public List<OutfitRule> GetOutfitRules() => OutfitRules.FindAll().ToList();
+    public void SaveOutfitRule(OutfitRule rule) => OutfitRules.Upsert(rule);
+    public void DeleteOutfitRule(int id) => OutfitRules.Delete(id);
+
+    public List<Chore> GetChores() => Chores.FindAll().ToList();
+    public void SaveChore(Chore chore) => Chores.Upsert(chore);
+    public void DeleteChore(int id) => Chores.Delete(id);
+
+    public List<PunishmentTemplate> GetPunishmentTemplates() => PunishmentTemplates.FindAll().ToList();
+    public void SavePunishmentTemplate(PunishmentTemplate template) => PunishmentTemplates.Upsert(template);
+    public void DeletePunishmentTemplate(int id) => PunishmentTemplates.Delete(id);
+
+    public PlayerProfile GetProfile() =>
+        Profiles.FindById(1) ?? new PlayerProfile();
+
+    public void SaveProfile(PlayerProfile profile) => Profiles.Upsert(profile);
+}

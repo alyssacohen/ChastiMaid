@@ -1,14 +1,11 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 
-namespace ChastiMaid.Views
+namespace ChastiMaid.Views;
+
+public partial class WelcomeView : UserControl
 {
-    public partial class WelcomeView : UserControl
+    public WelcomeView()
     {
-        public WelcomeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

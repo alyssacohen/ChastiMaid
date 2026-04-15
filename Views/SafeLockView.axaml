@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:SafeLockViewModel"
+             x:Class="ChastiMaid.Views.SafeLockView">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="24"
+                MaxWidth="520">
+
+        <TextBlock Text="Safe Lock"
+                   Classes="h1"
+                   HorizontalAlignment="Center" />
+
+        <TextBlock TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   Opacity="0.8"
+                   FontSize="16"
+                   Text="Place your distracting object inside the safe.&#10;Photograph the combination without looking at it, then press Continue." />
+
+        <Button Content="Continue"
+                Command="{Binding ContinueCommand}"
+                HorizontalAlignment="Center"
+                Padding="48,14" />
+
+    </StackPanel>
+
+</UserControl>

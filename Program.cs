@@ -1,5 +1,7 @@
-﻿using Avalonia;
+using Avalonia;
+using ReactiveUI;
 using System;
+using ReactiveUI.Avalonia;
 
 namespace ChastiMaid;
 
@@ -17,5 +19,6 @@ sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace()
+            .UseReactiveUI(_ => { });
 }

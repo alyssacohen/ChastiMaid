@@ -1,9 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
+using ChastiMaid.Services;
 using ChastiMaid.ViewModels;
 using ChastiMaid.Views;
 
@@ -11,37 +9,46 @@ namespace ChastiMaid;
 
 public partial class App : Application
 {
+    private DatabaseService? _databaseService;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    private const double ReferenceHeight = 1080.0;
+
+    private void RegisterScaledResources(MainWindow window)
+    {
+        var screen = window.Screens.Primary;
+        var height = screen?.Bounds.Height ?? ReferenceHeight;
+        var scale = height / ReferenceHeight;
+
+        Resources["FontSizeBody"]   = Math.Round(24 * scale);
+        Resources["FontSizeSmall"]  = Math.Round(14 * scale);
+        Resources["FontSizeButton"] = Math.Round(20 * scale);
+        Resources["FontSizeH1"]     = Math.Round(48 * scale);
     }
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            var mainWindow = new MainWindow();
+            RegisterScaledResources(mainWindow);
+
+            _databaseService = new DatabaseService();
+            var profileDb = _databaseService.OpenProfile();
+            var profileRepo = new ProfileRepository(profileDb);
+            DataSeeder.SeedIfEmpty(profileRepo);
+            var slotManager = new SaveSlotManager(_databaseService);
+
+            mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager);
+            desktop.MainWindow = mainWindow;
+
+            desktop.Exit += (_, _) => _databaseService.Dispose();
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    private void DisableAvaloniaDataAnnotationValidation()
-    {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
-
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-        {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
     }
 }
