@@ -166,3 +166,6 @@ Thumbs.db
 # Uncomment if you do not use EditorConfig.
 # .editorconfig
 
+## Kiro AI folder and files
+.kiro
+
