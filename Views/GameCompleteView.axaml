@@ -10,10 +10,10 @@
                 MaxWidth="520">
 
         <TextBlock Text="Game Complete!"
-                   Classes="h1"
+                   Classes="heading"
                    HorizontalAlignment="Center" />
 
-        <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.8" FontSize="16"
+        <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.8"
                    Text="Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed." />
 
         <!-- Export buttons -->
@@ -22,15 +22,13 @@
                     Command="{Binding ExportOutfitVideoCommand}"
                     IsVisible="{Binding HasOutfitVideo}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
 
             <Button Content="Export Safe Combination Photo"
                     Command="{Binding ExportSafePhotoCommand}"
                     IsVisible="{Binding HasSafePhoto}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
         </StackPanel>
 
         <!-- Status message -->
@@ -43,7 +41,7 @@
         <Button Content="Finish and Free Slot"
                 Command="{Binding FinishCommand}"
                 HorizontalAlignment="Center"
-                Padding="48,14"
+                Classes="primary"
                 Margin="0,8,0,0" />
 
     </StackPanel>

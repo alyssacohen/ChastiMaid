@@ -12,7 +12,7 @@
                     Spacing="6"
                     Margin="0,0,0,16">
             <TextBlock Text="Change Outfit"
-                       Classes="h1"
+                       Classes="heading"
                        HorizontalAlignment="Center" />
             <TextBlock Text="Select the clothes you would like to wear. I will choose the remaining clothes to complete the outfit."
                        TextWrapping="Wrap"
@@ -27,7 +27,7 @@
             <Grid Grid.Column="0" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0"
                            Text="Proposed outfit"
-                           FontSize="13"
+                           FontSize="{DynamicResource FontSizeSmall}"
                            Opacity="0.6"
                            Margin="0,0,0,6" />
                 <ScrollViewer Grid.Row="1">
@@ -37,7 +37,7 @@
                                 <CheckBox IsChecked="{Binding IsSelected}"
                                           Content="{Binding Name}"
                                           Padding="4,6"
-                                          FontSize="16" />
+                                          FontSize="{DynamicResource FontSizeSmall}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -54,7 +54,7 @@
             <Grid Grid.Column="2" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0"
                            Text="Other available clothings"
-                           FontSize="13"
+                           FontSize="{DynamicResource FontSizeSmall}"
                            Opacity="0.6"
                            Margin="0,0,0,6" />
                 <ScrollViewer Grid.Row="1">
@@ -64,7 +64,7 @@
                                 <CheckBox IsChecked="{Binding IsSelected}"
                                           Content="{Binding Name}"
                                           Padding="4,6"
-                                          FontSize="16" />
+                                          FontSize="{DynamicResource FontSizeSmall}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -80,14 +80,11 @@
                     Spacing="16"
                     Margin="0,16,0,0">
             <Button Content="Regenerate"
-                    Command="{Binding RegenerateCommand}"
-                    Padding="24,12" />
+                    Command="{Binding RegenerateCommand}" />
             <Button Content="Confirm"
-                    Command="{Binding ConfirmCommand}"
-                    Padding="24,12" />
+                    Command="{Binding ConfirmCommand}" />
             <Button Content="Back"
-                    Command="{Binding BackCommand}"
-                    Padding="24,12" />
+                    Command="{Binding BackCommand}" />
         </StackPanel>
 
     </Grid>

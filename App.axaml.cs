@@ -26,10 +26,11 @@ public partial class App : Application
         var height = screen?.Bounds.Height ?? ReferenceHeight;
         var scale = height / ReferenceHeight;
 
-        Resources["FontSizeBody"]   = Math.Round(24 * scale);
-        Resources["FontSizeSmall"]  = Math.Round(14 * scale);
-        Resources["FontSizeButton"] = Math.Round(20 * scale);
-        Resources["FontSizeH1"]     = Math.Round(48 * scale);
+        Resources["FontSizeSmall"]   = Math.Round(14 * scale);
+        Resources["FontSizeButton"]  = Math.Round(18 * scale);
+        Resources["FontSizeBody"]    = Math.Round(24 * scale);
+        Resources["FontSizeHeading"] = Math.Round(40 * scale);
+        Resources["FontSizeDisplay"] = Math.Round(72 * scale);
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -54,6 +55,7 @@ public partial class App : Application
             {
                 _webcamService.Dispose();
                 _autoSaveService.Dispose();
+                (mainWindow.DataContext as MainWindowViewModel)?.CloseActiveSave();
                 _databaseService.Dispose();
             };
         }

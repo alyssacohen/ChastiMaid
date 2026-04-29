@@ -15,7 +15,7 @@
             <StackPanel Spacing="16">
 
                 <TextBlock Text="{Binding Title}"
-                           Classes="h1"
+                           Classes="heading"
                            HorizontalAlignment="Center" />
 
                 <TextBlock Text="{Binding Message}"
@@ -29,12 +29,10 @@
                             Margin="0,8,0,0">
 
                     <Button Content="{Binding ConfirmLabel}"
-                            Command="{Binding ConfirmCommand}"
-                            Padding="28,10" />
+                            Command="{Binding ConfirmCommand}" />
 
                     <Button Content="{Binding CancelLabel}"
                             Command="{Binding CancelCommand}"
-                            Padding="28,10"
                             IsVisible="{Binding HasCancel}" />
 
                 </StackPanel>

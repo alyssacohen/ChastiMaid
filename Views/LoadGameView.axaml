@@ -15,7 +15,7 @@
                     Margin="0,32">
 
             <TextBlock Text="Load Game"
-                       Classes="h1"
+                       Classes="heading"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,8" />
 
@@ -39,7 +39,6 @@
                                         <StackPanel Spacing="0">
                                             <!-- Slot name -->
                                             <TextBlock Text="{Binding SlotName}"
-                                                       FontSize="18"
                                                        FontWeight="SemiBold" />
 
                                             <!-- Info row 1: data e difficoltà -->
@@ -71,9 +70,8 @@
                                     <Button Grid.Column="1"
                                             Content="Delete"
                                             Command="{Binding DeleteCommand}"
-                                            Classes="warning"
+                                            Classes="warning compact"
                                             VerticalAlignment="Center"
-                                            Padding="16,8"
                                             Margin="12,0,0,0" />
 
                                 </Grid>
@@ -92,7 +90,6 @@
             <Button Content="Back"
                     Command="{Binding BackCommand}"
                     HorizontalAlignment="Center"
-                    Padding="24,10"
                     Margin="0,8,0,0" />
 
         </StackPanel>

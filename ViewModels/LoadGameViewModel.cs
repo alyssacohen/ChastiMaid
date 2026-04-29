@@ -77,8 +77,7 @@ public class LoadGameViewModel : ViewModelBase
     {
         try
         {
-            var db = _mainVm.DatabaseService.OpenSave(slotName);
-            var saveRepo = new SaveRepository(db);
+            var saveRepo = _mainVm.OpenSaveSlot(slotName);
             _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, saveRepo));
         }
         catch (Exception ex)

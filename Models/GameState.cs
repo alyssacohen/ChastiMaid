@@ -14,4 +14,5 @@ public class GameState
     public bool IsCompleted { get; set; }
     public bool IsSafeLocked { get; set; }
     public string? OutfitVideoPath { get; set; }
+    public string? CurrentOutfit { get; set; }
 }

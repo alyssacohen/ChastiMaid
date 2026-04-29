@@ -1,4 +1,5 @@
 using ChastiMaid.Services;
+using LiteDB;
 using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;
@@ -10,6 +11,9 @@ public class MainWindowViewModel : ViewModelBase
     public SaveSlotManager SaveSlotManager { get; }
     public AutoSaveService AutoSaveService { get; }
     public WebcamPreviewService Webcam { get; }
+
+    /// <summary>DB del save slot attualmente aperto. Viene disposto quando si cambia slot o si torna al menu.</summary>
+    private LiteDatabase? _activeSaveDb;
 
     private ViewModelBase _currentPage = null!;
     public ViewModelBase CurrentPage
@@ -26,6 +30,24 @@ public class MainWindowViewModel : ViewModelBase
         AutoSaveService = autoSaveService;
         Webcam = webcam;
         CurrentPage = new WelcomeViewModel(this);
+    }
+
+    /// <summary>
+    /// Apre un save slot e ne traccia il DB per il dispose automatico.
+    /// Se c'era un DB aperto, viene chiuso prima.
+    /// </summary>
+    public SaveRepository OpenSaveSlot(string slotName)
+    {
+        _activeSaveDb?.Dispose();
+        _activeSaveDb = DatabaseService.OpenSave(slotName);
+        return new SaveRepository(_activeSaveDb);
+    }
+
+    /// <summary>Chiude il save DB attivo (se presente).</summary>
+    public void CloseActiveSave()
+    {
+        _activeSaveDb?.Dispose();
+        _activeSaveDb = null;
     }
 
     public void NavigateTo(ViewModelBase page) => CurrentPage = page;

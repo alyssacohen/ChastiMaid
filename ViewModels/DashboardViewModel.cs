@@ -84,6 +84,8 @@ public class DashboardViewModel : ViewModelBase
 
     public ObservableCollection<ChoreItemViewModel> Chores { get; } = [];
 
+    public string CurrentOutfit { get; }
+
     public ICommand EndSessionCommand { get; }
     public ICommand CompleteGameCommand { get; }
     public ICommand AnswerCommand { get; }
@@ -114,6 +116,7 @@ public class DashboardViewModel : ViewModelBase
         var state = saveRepo.GetGameState();
         CurrentDebt = state?.CurrentDebt ?? 0;
         DebtDisplay = FormatDebt(CurrentDebt);
+        CurrentOutfit = state?.CurrentOutfit ?? "No outfit set";
         PayRate = $"Wage: {_settings.IdleWageAmount} cr / {_settings.IdleWageIntervalMinutes} min";
 
         foreach (var chore in saveRepo.GetChores())
@@ -351,6 +354,7 @@ public class DashboardViewModel : ViewModelBase
         }
 
         _autoSave.TriggerSave();
+        _mainVm.CloseActiveSave();
         _mainVm.NavigateTo(new WelcomeViewModel(_mainVm));
     }
 }

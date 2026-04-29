@@ -35,8 +35,8 @@ public class WelcomeViewModel : ViewModelBase
         ContinueCommand = ReactiveCommand.Create(
             () =>
             {
-                var db = mainVm.DatabaseService.OpenSave(latest!.SlotName);
-                _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, new SaveRepository(db)));
+                var saveRepo = mainVm.OpenSaveSlot(latest!.SlotName);
+                _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, saveRepo));
             },
             canExecute: this.WhenAnyValue(x => x.HasActiveGame));
 

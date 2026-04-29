@@ -39,6 +39,14 @@ public class ConfirmOutfitViewModel : ViewModelBase
         _webcam = mainVm.Webcam;
         OutfitSummary = outfit.ToString();
 
+        // Salva l'outfit corrente nel GameState
+        var state = saveRepo.GetGameState();
+        if (state is not null)
+        {
+            state.CurrentOutfit = OutfitSummary;
+            saveRepo.SaveGameState(state);
+        }
+
         ConfirmOutfitCommand = ReactiveCommand.Create(OnOutfitConfirmed);
         RecordCommand = ReactiveCommand.CreateFromTask(OnRecord);
         SkipCommand = ReactiveCommand.Create(NavigateToSafeLock);

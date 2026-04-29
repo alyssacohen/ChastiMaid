@@ -3,7 +3,7 @@
     <Design.PreviewWith>
         <Border Padding="20">
           <StackPanel Spacing="8">
-              <TextBlock Classes="h1" Text="This is a header" />
+              <TextBlock Classes="heading" Text="This is a header" />
               <TextBlock Text="This is a text block" />
               <Button Content="Click Me" />
               <Button Classes="warning" Content="Warning" />
@@ -21,10 +21,14 @@
         <Setter Property="TextWrapping" Value="WrapWithOverflow" />
     </Style>
 
-    <Style Selector="TextBlock.h1">
+    <Style Selector="TextBlock.heading">
+        <Setter Property="FontFamily" Value="{StaticResource HeadingFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeHeading}" />
+    </Style>
+
+    <Style Selector="TextBlock.display">
         <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeH1}" />
-        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeDisplay}" />
     </Style>
 
     <Style Selector="TextBlock.small">
@@ -37,6 +41,15 @@
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
         <Setter Property="Foreground" Value="White" />
+        <Setter Property="Padding" Value="24,12" />
+    </Style>
+
+    <Style Selector="Button.primary">
+        <Setter Property="Padding" Value="48,14" />
+    </Style>
+
+    <Style Selector="Button.compact">
+        <Setter Property="Padding" Value="16,8" />
     </Style>
 
     <Style Selector="Button.warning">

@@ -11,18 +11,18 @@
                 MaxWidth="600">
 
         <TextBlock Text="Position the camera"
-                   Classes="h1"
+                   Classes="heading"
                    HorizontalAlignment="Center" />
 
         <TextBlock Text="{Binding ChoreName, StringFormat='Frame your work area for: {0}'}"
-                   FontSize="16" HorizontalAlignment="Center" Opacity="0.8" TextAlignment="Center" />
+                   HorizontalAlignment="Center" Opacity="0.8" TextAlignment="Center" />
 
         <v:WebcamPreviewControl Service="{Binding Webcam}"
                                 Width="480" Height="360" />
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16">
-            <Button Content="Confirm" Command="{Binding ConfirmCommand}" Padding="48,14" />
-            <Button Content="Cancel" Command="{Binding CancelCommand}" Padding="48,14" Opacity="0.6" />
+            <Button Content="Confirm" Command="{Binding ConfirmCommand}" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" />
         </StackPanel>
 
     </StackPanel>

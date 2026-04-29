@@ -1,6 +1,4 @@
 using Avalonia;
-using ReactiveUI;
-using System;
 using ReactiveUI.Avalonia;
 
 namespace ChastiMaid;

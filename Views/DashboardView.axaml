@@ -10,29 +10,45 @@
 
             <Border Grid.Row="0" Padding="24,16">
                 <TextBlock Text="{Binding DebtDisplay}"
-                           Classes="h1"
+                           Classes="heading"
                            HorizontalAlignment="Center" />
             </Border>
 
-            <ScrollViewer Grid.Row="1" Padding="24,0">
-                <ItemsControl ItemsSource="{Binding Chores}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:ChoreItemViewModel">
-                            <Border Padding="16,12" Margin="0,4">
-                                <Grid ColumnDefinitions="*,Auto,Auto">
-                                    <TextBlock Grid.Column="0" Text="{Binding Name}"
-                                               FontSize="16" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="1" Text="{Binding Value, StringFormat='{}{0:F0} cr'}"
-                                               Opacity="0.7" VerticalAlignment="Center" Margin="16,0" />
-                                    <Button Grid.Column="2" Content="Start"
-                                            Command="{Binding StartChoreCommand}"
-                                            Padding="24,8" />
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*" Margin="24,0">
+
+                <!-- Left: Chore list -->
+                <ScrollViewer Grid.Column="0">
+                    <ItemsControl ItemsSource="{Binding Chores}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChoreItemViewModel">
+                                <Border Padding="16,12" Margin="0,4">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Value, StringFormat='{}{0:F0} cr'}"
+                                                   Opacity="0.7" VerticalAlignment="Center" Margin="16,0" />
+                                        <Button Grid.Column="2" Content="Start"
+                                                Command="{Binding StartChoreCommand}"
+                                                Classes="compact" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Separator -->
+                <Border Grid.Column="1" Width="1" Background="#33FFFFFF" Margin="16,0" />
+
+                <!-- Right: Current outfit -->
+                <ScrollViewer Grid.Column="2">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Current Outfit" FontWeight="SemiBold" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding CurrentOutfit}" Classes="small" Opacity="0.85" />
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
 
             <Border Grid.Row="2" Padding="24,16">
                 <StackPanel HorizontalAlignment="Center" Spacing="8">
@@ -41,11 +57,9 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12" Margin="0,8,0,0">
                         <Button Content="Complete Game"
                                 Command="{Binding CompleteGameCommand}"
-                                IsVisible="{Binding CanComplete}"
-                                Padding="48,14" />
+                                IsVisible="{Binding CanComplete}" />
                         <Button Content="End Session"
-                                Command="{Binding EndSessionCommand}"
-                                Padding="48,14" />
+                                Command="{Binding EndSessionCommand}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -54,7 +68,7 @@
         <!-- ==================== BUSY MODE ==================== -->
         <Grid RowDefinitions="Auto,Auto,*,Auto" IsVisible="{Binding IsBusy}">
             <TextBlock Grid.Row="0" Text="{Binding BusyChoreName}"
-                       Classes="h1" HorizontalAlignment="Center" Margin="0,24" />
+                       Classes="heading" HorizontalAlignment="Center" Margin="0,24" />
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="4">
                 <TextBlock Text="{Binding BusyChoreDescription}" HorizontalAlignment="Center" Opacity="0.7" />
@@ -63,32 +77,32 @@
             </StackPanel>
 
             <TextBlock Grid.Row="2" Text="{Binding BusyElapsed}"
-                       FontSize="72" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                       Classes="display" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             <Button Grid.Row="3" Content="End Chore"
                     Command="{Binding EndChoreCommand}"
-                    HorizontalAlignment="Center" Padding="48,14" Margin="0,0,0,24" />
+                    HorizontalAlignment="Center" Classes="primary" Margin="0,0,0,24" />
         </Grid>
 
         <!-- ==================== TRIVIA POPUP OVERLAY ==================== -->
         <Border IsVisible="{Binding IsPopupVisible}"
                 Background="#CC000000"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                    CornerRadius="12" Padding="32" MaxWidth="500"
+            <Border Background="{DynamicResource SystemChromeMediumColor}"
+                    CornerRadius="4" Padding="32" MaxWidth="500"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Spacing="16">
                     <TextBlock Text="{Binding PopupCountdown, StringFormat='Time: {0}s'}"
-                               FontSize="24" HorizontalAlignment="Center" Foreground="OrangeRed" />
+                               HorizontalAlignment="Center" Foreground="OrangeRed" />
                     <TextBlock Text="{Binding PopupQuestion}"
-                               FontSize="20" TextWrapping="Wrap" HorizontalAlignment="Center" />
+                               TextWrapping="Wrap" HorizontalAlignment="Center" />
                     <ItemsControl ItemsSource="{Binding PopupAnswers}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
                                 <Button Content="{Binding}"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
-                                        Padding="16,10" Margin="0,4"
+                                        Margin="0,4"
                                         Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
                                         CommandParameter="{Binding}"/>
                             </DataTemplate>

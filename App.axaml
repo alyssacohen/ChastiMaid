@@ -11,7 +11,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="DisplayFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif</FontFamily>
-            <FontFamily x:Key="HeaderFont">avares://ChastiMaid/Assets/Fonts#Playfair Display</FontFamily>
+            <FontFamily x:Key="HeadingFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif Italic</FontFamily>
             <FontFamily x:Key="DefaultFont">avares://ChastiMaid/Assets/Fonts#Inter 28pt Light</FontFamily>
         </ResourceDictionary>
     </Application.Resources>

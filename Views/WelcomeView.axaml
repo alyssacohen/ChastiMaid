@@ -11,43 +11,44 @@
              x:Class="ChastiMaid.Views.WelcomeView">
 
     <Panel>
+        <StackPanel HorizontalAlignment="Center"
+                    Spacing="12"
+                    Margin="30,0,0,0">
+        <TextBlock Text="Welcome to ChastiMaid!"
+                   Classes="display"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24" />
+        <TextBlock Text="Do come in. The door is unlocked. It always is... at first."
+                   Classes="heading"
+                   HorizontalAlignment="Center"
+                   TextWrapping="WrapWithOverflow" />
+        </StackPanel>
+
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Spacing="12">
-            <TextBlock Text="Welcome to ChastiMaid!"
-                       Classes="h1"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,24" />
-            <TextBlock Text="Do come in. The door is unlocked. It always is... at first."
-                       FontSize="{DynamicResource FontSizeBody}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="WrapWithOverflow" />
+                    Spacing="12"
+                    Width="400">
 
             <Button Content="Continue"
                     Command="{Binding ContinueCommand}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
             <Button Content="Load Game"
                     Command="{Binding LoadGameCommand}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
             <Button Content="New Game"
                     Command="{Binding NewGameCommand}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
             <Button Content="Settings"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
             <Button Content="Exit"
                     Command="{Binding ExitCommand}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Padding="24,12" />
+                    HorizontalContentAlignment="Center" />
         </StackPanel>
 
         <views:ConfirmDialog DataContext="{Binding ActiveDialog}"

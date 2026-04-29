@@ -9,9 +9,10 @@
         WindowState="FullScreen"
         Title="ChastiMaid">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    <!--
+    Design.DataContext omesso: MainWindowViewModel richiede parametri nel costruttore.
+    Il preview XAML non è supportato per questa finestra.
+    -->
 
     <TransitioningContentControl Content="{Binding CurrentPage}">
         <TransitioningContentControl.PageTransition>
