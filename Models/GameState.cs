@@ -12,4 +12,6 @@ public class GameState
     public DateTime StartedAt { get; set; }
     public DateTime LastSessionAt { get; set; }
     public bool IsCompleted { get; set; }
+    public bool IsSafeLocked { get; set; }
+    public string? OutfitVideoPath { get; set; }
 }

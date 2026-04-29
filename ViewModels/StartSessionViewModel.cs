@@ -30,7 +30,7 @@ public class StartSessionViewModel : ViewModelBase
         ProposedOutfit = _outfit.ToString();
 
         AcceptCommand = ReactiveCommand.Create(
-            () => _mainVm.NavigateTo(new SafeLockViewModel(_mainVm, _saveRepo)));
+            () => _mainVm.NavigateTo(new ConfirmOutfitViewModel(_mainVm, _saveRepo, _outfit)));
 
         ChangeOutfitCommand = ReactiveCommand.Create(
             () => _mainVm.NavigateTo(new ChangeOutfitViewModel(_mainVm, _saveRepo, _outfit)));

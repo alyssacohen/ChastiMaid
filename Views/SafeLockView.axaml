@@ -1,28 +1,66 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:v="using:ChastiMaid.Views"
              x:DataType="vm:SafeLockViewModel"
              x:Class="ChastiMaid.Views.SafeLockView">
 
     <StackPanel HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Spacing="24"
-                MaxWidth="520">
+                MaxWidth="600">
 
         <TextBlock Text="Safe Lock"
                    Classes="h1"
                    HorizontalAlignment="Center" />
 
-        <TextBlock TextWrapping="Wrap"
-                   TextAlignment="Center"
-                   Opacity="0.8"
-                   FontSize="16"
-                   Text="Place your distracting object inside the safe.&#10;Photograph the combination without looking at it, then press Continue." />
+        <!-- Stato iniziale: istruzioni + pulsante avvia camera -->
+        <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.8" FontSize="16"
+                       Text="Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it." />
+            <Button Content="Start Camera"
+                    Command="{Binding StartCameraCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+            <Button Content="Skip (no safe)"
+                    Command="{Binding SkipCommand}"
+                    HorizontalAlignment="Center" Padding="24,10" Opacity="0.6" />
+        </StackPanel>
 
-        <Button Content="Continue"
-                Command="{Binding ContinueCommand}"
-                HorizontalAlignment="Center"
-                Padding="48,14" />
+        <!-- Stato preview: anteprima webcam + pulsante Capture -->
+        <StackPanel Spacing="16" IsVisible="{Binding IsPreviewing}" HorizontalAlignment="Center">
+            <TextBlock Text="Point the camera at the combination, then press Capture."
+                       FontSize="16" HorizontalAlignment="Center" Opacity="0.8" TextAlignment="Center" />
+            <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                    Width="480" Height="360" />
+            <Button Content="📸 Capture"
+                    Command="{Binding CaptureCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+            <Button Content="Skip (no safe)"
+                    Command="{Binding SkipCommand}"
+                    HorizontalAlignment="Center" Padding="24,10" Opacity="0.6" />
+        </StackPanel>
+
+        <!-- Stato no webcam -->
+        <StackPanel Spacing="16" IsVisible="{Binding NoWebcam}" HorizontalAlignment="Center">
+            <TextBlock Text="No webcam detected."
+                       FontSize="18" HorizontalAlignment="Center" Opacity="0.8" />
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.6"
+                       Text="The combination photo cannot be captured. You can continue without locking the safe." />
+            <Button Content="Continue without safe"
+                    Command="{Binding SkipCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+        </StackPanel>
+
+        <!-- Stato completato -->
+        <StackPanel Spacing="16" IsVisible="{Binding IsDone}" HorizontalAlignment="Center">
+            <TextBlock Text="🔒 Safe locked!"
+                       FontSize="22" HorizontalAlignment="Center" />
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.7"
+                       Text="The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe." />
+            <Button Content="Start Session"
+                    Command="{Binding ContinueCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+        </StackPanel>
 
     </StackPanel>
 

@@ -10,6 +10,7 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
     private ILiteCollection<PunishmentTemplate> PunishmentTemplates => db.GetCollection<PunishmentTemplate>("punishment_templates");
     private ILiteCollection<PlayerProfile> Profiles => db.GetCollection<PlayerProfile>("profile");
+    private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
 
     public List<ClothingItem> GetWardrobe() => Wardrobe.FindAll().ToList();
     public void SaveClothingItem(ClothingItem item) => Wardrobe.Upsert(item);
@@ -31,4 +32,7 @@ public class ProfileRepository(LiteDatabase db)
         Profiles.FindById(1) ?? new PlayerProfile();
 
     public void SaveProfile(PlayerProfile profile) => Profiles.Upsert(profile);
+
+    public PlayerStats GetStats() => Stats.FindById(1) ?? new PlayerStats();
+    public void SaveStats(PlayerStats stats) => Stats.Upsert(stats);
 }

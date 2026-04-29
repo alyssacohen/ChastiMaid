@@ -15,7 +15,7 @@
 
     <TransitioningContentControl Content="{Binding CurrentPage}">
         <TransitioningContentControl.PageTransition>
-            <PageSlide Duration="0:00:00.300" Orientation="Horizontal" />
+            <CrossFade Duration="0:00:00.250" />
         </TransitioningContentControl.PageTransition>
     </TransitioningContentControl>
 

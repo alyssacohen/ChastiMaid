@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ChastiMaid.Views.WebcamPreviewControl">
+
+    <Border Background="#1A1A1A" CornerRadius="4" ClipToBounds="True">
+        <Panel>
+            <Image x:Name="PreviewImage" Stretch="Uniform" />
+            <TextBlock Text="No webcam signal"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Opacity="0.4"
+                       x:Name="NoSignalText" />
+        </Panel>
+    </Border>
+
+</UserControl>

@@ -10,9 +10,9 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="DisplayFont">avares://ChastiMaid/Assets/EmilysCandy#Emilys Candy</FontFamily>
-            <FontFamily x:Key="HeaderFont">avares://ChastiMaid/Assets/PlayfairDisplay#Playfair Display</FontFamily>
-            <FontFamily x:Key="DefaultFont">avares://ChastiMaid/Assets/OpenSans#Open Sans SemiCondensed</FontFamily>
+            <FontFamily x:Key="DisplayFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif</FontFamily>
+            <FontFamily x:Key="HeaderFont">avares://ChastiMaid/Assets/Fonts#Playfair Display</FontFamily>
+            <FontFamily x:Key="DefaultFont">avares://ChastiMaid/Assets/Fonts#Inter 28pt Light</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 

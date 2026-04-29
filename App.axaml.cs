@@ -10,6 +10,8 @@ namespace ChastiMaid;
 public partial class App : Application
 {
     private DatabaseService? _databaseService;
+    private AutoSaveService? _autoSaveService;
+    private WebcamPreviewService? _webcamService;
 
     public override void Initialize()
     {
@@ -42,11 +44,18 @@ public partial class App : Application
             var profileRepo = new ProfileRepository(profileDb);
             DataSeeder.SeedIfEmpty(profileRepo);
             var slotManager = new SaveSlotManager(_databaseService);
+            _autoSaveService = new AutoSaveService();
+            _webcamService = new WebcamPreviewService();
 
-            mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager);
+            mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager, _autoSaveService, _webcamService);
             desktop.MainWindow = mainWindow;
 
-            desktop.Exit += (_, _) => _databaseService.Dispose();
+            desktop.Exit += (_, _) =>
+            {
+                _webcamService.Dispose();
+                _autoSaveService.Dispose();
+                _databaseService.Dispose();
+            };
         }
 
         base.OnFrameworkInitializationCompleted();

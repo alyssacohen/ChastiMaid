@@ -32,10 +32,17 @@
 
         <!-- Footer -->
         <Border Grid.Row="2" Padding="24,16">
-            <Button Content="End Session"
-                    Command="{Binding EndSessionCommand}"
-                    HorizontalAlignment="Center"
-                    Padding="48,14" />
+            <StackPanel HorizontalAlignment="Center" Spacing="12">
+                <Button Content="Complete Game"
+                        Command="{Binding CompleteGameCommand}"
+                        IsVisible="{Binding CanComplete}"
+                        HorizontalAlignment="Center"
+                        Padding="48,14" />
+                <Button Content="End Session"
+                        Command="{Binding EndSessionCommand}"
+                        HorizontalAlignment="Center"
+                        Padding="48,14" />
+            </StackPanel>
         </Border>
 
     </Grid>

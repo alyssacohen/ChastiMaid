@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:views="using:ChastiMaid.Views"
+             x:DataType="vm:LoadGameViewModel"
+             x:Class="ChastiMaid.Views.LoadGameView">
+
+    <!-- Panel root per permettere l'overlay del dialog -->
+    <Panel>
+
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="16"
+                    MaxWidth="900"
+                    Margin="0,32">
+
+            <TextBlock Text="Load Game"
+                       Classes="h1"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,8" />
+
+            <!-- Slot cards -->
+            <ScrollViewer MaxHeight="520">
+                <ItemsControl ItemsSource="{Binding Slots}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:SlotCardViewModel">
+                            <Border Background="{DynamicResource SystemChromeLowColor}"
+                                    CornerRadius="4"
+                                    Padding="20,16"
+                                    Margin="0,0,0,8"
+                                    Opacity="{Binding CardOpacity}">
+                                <Grid ColumnDefinitions="*,Auto">
+
+                                    <!-- Slot info area wrapped in a Button bound to LoadCommand -->
+                                    <Button Grid.Column="0"
+                                            Command="{Binding LoadCommand}"
+                                            Classes="slotCard"
+                                            HorizontalContentAlignment="Stretch">
+                                        <StackPanel Spacing="0">
+                                            <!-- Slot name -->
+                                            <TextBlock Text="{Binding SlotName}"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold" />
+
+                                            <!-- Info row 1: data e difficoltà -->
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="16"
+                                                        Margin="0,6,0,0">
+                                                <TextBlock Text="{Binding SavedAt}" Opacity="0.7" Classes="small" />
+                                                <TextBlock Text="{Binding Difficulty}" Opacity="0.7" Classes="small" />
+                                            </StackPanel>
+
+                                            <!-- Info row 2: debito e cassaforte -->
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="16"
+                                                        Margin="0,4,0,0">
+                                                <TextBlock Text="{Binding DebtDisplay}" Opacity="0.85" Classes="small" />
+                                                <TextBlock Text="{Binding SafeStatus}" Opacity="0.85" Classes="small" />
+                                            </StackPanel>
+
+                                            <!-- Completed label (visible only when IsCompleted is true) -->
+                                            <TextBlock Text="{Binding CompletedLabel}"
+                                                       IsVisible="{Binding IsCompleted}"
+                                                       Opacity="0.7"
+                                                       Margin="0,6,0,0"
+                                                       Classes="small" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <!-- Delete button (outside the load-clickable area) -->
+                                    <Button Grid.Column="1"
+                                            Content="Delete"
+                                            Command="{Binding DeleteCommand}"
+                                            Classes="warning"
+                                            VerticalAlignment="Center"
+                                            Padding="16,8"
+                                            Margin="12,0,0,0" />
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Messaggio se non ci sono slot -->
+            <TextBlock Text="No saved games found."
+                       HorizontalAlignment="Center"
+                       Opacity="0.6"
+                       IsVisible="{Binding !HasSlots}" />
+
+            <Button Content="Back"
+                    Command="{Binding BackCommand}"
+                    HorizontalAlignment="Center"
+                    Padding="24,10"
+                    Margin="0,8,0,0" />
+
+        </StackPanel>
+
+        <!-- Overlay dialog (visibile solo quando ActiveDialog != null) -->
+        <views:ConfirmDialog DataContext="{Binding ActiveDialog}"
+                             IsVisible="{Binding $parent[UserControl].((vm:LoadGameViewModel)DataContext).ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+    </Panel>
+
+</UserControl>

@@ -3,26 +3,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:views="using:ChastiMaid.Views"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
              x:DataType="vm:WelcomeViewModel"
              x:Class="ChastiMaid.Views.WelcomeView">
 
-    <StackPanel HorizontalAlignment="Center"
+    <Panel>
+
+        <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Spacing="12">
             <TextBlock Text="Welcome to ChastiMaid!"
                        Classes="h1"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,24" />
-            <TextBlock Text="Do come in. The door is unlocked. It always is... at first." 
+            <TextBlock Text="Do come in. The door is unlocked. It always is... at first."
                        FontSize="{DynamicResource FontSizeBody}"
                        HorizontalAlignment="Center"
                        TextWrapping="WrapWithOverflow" />
-            
+
             <Button Content="Continue"
                     Command="{Binding ContinueCommand}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Padding="24,12" />
+            <Button Content="Load Game"
+                    Command="{Binding LoadGameCommand}"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Padding="24,12" />
@@ -40,6 +48,11 @@
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Padding="24,12" />
-    </StackPanel>
-    
+        </StackPanel>
+
+        <views:ConfirmDialog DataContext="{Binding ActiveDialog}"
+                             IsVisible="{Binding $parent[UserControl].((vm:WelcomeViewModel)DataContext).ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+    </Panel>
+
 </UserControl>

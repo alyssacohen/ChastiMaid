@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
@@ -7,49 +6,59 @@ using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;
 
-public record SaveSlotItemViewModel(string SlotName, string DisplayDate, string DebtDisplay);
-
 public class WelcomeViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
 
-    public ObservableCollection<SaveSlotItemViewModel> SaveSlots { get; } = [];
+    public bool HasActiveGame { get; }
 
-    private SaveSlotItemViewModel? _selectedSlot;
-    public SaveSlotItemViewModel? SelectedSlot
+    private ConfirmDialogViewModel? _activeDialog;
+    public ConfirmDialogViewModel? ActiveDialog
     {
-        get => _selectedSlot;
-        set => this.RaiseAndSetIfChanged(ref _selectedSlot, value);
+        get => _activeDialog;
+        private set => this.RaiseAndSetIfChanged(ref _activeDialog, value);
     }
 
-    public ICommand NewGameCommand { get; }
     public ICommand ContinueCommand { get; }
+    public ICommand LoadGameCommand { get; }
+    public ICommand NewGameCommand { get; }
     public ICommand ExitCommand { get; }
 
     public WelcomeViewModel(MainWindowViewModel mainVm)
     {
         _mainVm = mainVm;
 
-        foreach (var slot in mainVm.SaveSlotManager.ListSlots())
-            SaveSlots.Add(new SaveSlotItemViewModel(
-                slot.SlotName,
-                slot.LastSessionAt.ToLocalTime().ToString("dd/MM/yyyy"),
-                $"{slot.CurrentDebt:F0} credits"));
-
-        _selectedSlot = SaveSlots.FirstOrDefault();
-
-        NewGameCommand = ReactiveCommand.Create(
-            () => _mainVm.NavigateTo(new NewGameViewModel(_mainVm)));
+        var slots = mainVm.SaveSlotManager.ListSlots();
+        var latest = slots.MaxBy(s => s.LastSessionAt);
+        HasActiveGame = latest is not null && !latest.IsCompleted;
 
         ContinueCommand = ReactiveCommand.Create(
             () =>
             {
-                if (SelectedSlot is null) return;
-                var db = mainVm.DatabaseService.OpenSave(SelectedSlot.SlotName);
-                var saveRepo = new SaveRepository(db);
-                _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, saveRepo));
+                var db = mainVm.DatabaseService.OpenSave(latest!.SlotName);
+                _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, new SaveRepository(db)));
             },
-            canExecute: this.WhenAnyValue(x => x.SelectedSlot, (SaveSlotItemViewModel? s) => s is not null));
+            canExecute: this.WhenAnyValue(x => x.HasActiveGame));
+
+        LoadGameCommand = ReactiveCommand.Create(
+            () => _mainVm.NavigateTo(new LoadGameViewModel(_mainVm)));
+
+        NewGameCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (slots.Count >= 5)
+            {
+                var dialog = new ConfirmDialogViewModel(
+                    title: "No Free Slots",
+                    message: "All 5 save slots are occupied. Please complete or delete an existing game before starting a new one.",
+                    confirmLabel: "OK",
+                    cancelLabel: null);
+                ActiveDialog = dialog;
+                await dialog.Result;
+                ActiveDialog = null;
+                return;
+            }
+            _mainVm.NavigateTo(new NewGameViewModel(_mainVm));
+        });
 
         ExitCommand = ReactiveCommand.Create(() =>
         {

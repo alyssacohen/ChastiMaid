@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:v="using:ChastiMaid.Views"
+             x:DataType="vm:ConfirmOutfitViewModel"
+             x:Class="ChastiMaid.Views.ConfirmOutfitView">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="24"
+                MaxWidth="600">
+
+        <TextBlock Text="Confirm Outfit"
+                   Classes="h1"
+                   HorizontalAlignment="Center" />
+
+        <!-- Stato iniziale: istruzioni + riepilogo + pulsante conferma -->
+        <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.8" FontSize="16"
+                       Text="Go change into the outfit below.&#10;When you are ready, press the button to confirm." />
+            <TextBlock Text="{Binding OutfitSummary}" TextWrapping="Wrap" Opacity="0.9" Margin="0,8" />
+            <Button Content="I'm wearing the outfit, continue"
+                    Command="{Binding ConfirmOutfitCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+        </StackPanel>
+
+        <!-- Stato preview: anteprima webcam + pulsante Record -->
+        <StackPanel Spacing="16" IsVisible="{Binding IsPreviewing}" HorizontalAlignment="Center">
+            <TextBlock Text="Check yourself in the preview, then press Record."
+                       FontSize="16" HorizontalAlignment="Center" Opacity="0.8" TextAlignment="Center" />
+            <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                    Width="480" Height="360" />
+            <Button Content="🔴 Record (5s)"
+                    Command="{Binding RecordCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+            <Button Content="Skip"
+                    Command="{Binding SkipCommand}"
+                    HorizontalAlignment="Center" Padding="24,10" Opacity="0.6" />
+        </StackPanel>
+
+        <!-- Stato recording: countdown + anteprima live -->
+        <StackPanel Spacing="16" IsVisible="{Binding IsRecording}" HorizontalAlignment="Center">
+            <TextBlock Text="Recording... Strike a pose!"
+                       FontSize="20" HorizontalAlignment="Center" Opacity="0.9" />
+            <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                    Width="480" Height="360" />
+            <TextBlock Text="{Binding Countdown, StringFormat={}{0}s}"
+                       FontSize="64" FontWeight="Bold" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <!-- Stato no webcam: avviso + skip -->
+        <StackPanel Spacing="16" IsVisible="{Binding NoWebcam}" HorizontalAlignment="Center">
+            <TextBlock Text="No webcam detected."
+                       FontSize="18" HorizontalAlignment="Center" Opacity="0.8" />
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.6"
+                       Text="The outfit video cannot be recorded. You can skip this step and continue." />
+            <Button Content="Skip"
+                    Command="{Binding SkipCommand}"
+                    HorizontalAlignment="Center" Padding="48,14" />
+        </StackPanel>
+
+    </StackPanel>
+
+</UserControl>
