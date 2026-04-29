@@ -12,10 +12,14 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<ActivePunishment> ActivePunishments => db.GetCollection<ActivePunishment>("active_punishments");
     private ILiteCollection<Session> Sessions => db.GetCollection<Session>("sessions");
     private ILiteCollection<GameState> GameStates => db.GetCollection<GameState>("game_state");
+    private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
     // --- GameState ---
     public GameState? GetGameState() => GameStates.FindById(1);
     public void SaveGameState(GameState state) => GameStates.Upsert(state);
+
+    // --- GameSettings ---
+    public GameSettings GetGameSettings() => Settings.FindById(1) ?? new GameSettings();
 
     // --- Snapshot collections (read-only after new game) ---
     public List<ClothingItem> GetWardrobe() => Wardrobe.FindAll().ToList();
@@ -64,6 +68,10 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot punishment templates
         var templatesCol = saveDb.GetCollection<PunishmentTemplate>("punishment_templates");
         templatesCol.InsertBulk(profile.GetPunishmentTemplates());
+
+        // Snapshot game settings
+        var settingsCol = saveDb.GetCollection<GameSettings>("game_settings");
+        settingsCol.Upsert(profile.GetGameSettings());
 
         // Create initial game state
         var playerProfile = profile.GetProfile();

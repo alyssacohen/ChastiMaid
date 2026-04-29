@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:v="using:ChastiMaid.Views"
+             x:DataType="vm:CameraSetupViewModel"
+             x:Class="ChastiMaid.Views.CameraSetupView">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="24"
+                MaxWidth="600">
+
+        <TextBlock Text="Position the camera"
+                   Classes="h1"
+                   HorizontalAlignment="Center" />
+
+        <TextBlock Text="{Binding ChoreName, StringFormat='Frame your work area for: {0}'}"
+                   FontSize="16" HorizontalAlignment="Center" Opacity="0.8" TextAlignment="Center" />
+
+        <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                Width="480" Height="360" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16">
+            <Button Content="Confirm" Command="{Binding ConfirmCommand}" Padding="48,14" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Padding="48,14" Opacity="0.6" />
+        </StackPanel>
+
+    </StackPanel>
+
+</UserControl>

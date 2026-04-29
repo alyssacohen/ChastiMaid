@@ -11,6 +11,7 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<PunishmentTemplate> PunishmentTemplates => db.GetCollection<PunishmentTemplate>("punishment_templates");
     private ILiteCollection<PlayerProfile> Profiles => db.GetCollection<PlayerProfile>("profile");
     private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
+    private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
     public List<ClothingItem> GetWardrobe() => Wardrobe.FindAll().ToList();
     public void SaveClothingItem(ClothingItem item) => Wardrobe.Upsert(item);
@@ -35,4 +36,7 @@ public class ProfileRepository(LiteDatabase db)
 
     public PlayerStats GetStats() => Stats.FindById(1) ?? new PlayerStats();
     public void SaveStats(PlayerStats stats) => Stats.Upsert(stats);
+
+    public GameSettings GetGameSettings() => Settings.FindById(1) ?? new GameSettings();
+    public void SaveGameSettings(GameSettings settings) => Settings.Upsert(settings);
 }

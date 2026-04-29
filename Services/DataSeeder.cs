@@ -70,5 +70,7 @@ public static class DataSeeder
 
         foreach (var chore in chores)
             profile.SaveChore(chore);
+
+        profile.SaveGameSettings(new GameSettings());
     }
 }
