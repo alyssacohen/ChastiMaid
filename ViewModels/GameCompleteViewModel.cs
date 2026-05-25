@@ -71,7 +71,7 @@ public class GameCompleteViewModel : ViewModelBase
         _mainVm.ProfileRepository.SaveStats(stats);
 
         // Chiudi il save DB prima di cancellare lo slot
-        _mainVm.AutoSaveService.StopTimer();
+        _mainVm.AutoSaveService.Unbind();
         _mainVm.CloseActiveSave();
 
         // Libera lo slot (DB + media)

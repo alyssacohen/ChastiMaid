@@ -12,12 +12,13 @@
                     Spacing="6"
                     Margin="0,0,0,16">
             <TextBlock Text="Change Outfit"
+                       Classes="display"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,24" />
+            <TextBlock Text="Select the clothes you would like to wear. I will choose the remaining clothes to complete the outfit. This will lock your outfit for today."
                        Classes="heading"
-                       HorizontalAlignment="Center" />
-            <TextBlock Text="Select the clothes you would like to wear. I will choose the remaining clothes to complete the outfit."
                        TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       Opacity="0.7" />
+                       TextAlignment="Center" />
         </StackPanel>
 
         <!-- Two columns -->
@@ -79,8 +80,6 @@
                     HorizontalAlignment="Center"
                     Spacing="16"
                     Margin="0,16,0,0">
-            <Button Content="Regenerate"
-                    Command="{Binding RegenerateCommand}" />
             <Button Content="Confirm"
                     Command="{Binding ConfirmCommand}" />
             <Button Content="Back"

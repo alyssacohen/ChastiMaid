@@ -1,55 +1,41 @@
 using System.Windows.Input;
-using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;
 
-public record DifficultyOptionViewModel(
-    Difficulty Difficulty,
-    string Label,
-    string DebtRange,
-    string InterestRate);
-
 public class NewGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
 
-    public IReadOnlyList<DifficultyOptionViewModel> Options { get; } =
-    [
-        BuildOption(Difficulty.Easy,   "Easy"),
-        BuildOption(Difficulty.Medium, "Medium"),
-        BuildOption(Difficulty.Hard,   "Hard"),
-    ];
+    public string DebtRange { get; }
+    public string InterestRate { get; }
 
-    public ICommand SelectCommand { get; }
+    public ICommand StartGameCommand { get; }
+    public ICommand SettingsCommand { get; }
     public ICommand BackCommand { get; }
 
     public NewGameViewModel(MainWindowViewModel mainVm)
     {
         _mainVm = mainVm;
 
-        SelectCommand = ReactiveCommand.Create<Difficulty>(StartGame);
-        BackCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
-    }
+        var settings = mainVm.ProfileRepository.GetGameSettings();
+        DebtRange = $"${settings.MinDebt:F2} – ${settings.MaxDebt:F2}";
+        InterestRate = $"{settings.DailyInterestRate * 100:F2}% / day";
 
-    private void StartGame(Difficulty difficulty)
-    {
-        var debt = DifficultySettings.RollDebt(difficulty);
-        var slotName = $"save_{DateTime.Now:yyyyMMdd_HHmm}";
+        StartGameCommand = ReactiveCommand.Create(() =>
+        {
+            var debt = settings.RollDebt();
+            var slotName = $"save_{DateTime.Now:yyyyMMdd_HHmm}";
+            var saveRepo = SaveRepository.CreateFromProfile(
+                mainVm.ProfileRepository, mainVm.DatabaseService, slotName, debt);
+            mainVm.NavigateTo(new StartSessionViewModel(mainVm, saveRepo));
+        });
 
-        var saveRepo = SaveRepository.CreateFromProfile(
-            _mainVm.ProfileRepository, _mainVm.DatabaseService, slotName, debt);
+        BackCommand = ReactiveCommand.Create(
+            () => mainVm.NavigateTo(new WelcomeViewModel(mainVm)));
 
-        _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, saveRepo));
-    }
-
-    private static DifficultyOptionViewModel BuildOption(Difficulty d, string label)
-    {
-        var cfg = DifficultySettings.Get(d);
-        return new DifficultyOptionViewModel(
-            d, label,
-            $"{cfg.MinDebt:F0} – {cfg.MaxDebt:F0} credits",
-            $"{cfg.DailyInterestRate * 100:F0}% / day");
+        SettingsCommand = ReactiveCommand.Create(
+            () => mainVm.NavigateTo(new SettingsViewModel(mainVm, new NewGameViewModel(mainVm))));
     }
 }

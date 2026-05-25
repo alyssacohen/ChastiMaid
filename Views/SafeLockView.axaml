@@ -11,12 +11,14 @@
                 MaxWidth="600">
 
         <TextBlock Text="Safe Lock"
-                   Classes="heading"
-                   HorizontalAlignment="Center" />
+                   Classes="display"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24" />
 
         <!-- Stato iniziale: istruzioni + pulsante avvia camera -->
         <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
-            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.8"
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center"
+                       Classes="heading"
                        Text="Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it." />
             <Button Content="Start Camera"
                     Command="{Binding StartCameraCommand}"

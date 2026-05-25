@@ -10,7 +10,6 @@ public class SlotCardViewModel : ViewModelBase
 {
     public string SlotName { get; }
     public string SavedAt { get; }
-    public string Difficulty { get; }
     public string DebtDisplay { get; }
     public string SafeStatus { get; }
     public bool IsSafeLocked { get; }
@@ -25,8 +24,7 @@ public class SlotCardViewModel : ViewModelBase
     {
         SlotName = slot.SlotName;
         SavedAt = slot.LastSessionAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm");
-        Difficulty = slot.Difficulty.ToString();
-        DebtDisplay = $"{slot.CurrentDebt:F0} credits";
+        DebtDisplay = $"${slot.CurrentDebt:F2}";
         IsSafeLocked = slot.IsSafeLocked;
         SafeStatus = slot.IsSafeLocked ? "🔒 Locked" : "🔓 Open";
         IsCompleted = slot.IsCompleted;

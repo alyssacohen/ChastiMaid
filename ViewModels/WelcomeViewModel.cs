@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
 using ChastiMaid.Services;
 using ReactiveUI;
+using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -22,7 +23,14 @@ public class WelcomeViewModel : ViewModelBase
     public ICommand ContinueCommand { get; }
     public ICommand LoadGameCommand { get; }
     public ICommand NewGameCommand { get; }
+    public ICommand SettingsCommand { get; }
     public ICommand ExitCommand { get; }
+    public ICommand TimeTravelCommand { get; }
+
+    public bool IsTestMode => Program.TestMode;
+
+    private string _clockOffset = "";
+    public string ClockOffset { get => _clockOffset; set => this.RaiseAndSetIfChanged(ref _clockOffset, value); }
 
     public WelcomeViewModel(MainWindowViewModel mainVm)
     {
@@ -64,6 +72,15 @@ public class WelcomeViewModel : ViewModelBase
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 desktop.Shutdown();
+        });
+
+        SettingsCommand = ReactiveCommand.Create(
+            () => _mainVm.NavigateTo(new SettingsViewModel(_mainVm, new WelcomeViewModel(_mainVm))));
+
+        TimeTravelCommand = ReactiveCommand.Create<string>(days =>
+        {
+            GameClock.Advance(TimeSpan.FromDays(int.Parse(days)));
+            ClockOffset = $"⏩ +{GameClock.UtcNow() - DateTime.UtcNow:d\\.hh\\:mm} ahead";
         });
     }
 }

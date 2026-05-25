@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:EndSessionViewModel"
+             x:Class="ChastiMaid.Views.EndSessionView">
+
+    <Panel>
+        <!-- Choice screen -->
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="24"
+                    MaxWidth="560"
+                    IsVisible="{Binding !ShowingCombo}">
+
+            <TextBlock Text="End Session"
+                       Classes="display"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,24" />
+
+            <TextBlock Text="Are you sure you want to end this session?"
+                       Classes="heading"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
+
+            <StackPanel Spacing="12">
+                <Button Content="Show Safe Combination and Close"
+                        Command="{Binding ShowComboAndCloseCommand}"
+                        IsVisible="{Binding HasSafeCombo}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Classes="warning" />
+
+                <TextBlock Text="A daily interest will be applied until you resume your session."
+                           Classes="small"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Opacity="0.6"
+                           IsVisible="{Binding HasSafeCombo}" />
+
+                <Button Content="Close Without Combination"
+                        Command="{Binding CloseWithoutComboCommand}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+
+                <Button Content="Cancel"
+                        Command="{Binding CancelCommand}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Margin="0,12,0,0" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Combo revealed screen -->
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="24"
+                    MaxWidth="600"
+                    IsVisible="{Binding ShowingCombo}">
+
+            <TextBlock Text="Your Safe Combination"
+                       Classes="heading"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,24" />
+
+            <Image Source="{Binding ComboImage}"
+                   MaxHeight="400"
+                   Stretch="Uniform"
+                   HorizontalAlignment="Center" />
+
+            <TextBlock Text="The combination has been saved alongside your session media."
+                       Classes="small"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Opacity="0.7" />
+
+            <Button Content="Close Application"
+                    Command="{Binding ConfirmCloseCommand}"
+                    HorizontalAlignment="Center"
+                    Classes="primary" />
+        </StackPanel>
+    </Panel>
+
+</UserControl>

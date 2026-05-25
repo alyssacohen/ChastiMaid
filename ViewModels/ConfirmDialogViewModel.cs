@@ -38,3 +38,31 @@ public class ConfirmDialogViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(() => _tcs.TrySetResult(false));
     }
 }
+
+public enum SaveDialogResult { Discard, Save, Cancel }
+
+/// <summary>
+/// 3-option dialog: Discard / Save / Cancel.
+/// </summary>
+public class SaveDialogViewModel : ViewModelBase
+{
+    private readonly TaskCompletionSource<SaveDialogResult> _tcs = new();
+
+    public string Title { get; }
+    public string Message { get; }
+
+    public Task<SaveDialogResult> Result => _tcs.Task;
+
+    public ICommand DiscardCommand { get; }
+    public ICommand SaveCommand { get; }
+    public ICommand CancelCommand { get; }
+
+    public SaveDialogViewModel(string title, string message)
+    {
+        Title = title;
+        Message = message;
+        DiscardCommand = ReactiveCommand.Create(() => _tcs.TrySetResult(SaveDialogResult.Discard));
+        SaveCommand = ReactiveCommand.Create(() => _tcs.TrySetResult(SaveDialogResult.Save));
+        CancelCommand = ReactiveCommand.Create(() => _tcs.TrySetResult(SaveDialogResult.Cancel));
+    }
+}

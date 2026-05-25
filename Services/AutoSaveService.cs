@@ -1,3 +1,5 @@
+using static ChastiMaid.Services.GameClock;
+
 namespace ChastiMaid.Services;
 
 /// <summary>
@@ -14,14 +16,25 @@ public class AutoSaveService : IDisposable
     /// <summary>Imposta il repository attivo. Chiamare quando si carica/crea uno slot.</summary>
     public void Bind(SaveRepository saveRepo) => _saveRepo = saveRepo;
 
+    /// <summary>Scollega il repository (chiamare prima di chiudere il save DB).</summary>
+    public void Unbind()
+    {
+        StopTimer();
+        _saveRepo = null;
+    }
+
     /// <summary>Salva lo stato corrente. Sicuro da chiamare da qualsiasi punto.</summary>
     public void TriggerSave()
     {
         if (_saveRepo is null) return;
-        var state = _saveRepo.GetGameState();
-        if (state is null) return;
-        state.LastSessionAt = DateTime.UtcNow;
-        _saveRepo.SaveGameState(state);
+        try
+        {
+            var state = _saveRepo.GetGameState();
+            if (state is null) return;
+            state.LastSessionAt = UtcNow();
+            _saveRepo.SaveGameState(state);
+        }
+        catch (ObjectDisposedException) { /* DB già chiuso */ }
     }
 
     /// <summary>Avvia il timer periodico. Se già attivo, lo riavvia con il nuovo intervallo.</summary>

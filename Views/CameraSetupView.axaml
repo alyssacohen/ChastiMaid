@@ -11,11 +11,13 @@
                 MaxWidth="600">
 
         <TextBlock Text="Position the camera"
-                   Classes="heading"
-                   HorizontalAlignment="Center" />
+                   Classes="display"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24" />
 
         <TextBlock Text="{Binding ChoreName, StringFormat='Frame your work area for: {0}'}"
-                   HorizontalAlignment="Center" Opacity="0.8" TextAlignment="Center" />
+                   Classes="heading"
+                   HorizontalAlignment="Center" TextAlignment="Center" />
 
         <v:WebcamPreviewControl Service="{Binding Webcam}"
                                 Width="480" Height="360" />

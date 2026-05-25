@@ -1,5 +1,6 @@
 using ChastiMaid.Models;
 using LiteDB;
+using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.Services;
 
@@ -74,15 +75,15 @@ public class SaveRepository(LiteDatabase db)
         settingsCol.Upsert(profile.GetGameSettings());
 
         // Create initial game state
-        var playerProfile = profile.GetProfile();
+        var settings = profile.GetGameSettings();
         save.SaveGameState(new GameState
         {
             SlotName = slotName,
             InitialDebt = initialDebt,
             CurrentDebt = initialDebt,
-            Difficulty = playerProfile.Difficulty,
-            StartedAt = DateTime.UtcNow,
-            LastSessionAt = DateTime.UtcNow,
+            DailyInterestRate = settings.DailyInterestRate,
+            StartedAt = UtcNow(),
+            LastSessionAt = UtcNow(),
         });
 
         return save;

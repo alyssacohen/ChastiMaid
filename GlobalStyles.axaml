@@ -35,10 +35,53 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
     </Style>
 
+    <Style Selector="TextBox">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Placeholder text inside TextBox -->
+    <Style Selector="TextBox /template/ TextBlock#PART_Placeholder">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+    </Style>
+
+    <!-- Dirty field highlighting -->
+    <Style Selector="TextBox.dirty /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="Gold" />
+    </Style>
+    <Style Selector="NumericUpDown.dirty">
+        <Setter Property="BorderBrush" Value="Gold" />
+    </Style>
+    <Style Selector="ComboBox.dirty">
+        <Setter Property="BorderBrush" Value="Gold" />
+    </Style>
+
+    <Style Selector="NumericUpDown">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+    </Style>
+
+    <!-- Card style: consistent container for grouped controls -->
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{DynamicResource SystemChromeLowColor}" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="Margin" Value="0,0,0,12" />
+    </Style>
+
+    <Style Selector="TabItem">
+        <Setter Property="FontFamily" Value="{DynamicResource DisplayFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeButton}" />
+    </Style>
+
     <Style Selector="Button">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeButton}" />
-        <Setter Property="CornerRadius" Value="2" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="BorderThickness" Value="3" />
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Padding" Value="24,12" />

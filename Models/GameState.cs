@@ -8,11 +8,20 @@ public class GameState
     public string SlotName { get; set; } = "";
     public decimal InitialDebt { get; set; }
     public decimal CurrentDebt { get; set; }
-    public Difficulty Difficulty { get; set; }
+    public double DailyInterestRate { get; set; }
     public DateTime StartedAt { get; set; }
     public DateTime LastSessionAt { get; set; }
     public bool IsCompleted { get; set; }
     public bool IsSafeLocked { get; set; }
     public string? OutfitVideoPath { get; set; }
     public string? CurrentOutfit { get; set; }
+
+    // Outfit lock: once set, outfit cannot be changed until the next day
+    public DateTime? OutfitLockedDate { get; set; }
+    public double OutfitBonusPercent { get; set; } = 1.0;
+    public double OutfitMultiplier { get; set; } = 1.0;
+
+    /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
+    [BsonIgnore]
+    public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;
 }

@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -13,14 +14,19 @@ public class ChoreItemViewModel : ViewModelBase
     public string Name { get; }
     public string Description { get; }
     public decimal Value { get; }
+    public string ValueDisplay { get; }
     public ICommand StartChoreCommand { get; }
 
-    public ChoreItemViewModel(Chore chore, Action<ChoreItemViewModel> onStart)
+    public ChoreItemViewModel(Chore chore, double multiplier, Action<ChoreItemViewModel> onStart)
     {
         ChoreId = chore.Id;
         Name = chore.Name;
         Description = chore.Description;
         Value = chore.Value;
+        var effective = Math.Round(chore.Value * (decimal)multiplier, 2);
+        ValueDisplay = Program.TestMode
+            ? $"${effective:F2} (${chore.Value:F2} × {multiplier:F2})"
+            : $"${effective:F2}";
         StartChoreCommand = ReactiveCommand.Create(() => onStart(this));
     }
 }
@@ -36,6 +42,8 @@ public class DashboardViewModel : ViewModelBase
 
     private string _debtDisplay = "";
     public string DebtDisplay { get => _debtDisplay; set => this.RaiseAndSetIfChanged(ref _debtDisplay, value); }
+
+    public string InitialDebtDisplay { get; }
 
     private decimal _currentDebt;
     public decimal CurrentDebt { get => _currentDebt; set => this.RaiseAndSetIfChanged(ref _currentDebt, value); }
@@ -61,8 +69,8 @@ public class DashboardViewModel : ViewModelBase
     private string _busyChoreDescription = "";
     public string BusyChoreDescription { get => _busyChoreDescription; set => this.RaiseAndSetIfChanged(ref _busyChoreDescription, value); }
 
-    private decimal _busyChoreValue;
-    public decimal BusyChoreValue { get => _busyChoreValue; set => this.RaiseAndSetIfChanged(ref _busyChoreValue, value); }
+    private string _busyChoreValueDisplay = "";
+    public string BusyChoreValueDisplay { get => _busyChoreValueDisplay; set => this.RaiseAndSetIfChanged(ref _busyChoreValueDisplay, value); }
 
     private string _busyElapsed = "00:00";
     public string BusyElapsed { get => _busyElapsed; set => this.RaiseAndSetIfChanged(ref _busyElapsed, value); }
@@ -97,6 +105,7 @@ public class DashboardViewModel : ViewModelBase
     private DispatcherTimer? _popupTimer;
     private CancellationTokenSource? _captureCts;
     private readonly Random _random = new();
+    private readonly double _outfitBonus;
 
     /// <summary>Costruttore standard — entra in idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
@@ -111,18 +120,30 @@ public class DashboardViewModel : ViewModelBase
         _settings = saveRepo.GetGameSettings();
 
         _autoSave.Bind(saveRepo);
-        _autoSave.StartTimer(mainVm.ProfileRepository.GetProfile().AutoSaveIntervalMinutes);
+        _autoSave.StartTimer(_settings.AutoSaveIntervalMinutes);
 
         var state = saveRepo.GetGameState();
+        if (state is not null)
+        {
+            state.LastSessionAt = UtcNow();
+            saveRepo.SaveGameState(state);
+        }
         CurrentDebt = state?.CurrentDebt ?? 0;
         DebtDisplay = FormatDebt(CurrentDebt);
+        InitialDebtDisplay = $"Initial: ${state?.InitialDebt ?? 0:F2}";
         CurrentOutfit = state?.CurrentOutfit ?? "No outfit set";
-        PayRate = $"Wage: {_settings.IdleWageAmount} cr / {_settings.IdleWageIntervalMinutes} min";
+
+        _outfitBonus = state?.EffectiveMultiplier ?? 1.0;
+        var effectiveWage = Math.Round(_settings.IdleWageAmount * (decimal)_outfitBonus, 2);
+        PayRate = Program.TestMode
+            ? $"Wage: ${effectiveWage:F2} / {_settings.IdleWageIntervalMinutes} min (${_settings.IdleWageAmount:F2} × {_outfitBonus:F2})"
+            : $"Wage: ${effectiveWage:F2} / {_settings.IdleWageIntervalMinutes} min";
 
         foreach (var chore in saveRepo.GetChores())
-            Chores.Add(new ChoreItemViewModel(chore, OnStartChore));
+            Chores.Add(new ChoreItemViewModel(chore, _outfitBonus, OnStartChore));
 
         _sessionLoop = new SessionLoopService(saveRepo, _settings);
+        _sessionLoop.OutfitBonus = _outfitBonus;
         _sessionLoop.OnIdleWagePaid = () => Dispatcher.UIThread.Post(RefreshDebt);
         _sessionLoop.OnPopupTriggered = () => Dispatcher.UIThread.Post(ShowTriviaPopup);
 
@@ -156,7 +177,7 @@ public class DashboardViewModel : ViewModelBase
         _countdownTimer?.Start();
     }
 
-    private static string FormatDebt(decimal debt) => $"Debt: {debt:F0} credits";
+    private static string FormatDebt(decimal debt) => $"Debt: ${debt:F2}";
 
     private void RefreshDebt()
     {
@@ -169,8 +190,9 @@ public class DashboardViewModel : ViewModelBase
     private void UpdateWageCountdown()
     {
         if (!IsIdle) return;
-        var elapsed = DateTime.UtcNow - _sessionLoop.LastWageTime;
-        var remaining = TimeSpan.FromMinutes(_sessionLoop.WageIntervalMinutes) - elapsed;
+        var elapsed = UtcNow() - _sessionLoop.LastWageTime;
+        var interval = TimeSpan.FromMinutes(_sessionLoop.WageIntervalMinutes);
+        var remaining = interval - elapsed;
         if (remaining < TimeSpan.Zero) remaining = TimeSpan.Zero;
         TimeToNextWage = $"Next wage in {remaining.Minutes:D2}:{remaining.Seconds:D2}";
     }
@@ -251,14 +273,16 @@ public class DashboardViewModel : ViewModelBase
         IsBusy = true;
         BusyChoreName = _activeChore.Name;
         BusyChoreDescription = _activeChore.Description;
-        BusyChoreValue = _activeChore.Value;
-        _choreStartTime = DateTime.UtcNow;
+        BusyChoreValueDisplay = Program.TestMode
+            ? $"${Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2):F2} (${_activeChore.Value:F2} × {_outfitBonus:F2})"
+            : $"${Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2):F2}";
+        _choreStartTime = UtcNow();
         BusyElapsed = "00:00";
 
         _choreTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _choreTimer.Tick += (_, _) =>
         {
-            var elapsed = DateTime.UtcNow - _choreStartTime;
+            var elapsed = UtcNow() - _choreStartTime;
             BusyElapsed = $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
         };
         _choreTimer.Start();
@@ -277,7 +301,8 @@ public class DashboardViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         if (state is not null)
         {
-            state.CurrentDebt = Math.Max(0, state.CurrentDebt - _activeChore.Value);
+            var credit = Math.Round(_activeChore.Value * (decimal)_outfitBonus, 0);
+            state.CurrentDebt = Math.Max(0, state.CurrentDebt - credit);
             _saveRepo.SaveGameState(state);
         }
 
@@ -344,17 +369,6 @@ public class DashboardViewModel : ViewModelBase
         _mainVm.Webcam.Stop();
         _autoSave.StopTimer();
 
-        var sessions = _saveRepo.GetSessions();
-        var current = sessions.LastOrDefault(s => s.EndedAt is null);
-        if (current is not null)
-        {
-            current.EndedAt = DateTime.UtcNow;
-            current.DebtAtEnd = _saveRepo.GetGameState()?.CurrentDebt ?? 0;
-            _saveRepo.UpdateSession(current);
-        }
-
-        _autoSave.TriggerSave();
-        _mainVm.CloseActiveSave();
-        _mainVm.NavigateTo(new WelcomeViewModel(_mainVm));
+        _mainVm.NavigateTo(new EndSessionViewModel(_mainVm, _saveRepo));
     }
 }

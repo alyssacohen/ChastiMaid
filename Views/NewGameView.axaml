@@ -6,39 +6,42 @@
 
     <StackPanel HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Spacing="24"
+                Spacing="12"
                 MaxWidth="480">
 
         <TextBlock Text="New Game"
+                   Classes="display"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24" />
+
+        <TextBlock Text="Your game will start with these settings:"
                    Classes="heading"
                    HorizontalAlignment="Center" />
 
-        <TextBlock Text="Choose your difficulty:"
-                   HorizontalAlignment="Center"
-                   Opacity="0.7" />
+        <StackPanel Spacing="4" Margin="0,16">
+            <TextBlock HorizontalAlignment="Center">
+                <Run Text="Initial debt: " Foreground="Gray" /><Run Text="{Binding DebtRange}" />
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Center">
+                <Run Text="Daily interest: " Foreground="Gray" /><Run Text="{Binding InterestRate}" />
+            </TextBlock>
+        </StackPanel>
 
-        <ItemsControl ItemsSource="{Binding Options}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="vm:DifficultyOptionViewModel">
-                    <Button Command="{Binding $parent[ItemsControl].((vm:NewGameViewModel)DataContext).SelectCommand}"
-                            CommandParameter="{Binding Difficulty}"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            Margin="0,4">
-                        <Grid ColumnDefinitions="*,Auto,Auto">
-                            <TextBlock Grid.Column="0" Text="{Binding Label}" />
-                            <TextBlock Grid.Column="1" Text="{Binding DebtRange}" Opacity="0.7" Margin="16,0" VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="2" Text="{Binding InterestRate}" Opacity="0.5" VerticalAlignment="Center" />
-                        </Grid>
-                    </Button>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Button Content="Start Game"
+                Command="{Binding StartGameCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Classes="primary" />
+
+        <Button Content="Settings"
+                Command="{Binding SettingsCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center" />
 
         <Button Content="Back"
                 Command="{Binding BackCommand}"
-                HorizontalAlignment="Center"
-                Margin="0,8,0,0" />
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center" />
 
     </StackPanel>
 

@@ -5,7 +5,6 @@
              x:DataType="vm:LoadGameViewModel"
              x:Class="ChastiMaid.Views.LoadGameView">
 
-    <!-- Panel root per permettere l'overlay del dialog -->
     <Panel>
 
         <StackPanel HorizontalAlignment="Center"
@@ -15,41 +14,38 @@
                     Margin="0,32">
 
             <TextBlock Text="Load Game"
-                       Classes="heading"
+                       Classes="display"
                        HorizontalAlignment="Center"
-                       Margin="0,0,0,8" />
+                       Margin="0,0,0,24" />
 
             <!-- Slot cards -->
             <ScrollViewer MaxHeight="520">
                 <ItemsControl ItemsSource="{Binding Slots}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:SlotCardViewModel">
-                            <Border Background="{DynamicResource SystemChromeLowColor}"
+                            <Button Grid.Column="0"
+                                    Command="{Binding LoadCommand}"
+                                    Classes="slotCard"
+                                    HorizontalContentAlignment="Stretch"
                                     CornerRadius="4"
                                     Padding="20,16"
                                     Margin="0,0,0,8"
                                     Opacity="{Binding CardOpacity}">
+
                                 <Grid ColumnDefinitions="*,Auto">
 
-                                    <!-- Slot info area wrapped in a Button bound to LoadCommand -->
-                                    <Button Grid.Column="0"
-                                            Command="{Binding LoadCommand}"
-                                            Classes="slotCard"
-                                            HorizontalContentAlignment="Stretch">
                                         <StackPanel Spacing="0">
                                             <!-- Slot name -->
-                                            <TextBlock Text="{Binding SlotName}"
-                                                       FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding SlotName}" />
 
-                                            <!-- Info row 1: data e difficoltà -->
+                                            <!-- Info row 1: date -->
                                             <StackPanel Orientation="Horizontal"
                                                         Spacing="16"
                                                         Margin="0,6,0,0">
                                                 <TextBlock Text="{Binding SavedAt}" Opacity="0.7" Classes="small" />
-                                                <TextBlock Text="{Binding Difficulty}" Opacity="0.7" Classes="small" />
                                             </StackPanel>
 
-                                            <!-- Info row 2: debito e cassaforte -->
+                                            <!-- Info row 2 -->
                                             <StackPanel Orientation="Horizontal"
                                                         Spacing="16"
                                                         Margin="0,4,0,0">
@@ -64,7 +60,7 @@
                                                        Margin="0,6,0,0"
                                                        Classes="small" />
                                         </StackPanel>
-                                    </Button>
+                                    
 
                                     <!-- Delete button (outside the load-clickable area) -->
                                     <Button Grid.Column="1"
@@ -75,7 +71,7 @@
                                             Margin="12,0,0,0" />
 
                                 </Grid>
-                            </Border>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -96,7 +92,7 @@
 
         <!-- Overlay dialog (visibile solo quando ActiveDialog != null) -->
         <views:ConfirmDialog DataContext="{Binding ActiveDialog}"
-                             IsVisible="{Binding $parent[UserControl].((vm:LoadGameViewModel)DataContext).ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                             IsVisible="{Binding $parent[UserControl].((vm:LoadGameViewModel)DataContext).ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}" />
 
     </Panel>
 

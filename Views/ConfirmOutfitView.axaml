@@ -5,20 +5,23 @@
              x:DataType="vm:ConfirmOutfitViewModel"
              x:Class="ChastiMaid.Views.ConfirmOutfitView">
 
+    <Panel>
     <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="24"
-                MaxWidth="600">
+                
+                Spacing="12"
+                Margin="30">
 
         <TextBlock Text="Confirm Outfit"
-                   Classes="heading"
-                   HorizontalAlignment="Center" />
+                   Classes="display"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24" />
 
-        <!-- Stato iniziale: istruzioni + riepilogo + pulsante conferma -->
+       <!-- Initial state: instructions + summary + confirm button -->
         <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
-            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Opacity="0.8"
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center"
+                       Classes="heading"
                        Text="Go change into the outfit below.&#10;When you are ready, press the button to confirm." />
-            <TextBlock Text="{Binding OutfitSummary}" TextWrapping="Wrap" Opacity="0.9" Margin="0,8" Classes="small" />
+            <TextBlock Text="{Binding OutfitSummary}" TextWrapping="Wrap" Opacity="0.9" Margin="0,8" />
             <Button Content="I'm wearing the outfit, continue"
                     Command="{Binding ConfirmOutfitCommand}"
                     HorizontalAlignment="Center" Classes="primary" />
@@ -60,5 +63,5 @@
         </StackPanel>
 
     </StackPanel>
-
+    </Panel>
 </UserControl>

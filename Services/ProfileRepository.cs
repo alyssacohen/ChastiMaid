@@ -9,7 +9,6 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
     private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
     private ILiteCollection<PunishmentTemplate> PunishmentTemplates => db.GetCollection<PunishmentTemplate>("punishment_templates");
-    private ILiteCollection<PlayerProfile> Profiles => db.GetCollection<PlayerProfile>("profile");
     private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
@@ -28,11 +27,6 @@ public class ProfileRepository(LiteDatabase db)
     public List<PunishmentTemplate> GetPunishmentTemplates() => PunishmentTemplates.FindAll().ToList();
     public void SavePunishmentTemplate(PunishmentTemplate template) => PunishmentTemplates.Upsert(template);
     public void DeletePunishmentTemplate(int id) => PunishmentTemplates.Delete(id);
-
-    public PlayerProfile GetProfile() =>
-        Profiles.FindById(1) ?? new PlayerProfile();
-
-    public void SaveProfile(PlayerProfile profile) => Profiles.Upsert(profile);
 
     public PlayerStats GetStats() => Stats.FindById(1) ?? new PlayerStats();
     public void SaveStats(PlayerStats stats) => Stats.Upsert(stats);

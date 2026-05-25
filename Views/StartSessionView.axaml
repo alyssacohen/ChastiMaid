@@ -1,33 +1,52 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:v="using:ChastiMaid.Views"
              x:DataType="vm:StartSessionViewModel"
              x:Class="ChastiMaid.Views.StartSessionView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="24">
+    <Panel>
+        <StackPanel HorizontalAlignment="Center"
+                    Spacing="12"
+                    Margin="30">
 
-        <TextBlock Text="{Binding DebtDisplay}"
-                   HorizontalAlignment="Center"
-                   Opacity="0.7"
-                   Classes="small" />
+            <TextBlock Text="Today's Outfit"
+                       Classes="display"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,24" />
 
-        <TextBlock Text="Today's Outfit"
-                   Classes="heading"
-                   HorizontalAlignment="Center" />
+            <TextBlock Text="I have taken the liberty of choosing your attire. I am sure you will like it."
+                       Classes="heading"
+                       HorizontalAlignment="Center"
+                       TextWrapping="WrapWithOverflow" />
 
-        <TextBlock Text="{Binding ProposedOutfit}" Classes="small" />
+            <TextBlock Text="{Binding ProposedOutfit}" />
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Spacing="16">
-            <Button Content="Accept"
-                    Command="{Binding AcceptCommand}" />
-            <Button Content="Change Outfit"
-                    Command="{Binding ChangeOutfitCommand}" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="16">
+                <Button Content="Accept"
+                        Command="{Binding AcceptCommand}"
+                        Classes="primary" />
+                <Button Content="Regenerate"
+                        Command="{Binding RegenerateCommand}"
+                        IsEnabled="{Binding !IsLocked}" />
+                <Button Content="Modify"
+                        Command="{Binding ModifyCommand}"
+                        IsEnabled="{Binding !IsLocked}" />
+            </StackPanel>
+
         </StackPanel>
 
-    </StackPanel>
+        <!-- Confirmation dialog overlay -->
+        <ContentControl Content="{Binding ActiveDialog}"
+                        IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <ContentControl.ContentTemplate>
+                <DataTemplate DataType="vm:ConfirmDialogViewModel">
+                    <v:ConfirmDialog />
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
+    </Panel>
 
 </UserControl>

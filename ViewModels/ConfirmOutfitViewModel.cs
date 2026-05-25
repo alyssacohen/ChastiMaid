@@ -2,6 +2,7 @@ using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -32,18 +33,20 @@ public class ConfirmOutfitViewModel : ViewModelBase
     public ICommand RecordCommand { get; }
     public ICommand SkipCommand { get; }
 
-    public ConfirmOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit outfit)
+    public ConfirmOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit outfit, double bonusPercent = 1.0)
     {
         _mainVm = mainVm;
         _saveRepo = saveRepo;
         _webcam = mainVm.Webcam;
         OutfitSummary = outfit.ToString();
 
-        // Salva l'outfit corrente nel GameState
+        // Lock outfit for today with the given bonus
         var state = saveRepo.GetGameState();
         if (state is not null)
         {
             state.CurrentOutfit = OutfitSummary;
+            state.OutfitLockedDate = UtcNow();
+            state.OutfitBonusPercent = bonusPercent;
             saveRepo.SaveGameState(state);
         }
 
@@ -94,6 +97,22 @@ public class ConfirmOutfitViewModel : ViewModelBase
     private void NavigateToSafeLock()
     {
         _webcam.Stop();
-        _mainVm.NavigateTo(new SafeLockViewModel(_mainVm, _saveRepo));
+
+        var state = _saveRepo.GetGameState();
+        if (state?.IsSafeLocked == true)
+        {
+            // Safe già chiuso — salta SafeLock, crea sessione e vai alla dashboard
+            _saveRepo.AddSession(new Session
+            {
+                StartedAt = UtcNow(),
+                DebtAtStart = state.CurrentDebt,
+                IsTestSession = Program.TestMode,
+            });
+            _mainVm.NavigateTo(new DashboardViewModel(_mainVm, _saveRepo));
+        }
+        else
+        {
+            _mainVm.NavigateTo(new SafeLockViewModel(_mainVm, _saveRepo));
+        }
     }
 }

@@ -1,4 +1,5 @@
 using ChastiMaid.Models;
+using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.Services;
 
@@ -24,6 +25,7 @@ public class SessionLoopService : IDisposable
 
     public DateTime LastWageTime => _lastWageTime;
     public int WageIntervalMinutes => _settings.IdleWageIntervalMinutes;
+    public double OutfitBonus { get; set; } = 1.0;
 
     public SessionLoopService(SaveRepository saveRepo, GameSettings settings)
     {
@@ -35,7 +37,7 @@ public class SessionLoopService : IDisposable
     {
         Stop();
         _missedSinceLastWage = false;
-        _lastWageTime = DateTime.UtcNow;
+        _lastWageTime = UtcNow();
         _cts = new CancellationTokenSource();
         _wageTask = RunWageLoop(_cts.Token);
         _popupTask = RunPopupLoop(_cts.Token);
@@ -56,7 +58,7 @@ public class SessionLoopService : IDisposable
     /// <summary>Riprende i timer (ritorno a idle mode). Resetta il contatore wage.</summary>
     public void Resume()
     {
-        _lastWageTime = DateTime.UtcNow;
+        _lastWageTime = UtcNow();
         _cts = new CancellationTokenSource();
         _wageTask = RunWageLoop(_cts.Token);
         _popupTask = RunPopupLoop(_cts.Token);
@@ -81,14 +83,15 @@ public class SessionLoopService : IDisposable
                 var state = _saveRepo.GetGameState();
                 if (state is not null)
                 {
-                    state.CurrentDebt = Math.Max(0, state.CurrentDebt - _settings.IdleWageAmount);
+                    var wage = Math.Round(_settings.IdleWageAmount * (decimal)OutfitBonus, 0);
+                    state.CurrentDebt = Math.Max(0, state.CurrentDebt - wage);
                     _saveRepo.SaveGameState(state);
                 }
                 OnIdleWagePaid?.Invoke();
             }
 
             _missedSinceLastWage = false;
-            _lastWageTime = DateTime.UtcNow;
+            _lastWageTime = UtcNow();
         }
     }
 
