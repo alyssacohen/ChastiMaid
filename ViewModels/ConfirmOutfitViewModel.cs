@@ -34,13 +34,10 @@ public class ConfirmOutfitViewModel : ViewModelBase
     public ICommand SkipCommand { get; }
 
     public ConfirmOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit outfit, double bonusPercent = 1.0)
+        : this(mainVm, saveRepo, bonusPercent)
     {
-        _mainVm = mainVm;
-        _saveRepo = saveRepo;
-        _webcam = mainVm.Webcam;
         OutfitSummary = outfit.ToString();
 
-        // Lock outfit for today with the given bonus
         var state = saveRepo.GetGameState();
         if (state is not null)
         {
@@ -49,6 +46,17 @@ public class ConfirmOutfitViewModel : ViewModelBase
             state.OutfitBonusPercent = bonusPercent;
             saveRepo.SaveGameState(state);
         }
+    }
+
+    /// <summary>Used when outfit is already locked — reads summary from saved state.</summary>
+    public ConfirmOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, double bonusPercent)
+    {
+        _mainVm = mainVm;
+        _saveRepo = saveRepo;
+        _webcam = mainVm.Webcam;
+
+        var state = saveRepo.GetGameState();
+        OutfitSummary = state?.CurrentOutfit ?? "";
 
         ConfirmOutfitCommand = ReactiveCommand.Create(OnOutfitConfirmed);
         RecordCommand = ReactiveCommand.CreateFromTask(OnRecord);

@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ChastiMaid.Views.DirtyTabHeader"
+             x:Name="Root">
+
+    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
+        <Panel Width="14" Height="14">
+            <Ellipse Width="10" Height="10" Fill="Gold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                     IsVisible="{Binding #Root.IsDirty}" />
+        </Panel>
+        <TextBlock Text="{Binding #Root.Text}" IsVisible="{Binding !#Root.IsDirty}" />
+        <TextBlock Text="{Binding #Root.Text}" Foreground="Gold" IsVisible="{Binding #Root.IsDirty}" />
+    </StackPanel>
+
+</UserControl>

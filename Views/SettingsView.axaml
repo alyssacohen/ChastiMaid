@@ -16,13 +16,7 @@
             <!-- ==================== GENERAL ==================== -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                        <Panel Width="14" Height="14">
-                            <Ellipse Width="10" Height="10" Fill="Gold" IsVisible="{Binding IsGeneralDirty}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Panel>
-                        <TextBlock Text="General" IsVisible="{Binding !IsGeneralDirty}" />
-                        <TextBlock Text="General" Foreground="Gold" IsVisible="{Binding IsGeneralDirty}" />
-                    </StackPanel>
+                    <views:DirtyTabHeader Text="General" IsDirty="{Binding IsGeneralDirty}" />
                 </TabItem.Header>
                 <ScrollViewer Padding="16,8,24,8" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Spacing="0" Margin="0,0,0,16">
@@ -110,13 +104,7 @@
             <!-- ==================== CHORES ==================== -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                        <Panel Width="14" Height="14">
-                            <Ellipse Width="10" Height="10" Fill="Gold" IsVisible="{Binding IsChoresDirty}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Panel>
-                        <TextBlock Text="Chores" IsVisible="{Binding !IsChoresDirty}" />
-                        <TextBlock Text="Chores" Foreground="Gold" IsVisible="{Binding IsChoresDirty}" />
-                    </StackPanel>
+                    <views:DirtyTabHeader Text="Chores" IsDirty="{Binding IsChoresDirty}" />
                 </TabItem.Header>
                 <Grid RowDefinitions="*,Auto" Margin="16,16,24,16">
                     <ScrollViewer Grid.Row="0">
@@ -165,13 +153,7 @@
             <!-- ==================== PUNISHMENTS ==================== -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                        <Panel Width="14" Height="14">
-                            <Ellipse Width="10" Height="10" Fill="Gold" IsVisible="{Binding IsPunishmentsDirty}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Panel>
-                        <TextBlock Text="Punishments" IsVisible="{Binding !IsPunishmentsDirty}" />
-                        <TextBlock Text="Punishments" Foreground="Gold" IsVisible="{Binding IsPunishmentsDirty}" />
-                    </StackPanel>
+                    <views:DirtyTabHeader Text="Punishments" IsDirty="{Binding IsPunishmentsDirty}" />
                 </TabItem.Header>
                 <Grid RowDefinitions="*,Auto" Margin="16,16,24,16">
                     <ScrollViewer Grid.Row="0">
@@ -216,13 +198,7 @@
             <!-- ==================== WARDROBE ==================== -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                        <Panel Width="14" Height="14">
-                            <Ellipse Width="10" Height="10" Fill="Gold" IsVisible="{Binding IsWardrobeDirty}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Panel>
-                        <TextBlock Text="Wardrobe" IsVisible="{Binding !IsWardrobeDirty}" />
-                        <TextBlock Text="Wardrobe" Foreground="Gold" IsVisible="{Binding IsWardrobeDirty}" />
-                    </StackPanel>
+                    <views:DirtyTabHeader Text="Wardrobe" IsDirty="{Binding IsWardrobeDirty}" />
                 </TabItem.Header>
                 <Grid RowDefinitions="*,Auto" Margin="16,16,24,16">
                     <ScrollViewer Grid.Row="0">
@@ -287,13 +263,7 @@
             <!-- ==================== OUTFIT RULES ==================== -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                        <Panel Width="14" Height="14">
-                            <Ellipse Width="10" Height="10" Fill="Gold" IsVisible="{Binding IsRulesDirty}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Panel>
-                        <TextBlock Text="Outfit Rules" IsVisible="{Binding !IsRulesDirty}" />
-                        <TextBlock Text="Outfit Rules" Foreground="Gold" IsVisible="{Binding IsRulesDirty}" />
-                    </StackPanel>
+                    <views:DirtyTabHeader Text="Outfit Rules" IsDirty="{Binding IsRulesDirty}" />
                 </TabItem.Header>
                 <Grid RowDefinitions="*,Auto" Margin="16,16,24,16">
                     <Grid.Styles>

@@ -29,13 +29,16 @@ public class OutfitBuilder
     private readonly List<ClothingItem> _pickingList = [];
 
     public OutfitBuilder(ProfileRepository repo, int? randomSeed = null)
+        : this(repo.GetWardrobe(), repo.GetOutfitRules(), randomSeed) { }
+
+    public OutfitBuilder(List<ClothingItem> items, List<OutfitRule> rules, int? randomSeed = null)
     {
-        _allItems = repo.GetWardrobe();
+        _allItems = items;
         _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
         _layerProbability = DefaultLayerProbability;
 
         _rules = [];
-        foreach (var rule in repo.GetOutfitRules())
+        foreach (var rule in rules)
         {
             if (!_rules.ContainsKey(rule.ItemId))
                 _rules[rule.ItemId] = (new HashSet<int>(), new HashSet<int>());

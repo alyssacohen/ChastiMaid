@@ -49,7 +49,7 @@ public class ChangeOutfitViewModel : ViewModelBase
                 .ToHashSet();
 
             var seeds = _saveRepo.GetWardrobe().Where(w => selectedIds.Contains(w.Id)).ToList();
-            var builder = new OutfitBuilder(_mainVm.ProfileRepository);
+            var builder = new OutfitBuilder(_saveRepo.GetWardrobe(), _saveRepo.GetOutfitRules());
             builder.AddSeedItems(seeds);
             var newOutfit = builder.Build();
 

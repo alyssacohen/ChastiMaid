@@ -60,7 +60,7 @@ public class StartSessionViewModel : ViewModelBase
         }
         else
         {
-            var builder = new OutfitBuilder(mainVm.ProfileRepository);
+            var builder = new OutfitBuilder(saveRepo.GetWardrobe(), saveRepo.GetOutfitRules());
             _outfit = outfit ?? builder.Build();
             _proposedOutfit = _outfit.ToString();
         }
@@ -93,7 +93,7 @@ public class StartSessionViewModel : ViewModelBase
         _currentBonus = resultBonus;
         _regenCount++;
 
-        var builder = new OutfitBuilder(_mainVm.ProfileRepository);
+        var builder = new OutfitBuilder(_saveRepo.GetWardrobe(), _saveRepo.GetOutfitRules());
         _outfit = builder.Build();
         ProposedOutfit = _outfit.ToString();
 
@@ -123,7 +123,7 @@ public class StartSessionViewModel : ViewModelBase
     private void LockAndProceed()
     {
         var state = _saveRepo.GetGameState();
-        if (state is not null)
+        if (state is not null && !_isLocked)
         {
             state.CurrentOutfit = _outfit.ToString();
             state.OutfitLockedDate = UtcNow();
@@ -133,6 +133,6 @@ public class StartSessionViewModel : ViewModelBase
         }
 
         IsLocked = true;
-        _mainVm.NavigateTo(new ConfirmOutfitViewModel(_mainVm, _saveRepo, _outfit, _currentBonus));
+        _mainVm.NavigateTo(new ConfirmOutfitViewModel(_mainVm, _saveRepo, _currentBonus));
     }
 }

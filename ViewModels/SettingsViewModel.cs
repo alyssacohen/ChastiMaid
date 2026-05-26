@@ -12,7 +12,9 @@ public class SettingsViewModel : ViewModelBase
     private readonly MainWindowViewModel _mainVm;
     private readonly ProfileRepository _repo;
     private readonly ViewModelBase _returnTo;
-    private readonly Dictionary<string, object?> _original = [];
+
+    // Snapshot for General tab dirty detection
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int) _snapshot;
 
     // --- General tab fields ---
     private string _playerName;
@@ -66,11 +68,7 @@ public class SettingsViewModel : ViewModelBase
     public int SelectedTabIndex
     {
         get => _selectedTabIndex;
-        set
-        {
-            if (_selectedTabIndex == value) return;
-            _ = TryChangeTab(value);
-        }
+        set { if (_selectedTabIndex != value) _ = TryChangeTab(value); }
     }
 
     // --- Dialog ---
@@ -106,16 +104,16 @@ public class SettingsViewModel : ViewModelBase
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
 
         foreach (var c in _repo.GetChores())
-            Chores.Add(CreateChoreVm(c));
+            Chores.Add(WireChild(new ChoreEditViewModel(c, id => RemoveFrom(Chores, id, _repo.DeleteChore)), () => IsChoresDirty = true));
         foreach (var p in _repo.GetPunishmentTemplates())
-            Punishments.Add(CreatePunishmentVm(p));
+            Punishments.Add(WireChild(new PunishmentEditViewModel(p, id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true));
         foreach (var w in _repo.GetWardrobe())
         {
-            WardrobeItems.Add(CreateWardrobeVm(w));
+            WardrobeItems.Add(WireChild(new WardrobeEditViewModel(w, id => RemoveFrom(WardrobeItems, id, _repo.DeleteClothingItem)), () => IsWardrobeDirty = true));
             AvailableItems.Add(new ClothingItemOption(w.Id, w.Name));
         }
         foreach (var r in _repo.GetOutfitRules())
-            OutfitRules.Add(CreateRuleVm(r));
+            OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(r, AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true));
 
         TakeSnapshot();
 
@@ -126,95 +124,55 @@ public class SettingsViewModel : ViewModelBase
 
         SaveCommand = ReactiveCommand.Create(Save);
         BackCommand = ReactiveCommand.CreateFromTask(ConfirmBack);
-        AddChoreCommand = ReactiveCommand.Create(() => Chores.Add(CreateChoreVm(new Chore())));
-        AddPunishmentCommand = ReactiveCommand.Create(() => Punishments.Add(CreatePunishmentVm(new PunishmentTemplate())));
-        AddWardrobeItemCommand = ReactiveCommand.Create(() => WardrobeItems.Add(CreateWardrobeVm(new ClothingItem { Multiplier = 1.0, Weight = 1.0 })));
-        AddOutfitRuleCommand = ReactiveCommand.Create(() => OutfitRules.Add(CreateRuleVm(new OutfitRule())));
+        AddChoreCommand = ReactiveCommand.Create(() =>
+            Chores.Add(WireChild(new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)), () => IsChoresDirty = true)));
+        AddPunishmentCommand = ReactiveCommand.Create(() =>
+            Punishments.Add(WireChild(new PunishmentEditViewModel(new PunishmentTemplate(), id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true)));
+        AddWardrobeItemCommand = ReactiveCommand.Create(() =>
+            WardrobeItems.Add(WireChild(new WardrobeEditViewModel(new ClothingItem { Multiplier = 1.0, Weight = 1.0 }, id => RemoveFrom(WardrobeItems, id, _repo.DeleteClothingItem)), () => IsWardrobeDirty = true)));
+        AddOutfitRuleCommand = ReactiveCommand.Create(() =>
+            OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(new OutfitRule(), AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
     }
 
-    // --- Factory methods that wire PropertyChanged ---
-    private ChoreEditViewModel CreateChoreVm(Chore c)
+    // --- Generic helpers ---
+    private static T WireChild<T>(T vm, Action markDirty) where T : INotifyPropertyChanged
     {
-        var vm = new ChoreEditViewModel(c, id => { RemoveChore(id); IsChoresDirty = true; });
-        vm.PropertyChanged += (_, _) => IsChoresDirty = true;
+        vm.PropertyChanged += (_, _) => markDirty();
         return vm;
     }
 
-    private PunishmentEditViewModel CreatePunishmentVm(PunishmentTemplate p)
+    private static void RemoveFrom<T>(ObservableCollection<T> collection, int id, Action<int> deleteFromRepo) where T : class
     {
-        var vm = new PunishmentEditViewModel(p, id => { RemovePunishment(id); IsPunishmentsDirty = true; });
-        vm.PropertyChanged += (_, _) => IsPunishmentsDirty = true;
-        return vm;
-    }
-
-    private WardrobeEditViewModel CreateWardrobeVm(ClothingItem w)
-    {
-        var vm = new WardrobeEditViewModel(w, id => { RemoveWardrobeItem(id); IsWardrobeDirty = true; });
-        vm.PropertyChanged += (_, _) => IsWardrobeDirty = true;
-        return vm;
-    }
-
-    private OutfitRuleEditViewModel CreateRuleVm(OutfitRule r)
-    {
-        var vm = new OutfitRuleEditViewModel(r, AvailableItems, id => { RemoveOutfitRule(id); IsRulesDirty = true; });
-        vm.PropertyChanged += (_, _) => IsRulesDirty = true;
-        return vm;
+        var item = collection.FirstOrDefault(i => ((dynamic)i).Id == id);
+        if (item is null) return;
+        collection.Remove(item);
+        if (id > 0) deleteFromRepo(id);
     }
 
     // --- Tab change interception ---
     private async Task TryChangeTab(int newIndex)
     {
-        if (!IsDirty)
-        {
-            SetTab(newIndex);
-            return;
-        }
+        if (!IsDirty) { SetTab(newIndex); return; }
 
-        var result = await ShowSaveDialog("You have unsaved changes in this tab.");
-        switch (result)
+        switch (await ShowSaveDialog("You have unsaved changes in this tab."))
         {
-            case SaveDialogResult.Save:
-                Save();
-                SetTab(newIndex);
-                break;
-            case SaveDialogResult.Discard:
-                ReloadAll();
-                SetTab(newIndex);
-                break;
-            case SaveDialogResult.Cancel:
-                // Stay on current tab — force UI refresh
-                this.RaisePropertyChanged(nameof(SelectedTabIndex));
-                break;
+            case SaveDialogResult.Save: Save(); SetTab(newIndex); break;
+            case SaveDialogResult.Discard: _mainVm.NavigateTo(new SettingsViewModel(_mainVm, _returnTo)); break;
+            case SaveDialogResult.Cancel: this.RaisePropertyChanged(nameof(SelectedTabIndex)); break;
         }
     }
 
-    private void SetTab(int index)
-    {
-        _selectedTabIndex = index;
-        this.RaisePropertyChanged(nameof(SelectedTabIndex));
-    }
+    private void SetTab(int index) { _selectedTabIndex = index; this.RaisePropertyChanged(nameof(SelectedTabIndex)); }
 
-    // --- Back with 3-option dialog ---
     private async Task ConfirmBack()
     {
-        if (!IsDirty)
-        {
-            _mainVm.NavigateTo(_returnTo);
-            return;
-        }
+        if (!IsDirty) { _mainVm.NavigateTo(_returnTo); return; }
 
-        var result = await ShowSaveDialog("You have unsaved changes. What would you like to do?");
-        switch (result)
+        switch (await ShowSaveDialog("You have unsaved changes. What would you like to do?"))
         {
-            case SaveDialogResult.Save:
-                Save();
-                _mainVm.NavigateTo(_returnTo);
-                break;
-            case SaveDialogResult.Discard:
-                _mainVm.NavigateTo(_returnTo);
-                break;
-            case SaveDialogResult.Cancel:
-                break;
+            case SaveDialogResult.Save: Save(); _mainVm.NavigateTo(_returnTo); break;
+            case SaveDialogResult.Discard: _mainVm.NavigateTo(_returnTo); break;
+            case SaveDialogResult.Cancel: break;
         }
     }
 
@@ -227,60 +185,21 @@ public class SettingsViewModel : ViewModelBase
         return result;
     }
 
-    // --- Snapshot & dirty ---
-    private void TakeSnapshot()
-    {
-        _original[nameof(PlayerName)] = _playerName;
-        _original[nameof(AutoSaveInterval)] = _autoSaveInterval;
-        _original[nameof(MinDebt)] = _minDebt;
-        _original[nameof(MaxDebt)] = _maxDebt;
-        _original[nameof(DailyInterestRate)] = _dailyInterestRate;
-        _original[nameof(IdleWageAmount)] = _idleWageAmount;
-        _original[nameof(IdleWageInterval)] = _idleWageInterval;
-        _original[nameof(PopupMinInterval)] = _popupMinInterval;
-        _original[nameof(PopupMaxInterval)] = _popupMaxInterval;
-        _original[nameof(PopupTimeout)] = _popupTimeout;
-        _original[nameof(CaptureMinInterval)] = _captureMinInterval;
-        _original[nameof(CaptureMaxInterval)] = _captureMaxInterval;
-    }
+    // --- Snapshot & dirty (tuple comparison) ---
+    private void TakeSnapshot() => _snapshot = CurrentValues();
 
-    private void UpdateGeneralDirty()
-    {
-        IsGeneralDirty = !Equals(_original.GetValueOrDefault(nameof(PlayerName)), _playerName)
-            || !Equals(_original.GetValueOrDefault(nameof(AutoSaveInterval)), _autoSaveInterval)
-            || !Equals(_original.GetValueOrDefault(nameof(MinDebt)), _minDebt)
-            || !Equals(_original.GetValueOrDefault(nameof(MaxDebt)), _maxDebt)
-            || !Equals(_original.GetValueOrDefault(nameof(DailyInterestRate)), _dailyInterestRate)
-            || !Equals(_original.GetValueOrDefault(nameof(IdleWageAmount)), _idleWageAmount)
-            || !Equals(_original.GetValueOrDefault(nameof(IdleWageInterval)), _idleWageInterval)
-            || !Equals(_original.GetValueOrDefault(nameof(PopupMinInterval)), _popupMinInterval)
-            || !Equals(_original.GetValueOrDefault(nameof(PopupMaxInterval)), _popupMaxInterval)
-            || !Equals(_original.GetValueOrDefault(nameof(PopupTimeout)), _popupTimeout)
-            || !Equals(_original.GetValueOrDefault(nameof(CaptureMinInterval)), _captureMinInterval)
-            || !Equals(_original.GetValueOrDefault(nameof(CaptureMaxInterval)), _captureMaxInterval);
-    }
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int) CurrentValues() =>
+        (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
+         _idleWageInterval, _popupMinInterval, _popupMaxInterval, _popupTimeout, _captureMinInterval, _captureMaxInterval);
+
+    private void UpdateGeneralDirty() => IsGeneralDirty = CurrentValues() != _snapshot;
 
     private void Save()
     {
         SaveAll();
         TakeSnapshot();
-        IsGeneralDirty = false;
-        IsChoresDirty = false;
-        IsPunishmentsDirty = false;
-        IsWardrobeDirty = false;
-        IsRulesDirty = false;
+        IsGeneralDirty = IsChoresDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty = false;
     }
-
-    private void ReloadAll()
-    {
-        _mainVm.NavigateTo(new SettingsViewModel(_mainVm, _returnTo));
-    }
-
-    // --- Remove helpers ---
-    private void RemoveChore(int id) { var i = Chores.FirstOrDefault(c => c.Id == id); if (i is not null) { Chores.Remove(i); if (id > 0) _repo.DeleteChore(id); } }
-    private void RemovePunishment(int id) { var i = Punishments.FirstOrDefault(p => p.Id == id); if (i is not null) { Punishments.Remove(i); if (id > 0) _repo.DeletePunishmentTemplate(id); } }
-    private void RemoveWardrobeItem(int id) { var i = WardrobeItems.FirstOrDefault(w => w.Id == id); if (i is not null) { WardrobeItems.Remove(i); if (id > 0) _repo.DeleteClothingItem(id); } }
-    private void RemoveOutfitRule(int id) { var i = OutfitRules.FirstOrDefault(r => r.Id == id); if (i is not null) { OutfitRules.Remove(i); if (id > 0) _repo.DeleteOutfitRule(id); } }
 
     // --- Persist ---
     private void SaveAll()
@@ -362,14 +281,11 @@ public class WardrobeEditViewModel : ViewModelBase
     private double _multiplier; public double Multiplier { get => _multiplier; set => this.RaiseAndSetIfChanged(ref _multiplier, value); }
     private double _weight; public double Weight { get => _weight; set => this.RaiseAndSetIfChanged(ref _weight, value); }
     private string _tags; public string Tags { get => _tags; set => this.RaiseAndSetIfChanged(ref _tags, value); }
-
-    // Layer checkboxes
     private bool _layerUndies; public bool LayerUndies { get => _layerUndies; set => this.RaiseAndSetIfChanged(ref _layerUndies, value); }
     private bool _layerBase; public bool LayerBase { get => _layerBase; set => this.RaiseAndSetIfChanged(ref _layerBase, value); }
     private bool _layerExtra; public bool LayerExtra { get => _layerExtra; set => this.RaiseAndSetIfChanged(ref _layerExtra, value); }
     private bool _layerOuter; public bool LayerOuter { get => _layerOuter; set => this.RaiseAndSetIfChanged(ref _layerOuter, value); }
     private bool _layerGears; public bool LayerGears { get => _layerGears; set => this.RaiseAndSetIfChanged(ref _layerGears, value); }
-
     public ICommand DeleteCommand { get; }
 
     public WardrobeEditViewModel(ClothingItem item, Action<int> onDelete)
@@ -420,8 +336,7 @@ public class OutfitRuleEditViewModel : ViewModelBase
 
     public OutfitRuleEditViewModel(OutfitRule rule, ObservableCollection<ClothingItemOption> items, Action<int> onDelete)
     {
-        Id = rule.Id;
-        AvailableItems = items;
+        Id = rule.Id; AvailableItems = items;
         _item = items.FirstOrDefault(i => i.Id == rule.ItemId);
         _relatedItem = items.FirstOrDefault(i => i.Id == rule.RelatedItemId);
         _relation = rule.Relation;
@@ -430,9 +345,6 @@ public class OutfitRuleEditViewModel : ViewModelBase
 
     public OutfitRule ToModel() => new()
     {
-        Id = Id,
-        ItemId = Item?.Id ?? 0,
-        RelatedItemId = RelatedItem?.Id ?? 0,
-        Relation = Relation
+        Id = Id, ItemId = Item?.Id ?? 0, RelatedItemId = RelatedItem?.Id ?? 0, Relation = Relation
     };
 }
