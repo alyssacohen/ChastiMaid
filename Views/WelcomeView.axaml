@@ -1,29 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
              x:DataType="vm:WelcomeViewModel"
              x:Class="ChastiMaid.Views.WelcomeView">
 
     <Panel>
-        <StackPanel HorizontalAlignment="Center"
-                    Spacing="12"
-                    Margin="30,0,0,0">
-        <TextBlock Text="Welcome to ChastiMaid!"
-                   Classes="display"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,24" />
-        <TextBlock Text="Do come in. The door is unlocked. It always is... at first."
-                   Classes="heading"
-                   HorizontalAlignment="Center"
-                   TextWrapping="WrapWithOverflow" />
+        <StackPanel HorizontalAlignment="Center" Spacing="12">
+            <TextBlock Text="Welcome to ChastiMaid!" Classes="pageTitle" />
+            <TextBlock Text="Do come in. The door is unlocked. It always is... at first."
+                       Classes="subtitle" />
         </StackPanel>
-
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -57,10 +44,10 @@
                     Padding="12" Margin="0,12,0,0">
                 <StackPanel Spacing="8">
                     <TextBlock Text="⏩ TEST MODE — Time Travel" HorizontalAlignment="Center"
-                               Foreground="OrangeRed" FontSize="{DynamicResource FontSizeSmall}" />
+                               Foreground="OrangeRed" Classes="small" />
                     <TextBlock Text="{Binding ClockOffset}" HorizontalAlignment="Center"
-                               Opacity="0.7" FontSize="{DynamicResource FontSizeSmall}" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                               Classes="small muted" />
+                    <StackPanel Classes="buttonBar" Margin="0">
                         <Button Content="+1 day" Command="{Binding TimeTravelCommand}" CommandParameter="1" Classes="compact" />
                         <Button Content="+3 days" Command="{Binding TimeTravelCommand}" CommandParameter="3" Classes="compact" />
                         <Button Content="+7 days" Command="{Binding TimeTravelCommand}" CommandParameter="7" Classes="compact" />

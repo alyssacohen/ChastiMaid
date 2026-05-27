@@ -5,25 +5,17 @@
              x:DataType="vm:CameraSetupViewModel"
              x:Class="ChastiMaid.Views.CameraSetupView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="24"
-                MaxWidth="600">
+    <StackPanel Classes="pageContent" MaxWidth="600">
 
-        <TextBlock Text="Position the camera"
-                   Classes="display"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,24" />
+        <TextBlock Text="Position the camera" Classes="pageTitle" />
 
         <TextBlock Text="{Binding ChoreName, StringFormat='Frame your work area for: {0}'}"
-                   Classes="heading"
-                   HorizontalAlignment="Center" TextAlignment="Center" />
+                   Classes="subtitle" />
 
-        <v:WebcamPreviewControl Service="{Binding Webcam}"
-                                Width="480" Height="360" />
+        <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16">
-            <Button Content="Confirm" Command="{Binding ConfirmCommand}" />
+        <StackPanel Classes="buttonBar">
+            <Button Content="Confirm" Command="{Binding ConfirmCommand}" Classes="primary" />
             <Button Content="Cancel" Command="{Binding CancelCommand}" />
         </StackPanel>
 

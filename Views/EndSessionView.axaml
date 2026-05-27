@@ -6,21 +6,12 @@
 
     <Panel>
         <!-- Choice screen -->
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="24"
-                    MaxWidth="560"
-                    IsVisible="{Binding !ShowingCombo}">
+        <StackPanel Classes="pageContent" IsVisible="{Binding !ShowingCombo}">
 
-            <TextBlock Text="End Session"
-                       Classes="display"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,24" />
+            <TextBlock Text="End Session" Classes="pageTitle" />
 
             <TextBlock Text="Are you sure you want to end this session?"
-                       Classes="heading"
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
+                       Classes="subtitle" />
 
             <StackPanel Spacing="12">
                 <Button Content="Show Safe Combination and Close"
@@ -31,10 +22,9 @@
                         Classes="warning" />
 
                 <TextBlock Text="A daily interest will be applied until you resume your session."
-                           Classes="small"
+                           Classes="small muted"
                            HorizontalAlignment="Center"
                            TextAlignment="Center"
-                           Opacity="0.6"
                            IsVisible="{Binding HasSafeCombo}" />
 
                 <Button Content="Close Without Combination"
@@ -51,16 +41,9 @@
         </StackPanel>
 
         <!-- Combo revealed screen -->
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="24"
-                    MaxWidth="600"
-                    IsVisible="{Binding ShowingCombo}">
+        <StackPanel Classes="pageContent" MaxWidth="600" IsVisible="{Binding ShowingCombo}">
 
-            <TextBlock Text="Your Safe Combination"
-                       Classes="heading"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,24" />
+            <TextBlock Text="Your Safe Combination" Classes="subtitle" />
 
             <Image Source="{Binding ComboImage}"
                    MaxHeight="400"
@@ -68,10 +51,9 @@
                    HorizontalAlignment="Center" />
 
             <TextBlock Text="The combination has been saved alongside your session media."
-                       Classes="small"
+                       Classes="small muted"
                        HorizontalAlignment="Center"
-                       TextAlignment="Center"
-                       Opacity="0.7" />
+                       TextAlignment="Center" />
 
             <Button Content="Close Application"
                     Command="{Binding ConfirmCloseCommand}"

@@ -14,8 +14,7 @@
                                Classes="heading"
                                HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding InitialDebtDisplay}"
-                               HorizontalAlignment="Center" Opacity="0.5"
-                               FontSize="{DynamicResource FontSizeSmall}" />
+                               HorizontalAlignment="Center" Classes="small muted" />
                 </StackPanel>
             </Border>
 
@@ -31,7 +30,7 @@
                                         <TextBlock Grid.Column="0" Text="{Binding Name}"
                                                    VerticalAlignment="Center" />
                                         <TextBlock Grid.Column="1" Text="{Binding ValueDisplay}"
-                                                   Opacity="0.7" VerticalAlignment="Center" Margin="16,0" />
+                                                   Classes="muted" VerticalAlignment="Center" Margin="16,0" />
                                         <Button Grid.Column="2" Content="Start"
                                                 Command="{Binding StartChoreCommand}"
                                                 Classes="compact" />
@@ -57,9 +56,9 @@
 
             <Border Grid.Row="2" Padding="24,16">
                 <StackPanel HorizontalAlignment="Center" Spacing="8">
-                    <TextBlock Text="{Binding PayRate}" HorizontalAlignment="Center" Opacity="0.7" />
-                    <TextBlock Text="{Binding TimeToNextWage}" HorizontalAlignment="Center" Opacity="0.7" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12" Margin="0,8,0,0">
+                    <TextBlock Text="{Binding PayRate}" HorizontalAlignment="Center" Classes="muted" />
+                    <TextBlock Text="{Binding TimeToNextWage}" HorizontalAlignment="Center" Classes="muted" />
+                    <StackPanel Classes="buttonBar" Margin="0,8,0,0">
                         <Button Content="Complete Game"
                                 Command="{Binding CompleteGameCommand}"
                                 IsVisible="{Binding CanComplete}" />
@@ -76,9 +75,8 @@
                        Classes="heading" HorizontalAlignment="Center" Margin="0,24" />
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="4">
-                <TextBlock Text="{Binding BusyChoreDescription}" HorizontalAlignment="Center" Opacity="0.7" />
-                <TextBlock Text="{Binding BusyChoreValueDisplay}"
-                           HorizontalAlignment="Center" Opacity="0.7" />
+                <TextBlock Text="{Binding BusyChoreDescription}" HorizontalAlignment="Center" Classes="muted" />
+                <TextBlock Text="{Binding BusyChoreValueDisplay}" HorizontalAlignment="Center" Classes="muted" />
             </StackPanel>
 
             <TextBlock Grid.Row="2" Text="{Binding BusyElapsed}"
@@ -90,12 +88,8 @@
         </Grid>
 
         <!-- ==================== TRIVIA POPUP OVERLAY ==================== -->
-        <Border IsVisible="{Binding IsPopupVisible}"
-                Background="#CC000000"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Border Background="{DynamicResource SystemChromeMediumColor}"
-                    CornerRadius="4" Padding="32" MaxWidth="500"
-                    HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay">
+            <Border Classes="dialogBox" MaxWidth="500">
                 <StackPanel Spacing="16">
                     <TextBlock Text="{Binding PopupCountdown, StringFormat='Time: {0}s'}"
                                HorizontalAlignment="Center" Foreground="OrangeRed" />
@@ -115,7 +109,7 @@
                     </ItemsControl>
                 </StackPanel>
             </Border>
-        </Border>
+        </Panel>
     </Grid>
 
 </UserControl>

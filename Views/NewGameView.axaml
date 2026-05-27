@@ -4,21 +4,13 @@
              x:DataType="vm:NewGameViewModel"
              x:Class="ChastiMaid.Views.NewGameView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="12"
-                MaxWidth="480">
+    <StackPanel Classes="pageContent">
 
-        <TextBlock Text="New Game"
-                   Classes="display"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,24" />
+        <TextBlock Text="New Game" Classes="pageTitle" />
 
-        <TextBlock Text="Your game will start with these settings:"
-                   Classes="heading"
-                   HorizontalAlignment="Center" />
+        <TextBlock Text="Your game will start with these settings:" Classes="subtitle" />
 
-        <StackPanel Spacing="4" Margin="0,16">
+        <StackPanel Spacing="4">
             <TextBlock HorizontalAlignment="Center">
                 <Run Text="Initial debt: " Foreground="Gray" /><Run Text="{Binding DebtRange}" />
             </TextBlock>

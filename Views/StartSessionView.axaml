@@ -6,25 +6,16 @@
              x:Class="ChastiMaid.Views.StartSessionView">
 
     <Panel>
-        <StackPanel HorizontalAlignment="Center"
-                    Spacing="12"
-                    Margin="30">
+        <StackPanel Classes="pageContent">
 
-            <TextBlock Text="Today's Outfit"
-                       Classes="display"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,24" />
+            <TextBlock Text="Today's Outfit" Classes="pageTitle" />
 
             <TextBlock Text="I have taken the liberty of choosing your attire. I am sure you will like it."
-                       Classes="heading"
-                       HorizontalAlignment="Center"
-                       TextWrapping="WrapWithOverflow" />
+                       Classes="subtitle" />
 
             <TextBlock Text="{Binding ProposedOutfit}" />
 
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Spacing="16">
+            <StackPanel Classes="buttonBar">
                 <Button Content="Accept"
                         Command="{Binding AcceptCommand}"
                         Classes="primary" />

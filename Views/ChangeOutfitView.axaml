@@ -7,18 +7,10 @@
     <Grid RowDefinitions="Auto,*,Auto" Margin="24">
 
         <!-- Header -->
-        <StackPanel Grid.Row="0"
-                    HorizontalAlignment="Center"
-                    Spacing="6"
-                    Margin="0,0,0,16">
-            <TextBlock Text="Change Outfit"
-                       Classes="display"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,24" />
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="6" Margin="0,0,0,16">
+            <TextBlock Text="Change Outfit" Classes="pageTitle" />
             <TextBlock Text="Select the clothes you would like to wear. I will choose the remaining clothes to complete the outfit. This will lock your outfit for today."
-                       Classes="heading"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center" />
+                       Classes="subtitle" />
         </StackPanel>
 
         <!-- Two columns -->
@@ -26,19 +18,14 @@
 
             <!-- Proposed outfit -->
             <Grid Grid.Column="0" RowDefinitions="Auto,*">
-                <TextBlock Grid.Row="0"
-                           Text="Proposed outfit"
-                           FontSize="{DynamicResource FontSizeSmall}"
-                           Opacity="0.6"
-                           Margin="0,0,0,6" />
+                <TextBlock Grid.Row="0" Text="Proposed outfit" Classes="fieldLabel" Margin="0,0,0,6" />
                 <ScrollViewer Grid.Row="1">
                     <ItemsControl ItemsSource="{Binding ProposedItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:OutfitItemViewModel">
                                 <CheckBox IsChecked="{Binding IsSelected}"
                                           Content="{Binding Name}"
-                                          Padding="4,6"
-                                          FontSize="{DynamicResource FontSizeSmall}" />
+                                          Padding="4,6" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -46,26 +33,18 @@
             </Grid>
 
             <!-- Separator -->
-            <Border Grid.Column="1"
-                    Width="1"
-                    Background="#33FFFFFF"
-                    HorizontalAlignment="Center" />
+            <Border Grid.Column="1" Width="1" Background="#33FFFFFF" HorizontalAlignment="Center" />
 
             <!-- Other items -->
             <Grid Grid.Column="2" RowDefinitions="Auto,*">
-                <TextBlock Grid.Row="0"
-                           Text="Other available clothings"
-                           FontSize="{DynamicResource FontSizeSmall}"
-                           Opacity="0.6"
-                           Margin="0,0,0,6" />
+                <TextBlock Grid.Row="0" Text="Other available clothings" Classes="fieldLabel" Margin="0,0,0,6" />
                 <ScrollViewer Grid.Row="1">
                     <ItemsControl ItemsSource="{Binding OtherItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:OutfitItemViewModel">
                                 <CheckBox IsChecked="{Binding IsSelected}"
                                           Content="{Binding Name}"
-                                          Padding="4,6"
-                                          FontSize="{DynamicResource FontSizeSmall}" />
+                                          Padding="4,6" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -75,15 +54,9 @@
         </Grid>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Spacing="16"
-                    Margin="0,16,0,0">
-            <Button Content="Confirm"
-                    Command="{Binding ConfirmCommand}" />
-            <Button Content="Back"
-                    Command="{Binding BackCommand}" />
+        <StackPanel Grid.Row="2" Classes="buttonBar">
+            <Button Content="Confirm" Command="{Binding ConfirmCommand}" Classes="primary" />
+            <Button Content="Back" Command="{Binding BackCommand}" />
         </StackPanel>
 
     </Grid>

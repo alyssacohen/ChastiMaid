@@ -18,27 +18,11 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    private const double ReferenceHeight = 1080.0;
-
-    private void RegisterScaledResources(MainWindow window)
-    {
-        var screen = window.Screens.Primary;
-        var height = screen?.Bounds.Height ?? ReferenceHeight;
-        var scale = height / ReferenceHeight;
-
-        Resources["FontSizeSmall"]   = Math.Round(14 * scale);
-        Resources["FontSizeButton"]  = Math.Round(18 * scale);
-        Resources["FontSizeBody"]    = Math.Round(24 * scale);
-        Resources["FontSizeHeading"] = Math.Round(40 * scale);
-        Resources["FontSizeDisplay"] = Math.Round(72 * scale);
-    }
-
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var mainWindow = new MainWindow();
-            RegisterScaledResources(mainWindow);
 
             _databaseService = new DatabaseService();
             var profileDb = _databaseService.OpenProfile();

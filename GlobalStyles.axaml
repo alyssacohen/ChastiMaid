@@ -1,85 +1,134 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ic="using:FluentIcons.Avalonia">
     <Design.PreviewWith>
         <Border Padding="20">
           <StackPanel Spacing="8">
               <TextBlock Classes="heading" Text="This is a header" />
               <TextBlock Text="This is a text block" />
+              <TextBlock Classes="muted" Text="Muted text" />
               <Button Content="Click Me" />
               <Button Classes="warning" Content="Warning" />
+              <Button Classes="delete" />
+              <Button Classes="add" Content="Add Item" />
           </StackPanel>
         </Border>
     </Design.PreviewWith>
+
+    <!-- ==================== BASE ELEMENT STYLES ==================== -->
 
     <Style Selector="Window, UserControl">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
     </Style>
 
     <Style Selector="TextBlock">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="TextWrapping" Value="WrapWithOverflow" />
     </Style>
 
-    <Style Selector="TextBlock.heading">
-        <Setter Property="FontFamily" Value="{StaticResource HeadingFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeHeading}" />
-    </Style>
-
-    <Style Selector="TextBlock.display">
-        <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeDisplay}" />
-    </Style>
-
-    <Style Selector="TextBlock.small">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
-    </Style>
-
     <Style Selector="TextBox">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
         <Setter Property="MinHeight" Value="32" />
         <Setter Property="MaxHeight" Value="32" />
         <Setter Property="Padding" Value="8,4" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <!-- Placeholder text inside TextBox -->
     <Style Selector="TextBox /template/ TextBlock#PART_Placeholder">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
-    </Style>
-
-    <!-- Dirty field highlighting -->
-    <Style Selector="TextBox.dirty /template/ Border#PART_BorderElement">
-        <Setter Property="BorderBrush" Value="Gold" />
-    </Style>
-    <Style Selector="NumericUpDown.dirty">
-        <Setter Property="BorderBrush" Value="Gold" />
-    </Style>
-    <Style Selector="ComboBox.dirty">
-        <Setter Property="BorderBrush" Value="Gold" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
     </Style>
 
     <Style Selector="NumericUpDown">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
         <Setter Property="MinHeight" Value="32" />
         <Setter Property="MaxHeight" Value="32" />
     </Style>
 
-    <!-- Card style: consistent container for grouped controls -->
-    <Style Selector="Border.card">
-        <Setter Property="Background" Value="{DynamicResource SystemChromeLowColor}" />
-        <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Padding" Value="20,16" />
-        <Setter Property="Margin" Value="0,0,0,12" />
+    <Style Selector="CheckBox">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
+    </Style>
+
+    <Style Selector="ComboBox">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+    </Style>
+
+    <Style Selector="ComboBox TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
     </Style>
 
     <Style Selector="TabItem">
-        <Setter Property="FontFamily" Value="{DynamicResource DisplayFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeButton}" />
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
     </Style>
 
+    <!-- ==================== TEXT CLASSES ==================== -->
+
+    <Style Selector="TextBlock.display">
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeDisplay}" />
+    </Style>
+
+    <Style Selector="TextBlock.heading">
+        <Setter Property="FontFamily" Value="{StaticResource HeadingFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeHeading}" />
+    </Style>
+
+    <Style Selector="TextBlock.small">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
+    </Style>
+
+    <Style Selector="TextBlock.muted">
+        <Setter Property="Opacity" Value="0.7" />
+    </Style>
+
+    <!-- ==================== PAGE LAYOUT CLASSES ==================== -->
+
+    <!-- Standard centered page content container -->
+    <Style Selector="StackPanel.pageContent">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Spacing" Value="24" />
+        <Setter Property="MaxWidth" Value="560" />
+    </Style>
+
+    <!-- Page title: display font, centered, bottom margin -->
+    <Style Selector="TextBlock.pageTitle">
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeDisplay}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,0,24" />
+    </Style>
+
+    <!-- Subtitle: heading font, centered, wrapping -->
+    <Style Selector="TextBlock.subtitle">
+        <Setter Property="FontFamily" Value="{StaticResource HeadingFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeHeading}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <!-- Horizontal button bar -->
+    <Style Selector="StackPanel.buttonBar">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Spacing" Value="16" />
+        <Setter Property="Margin" Value="0,16,0,0" />
+    </Style>
+
+    <!-- Field label in forms -->
+    <Style Selector="TextBlock.fieldLabel">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
+        <Setter Property="Opacity" Value="0.6" />
+    </Style>
+
+    <!-- ==================== BUTTON STYLES ==================== -->
+
     <Style Selector="Button">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeButton}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="BorderThickness" Value="3" />
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
@@ -100,7 +149,25 @@
         <Setter Property="Foreground" Value="Red" />
     </Style>
 
-    <!-- Slot card button: transparent clickable area for load interaction -->
+    <!-- Delete button: trash icon, compact warning -->
+    <Style Selector="Button.delete">
+        <Setter Property="Padding" Value="10,8" />
+        <Setter Property="BorderBrush" Value="Red" />
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="Content">
+            <Template>
+                <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
+            </Template>
+        </Setter>
+    </Style>
+
+    <!-- Add button -->
+    <Style Selector="Button.add">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,8,0,0" />
+    </Style>
+
+    <!-- Slot card button: transparent clickable area -->
     <Style Selector="Button.slotCard">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
@@ -119,6 +186,43 @@
     </Style>
     <Style Selector="Button.slotCard:disabled:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <!-- ==================== CONTAINER STYLES ==================== -->
+
+    <!-- Card: grouped controls container -->
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{DynamicResource SystemChromeLowColor}" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="Margin" Value="0,0,0,12" />
+    </Style>
+
+    <!-- Dialog overlay background -->
+    <Style Selector="Panel.dialogOverlay">
+        <Setter Property="Background" Value="#AA000000" />
+    </Style>
+
+    <!-- Dialog box -->
+    <Style Selector="Border.dialogBox">
+        <Setter Property="Background" Value="{DynamicResource SystemChromeMediumColor}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="32,24" />
+        <Setter Property="MaxWidth" Value="440" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!-- ==================== DIRTY FIELD HIGHLIGHTING ==================== -->
+
+    <Style Selector="TextBox.dirty /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="Gold" />
+    </Style>
+    <Style Selector="NumericUpDown.dirty">
+        <Setter Property="BorderBrush" Value="Gold" />
+    </Style>
+    <Style Selector="ComboBox.dirty">
+        <Setter Property="BorderBrush" Value="Gold" />
     </Style>
 
 </Styles>

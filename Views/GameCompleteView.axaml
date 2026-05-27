@@ -4,18 +4,11 @@
              x:DataType="vm:GameCompleteViewModel"
              x:Class="ChastiMaid.Views.GameCompleteView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="24"
-                MaxWidth="520">
+    <StackPanel Classes="pageContent">
 
-        <TextBlock Text="Game Complete!"
-                   Classes="display"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,24" />
+        <TextBlock Text="Game Complete!" Classes="pageTitle" />
 
-        <TextBlock TextWrapping="Wrap" TextAlignment="Center"
-                   Classes="heading"
+        <TextBlock Classes="subtitle"
                    Text="Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed." />
 
         <!-- Export buttons -->
@@ -36,15 +29,14 @@
         <!-- Status message -->
         <TextBlock Text="{Binding StatusMessage}"
                    HorizontalAlignment="Center"
-                   Opacity="0.7"
+                   Classes="muted"
                    IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
         <!-- Finish -->
         <Button Content="Finish and Free Slot"
                 Command="{Binding FinishCommand}"
                 HorizontalAlignment="Center"
-                Classes="primary"
-                Margin="0,8,0,0" />
+                Classes="primary" />
 
     </StackPanel>
 
