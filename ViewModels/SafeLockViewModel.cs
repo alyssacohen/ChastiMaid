@@ -2,11 +2,12 @@ using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
-public class SafeLockViewModel : ViewModelBase
+public partial class SafeLockViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -14,14 +15,9 @@ public class SafeLockViewModel : ViewModelBase
 
     public WebcamPreviewService Webcam => _webcam;
 
-    private bool _isPreviewing;
-    public bool IsPreviewing { get => _isPreviewing; private set => this.RaiseAndSetIfChanged(ref _isPreviewing, value); }
-
-    private bool _noWebcam;
-    public bool NoWebcam { get => _noWebcam; private set => this.RaiseAndSetIfChanged(ref _noWebcam, value); }
-
-    private bool _isDone;
-    public bool IsDone { get => _isDone; private set => this.RaiseAndSetIfChanged(ref _isDone, value); }
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _isPreviewing;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _noWebcam;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _isDone;
 
     public bool IsInitial => !IsPreviewing && !NoWebcam && !IsDone;
 

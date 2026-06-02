@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
@@ -31,7 +32,7 @@ public class ChoreItemViewModel : ViewModelBase
     }
 }
 
-public class DashboardViewModel : ViewModelBase
+public partial class DashboardViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -40,53 +41,30 @@ public class DashboardViewModel : ViewModelBase
     private readonly GameSettings _settings;
     private DispatcherTimer? _countdownTimer;
 
-    private string _debtDisplay = "";
-    public string DebtDisplay { get => _debtDisplay; set => this.RaiseAndSetIfChanged(ref _debtDisplay, value); }
+    [Reactive] private string _debtDisplay = "";
 
     public string InitialDebtDisplay { get; }
 
-    private decimal _currentDebt;
-    public decimal CurrentDebt { get => _currentDebt; set => this.RaiseAndSetIfChanged(ref _currentDebt, value); }
+    [Reactive] private decimal _currentDebt;
 
     public bool CanComplete => CurrentDebt <= 0;
 
-    private string _payRate = "";
-    public string PayRate { get => _payRate; set => this.RaiseAndSetIfChanged(ref _payRate, value); }
-
-    private string _timeToNextWage = "";
-    public string TimeToNextWage { get => _timeToNextWage; set => this.RaiseAndSetIfChanged(ref _timeToNextWage, value); }
-
-    private bool _isIdle = true;
-    public bool IsIdle { get => _isIdle; set => this.RaiseAndSetIfChanged(ref _isIdle, value); }
-
-    private bool _isBusy;
-    public bool IsBusy { get => _isBusy; set => this.RaiseAndSetIfChanged(ref _isBusy, value); }
+    [Reactive] private string _payRate = "";
+    [Reactive] private string _timeToNextWage = "";
+    [Reactive] private bool _isIdle = true;
+    [Reactive] private bool _isBusy;
 
     // --- Busy mode ---
-    private string _busyChoreName = "";
-    public string BusyChoreName { get => _busyChoreName; set => this.RaiseAndSetIfChanged(ref _busyChoreName, value); }
-
-    private string _busyChoreDescription = "";
-    public string BusyChoreDescription { get => _busyChoreDescription; set => this.RaiseAndSetIfChanged(ref _busyChoreDescription, value); }
-
-    private string _busyChoreValueDisplay = "";
-    public string BusyChoreValueDisplay { get => _busyChoreValueDisplay; set => this.RaiseAndSetIfChanged(ref _busyChoreValueDisplay, value); }
-
-    private string _busyElapsed = "00:00";
-    public string BusyElapsed { get => _busyElapsed; set => this.RaiseAndSetIfChanged(ref _busyElapsed, value); }
+    [Reactive] private string _busyChoreName = "";
+    [Reactive] private string _busyChoreDescription = "";
+    [Reactive] private string _busyChoreValueDisplay = "";
+    [Reactive] private string _busyElapsed = "00:00";
 
     // --- Trivia popup ---
-    private bool _isPopupVisible;
-    public bool IsPopupVisible { get => _isPopupVisible; set => this.RaiseAndSetIfChanged(ref _isPopupVisible, value); }
-
-    private string _popupQuestion = "";
-    public string PopupQuestion { get => _popupQuestion; set => this.RaiseAndSetIfChanged(ref _popupQuestion, value); }
-
-    private ObservableCollection<string> _popupAnswers = [];
-    public ObservableCollection<string> PopupAnswers { get => _popupAnswers; set => this.RaiseAndSetIfChanged(ref _popupAnswers, value); }
-
-    private int _popupCountdown;
-    public int PopupCountdown { get => _popupCountdown; set => this.RaiseAndSetIfChanged(ref _popupCountdown, value); }
+    [Reactive] private bool _isPopupVisible;
+    [Reactive] private string _popupQuestion = "";
+    [Reactive] private ObservableCollection<string> _popupAnswers = [];
+    [Reactive] private int _popupCountdown;
 
     private int _correctAnswerIndex;
 

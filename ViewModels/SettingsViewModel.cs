@@ -1,13 +1,15 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
-public class SettingsViewModel : ViewModelBase
+public partial class SettingsViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly ProfileRepository _repo;
@@ -17,30 +19,18 @@ public class SettingsViewModel : ViewModelBase
     private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int) _snapshot;
 
     // --- General tab fields ---
-    private string _playerName;
-    public string PlayerName { get => _playerName; set { this.RaiseAndSetIfChanged(ref _playerName, value); UpdateGeneralDirty(); } }
-    private int _autoSaveInterval;
-    public int AutoSaveInterval { get => _autoSaveInterval; set { this.RaiseAndSetIfChanged(ref _autoSaveInterval, value); UpdateGeneralDirty(); } }
-    private decimal _minDebt;
-    public decimal MinDebt { get => _minDebt; set { this.RaiseAndSetIfChanged(ref _minDebt, value); UpdateGeneralDirty(); } }
-    private decimal _maxDebt;
-    public decimal MaxDebt { get => _maxDebt; set { this.RaiseAndSetIfChanged(ref _maxDebt, value); UpdateGeneralDirty(); } }
-    private double _dailyInterestRate;
-    public double DailyInterestRate { get => _dailyInterestRate; set { this.RaiseAndSetIfChanged(ref _dailyInterestRate, value); UpdateGeneralDirty(); } }
-    private decimal _idleWageAmount;
-    public decimal IdleWageAmount { get => _idleWageAmount; set { this.RaiseAndSetIfChanged(ref _idleWageAmount, value); UpdateGeneralDirty(); } }
-    private int _idleWageInterval;
-    public int IdleWageInterval { get => _idleWageInterval; set { this.RaiseAndSetIfChanged(ref _idleWageInterval, value); UpdateGeneralDirty(); } }
-    private int _popupMinInterval;
-    public int PopupMinInterval { get => _popupMinInterval; set { this.RaiseAndSetIfChanged(ref _popupMinInterval, value); UpdateGeneralDirty(); } }
-    private int _popupMaxInterval;
-    public int PopupMaxInterval { get => _popupMaxInterval; set { this.RaiseAndSetIfChanged(ref _popupMaxInterval, value); UpdateGeneralDirty(); } }
-    private int _popupTimeout;
-    public int PopupTimeout { get => _popupTimeout; set { this.RaiseAndSetIfChanged(ref _popupTimeout, value); UpdateGeneralDirty(); } }
-    private int _captureMinInterval;
-    public int CaptureMinInterval { get => _captureMinInterval; set { this.RaiseAndSetIfChanged(ref _captureMinInterval, value); UpdateGeneralDirty(); } }
-    private int _captureMaxInterval;
-    public int CaptureMaxInterval { get => _captureMaxInterval; set { this.RaiseAndSetIfChanged(ref _captureMaxInterval, value); UpdateGeneralDirty(); } }
+    [Reactive] private string _playerName = "";
+    [Reactive] private int _autoSaveInterval;
+    [Reactive] private decimal _minDebt;
+    [Reactive] private decimal _maxDebt;
+    [Reactive] private double _dailyInterestRate;
+    [Reactive] private decimal _idleWageAmount;
+    [Reactive] private int _idleWageInterval;
+    [Reactive] private int _popupMinInterval;
+    [Reactive] private int _popupMaxInterval;
+    [Reactive] private int _popupTimeout;
+    [Reactive] private int _captureMinInterval;
+    [Reactive] private int _captureMaxInterval;
 
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
@@ -50,16 +40,11 @@ public class SettingsViewModel : ViewModelBase
     public ObservableCollection<ClothingItemOption> AvailableItems { get; } = [];
 
     // --- Per-tab dirty flags ---
-    private bool _isGeneralDirty;
-    public bool IsGeneralDirty { get => _isGeneralDirty; set => this.RaiseAndSetIfChanged(ref _isGeneralDirty, value); }
-    private bool _isChoresDirty;
-    public bool IsChoresDirty { get => _isChoresDirty; set => this.RaiseAndSetIfChanged(ref _isChoresDirty, value); }
-    private bool _isPunishmentsDirty;
-    public bool IsPunishmentsDirty { get => _isPunishmentsDirty; set => this.RaiseAndSetIfChanged(ref _isPunishmentsDirty, value); }
-    private bool _isWardrobeDirty;
-    public bool IsWardrobeDirty { get => _isWardrobeDirty; set => this.RaiseAndSetIfChanged(ref _isWardrobeDirty, value); }
-    private bool _isRulesDirty;
-    public bool IsRulesDirty { get => _isRulesDirty; set => this.RaiseAndSetIfChanged(ref _isRulesDirty, value); }
+    [Reactive] private bool _isGeneralDirty;
+    [Reactive] private bool _isChoresDirty;
+    [Reactive] private bool _isPunishmentsDirty;
+    [Reactive] private bool _isWardrobeDirty;
+    [Reactive] private bool _isRulesDirty;
 
     public bool IsDirty => IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty;
 
@@ -72,8 +57,7 @@ public class SettingsViewModel : ViewModelBase
     }
 
     // --- Dialog ---
-    private ViewModelBase? _activeDialog;
-    public ViewModelBase? ActiveDialog { get => _activeDialog; set => this.RaiseAndSetIfChanged(ref _activeDialog, value); }
+    [Reactive] private ViewModelBase? _activeDialog;
 
     // --- Commands ---
     public ICommand SaveCommand { get; }
@@ -116,6 +100,17 @@ public class SettingsViewModel : ViewModelBase
             OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(r, AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true));
 
         TakeSnapshot();
+
+        Observable.Merge(
+            this.WhenAnyValue(
+                x => x.PlayerName, x => x.AutoSaveInterval, x => x.MinDebt,
+                x => x.MaxDebt, x => x.DailyInterestRate, x => x.IdleWageAmount,
+                (_, _, _, _, _, _) => System.Reactive.Unit.Default),
+            this.WhenAnyValue(
+                x => x.IdleWageInterval, x => x.PopupMinInterval, x => x.PopupMaxInterval,
+                x => x.PopupTimeout, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
+                (_, _, _, _, _, _) => System.Reactive.Unit.Default))
+            .Subscribe(_ => UpdateGeneralDirty());
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
         Punishments.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
@@ -231,36 +226,41 @@ public record ClothingItemOption(int Id, string Name)
     public override string ToString() => Name;
 }
 
-public class ChoreEditViewModel : ViewModelBase
+public partial class ChoreEditViewModel : ViewModelBase
 {
     public int Id { get; }
-    private string _name; public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
-    private string _description; public string Description { get => _description; set => this.RaiseAndSetIfChanged(ref _description, value); }
-    private decimal _value; public decimal Value { get => _value; set => this.RaiseAndSetIfChanged(ref _value, value); }
-    private int _frequencyDays; public int FrequencyDays { get => _frequencyDays; set => this.RaiseAndSetIfChanged(ref _frequencyDays, value); }
+    [Reactive] private string _name = "";
+    [Reactive] private string _description = "";
+    [Reactive] private decimal _value;
+    [Reactive] private int _frequencyDays;
     public ICommand DeleteCommand { get; }
 
     public ChoreEditViewModel(Chore chore, Action<int> onDelete)
     {
-        Id = chore.Id; _name = chore.Name; _description = chore.Description;
-        _value = chore.Value; _frequencyDays = chore.FrequencyDays;
+        Id = chore.Id;
+        _name = chore.Name;
+        _description = chore.Description;
+        _value = chore.Value;
+        _frequencyDays = chore.FrequencyDays;
         DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
     }
 
     public Chore ToModel() => new() { Id = Id, Name = Name, Description = Description, Value = Value, FrequencyDays = FrequencyDays };
 }
 
-public class PunishmentEditViewModel : ViewModelBase
+public partial class PunishmentEditViewModel : ViewModelBase
 {
     public int Id { get; }
-    private string _name; public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
-    private decimal _debtIncrease; public decimal DebtIncrease { get => _debtIncrease; set => this.RaiseAndSetIfChanged(ref _debtIncrease, value); }
-    private int _requiredChoreCount; public int RequiredChoreCount { get => _requiredChoreCount; set => this.RaiseAndSetIfChanged(ref _requiredChoreCount, value); }
+    [Reactive] private string _name = "";
+    [Reactive] private decimal _debtIncrease;
+    [Reactive] private int _requiredChoreCount;
     public ICommand DeleteCommand { get; }
 
     public PunishmentEditViewModel(PunishmentTemplate t, Action<int> onDelete)
     {
-        Id = t.Id; _name = t.Name; _debtIncrease = t.DebtIncrease ?? 0;
+        Id = t.Id;
+        _name = t.Name;
+        _debtIncrease = t.DebtIncrease ?? 0;
         _requiredChoreCount = t.RequiredChoreCount ?? 0;
         DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
     }
@@ -273,26 +273,28 @@ public class PunishmentEditViewModel : ViewModelBase
     };
 }
 
-public class WardrobeEditViewModel : ViewModelBase
+public partial class WardrobeEditViewModel : ViewModelBase
 {
     public int Id { get; }
-    private string _name; public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
-    private string _slots; public string Slots { get => _slots; set => this.RaiseAndSetIfChanged(ref _slots, value); }
-    private double _multiplier; public double Multiplier { get => _multiplier; set => this.RaiseAndSetIfChanged(ref _multiplier, value); }
-    private double _weight; public double Weight { get => _weight; set => this.RaiseAndSetIfChanged(ref _weight, value); }
-    private string _tags; public string Tags { get => _tags; set => this.RaiseAndSetIfChanged(ref _tags, value); }
-    private bool _layerUndies; public bool LayerUndies { get => _layerUndies; set => this.RaiseAndSetIfChanged(ref _layerUndies, value); }
-    private bool _layerBase; public bool LayerBase { get => _layerBase; set => this.RaiseAndSetIfChanged(ref _layerBase, value); }
-    private bool _layerExtra; public bool LayerExtra { get => _layerExtra; set => this.RaiseAndSetIfChanged(ref _layerExtra, value); }
-    private bool _layerOuter; public bool LayerOuter { get => _layerOuter; set => this.RaiseAndSetIfChanged(ref _layerOuter, value); }
-    private bool _layerGears; public bool LayerGears { get => _layerGears; set => this.RaiseAndSetIfChanged(ref _layerGears, value); }
+    [Reactive] private string _name = "";
+    [Reactive] private string _slots = "";
+    [Reactive] private double _multiplier;
+    [Reactive] private double _weight;
+    [Reactive] private string _tags = "";
+    [Reactive] private bool _layerUndies;
+    [Reactive] private bool _layerBase;
+    [Reactive] private bool _layerExtra;
+    [Reactive] private bool _layerOuter;
+    [Reactive] private bool _layerGears;
     public ICommand DeleteCommand { get; }
 
     public WardrobeEditViewModel(ClothingItem item, Action<int> onDelete)
     {
-        Id = item.Id; _name = item.Name;
+        Id = item.Id;
+        _name = item.Name;
         _slots = string.Join(", ", item.Slots);
-        _multiplier = item.Multiplier; _weight = item.Weight;
+        _multiplier = item.Multiplier;
+        _weight = item.Weight;
         _tags = string.Join(", ", item.Tags);
         _layerUndies = item.Layers.Contains("undies");
         _layerBase = item.Layers.Contains("base");
@@ -320,15 +322,12 @@ public class WardrobeEditViewModel : ViewModelBase
     }
 }
 
-public class OutfitRuleEditViewModel : ViewModelBase
+public partial class OutfitRuleEditViewModel : ViewModelBase
 {
     public int Id { get; }
-    private ClothingItemOption? _item;
-    public ClothingItemOption? Item { get => _item; set => this.RaiseAndSetIfChanged(ref _item, value); }
-    private ClothingItemOption? _relatedItem;
-    public ClothingItemOption? RelatedItem { get => _relatedItem; set => this.RaiseAndSetIfChanged(ref _relatedItem, value); }
-    private OutfitRelation _relation;
-    public OutfitRelation Relation { get => _relation; set => this.RaiseAndSetIfChanged(ref _relation, value); }
+    [Reactive] private ClothingItemOption? _item;
+    [Reactive] private ClothingItemOption? _relatedItem;
+    [Reactive] private OutfitRelation _relation;
 
     public ObservableCollection<ClothingItemOption> AvailableItems { get; }
     public ICommand DeleteCommand { get; }
@@ -336,7 +335,8 @@ public class OutfitRuleEditViewModel : ViewModelBase
 
     public OutfitRuleEditViewModel(OutfitRule rule, ObservableCollection<ClothingItemOption> items, Action<int> onDelete)
     {
-        Id = rule.Id; AvailableItems = items;
+        Id = rule.Id;
+        AvailableItems = items;
         _item = items.FirstOrDefault(i => i.Id == rule.ItemId);
         _relatedItem = items.FirstOrDefault(i => i.Id == rule.RelatedItemId);
         _relation = rule.Relation;

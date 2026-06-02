@@ -5,10 +5,11 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
-public class GameCompleteViewModel : ViewModelBase
+public partial class GameCompleteViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -17,12 +18,7 @@ public class GameCompleteViewModel : ViewModelBase
     public bool HasOutfitVideo { get; }
     public bool HasSafePhoto { get; }
 
-    private string? _statusMessage;
-    public string? StatusMessage
-    {
-        get => _statusMessage;
-        private set => this.RaiseAndSetIfChanged(ref _statusMessage, value);
-    }
+    [Reactive(SetModifier = AccessModifier.Private)] private string? _statusMessage;
 
     public ICommand ExportOutfitVideoCommand { get; }
     public ICommand ExportSafePhotoCommand { get; }

@@ -2,11 +2,12 @@ using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
-public class StartSessionViewModel : ViewModelBase
+public partial class StartSessionViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -14,16 +15,12 @@ public class StartSessionViewModel : ViewModelBase
     private double _currentBonus = 1.0;
     private int _regenCount;
 
-    private string _proposedOutfit = "";
-    public string ProposedOutfit { get => _proposedOutfit; set => this.RaiseAndSetIfChanged(ref _proposedOutfit, value); }
+    [Reactive] private string _proposedOutfit = "";
 
     public string DebtDisplay { get; }
 
-    private bool _isLocked;
-    public bool IsLocked { get => _isLocked; set => this.RaiseAndSetIfChanged(ref _isLocked, value); }
-
-    private ConfirmDialogViewModel? _activeDialog;
-    public ConfirmDialogViewModel? ActiveDialog { get => _activeDialog; set => this.RaiseAndSetIfChanged(ref _activeDialog, value); }
+    [Reactive] private bool _isLocked;
+    [Reactive] private ConfirmDialogViewModel? _activeDialog;
 
     public ICommand AcceptCommand { get; }
     public ICommand RegenerateCommand { get; }

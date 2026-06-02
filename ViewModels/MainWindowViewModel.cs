@@ -1,10 +1,11 @@
 using ChastiMaid.Services;
 using LiteDB;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public partial class MainWindowViewModel : ViewModelBase
 {
     public DatabaseService DatabaseService { get; }
     public ProfileRepository ProfileRepository { get; }
@@ -15,12 +16,7 @@ public class MainWindowViewModel : ViewModelBase
     /// <summary>DB of the currently open save slot. Disposed when switching slots or returning to the menu.</summary>
     private LiteDatabase? _activeSaveDb;
 
-    private ViewModelBase _currentPage = null!;
-    public ViewModelBase CurrentPage
-    {
-        get => _currentPage;
-        set => this.RaiseAndSetIfChanged(ref _currentPage, value);
-    }
+    [Reactive] private ViewModelBase _currentPage = null!;
 
     public MainWindowViewModel(DatabaseService databaseService, ProfileRepository profileRepository, SaveSlotManager saveSlotManager, AutoSaveService autoSaveService, WebcamPreviewService webcam)
     {

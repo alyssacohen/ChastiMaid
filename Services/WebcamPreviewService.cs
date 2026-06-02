@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using OpenCvSharp;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.Services;
 
@@ -9,32 +10,15 @@ namespace ChastiMaid.Services;
 /// Manages the webcam: live preview on a WriteableBitmap plus video recording and photo capture
 /// from the same open VideoCapture. Implements INotifyPropertyChanged via ReactiveObject.
 /// </summary>
-public class WebcamPreviewService : ReactiveObject, IDisposable
+public partial class WebcamPreviewService : ReactiveObject, IDisposable
 {
     private VideoCapture? _capture;
     private CancellationTokenSource? _previewCts;
     private Task? _previewTask;
 
-    private WriteableBitmap? _previewBitmap;
-    public WriteableBitmap? PreviewBitmap
-    {
-        get => _previewBitmap;
-        private set => this.RaiseAndSetIfChanged(ref _previewBitmap, value);
-    }
-
-    private bool _isRunning;
-    public bool IsRunning
-    {
-        get => _isRunning;
-        private set => this.RaiseAndSetIfChanged(ref _isRunning, value);
-    }
-
-    private long _frameCount;
-    public long FrameCount
-    {
-        get => _frameCount;
-        private set => this.RaiseAndSetIfChanged(ref _frameCount, value);
-    }
+    [Reactive(SetModifier = AccessModifier.Private)] private WriteableBitmap? _previewBitmap;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _isRunning;
+    [Reactive(SetModifier = AccessModifier.Private)] private long _frameCount;
 
     /// <summary>Opens the webcam and starts the preview loop. Returns false if unavailable.</summary>
     public bool Start()

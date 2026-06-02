@@ -2,11 +2,12 @@ using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
-public class ConfirmOutfitViewModel : ViewModelBase
+public partial class ConfirmOutfitViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -15,17 +16,10 @@ public class ConfirmOutfitViewModel : ViewModelBase
     public string OutfitSummary { get; }
     public WebcamPreviewService Webcam => _webcam;
 
-    private bool _isPreviewing;
-    public bool IsPreviewing { get => _isPreviewing; private set => this.RaiseAndSetIfChanged(ref _isPreviewing, value); }
-
-    private bool _isRecording;
-    public bool IsRecording { get => _isRecording; private set => this.RaiseAndSetIfChanged(ref _isRecording, value); }
-
-    private bool _noWebcam;
-    public bool NoWebcam { get => _noWebcam; private set => this.RaiseAndSetIfChanged(ref _noWebcam, value); }
-
-    private int _countdown;
-    public int Countdown { get => _countdown; private set => this.RaiseAndSetIfChanged(ref _countdown, value); }
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _isPreviewing;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _isRecording;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _noWebcam;
+    [Reactive(SetModifier = AccessModifier.Private)] private int _countdown;
 
     public bool IsInitial => !IsPreviewing && !IsRecording && !NoWebcam;
 

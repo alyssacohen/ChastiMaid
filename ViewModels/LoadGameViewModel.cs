@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
@@ -52,18 +53,13 @@ public class SlotCardViewModel : ViewModelBase
     }
 }
 
-public class LoadGameViewModel : ViewModelBase
+public partial class LoadGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
 
     public ObservableCollection<SlotCardViewModel> Slots { get; } = [];
 
-    private ConfirmDialogViewModel? _activeDialog;
-    public ConfirmDialogViewModel? ActiveDialog
-    {
-        get => _activeDialog;
-        private set => this.RaiseAndSetIfChanged(ref _activeDialog, value);
-    }
+    [Reactive(SetModifier = AccessModifier.Private)] private ConfirmDialogViewModel? _activeDialog;
 
     public ICommand BackCommand { get; }
 

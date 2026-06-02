@@ -3,25 +3,20 @@ using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
 public enum ChipState { Normal, Selected, Required, Disabled }
 
-public class ChipViewModel : ViewModelBase
+public partial class ChipViewModel : ViewModelBase
 {
-    private ChipState _state;
-
     public ClothingItem Item { get; }
     public string Name => Item.Name;
     public int ItemId => Item.Id;
 
-    public ChipState State
-    {
-        get => _state;
-        set => this.RaiseAndSetIfChanged(ref _state, value);
-    }
+    [Reactive] private ChipState _state;
 
     public bool IsSelected => State is ChipState.Selected;
     public bool IsRequired => State is ChipState.Required;
@@ -44,7 +39,7 @@ public class LayerGroupViewModel(string layerName)
     public ObservableCollection<ChipViewModel> Chips { get; } = [];
 }
 
-public class ChangeOutfitViewModel : ViewModelBase
+public partial class ChangeOutfitViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -55,17 +50,10 @@ public class ChangeOutfitViewModel : ViewModelBase
 
     public ObservableCollection<LayerGroupViewModel> Layers { get; } = [];
 
-    private string _statusMessage = "";
-    public string StatusMessage { get => _statusMessage; set => this.RaiseAndSetIfChanged(ref _statusMessage, value); }
-
-    private bool _hasWarning;
-    public bool HasWarning { get => _hasWarning; set => this.RaiseAndSetIfChanged(ref _hasWarning, value); }
-
-    private bool _canFinalize = true;
-    public bool CanFinalize { get => _canFinalize; set => this.RaiseAndSetIfChanged(ref _canFinalize, value); }
-
-    private int _selectedCount;
-    public int SelectedCount { get => _selectedCount; set => this.RaiseAndSetIfChanged(ref _selectedCount, value); }
+    [Reactive] private string _statusMessage = "";
+    [Reactive] private bool _hasWarning;
+    [Reactive] private bool _canFinalize = true;
+    [Reactive] private int _selectedCount;
 
     public ICommand IntegrateCommand { get; }
     public ICommand SaveOutfitCommand { get; }

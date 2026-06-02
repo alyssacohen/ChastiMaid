@@ -3,22 +3,18 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
-public class WelcomeViewModel : ViewModelBase
+public partial class WelcomeViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
 
     public bool HasActiveGame { get; }
 
-    private ConfirmDialogViewModel? _activeDialog;
-    public ConfirmDialogViewModel? ActiveDialog
-    {
-        get => _activeDialog;
-        private set => this.RaiseAndSetIfChanged(ref _activeDialog, value);
-    }
+    [Reactive(SetModifier = AccessModifier.Private)] private ConfirmDialogViewModel? _activeDialog;
 
     public ICommand ContinueCommand { get; }
     public ICommand LoadGameCommand { get; }
@@ -29,8 +25,7 @@ public class WelcomeViewModel : ViewModelBase
 
     public bool IsTestMode => Program.TestMode;
 
-    private string _clockOffset = "";
-    public string ClockOffset { get => _clockOffset; set => this.RaiseAndSetIfChanged(ref _clockOffset, value); }
+    [Reactive] private string _clockOffset = "";
 
     public WelcomeViewModel(MainWindowViewModel mainVm)
     {

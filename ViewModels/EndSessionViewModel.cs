@@ -5,11 +5,12 @@ using Avalonia.Media.Imaging;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
-public class EndSessionViewModel : ViewModelBase
+public partial class EndSessionViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
@@ -18,19 +19,8 @@ public class EndSessionViewModel : ViewModelBase
 
     public bool HasSafeCombo { get; }
 
-    private Bitmap? _comboImage;
-    public Bitmap? ComboImage
-    {
-        get => _comboImage;
-        private set => this.RaiseAndSetIfChanged(ref _comboImage, value);
-    }
-
-    private bool _showingCombo;
-    public bool ShowingCombo
-    {
-        get => _showingCombo;
-        private set => this.RaiseAndSetIfChanged(ref _showingCombo, value);
-    }
+    [Reactive(SetModifier = AccessModifier.Private)] private Bitmap? _comboImage;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _showingCombo;
 
     public ICommand ShowComboAndCloseCommand { get; }
     public ICommand CloseWithoutComboCommand { get; }
