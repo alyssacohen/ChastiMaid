@@ -30,12 +30,40 @@ public partial class ChipViewModel : ViewModelBase
         Item = item;
         _state = ChipState.Normal;
         ToggleCommand = ReactiveCommand.Create(() => onToggle(this));
+
+        // Propagate State changes to the derived bool properties so XAML bindings update
+        this.WhenAnyValue(x => x.State).Subscribe(_ =>
+        {
+            this.RaisePropertyChanged(nameof(IsSelected));
+            this.RaisePropertyChanged(nameof(IsRequired));
+            this.RaisePropertyChanged(nameof(IsDisabled));
+            this.RaisePropertyChanged(nameof(IsNormal));
+        });
     }
 }
 
-public class LayerGroupViewModel(string layerName)
+public class LayerGroupViewModel
 {
-    public string LayerName { get; } = layerName;
+    private static readonly Dictionary<string, (string Display, string Desc)> _meta = new()
+    {
+        ["undies"] = ("Underwear",   "foundation · choose freely"),
+        ["extra"]  = ("Extra",       "suspenders, garters · optional unless required by hosiery"),
+        ["base"]   = ("Base",        "hosiery, slip · choose at most one pair"),
+        ["outer"]  = ("Outerwear",   "dress, skirt, blouse"),
+        ["gears"]  = ("Accessories", "shoes, jewellery · multiple allowed"),
+    };
+
+    public LayerGroupViewModel(string layerKey)
+    {
+        LayerKey = layerKey;
+        var (display, desc) = _meta.GetValueOrDefault(layerKey, (layerKey, ""));
+        DisplayName = display;
+        Description = desc;
+    }
+
+    public string LayerKey { get; }
+    public string DisplayName { get; }
+    public string Description { get; }
     public ObservableCollection<ChipViewModel> Chips { get; } = [];
 }
 
@@ -52,6 +80,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
 
     [Reactive] private string _statusMessage = "";
     [Reactive] private bool _hasWarning;
+    [Reactive] private bool _isViolation;
     [Reactive] private bool _canFinalize = true;
     [Reactive] private int _selectedCount;
 
@@ -87,7 +116,6 @@ public partial class ChangeOutfitViewModel : ViewModelBase
             var items = _allItems.Where(i => i.Layers.Contains(layer)).ToList();
             foreach (var item in items)
             {
-                // Avoid duplicating chips if item already placed in another layer group
                 if (Layers.SelectMany(l => l.Chips).Any(c => c.ItemId == item.Id)) continue;
                 group.Chips.Add(new ChipViewModel(item, OnChipToggled));
             }
@@ -100,9 +128,8 @@ public partial class ChangeOutfitViewModel : ViewModelBase
     {
         if (chip.State is ChipState.Disabled) return;
 
-        chip.State = chip.State is ChipState.Selected or ChipState.Required
-            ? ChipState.Normal
-            : ChipState.Selected;
+        // Required → Selected (satisfies the requirement); Selected → Normal; Normal → Selected
+        chip.State = chip.State is ChipState.Selected ? ChipState.Normal : ChipState.Selected;
 
         ValidateRules();
     }
@@ -110,42 +137,62 @@ public partial class ChangeOutfitViewModel : ViewModelBase
     private void ValidateRules()
     {
         var selectedIds = GetSelectedIds();
-        var messages = new List<string>();
+        var violations = new List<string>();
+        var infos = new List<string>();
         var canFinalize = true;
 
-        // Reset all non-selected chips to Normal first
         foreach (var chip in AllChips().Where(c => c.State is not ChipState.Selected))
             chip.State = ChipState.Normal;
+
+        var processedRequires = new HashSet<int>();
 
         foreach (var rule in _allRules)
         {
             if (!selectedIds.Contains(rule.ItemId)) continue;
 
-            var source = _allItems.First(i => i.Id == rule.ItemId);
+            var source = _allItems.FirstOrDefault(i => i.Id == rule.ItemId);
             var related = _allItems.FirstOrDefault(i => i.Id == rule.RelatedItemId);
-            if (related is null) continue;
+            if (source is null || related is null) continue;
 
             if (rule.Relation == OutfitRelation.Incompatible)
             {
-                // Disable incompatible items
                 var chip = FindChip(rule.RelatedItemId);
                 if (chip is not null && chip.State is not ChipState.Selected)
                     chip.State = ChipState.Disabled;
 
                 if (selectedIds.Contains(rule.RelatedItemId))
-                    messages.Add($"{source.Name} is incompatible with {related.Name}.");
+                    violations.Add($"{source.Name} and {related.Name} cannot be worn together.");
             }
-            else if (rule.Relation == OutfitRelation.Requires)
+            else if (rule.Relation == OutfitRelation.Requires && !processedRequires.Contains(rule.ItemId))
             {
-                // Check if any required item is selected
+                processedRequires.Add(rule.ItemId);
+
                 var requiredIds = _allRules
                     .Where(r => r.ItemId == rule.ItemId && r.Relation == OutfitRelation.Requires)
                     .Select(r => r.RelatedItemId)
                     .ToHashSet();
 
-                if (!requiredIds.Any(selectedIds.Contains))
+                var satisfying = requiredIds
+                    .Select(id => _allItems.FirstOrDefault(i => i.Id == id))
+                    .Where(i => i is not null && selectedIds.Contains(i.Id))
+                    .ToList();
+
+                if (satisfying.Count > 0)
                 {
-                    // Mark required items
+                    var satisfierName = satisfying[0]!.Name;
+                    var otherNames = requiredIds
+                        .Where(id => satisfying.All(s => s!.Id != id))
+                        .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
+                        .Where(n => n is not null)
+                        .ToList();
+
+                    var msg = $"{source.Name} requires one of: {string.Join(", ", requiredIds.Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name).Where(n => n is not null))}. {satisfierName} is selected — requirement satisfied.";
+                    if (otherNames.Count > 0)
+                        msg += $" {string.Join(", ", otherNames)} {(otherNames.Count == 1 ? "remains" : "remain")} available.";
+                    infos.Add(msg);
+                }
+                else
+                {
                     foreach (var reqId in requiredIds)
                     {
                         var chip = FindChip(reqId);
@@ -156,7 +203,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
                     var reqNames = requiredIds
                         .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
                         .Where(n => n is not null);
-                    messages.Add($"{source.Name} requires one of: {string.Join(", ", reqNames)}.");
+                    violations.Add($"{source.Name} requires one of: {string.Join(", ", reqNames)}.");
                     canFinalize = false;
                 }
             }
@@ -164,8 +211,9 @@ public partial class ChangeOutfitViewModel : ViewModelBase
 
         SelectedCount = selectedIds.Count;
         CanFinalize = canFinalize;
-        HasWarning = messages.Count > 0;
-        StatusMessage = string.Join("\n", messages);
+        IsViolation = violations.Count > 0;
+        HasWarning = violations.Count > 0 || infos.Count > 0;
+        StatusMessage = string.Join(" ", violations.Concat(infos));
     }
 
     private void Integrate()
@@ -174,26 +222,44 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         var builder = new OutfitBuilder(_allItems, _allRules);
         builder.AddSeedItems(seeds);
         var newOutfit = builder.Build();
-
-        // Accepted = items in final outfit, rejected = items NOT in final outfit from wardrobe
         _saveRepo.AcceptItems(newOutfit.Items);
-
         LockOutfit(newOutfit);
     }
 
     private void SaveOutfit()
     {
         var seeds = GetSelectedItems();
+
+        // Run OutfitBuilder to determine what would have been auto-filled,
+        // then use those items only for weight adjustment — not for the actual outfit.
         var builder = new OutfitBuilder(_allItems, _allRules);
         builder.AddSeedItems(seeds);
-        var newOutfit = builder.Build();
+        var referenceOutfit = builder.Build();
 
-        // Accept only the seed items; reject items added by generator but not selected by user
         _saveRepo.AcceptItems(seeds);
-        var rejected = newOutfit.Items.Where(i => !seeds.Any(s => s.Id == i.Id)).ToList();
-        _saveRepo.RejectItems(rejected);
+        var autoFilled = referenceOutfit.Items.Where(i => seeds.All(s => s.Id != i.Id)).ToList();
+        _saveRepo.RejectItems(autoFilled);
 
-        LockOutfit(newOutfit);
+        // Lock only the user-selected items
+        var seedOutfit = PlaceSeedsOnOutfit(seeds, referenceOutfit);
+        LockOutfit(seedOutfit);
+    }
+
+    // Builds an Outfit containing only the given seeds, using the reference outfit
+    // for preferred layer assignment (fallback to item's first available layer).
+    private static Outfit PlaceSeedsOnOutfit(List<ClothingItem> seeds, Outfit referenceOutfit)
+    {
+        var outfit = new Outfit();
+        foreach (var item in seeds)
+        {
+            var preferred = referenceOutfit.LayerOf(item);
+            var layers = item.Layers.OrderByDescending(l => l == preferred);
+            foreach (var layer in layers)
+            {
+                if (outfit.AddItemOnLayer(item, layer)) break;
+            }
+        }
+        return outfit;
     }
 
     private void LockOutfit(Outfit outfit)
@@ -207,7 +273,6 @@ public partial class ChangeOutfitViewModel : ViewModelBase
             state.OutfitMultiplier = outfit.TotalMultiplier;
             _saveRepo.SaveGameState(state);
         }
-
         _mainVm.NavigateTo(new ConfirmOutfitViewModel(_mainVm, _saveRepo, outfit, _bonusPercent));
     }
 

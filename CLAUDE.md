@@ -23,6 +23,27 @@ dotnet publish -c Release  # Publish (excludes Avalonia.Diagnostics)
 
 There is **no test project** — there is no `dotnet test` to run. Verify changes by building and running.
 
+## Target Platforms
+
+The app runs on two form factors with different constraints:
+
+**Primary: Windows 11 desktop (development machine)**
+Full keyboard and mouse, large screen. Used for development and testing.
+
+**Secondary: Surface Go (Windows 10, tablet mode)**
+- Screen: 1800×1200 (10"), typically used at 150% DPI scaling → effective ~1200×800
+- Input: touch-first; mouse and type cover optional. All interactive elements must be
+  large enough for finger tap (minimum 44×44px hit target).
+- Orientation: primarily landscape, but portrait must not break layouts.
+- Performance: low-power Intel Pentium Gold / 4 GB RAM — avoid heavy background work
+  on the UI thread; keep animations simple.
+- Cameras: **two cameras** (front-facing and rear-facing). `MediaCaptureService` and
+  `WebcamPreviewService` must support camera enumeration and allow the user to select
+  which camera to use. The selected camera should be persisted in `GameSettings`.
+- No font scaling: instead of scaling font sizes to screen dimensions, layouts use
+  generous padding/spacing so they breathe naturally on larger screens. Font size keys
+  (`FontSizeBody`, `FontSizeDisplay`, etc.) are fixed constants.
+
 ## Architecture
 
 **MVVM via ReactiveUI + ViewLocator convention.**
