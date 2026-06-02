@@ -13,6 +13,7 @@ public enum ChipState { Normal, Selected, Required, Disabled }
 public partial class ChipViewModel : ViewModelBase
 {
     public ClothingItem Item { get; }
+    public string Layer { get; }
     public string Name => Item.Name;
     public int ItemId => Item.Id;
 
@@ -25,13 +26,13 @@ public partial class ChipViewModel : ViewModelBase
 
     public ICommand ToggleCommand { get; }
 
-    public ChipViewModel(ClothingItem item, Action<ChipViewModel> onToggle)
+    public ChipViewModel(ClothingItem item, string layer, Action<ChipViewModel> onToggle)
     {
         Item = item;
+        Layer = layer;
         _state = ChipState.Normal;
         ToggleCommand = ReactiveCommand.Create(() => onToggle(this));
 
-        // Propagate State changes to the derived bool properties so XAML bindings update
         this.WhenAnyValue(x => x.State).Subscribe(_ =>
         {
             this.RaisePropertyChanged(nameof(IsSelected));
@@ -113,12 +114,8 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         foreach (var layer in Outfit.LayersOrder)
         {
             var group = new LayerGroupViewModel(layer);
-            var items = _allItems.Where(i => i.Layers.Contains(layer)).ToList();
-            foreach (var item in items)
-            {
-                if (Layers.SelectMany(l => l.Chips).Any(c => c.ItemId == item.Id)) continue;
-                group.Chips.Add(new ChipViewModel(item, OnChipToggled));
-            }
+            foreach (var item in _allItems.Where(i => i.Layers.Contains(layer)))
+                group.Chips.Add(new ChipViewModel(item, layer, OnChipToggled));
             if (group.Chips.Count > 0)
                 Layers.Add(group);
         }
@@ -128,7 +125,6 @@ public partial class ChangeOutfitViewModel : ViewModelBase
     {
         if (chip.State is ChipState.Disabled) return;
 
-        // Required → Selected (satisfies the requirement); Selected → Normal; Normal → Selected
         chip.State = chip.State is ChipState.Selected ? ChipState.Normal : ChipState.Selected;
 
         ValidateRules();
@@ -136,76 +132,112 @@ public partial class ChangeOutfitViewModel : ViewModelBase
 
     private void ValidateRules()
     {
-        var selectedIds = GetSelectedIds();
+        var selectedChips = AllChips().Where(c => c.State is ChipState.Selected).ToList();
+        var selectedIds = selectedChips.Select(c => c.ItemId).ToHashSet();
         var violations = new List<string>();
         var infos = new List<string>();
         var canFinalize = true;
 
+        // 1. Reset all non-selected chips to Normal
         foreach (var chip in AllChips().Where(c => c.State is not ChipState.Selected))
             chip.State = ChipState.Normal;
 
-        var processedRequires = new HashSet<int>();
-
-        foreach (var rule in _allRules)
+        // 2. Disable other copies of the same item (multi-layer duplicates)
+        foreach (var sel in selectedChips)
         {
-            if (!selectedIds.Contains(rule.ItemId)) continue;
+            foreach (var copy in AllChips().Where(c => c.ItemId == sel.ItemId && c != sel && c.State is ChipState.Normal))
+                copy.State = ChipState.Disabled;
+        }
 
-            var source = _allItems.FirstOrDefault(i => i.Id == rule.ItemId);
-            var related = _allItems.FirstOrDefault(i => i.Id == rule.RelatedItemId);
-            if (source is null || related is null) continue;
-
-            if (rule.Relation == OutfitRelation.Incompatible)
+        // 3. Disable slot conflicts on the same layer
+        foreach (var sel in selectedChips)
+        {
+            var slots = sel.Item.Slots.ToHashSet();
+            foreach (var chip in AllChips().Where(c =>
+                c != sel &&
+                c.Layer == sel.Layer &&
+                c.State is ChipState.Normal &&
+                c.Item.Slots.Any(slots.Contains)))
             {
-                var chip = FindChip(rule.RelatedItemId);
-                if (chip is not null && chip.State is not ChipState.Selected)
-                    chip.State = ChipState.Disabled;
+                chip.State = ChipState.Disabled;
+            }
+        }
 
-                if (selectedIds.Contains(rule.RelatedItemId))
+        // 4. Apply incompatibility rules (bidirectional)
+        foreach (var rule in _allRules.Where(r => r.Relation == OutfitRelation.Incompatible))
+        {
+            var aSelected = selectedIds.Contains(rule.ItemId);
+            var bSelected = selectedIds.Contains(rule.RelatedItemId);
+
+            if (aSelected && bSelected)
+            {
+                var source = _allItems.FirstOrDefault(i => i.Id == rule.ItemId);
+                var related = _allItems.FirstOrDefault(i => i.Id == rule.RelatedItemId);
+                if (source is not null && related is not null)
                     violations.Add($"{source.Name} and {related.Name} cannot be worn together.");
             }
-            else if (rule.Relation == OutfitRelation.Requires && !processedRequires.Contains(rule.ItemId))
+            else if (aSelected)
             {
-                processedRequires.Add(rule.ItemId);
+                foreach (var chip in FindChips(rule.RelatedItemId).Where(c => c.State is ChipState.Normal))
+                    chip.State = ChipState.Disabled;
+            }
+            else if (bSelected)
+            {
+                foreach (var chip in FindChips(rule.ItemId).Where(c => c.State is ChipState.Normal))
+                    chip.State = ChipState.Disabled;
+            }
+        }
 
-                var requiredIds = _allRules
-                    .Where(r => r.ItemId == rule.ItemId && r.Relation == OutfitRelation.Requires)
-                    .Select(r => r.RelatedItemId)
-                    .ToHashSet();
+        // 5. Apply requires rules (directional: A requires B)
+        var processedRequires = new HashSet<int>();
+        foreach (var rule in _allRules.Where(r => r.Relation == OutfitRelation.Requires))
+        {
+            if (!selectedIds.Contains(rule.ItemId)) continue;
+            if (!processedRequires.Add(rule.ItemId)) continue;
 
-                var satisfying = requiredIds
-                    .Select(id => _allItems.FirstOrDefault(i => i.Id == id))
-                    .Where(i => i is not null && selectedIds.Contains(i.Id))
+            var source = _allItems.FirstOrDefault(i => i.Id == rule.ItemId);
+            if (source is null) continue;
+
+            var requiredIds = _allRules
+                .Where(r => r.ItemId == rule.ItemId && r.Relation == OutfitRelation.Requires)
+                .Select(r => r.RelatedItemId)
+                .ToHashSet();
+
+            var satisfying = requiredIds
+                .Select(id => _allItems.FirstOrDefault(i => i.Id == id))
+                .Where(i => i is not null && selectedIds.Contains(i.Id))
+                .ToList();
+
+            if (satisfying.Count > 0)
+            {
+                var satisfierName = satisfying[0]!.Name;
+                var otherNames = requiredIds
+                    .Where(id => satisfying.All(s => s!.Id != id))
+                    .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
+                    .Where(n => n is not null)
                     .ToList();
 
-                if (satisfying.Count > 0)
+                var allReqNames = requiredIds
+                    .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
+                    .Where(n => n is not null);
+                var msg = $"{source.Name} requires one of: {string.Join(", ", allReqNames)}. {satisfierName} is selected — requirement satisfied.";
+                if (otherNames.Count > 0)
+                    msg += $" {string.Join(", ", otherNames)} {(otherNames.Count == 1 ? "remains" : "remain")} available.";
+                infos.Add(msg);
+            }
+            else
+            {
+                foreach (var reqId in requiredIds)
                 {
-                    var satisfierName = satisfying[0]!.Name;
-                    var otherNames = requiredIds
-                        .Where(id => satisfying.All(s => s!.Id != id))
-                        .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
-                        .Where(n => n is not null)
-                        .ToList();
-
-                    var msg = $"{source.Name} requires one of: {string.Join(", ", requiredIds.Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name).Where(n => n is not null))}. {satisfierName} is selected — requirement satisfied.";
-                    if (otherNames.Count > 0)
-                        msg += $" {string.Join(", ", otherNames)} {(otherNames.Count == 1 ? "remains" : "remain")} available.";
-                    infos.Add(msg);
+                    foreach (var chip in FindChips(reqId).Where(c => c.State is ChipState.Normal))
+                        chip.State = ChipState.Required;
                 }
-                else
-                {
-                    foreach (var reqId in requiredIds)
-                    {
-                        var chip = FindChip(reqId);
-                        if (chip is not null && chip.State is ChipState.Normal)
-                            chip.State = ChipState.Required;
-                    }
 
-                    var reqNames = requiredIds
-                        .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
-                        .Where(n => n is not null);
-                    violations.Add($"{source.Name} requires one of: {string.Join(", ", reqNames)}.");
-                    canFinalize = false;
-                }
+                var reqNames = requiredIds
+                    .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
+                    .Where(n => n is not null);
+                violations.Add($"{source.Name} requires one of: {string.Join(", ", reqNames)}.");
+                canFinalize = false;
             }
         }
 
@@ -228,10 +260,9 @@ public partial class ChangeOutfitViewModel : ViewModelBase
 
     private void SaveOutfit()
     {
-        var seeds = GetSelectedItems();
+        var selectedChips = AllChips().Where(c => c.State is ChipState.Selected).ToList();
+        var seeds = selectedChips.Select(c => c.Item).ToList();
 
-        // Run OutfitBuilder to determine what would have been auto-filled,
-        // then use those items only for weight adjustment — not for the actual outfit.
         var builder = new OutfitBuilder(_allItems, _allRules);
         builder.AddSeedItems(seeds);
         var referenceOutfit = builder.Build();
@@ -240,23 +271,20 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         var autoFilled = referenceOutfit.Items.Where(i => seeds.All(s => s.Id != i.Id)).ToList();
         _saveRepo.RejectItems(autoFilled);
 
-        // Lock only the user-selected items
-        var seedOutfit = PlaceSeedsOnOutfit(seeds, referenceOutfit);
+        var seedOutfit = PlaceSeedsOnOutfit(selectedChips);
         LockOutfit(seedOutfit);
     }
 
-    // Builds an Outfit containing only the given seeds, using the reference outfit
-    // for preferred layer assignment (fallback to item's first available layer).
-    private static Outfit PlaceSeedsOnOutfit(List<ClothingItem> seeds, Outfit referenceOutfit)
+    // Builds an Outfit with only the selected chips, using each chip's Layer as the placement layer.
+    private static Outfit PlaceSeedsOnOutfit(List<ChipViewModel> chips)
     {
         var outfit = new Outfit();
-        foreach (var item in seeds)
+        foreach (var chip in chips)
         {
-            var preferred = referenceOutfit.LayerOf(item);
-            var layers = item.Layers.OrderByDescending(l => l == preferred);
+            var layers = chip.Item.Layers.OrderByDescending(l => l == chip.Layer);
             foreach (var layer in layers)
             {
-                if (outfit.AddItemOnLayer(item, layer)) break;
+                if (outfit.AddItemOnLayer(chip.Item, layer)) break;
             }
         }
         return outfit;
@@ -283,14 +311,11 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         ValidateRules();
     }
 
-    private HashSet<int> GetSelectedIds() =>
-        AllChips().Where(c => c.State is ChipState.Selected).Select(c => c.ItemId).ToHashSet();
-
     private List<ClothingItem> GetSelectedItems() =>
         AllChips().Where(c => c.State is ChipState.Selected).Select(c => c.Item).ToList();
 
-    private ChipViewModel? FindChip(int itemId) =>
-        AllChips().FirstOrDefault(c => c.ItemId == itemId);
+    private IEnumerable<ChipViewModel> FindChips(int itemId) =>
+        AllChips().Where(c => c.ItemId == itemId);
 
     private IEnumerable<ChipViewModel> AllChips() =>
         Layers.SelectMany(l => l.Chips);

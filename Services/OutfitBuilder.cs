@@ -39,13 +39,24 @@ public class OutfitBuilder
         _rules = [];
         foreach (var rule in rules)
         {
-            if (!_rules.ContainsKey(rule.ItemId))
-                _rules[rule.ItemId] = (new HashSet<int>(), new HashSet<int>());
-
+            Ensure(rule.ItemId);
             if (rule.Relation == OutfitRelation.Requires)
+            {
                 _rules[rule.ItemId].Requires.Add(rule.RelatedItemId);
+            }
             else if (rule.Relation == OutfitRelation.Incompatible)
+            {
+                // Store both directions so candidate filtering works regardless of rule direction
                 _rules[rule.ItemId].Incompatible.Add(rule.RelatedItemId);
+                Ensure(rule.RelatedItemId);
+                _rules[rule.RelatedItemId].Incompatible.Add(rule.ItemId);
+            }
+        }
+
+        void Ensure(int id)
+        {
+            if (!_rules.ContainsKey(id))
+                _rules[id] = (new HashSet<int>(), new HashSet<int>());
         }
     }
 
@@ -82,11 +93,13 @@ public class OutfitBuilder
                     unplaced.Remove(seed);
             }
 
-            // Fill layer with random candidates
+            // Fill layer with random candidates (exclude items incompatible with already-placed items)
             for (var attempt = 0; attempt < MaxFillAttemptsPerLayer; attempt++)
             {
+                var placedIds = outfit.Items.Select(i => i.Id).ToHashSet();
                 var candidates = remaining.Values
                     .Where(i => i.Layers.Contains(layer) && outfit.CanAddOnLayer(i, layer))
+                    .Where(i => !_rules.TryGetValue(i.Id, out var r) || !r.Incompatible.Any(placedIds.Contains))
                     .ToList();
                 if (candidates.Count == 0) break;
 
