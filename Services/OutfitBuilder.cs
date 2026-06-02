@@ -11,14 +11,13 @@ public class OutfitBuilder
     private static readonly Dictionary<string, double> DefaultLayerProbability = new()
     {
         ["undies"] = 1.0,
-        ["base"]   = 1.0,
         ["extra"]  = 0.7,
+        ["base"]   = 1.0,
         ["outer"]  = 1.0,
         ["gears"]  = 0.5,
     };
 
     private const int MaxFillAttemptsPerLayer = 10;
-    private const double ReplacementThreshold = 0.8;
 
     private readonly List<ClothingItem> _allItems;
     private readonly Dictionary<int, (HashSet<int> Requires, HashSet<int> Incompatible)> _rules;
@@ -97,7 +96,7 @@ public class OutfitBuilder
             }
         }
 
-        // Conservative fallback for unplaced seeds
+        // Fallback for unplaced seeds: replace non-seed items on conflict
         foreach (var seed in unplaced.ToList())
         {
             foreach (var layer in Outfit.LayersOrder.Where(l => seed.Layers.Contains(l)))
@@ -108,15 +107,13 @@ public class OutfitBuilder
                     break;
                 }
 
-                // Try replacing a low-weight non-seed item
                 var occupying = outfit.ItemsInLayer(layer, seed.Slots).ToList();
-                if (occupying.Count == 0) continue;
+                var replaceable = occupying.FirstOrDefault(i => !_seedItems.Contains(i));
+                if (replaceable is null) continue;
 
-                var weakest = occupying.MinBy(i => i.Weight)!;
-                if (weakest.Weight < seed.Weight * ReplacementThreshold && !_seedItems.Contains(weakest))
+                outfit.RemoveItem(replaceable);
+                if (outfit.AddItemOnLayer(seed, layer))
                 {
-                    outfit.RemoveItem(weakest);
-                    outfit.AddItemOnLayer(seed, layer);
                     unplaced.Remove(seed);
                     break;
                 }

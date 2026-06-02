@@ -28,6 +28,27 @@ public class SaveRepository(LiteDatabase db)
     public List<Chore> GetChores() => Chores.FindAll().ToList();
     public List<PunishmentTemplate> GetPunishmentTemplates() => PunishmentTemplates.FindAll().ToList();
 
+    // --- Wardrobe weight adjustments ---
+    public void AcceptItems(IEnumerable<ClothingItem> items)
+    {
+        foreach (var item in items)
+        {
+            item.Weight = Math.Max(0.1, item.Weight - 0.1);
+            if (item.RejectionCount > 0) item.RejectionCount--;
+            Wardrobe.Update(item);
+        }
+    }
+
+    public void RejectItems(IEnumerable<ClothingItem> items)
+    {
+        foreach (var item in items)
+        {
+            item.Weight += 0.3;
+            item.RejectionCount++;
+            Wardrobe.Update(item);
+        }
+    }
+
     // --- In-game chores (can add during session, don't affect profile) ---
     public void AddChore(Chore chore) => Chores.Insert(chore);
 

@@ -12,7 +12,7 @@ public class MainWindowViewModel : ViewModelBase
     public AutoSaveService AutoSaveService { get; }
     public WebcamPreviewService Webcam { get; }
 
-    /// <summary>DB del save slot attualmente aperto. Viene disposto quando si cambia slot o si torna al menu.</summary>
+    /// <summary>DB of the currently open save slot. Disposed when switching slots or returning to the menu.</summary>
     private LiteDatabase? _activeSaveDb;
 
     private ViewModelBase _currentPage = null!;
@@ -33,9 +33,9 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Apre un save slot e ne traccia il DB per il dispose automatico.
-    /// Se c'era un DB aperto, viene chiuso prima.
-    /// </summary>
+    /// Opens a save slot and tracks its DB for automatic disposal.
+    /// If a DB was already open, it is closed first.
+    ///</summary>
     public SaveRepository OpenSaveSlot(string slotName)
     {
         _activeSaveDb?.Dispose();
@@ -43,7 +43,7 @@ public class MainWindowViewModel : ViewModelBase
         return new SaveRepository(_activeSaveDb);
     }
 
-    /// <summary>Chiude il save DB attivo (se presente).</summary>
+    /// <summary>Closes the active save DB (if any).</summary>
     public void CloseActiveSave()
     {
         _activeSaveDb?.Dispose();

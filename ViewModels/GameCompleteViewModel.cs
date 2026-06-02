@@ -65,16 +65,15 @@ public class GameCompleteViewModel : ViewModelBase
 
     private void Finish()
     {
-        // Incrementa GamesCompleted
         var stats = _mainVm.ProfileRepository.GetStats();
         stats.GamesCompleted++;
         _mainVm.ProfileRepository.SaveStats(stats);
 
-        // Chiudi il save DB prima di cancellare lo slot
+        // Close the save DB before deleting the slot
         _mainVm.AutoSaveService.Unbind();
         _mainVm.CloseActiveSave();
 
-        // Libera lo slot (DB + media)
+        // Delete the slot (DB + media files)
         _mainVm.SaveSlotManager.DeleteSlot(_slotName);
 
         _mainVm.NavigateTo(new WelcomeViewModel(_mainVm));

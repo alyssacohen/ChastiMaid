@@ -3,15 +3,15 @@ using System.Security.Cryptography;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Crittografia file AES-256-GCM.
-/// Formato file: [12 byte nonce][16 byte tag][ciphertext]
+/// AES-256-GCM file encryption.
+/// File format: [12-byte nonce][16-byte tag][ciphertext]
 /// </summary>
 public static class CryptoService
 {
     private const int NonceSize = 12;
     private const int TagSize = 16;
 
-    /// <summary>Deriva la chiave AES-256 (32 byte) dalla stessa sorgente usata per i DB.</summary>
+    /// <summary>Derives the AES-256 key (32 bytes) from the same source used for the DB password.</summary>
     private static byte[] DeriveKey()
     {
         var hex = DatabaseService.DeriveEncryptionKey();

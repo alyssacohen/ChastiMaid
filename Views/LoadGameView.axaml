@@ -2,30 +2,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views"
+             xmlns:ic="using:FluentIcons.Avalonia"
              x:DataType="vm:LoadGameViewModel"
              x:Class="ChastiMaid.Views.LoadGameView">
 
     <Panel>
 
-        <StackPanel Classes="pageContent" MaxWidth="900">
+        <StackPanel Classes="pageContent">
 
             <TextBlock Text="Load Game" Classes="pageTitle" />
 
-            <!-- Slot cards -->
-            <ScrollViewer MaxHeight="520">
-                <ItemsControl ItemsSource="{Binding Slots}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:SlotCardViewModel">
-                            <Button Command="{Binding LoadCommand}"
+            <ItemsControl ItemsSource="{Binding Slots}" Width="600">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SlotCardViewModel">
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                            <!-- Card (clickable to load) -->
+                            <Button Grid.Column="0"
+                                    Command="{Binding LoadCommand}"
                                     Classes="slotCard"
+                                    IsEnabled="{Binding !IsEmpty}"
+                                    HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Stretch"
                                     CornerRadius="4"
-                                    Padding="20,16"
-                                    Margin="0,0,0,8"
-                                    Opacity="{Binding CardOpacity}">
+                                    Padding="20,16">
 
-                                <Grid ColumnDefinitions="*,Auto">
-                                    <StackPanel Spacing="0">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <!-- Slot number -->
+                                    <TextBlock Text="{Binding SlotNumber}"
+                                               FontFamily="{StaticResource DisplayFont}"
+                                               FontSize="{StaticResource FontSizeDisplay}"
+                                               VerticalAlignment="Center"
+                                               Opacity="0.8"
+                                               Margin="0,0,24,0"
+                                               MinWidth="40"
+                                               TextAlignment="Center" />
+
+                                    <!-- Save data -->
+                                    <StackPanel Grid.Column="1" Spacing="0" VerticalAlignment="Center"
+                                                IsVisible="{Binding !IsEmpty}">
                                         <TextBlock Text="{Binding SlotName}" />
                                         <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,6,0,0">
                                             <TextBlock Text="{Binding SavedAt}" Classes="small muted" />
@@ -40,23 +54,28 @@
                                                    Margin="0,6,0,0" />
                                     </StackPanel>
 
-                                    <!-- Delete button -->
-                                    <Button Grid.Column="1"
-                                            Command="{Binding DeleteCommand}"
-                                            Classes="delete"
-                                            VerticalAlignment="Center"
-                                            Margin="12,0,0,0" />
+                                    <!-- Empty slot label -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="Empty"
+                                               Classes="muted"
+                                               VerticalAlignment="Center"
+                                               IsVisible="{Binding IsEmpty}" />
                                 </Grid>
                             </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
 
-            <TextBlock Text="No saved games found."
-                       HorizontalAlignment="Center"
-                       Classes="muted"
-                       IsVisible="{Binding !HasSlots}" />
+                            <!-- Delete button (outside card, larger icon) -->
+                            <Button Grid.Column="1"
+                                    Command="{Binding DeleteCommand}"
+                                    Classes="delete"
+                                    Margin="8,0,0,0"
+                                    IsVisible="{Binding !IsEmpty}"
+                                    Padding="16,12">
+                                <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
             <Button Content="Back"
                     Command="{Binding BackCommand}"

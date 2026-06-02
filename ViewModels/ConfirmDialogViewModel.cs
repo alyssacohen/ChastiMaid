@@ -4,9 +4,9 @@ using ReactiveUI;
 namespace ChastiMaid.ViewModels;
 
 /// <summary>
-/// Riutilizzabile per qualsiasi popup di conferma nell'app.
-/// Await Result per ottenere true (confermato) o false (annullato).
-/// Imposta CancelLabel = null per nascondere il pulsante Annulla (solo OK).
+/// Reusable confirm dialog for any confirmation popup in the app.
+/// Await Result to get true (confirmed) or false (cancelled).
+/// Set CancelLabel = null to hide the Cancel button (OK-only mode).
 /// </summary>
 public class ConfirmDialogViewModel : ViewModelBase
 {

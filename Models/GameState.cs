@@ -4,7 +4,7 @@ namespace ChastiMaid.Models;
 
 public class GameState
 {
-    [BsonId] public int Id { get; set; } = 1; // singleton per save
+    [BsonId] public int Id { get; set; } = 1; // one instance per save slot
     public string SlotName { get; set; } = "";
     public decimal InitialDebt { get; set; }
     public decimal CurrentDebt { get; set; }

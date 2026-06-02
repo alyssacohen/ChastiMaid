@@ -64,6 +64,11 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
     </Style>
 
+    <!-- Center tab strip -->
+    <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
     <!-- ==================== TEXT CLASSES ==================== -->
 
     <Style Selector="TextBlock.display">
@@ -130,14 +135,18 @@
     <Style Selector="Button">
         <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
         <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="BorderThickness" Value="3" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="Padding" Value="24,12" />
+        <Setter Property="Foreground" Value="#CCC" />
+        <Setter Property="Padding" Value="24,14" />
+    </Style>
+
+    <Style Selector="Button TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
     </Style>
 
     <Style Selector="Button.primary">
-        <Setter Property="Padding" Value="48,14" />
+        <Setter Property="Foreground" Value="White" />
     </Style>
 
     <Style Selector="Button.compact">
@@ -156,15 +165,19 @@
         <Setter Property="Foreground" Value="Red" />
         <Setter Property="Content">
             <Template>
-                <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
+                <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" />
             </Template>
         </Setter>
     </Style>
 
     <!-- Add button -->
     <Style Selector="Button.add">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="0,8,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,8,0,8" />
+        <Setter Property="Background" Value="{DynamicResource SystemChromeLowColor}" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="20,16" />
     </Style>
 
     <!-- Slot card button: transparent clickable area -->

@@ -10,6 +10,7 @@
         </Panel>
         <TextBlock Text="{Binding #Root.Text}" IsVisible="{Binding !#Root.IsDirty}" />
         <TextBlock Text="{Binding #Root.Text}" Foreground="Gold" IsVisible="{Binding #Root.IsDirty}" />
+        <Panel Width="14" />
     </StackPanel>
 
 </UserControl>

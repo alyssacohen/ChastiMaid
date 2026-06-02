@@ -97,7 +97,7 @@ public class ConfirmOutfitViewModel : ViewModelBase
                 _saveRepo.SaveGameState(state);
             }
         }
-        catch { /* Registrazione fallita — procedi comunque */ }
+        catch { /* Recording failed — proceed anyway */ }
 
         NavigateToSafeLock();
     }
@@ -109,7 +109,7 @@ public class ConfirmOutfitViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         if (state?.IsSafeLocked == true)
         {
-            // Safe già chiuso — salta SafeLock, crea sessione e vai alla dashboard
+            // Safe already locked — skip SafeLock, create session, and navigate to dashboard
             _saveRepo.AddSession(new Session
             {
                 StartedAt = UtcNow(),

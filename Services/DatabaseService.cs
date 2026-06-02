@@ -28,11 +28,11 @@ public class DatabaseService : IDisposable
         return Convert.ToHexString(hash)[..32].ToLower();
     }
 
-    /// <summary>Restituisce 32 caratteri hex (16 byte) usati come chiave AES-256 per i file criptati.</summary>
+    /// <summary>Returns 32 hex chars (16 bytes) used as the AES-256 key for encrypted files.</summary>
     internal static string DeriveEncryptionKey()
     {
         var hash = SHA256.HashData(Encoding.UTF8.GetBytes(KeySource));
-        // Usa la seconda metà dell'hash per separare la chiave file da quella DB
+        // Uses the second half of the hash to keep the file key separate from the DB password
         return Convert.ToHexString(hash)[32..64].ToLower();
     }
 

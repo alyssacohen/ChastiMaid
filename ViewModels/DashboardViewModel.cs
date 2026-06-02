@@ -107,11 +107,11 @@ public class DashboardViewModel : ViewModelBase
     private readonly Random _random = new();
     private readonly double _outfitBonus;
 
-    /// <summary>Costruttore standard — entra in idle mode.</summary>
+    /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
         : this(mainVm, saveRepo, null) { }
 
-    /// <summary>Se startChore non è null, entra direttamente in busy mode.</summary>
+    /// <summary>If startChore is not null, enters busy mode directly.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Chore? startChore)
     {
         _mainVm = mainVm;
@@ -158,7 +158,7 @@ public class DashboardViewModel : ViewModelBase
 
         if (startChore is not null)
         {
-            // Trova il ChoreItemViewModel corrispondente
+            // Find the matching ChoreItemViewModel
             _activeChore = Chores.FirstOrDefault(c => c.ChoreId == startChore.Id);
             if (_activeChore is not null)
                 EnterBusyMode();
@@ -243,21 +243,21 @@ public class DashboardViewModel : ViewModelBase
     {
         if (IsBusy) return;
 
-        // Ferma i timer prima di navigare via
+        // Stop timers before navigating away
         _sessionLoop.Pause();
         _countdownTimer?.Stop();
 
         var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == choreVm.ChoreId);
         if (chore is null) return;
 
-        // Se la webcam è disponibile, naviga alla vista camera setup
+        // Webcam available — navigate to camera setup
         if (MediaCaptureService.DetectWebcam())
         {
             _mainVm.NavigateTo(new CameraSetupViewModel(_mainVm, _saveRepo, chore));
         }
         else
         {
-            // Nessuna webcam — entra direttamente in busy mode
+            // No webcam — enter busy mode directly
             _activeChore = choreVm;
             EnterBusyMode();
         }
@@ -347,7 +347,7 @@ public class DashboardViewModel : ViewModelBase
                     }
                 }
                 catch (OperationCanceledException) { break; }
-                catch { /* Webcam non disponibile — ignora */ }
+                catch { /* Webcam unavailable — ignore */ }
             }
         }, ct);
     }

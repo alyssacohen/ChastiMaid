@@ -4,7 +4,7 @@ namespace ChastiMaid.Services;
 
 public class MediaCaptureService
 {
-    /// <summary>Verifica se una webcam è disponibile.</summary>
+    /// <summary>Checks whether a webcam is available.</summary>
     public static bool DetectWebcam()
     {
         using var cap = new VideoCapture(0);
@@ -12,8 +12,8 @@ public class MediaCaptureService
     }
 
     /// <summary>
-    /// Registra un video dalla webcam per la durata specificata.
-    /// Salva in formato AVI (MJPG) nel path indicato.
+    /// Records a video from the webcam for the specified duration.
+    /// Saves in AVI (MJPG) format at the given path.
     /// </summary>
     public static async Task RecordVideoAsync(
         string outputPath,
@@ -46,7 +46,6 @@ public class MediaCaptureService
                 if (frame.Empty()) continue;
                 writer.Write(frame);
 
-                // Riporta i secondi rimanenti
                 var elapsed = (int)(i / fps);
                 progress?.Report(durationSeconds - elapsed);
 
@@ -55,7 +54,7 @@ public class MediaCaptureService
         }, ct);
     }
 
-    /// <summary>Cattura un singolo frame dalla webcam e lo salva come immagine.</summary>
+    /// <summary>Captures a single frame from the webcam and saves it as an image.</summary>
     public static async Task<bool> CaptureFrameAsync(string outputPath, CancellationToken ct = default)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);

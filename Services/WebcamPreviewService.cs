@@ -6,8 +6,8 @@ using ReactiveUI;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Gestisce la webcam: preview live su WriteableBitmap + registrazione video / cattura foto
-/// dalla stessa VideoCapture aperta. Implementa INotifyPropertyChanged via ReactiveObject.
+/// Manages the webcam: live preview on a WriteableBitmap plus video recording and photo capture
+/// from the same open VideoCapture. Implements INotifyPropertyChanged via ReactiveObject.
 /// </summary>
 public class WebcamPreviewService : ReactiveObject, IDisposable
 {
@@ -36,7 +36,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         private set => this.RaiseAndSetIfChanged(ref _frameCount, value);
     }
 
-    /// <summary>Apre la webcam e avvia il loop di preview. Ritorna false se non disponibile.</summary>
+    /// <summary>Opens the webcam and starts the preview loop. Returns false if unavailable.</summary>
     public bool Start()
     {
         if (_capture is not null) return true;
@@ -69,7 +69,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
 
     private void CopyFrameToBitmap(Mat frame)
     {
-        // Converti BGR → BGRA e copia i pixel in un byte[] sul thread corrente (background)
+        // Convert BGR → BGRA and copy pixels into a byte[] on the current (background) thread
         using var bgra = new Mat();
         Cv2.CvtColor(frame, bgra, ColorConversionCodes.BGR2BGRA);
 
@@ -80,7 +80,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         var pixels = new byte[size];
         System.Runtime.InteropServices.Marshal.Copy(bgra.Data, pixels, 0, size);
 
-        // Posta solo il byte[] al UI thread — nessun riferimento a Mat
+        // Post only the byte[] to the UI thread — no Mat reference crosses the thread boundary
         Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
             if (_previewBitmap is null || _previewBitmap.PixelSize.Width != w || _previewBitmap.PixelSize.Height != h)
@@ -92,7 +92,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         });
     }
 
-    /// <summary>Ferma il preview loop e attende che si chiuda. La VideoCapture resta aperta.</summary>
+    /// <summary>Stops the preview loop and waits for it to finish. The VideoCapture stays open.</summary>
     private void StopPreviewLoop()
     {
         _previewCts?.Cancel();
@@ -102,7 +102,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         _previewTask = null;
     }
 
-    /// <summary>Riavvia il preview loop (la VideoCapture deve essere già aperta).</summary>
+    /// <summary>Restarts the preview loop (VideoCapture must already be open).</summary>
     private void StartPreviewLoop()
     {
         if (_capture is null || !_capture.IsOpened()) return;
@@ -111,13 +111,13 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         _previewTask = Task.Run(() => PreviewLoop(ct), ct);
     }
 
-    /// <summary>Registra video per la durata specificata dalla webcam già aperta.</summary>
+    /// <summary>Records a video for the specified duration using the already-open VideoCapture.</summary>
     public async Task RecordVideoAsync(string outputPath, int durationSeconds, IProgress<int>? progress = null, CancellationToken ct = default)
     {
         if (_capture is null || !_capture.IsOpened())
             throw new InvalidOperationException("Webcam not started.");
 
-        // Ferma il preview loop per avere accesso esclusivo alla VideoCapture
+        // Stop the preview loop for exclusive access to the VideoCapture
         StopPreviewLoop();
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
@@ -143,7 +143,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
                     if (frame.Empty()) continue;
                     writer.Write(frame);
 
-                    // Aggiorna il preview anche durante la registrazione
+                    // Keep the preview updated during recording
                     CopyFrameToBitmap(frame);
 
                     var elapsed = (int)(i / fps);
@@ -159,12 +159,12 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         }
     }
 
-    /// <summary>Cattura un singolo frame e lo salva come immagine.</summary>
+    /// <summary>Captures a single frame and saves it as an image.</summary>
     public async Task<bool> CaptureFrameAsync(string outputPath, CancellationToken ct = default)
     {
         if (_capture is null || !_capture.IsOpened()) return false;
 
-        // Ferma il preview loop per avere accesso esclusivo
+        // Stop the preview loop for exclusive access
         StopPreviewLoop();
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
@@ -186,7 +186,7 @@ public class WebcamPreviewService : ReactiveObject, IDisposable
         }
     }
 
-    /// <summary>Ferma il preview e rilascia la webcam.</summary>
+    /// <summary>Stops the preview and releases the webcam.</summary>
     public void Stop()
     {
         StopPreviewLoop();

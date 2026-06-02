@@ -3,9 +3,9 @@ using static ChastiMaid.Services.GameClock;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Salvataggio automatico: espone TriggerSave() per eventi puntuali
-/// e un timer periodico configurabile. Chiamare StartTimer() dalla dashboard
-/// e StopTimer() quando si esce dalla sessione.
+/// Auto-save service: exposes TriggerSave() for point-in-time saves
+/// and a configurable periodic timer. Call StartTimer() from the dashboard
+/// and StopTimer() when leaving the session.
 /// </summary>
 public class AutoSaveService : IDisposable
 {
@@ -13,17 +13,17 @@ public class AutoSaveService : IDisposable
     private CancellationTokenSource? _cts;
     private Task? _timerTask;
 
-    /// <summary>Imposta il repository attivo. Chiamare quando si carica/crea uno slot.</summary>
+    /// <summary>Sets the active repository. Call when loading or creating a save slot.</summary>
     public void Bind(SaveRepository saveRepo) => _saveRepo = saveRepo;
 
-    /// <summary>Scollega il repository (chiamare prima di chiudere il save DB).</summary>
+    /// <summary>Unbinds the repository. Call before closing the save DB.</summary>
     public void Unbind()
     {
         StopTimer();
         _saveRepo = null;
     }
 
-    /// <summary>Salva lo stato corrente. Sicuro da chiamare da qualsiasi punto.</summary>
+    /// <summary>Saves the current state. Safe to call from anywhere.</summary>
     public void TriggerSave()
     {
         if (_saveRepo is null) return;
@@ -34,10 +34,10 @@ public class AutoSaveService : IDisposable
             state.LastSessionAt = UtcNow();
             _saveRepo.SaveGameState(state);
         }
-        catch (ObjectDisposedException) { /* DB già chiuso */ }
+        catch (ObjectDisposedException) { /* DB already closed */ }
     }
 
-    /// <summary>Avvia il timer periodico. Se già attivo, lo riavvia con il nuovo intervallo.</summary>
+    /// <summary>Starts the periodic timer. If already running, restarts it with the new interval.</summary>
     public void StartTimer(int intervalMinutes)
     {
         StopTimer();
@@ -55,7 +55,7 @@ public class AutoSaveService : IDisposable
         }, token);
     }
 
-    /// <summary>Ferma il timer periodico.</summary>
+    /// <summary>Stops the periodic timer.</summary>
     public void StopTimer()
     {
         _cts?.Cancel();

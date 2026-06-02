@@ -75,7 +75,7 @@ public class WelcomeViewModel : ViewModelBase
         });
 
         SettingsCommand = ReactiveCommand.Create(
-            () => _mainVm.NavigateTo(new SettingsViewModel(_mainVm, new WelcomeViewModel(_mainVm))));
+            () => _mainVm.NavigateTo(new SettingsViewModel(_mainVm, () => new WelcomeViewModel(_mainVm))));
 
         TimeTravelCommand = ReactiveCommand.Create<string>(days =>
         {

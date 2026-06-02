@@ -4,8 +4,8 @@ using static ChastiMaid.Services.GameClock;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Gestisce il game loop della sessione: idle wage periodico e popup a intervalli random.
-/// Supporta pausa/ripresa per la transizione idle ↔ busy mode.
+/// Manages the session game loop: periodic idle wage and random-interval check-in popups.
+/// Supports pause/resume for the idle ↔ busy mode transition.
 /// </summary>
 public class SessionLoopService : IDisposable
 {
@@ -52,10 +52,10 @@ public class SessionLoopService : IDisposable
         _popupTask = null;
     }
 
-    /// <summary>Pausa i timer (per busy mode).</summary>
+    /// <summary>Pauses the timers (for busy mode).</summary>
     public void Pause() => Stop();
 
-    /// <summary>Riprende i timer (ritorno a idle mode). Resetta il contatore wage.</summary>
+    /// <summary>Resumes the timers (returning to idle mode). Resets the wage clock.</summary>
     public void Resume()
     {
         _lastWageTime = UtcNow();

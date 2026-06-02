@@ -26,7 +26,7 @@ public class SaveSlotManager(DatabaseService dbService)
             }
             catch
             {
-                // File corrotto o incompatibile — ignorato
+                // Corrupt or incompatible save file — skip
             }
         }
         return slots;
@@ -36,7 +36,7 @@ public class SaveSlotManager(DatabaseService dbService)
     {
         dbService.DeleteSave(slotName);
 
-        // Cancella anche la cartella media (outfit video, safe combo, ecc.)
+        // Also delete the media folder (outfit video, safe combo, etc.)
         var mediaDir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
         if (Directory.Exists(mediaDir))
             Directory.Delete(mediaDir, recursive: true);

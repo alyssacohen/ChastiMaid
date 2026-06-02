@@ -28,6 +28,7 @@ public class StartSessionViewModel : ViewModelBase
     public ICommand AcceptCommand { get; }
     public ICommand RegenerateCommand { get; }
     public ICommand ModifyCommand { get; }
+    public ICommand QuitCommand { get; }
 
     public StartSessionViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit? outfit = null)
     {
@@ -68,10 +69,13 @@ public class StartSessionViewModel : ViewModelBase
         AcceptCommand = ReactiveCommand.Create(Accept);
         RegenerateCommand = ReactiveCommand.CreateFromTask(ConfirmRegenerate);
         ModifyCommand = ReactiveCommand.CreateFromTask(ConfirmModify);
+        QuitCommand = ReactiveCommand.Create(
+            () => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
     }
 
     private void Accept()
     {
+        _saveRepo.AcceptItems(_outfit.Items);
         LockAndProceed();
     }
 
@@ -90,6 +94,7 @@ public class StartSessionViewModel : ViewModelBase
 
         if (!confirmed) return;
 
+        _saveRepo.RejectItems(_outfit.Items);
         _currentBonus = resultBonus;
         _regenCount++;
 

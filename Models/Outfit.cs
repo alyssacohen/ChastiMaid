@@ -5,7 +5,7 @@ namespace ChastiMaid.Models;
 /// </summary>
 public class Outfit
 {
-    public static readonly List<string> LayersOrder = ["undies", "base", "extra", "outer", "gears"];
+    public static readonly List<string> LayersOrder = ["undies", "extra", "base", "outer", "gears"];
 
     private readonly List<ClothingItem> _items = [];
     private readonly Dictionary<int, string> _itemLayer = [];       // itemId -> layer
@@ -18,7 +18,7 @@ public class Outfit
     public IEnumerable<ClothingItem> ItemsInLayer(string layer, IEnumerable<string>? slots = null)
     {
         var result = _items.Where(i => _itemLayer.GetValueOrDefault(i.Id) == layer);
-        if (slots != null)
+        if (slots is not null)
         {
             var slotSet = slots.ToHashSet();
             result = result.Where(i => i.Slots.Any(slotSet.Contains));
@@ -43,7 +43,7 @@ public class Outfit
         {
             var oldLayer = _itemLayer.GetValueOrDefault(item.Id);
             if (oldLayer == layer) return true;
-            if (oldLayer != null)
+            if (oldLayer is not null)
                 foreach (var s in item.Slots) _usedSlots.GetValueOrDefault(oldLayer)?.Remove(s);
         }
         else

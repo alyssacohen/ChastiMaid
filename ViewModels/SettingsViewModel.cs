@@ -11,7 +11,7 @@ public class SettingsViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly ProfileRepository _repo;
-    private readonly ViewModelBase _returnTo;
+    private readonly Func<ViewModelBase> _returnTo;
 
     // Snapshot for General tab dirty detection
     private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int) _snapshot;
@@ -83,7 +83,7 @@ public class SettingsViewModel : ViewModelBase
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
 
-    public SettingsViewModel(MainWindowViewModel mainVm, ViewModelBase returnTo)
+    public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo)
     {
         _mainVm = mainVm;
         _repo = mainVm.ProfileRepository;
@@ -166,12 +166,12 @@ public class SettingsViewModel : ViewModelBase
 
     private async Task ConfirmBack()
     {
-        if (!IsDirty) { _mainVm.NavigateTo(_returnTo); return; }
+        if (!IsDirty) { _mainVm.NavigateTo(_returnTo()); return; }
 
         switch (await ShowSaveDialog("You have unsaved changes. What would you like to do?"))
         {
-            case SaveDialogResult.Save: Save(); _mainVm.NavigateTo(_returnTo); break;
-            case SaveDialogResult.Discard: _mainVm.NavigateTo(_returnTo); break;
+            case SaveDialogResult.Save: Save(); _mainVm.NavigateTo(_returnTo()); break;
+            case SaveDialogResult.Discard: _mainVm.NavigateTo(_returnTo()); break;
             case SaveDialogResult.Cancel: break;
         }
     }

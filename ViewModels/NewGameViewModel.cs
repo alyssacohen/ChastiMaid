@@ -36,6 +36,6 @@ public class NewGameViewModel : ViewModelBase
             () => mainVm.NavigateTo(new WelcomeViewModel(mainVm)));
 
         SettingsCommand = ReactiveCommand.Create(
-            () => mainVm.NavigateTo(new SettingsViewModel(mainVm, new NewGameViewModel(mainVm))));
+            () => mainVm.NavigateTo(new SettingsViewModel(mainVm, () => new NewGameViewModel(mainVm))));
     }
 }

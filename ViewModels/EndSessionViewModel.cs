@@ -55,17 +55,15 @@ public class EndSessionViewModel : ViewModelBase
 
     private void RevealCombo(GameState? state)
     {
-        // Decripta e salva in chiaro
         var decrypted = CryptoService.DecryptFile(_encPath);
         var clearPath = Path.Combine(AppContext.BaseDirectory, "data", "saves", _slotName, "safe_combo.png");
         File.WriteAllBytes(clearPath, decrypted);
 
-        // Mostra l'immagine
         using var ms = new MemoryStream(decrypted);
         ComboImage = new Bitmap(ms);
         ShowingCombo = true;
 
-        // Segna il safe come aperto — gli interessi matureranno dalle prossime sessioni
+        // Mark the safe as unlocked — interest will accrue from the next sessions onward
         if (state is not null)
         {
             state.IsSafeLocked = false;
@@ -91,7 +89,7 @@ public class EndSessionViewModel : ViewModelBase
         _mainVm.AutoSaveService.Unbind();
         _mainVm.CloseActiveSave();
 
-        // Se non mostra la combo, chiudi subito
+        // If not revealing the combo, shut down immediately
         if (!safeUnlocked)
             Shutdown();
     }

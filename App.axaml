@@ -13,11 +13,11 @@
             <FontFamily x:Key="DisplayFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif</FontFamily>
             <FontFamily x:Key="HeadingFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif</FontFamily>
             <FontFamily x:Key="DefaultFont">avares://ChastiMaid/Assets/Fonts#Inter 28pt Light</FontFamily>
-            <x:Double x:Key="FontSizeSmall">14</x:Double>
+            <x:Double x:Key="FontSizeSmall">16</x:Double>
             <x:Double x:Key="FontSizeButton">18</x:Double>
-            <x:Double x:Key="FontSizeBody">24</x:Double>
-            <x:Double x:Key="FontSizeHeading">40</x:Double>
-            <x:Double x:Key="FontSizeDisplay">72</x:Double>
+            <x:Double x:Key="FontSizeBody">22</x:Double>
+            <x:Double x:Key="FontSizeHeading">36</x:Double>
+            <x:Double x:Key="FontSizeDisplay">64</x:Double>
         </ResourceDictionary>
     </Application.Resources>
 

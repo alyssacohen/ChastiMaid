@@ -8,6 +8,8 @@ namespace ChastiMaid.ViewModels;
 
 public class SlotCardViewModel : ViewModelBase
 {
+    public int SlotNumber { get; }
+    public bool IsEmpty { get; }
     public string SlotName { get; }
     public string SavedAt { get; }
     public string DebtDisplay { get; }
@@ -15,13 +17,28 @@ public class SlotCardViewModel : ViewModelBase
     public bool IsSafeLocked { get; }
     public bool IsCompleted { get; }
     public string CompletedLabel => IsCompleted ? "✓ Completed" : "";
-    public double CardOpacity => IsCompleted ? 0.5 : 1.0;
 
     public ICommand LoadCommand { get; }
     public ICommand DeleteCommand { get; }
 
-    public SlotCardViewModel(SaveSlotInfo slot, LoadGameViewModel parent)
+    // Empty slot
+    public SlotCardViewModel(int number)
     {
+        SlotNumber = number;
+        IsEmpty = true;
+        SlotName = "";
+        SavedAt = "";
+        DebtDisplay = "";
+        SafeStatus = "";
+        LoadCommand = ReactiveCommand.Create(() => { });
+        DeleteCommand = ReactiveCommand.Create(() => { });
+    }
+
+    // Filled slot
+    public SlotCardViewModel(int number, SaveSlotInfo slot, LoadGameViewModel parent)
+    {
+        SlotNumber = number;
+        IsEmpty = false;
         SlotName = slot.SlotName;
         SavedAt = slot.LastSessionAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm");
         DebtDisplay = $"${slot.CurrentDebt:F2}";
@@ -48,8 +65,6 @@ public class LoadGameViewModel : ViewModelBase
         private set => this.RaiseAndSetIfChanged(ref _activeDialog, value);
     }
 
-    public bool HasSlots => Slots.Count > 0;
-
     public ICommand BackCommand { get; }
 
     public LoadGameViewModel(MainWindowViewModel mainVm)
@@ -65,10 +80,16 @@ public class LoadGameViewModel : ViewModelBase
     {
         Slots.Clear();
 
-        foreach (var slot in _mainVm.SaveSlotManager.ListSlots().OrderByDescending(s => s.LastSessionAt))
-            Slots.Add(new SlotCardViewModel(slot, this));
+        var saves = _mainVm.SaveSlotManager.ListSlots()
+            .OrderByDescending(s => s.LastSessionAt)
+            .ToList();
 
-        this.RaisePropertyChanged(nameof(HasSlots));
+        for (var i = 0; i < 5; i++)
+        {
+            Slots.Add(i < saves.Count
+                ? new SlotCardViewModel(i + 1, saves[i], this)
+                : new SlotCardViewModel(i + 1));
+        }
     }
 
     public async Task LoadSlot(string slotName)
@@ -116,6 +137,6 @@ public class LoadGameViewModel : ViewModelBase
         stats.GamesFailed++;
         _mainVm.ProfileRepository.SaveStats(stats);
 
-        Slots.Remove(slot);
+        RefreshSlots();
     }
 }
