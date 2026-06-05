@@ -19,9 +19,11 @@
 
                 <StackPanel Classes="buttonBar" Margin="0,8,0,0">
                     <Button Content="{Binding ConfirmLabel}"
-                            Command="{Binding ConfirmCommand}" />
+                            Command="{Binding ConfirmCommand}"
+                            Classes="primary" />
                     <Button Content="{Binding CancelLabel}"
                             Command="{Binding CancelCommand}"
+                            Classes="secondary"
                             IsVisible="{Binding HasCancel}" />
                 </StackPanel>
             </StackPanel>

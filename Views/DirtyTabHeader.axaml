@@ -5,11 +5,11 @@
 
     <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
         <Panel Width="14" Height="14">
-            <Ellipse Width="10" Height="10" Fill="Gold" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <Ellipse Width="10" Height="10" Fill="{DynamicResource AmberBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
                      IsVisible="{Binding #Root.IsDirty}" />
         </Panel>
         <TextBlock Text="{Binding #Root.Text}" IsVisible="{Binding !#Root.IsDirty}" />
-        <TextBlock Text="{Binding #Root.Text}" Foreground="Gold" IsVisible="{Binding #Root.IsDirty}" />
+        <TextBlock Text="{Binding #Root.Text}" Foreground="{DynamicResource AmberBrush}" IsVisible="{Binding #Root.IsDirty}" />
         <Panel Width="14" />
     </StackPanel>
 

@@ -30,6 +30,7 @@
                     HorizontalAlignment="Center" Classes="primary" />
             <Button Content="Skip"
                     Command="{Binding SkipCommand}"
+                    Classes="secondary"
                     HorizontalAlignment="Center" Opacity="0.6" />
         </StackPanel>
 

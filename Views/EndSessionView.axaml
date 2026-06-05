@@ -19,7 +19,7 @@
                         IsVisible="{Binding HasSafeCombo}"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        Classes="warning" />
+                        Classes="amber" />
 
                 <TextBlock Text="A daily interest will be applied until you resume your session."
                            Classes="small muted"
@@ -29,11 +29,13 @@
 
                 <Button Content="Close Without Combination"
                         Command="{Binding CloseWithoutComboCommand}"
+                        Classes="secondary"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center" />
 
                 <Button Content="Cancel"
                         Command="{Binding CancelCommand}"
+                        Classes="secondary"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         Margin="0,12,0,0" />

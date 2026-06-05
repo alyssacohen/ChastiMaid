@@ -21,9 +21,11 @@
                         Classes="primary" />
                 <Button Content="Regenerate"
                         Command="{Binding RegenerateCommand}"
+                        Classes="secondary"
                         IsEnabled="{Binding !IsLocked}" />
                 <Button Content="Modify"
                         Command="{Binding ModifyCommand}"
+                        Classes="secondary"
                         IsEnabled="{Binding !IsLocked}" />
             </StackPanel>
 

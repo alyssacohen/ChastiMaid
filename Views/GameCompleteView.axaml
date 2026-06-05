@@ -16,12 +16,14 @@
             <Button Content="Export Outfit Video"
                     Command="{Binding ExportOutfitVideoCommand}"
                     IsVisible="{Binding HasOutfitVideo}"
+                    Classes="secondary"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center" />
 
             <Button Content="Export Safe Combination Photo"
                     Command="{Binding ExportSafePhotoCommand}"
                     IsVisible="{Binding HasSafePhoto}"
+                    Classes="secondary"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center" />
         </StackPanel>

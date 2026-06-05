@@ -16,7 +16,7 @@
 
         <StackPanel Classes="buttonBar">
             <Button Content="Confirm" Command="{Binding ConfirmCommand}" Classes="primary" />
-            <Button Content="Cancel" Command="{Binding CancelCommand}" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Classes="secondary" />
         </StackPanel>
 
     </StackPanel>

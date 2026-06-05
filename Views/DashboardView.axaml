@@ -12,6 +12,7 @@
                 <StackPanel HorizontalAlignment="Center" Spacing="4">
                     <TextBlock Text="{Binding DebtDisplay}"
                                Classes="heading"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
                                HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding InitialDebtDisplay}"
                                HorizontalAlignment="Center" Classes="small muted" />
@@ -28,12 +29,13 @@
                                 <Border Padding="16,12" Margin="0,4">
                                     <Grid ColumnDefinitions="*,Auto,Auto">
                                         <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
                                                    VerticalAlignment="Center" />
                                         <TextBlock Grid.Column="1" Text="{Binding ValueDisplay}"
                                                    Classes="muted" VerticalAlignment="Center" Margin="16,0" />
                                         <Button Grid.Column="2" Content="Start"
                                                 Command="{Binding StartChoreCommand}"
-                                                Classes="compact" />
+                                                Classes="compact primary" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>
@@ -42,12 +44,13 @@
                 </ScrollViewer>
 
                 <!-- Separator -->
-                <Border Grid.Column="1" Width="1" Background="#33FFFFFF" Margin="16,0" />
+                <Border Grid.Column="1" Width="1" Background="{DynamicResource BorderBrush}" Margin="16,0" />
 
                 <!-- Right: Current outfit -->
                 <ScrollViewer Grid.Column="2">
                     <StackPanel Spacing="4">
-                        <TextBlock Text="Current Outfit" FontWeight="SemiBold" Margin="0,0,0,8" />
+                        <TextBlock Text="Current Outfit" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8" />
                         <TextBlock Text="{Binding CurrentOutfit}" Classes="small" Opacity="0.85" />
                     </StackPanel>
                 </ScrollViewer>
@@ -61,9 +64,11 @@
                     <StackPanel Classes="buttonBar" Margin="0,8,0,0">
                         <Button Content="Complete Game"
                                 Command="{Binding CompleteGameCommand}"
-                                IsVisible="{Binding CanComplete}" />
+                                IsVisible="{Binding CanComplete}"
+                                Classes="primary" />
                         <Button Content="End Session"
-                                Command="{Binding EndSessionCommand}" />
+                                Command="{Binding EndSessionCommand}"
+                                Classes="secondary" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -72,7 +77,9 @@
         <!-- ==================== BUSY MODE ==================== -->
         <Grid RowDefinitions="Auto,Auto,*,Auto" IsVisible="{Binding IsBusy}">
             <TextBlock Grid.Row="0" Text="{Binding BusyChoreName}"
-                       Classes="heading" HorizontalAlignment="Center" Margin="0,24" />
+                       Classes="heading"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       HorizontalAlignment="Center" Margin="0,24" />
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="4">
                 <TextBlock Text="{Binding BusyChoreDescription}" HorizontalAlignment="Center" Classes="muted" />
@@ -80,7 +87,9 @@
             </StackPanel>
 
             <TextBlock Grid.Row="2" Text="{Binding BusyElapsed}"
-                       Classes="display" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                       Classes="display"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             <Button Grid.Row="3" Content="End Chore"
                     Command="{Binding EndChoreCommand}"
@@ -92,13 +101,16 @@
             <Border Classes="dialogBox" MaxWidth="500">
                 <StackPanel Spacing="16">
                     <TextBlock Text="{Binding PopupCountdown, StringFormat='Time: {0}s'}"
-                               HorizontalAlignment="Center" Foreground="OrangeRed" />
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource EmergencyTextBrush}" />
                     <TextBlock Text="{Binding PopupQuestion}"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
                                TextWrapping="Wrap" HorizontalAlignment="Center" />
                     <ItemsControl ItemsSource="{Binding PopupAnswers}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
                                 <Button Content="{Binding}"
+                                        Classes="secondary"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         Margin="0,4"

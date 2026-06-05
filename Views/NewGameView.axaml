@@ -12,10 +12,10 @@
 
         <StackPanel Spacing="4">
             <TextBlock HorizontalAlignment="Center">
-                <Run Text="Initial debt: " Foreground="Gray" /><Run Text="{Binding DebtRange}" />
+                <Run Text="Initial debt: " Foreground="{DynamicResource TextHintBrush}" /><Run Text="{Binding DebtRange}" />
             </TextBlock>
             <TextBlock HorizontalAlignment="Center">
-                <Run Text="Daily interest: " Foreground="Gray" /><Run Text="{Binding InterestRate}" />
+                <Run Text="Daily interest: " Foreground="{DynamicResource TextHintBrush}" /><Run Text="{Binding InterestRate}" />
             </TextBlock>
         </StackPanel>
 
@@ -27,11 +27,13 @@
 
         <Button Content="Settings"
                 Command="{Binding SettingsCommand}"
+                Classes="secondary"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center" />
 
         <Button Content="Back"
                 Command="{Binding BackCommand}"
+                Classes="secondary"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center" />
 

@@ -7,7 +7,7 @@
               <TextBlock Classes="heading" Text="This is a header" />
               <TextBlock Text="This is a text block" />
               <TextBlock Classes="muted" Text="Muted text" />
-              <Button Content="Click Me" />
+              <Button Content="Click Me" Classes="secondary" />
               <Button Classes="warning" Content="Warning" />
               <Button Classes="delete" />
               <Button Classes="add" Content="Add Item" />
@@ -130,14 +130,14 @@
         <Setter Property="Opacity" Value="0.6" />
     </Style>
 
-    <!-- ==================== BUTTON STYLES ==================== -->
+    <!-- ==================== BUTTON BASE ==================== -->
 
     <Style Selector="Button">
         <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
-        <Setter Property="Foreground" Value="#CCC" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
         <Setter Property="Padding" Value="24,14" />
     </Style>
 
@@ -145,24 +145,22 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeButton}" />
     </Style>
 
-    <Style Selector="Button.primary">
-        <Setter Property="Foreground" Value="White" />
-    </Style>
-
+    <!-- Compact padding variant -->
     <Style Selector="Button.compact">
         <Setter Property="Padding" Value="16,8" />
     </Style>
 
+    <!-- Warning: kept as an alias → emergency token colours -->
     <Style Selector="Button.warning">
-        <Setter Property="BorderBrush" Value="Red" />
-        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="BorderBrush" Value="{DynamicResource EmergencyBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource EmergencyTextBrush}" />
     </Style>
 
     <!-- Delete button: trash icon, compact warning -->
     <Style Selector="Button.delete">
         <Setter Property="Padding" Value="10,8" />
-        <Setter Property="BorderBrush" Value="Red" />
-        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="BorderBrush" Value="{DynamicResource EmergencyBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource EmergencyTextBrush}" />
         <Setter Property="Content">
             <Template>
                 <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" />
@@ -175,12 +173,17 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="0,8,0,8" />
-        <Setter Property="Background" Value="{DynamicResource SystemChromeLowColor}" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Padding" Value="20,16" />
     </Style>
+    <Style Selector="Button.add /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}" />
+    </Style>
+    <Style Selector="Button.add:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource CardBrush}" />
+    </Style>
 
-    <!-- Slot card button: transparent clickable area -->
+    <!-- Slot card button: transparent clickable area in LoadGameView -->
     <Style Selector="Button.slotCard">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
@@ -188,10 +191,10 @@
         <Setter Property="Cursor" Value="Hand" />
     </Style>
     <Style Selector="Button.slotCard:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#20FFFFFF" />
+        <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}" />
     </Style>
     <Style Selector="Button.slotCard:pressed /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#30FFFFFF" />
+        <Setter Property="Background" Value="{DynamicResource CardBrush}" />
     </Style>
     <Style Selector="Button.slotCard:disabled">
         <Setter Property="Background" Value="Transparent" />
@@ -205,7 +208,7 @@
 
     <!-- Card: grouped controls container -->
     <Style Selector="Border.card">
-        <Setter Property="Background" Value="{DynamicResource SystemChromeLowColor}" />
+        <Setter Property="Background" Value="{DynamicResource CardBrush}" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Padding" Value="20,16" />
         <Setter Property="Margin" Value="0,0,0,12" />
@@ -218,7 +221,7 @@
 
     <!-- Dialog box -->
     <Style Selector="Border.dialogBox">
-        <Setter Property="Background" Value="{DynamicResource SystemChromeMediumColor}" />
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="32,24" />
         <Setter Property="MaxWidth" Value="440" />
@@ -229,13 +232,13 @@
     <!-- ==================== DIRTY FIELD HIGHLIGHTING ==================== -->
 
     <Style Selector="TextBox.dirty /template/ Border#PART_BorderElement">
-        <Setter Property="BorderBrush" Value="Gold" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AmberBrush}" />
     </Style>
     <Style Selector="NumericUpDown.dirty">
-        <Setter Property="BorderBrush" Value="Gold" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AmberBrush}" />
     </Style>
     <Style Selector="ComboBox.dirty">
-        <Setter Property="BorderBrush" Value="Gold" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AmberBrush}" />
     </Style>
 
 </Styles>

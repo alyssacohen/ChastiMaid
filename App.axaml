@@ -1,8 +1,8 @@
-<Application xmlns="https://github.com/avaloniaui"
+    <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="ChastiMaid.App"
              xmlns:local="using:ChastiMaid"
-             RequestedThemeVariant="Dark">
+             RequestedThemeVariant="Light">
 
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -10,20 +10,194 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="DisplayFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif</FontFamily>
-            <FontFamily x:Key="HeadingFont">avares://ChastiMaid/Assets/Fonts#Instrument Serif</FontFamily>
-            <FontFamily x:Key="DefaultFont">avares://ChastiMaid/Assets/Fonts#Inter 28pt Light</FontFamily>
+            <FontFamily x:Key="DisplayFont">avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond</FontFamily>
+            <FontFamily x:Key="HeadingFont">avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond</FontFamily>
+            <FontFamily x:Key="DefaultFont">Inter</FontFamily>
             <x:Double x:Key="FontSizeSmall">16</x:Double>
             <x:Double x:Key="FontSizeButton">18</x:Double>
             <x:Double x:Key="FontSizeBody">22</x:Double>
             <x:Double x:Key="FontSizeHeading">36</x:Double>
             <x:Double x:Key="FontSizeDisplay">64</x:Double>
+
+            <!-- Design tokens: colors -->
+            <Color x:Key="ColorPageBackground">#F5F0E8</Color>
+            <Color x:Key="ColorSurface">#EDE8DE</Color>
+            <Color x:Key="ColorCard">#E8E0D0</Color>
+            <Color x:Key="ColorButtonSecondary">#DDD8CE</Color>
+            <Color x:Key="ColorProgressTrack">#D0C8BC</Color>
+            <Color x:Key="ColorBorder">#C8C0B0</Color>
+            <Color x:Key="ColorBorderWarm">#C8B898</Color>
+            <Color x:Key="ColorTextPrimary">#2C2C2C</Color>
+            <Color x:Key="ColorTextSecondary">#5A5550</Color>
+            <Color x:Key="ColorTextHint">#9A9288</Color>
+            <Color x:Key="ColorTextMuted">#C0B8AC</Color>
+            <Color x:Key="ColorAmber">#C8882A</Color>
+            <Color x:Key="ColorAmberBackground">#F5E6C8</Color>
+            <Color x:Key="ColorAmberText">#8A5A10</Color>
+            <Color x:Key="ColorEmergency">#C84820</Color>
+            <Color x:Key="ColorEmergencyBackground">#F5D8D0</Color>
+            <Color x:Key="ColorEmergencyText">#8A2010</Color>
+            <Color x:Key="ColorStatusIdle">#7CB87C</Color>
+
+            <!-- Design tokens: brushes -->
+            <SolidColorBrush x:Key="PageBackgroundBrush" Color="{StaticResource ColorPageBackground}" />
+            <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource ColorSurface}" />
+            <SolidColorBrush x:Key="CardBrush" Color="{StaticResource ColorCard}" />
+            <SolidColorBrush x:Key="ButtonSecondaryBrush" Color="{StaticResource ColorButtonSecondary}" />
+            <SolidColorBrush x:Key="ProgressTrackBrush" Color="{StaticResource ColorProgressTrack}" />
+            <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource ColorBorder}" />
+            <SolidColorBrush x:Key="BorderWarmBrush" Color="{StaticResource ColorBorderWarm}" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource ColorTextPrimary}" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource ColorTextSecondary}" />
+            <SolidColorBrush x:Key="TextHintBrush" Color="{StaticResource ColorTextHint}" />
+            <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource ColorTextMuted}" />
+            <SolidColorBrush x:Key="AmberBrush" Color="{StaticResource ColorAmber}" />
+            <SolidColorBrush x:Key="AmberBackgroundBrush" Color="{StaticResource ColorAmberBackground}" />
+            <SolidColorBrush x:Key="AmberTextBrush" Color="{StaticResource ColorAmberText}" />
+            <SolidColorBrush x:Key="EmergencyBrush" Color="{StaticResource ColorEmergency}" />
+            <SolidColorBrush x:Key="EmergencyBackgroundBrush" Color="{StaticResource ColorEmergencyBackground}" />
+            <SolidColorBrush x:Key="EmergencyTextBrush" Color="{StaticResource ColorEmergencyText}" />
+            <SolidColorBrush x:Key="StatusIdleBrush" Color="{StaticResource ColorStatusIdle}" />
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://ChastiMaid/GlobalStyles.axaml" />
+
+        <!-- ==================== BUTTON SEMANTIC CLASSES ==================== -->
+
+        <!-- .secondary — default action buttons -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.secondary /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}"/>
+        </Style>
+        <Style Selector="Button.secondary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        </Style>
+        <Style Selector="Button.secondary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ProgressTrackBrush}"/>
+        </Style>
+
+        <!-- .primary — dark filled buttons -->
+        <Style Selector="Button.primary">
+            <Setter Property="Foreground" Value="{DynamicResource PageBackgroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.primary /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TextPrimaryBrush}"/>
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TextSecondaryBrush}"/>
+        </Style>
+        <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TextSecondaryBrush}"/>
+        </Style>
+        <Style Selector="Button.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ProgressTrackBrush}"/>
+        </Style>
+        <Style Selector="Button.primary:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextHintBrush}"/>
+        </Style>
+
+        <!-- .amber — attention actions (punishment button, warning confirmations) -->
+        <Style Selector="Button.amber">
+            <Setter Property="Foreground" Value="{DynamicResource AmberTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AmberBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.amber /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AmberBackgroundBrush}"/>
+        </Style>
+        <Style Selector="Button.amber:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ProgressTrackBrush}"/>
+        </Style>
+        <Style Selector="Button.amber:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        </Style>
+        <Style Selector="Button.amber:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextHintBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        </Style>
+        <Style Selector="Button.amber:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}"/>
+        </Style>
+
+        <!-- .chip — selectable outfit item chips (ChangeOutfitView) -->
+        <Style Selector="Button.chip">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+            <Setter Property="Padding" Value="8,6,14,6"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="Button.chip /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="Button.chip:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}"/>
+        </Style>
+        <!-- chip selected -->
+        <Style Selector="Button.chip.selected">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderWarmBrush}"/>
+        </Style>
+        <Style Selector="Button.chip.selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        </Style>
+        <Style Selector="Button.chip.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}"/>
+        </Style>
+        <!-- chip required (dependency not yet satisfied) -->
+        <Style Selector="Button.chip.required">
+            <Setter Property="Foreground" Value="{DynamicResource AmberTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AmberBrush}"/>
+        </Style>
+        <Style Selector="Button.chip.required /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AmberBackgroundBrush}"/>
+        </Style>
+        <Style Selector="Button.chip.required:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        </Style>
+        <!-- chip disabled (incompatible item) -->
+        <Style Selector="Button.chip.disabled">
+            <Setter Property="Opacity" Value="0.28"/>
+            <Setter Property="Cursor" Value="Arrow"/>
+        </Style>
+        <Style Selector="Button.chip.disabled:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <!-- .emergency — Emergency Break only -->
+        <Style Selector="Button.emergency">
+            <Setter Property="Foreground" Value="{DynamicResource EmergencyTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource EmergencyBrush}"/>
+            <Setter Property="BorderThickness" Value="1.25"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="Button.emergency /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource EmergencyBackgroundBrush}"/>
+        </Style>
+        <Style Selector="Button.emergency:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource EmergencyBrush}"/>
+        </Style>
+        <Style Selector="Button.emergency:pointerover">
+            <Setter Property="Foreground" Value="{DynamicResource PageBackgroundBrush}"/>
+        </Style>
+        <Style Selector="Button.emergency:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource EmergencyBrush}"/>
+        </Style>
+
     </Application.Styles>
 
 </Application>
