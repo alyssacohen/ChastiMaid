@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
+using ChastiMaid.Views.Dialogs;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
@@ -68,7 +71,26 @@ public partial class DashboardViewModel : ViewModelBase
 
     private int _correctAnswerIndex;
 
+    // --- Debt widget data ---
+    [Reactive] private decimal _debtTotal;
+    [Reactive] private decimal _debtSettled;
+    public decimal DebtRemaining => DebtTotal - DebtSettled;
+    public double DebtProgress => DebtTotal > 0 ? Math.Clamp((double)(DebtSettled / DebtTotal), 0.0, 1.0) : 0.0;
+
+    // --- Orientation ---
+    [Reactive] private bool _isLandscape;
+
+    // --- Outfit drawer ---
+    [Reactive] private bool _isOutfitDrawerOpen;
+    [Reactive] private OutfitViewModel? _currentOutfitVm;
+
+    // --- Pending punishments ---
+    [Reactive] private int _pendingPunishmentsCount;
+    public bool HasPendingPunishments => PendingPunishmentsCount > 0;
+
     public ObservableCollection<ChoreItemViewModel> Chores { get; } = [];
+    public ObservableCollection<TaskItemViewModel> Tasks { get; } = [];
+    public ObservableCollection<PunishmentItemViewModel> Punishments { get; } = [];
 
     public string CurrentOutfit { get; }
 
@@ -76,6 +98,15 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand CompleteGameCommand { get; }
     public ICommand AnswerCommand { get; }
     public ICommand EndChoreCommand { get; }
+
+    // --- New dashboard commands ---
+    public ICommand ToggleOutfitDrawerCommand { get; }
+    public ICommand OpenPunishmentsCommand { get; }
+    public ICommand StartTaskCommand { get; }
+    public ICommand StartPunishmentCommand { get; }
+    public ICommand RequestPermissionCommand { get; }
+    public ICommand OpenShopCommand { get; }
+    public ICommand EmergencyBreakCommand { get; }
 
     private ChoreItemViewModel? _activeChore;
     private DateTime _choreStartTime;
@@ -118,7 +149,27 @@ public partial class DashboardViewModel : ViewModelBase
             : $"Wage: ${effectiveWage:F2} / {_settings.IdleWageIntervalMinutes} min";
 
         foreach (var chore in saveRepo.GetChores())
+        {
             Chores.Add(new ChoreItemViewModel(chore, _outfitBonus, OnStartChore));
+            Tasks.Add(new TaskItemViewModel(chore, OnStartTask));
+        }
+
+        foreach (var punishment in saveRepo.GetActivePunishments())
+            Punishments.Add(new PunishmentItemViewModel(punishment));
+
+        Punishments.CollectionChanged += (_, _) =>
+        {
+            PendingPunishmentsCount = Punishments.Count;
+            this.RaisePropertyChanged(nameof(HasPendingPunishments));
+        };
+        PendingPunishmentsCount = Punishments.Count;
+
+        // Debt widget
+        DebtTotal   = state?.InitialDebt ?? 0;
+        DebtSettled = (state?.InitialDebt ?? 0) - (state?.CurrentDebt ?? 0);
+
+        // Outfit drawer
+        CurrentOutfitVm = OutfitViewModel.FromString(state?.CurrentOutfit);
 
         _sessionLoop = new SessionLoopService(saveRepo, _settings);
         _sessionLoop.OutfitBonus = _outfitBonus;
@@ -133,6 +184,15 @@ public partial class DashboardViewModel : ViewModelBase
             () => _mainVm.NavigateTo(new GameCompleteViewModel(_mainVm, _saveRepo)));
         AnswerCommand = ReactiveCommand.Create<string>(OnAnswer);
         EndChoreCommand = ReactiveCommand.Create(OnEndChore);
+
+        var canOpenPunishments = this.WhenAnyValue(x => x.PendingPunishmentsCount, c => c > 0);
+        ToggleOutfitDrawerCommand  = ReactiveCommand.Create(() => IsOutfitDrawerOpen = !IsOutfitDrawerOpen);
+        OpenPunishmentsCommand     = ReactiveCommand.CreateFromTask(OpenPunishmentsAsync, canOpenPunishments);
+        StartTaskCommand           = ReactiveCommand.Create<TaskItemViewModel>(OnStartTask);
+        StartPunishmentCommand     = ReactiveCommand.Create<PunishmentItemViewModel>(OnStartPunishment);
+        RequestPermissionCommand   = ReactiveCommand.Create(() => { /* spec TBD */ });
+        OpenShopCommand            = ReactiveCommand.Create(() => { /* spec TBD */ });
+        EmergencyBreakCommand      = ReactiveCommand.Create(OnEmergencyBreak);
 
         if (startChore is not null)
         {
@@ -162,7 +222,11 @@ public partial class DashboardViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         CurrentDebt = state?.CurrentDebt ?? 0;
         DebtDisplay = FormatDebt(CurrentDebt);
+        DebtTotal   = state?.InitialDebt ?? 0;
+        DebtSettled = (state?.InitialDebt ?? 0) - (state?.CurrentDebt ?? 0);
         this.RaisePropertyChanged(nameof(CanComplete));
+        this.RaisePropertyChanged(nameof(DebtRemaining));
+        this.RaisePropertyChanged(nameof(DebtProgress));
     }
 
     private void UpdateWageCountdown()
@@ -335,6 +399,38 @@ public partial class DashboardViewModel : ViewModelBase
         _captureCts?.Cancel();
         _captureCts?.Dispose();
         _captureCts = null;
+    }
+
+    // --- New dashboard command handlers ---
+
+    private void OnStartTask(TaskItemViewModel task)
+    {
+        var choreVm = Chores.FirstOrDefault(c => c.ChoreId == task.ChoreId);
+        if (choreVm is not null)
+            OnStartChore(choreVm);
+    }
+
+    private async Task OpenPunishmentsAsync()
+    {
+        var owner = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        if (owner is null) return;
+
+        var dialog = new PunishmentListDialog(Punishments);
+        await dialog.ShowDialog(owner);
+
+        if (dialog.DialogResult && dialog.SelectedPunishment is not null)
+            OnStartPunishment(dialog.SelectedPunishment);
+    }
+
+    private void OnStartPunishment(PunishmentItemViewModel punishment)
+    {
+        // TODO: navigate to punishment execution view (spec TBD)
+    }
+
+    private void OnEmergencyBreak()
+    {
+        // TODO: brief confirmation dialog, then log event and navigate to end view
+        EndSession();
     }
 
     private void EndSession()

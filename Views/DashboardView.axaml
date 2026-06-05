@@ -1,102 +1,447 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:controls="using:ChastiMaid.Views.Controls"
              x:DataType="vm:DashboardViewModel"
-             x:Class="ChastiMaid.Views.DashboardView">
+             x:Class="ChastiMaid.Views.DashboardView"
+             Background="{DynamicResource PageBackgroundBrush}">
 
-    <Grid>
-        <!-- ==================== IDLE MODE ==================== -->
-        <Grid RowDefinitions="Auto,*,Auto" IsVisible="{Binding IsIdle}">
+    <Panel>
 
-            <Border Grid.Row="0" Padding="24,16">
-                <StackPanel HorizontalAlignment="Center" Spacing="4">
-                    <TextBlock Text="{Binding DebtDisplay}"
-                               Classes="heading"
-                               Foreground="{DynamicResource TextPrimaryBrush}"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding InitialDebtDisplay}"
-                               HorizontalAlignment="Center" Classes="small muted" />
-                </StackPanel>
-            </Border>
+        <!-- ══════════════════════════════════════════════════════
+             IDLE MODE — full dashboard layout
+             ══════════════════════════════════════════════════════ -->
+        <Grid IsVisible="{Binding IsIdle}">
 
-            <Grid Grid.Row="1" ColumnDefinitions="65*,Auto,35*" Margin="24,0">
+            <!-- ── PORTRAIT layout ── -->
+            <Grid RowDefinitions="Auto,*,Auto"
+                  IsVisible="{Binding !IsLandscape}">
 
-                <!-- Left: Chore list -->
-                <ScrollViewer Grid.Column="0">
-                    <ItemsControl ItemsSource="{Binding Chores}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="vm:ChoreItemViewModel">
-                                <Border Padding="16,12" Margin="0,4">
-                                    <Grid ColumnDefinitions="*,Auto,Auto">
-                                        <TextBlock Grid.Column="0" Text="{Binding Name}"
-                                                   Foreground="{DynamicResource TextPrimaryBrush}"
-                                                   VerticalAlignment="Center" />
-                                        <TextBlock Grid.Column="1" Text="{Binding ValueDisplay}"
-                                                   Classes="muted" VerticalAlignment="Center" Margin="16,0" />
-                                        <Button Grid.Column="2" Content="Start"
-                                                Command="{Binding StartChoreCommand}"
-                                                Classes="compact primary" />
-                                    </Grid>
+                <!-- Status bar -->
+                <Border Grid.Row="0"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderWarmBrush}"
+                        BorderThickness="0,0,0,1"
+                        Height="50"
+                        Padding="16,0">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <!-- Green dot + Idle label -->
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    Spacing="8"
+                                    VerticalAlignment="Center">
+                            <Ellipse Width="10" Height="10"
+                                     Fill="{DynamicResource StatusIdleBrush}" />
+                            <TextBlock Text="Idle"
+                                       FontSize="{DynamicResource FontSizeSmall}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                        <!-- Outfit button -->
+                        <Button Grid.Column="2"
+                                Content="Outfit ▸"
+                                Command="{Binding ToggleOutfitDrawerCommand}"
+                                Classes="secondary compact"
+                                VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Scrollable content -->
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel Margin="16,16,16,0" Spacing="20">
+
+                        <!-- Debt widget -->
+                        <controls:DebtWidget DebtTotal="{Binding DebtTotal}"
+                                             DebtSettled="{Binding DebtSettled}" />
+
+                        <!-- Tasks section -->
+                        <StackPanel Spacing="0">
+                            <!-- Section header -->
+                            <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                                <TextBlock Grid.Column="0"
+                                           Text="Tasks"
+                                           FontSize="{DynamicResource FontSizeSmall}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           VerticalAlignment="Center" />
+                                <Border Grid.Column="1"
+                                        Background="{DynamicResource SurfaceBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="8,2"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Tasks.Count}"
+                                               FontSize="{DynamicResource FontSizeSmall}"
+                                               Foreground="{DynamicResource TextHintBrush}" />
                                 </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                            </Grid>
+
+                            <!-- Divider -->
+                            <Border Height="1"
+                                    Background="{DynamicResource BorderBrush}"
+                                    Margin="0,0,0,0" />
+
+                            <!-- Task rows -->
+                            <ItemsControl ItemsSource="{Binding Tasks}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:TaskItemViewModel">
+                                        <StackPanel>
+                                            <Grid ColumnDefinitions="*,Auto" MinHeight="56">
+                                                <StackPanel Grid.Column="0"
+                                                            VerticalAlignment="Center"
+                                                            Spacing="2"
+                                                            Margin="0,0,8,0">
+                                                    <TextBlock Text="{Binding Name}"
+                                                               FontSize="{DynamicResource FontSizeBody}"
+                                                               Foreground="{DynamicResource TextPrimaryBrush}" />
+                                                    <TextBlock Text="{Binding EstimatedDurationLabel}"
+                                                               FontSize="{DynamicResource FontSizeSmall}"
+                                                               Foreground="{DynamicResource TextHintBrush}"
+                                                               IsVisible="{Binding EstimatedDurationLabel,
+                                                                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="1"
+                                                        Content="Start"
+                                                        Command="{Binding StartCommand}"
+                                                        Classes="primary compact"
+                                                        MinHeight="44"
+                                                        VerticalAlignment="Center" />
+                                            </Grid>
+                                            <Border Height="0.5"
+                                                    Background="{DynamicResource BorderBrush}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Empty tasks state -->
+                            <TextBlock Text="No pending tasks"
+                                       FontSize="{DynamicResource FontSizeSmall}"
+                                       Foreground="{DynamicResource TextHintBrush}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,16"
+                                       IsVisible="{Binding Tasks.Count,
+                                                   Converter={x:Static ObjectConverters.IsNull},
+                                                   FallbackValue=False}">
+                                <TextBlock.IsVisible>
+                                    <Binding Path="Tasks.Count"
+                                             Converter="{x:Static ObjectConverters.IsNull}"
+                                             FallbackValue="False" />
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+
+                        </StackPanel>
+
+                        <!-- Punishment button -->
+                        <Button Command="{Binding OpenPunishmentsCommand}"
+                                IsEnabled="{Binding HasPendingPunishments}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Padding="16,14"
+                                CornerRadius="6"
+                                Classes="amber">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0"
+                                           Text="Pending Punishments"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           VerticalAlignment="Center" />
+                                <!-- Badge -->
+                                <Border Grid.Column="1"
+                                        Background="{DynamicResource AmberBrush}"
+                                        CornerRadius="12"
+                                        MinWidth="24"
+                                        Height="24"
+                                        Padding="6,0"
+                                        IsVisible="{Binding HasPendingPunishments}"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding PendingPunishmentsCount}"
+                                               FontSize="{DynamicResource FontSizeSmall}"
+                                               Foreground="{DynamicResource PageBackgroundBrush}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Button>
+
+                        <!-- Bottom spacer -->
+                        <Border Height="16" />
+
+                    </StackPanel>
                 </ScrollViewer>
 
-                <!-- Separator -->
-                <Border Grid.Column="1" Width="1" Background="{DynamicResource BorderBrush}" Margin="16,0" />
+                <!-- Action bar (pinned bottom) -->
+                <Border Grid.Row="2"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderWarmBrush}"
+                        BorderThickness="0,1,0,0"
+                        Padding="8,8">
+                    <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
 
-                <!-- Right: Current outfit -->
-                <ScrollViewer Grid.Column="2">
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="Current Outfit" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8" />
-                        <TextBlock Text="{Binding CurrentOutfit}" Classes="small" Opacity="0.85" />
+                        <Button Grid.Column="0"
+                                Content="Request Permission"
+                                Command="{Binding RequestPermissionCommand}"
+                                Classes="secondary"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Height="42"
+                                FontSize="{DynamicResource FontSizeSmall}" />
+
+                        <Button Grid.Column="1"
+                                Content="Shop"
+                                Command="{Binding OpenShopCommand}"
+                                Classes="secondary"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Height="42"
+                                FontSize="{DynamicResource FontSizeSmall}" />
+
+                        <Button Grid.Column="2"
+                                Content="End Session"
+                                Command="{Binding EndSessionCommand}"
+                                Classes="secondary"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Height="42"
+                                FontSize="{DynamicResource FontSizeSmall}" />
+
+                        <Button Grid.Column="3"
+                                Content="Emergency Break"
+                                Command="{Binding EmergencyBreakCommand}"
+                                Classes="emergency"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Height="42"
+                                FontWeight="SemiBold"
+                                FontSize="{DynamicResource FontSizeSmall}" />
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+            <!-- ── LANDSCAPE layout ── -->
+            <Grid ColumnDefinitions="260,*" RowDefinitions="Auto,*"
+                  IsVisible="{Binding IsLandscape}">
+
+                <!-- Status bar (spans both columns) -->
+                <Border Grid.Row="0" Grid.ColumnSpan="2"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderWarmBrush}"
+                        BorderThickness="0,0,0,1"
+                        Height="50"
+                        Padding="16,0">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <Ellipse Width="10" Height="10"
+                                 Fill="{DynamicResource StatusIdleBrush}" />
+                        <TextBlock Text="Idle"
+                                   FontSize="{DynamicResource FontSizeSmall}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Left rail -->
+                <Border Grid.Row="1" Grid.Column="0"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,0,1,0"
+                        Padding="12">
+                    <DockPanel>
+                        <!-- "Current Outfit ▸" at bottom -->
+                        <Button DockPanel.Dock="Bottom"
+                                Content="Current Outfit ▸"
+                                Command="{Binding ToggleOutfitDrawerCommand}"
+                                Classes="secondary"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Margin="0,8,0,0" />
+
+                        <StackPanel Spacing="8">
+                            <!-- Debt widget -->
+                            <controls:DebtWidget DebtTotal="{Binding DebtTotal}"
+                                                 DebtSettled="{Binding DebtSettled}"
+                                                 Margin="0,0,0,12" />
+
+                            <!-- Action buttons -->
+                            <Button Content="Request Permission"
+                                    Command="{Binding RequestPermissionCommand}"
+                                    Classes="secondary"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Height="44" />
+
+                            <Button Content="Shop"
+                                    Command="{Binding OpenShopCommand}"
+                                    Classes="secondary"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Height="44" />
+
+                            <Button Content="End Session"
+                                    Command="{Binding EndSessionCommand}"
+                                    Classes="secondary"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Height="44" />
+
+                            <Button Content="Emergency Break"
+                                    Command="{Binding EmergencyBreakCommand}"
+                                    Classes="emergency"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Height="44"
+                                    FontWeight="SemiBold" />
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <!-- Right: scrollable tasks + punishment -->
+                <ScrollViewer Grid.Row="1" Grid.Column="1">
+                    <StackPanel Margin="16,16,16,0" Spacing="20">
+
+                        <!-- Tasks section header -->
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                            <TextBlock Grid.Column="0"
+                                       Text="Tasks"
+                                       FontSize="{DynamicResource FontSizeSmall}"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center" />
+                            <Border Grid.Column="1"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="10"
+                                    Padding="8,2"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Tasks.Count}"
+                                           FontSize="{DynamicResource FontSizeSmall}"
+                                           Foreground="{DynamicResource TextHintBrush}" />
+                            </Border>
+                        </Grid>
+
+                        <Border Height="1" Background="{DynamicResource BorderBrush}" />
+
+                        <!-- Task rows -->
+                        <ItemsControl ItemsSource="{Binding Tasks}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:TaskItemViewModel">
+                                    <StackPanel>
+                                        <Grid ColumnDefinitions="*,Auto" MinHeight="56">
+                                            <StackPanel Grid.Column="0"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="2"
+                                                        Margin="0,0,8,0">
+                                                <TextBlock Text="{Binding Name}"
+                                                           FontSize="{DynamicResource FontSizeBody}"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                                                <TextBlock Text="{Binding EstimatedDurationLabel}"
+                                                           FontSize="{DynamicResource FontSizeSmall}"
+                                                           Foreground="{DynamicResource TextHintBrush}"
+                                                           IsVisible="{Binding EstimatedDurationLabel,
+                                                                       Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                            </StackPanel>
+                                            <Button Grid.Column="1"
+                                                    Content="Start"
+                                                    Command="{Binding StartCommand}"
+                                                    Classes="primary compact"
+                                                    MinHeight="44"
+                                                    VerticalAlignment="Center" />
+                                        </Grid>
+                                        <Border Height="0.5"
+                                                Background="{DynamicResource BorderBrush}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Punishment button -->
+                        <Button Command="{Binding OpenPunishmentsCommand}"
+                                IsEnabled="{Binding HasPendingPunishments}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Padding="16,14"
+                                CornerRadius="6"
+                                Classes="amber">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0"
+                                           Text="Pending Punishments"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           VerticalAlignment="Center" />
+                                <Border Grid.Column="1"
+                                        Background="{DynamicResource AmberBrush}"
+                                        CornerRadius="12"
+                                        MinWidth="24"
+                                        Height="24"
+                                        Padding="6,0"
+                                        IsVisible="{Binding HasPendingPunishments}"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding PendingPunishmentsCount}"
+                                               FontSize="{DynamicResource FontSizeSmall}"
+                                               Foreground="{DynamicResource PageBackgroundBrush}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Button>
+
+                        <!-- Complete Game button (shown when debt cleared) -->
+                        <Button Content="Complete Game"
+                                Command="{Binding CompleteGameCommand}"
+                                IsVisible="{Binding CanComplete}"
+                                Classes="primary"
+                                HorizontalAlignment="Center"
+                                Margin="0,8,0,16" />
+
                     </StackPanel>
                 </ScrollViewer>
 
             </Grid>
 
-            <Border Grid.Row="2" Padding="24,16">
-                <StackPanel HorizontalAlignment="Center" Spacing="8">
-                    <TextBlock Text="{Binding PayRate}" HorizontalAlignment="Center" Classes="muted" />
-                    <TextBlock Text="{Binding TimeToNextWage}" HorizontalAlignment="Center" Classes="muted" />
-                    <StackPanel Classes="buttonBar" Margin="0,8,0,0">
-                        <Button Content="Complete Game"
-                                Command="{Binding CompleteGameCommand}"
-                                IsVisible="{Binding CanComplete}"
-                                Classes="primary" />
-                        <Button Content="End Session"
-                                Command="{Binding EndSessionCommand}"
-                                Classes="secondary" />
-                    </StackPanel>
-                </StackPanel>
-            </Border>
         </Grid>
 
-        <!-- ==================== BUSY MODE ==================== -->
-        <Grid RowDefinitions="Auto,Auto,*,Auto" IsVisible="{Binding IsBusy}">
-            <TextBlock Grid.Row="0" Text="{Binding BusyChoreName}"
+        <!-- ══════════════════════════════════════════════════════
+             BUSY MODE overlay
+             ══════════════════════════════════════════════════════ -->
+        <Grid RowDefinitions="Auto,Auto,*,Auto"
+              IsVisible="{Binding IsBusy}"
+              Background="{DynamicResource PageBackgroundBrush}">
+
+            <TextBlock Grid.Row="0"
+                       Text="{Binding BusyChoreName}"
                        Classes="heading"
                        Foreground="{DynamicResource TextPrimaryBrush}"
-                       HorizontalAlignment="Center" Margin="0,24" />
+                       HorizontalAlignment="Center"
+                       Margin="0,24" />
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="4">
-                <TextBlock Text="{Binding BusyChoreDescription}" HorizontalAlignment="Center" Classes="muted" />
-                <TextBlock Text="{Binding BusyChoreValueDisplay}" HorizontalAlignment="Center" Classes="muted" />
+                <TextBlock Text="{Binding BusyChoreDescription}"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondaryBrush}" />
+                <TextBlock Text="{Binding BusyChoreValueDisplay}"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource TextHintBrush}" />
             </StackPanel>
 
-            <TextBlock Grid.Row="2" Text="{Binding BusyElapsed}"
+            <TextBlock Grid.Row="2"
+                       Text="{Binding BusyElapsed}"
                        Classes="display"
                        Foreground="{DynamicResource TextPrimaryBrush}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
 
-            <Button Grid.Row="3" Content="End Chore"
+            <Button Grid.Row="3"
+                    Content="End Chore"
                     Command="{Binding EndChoreCommand}"
-                    HorizontalAlignment="Center" Classes="primary" Margin="0,0,0,24" />
+                    HorizontalAlignment="Center"
+                    Classes="primary"
+                    Margin="0,0,0,24" />
         </Grid>
 
-        <!-- ==================== TRIVIA POPUP OVERLAY ==================== -->
+        <!-- ══════════════════════════════════════════════════════
+             TRIVIA POPUP overlay
+             ══════════════════════════════════════════════════════ -->
         <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay">
             <Border Classes="dialogBox" MaxWidth="500">
                 <StackPanel Spacing="16">
@@ -105,7 +450,8 @@
                                Foreground="{DynamicResource EmergencyTextBrush}" />
                     <TextBlock Text="{Binding PopupQuestion}"
                                Foreground="{DynamicResource TextPrimaryBrush}"
-                               TextWrapping="Wrap" HorizontalAlignment="Center" />
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Center" />
                     <ItemsControl ItemsSource="{Binding PopupAnswers}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
@@ -115,13 +461,21 @@
                                         HorizontalContentAlignment="Center"
                                         Margin="0,4"
                                         Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
-                                        CommandParameter="{Binding}"/>
+                                        CommandParameter="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
             </Border>
         </Panel>
-    </Grid>
+
+        <!-- ══════════════════════════════════════════════════════
+             OUTFIT DRAWER (topmost overlay)
+             ══════════════════════════════════════════════════════ -->
+        <!-- DataContext (OutfitViewModel) is set from the code-behind -->
+        <controls:OutfitDrawer x:Name="OutfitDrawerControl"
+                               IsOpen="{Binding IsOutfitDrawerOpen}" />
+
+    </Panel>
 
 </UserControl>
