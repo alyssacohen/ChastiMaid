@@ -1,3 +1,4 @@
+using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using LiteDB;
 using ReactiveUI;

@@ -184,7 +184,6 @@
                                 Classes="secondary"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center"
-                                Height="42"
                                 FontSize="{DynamicResource FontSizeSmall}" />
 
                         <Button Grid.Column="1"
@@ -193,7 +192,6 @@
                                 Classes="secondary"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center"
-                                Height="42"
                                 FontSize="{DynamicResource FontSizeSmall}" />
 
                         <Button Grid.Column="2"
@@ -202,7 +200,6 @@
                                 Classes="secondary"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center"
-                                Height="42"
                                 FontSize="{DynamicResource FontSizeSmall}" />
 
                         <Button Grid.Column="3"
@@ -211,7 +208,6 @@
                                 Classes="emergency"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center"
-                                Height="42"
                                 FontWeight="SemiBold"
                                 FontSize="{DynamicResource FontSizeSmall}" />
 
@@ -266,32 +262,31 @@
                             <!-- Action buttons -->
                             <Button Content="Request Permission"
                                     Command="{Binding RequestPermissionCommand}"
-                                    Classes="secondary"
+                                    Classes="secondary compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
-                                    Height="44" />
+                                    MinHeight="44" />
 
                             <Button Content="Shop"
                                     Command="{Binding OpenShopCommand}"
-                                    Classes="secondary"
+                                    Classes="secondary compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
-                                    Height="44" />
+                                    MinHeight="44" />
 
                             <Button Content="End Session"
                                     Command="{Binding EndSessionCommand}"
-                                    Classes="secondary"
+                                    Classes="secondary compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
-                                    Height="44" />
+                                    MinHeight="44" />
 
                             <Button Content="Emergency Break"
                                     Command="{Binding EmergencyBreakCommand}"
-                                    Classes="emergency"
+                                    Classes="emergency compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
-                                    Height="44"
-                                    FontWeight="SemiBold" />
+                                    MinHeight="44" />
                         </StackPanel>
                     </DockPanel>
                 </Border>
@@ -472,9 +467,9 @@
         <!-- ══════════════════════════════════════════════════════
              OUTFIT DRAWER (topmost overlay)
              ══════════════════════════════════════════════════════ -->
-        <!-- DataContext (OutfitViewModel) is set from the code-behind -->
         <controls:OutfitDrawer x:Name="OutfitDrawerControl"
-                               IsOpen="{Binding IsOutfitDrawerOpen}" />
+                               IsOpen="{Binding IsOutfitDrawerOpen}"
+                               Outfit="{Binding CurrentOutfitVm}" />
 
     </Panel>
 

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using ChastiMaid.Services;
 using ReactiveUI;
 
-namespace ChastiMaid.Views;
+namespace ChastiMaid.Views.Controls;
 
 public partial class WebcamPreviewControl : UserControl
 {

@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
 using ChastiMaid.Models;
+using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;

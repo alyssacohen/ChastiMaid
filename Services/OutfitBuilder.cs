@@ -1,4 +1,5 @@
 using ChastiMaid.Models;
+using ChastiMaid.Repositories;
 
 namespace ChastiMaid.Services;
 

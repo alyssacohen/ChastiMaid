@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 
-namespace ChastiMaid.Views;
+namespace ChastiMaid.Views.Controls;
 
 public partial class DirtyTabHeader : UserControl
 {

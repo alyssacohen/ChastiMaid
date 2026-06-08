@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.ViewModels;
 using ChastiMaid.Views;

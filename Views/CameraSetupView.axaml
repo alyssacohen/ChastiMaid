@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:v="using:ChastiMaid.Views"
+             xmlns:v="using:ChastiMaid.Views.Controls"
              x:DataType="vm:CameraSetupViewModel"
              x:Class="ChastiMaid.Views.CameraSetupView">
 

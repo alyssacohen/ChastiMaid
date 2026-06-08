@@ -138,7 +138,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
-        <Setter Property="Padding" Value="24,14" />
+        <Setter Property="Padding" Value="20,16" />
     </Style>
 
     <Style Selector="Button TextBlock">
@@ -150,10 +150,24 @@
         <Setter Property="Padding" Value="16,8" />
     </Style>
 
-    <!-- Warning: kept as an alias → emergency token colours -->
+    <!-- Warning: full alias for emergency style — same colours and weight -->
     <Style Selector="Button.warning">
-        <Setter Property="BorderBrush" Value="{DynamicResource EmergencyBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource EmergencyTextBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource EmergencyBrush}" />
+        <Setter Property="BorderThickness" Value="1.25" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.warning /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource EmergencyBackgroundBrush}" />
+    </Style>
+    <Style Selector="Button.warning:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource EmergencyBrush}" />
+    </Style>
+    <Style Selector="Button.warning:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource PageBackgroundBrush}" />
+    </Style>
+    <Style Selector="Button.warning:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource EmergencyBrush}" />
     </Style>
 
     <!-- Delete button: trash icon, compact warning -->

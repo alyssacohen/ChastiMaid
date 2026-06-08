@@ -2,10 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:controls="using:ChastiMaid.Views.Controls"
-             x:DataType="vm:OutfitViewModel"
              x:Class="ChastiMaid.Views.Controls.OutfitDrawer"
-             x:Name="DrawerRoot"
-             IsVisible="{Binding #DrawerRoot.IsOpen}">
+             x:Name="DrawerRoot">
 
     <!-- Full-size overlay panel -->
     <Panel>
@@ -65,7 +63,7 @@
 
                 <!-- Layer list -->
                 <ScrollViewer>
-                    <ItemsControl ItemsSource="{Binding Layers}">
+                    <ItemsControl ItemsSource="{Binding #DrawerRoot.Layers}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:OutfitLayerViewModel">
                                 <StackPanel>

@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 

@@ -167,6 +167,9 @@ Thumbs.db
 # .editorconfig
 
 ## Kiro AI folder and files
-.kiro
+.kiro/agents/
+.kiro/prompts/
+.kiro/settings/
+.kiro/specs/
 
 chastimaid-session.json

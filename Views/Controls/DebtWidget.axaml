@@ -27,7 +27,7 @@
                                FontSize="{DynamicResource FontSizeSmall}"
                                Foreground="{DynamicResource TextHintBrush}" />
                     <TextBlock Text="{Binding #Root.DebtSettled, StringFormat='${0:F2}'}"
-                               FontSize="{DynamicResource FontSizeHeading}"
+                               FontSize="{DynamicResource FontSizeButton}"
                                FontWeight="Light"
                                Foreground="{DynamicResource TextPrimaryBrush}" />
                 </StackPanel>
@@ -38,7 +38,7 @@
                                Foreground="{DynamicResource TextHintBrush}"
                                HorizontalAlignment="Right" />
                     <TextBlock Text="{Binding #Root.DebtRemaining, StringFormat='${0:F2}'}"
-                               FontSize="{DynamicResource FontSizeHeading}"
+                               FontSize="{DynamicResource FontSizeButton}"
                                FontWeight="Light"
                                Foreground="{DynamicResource TextPrimaryBrush}"
                                HorizontalAlignment="Right" />

@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ChastiMaid.Models;
+using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;

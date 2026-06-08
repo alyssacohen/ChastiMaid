@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ChastiMaid is a gamification desktop app (Avalonia, .NET 10, Windows) where the user role-plays a maid completing chores to pay off a randomly-generated virtual debt. Earned credits reduce the debt; the game ends when the debt is cleared and no punishments are pending.
 
-Detailed domain specs live in `.kiro/steering/` (always-relevant design docs):
+Detailed domain specs live in `docs/specs/` (always-relevant design docs):
 - `product.md` — the **employer character voice** (Edwardian, ironic, never scolds). All user-facing copy must match this register.
 - `gameplay.md` — game/session/dashboard flow, idle vs. busy mode, popups.
 - `wardrobe.md` — outfit generation, layers/slots, the daily lock + bonus/multiplier mechanic.
@@ -18,10 +18,9 @@ Detailed domain specs live in `.kiro/steering/` (always-relevant design docs):
 ```powershell
 dotnet build               # Build
 dotnet run                 # Run (fullscreen desktop app)
+dotnet test                # Run unit tests (ChastiMaid.Tests project)
 dotnet publish -c Release  # Publish (excludes Avalonia.Diagnostics)
 ```
-
-There is **no test project** — there is no `dotnet test` to run. Verify changes by building and running.
 
 ## Target Platforms
 
@@ -83,7 +82,7 @@ Full keyboard and mouse, large screen. Used for development and testing.
 - ViewModels extend `ViewModelBase` (→ `ReactiveObject`).
 - **Reactive properties are written by hand**: a private backing field plus `get => _field; set => this.RaiseAndSetIfChanged(ref _field, value);`.
 - Commands: `ReactiveCommand.Create(...)` / `CreateFromTask(...)`, exposed as read-only `ICommand` auto-properties.
-- ⚠️ `ReactiveUI.SourceGenerators` is referenced in the `.csproj` but **not yet in use** — no `[Reactive]`/`[ReactiveCommand]` attributes, no `partial` ViewModels. Adoption is planned; until then follow the manual pattern above.
+- Use of `ReactiveUI.SourceGenerators`. Is already referenced in the `.csproj.
 - Keep business logic in Services/Models, not ViewModels. (`WebcamPreviewService` is intentionally a `ReactiveObject` so its preview bitmap can be data-bound.)
 
 ### Comments
@@ -93,5 +92,5 @@ Full keyboard and mouse, large screen. Used for development and testing.
 
 - Global styles in `GlobalStyles.axaml`, included via `StyleInclude` in `App.axaml`. `RequestedThemeVariant="Dark"`.
 - Font sizes are scaled at runtime from primary screen height (1080p reference) and exposed as `DynamicResource` keys: `FontSizeBody`, `FontSizeSmall`, `FontSizeButton`, `FontSizeHeading`, `FontSizeDisplay`.
-- Fonts: DisplayFont (Instrument Serif), HeadingFont (Instrument Serif Italic), DefaultFont (Inter Light).
+- Fonts: DisplayFont (Cormorant Garamond), HeadingFont (Cormorant Garamond Italic), DefaultFont (Inter Light).
 - Use style classes for variants, e.g. `TextBlock.heading`, `TextBlock.display`, `Button.primary`, `Button.compact`. Icons via FluentIcons.Avalonia.

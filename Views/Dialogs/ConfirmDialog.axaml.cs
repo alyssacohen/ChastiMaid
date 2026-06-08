@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace ChastiMaid.Views;
+namespace ChastiMaid.Views.Dialogs;
 
 public partial class ConfirmDialog : UserControl
 {

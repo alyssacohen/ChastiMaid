@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using ChastiMaid.Models;
+using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.Views.Dialogs;
 using ReactiveUI;

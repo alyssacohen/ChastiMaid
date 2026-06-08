@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="ChastiMaid.Views.DirtyTabHeader"
+             x:Class="ChastiMaid.Views.Controls.DirtyTabHeader"
              x:Name="Root">
 
     <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
