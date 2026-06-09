@@ -58,6 +58,25 @@
             <SolidColorBrush x:Key="EmergencyBackgroundBrush" Color="{StaticResource ColorEmergencyBackground}" />
             <SolidColorBrush x:Key="EmergencyTextBrush" Color="{StaticResource ColorEmergencyText}" />
             <SolidColorBrush x:Key="StatusIdleBrush" Color="{StaticResource ColorStatusIdle}" />
+
+            <!-- Aliases used by wardrobe table spec -->
+            <SolidColorBrush x:Key="PrimaryTextBrush" Color="{StaticResource ColorTextPrimary}" />
+            <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource ColorCard}" />
+
+            <!-- Chip tokens -->
+            <Color x:Key="ColorChipBackground">#DDD8CE</Color>
+            <Color x:Key="ColorChipText">#4A4240</Color>
+            <SolidColorBrush x:Key="ChipBackgroundBrush" Color="{StaticResource ColorChipBackground}" />
+            <SolidColorBrush x:Key="ChipTextBrush" Color="{StaticResource ColorChipText}" />
+
+            <!-- Danger tokens (mapped from existing Emergency palette) -->
+            <SolidColorBrush x:Key="DangerBackgroundBrush" Color="{StaticResource ColorEmergencyBackground}" />
+            <SolidColorBrush x:Key="DangerBorderBrush" Color="{StaticResource ColorEmergency}" />
+            <SolidColorBrush x:Key="DangerTextBrush" Color="{StaticResource ColorEmergencyText}" />
+
+            <!-- Expanded row warm tint -->
+            <Color x:Key="ColorAccentSubtle">#F0EAE0</Color>
+            <SolidColorBrush x:Key="AccentSubtleBrush" Color="{StaticResource ColorAccentSubtle}" />
         </ResourceDictionary>
     </Application.Resources>
 
@@ -175,6 +194,60 @@
         </Style>
         <Style Selector="Button.chip.disabled:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <!-- .danger — destructive inline actions (delete item, bulk delete) -->
+        <Style Selector="Button.danger">
+            <Setter Property="Foreground" Value="{DynamicResource DangerTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource DangerBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.danger /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource DangerBackgroundBrush}"/>
+        </Style>
+        <Style Selector="Button.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource DangerBorderBrush}"/>
+        </Style>
+        <Style Selector="Button.danger:pointerover">
+            <Setter Property="Foreground" Value="{DynamicResource PageBackgroundBrush}"/>
+        </Style>
+        <Style Selector="Button.danger:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource DangerBorderBrush}"/>
+        </Style>
+        <Style Selector="Button.danger:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}"/>
+        </Style>
+        <Style Selector="Button.danger:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextHintBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        </Style>
+
+        <!-- .filterChip — ToggleButton layer filter chips in WardrobeToolbar -->
+        <Style Selector="ToggleButton.filterChip">
+            <Setter Property="Foreground" Value="{DynamicResource ChipTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="9"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+            <Setter Property="MinHeight" Value="44"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="ToggleButton.filterChip /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ChipBackgroundBrush}"/>
+        </Style>
+        <Style Selector="ToggleButton.filterChip:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBrush}"/>
+        </Style>
+        <Style Selector="ToggleButton.filterChip:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource PrimaryTextBrush}"/>
+        </Style>
+        <Style Selector="ToggleButton.filterChip:checked">
+            <Setter Property="Foreground" Value="{DynamicResource PageBackgroundBrush}"/>
+        </Style>
+        <Style Selector="ToggleButton.filterChip:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TextSecondaryBrush}"/>
         </Style>
 
         <!-- .emergency — Emergency Break only -->

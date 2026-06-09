@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="ChastiMaid.Views.Controls.WardrobeToolbar">
+
+    <Border Background="{DynamicResource SurfaceBrush}" Padding="8,4">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" VerticalAlignment="Center">
+
+            <!-- Name / tag filter -->
+            <TextBox Grid.Column="0"
+                     Text="{Binding WardrobeNameFilter}"
+                     PlaceholderText="Filter by name or tag…"
+                     Width="240"
+                     MinHeight="44"
+                     VerticalContentAlignment="Center" />
+
+            <!-- Layer label -->
+            <TextBlock Grid.Column="1"
+                       Text="Layer:"
+                       VerticalAlignment="Center"
+                       Margin="16,0,8,0" />
+
+            <!-- Layer filter chips -->
+            <WrapPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
+                <ToggleButton Classes="filterChip"
+                              Content="All"
+                              IsChecked="{Binding LayerFilterAll}"
+                              Command="{Binding SetLayerFilterCommand}"
+                              CommandParameter="{x:Null}"
+                              Margin="0,0,4,0" />
+                <ToggleButton Classes="filterChip"
+                              Content="undies"
+                              IsChecked="{Binding LayerFilterUndies}"
+                              Command="{Binding SetLayerFilterCommand}"
+                              CommandParameter="undies"
+                              Margin="0,0,4,0" />
+                <ToggleButton Classes="filterChip"
+                              Content="base"
+                              IsChecked="{Binding LayerFilterBase}"
+                              Command="{Binding SetLayerFilterCommand}"
+                              CommandParameter="base"
+                              Margin="0,0,4,0" />
+                <ToggleButton Classes="filterChip"
+                              Content="extra"
+                              IsChecked="{Binding LayerFilterExtra}"
+                              Command="{Binding SetLayerFilterCommand}"
+                              CommandParameter="extra"
+                              Margin="0,0,4,0" />
+                <ToggleButton Classes="filterChip"
+                              Content="outer"
+                              IsChecked="{Binding LayerFilterOuter}"
+                              Command="{Binding SetLayerFilterCommand}"
+                              CommandParameter="outer"
+                              Margin="0,0,4,0" />
+                <ToggleButton Classes="filterChip"
+                              Content="gears"
+                              IsChecked="{Binding LayerFilterGears}"
+                              Command="{Binding SetLayerFilterCommand}"
+                              CommandParameter="gears" />
+            </WrapPanel>
+
+            <!-- Add item button (right-aligned via Grid stretch column) -->
+            <Button Grid.Column="4"
+                    Classes="primary"
+                    Content="+ Add item"
+                    Command="{Binding AddWardrobeItemCommand}"
+                    MinHeight="44"
+                    VerticalAlignment="Center" />
+
+        </Grid>
+    </Border>
+
+</UserControl>

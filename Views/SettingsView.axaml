@@ -209,67 +209,12 @@
                 <TabItem.Header>
                     <views:DirtyTabHeader Text="Wardrobe" IsDirty="{Binding IsWardrobeDirty}" />
                 </TabItem.Header>
-                <Grid RowDefinitions="*,Auto" Margin="16,16,24,16">
-                    <ScrollViewer Grid.Row="0" Name="WardrobeScroll">
-                        <ItemsControl ItemsSource="{Binding WardrobeItems}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vm:WardrobeEditViewModel">
-                                    <Border Classes="card">
-                                        <Grid ColumnDefinitions="*,Auto">
-                                            <!-- Content -->
-                                            <StackPanel Grid.Column="0" Spacing="8">
-                                                <!-- Row 1: Name, Multiplier, Weight -->
-                                                <Grid ColumnDefinitions="*,120,120">
-                                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Name" Classes="fieldLabel" />
-                                                        <TextBox Text="{Binding Name}" PlaceholderText="Item name" />
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Multiplier" Classes="fieldLabel" />
-                                                        <NumericUpDown Value="{Binding Multiplier}" FormatString="0.0" Increment="0.1" />
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="2" Spacing="2">
-                                                        <TextBlock Text="Weight" Classes="fieldLabel" />
-                                                        <NumericUpDown Value="{Binding Weight}" FormatString="0.0" Increment="0.1" />
-                                                    </StackPanel>
-                                                </Grid>
-                                                <!-- Row 2: Layers, Slots, Tags -->
-                                                <Grid ColumnDefinitions="*,*,*">
-                                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Layers" Classes="fieldLabel" />
-                                                        <WrapPanel>
-                                                            <CheckBox Content="undies" IsChecked="{Binding LayerUndies}" Padding="4,0" />
-                                                            <CheckBox Content="base" IsChecked="{Binding LayerBase}" Padding="4,0" />
-                                                            <CheckBox Content="extra" IsChecked="{Binding LayerExtra}" Padding="4,0" />
-                                                            <CheckBox Content="outer" IsChecked="{Binding LayerOuter}" Padding="4,0" />
-                                                            <CheckBox Content="gears" IsChecked="{Binding LayerGears}" Padding="4,0" />
-                                                        </WrapPanel>
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Slots" Classes="fieldLabel" />
-                                                        <TextBox Text="{Binding Slots}" PlaceholderText="torso, legs, feet..." />
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="2" Spacing="2">
-                                                        <TextBlock Text="Tags" Classes="fieldLabel" />
-                                                        <TextBox Text="{Binding Tags}" PlaceholderText="maid, elegant..." />
-                                                    </StackPanel>
-                                                </Grid>
-                                            </StackPanel>
-                                            <!-- Delete button -->
-                                            <Button Grid.Column="1" Command="{Binding DeleteCommand}"
-                                                    Classes="delete" VerticalAlignment="Center" Margin="12,0,0,0" />
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                <Grid RowDefinitions="Auto,*,Auto" Margin="16,8,16,8">
+                    <views:WardrobeToolbar Grid.Row="0" Margin="0,0,0,8" />
+                    <ScrollViewer Grid.Row="1" Name="WardrobeScroll">
+                        <views:WardrobeTable />
                     </ScrollViewer>
-                    <Button Grid.Row="1" Command="{Binding AddWardrobeItemCommand}" Classes="add">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                            <TextBlock Text="Add Item" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Button>
+                    <views:WardrobeBulkBar Grid.Row="2" Margin="0,8,0,0" />
                 </Grid>
             </TabItem>
 

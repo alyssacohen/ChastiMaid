@@ -5,6 +5,8 @@ using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
+using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -47,7 +49,31 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _isWardrobeDirty;
     [Reactive] private bool _isRulesDirty;
 
+    // --- Wardrobe filter & selection ---
+    [Reactive] private string _wardrobeNameFilter = string.Empty;
+    [Reactive] private string? _wardrobeLayerFilter;
+    [Reactive] private int _wardrobeSelectedCount;
+    private ReadOnlyObservableCollection<WardrobeEditViewModel> _filteredWardrobeItems = null!;
+
+    // --- New-item row state (used by Phase 2 UserControl) ---
+    [Reactive] private string _newItemName = string.Empty;
+    [Reactive] private bool _newItemLayerUndies;
+    [Reactive] private bool _newItemLayerBase;
+    [Reactive] private bool _newItemLayerExtra;
+    [Reactive] private bool _newItemLayerOuter;
+    [Reactive] private bool _newItemLayerGears;
+    [Reactive] private string _newItemSlots = string.Empty;
+
     public bool IsDirty => IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty;
+    public ReadOnlyObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems => _filteredWardrobeItems;
+
+    // Layer filter active-state helpers (bound to ToggleButton.IsChecked in WardrobeToolbar)
+    public bool LayerFilterAll => WardrobeLayerFilter is null;
+    public bool LayerFilterUndies => WardrobeLayerFilter == "undies";
+    public bool LayerFilterBase => WardrobeLayerFilter == "base";
+    public bool LayerFilterExtra => WardrobeLayerFilter == "extra";
+    public bool LayerFilterOuter => WardrobeLayerFilter == "outer";
+    public bool LayerFilterGears => WardrobeLayerFilter == "gears";
 
     // --- Tab selection with interception ---
     private int _selectedTabIndex;
@@ -67,6 +93,8 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand AddPunishmentCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
+    public ICommand DeleteSelectedWardrobeItemsCommand { get; }
+    public ICommand SetLayerFilterCommand { get; }
 
     public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo)
     {
@@ -94,13 +122,38 @@ public partial class SettingsViewModel : ViewModelBase
             Punishments.Add(WireChild(new PunishmentEditViewModel(p, id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true));
         foreach (var w in _repo.GetWardrobe())
         {
-            WardrobeItems.Add(WireChild(new WardrobeEditViewModel(w, id => RemoveFrom(WardrobeItems, id, _repo.DeleteClothingItem)), () => IsWardrobeDirty = true));
+            var vm = new WardrobeEditViewModel(w, id => RemoveWardrobeItem(id));
+            WireWardrobeItem(vm);
+            WardrobeItems.Add(vm);
             AvailableItems.Add(new ClothingItemOption(w.Id, w.Name));
         }
         foreach (var r in _repo.GetOutfitRules())
             OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(r, AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true));
 
+        UpdateRowParities();
+
+        // Filtered wardrobe view — reactive to filter controls
+        WardrobeItems.ToObservableChangeSet()
+            .Filter(this.WhenAnyValue(
+                x => x.WardrobeNameFilter,
+                x => x.WardrobeLayerFilter,
+                (name, layer) => (Func<WardrobeEditViewModel, bool>)(item => MatchesWardrobeFilter(item, name, layer))))
+            .Bind(out _filteredWardrobeItems)
+            .Subscribe();
+
         TakeSnapshot();
+
+        // Notify layer-filter bool helpers when the filter string changes
+        this.WhenAnyValue(x => x.WardrobeLayerFilter)
+            .Subscribe(_ =>
+            {
+                this.RaisePropertyChanged(nameof(LayerFilterAll));
+                this.RaisePropertyChanged(nameof(LayerFilterUndies));
+                this.RaisePropertyChanged(nameof(LayerFilterBase));
+                this.RaisePropertyChanged(nameof(LayerFilterExtra));
+                this.RaisePropertyChanged(nameof(LayerFilterOuter));
+                this.RaisePropertyChanged(nameof(LayerFilterGears));
+            });
 
         Observable.Merge(
             this.WhenAnyValue(
@@ -115,7 +168,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
         Punishments.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
-        WardrobeItems.CollectionChanged += (_, _) => IsWardrobeDirty = true;
+        WardrobeItems.CollectionChanged += (_, _) => { IsWardrobeDirty = true; UpdateRowParities(); UpdateSelectedCount(); };
         OutfitRules.CollectionChanged += (_, _) => IsRulesDirty = true;
 
         SaveCommand = ReactiveCommand.Create(Save);
@@ -124,11 +177,109 @@ public partial class SettingsViewModel : ViewModelBase
             Chores.Add(WireChild(new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)), () => IsChoresDirty = true)));
         AddPunishmentCommand = ReactiveCommand.Create(() =>
             Punishments.Add(WireChild(new PunishmentEditViewModel(new PunishmentTemplate(), id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true)));
-        AddWardrobeItemCommand = ReactiveCommand.Create(() =>
-            WardrobeItems.Add(WireChild(new WardrobeEditViewModel(new ClothingItem { Multiplier = 1.0, Weight = 1.0 }, id => RemoveFrom(WardrobeItems, id, _repo.DeleteClothingItem)), () => IsWardrobeDirty = true)));
+        var canAddWardrobe = this.WhenAnyValue(
+            x => x.NewItemName,
+            x => x.NewItemLayerUndies, x => x.NewItemLayerBase, x => x.NewItemLayerExtra,
+            x => x.NewItemLayerOuter, x => x.NewItemLayerGears,
+            x => x.NewItemSlots,
+            (name, u, b, e, o, g, slots) =>
+                !string.IsNullOrWhiteSpace(name) && (u || b || e || o || g) && !string.IsNullOrWhiteSpace(slots));
+        AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
+        SetLayerFilterCommand = ReactiveCommand.Create<string?>(layer => WardrobeLayerFilter = layer);
         AddOutfitRuleCommand = ReactiveCommand.Create(() =>
             OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(new OutfitRule(), AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
+        DeleteSelectedWardrobeItemsCommand = ReactiveCommand.Create(
+            DeleteSelectedWardrobeItems,
+            this.WhenAnyValue(x => x.WardrobeSelectedCount, n => n > 0));
     }
+
+    // --- Wardrobe helpers ---
+
+    private void WireWardrobeItem(WardrobeEditViewModel vm)
+    {
+        vm.PropertyChanged += (_, e) =>
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(WardrobeEditViewModel.IsSelected):
+                    UpdateSelectedCount();
+                    break;
+                case nameof(WardrobeEditViewModel.Name):
+                case nameof(WardrobeEditViewModel.Slots):
+                case nameof(WardrobeEditViewModel.Multiplier):
+                case nameof(WardrobeEditViewModel.Weight):
+                case nameof(WardrobeEditViewModel.Tags):
+                case nameof(WardrobeEditViewModel.LayerUndies):
+                case nameof(WardrobeEditViewModel.LayerBase):
+                case nameof(WardrobeEditViewModel.LayerExtra):
+                case nameof(WardrobeEditViewModel.LayerOuter):
+                case nameof(WardrobeEditViewModel.LayerGears):
+                    IsWardrobeDirty = true;
+                    break;
+            }
+        };
+    }
+
+    private void RemoveWardrobeItem(int id)
+    {
+        var item = WardrobeItems.FirstOrDefault(i => i.Id == id);
+        if (item is null) return;
+        WardrobeItems.Remove(item);
+        if (id > 0) _repo.DeleteClothingItem(id);
+    }
+
+    private void UpdateRowParities()
+    {
+        for (int i = 0; i < WardrobeItems.Count; i++)
+            WardrobeItems[i].IsEvenRow = i % 2 == 0;
+    }
+
+    private void UpdateSelectedCount() =>
+        WardrobeSelectedCount = WardrobeItems.Count(x => x.IsSelected);
+
+    private void AddWardrobeItemFromNewRow()
+    {
+        var layers = new List<string>();
+        if (NewItemLayerUndies) layers.Add("undies");
+        if (NewItemLayerBase) layers.Add("base");
+        if (NewItemLayerExtra) layers.Add("extra");
+        if (NewItemLayerOuter) layers.Add("outer");
+        if (NewItemLayerGears) layers.Add("gears");
+
+        var item = new ClothingItem
+        {
+            Name = NewItemName,
+            Layers = layers,
+            Slots = NewItemSlots.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList(),
+            Multiplier = 1.0,
+            Weight = 1.0
+        };
+
+        var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id));
+        WireWardrobeItem(vm);
+        WardrobeItems.Add(vm);
+
+        // Clear new-item fields
+        NewItemName = string.Empty;
+        NewItemLayerUndies = NewItemLayerBase = NewItemLayerExtra = NewItemLayerOuter = NewItemLayerGears = false;
+        NewItemSlots = string.Empty;
+
+        IsWardrobeDirty = true;
+    }
+
+    private void DeleteSelectedWardrobeItems()
+    {
+        var toDelete = WardrobeItems.Where(x => x.IsSelected).ToList();
+        foreach (var item in toDelete)
+        {
+            WardrobeItems.Remove(item);
+            if (item.Id > 0) _repo.DeleteClothingItem(item.Id);
+        }
+    }
+
+    private static bool MatchesWardrobeFilter(WardrobeEditViewModel item, string nameFilter, string? layerFilter) =>
+        (string.IsNullOrEmpty(nameFilter) || item.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase))
+        && (layerFilter is null || item.ActiveLayers.Any(l => l.Equals(layerFilter, StringComparison.OrdinalIgnoreCase)));
 
     // --- Generic helpers ---
     private static T WireChild<T>(T vm, Action markDirty) where T : INotifyPropertyChanged
@@ -287,6 +438,16 @@ public partial class WardrobeEditViewModel : ViewModelBase
     [Reactive] private bool _layerExtra;
     [Reactive] private bool _layerOuter;
     [Reactive] private bool _layerGears;
+    [Reactive] private bool _isSelected;
+    [Reactive] private bool _isExpanded;
+    [Reactive] private bool _isEvenRow;
+
+    private readonly ObservableAsPropertyHelper<IReadOnlyList<string>> _activeLayers;
+    private readonly ObservableAsPropertyHelper<IReadOnlyList<string>> _slotList;
+
+    public IReadOnlyList<string> ActiveLayers => _activeLayers.Value;
+    public IReadOnlyList<string> SlotList => _slotList.Value;
+    public ICommand ToggleExpandedCommand { get; }
     public ICommand DeleteCommand { get; }
 
     public WardrobeEditViewModel(ClothingItem item, Action<int> onDelete)
@@ -302,7 +463,27 @@ public partial class WardrobeEditViewModel : ViewModelBase
         _layerExtra = item.Layers.Contains("extra");
         _layerOuter = item.Layers.Contains("outer");
         _layerGears = item.Layers.Contains("gears");
+
         DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
+        ToggleExpandedCommand = ReactiveCommand.Create(() => { IsExpanded = !IsExpanded; });
+
+        _activeLayers = this.WhenAnyValue(
+            x => x.LayerUndies, x => x.LayerBase, x => x.LayerExtra, x => x.LayerOuter, x => x.LayerGears,
+            (undies, baseLayer, extra, outer, gears) =>
+            {
+                var list = new List<string>(5);
+                if (undies) list.Add("undies");
+                if (baseLayer) list.Add("base");
+                if (extra) list.Add("extra");
+                if (outer) list.Add("outer");
+                if (gears) list.Add("gears");
+                return (IReadOnlyList<string>)list;
+            })
+            .ToProperty(this, x => x.ActiveLayers, initialValue: []);
+
+        _slotList = this.WhenAnyValue(x => x.Slots)
+            .Select(s => (IReadOnlyList<string>)s.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            .ToProperty(this, x => x.SlotList, initialValue: []);
     }
 
     public ClothingItem ToModel()

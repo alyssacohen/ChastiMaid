@@ -1,0 +1,246 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:converters="using:ChastiMaid.Views.Converters"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="ChastiMaid.Views.Controls.WardrobeTable">
+
+    <StackPanel>
+
+        <!-- ── Header row ──────────────────────────────────────────── -->
+        <Border Background="{DynamicResource SurfaceBrush}" Padding="0,4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="44" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="44" />
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Grid.Column="0"
+                          x:Name="SelectAllCheckBox"
+                          MinWidth="44" MinHeight="44"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="NAME"
+                           Classes="fieldLabel"
+                           VerticalAlignment="Center"
+                           Margin="4,0" />
+                <TextBlock Grid.Column="2" Text="LAYERS"
+                           Classes="fieldLabel"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="3" Text="SLOTS"
+                           Classes="fieldLabel"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="4" Text="⋮"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextHintBrush}" />
+            </Grid>
+        </Border>
+        <Border Height="1" Background="{DynamicResource BorderBrush}" />
+
+        <!-- ── Data rows ───────────────────────────────────────────── -->
+        <ItemsControl ItemsSource="{Binding FilteredWardrobeItems}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:WardrobeEditViewModel">
+                    <StackPanel>
+
+                        <!-- Part A: always-visible row -->
+                        <Border Background="{Binding IsEvenRow, Converter={x:Static converters:IsEvenRowConverter.Instance}}"
+                                MinHeight="44">
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="44" />
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding IsSelected}"
+                                          MinWidth="44" MinHeight="44"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0"
+                                           TextTrimming="CharacterEllipsis" />
+
+                                <!-- Layer chips -->
+                                <ItemsControl Grid.Column="2"
+                                              ItemsSource="{Binding ActiveLayers}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,4">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Border Background="{DynamicResource ChipBackgroundBrush}"
+                                                    CornerRadius="4"
+                                                    Padding="6,2"
+                                                    Margin="0,2,4,0">
+                                                <TextBlock Text="{Binding}"
+                                                           Foreground="{DynamicResource ChipTextBrush}"
+                                                           Classes="small" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Slot chips -->
+                                <ItemsControl Grid.Column="3"
+                                              ItemsSource="{Binding SlotList}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,4">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Border Background="{DynamicResource ChipBackgroundBrush}"
+                                                    CornerRadius="4"
+                                                    Padding="6,2"
+                                                    Margin="0,2,4,0">
+                                                <TextBlock Text="{Binding}"
+                                                           Foreground="{DynamicResource ChipTextBrush}"
+                                                           Classes="small" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Expand/collapse chevron -->
+                                <Button Grid.Column="4"
+                                        Command="{Binding ToggleExpandedCommand}"
+                                        Width="44" Height="44"
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center">
+                                    <Panel>
+                                        <ic:SymbolIcon Symbol="ChevronRight"
+                                                       FontSize="14"
+                                                       IsVisible="{Binding !IsExpanded}" />
+                                        <ic:SymbolIcon Symbol="ChevronDown"
+                                                       FontSize="14"
+                                                       IsVisible="{Binding IsExpanded}" />
+                                    </Panel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <!-- Part B: expanded detail panel -->
+                        <Border IsVisible="{Binding IsExpanded}"
+                                Background="{DynamicResource AccentSubtleBrush}"
+                                Padding="40,8,8,8">
+                            <StackPanel Spacing="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                                        <TextBlock Text="MULTIPLIER" Classes="fieldLabel" />
+                                        <NumericUpDown Value="{Binding Multiplier}"
+                                                       FormatString="0.0"
+                                                       Increment="0.1"
+                                                       Minimum="0" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
+                                        <TextBlock Text="WEIGHT" Classes="fieldLabel" />
+                                        <NumericUpDown Value="{Binding Weight}"
+                                                       FormatString="0.0"
+                                                       Increment="0.1"
+                                                       Minimum="0" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Spacing="2">
+                                        <TextBlock Text="TAGS" Classes="fieldLabel" />
+                                        <TextBox Text="{Binding Tags}"
+                                                 PlaceholderText="maid, elegant…" />
+                                    </StackPanel>
+                                </Grid>
+                                <Button Classes="danger compact"
+                                        Content="Delete item"
+                                        Command="{Binding DeleteCommand}"
+                                        HorizontalAlignment="Right" />
+                                <TextBlock Text="Multiplier and weight affect outfit scoring. Tags are used by outfit rules."
+                                           Classes="small muted"
+                                           FontStyle="Italic" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Height="1"
+                                Background="{DynamicResource BorderBrush}"
+                                Opacity="0.3" />
+
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- ── New-item row ────────────────────────────────────────── -->
+        <Border BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="2"
+                Background="{DynamicResource AccentSubtleBrush}"
+                Margin="0,8,0,0"
+                Opacity="0.85">
+            <Grid Margin="4,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="44" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="44" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Col 0: intentionally empty (no checkbox for new items) -->
+
+                <TextBox Grid.Column="1"
+                         Text="{Binding NewItemName}"
+                         PlaceholderText="New item name…"
+                         MinHeight="44"
+                         VerticalContentAlignment="Center" />
+
+                <WrapPanel Grid.Column="2"
+                           VerticalAlignment="Center"
+                           Margin="8,0">
+                    <CheckBox Content="undies" IsChecked="{Binding NewItemLayerUndies}" />
+                    <CheckBox Content="base"   IsChecked="{Binding NewItemLayerBase}" />
+                    <CheckBox Content="extra"  IsChecked="{Binding NewItemLayerExtra}" />
+                    <CheckBox Content="outer"  IsChecked="{Binding NewItemLayerOuter}" />
+                    <CheckBox Content="gears"  IsChecked="{Binding NewItemLayerGears}" />
+                </WrapPanel>
+
+                <TextBox Grid.Column="3"
+                         Text="{Binding NewItemSlots}"
+                         PlaceholderText="torso, legs…"
+                         MinHeight="44"
+                         VerticalContentAlignment="Center"
+                         Margin="4,0" />
+
+                <Button Grid.Column="4"
+                        Content="↵"
+                        Command="{Binding AddWardrobeItemCommand}"
+                        MinHeight="44"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+
+            </Grid>
+        </Border>
+
+    </StackPanel>
+
+</UserControl>
