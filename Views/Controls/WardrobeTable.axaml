@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:controls="using:ChastiMaid.Controls"
              xmlns:converters="using:ChastiMaid.Views.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
              x:DataType="vm:SettingsViewModel"
@@ -84,12 +85,12 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
-                                            <Border Background="{DynamicResource ChipBackgroundBrush}"
+                                            <Border Background="{DynamicResource BrushChipDefault}"
                                                     CornerRadius="4"
                                                     Padding="6,2"
                                                     Margin="0,2,4,0">
                                                 <TextBlock Text="{Binding}"
-                                                           Foreground="{DynamicResource ChipTextBrush}"
+                                                           Foreground="{DynamicResource TextSecondary}"
                                                            Classes="small" />
                                             </Border>
                                         </DataTemplate>
@@ -108,12 +109,12 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
-                                            <Border Background="{DynamicResource ChipBackgroundBrush}"
+                                            <Border Background="{DynamicResource BrushChipDefault}"
                                                     CornerRadius="4"
                                                     Padding="6,2"
                                                     Margin="0,2,4,0">
                                                 <TextBlock Text="{Binding}"
-                                                           Foreground="{DynamicResource ChipTextBrush}"
+                                                           Foreground="{DynamicResource TextSecondary}"
                                                            Classes="small" />
                                             </Border>
                                         </DataTemplate>
@@ -142,41 +143,47 @@
 
                         <!-- Part B: expanded detail panel -->
                         <Border IsVisible="{Binding IsExpanded}"
-                                Background="{DynamicResource AccentSubtleBrush}"
+                                Background="{DynamicResource BrushSurfaceSubtle}"
                                 Padding="40,8,8,8">
-                            <StackPanel Spacing="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120" />
-                                        <ColumnDefinition Width="120" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                            <StackPanel Spacing="10">
+                                <Grid ColumnDefinitions="120,120">
                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                        <TextBlock Text="MULTIPLIER" Classes="fieldLabel" />
+                                        <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
                                         <NumericUpDown Value="{Binding Multiplier}"
                                                        FormatString="0.0"
                                                        Increment="0.1"
                                                        Minimum="0" />
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                        <TextBlock Text="WEIGHT" Classes="fieldLabel" />
+                                    <StackPanel Grid.Column="1" Spacing="2">
+                                        <TextBlock Classes="LabelUI" Text="WEIGHT" />
                                         <NumericUpDown Value="{Binding Weight}"
                                                        FormatString="0.0"
                                                        Increment="0.1"
                                                        Minimum="0" />
                                     </StackPanel>
-                                    <StackPanel Grid.Column="2" Spacing="2">
-                                        <TextBlock Text="TAGS" Classes="fieldLabel" />
-                                        <TextBox Text="{Binding Tags}"
-                                                 PlaceholderText="maid, elegant…" />
-                                    </StackPanel>
                                 </Grid>
+
+                                <StackPanel Spacing="2">
+                                    <TextBlock Classes="LabelUI" Text="LAYERS" />
+                                    <controls:ChipInputControl DataContext="{Binding LayersChipInput}" />
+                                </StackPanel>
+
+                                <StackPanel Spacing="2">
+                                    <TextBlock Classes="LabelUI" Text="SLOTS" />
+                                    <controls:ChipInputControl DataContext="{Binding SlotsChipInput}" />
+                                </StackPanel>
+
+                                <StackPanel Spacing="2">
+                                    <TextBlock Classes="LabelUI" Text="TAGS" />
+                                    <controls:ChipInputControl DataContext="{Binding TagsChipInput}" />
+                                </StackPanel>
+
                                 <Button Classes="danger compact"
                                         Content="Delete item"
                                         Command="{Binding DeleteCommand}"
                                         HorizontalAlignment="Right" />
                                 <TextBlock Text="Multiplier and weight affect outfit scoring. Tags are used by outfit rules."
-                                           Classes="small muted"
+                                           Classes="Caption"
                                            FontStyle="Italic" />
                             </StackPanel>
                         </Border>

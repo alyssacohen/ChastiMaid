@@ -7,7 +7,8 @@
         x:DataType="vm:MainWindowViewModel"
         xmlns:vm="using:ChastiMaid.ViewModels"
         WindowState="FullScreen"
-        Title="ChastiMaid">
+        Title="ChastiMaid"
+        Background="{StaticResource BrushWindowBackground}">
 
     <!--
     Design.DataContext omesso: MainWindowViewModel richiede parametri nel costruttore.

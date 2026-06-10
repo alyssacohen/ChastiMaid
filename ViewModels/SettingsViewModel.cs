@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using ChastiMaid.Controls;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
@@ -120,9 +121,13 @@ public partial class SettingsViewModel : ViewModelBase
             Chores.Add(WireChild(new ChoreEditViewModel(c, id => RemoveFrom(Chores, id, _repo.DeleteChore)), () => IsChoresDirty = true));
         foreach (var p in _repo.GetPunishmentTemplates())
             Punishments.Add(WireChild(new PunishmentEditViewModel(p, id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true));
-        foreach (var w in _repo.GetWardrobe())
+        var allWardrobe = _repo.GetWardrobe().ToList();
+        var initTags   = allWardrobe.SelectMany(i => i.Tags).Distinct().OrderBy(s => s).ToList();
+        var initLayers = allWardrobe.SelectMany(i => i.Layers).Distinct().OrderBy(s => s).ToList();
+        var initSlots  = allWardrobe.SelectMany(i => i.Slots).Distinct().OrderBy(s => s).ToList();
+        foreach (var w in allWardrobe)
         {
-            var vm = new WardrobeEditViewModel(w, id => RemoveWardrobeItem(id));
+            var vm = new WardrobeEditViewModel(w, id => RemoveWardrobeItem(id), initTags, initLayers, initSlots);
             WireWardrobeItem(vm);
             WardrobeItems.Add(vm);
             AvailableItems.Add(new ClothingItemOption(w.Id, w.Name));
@@ -195,6 +200,10 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Wardrobe helpers ---
 
+    private IEnumerable<string> AllUsedTags   => WardrobeItems.SelectMany(w => w.TagsChipInput.Values).Distinct().OrderBy(s => s);
+    private IEnumerable<string> AllUsedLayers => WardrobeItems.SelectMany(w => w.LayersChipInput.Values).Distinct().OrderBy(s => s);
+    private IEnumerable<string> AllUsedSlots  => WardrobeItems.SelectMany(w => w.SlotsChipInput.Values).Distinct().OrderBy(s => s);
+
     private void WireWardrobeItem(WardrobeEditViewModel vm)
     {
         vm.PropertyChanged += (_, e) =>
@@ -205,19 +214,15 @@ public partial class SettingsViewModel : ViewModelBase
                     UpdateSelectedCount();
                     break;
                 case nameof(WardrobeEditViewModel.Name):
-                case nameof(WardrobeEditViewModel.Slots):
                 case nameof(WardrobeEditViewModel.Multiplier):
                 case nameof(WardrobeEditViewModel.Weight):
-                case nameof(WardrobeEditViewModel.Tags):
-                case nameof(WardrobeEditViewModel.LayerUndies):
-                case nameof(WardrobeEditViewModel.LayerBase):
-                case nameof(WardrobeEditViewModel.LayerExtra):
-                case nameof(WardrobeEditViewModel.LayerOuter):
-                case nameof(WardrobeEditViewModel.LayerGears):
                     IsWardrobeDirty = true;
                     break;
             }
         };
+        vm.LayersChipInput.Values.CollectionChanged += (_, _) => IsWardrobeDirty = true;
+        vm.SlotsChipInput.Values.CollectionChanged  += (_, _) => IsWardrobeDirty = true;
+        vm.TagsChipInput.Values.CollectionChanged   += (_, _) => IsWardrobeDirty = true;
     }
 
     private void RemoveWardrobeItem(int id)
@@ -255,7 +260,7 @@ public partial class SettingsViewModel : ViewModelBase
             Weight = 1.0
         };
 
-        var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id));
+        var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id), AllUsedTags, AllUsedLayers, AllUsedSlots);
         WireWardrobeItem(vm);
         WardrobeItems.Add(vm);
 
@@ -429,79 +434,61 @@ public partial class WardrobeEditViewModel : ViewModelBase
 {
     public int Id { get; }
     [Reactive] private string _name = "";
-    [Reactive] private string _slots = "";
     [Reactive] private double _multiplier;
     [Reactive] private double _weight;
-    [Reactive] private string _tags = "";
-    [Reactive] private bool _layerUndies;
-    [Reactive] private bool _layerBase;
-    [Reactive] private bool _layerExtra;
-    [Reactive] private bool _layerOuter;
-    [Reactive] private bool _layerGears;
     [Reactive] private bool _isSelected;
     [Reactive] private bool _isExpanded;
     [Reactive] private bool _isEvenRow;
 
-    private readonly ObservableAsPropertyHelper<IReadOnlyList<string>> _activeLayers;
-    private readonly ObservableAsPropertyHelper<IReadOnlyList<string>> _slotList;
+    private readonly ObservableCollection<string> _layersCollection;
+    private readonly ObservableCollection<string> _slotsCollection;
+    private readonly ObservableCollection<string> _tagsCollection;
 
-    public IReadOnlyList<string> ActiveLayers => _activeLayers.Value;
-    public IReadOnlyList<string> SlotList => _slotList.Value;
+    public ChipInputViewModel LayersChipInput { get; }
+    public ChipInputViewModel SlotsChipInput  { get; }
+    public ChipInputViewModel TagsChipInput   { get; }
+
+    // Passthrough for filter logic and read-only chip display in the table row
+    public IReadOnlyList<string> ActiveLayers => _layersCollection;
+    public IReadOnlyList<string> SlotList     => _slotsCollection;
+
     public ICommand ToggleExpandedCommand { get; }
     public ICommand DeleteCommand { get; }
 
-    public WardrobeEditViewModel(ClothingItem item, Action<int> onDelete)
+    public WardrobeEditViewModel(
+        ClothingItem item,
+        Action<int> onDelete,
+        IEnumerable<string>? tagSuggestions   = null,
+        IEnumerable<string>? layerSuggestions = null,
+        IEnumerable<string>? slotSuggestions  = null)
     {
-        Id = item.Id;
-        _name = item.Name;
-        _slots = string.Join(", ", item.Slots);
+        Id          = item.Id;
+        _name       = item.Name;
         _multiplier = item.Multiplier;
-        _weight = item.Weight;
-        _tags = string.Join(", ", item.Tags);
-        _layerUndies = item.Layers.Contains("undies");
-        _layerBase = item.Layers.Contains("base");
-        _layerExtra = item.Layers.Contains("extra");
-        _layerOuter = item.Layers.Contains("outer");
-        _layerGears = item.Layers.Contains("gears");
+        _weight     = item.Weight;
 
-        DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
+        _layersCollection = new(item.Layers);
+        _slotsCollection  = new(item.Slots);
+        _tagsCollection   = new(item.Tags);
+
+        LayersChipInput = new(_layersCollection) { Placeholder = "aggiungi layer...", Suggestions = layerSuggestions ?? [] };
+        SlotsChipInput  = new(_slotsCollection)  { Placeholder = "aggiungi slot...",  Suggestions = slotSuggestions  ?? [] };
+        TagsChipInput   = new(_tagsCollection)   { Placeholder = "aggiungi tag...",   Suggestions = tagSuggestions   ?? [] };
+
+        DeleteCommand         = ReactiveCommand.Create(() => onDelete(Id));
         ToggleExpandedCommand = ReactiveCommand.Create(() => { IsExpanded = !IsExpanded; });
-
-        _activeLayers = this.WhenAnyValue(
-            x => x.LayerUndies, x => x.LayerBase, x => x.LayerExtra, x => x.LayerOuter, x => x.LayerGears,
-            (undies, baseLayer, extra, outer, gears) =>
-            {
-                var list = new List<string>(5);
-                if (undies) list.Add("undies");
-                if (baseLayer) list.Add("base");
-                if (extra) list.Add("extra");
-                if (outer) list.Add("outer");
-                if (gears) list.Add("gears");
-                return (IReadOnlyList<string>)list;
-            })
-            .ToProperty(this, x => x.ActiveLayers, initialValue: []);
-
-        _slotList = this.WhenAnyValue(x => x.Slots)
-            .Select(s => (IReadOnlyList<string>)s.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-            .ToProperty(this, x => x.SlotList, initialValue: []);
     }
 
-    public ClothingItem ToModel()
+    public ClothingItem ToModel() => new()
     {
-        var layers = new List<string>();
-        if (LayerUndies) layers.Add("undies");
-        if (LayerBase) layers.Add("base");
-        if (LayerExtra) layers.Add("extra");
-        if (LayerOuter) layers.Add("outer");
-        if (LayerGears) layers.Add("gears");
-        return new()
-        {
-            Id = Id, Name = Name, Layers = layers,
-            Slots = Slots.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList(),
-            Multiplier = Multiplier, Weight = Weight,
-            Tags = Tags.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList()
-        };
-    }
+        Id         = Id,
+        Name       = Name,
+        Layers     = [.. _layersCollection],
+        Slots      = [.. _slotsCollection],
+        Tags       = [.. _tagsCollection],
+        Multiplier = Multiplier,
+        Weight     = Weight
+    };
 }
 
 public partial class OutfitRuleEditViewModel : ViewModelBase

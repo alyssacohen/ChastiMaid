@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ═══════════════════════════════════════════
+       SPACING SCALE (base 4px)
+  ═══════════════════════════════════════════ -->
+  <x:Double x:Key="SpacingXs">4</x:Double>    <!-- chip gap, badge padding          -->
+  <x:Double x:Key="SpacingSm">8</x:Double>    <!-- icon-text gap, button pad min     -->
+  <x:Double x:Key="SpacingMd">12</x:Double>   <!-- row vertical pad, label-field gap -->
+  <x:Double x:Key="SpacingLg">16</x:Double>   <!-- card/panel padding, section gap   -->
+  <x:Double x:Key="SpacingXl">24</x:Double>   <!-- page lateral pad, widget gap      -->
+  <x:Double x:Key="SpacingXxl">40</x:Double>  <!-- page top margin, strong separator -->
+
+  <!-- ═══════════════════════════════════════════
+       LAYOUT CONSTANTS
+  ═══════════════════════════════════════════ -->
+  <x:Double x:Key="NavPanelWidth">220</x:Double>
+  <x:Double x:Key="TouchTargetMin">44</x:Double>
+  <x:Double x:Key="TableRowHeight">48</x:Double>
+  <x:Double x:Key="ChipHeight">30</x:Double>
+
+</ResourceDictionary>

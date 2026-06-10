@@ -1,0 +1,37 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- chip — default unselected state -->
+  <Style Selector="Border.chip">
+    <Setter Property="Background" Value="{DynamicResource BrushChipDefault}"/>
+    <Setter Property="CornerRadius" Value="4"/>
+    <Setter Property="Padding" Value="8,0"/>
+    <Setter Property="Height" Value="30"/>
+  </Style>
+
+  <!-- chip.selected — user-selected value -->
+  <Style Selector="Border.chip.selected">
+    <Setter Property="Background" Value="{DynamicResource BrushChipSelected}"/>
+  </Style>
+
+  <!-- chip.required — forced/required value -->
+  <Style Selector="Border.chip.required">
+    <Setter Property="Background" Value="{DynamicResource BrushChipRequired}"/>
+  </Style>
+
+  <!-- chip-label — inner text for all chip states -->
+  <Style Selector="TextBlock.chip-label">
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+  </Style>
+
+  <!-- chip-label on selected or required chip — inverted text -->
+  <Style Selector="Border.chip.selected TextBlock.chip-label,
+                   Border.chip.required TextBlock.chip-label">
+    <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
+  </Style>
+
+</Styles>

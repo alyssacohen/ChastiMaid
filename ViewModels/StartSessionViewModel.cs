@@ -15,13 +15,18 @@ public partial class StartSessionViewModel : ViewModelBase
     private Outfit _outfit;
     private double _currentBonus = 1.0;
     private int _regenCount;
+    private ActivePunishment? _forcedOutfitPunishment;
 
     [Reactive] private string _proposedOutfit = "";
 
     public string DebtDisplay { get; }
 
     [Reactive] private bool _isLocked;
+    [Reactive(SetModifier = AccessModifier.Private)] private bool _isForced;
     [Reactive] private ConfirmDialogViewModel? _activeDialog;
+
+    /// <summary>True while the outfit can be regenerated or manually modified.</summary>
+    public bool CanRegenOrModify => !IsLocked && !IsForced;
 
     public ICommand AcceptCommand { get; }
     public ICommand RegenerateCommand { get; }
@@ -59,10 +64,63 @@ public partial class StartSessionViewModel : ViewModelBase
         }
         else
         {
-            var builder = new OutfitBuilder(saveRepo.GetWardrobe(), saveRepo.GetOutfitRules());
-            _outfit = outfit ?? builder.Build();
-            _proposedOutfit = _outfit.ToString();
+            var wardrobe = saveRepo.GetWardrobe();
+            var rules = saveRepo.GetOutfitRules();
+
+            // Priority 1: active forced-outfit punishment with sessions remaining
+            var forcedPunishment = saveRepo.GetActivePunishments()
+                .FirstOrDefault(p => (p.RemainingOutfitForce?.Sessions ?? 0) > 0);
+
+            if (forcedPunishment is not null)
+            {
+                _forcedOutfitPunishment = forcedPunishment;
+                _isForced = true;
+
+                if (forcedPunishment.ForceFullOutfit && forcedPunishment.ForcedClothingItemIds?.Count > 0)
+                {
+                    // Entire outfit is fixed: place only the specified items
+                    var forcedItems = wardrobe
+                        .Where(i => forcedPunishment.ForcedClothingItemIds.Contains(i.Id))
+                        .ToList();
+                    _outfit = BuildOutfitFromFixedItems(forcedItems);
+                }
+                else
+                {
+                    // Partial forced: specified items as seeds, builder fills the rest
+                    var seeds = wardrobe
+                        .Where(i => forcedPunishment.ForcedClothingItemIds?.Contains(i.Id) == true)
+                        .ToList();
+                    var builder = new OutfitBuilder(wardrobe, rules);
+                    builder.AddSeedItems(seeds);
+                    _outfit = outfit ?? builder.Build();
+                }
+
+                _proposedOutfit = _outfit.ToString();
+            }
+            else
+            {
+                // Priority 2: item rejection threshold — generate non-editable outfit
+                var overThreshold = wardrobe.Where(i => i.RejectionCount >= 5).ToList();
+                if (overThreshold.Count > 0)
+                {
+                    _isForced = true;
+                    var builder = new OutfitBuilder(wardrobe, rules);
+                    builder.AddSeedItems(overThreshold);
+                    _outfit = outfit ?? builder.Build();
+                    _proposedOutfit = _outfit.ToString();
+                }
+                else
+                {
+                    // Normal generation
+                    var builder = new OutfitBuilder(wardrobe, rules);
+                    _outfit = outfit ?? builder.Build();
+                    _proposedOutfit = _outfit.ToString();
+                }
+            }
         }
+
+        this.WhenAnyValue(x => x.IsLocked, x => x.IsForced)
+            .Subscribe(_ => this.RaisePropertyChanged(nameof(CanRegenOrModify)));
 
         AcceptCommand = ReactiveCommand.Create(Accept);
         RegenerateCommand = ReactiveCommand.CreateFromTask(ConfirmRegenerate);
@@ -71,9 +129,32 @@ public partial class StartSessionViewModel : ViewModelBase
             () => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
     }
 
+    /// <summary>Builds an Outfit from a fixed list of items without the builder.</summary>
+    private static Outfit BuildOutfitFromFixedItems(List<ClothingItem> items)
+    {
+        var outfit = new Outfit();
+        foreach (var item in items)
+        {
+            foreach (var layer in Outfit.LayersOrder.Where(l => item.Layers.Contains(l)))
+            {
+                if (outfit.AddItemOnLayer(item, layer)) break;
+            }
+        }
+        return outfit;
+    }
+
     private void Accept()
     {
         _saveRepo.AcceptItems(_outfit.Items);
+
+        if (_forcedOutfitPunishment?.RemainingOutfitForce is { } remaining)
+        {
+            remaining.Sessions = (remaining.Sessions ?? 0) - 1;
+            if ((remaining.Sessions ?? 0) <= 0)
+                _forcedOutfitPunishment.IsResolved = true;
+            _saveRepo.SaveActivePunishment(_forcedOutfitPunishment);
+        }
+
         LockAndProceed();
     }
 

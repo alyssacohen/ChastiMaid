@@ -252,9 +252,18 @@ public partial class ChangeOutfitViewModel : ViewModelBase
     private void Integrate()
     {
         var seeds = GetSelectedItems();
+        var seedIds = seeds.Select(s => s.Id).ToHashSet();
+
+        // Items from the previous outfit that the user did not select as seeds are rejected
+        var droppedFromPrevious = _currentOutfit.Items
+            .Where(i => !seedIds.Contains(i.Id))
+            .ToList();
+
         var builder = new OutfitBuilder(_allItems, _allRules);
         builder.AddSeedItems(seeds);
         var newOutfit = builder.Build();
+
+        _saveRepo.RejectItems(droppedFromPrevious);
         _saveRepo.AcceptItems(newOutfit.Items);
         LockOutfit(newOutfit);
     }

@@ -22,11 +22,14 @@
                 <Button Content="Regenerate"
                         Command="{Binding RegenerateCommand}"
                         Classes="secondary"
-                        IsEnabled="{Binding !IsLocked}" />
+                        IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Content="Modify"
                         Command="{Binding ModifyCommand}"
                         Classes="secondary"
-                        IsEnabled="{Binding !IsLocked}" />
+                        IsEnabled="{Binding CanRegenOrModify}" />
+                <Button Content="Quit"
+                        Command="{Binding QuitCommand}"
+                        Classes="ghost" />
             </StackPanel>
 
         </StackPanel>
