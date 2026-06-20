@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ChastiMaid.Repositories;
@@ -35,6 +36,7 @@ public partial class App : Application
 
             mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager, _autoSaveService, _webcamService);
             desktop.MainWindow = mainWindow;
+            ApplyWindowGeometry(mainWindow);
 
             desktop.Exit += (_, _) =>
             {
@@ -46,5 +48,30 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    /// <summary>
+    /// Applies startup window size based on command-line flags.
+    ///
+    /// --portrait   800×1200  (Surface Go portrait,  150% DPI logical pixels)
+    /// --landscape  1200×800  (Surface Go landscape, 150% DPI logical pixels)
+    /// No flag      normal startup (maximized or last saved state)
+    /// </summary>
+    private static void ApplyWindowGeometry(Window window)
+    {
+        if (Program.ForcePortrait)
+        {
+            window.Width  = 800;
+            window.Height = 1200;
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            window.WindowState = WindowState.Normal;
+        }
+        else if (Program.ForceLandscape)
+        {
+            window.Width  = 1200;
+            window.Height = 800;
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            window.WindowState = WindowState.Normal;
+        }
     }
 }

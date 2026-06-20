@@ -5,67 +5,136 @@
              x:DataType="vm:WelcomeViewModel"
              x:Class="ChastiMaid.Views.WelcomeView">
 
-    <Panel>
-        <StackPanel HorizontalAlignment="Center" Spacing="12">
-            <TextBlock Text="Welcome to ChastiMaid!" Classes="pageTitle"
-                       Foreground="{DynamicResource TextPrimaryBrush}" />
-            <TextBlock Text="Do come in. The door is unlocked. It always is... at first."
-                       Classes="subtitle"
-                       Foreground="{DynamicResource TextPrimaryBrush}" />
+  <Panel>
+
+    <Grid Margin="40"
+          ColumnDefinitions="*,340">
+
+      <!-- ── LEFT COLUMN ── -->
+      <Grid Grid.Column="0"
+            RowDefinitions="*,Auto">
+
+        <!-- Row 0: title + quote -->
+        <StackPanel Grid.Row="0"
+                    VerticalAlignment="Top"
+                    Spacing="0">
+
+          <TextBlock Classes="PageTitle"
+                     Text="ChastiMaid"/>
+
+          <Border Height="1"
+                  Background="{DynamicResource BrushBorderSubtle}"
+                  Margin="0,12,80,16"/>
+
+          <TextBlock Classes="EmployerVoice"
+                     TextWrapping="Wrap"
+                     Text="«Do come in. The door is unlocked. It always is... at first.»"/>
+
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="12"
-                    Width="400">
+        <!-- Row 1: test mode panel (auto-height, bottom-anchored) -->
+        <StackPanel Grid.Row="1"
+                    IsVisible="{Binding IsTestMode}">
 
-            <Button Content="Continue"
-                    Command="{Binding ContinueCommand}"
-                    Classes="secondary"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
-            <Button Content="Load Game"
-                    Command="{Binding LoadGameCommand}"
-                    Classes="secondary"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
-            <Button Content="New Game"
-                    Command="{Binding NewGameCommand}"
-                    Classes="secondary"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
-            <Button Content="Settings"
-                    Command="{Binding SettingsCommand}"
-                    Classes="secondary"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
-            <Button Content="Exit"
-                    Command="{Binding ExitCommand}"
-                    Classes="secondary"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
+          <Border BorderBrush="{DynamicResource BrushBorderSubtle}"
+                  BorderThickness="1"
+                  CornerRadius="4"
+                  Padding="{StaticResource SpacingLgThickness}"
+                  Margin="0,0,80,0">
+            <StackPanel Spacing="8">
 
-            <!-- Time travel (test mode only) -->
-            <Border IsVisible="{Binding IsTestMode}"
-                    BorderBrush="{DynamicResource EmergencyBrush}" BorderThickness="1" CornerRadius="4"
-                    Padding="12" Margin="0,12,0,0">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="⏩ TEST MODE — Time Travel" HorizontalAlignment="Center"
-                               Foreground="{DynamicResource EmergencyTextBrush}" Classes="small" />
-                    <TextBlock Text="{Binding ClockOffset}" HorizontalAlignment="Center"
-                               Foreground="{DynamicResource TextHintBrush}" Classes="small muted" />
-                    <StackPanel Classes="buttonBar" Margin="0">
-                        <Button Content="+1 day" Command="{Binding TimeTravelCommand}" CommandParameter="1" Classes="compact secondary" />
-                        <Button Content="+3 days" Command="{Binding TimeTravelCommand}" CommandParameter="3" Classes="compact secondary" />
-                        <Button Content="+7 days" Command="{Binding TimeTravelCommand}" CommandParameter="7" Classes="compact secondary" />
-                    </StackPanel>
-                </StackPanel>
-            </Border>
+              <TextBlock Classes="LabelUI"
+                         HorizontalAlignment="Center"
+                         Text="⏩  TEST MODE — TIME TRAVEL"/>
+
+              <TextBlock Classes="Caption"
+                         HorizontalAlignment="Center"
+                         Text="{Binding ClockOffset}"/>
+
+              <StackPanel Orientation="Horizontal"
+                          HorizontalAlignment="Center"
+                          Spacing="8">
+                <Button Classes="SmallGhost"
+                        Content="+1 day"
+                        Command="{Binding TimeTravelCommand}"
+                        CommandParameter="1"/>
+                <Button Classes="SmallGhost"
+                        Content="+3 days"
+                        Command="{Binding TimeTravelCommand}"
+                        CommandParameter="3"/>
+                <Button Classes="SmallGhost"
+                        Content="+7 days"
+                        Command="{Binding TimeTravelCommand}"
+                        CommandParameter="7"/>
+              </StackPanel>
+
+            </StackPanel>
+          </Border>
+
         </StackPanel>
 
-        <views:ConfirmDialog DataContext="{Binding ActiveDialog}"
-                             IsVisible="{Binding $parent[UserControl].((vm:WelcomeViewModel)DataContext).ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}" />
+      </Grid>
 
-    </Panel>
+      <!-- ── RIGHT COLUMN ── -->
+      <StackPanel Grid.Column="1"
+                  VerticalAlignment="Center"
+                  Spacing="0">
+
+        <Button Classes="Primary"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Content="Continue"
+                Command="{Binding ContinueCommand}"/>
+
+        <Button Classes="Primary"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSize="15"
+                Margin="0,12,0,0"
+                Content="New Game"
+                Command="{Binding NewGameCommand}"/>
+
+        <Border Height="1"
+                Background="{DynamicResource BrushBorderSubtle}"
+                Margin="0,20,0,20"/>
+
+        <Button Classes="Ghost"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Content="Load Game"
+                Command="{Binding LoadGameCommand}"/>
+
+        <Button Classes="Ghost"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Margin="0,12,0,0"
+                Content="Settings"
+                Command="{Binding SettingsCommand}"/>
+
+        <TextBlock Name="ExitLabel"
+                   Classes="Caption"
+                   Text="Exit"
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,0"
+                   Cursor="Hand">
+          <TextBlock.Styles>
+            <Style Selector="TextBlock:pointerover">
+              <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+            </Style>
+          </TextBlock.Styles>
+        </TextBlock>
+
+      </StackPanel>
+
+    </Grid>
+
+    <views:ConfirmDialog
+        DataContext="{Binding ActiveDialog}"
+        IsVisible="{Binding $parent[UserControl].((vm:WelcomeViewModel)DataContext).ActiveDialog,
+                    Converter={x:Static ObjectConverters.IsNotNull},
+                    FallbackValue=False}"/>
+
+  </Panel>
 
 </UserControl>

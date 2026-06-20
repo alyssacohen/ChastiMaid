@@ -4,14 +4,23 @@
   <!-- ═══════════════════════════════════════════
        SPACING SCALE (base 4px)
   ═══════════════════════════════════════════ -->
-  <x:Double x:Key="SpacingXs">4</x:Double>    <!-- chip gap, badge padding          -->
-  <x:Double x:Key="SpacingSm">8</x:Double>    <!-- icon-text gap, button pad min     -->
-  <x:Double x:Key="SpacingMd">12</x:Double>   <!-- row vertical pad, label-field gap -->
-  <x:Double x:Key="SpacingLg">16</x:Double>   <!-- card/panel padding, section gap   -->
-  <x:Double x:Key="SpacingXl">24</x:Double>   <!-- page lateral pad, widget gap      -->
-  <x:Double x:Key="SpacingXxl">40</x:Double>  <!-- page top margin, strong separator -->
+  <!-- Double values — for StackPanel.Spacing, WrapPanel.Spacing -->
+    <x:Double x:Key="SpacingXs">4</x:Double>
+    <x:Double x:Key="SpacingSm">8</x:Double>
+    <x:Double x:Key="SpacingMd">12</x:Double>
+    <x:Double x:Key="SpacingLg">16</x:Double>
+    <x:Double x:Key="SpacingXl">24</x:Double>
+    <x:Double x:Key="SpacingXxl">40</x:Double>
 
-  <!-- ═══════════════════════════════════════════
+  <!-- Thickness values — for Margin and Padding (uniform on all sides) -->
+    <Thickness x:Key="SpacingXsThickness">4</Thickness>
+    <Thickness x:Key="SpacingSmThickness">8</Thickness>
+    <Thickness x:Key="SpacingMdThickness">12</Thickness>
+    <Thickness x:Key="SpacingLgThickness">16</Thickness>
+    <Thickness x:Key="SpacingXlThickness">24</Thickness>
+    <Thickness x:Key="SpacingXxlThickness">40</Thickness>
+
+    <!-- ═══════════════════════════════════════════
        LAYOUT CONSTANTS
   ═══════════════════════════════════════════ -->
   <x:Double x:Key="NavPanelWidth">220</x:Double>

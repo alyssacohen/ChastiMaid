@@ -1,7 +1,8 @@
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using LiteDB;
-using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
@@ -19,6 +20,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [Reactive] private ViewModelBase _currentPage = null!;
 
+    /// <summary>
+    /// True when the window width is less than its height (portrait orientation).
+    /// Updated reactively on every window resize — no app restart needed.
+    /// Propagate to child ViewModels that need to adapt their layout.
+    /// </summary>
+    [Reactive] private bool _isPortrait;
+
     public MainWindowViewModel(DatabaseService databaseService, ProfileRepository profileRepository, SaveSlotManager saveSlotManager, AutoSaveService autoSaveService, WebcamPreviewService webcam)
     {
         DatabaseService = databaseService;
@@ -27,6 +35,14 @@ public partial class MainWindowViewModel : ViewModelBase
         AutoSaveService = autoSaveService;
         Webcam = webcam;
         CurrentPage = new WelcomeViewModel(this);
+
+        if (Application.Current?.ApplicationLifetime
+                is IClassicDesktopStyleApplicationLifetime lifetime
+            && lifetime.MainWindow is { } window)
+        {
+            window.GetObservable(Visual.BoundsProperty)
+                .Subscribe(bounds => IsPortrait = bounds.Width < bounds.Height);
+        }
     }
 
     /// <summary>
