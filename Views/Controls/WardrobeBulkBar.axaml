@@ -4,7 +4,7 @@
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeBulkBar">
 
-    <Border Background="{DynamicResource PrimaryTextBrush}"
+    <Border Background="{DynamicResource TextPrimary}"
             MinHeight="44">
         <Grid ColumnDefinitions="*,Auto"
               VerticalAlignment="Center"
@@ -12,11 +12,11 @@
 
             <TextBlock Grid.Column="0"
                        Text="{Binding WardrobeSelectedCount, StringFormat='{}{0} items selected'}"
-                       Foreground="{DynamicResource PageBackgroundBrush}"
+                       Foreground="{DynamicResource BrushWindowBackground}"
                        VerticalAlignment="Center" />
 
             <Button Grid.Column="1"
-                    Classes="danger compact"
+                    Classes="Danger compact"
                     Content="Delete selected"
                     Command="{Binding DeleteSelectedWardrobeItemsCommand}"
                     VerticalAlignment="Center" />

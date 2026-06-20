@@ -5,54 +5,78 @@
              x:DataType="vm:ConfirmOutfitViewModel"
              x:Class="ChastiMaid.Views.ConfirmOutfitView">
 
-    <Panel>
-    <StackPanel Classes="pageContent">
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MaxWidth="600"
+                Margin="40"
+                Spacing="16">
 
-        <TextBlock Text="Confirm Outfit" Classes="pageTitle" />
+        <TextBlock Classes="PageTitle"
+                   Text="Confirm Outfit"
+                   HorizontalAlignment="Center" />
 
         <!-- Initial state -->
         <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
-            <TextBlock Classes="subtitle"
-                       Text="Go change into the outfit below.&#10;When you are ready, press the button to confirm." />
-            <TextBlock Text="{Binding OutfitSummary}" TextWrapping="Wrap" Opacity="0.9" Margin="0,8" />
+            <TextBlock Classes="Body"
+                       Text="Go change into the outfit below.&#10;When you are ready, press the button to confirm."
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
+            <TextBlock Classes="Body"
+                       Text="{Binding OutfitSummary}"
+                       TextWrapping="Wrap"
+                       Opacity="0.9"
+                       Margin="0,8"
+                       HorizontalAlignment="Center" />
             <Button Content="I'm wearing the outfit, continue"
                     Command="{Binding ConfirmOutfitCommand}"
-                    HorizontalAlignment="Center" Classes="primary" />
+                    HorizontalAlignment="Center"
+                    Classes="Primary" />
         </StackPanel>
 
         <!-- Preview: webcam + Record -->
         <StackPanel Spacing="16" IsVisible="{Binding IsPreviewing}" HorizontalAlignment="Center">
-            <TextBlock Text="Check yourself in the preview, then press Record."
-                       HorizontalAlignment="Center" Classes="muted" TextAlignment="Center" />
+            <TextBlock Classes="Caption"
+                       Text="Check yourself in the preview, then press Record."
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
             <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
             <Button Content="🔴 Record (5s)"
                     Command="{Binding RecordCommand}"
-                    HorizontalAlignment="Center" Classes="primary" />
+                    HorizontalAlignment="Center"
+                    Classes="Primary" />
             <Button Content="Skip"
                     Command="{Binding SkipCommand}"
-                    Classes="secondary"
-                    HorizontalAlignment="Center" Opacity="0.6" />
+                    Classes="Ghost"
+                    HorizontalAlignment="Center"
+                    Opacity="0.6" />
         </StackPanel>
 
         <!-- Recording: countdown + live preview -->
         <StackPanel Spacing="16" IsVisible="{Binding IsRecording}" HorizontalAlignment="Center">
-            <TextBlock Text="Recording... Strike a pose!"
-                       HorizontalAlignment="Center" Opacity="0.9" />
+            <TextBlock Classes="Body"
+                       Text="Recording... Strike a pose!"
+                       HorizontalAlignment="Center" />
             <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
             <TextBlock Text="{Binding Countdown, StringFormat={}{0}s}"
-                       Classes="display" HorizontalAlignment="Center" />
+                       Classes="NumberLarge"
+                       HorizontalAlignment="Center" />
         </StackPanel>
 
         <!-- No webcam -->
         <StackPanel Spacing="16" IsVisible="{Binding NoWebcam}" HorizontalAlignment="Center">
-            <TextBlock Text="No webcam detected." HorizontalAlignment="Center" Classes="muted" />
-            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Classes="muted"
+            <TextBlock Classes="Body"
+                       Text="No webcam detected."
+                       HorizontalAlignment="Center" />
+            <TextBlock Classes="Caption"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
                        Text="The outfit video cannot be recorded. You can skip this step and continue." />
             <Button Content="Skip"
                     Command="{Binding SkipCommand}"
-                    HorizontalAlignment="Center" Classes="primary" />
+                    HorizontalAlignment="Center"
+                    Classes="Primary" />
         </StackPanel>
 
     </StackPanel>
-    </Panel>
+
 </UserControl>

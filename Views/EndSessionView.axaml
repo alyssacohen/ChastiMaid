@@ -5,13 +5,23 @@
              x:Class="ChastiMaid.Views.EndSessionView">
 
     <Panel>
+
         <!-- Choice screen -->
-        <StackPanel Classes="pageContent" IsVisible="{Binding !ShowingCombo}">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="420"
+                    Margin="40"
+                    Spacing="16"
+                    IsVisible="{Binding !ShowingCombo}">
 
-            <TextBlock Text="End Session" Classes="pageTitle" />
+            <TextBlock Classes="PageTitle"
+                       Text="End Session"
+                       HorizontalAlignment="Center" />
 
-            <TextBlock Text="Are you sure you want to end this session?"
-                       Classes="subtitle" />
+            <TextBlock Classes="Body"
+                       Text="Are you sure you want to end this session?"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
 
             <StackPanel Spacing="12">
                 <Button Content="Show Safe Combination and Close"
@@ -19,49 +29,59 @@
                         IsVisible="{Binding HasSafeCombo}"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        Classes="amber" />
+                        Classes="Amber" />
 
-                <TextBlock Text="A daily interest will be applied until you resume your session."
-                           Classes="small muted"
+                <TextBlock Classes="Caption"
+                           Text="A daily interest will be applied until you resume your session."
                            HorizontalAlignment="Center"
                            TextAlignment="Center"
                            IsVisible="{Binding HasSafeCombo}" />
 
                 <Button Content="Close Without Combination"
                         Command="{Binding CloseWithoutComboCommand}"
-                        Classes="secondary"
+                        Classes="Ghost"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center" />
 
                 <Button Content="Cancel"
                         Command="{Binding CancelCommand}"
-                        Classes="secondary"
+                        Classes="Ghost"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         Margin="0,12,0,0" />
             </StackPanel>
+
         </StackPanel>
 
         <!-- Combo revealed screen -->
-        <StackPanel Classes="pageContent" MaxWidth="600" IsVisible="{Binding ShowingCombo}">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="600"
+                    Margin="40"
+                    Spacing="16"
+                    IsVisible="{Binding ShowingCombo}">
 
-            <TextBlock Text="Your Safe Combination" Classes="subtitle" />
+            <TextBlock Classes="SectionTitle"
+                       Text="Your Safe Combination"
+                       HorizontalAlignment="Center" />
 
             <Image Source="{Binding ComboImage}"
                    MaxHeight="400"
                    Stretch="Uniform"
                    HorizontalAlignment="Center" />
 
-            <TextBlock Text="The combination has been saved alongside your session media."
-                       Classes="small muted"
+            <TextBlock Classes="Caption"
+                       Text="The combination has been saved alongside your session media."
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
 
             <Button Content="Close Application"
                     Command="{Binding ConfirmCloseCommand}"
                     HorizontalAlignment="Center"
-                    Classes="primary" />
+                    Classes="Primary" />
+
         </StackPanel>
+
     </Panel>
 
 </UserControl>

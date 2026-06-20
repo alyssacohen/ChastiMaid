@@ -4,18 +4,26 @@
              x:DataType="vm:NewGameViewModel"
              x:Class="ChastiMaid.Views.NewGameView">
 
-    <StackPanel Classes="pageContent">
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MaxWidth="420"
+                Margin="40"
+                Spacing="16">
 
-        <TextBlock Text="New Game" Classes="pageTitle" />
+        <TextBlock Classes="PageTitle"
+                   Text="New Game"
+                   HorizontalAlignment="Center" />
 
-        <TextBlock Text="Your game will start with these settings:" Classes="subtitle" />
+        <TextBlock Classes="Subheading"
+                   Text="Your game will start with these settings:"
+                   HorizontalAlignment="Center" />
 
         <StackPanel Spacing="4">
-            <TextBlock HorizontalAlignment="Center">
-                <Run Text="Initial debt: " Foreground="{DynamicResource TextHintBrush}" /><Run Text="{Binding DebtRange}" />
+            <TextBlock Classes="Body" HorizontalAlignment="Center">
+                <Run Text="Initial debt: " Foreground="{DynamicResource TextMuted}" /><Run Text="{Binding DebtRange}" />
             </TextBlock>
-            <TextBlock HorizontalAlignment="Center">
-                <Run Text="Daily interest: " Foreground="{DynamicResource TextHintBrush}" /><Run Text="{Binding InterestRate}" />
+            <TextBlock Classes="Body" HorizontalAlignment="Center">
+                <Run Text="Daily interest: " Foreground="{DynamicResource TextMuted}" /><Run Text="{Binding InterestRate}" />
             </TextBlock>
         </StackPanel>
 
@@ -23,17 +31,17 @@
                 Command="{Binding StartGameCommand}"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Classes="primary" />
+                Classes="Primary" />
 
         <Button Content="Settings"
                 Command="{Binding SettingsCommand}"
-                Classes="secondary"
+                Classes="Ghost"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center" />
 
         <Button Content="Back"
                 Command="{Binding BackCommand}"
-                Classes="secondary"
+                Classes="Ghost"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center" />
 

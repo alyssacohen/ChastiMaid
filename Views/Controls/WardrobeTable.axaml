@@ -10,7 +10,7 @@
     <StackPanel>
 
         <!-- ── Header row ──────────────────────────────────────────── -->
-        <Border Background="{DynamicResource SurfaceBrush}" Padding="0,4">
+        <Border Background="{DynamicResource BrushSurfaceBase}" Padding="0,4">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="44" />
@@ -26,22 +26,22 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1" Text="NAME"
-                           Classes="fieldLabel"
+                           Classes="LabelUI"
                            VerticalAlignment="Center"
                            Margin="4,0" />
                 <TextBlock Grid.Column="2" Text="LAYERS"
-                           Classes="fieldLabel"
+                           Classes="LabelUI"
                            VerticalAlignment="Center" />
                 <TextBlock Grid.Column="3" Text="SLOTS"
-                           Classes="fieldLabel"
+                           Classes="LabelUI"
                            VerticalAlignment="Center" />
                 <TextBlock Grid.Column="4" Text="⋮"
+                           Classes="Caption"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource TextHintBrush}" />
+                           VerticalAlignment="Center" />
             </Grid>
         </Border>
-        <Border Height="1" Background="{DynamicResource BorderBrush}" />
+        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" />
 
         <!-- ── Data rows ───────────────────────────────────────────── -->
         <ItemsControl ItemsSource="{Binding FilteredWardrobeItems}">
@@ -68,6 +68,7 @@
                                           VerticalAlignment="Center" />
 
                                 <TextBlock Grid.Column="1"
+                                           Classes="Body"
                                            Text="{Binding Name}"
                                            VerticalAlignment="Center"
                                            Margin="4,0"
@@ -89,9 +90,9 @@
                                                     CornerRadius="4"
                                                     Padding="6,2"
                                                     Margin="0,2,4,0">
-                                                <TextBlock Text="{Binding}"
-                                                           Foreground="{DynamicResource TextSecondary}"
-                                                           Classes="small" />
+                                                <TextBlock Classes="BodySmall"
+                                                           Text="{Binding}"
+                                                           Foreground="{DynamicResource TextSecondary}" />
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -113,9 +114,9 @@
                                                     CornerRadius="4"
                                                     Padding="6,2"
                                                     Margin="0,2,4,0">
-                                                <TextBlock Text="{Binding}"
-                                                           Foreground="{DynamicResource TextSecondary}"
-                                                           Classes="small" />
+                                                <TextBlock Classes="BodySmall"
+                                                           Text="{Binding}"
+                                                           Foreground="{DynamicResource TextSecondary}" />
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -178,18 +179,18 @@
                                     <controls:ChipInputControl DataContext="{Binding TagsChipInput}" />
                                 </StackPanel>
 
-                                <Button Classes="danger compact"
+                                <Button Classes="Danger compact"
                                         Content="Delete item"
                                         Command="{Binding DeleteCommand}"
                                         HorizontalAlignment="Right" />
-                                <TextBlock Text="Multiplier and weight affect outfit scoring. Tags are used by outfit rules."
-                                           Classes="Caption"
-                                           FontStyle="Italic" />
+                                <TextBlock Classes="Caption"
+                                           FontStyle="Italic"
+                                           Text="Multiplier and weight affect outfit scoring. Tags are used by outfit rules." />
                             </StackPanel>
                         </Border>
 
                         <Border Height="1"
-                                Background="{DynamicResource BorderBrush}"
+                                Background="{DynamicResource BrushBorderSubtle}"
                                 Opacity="0.3" />
 
                     </StackPanel>
@@ -198,10 +199,10 @@
         </ItemsControl>
 
         <!-- ── New-item row ────────────────────────────────────────── -->
-        <Border BorderBrush="{DynamicResource BorderBrush}"
+        <Border BorderBrush="{DynamicResource BrushBorderSubtle}"
                 BorderThickness="1"
                 CornerRadius="2"
-                Background="{DynamicResource AccentSubtleBrush}"
+                Background="{DynamicResource BrushSurfaceSubtle}"
                 Margin="0,8,0,0"
                 Opacity="0.85">
             <Grid Margin="4,4">
@@ -212,8 +213,6 @@
                     <ColumnDefinition Width="180" />
                     <ColumnDefinition Width="44" />
                 </Grid.ColumnDefinitions>
-
-                <!-- Col 0: intentionally empty (no checkbox for new items) -->
 
                 <TextBox Grid.Column="1"
                          Text="{Binding NewItemName}"

@@ -6,30 +6,45 @@
              x:Class="ChastiMaid.Views.StartSessionView">
 
     <Panel>
-        <StackPanel Classes="pageContent">
 
-            <TextBlock Text="Today's Outfit" Classes="pageTitle" />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="480"
+                    Margin="40"
+                    Spacing="16">
 
-            <TextBlock Text="I have taken the liberty of choosing your attire. I am sure you will like it."
-                       Classes="subtitle" />
+            <TextBlock Classes="PageTitle"
+                       Text="Today's Outfit"
+                       HorizontalAlignment="Center" />
 
-            <TextBlock Text="{Binding ProposedOutfit}" />
+            <TextBlock Classes="EmployerVoice"
+                       Text="I have taken the liberty of choosing your attire. I am sure you will like it."
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
 
-            <StackPanel Classes="buttonBar">
+            <TextBlock Classes="Body"
+                       Text="{Binding ProposedOutfit}"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="8">
                 <Button Content="Accept"
                         Command="{Binding AcceptCommand}"
-                        Classes="primary" />
+                        Classes="Primary" />
                 <Button Content="Regenerate"
                         Command="{Binding RegenerateCommand}"
-                        Classes="secondary"
+                        Classes="Ghost"
                         IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Content="Modify"
                         Command="{Binding ModifyCommand}"
-                        Classes="secondary"
+                        Classes="Ghost"
                         IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Content="Quit"
                         Command="{Binding QuitCommand}"
-                        Classes="ghost" />
+                        Classes="Ghost" />
             </StackPanel>
 
         </StackPanel>
@@ -43,6 +58,7 @@
                 </DataTemplate>
             </ContentControl.ContentTemplate>
         </ContentControl>
+
     </Panel>
 
 </UserControl>

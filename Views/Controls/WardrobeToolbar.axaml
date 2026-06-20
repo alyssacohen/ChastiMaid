@@ -4,10 +4,9 @@
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeToolbar">
 
-    <Border Background="{DynamicResource SurfaceBrush}" Padding="8,4">
+    <Border Background="{DynamicResource BrushSurfaceBase}" Padding="8,4">
         <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" VerticalAlignment="Center">
 
-            <!-- Name / tag filter -->
             <TextBox Grid.Column="0"
                      Text="{Binding WardrobeNameFilter}"
                      PlaceholderText="Filter by name or tag…"
@@ -15,13 +14,12 @@
                      MinHeight="44"
                      VerticalContentAlignment="Center" />
 
-            <!-- Layer label -->
             <TextBlock Grid.Column="1"
+                       Classes="BodySmall"
                        Text="Layer:"
                        VerticalAlignment="Center"
                        Margin="16,0,8,0" />
 
-            <!-- Layer filter chips -->
             <WrapPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton Classes="filterChip"
                               Content="All"
@@ -60,9 +58,8 @@
                               CommandParameter="gears" />
             </WrapPanel>
 
-            <!-- Add item button (right-aligned via Grid stretch column) -->
             <Button Grid.Column="4"
-                    Classes="primary"
+                    Classes="Primary"
                     Content="+ Add item"
                     Command="{Binding AddWardrobeItemCommand}"
                     MinHeight="44"

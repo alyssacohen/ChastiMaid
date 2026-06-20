@@ -34,4 +34,33 @@
     <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
   </Style>
 
+  <!-- ──────────────────────────────────────────────────────────
+       Button.chip — interactive chip variant (ChangeOutfitView)
+  ────────────────────────────────────────────────────────────── -->
+  <Style Selector="Button.chip">
+    <Setter Property="Background" Value="{DynamicResource BrushChipDefault}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="CornerRadius" Value="4"/>
+    <Setter Property="Padding" Value="8,0"/>
+    <Setter Property="Height" Value="30"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+
+  <Style Selector="Button.chip.selected">
+    <Setter Property="Background" Value="{DynamicResource BrushChipSelected}"/>
+    <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
+  </Style>
+
+  <Style Selector="Button.chip.required">
+    <Setter Property="Background" Value="{DynamicResource BrushChipRequired}"/>
+    <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
+  </Style>
+
+  <Style Selector="Button.chip.disabled">
+    <Setter Property="Opacity" Value="0.28"/>
+  </Style>
+
 </Styles>

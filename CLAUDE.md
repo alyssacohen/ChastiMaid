@@ -90,7 +90,54 @@ Full keyboard and mouse, large screen. Used for development and testing.
 
 ## Styling
 
-- Global styles in `GlobalStyles.axaml`, included via `StyleInclude` in `App.axaml`. `RequestedThemeVariant="Dark"`.
-- Font sizes are scaled at runtime from primary screen height (1080p reference) and exposed as `DynamicResource` keys: `FontSizeBody`, `FontSizeSmall`, `FontSizeButton`, `FontSizeHeading`, `FontSizeDisplay`.
-- Fonts: DisplayFont (Cormorant Garamond), HeadingFont (Cormorant Garamond Italic), DefaultFont (Inter Light).
-- Use style classes for variants, e.g. `TextBlock.heading`, `TextBlock.display`, `Button.primary`, `Button.compact`. Icons via FluentIcons.Avalonia.
+**Warm light theme only.** `RequestedThemeVariant="Light"`. No dark theme, no conditional palettes.
+
+Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
+
+| File | Root element | Contents |
+|------|-------------|---------|
+| `Colors.axaml` | `ResourceDictionary` | All `Color` and `SolidColorBrush` resources |
+| `Spacing.axaml` | `ResourceDictionary` | Spacing scale + layout constants |
+| `Typography.axaml` | `Styles` | `TextBlock.*` style classes |
+| `Buttons.axaml` | `Styles` | `Button.*` style classes |
+| `Chips.axaml` | `Styles` | `Border.chip` + `TextBlock.chip-label` styles |
+| `Tables.axaml` | `Styles` | `Grid.TableRow.*` styles |
+| `Components.axaml` | `Styles` | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip`, `Button.slotCard` |
+
+**Colors.axaml** is always loaded first (others reference its brushes). `Colors.axaml` must stay first in `MergedDictionaries`.
+
+**No inline styles.** Never hardcode colors, font sizes, or spacing directly in views. All tokens live in `Assets/Styles/`. Views assign classes and reference resources only.
+
+**No font scaling.** Typography uses fixed pixel values. `TypographyService.cs` is dead code — delete it if found.
+
+**Font families** — referenced as embedded Avalonia assets, not installed system fonts:
+- `Cormorant Garamond` — display serif, used in `PageTitle`, `SectionTitle`, `EmployerVoice` only. Files live in `Assets/Fonts/CormorantGaramond/`; registered in `Typography.axaml` via URI `avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond`.
+- `Inter` — all other UI text, provided by the `Avalonia.Fonts.Inter` NuGet package (auto-registered).
+
+### Typography classes (`TextBlock`)
+
+`PageTitle` · `SectionTitle` · `Heading` · `Subheading` · `Body` · `BodySmall` · `Caption` · `LabelUI` · `NumberLarge` · `EmployerVoice`
+
+`LabelUI` text must be UPPERCASED at content level (`Text="NAME"`).
+
+### Button classes
+
+`Primary` · `Ghost` · `Danger` · `SmallGhost` · `Amber` · `Emergency` · `Delete` · `Add` · `SlotCard`
+
+Modifier: `compact` (reduces height to 32px; combinable: `Classes="Danger compact"`).
+
+### Color brush keys
+
+**Surfaces:** `BrushWindowBackground` · `BrushSurfaceBase` · `BrushSurfaceSubtle` · `BrushSurfaceMuted`
+
+**Text:** `TextPrimary` · `TextSecondary` · `TextMuted` · `TextAccent`
+
+**Interactive:** `BrushButtonPrimary` · `BrushButtonPrimaryText` · `BrushButtonDanger` · `BrushBorderSubtle` · `BrushChipDefault` · `BrushChipSelected` · `BrushChipRequired`
+
+**Semantic:** `BrushAmber` · `BrushAmberBackground` · `BrushAmberText` · `BrushStatusIdle` · `BrushEmergencyText`
+
+Icons via `FluentIcons.Avalonia`.
+
+### Migration status
+
+All views are fully migrated to the design system. `WelcomeView` is the reference view. When editing any view, use only the class names and brush keys listed above.

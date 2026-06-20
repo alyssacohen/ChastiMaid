@@ -54,4 +54,25 @@
   <SolidColorBrush x:Key="BrushChipSelected"      Color="{StaticResource ColorChipSelected}"/>
   <SolidColorBrush x:Key="BrushChipRequired"      Color="{StaticResource ColorChipRequired}"/>
 
+  <!-- ═══════════════════════════════════════════
+       SEMANTIC COLORS — AMBER / WARNING
+  ═══════════════════════════════════════════ -->
+  <Color x:Key="ColorAmber">#8B6914</Color>
+  <Color x:Key="ColorAmberSurface">#FEF5DC</Color>
+  <Color x:Key="ColorAmberText">#4A3507</Color>
+
+  <!-- ═══════════════════════════════════════════
+       SEMANTIC COLORS — STATUS / FEEDBACK
+  ═══════════════════════════════════════════ -->
+  <Color x:Key="ColorStatusIdle">#5B8F6A</Color>
+
+  <!-- ═══════════════════════════════════════════
+       BRUSHES — SEMANTIC
+  ═══════════════════════════════════════════ -->
+  <SolidColorBrush x:Key="BrushAmber"           Color="{StaticResource ColorAmber}"/>
+  <SolidColorBrush x:Key="BrushAmberBackground" Color="{StaticResource ColorAmberSurface}"/>
+  <SolidColorBrush x:Key="BrushAmberText"       Color="{StaticResource ColorAmberText}"/>
+  <SolidColorBrush x:Key="BrushStatusIdle"      Color="{StaticResource ColorStatusIdle}"/>
+  <SolidColorBrush x:Key="BrushEmergencyText"   Color="{StaticResource ColorButtonDanger}"/>
+
 </ResourceDictionary>

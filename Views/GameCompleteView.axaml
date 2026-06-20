@@ -4,26 +4,34 @@
              x:DataType="vm:GameCompleteViewModel"
              x:Class="ChastiMaid.Views.GameCompleteView">
 
-    <StackPanel Classes="pageContent">
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MaxWidth="480"
+                Margin="40"
+                Spacing="16">
 
-        <TextBlock Text="Game Complete!" Classes="pageTitle" />
+        <TextBlock Classes="PageTitle"
+                   Text="Game Complete!"
+                   HorizontalAlignment="Center" />
 
-        <TextBlock Classes="subtitle"
-                   Text="Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed." />
+        <TextBlock Classes="EmployerVoice"
+                   Text="Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed."
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center" />
 
         <!-- Export buttons -->
         <StackPanel Spacing="12">
             <Button Content="Export Outfit Video"
                     Command="{Binding ExportOutfitVideoCommand}"
                     IsVisible="{Binding HasOutfitVideo}"
-                    Classes="secondary"
+                    Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center" />
 
             <Button Content="Export Safe Combination Photo"
                     Command="{Binding ExportSafePhotoCommand}"
                     IsVisible="{Binding HasSafePhoto}"
-                    Classes="secondary"
+                    Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center" />
         </StackPanel>
@@ -31,14 +39,14 @@
         <!-- Status message -->
         <TextBlock Text="{Binding StatusMessage}"
                    HorizontalAlignment="Center"
-                   Classes="muted"
+                   Classes="Caption"
                    IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
         <!-- Finish -->
         <Button Content="Finish and Free Slot"
                 Command="{Binding FinishCommand}"
                 HorizontalAlignment="Center"
-                Classes="primary" />
+                Classes="Primary" />
 
     </StackPanel>
 

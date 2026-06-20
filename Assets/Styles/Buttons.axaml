@@ -59,4 +59,78 @@
     <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
   </Style>
 
+  <!-- Amber — warning / punishment actions -->
+  <Style Selector="Button.Amber">
+    <Setter Property="Background" Value="{DynamicResource BrushAmber}"/>
+    <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="FontWeight" Value="SemiLight"/>
+    <Setter Property="Height" Value="44"/>
+    <Setter Property="Padding" Value="16,0"/>
+    <Setter Property="CornerRadius" Value="6"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+
+  <!-- Emergency — high-urgency action (emergency break) -->
+  <Style Selector="Button.Emergency">
+    <Setter Property="Background" Value="{DynamicResource BrushButtonDanger}"/>
+    <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Height" Value="44"/>
+    <Setter Property="Padding" Value="16,0"/>
+    <Setter Property="CornerRadius" Value="6"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+
+  <!-- Delete — icon-only destructive action -->
+  <Style Selector="Button.Delete">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource BrushButtonDanger}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="Height" Value="44"/>
+    <Setter Property="Padding" Value="8,0"/>
+    <Setter Property="CornerRadius" Value="4"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+
+  <!-- Add — insert a new item (ghost with neutral tone) -->
+  <Style Selector="Button.Add">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+    <Setter Property="Height" Value="44"/>
+    <Setter Property="Padding" Value="16,0"/>
+    <Setter Property="CornerRadius" Value="6"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
+  </Style>
+
+  <!-- SlotCard — large clickable card button (LoadGameView) -->
+  <Style Selector="Button.SlotCard">
+    <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="CornerRadius" Value="4"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
+  </Style>
+
+  <!-- compact — size modifier; combine with other button classes -->
+  <Style Selector="Button.compact">
+    <Setter Property="Height" Value="32"/>
+    <Setter Property="Padding" Value="12,0"/>
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="CornerRadius" Value="4"/>
+  </Style>
+
 </Styles>

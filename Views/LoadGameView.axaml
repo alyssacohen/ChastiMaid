@@ -8,29 +8,33 @@
 
     <Panel>
 
-        <StackPanel Classes="pageContent">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="40"
+                    Spacing="16">
 
-            <TextBlock Text="Load Game" Classes="pageTitle" />
+            <TextBlock Classes="PageTitle"
+                       Text="Load Game"
+                       HorizontalAlignment="Center" />
 
             <ItemsControl ItemsSource="{Binding Slots}" Width="600">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:SlotCardViewModel">
                         <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+
                             <!-- Card (clickable to load) -->
                             <Button Grid.Column="0"
                                     Command="{Binding LoadCommand}"
-                                    Classes="slotCard"
+                                    Classes="SlotCard"
                                     IsEnabled="{Binding !IsEmpty}"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Stretch"
-                                    CornerRadius="4"
                                     Padding="20,16">
 
                                 <Grid ColumnDefinitions="Auto,*">
                                     <!-- Slot number -->
-                                    <TextBlock Text="{Binding SlotNumber}"
-                                               FontFamily="{StaticResource DisplayFont}"
-                                               FontSize="{StaticResource FontSizeDisplay}"
+                                    <TextBlock Classes="NumberLarge"
+                                               Text="{Binding SlotNumber}"
                                                VerticalAlignment="Center"
                                                Opacity="0.8"
                                                Margin="0,0,24,0"
@@ -38,40 +42,53 @@
                                                TextAlignment="Center" />
 
                                     <!-- Save data -->
-                                    <StackPanel Grid.Column="1" Spacing="0" VerticalAlignment="Center"
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="0"
+                                                VerticalAlignment="Center"
                                                 IsVisible="{Binding !IsEmpty}">
-                                        <TextBlock Text="{Binding SlotName}" />
-                                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,6,0,0">
-                                            <TextBlock Text="{Binding SavedAt}" Classes="small muted" />
+                                        <TextBlock Classes="Body"
+                                                   Text="{Binding SlotName}" />
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="16"
+                                                    Margin="0,6,0,0">
+                                            <TextBlock Classes="Caption"
+                                                       Text="{Binding SavedAt}" />
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,4,0,0">
-                                            <TextBlock Text="{Binding DebtDisplay}" Classes="small" Opacity="0.85" />
-                                            <TextBlock Text="{Binding SafeStatus}" Classes="small" Opacity="0.85" />
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="16"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Classes="BodySmall"
+                                                       Text="{Binding DebtDisplay}"
+                                                       Opacity="0.85" />
+                                            <TextBlock Classes="BodySmall"
+                                                       Text="{Binding SafeStatus}"
+                                                       Opacity="0.85" />
                                         </StackPanel>
-                                        <TextBlock Text="{Binding CompletedLabel}"
+                                        <TextBlock Classes="Caption"
+                                                   Text="{Binding CompletedLabel}"
                                                    IsVisible="{Binding IsCompleted}"
-                                                   Classes="small muted"
                                                    Margin="0,6,0,0" />
                                     </StackPanel>
 
                                     <!-- Empty slot label -->
                                     <TextBlock Grid.Column="1"
+                                               Classes="Caption"
                                                Text="Empty"
-                                               Classes="muted"
                                                VerticalAlignment="Center"
                                                IsVisible="{Binding IsEmpty}" />
                                 </Grid>
                             </Button>
 
-                            <!-- Delete button (outside card, larger icon) -->
+                            <!-- Delete button -->
                             <Button Grid.Column="1"
                                     Command="{Binding DeleteCommand}"
-                                    Classes="delete"
+                                    Classes="Delete"
                                     Margin="8,0,0,0"
                                     IsVisible="{Binding !IsEmpty}"
                                     Padding="16,12">
                                 <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
                             </Button>
+
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -79,7 +96,7 @@
 
             <Button Content="Back"
                     Command="{Binding BackCommand}"
-                    Classes="secondary"
+                    Classes="Ghost"
                     HorizontalAlignment="Center" />
 
         </StackPanel>

@@ -50,6 +50,7 @@ public partial class OutfitDrawer : UserControl
     public OutfitDrawer()
     {
         InitializeComponent();
+        IsVisible = false; // closed by default; OnPropertyChanged syncs when IsOpen changes
     }
 
     // ── Property sync ────────────────────────────────────────────────────────

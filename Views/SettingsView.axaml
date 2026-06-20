@@ -9,8 +9,11 @@
     <Panel>
     <Grid RowDefinitions="Auto,*,Auto" Margin="48,24">
 
-        <TextBlock Grid.Row="0" Text="Settings" Classes="display"
-                   HorizontalAlignment="Center" Margin="0,0,0,16" />
+        <TextBlock Grid.Row="0"
+                   Classes="PageTitle"
+                   Text="Settings"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,16" />
 
         <TabControl Grid.Row="1" Margin="0,0,0,8" SelectedIndex="{Binding SelectedTabIndex}">
 
@@ -23,76 +26,76 @@
                     <StackPanel Spacing="0" Margin="0,0,0,16">
 
                         <!-- Player -->
-                        <TextBlock Text="Player" Classes="heading" Margin="0,0,0,8" />
+                        <TextBlock Classes="Heading" Text="Player" Margin="0,0,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Name" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Name" VerticalAlignment="Center" />
                                     <TextBox Grid.Column="1" Text="{Binding PlayerName}" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Auto-save (min)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Auto-save (min)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding AutoSaveInterval}" Minimum="1" Maximum="60" FormatString="0" />
                                 </Grid>
                             </StackPanel>
                         </Border>
 
                         <!-- Game Balance -->
-                        <TextBlock Text="Game Balance" Classes="heading" Margin="0,8,0,8" />
+                        <TextBlock Classes="Heading" Text="Game Balance" Margin="0,8,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Min debt" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Min debt" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding MinDebt}" Minimum="0" Increment="50" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Max debt" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Max debt" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding MaxDebt}" Minimum="0" Increment="50" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Daily interest rate" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Daily interest rate" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding DailyInterestRate}" Minimum="0" Maximum="1" Increment="0.01" FormatString="0.00" />
                                 </Grid>
                             </StackPanel>
                         </Border>
 
                         <!-- Session Timing -->
-                        <TextBlock Text="Session Timing" Classes="heading" Margin="0,8,0,8" />
+                        <TextBlock Classes="Heading" Text="Session Timing" Margin="0,8,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Idle wage amount" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Idle wage amount" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding IdleWageAmount}" Minimum="0" Increment="1" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Wage interval (min)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Wage interval (min)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding IdleWageInterval}" Minimum="1" Maximum="120" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Popup min (sec)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Popup min (sec)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding PopupMinInterval}" Minimum="10" Increment="10" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Popup max (sec)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Popup max (sec)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding PopupMaxInterval}" Minimum="10" Increment="10" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Popup timeout (sec)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Popup timeout (sec)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding PopupTimeout}" Minimum="5" Maximum="60" FormatString="0" />
                                 </Grid>
                             </StackPanel>
                         </Border>
 
                         <!-- Capture -->
-                        <TextBlock Text="Capture" Classes="heading" Margin="0,8,0,8" />
+                        <TextBlock Classes="Heading" Text="Capture" Margin="0,8,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Capture min (sec)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Capture min (sec)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding CaptureMinInterval}" Minimum="1" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Text="Capture max (sec)" Classes="small" VerticalAlignment="Center" />
+                                    <TextBlock Classes="BodySmall" Text="Capture max (sec)" VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Value="{Binding CaptureMaxInterval}" Minimum="1" FormatString="0" />
                                 </Grid>
                             </StackPanel>
@@ -116,37 +119,40 @@
                                         <Grid ColumnDefinitions="*,Auto">
                                             <!-- Content -->
                                             <StackPanel Grid.Column="0" Spacing="8">
-                                                <!-- Row 0: Name, Value, Frequency — all with labels -->
+                                                <!-- Row 0: Name, Value, Frequency -->
                                                 <Grid ColumnDefinitions="*,100,100">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Name" Classes="fieldLabel" />
+                                                        <TextBlock Classes="LabelUI" Text="NAME" />
                                                         <TextBox Text="{Binding Name}" PlaceholderText="Chore name" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Value" Classes="fieldLabel" />
+                                                        <TextBlock Classes="LabelUI" Text="VALUE" />
                                                         <TextBox Text="{Binding Value}" PlaceholderText="0" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2" Spacing="2">
-                                                        <TextBlock Text="Freq. (days)" Classes="fieldLabel" />
+                                                        <TextBlock Classes="LabelUI" Text="FREQ. (DAYS)" />
                                                         <TextBox Text="{Binding FrequencyDays}" PlaceholderText="0" />
                                                     </StackPanel>
                                                 </Grid>
                                                 <!-- Row 1: Description -->
                                                 <StackPanel Spacing="2">
-                                                    <TextBlock Text="Description" Classes="fieldLabel" />
+                                                    <TextBlock Classes="LabelUI" Text="DESCRIPTION" />
                                                     <TextBox Text="{Binding Description}" PlaceholderText="Optional description" />
                                                 </StackPanel>
                                             </StackPanel>
                                             <!-- Delete button -->
-                                            <Button Grid.Column="1" Command="{Binding DeleteCommand}"
-                                                    Classes="delete" VerticalAlignment="Center" Margin="12,0,0,0" />
+                                            <Button Grid.Column="1"
+                                                    Command="{Binding DeleteCommand}"
+                                                    Classes="Delete"
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0,0,0" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Button Grid.Row="1" Command="{Binding AddChoreCommand}" Classes="add">
+                    <Button Grid.Row="1" Command="{Binding AddChoreCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
                             <TextBlock Text="Add Chore" VerticalAlignment="Center" />
@@ -171,31 +177,34 @@
                                             <StackPanel Grid.Column="0" Spacing="8">
                                                 <!-- Row 0: Name -->
                                                 <StackPanel Spacing="2">
-                                                    <TextBlock Text="Name" Classes="fieldLabel" />
+                                                    <TextBlock Classes="LabelUI" Text="NAME" />
                                                     <TextBox Text="{Binding Name}" PlaceholderText="Punishment name" />
                                                 </StackPanel>
                                                 <!-- Row 1: Effects -->
                                                 <Grid ColumnDefinitions="*,*">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Text="Debt increase" Classes="fieldLabel" />
+                                                        <TextBlock Classes="LabelUI" Text="DEBT INCREASE" />
                                                         <NumericUpDown Value="{Binding DebtIncrease}" FormatString="0" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2">
-                                                        <TextBlock Text="Required chores" Classes="fieldLabel" />
+                                                        <TextBlock Classes="LabelUI" Text="REQUIRED CHORES" />
                                                         <NumericUpDown Value="{Binding RequiredChoreCount}" FormatString="0" />
                                                     </StackPanel>
                                                 </Grid>
                                             </StackPanel>
                                             <!-- Delete button -->
-                                            <Button Grid.Column="1" Command="{Binding DeleteCommand}"
-                                                    Classes="delete" VerticalAlignment="Center" Margin="12,0,0,0" />
+                                            <Button Grid.Column="1"
+                                                    Command="{Binding DeleteCommand}"
+                                                    Classes="Delete"
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0,0,0" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Button Grid.Row="1" Command="{Binding AddPunishmentCommand}" Classes="add">
+                    <Button Grid.Row="1" Command="{Binding AddPunishmentCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
                             <TextBlock Text="Add Punishment" VerticalAlignment="Center" />
@@ -234,12 +243,12 @@
                                                       ItemsSource="{Binding AvailableItems}"
                                                       SelectedItem="{Binding Item}"
                                                       PlaceholderText="Select item"
-                                                      HorizontalAlignment="Stretch" 
+                                                      HorizontalAlignment="Stretch"
                                                       VerticalAlignment="Center" />
                                             <ComboBox Grid.Column="1"
                                                       ItemsSource="{x:Static vm:OutfitRuleEditViewModel.RelationOptions}"
                                                       SelectedItem="{Binding Relation}"
-                                                      HorizontalAlignment="Stretch" 
+                                                      HorizontalAlignment="Stretch"
                                                       VerticalAlignment="Center"
                                                       Margin="8,0" />
                                             <ComboBox Grid.Column="2"
@@ -248,9 +257,11 @@
                                                       PlaceholderText="Select item"
                                                       HorizontalAlignment="Stretch"
                                                       VerticalAlignment="Center" />
-                                            <Button Grid.Column="3" Command="{Binding DeleteCommand}"
-                                                    Classes="delete" Margin="8,0,0,0" 
-                                                    HorizontalAlignment="Stretch" 
+                                            <Button Grid.Column="3"
+                                                    Command="{Binding DeleteCommand}"
+                                                    Classes="Delete"
+                                                    Margin="8,0,0,0"
+                                                    HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Center" />
                                         </Grid>
                                     </Border>
@@ -258,7 +269,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Button Grid.Row="1" Command="{Binding AddOutfitRuleCommand}" Classes="add">
+                    <Button Grid.Row="1" Command="{Binding AddOutfitRuleCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
                             <TextBlock Text="Add Rule" VerticalAlignment="Center" />
@@ -269,14 +280,19 @@
 
         </TabControl>
 
-        <StackPanel Grid.Row="2" Classes="buttonBar" Margin="0,8,0,0">
-            <Button Command="{Binding SaveCommand}" Classes="primary">
+        <!-- Footer action bar -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Spacing="8"
+                    Margin="0,8,0,0">
+            <Button Command="{Binding SaveCommand}" Classes="Primary">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="18" />
                     <TextBlock Text="Save" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-            <Button Content="Back" Command="{Binding BackCommand}" Classes="secondary" />
+            <Button Content="Back" Command="{Binding BackCommand}" Classes="Ghost" />
         </StackPanel>
 
     </Grid>
@@ -286,17 +302,26 @@
            Classes="dialogOverlay">
         <Border Classes="dialogBox">
             <StackPanel Spacing="16" DataContext="{Binding ActiveDialog}" x:DataType="vm:SaveDialogViewModel">
-                <TextBlock Text="{Binding Title}" Classes="heading" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Message}" TextAlignment="Center" Opacity="0.85" TextWrapping="Wrap" />
-                <StackPanel Classes="buttonBar" Margin="0,8,0,0">
-                    <Button Content="Discard" Command="{Binding DiscardCommand}" Classes="secondary" />
-                    <Button Command="{Binding SaveCommand}" Classes="primary">
+                <TextBlock Classes="Heading"
+                           Text="{Binding Title}"
+                           HorizontalAlignment="Center" />
+                <TextBlock Classes="Body"
+                           Text="{Binding Message}"
+                           TextAlignment="Center"
+                           Opacity="0.85"
+                           TextWrapping="Wrap" />
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="8"
+                            Margin="0,8,0,0">
+                    <Button Content="Discard" Command="{Binding DiscardCommand}" Classes="Ghost" />
+                    <Button Command="{Binding SaveCommand}" Classes="Primary">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="18" />
                             <TextBlock Text="Save" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" Classes="secondary" />
+                    <Button Content="Cancel" Command="{Binding CancelCommand}" Classes="Ghost" />
                 </StackPanel>
             </StackPanel>
         </Border>

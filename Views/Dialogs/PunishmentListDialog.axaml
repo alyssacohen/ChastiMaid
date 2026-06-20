@@ -11,7 +11,7 @@
                     Background="Transparent"
                     CanResize="False">
 
-    <Border Background="{DynamicResource PageBackgroundBrush}"
+    <Border Background="{DynamicResource BrushWindowBackground}"
             CornerRadius="8"
             BoxShadow="0 8 32 0 #40000000">
 
@@ -19,28 +19,26 @@
 
             <!-- ── Header (amber) ── -->
             <Border DockPanel.Dock="Top"
-                    Background="{DynamicResource AmberBackgroundBrush}"
+                    Background="{DynamicResource BrushAmberBackground}"
                     CornerRadius="8,8,0,0"
                     Padding="20,0,12,0"
                     Height="52">
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBlock Grid.Column="0"
+                               Classes="SectionTitle"
                                Text="Pending Punishments"
-                               FontFamily="{DynamicResource DisplayFont}"
-                               FontStyle="Italic"
-                               FontSize="{DynamicResource FontSizeBody}"
-                               Foreground="{DynamicResource AmberTextBrush}"
+                               Foreground="{DynamicResource BrushAmberText}"
                                VerticalAlignment="Center" />
                     <Button Grid.Column="1"
                             Click="OnDismissClick"
                             Width="32" Height="32"
                             Padding="0"
                             CornerRadius="16"
-                            Classes="secondary"
+                            Classes="Ghost compact"
                             VerticalAlignment="Center"
                             ToolTip.Tip="Close">
                         <TextBlock Text="✕" FontSize="14"
-                                   Foreground="{DynamicResource AmberTextBrush}"
+                                   Foreground="{DynamicResource BrushAmberText}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
                     </Button>
@@ -49,12 +47,12 @@
 
             <!-- ── Footer ── -->
             <Border DockPanel.Dock="Bottom"
-                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
                     BorderThickness="0,1,0,0"
                     Padding="20,12">
                 <Button Content="Close"
                         Click="OnDismissClick"
-                        Classes="secondary"
+                        Classes="Ghost"
                         HorizontalAlignment="Center"
                         MinWidth="100" />
             </Border>
@@ -71,24 +69,21 @@
                                     <StackPanel Grid.Column="0"
                                                 VerticalAlignment="Center"
                                                 Spacing="2">
-                                        <TextBlock Text="{Binding Name}"
-                                                   FontSize="{DynamicResource FontSizeBody}"
-                                                   Foreground="{DynamicResource TextPrimaryBrush}" />
-                                        <TextBlock Text="{Binding AssignedLabel}"
-                                                   FontSize="{DynamicResource FontSizeSmall}"
-                                                   Foreground="{DynamicResource TextHintBrush}" />
+                                        <TextBlock Classes="Body"
+                                                   Text="{Binding Name}" />
+                                        <TextBlock Classes="Caption"
+                                                   Text="{Binding AssignedLabel}" />
                                     </StackPanel>
                                     <Button Grid.Column="1"
                                             Content="Start"
                                             Click="StartButton_Click"
-                                            Classes="primary compact"
-                                            Height="34"
+                                            Classes="Primary compact"
                                             MinHeight="44"
                                             VerticalAlignment="Center"
                                             Margin="12,0,0,0" />
                                 </Grid>
                                 <Border Height="0.5"
-                                        Background="{DynamicResource BorderBrush}"
+                                        Background="{DynamicResource BrushBorderSubtle}"
                                         Margin="20,0" />
                             </StackPanel>
                         </DataTemplate>

@@ -9,7 +9,7 @@
 
   <!-- PageTitle — main heading of each page (one per page) -->
   <Style Selector="TextBlock.PageTitle">
-    <Setter Property="FontFamily" Value="Cormorant Garamond"/>
+    <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond"/>
     <Setter Property="FontSize" Value="32"/>
     <Setter Property="FontWeight" Value="SemiBold"/>
     <Setter Property="LineHeight" Value="38"/>
@@ -19,7 +19,7 @@
 
   <!-- SectionTitle — widget headers, internal section headings -->
   <Style Selector="TextBlock.SectionTitle">
-    <Setter Property="FontFamily" Value="Cormorant Garamond"/>
+    <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond"/>
     <Setter Property="FontSize" Value="22"/>
     <Setter Property="FontWeight" Value="Regular"/>
     <Setter Property="FontStyle" Value="Italic"/>
@@ -94,7 +94,7 @@
 
   <!-- EmployerVoice — character dialogue, in-UI quotes -->
   <Style Selector="TextBlock.EmployerVoice">
-    <Setter Property="FontFamily" Value="Cormorant Garamond"/>
+    <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond"/>
     <Setter Property="FontSize" Value="13"/>
     <Setter Property="FontWeight" Value="Regular"/>
     <Setter Property="FontStyle" Value="Italic"/>

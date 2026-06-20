@@ -3,60 +3,38 @@
              x:Class="ChastiMaid.Views.Controls.DebtWidget"
              x:Name="Root">
 
-    <Border Background="{DynamicResource CardBrush}"
-            BorderBrush="{DynamicResource BorderWarmBrush}"
-            BorderThickness="1"
-            CornerRadius="8"
-            Padding="16">
-
+    <Border Classes="card" Margin="0">
         <StackPanel Spacing="10">
 
-            <!-- Title -->
-            <TextBlock Text="Outstanding Balance"
-                       FontFamily="{DynamicResource DisplayFont}"
-                       FontStyle="Italic"
-                       FontSize="{DynamicResource FontSizeSmall}"
-                       Foreground="{DynamicResource TextSecondaryBrush}" />
+            <TextBlock Classes="SectionTitle" Text="Outstanding Balance" />
 
-            <!-- Settled / Remaining row -->
             <Grid ColumnDefinitions="*,*">
 
                 <StackPanel Grid.Column="0" Spacing="2">
-                    <TextBlock Text="Settled"
-                               FontSize="{DynamicResource FontSizeSmall}"
-                               Foreground="{DynamicResource TextHintBrush}" />
-                    <TextBlock Text="{Binding #Root.DebtSettled, StringFormat='${0:F2}'}"
-                               FontSize="{DynamicResource FontSizeButton}"
-                               FontWeight="Light"
-                               Foreground="{DynamicResource TextPrimaryBrush}" />
+                    <TextBlock Classes="LabelUI" Text="SETTLED" />
+                    <TextBlock Classes="NumberLarge"
+                               Text="{Binding #Root.DebtSettled, StringFormat='${0:F2}'}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Spacing="2" HorizontalAlignment="Right">
-                    <TextBlock Text="Remaining"
-                               FontSize="{DynamicResource FontSizeSmall}"
-                               Foreground="{DynamicResource TextHintBrush}"
+                    <TextBlock Classes="LabelUI" Text="REMAINING"
                                HorizontalAlignment="Right" />
-                    <TextBlock Text="{Binding #Root.DebtRemaining, StringFormat='${0:F2}'}"
-                               FontSize="{DynamicResource FontSizeButton}"
-                               FontWeight="Light"
-                               Foreground="{DynamicResource TextPrimaryBrush}"
+                    <TextBlock Classes="NumberLarge"
+                               Text="{Binding #Root.DebtRemaining, StringFormat='${0:F2}'}"
                                HorizontalAlignment="Right" />
                 </StackPanel>
 
             </Grid>
 
-            <!-- Progress bar: left = settled (dark), right = remaining (light track) -->
             <ProgressBar Minimum="0" Maximum="1"
                          Value="{Binding #Root.DebtProgress}"
                          Height="6"
-                         Foreground="{DynamicResource TextPrimaryBrush}"
-                         Background="{DynamicResource ProgressTrackBrush}"
+                         Foreground="{DynamicResource TextPrimary}"
+                         Background="{DynamicResource BrushSurfaceMuted}"
                          CornerRadius="3" />
 
-            <!-- Total -->
-            <TextBlock Text="{Binding #Root.DebtTotal, StringFormat='Total incurred: ${0:F2}'}"
-                       FontSize="{DynamicResource FontSizeSmall}"
-                       Foreground="{DynamicResource TextHintBrush}" />
+            <TextBlock Classes="Caption"
+                       Text="{Binding #Root.DebtTotal, StringFormat='Total incurred: ${0:F2}'}" />
 
         </StackPanel>
     </Border>
