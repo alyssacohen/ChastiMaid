@@ -67,6 +67,12 @@
   <Color x:Key="ColorStatusIdle">#5B8F6A</Color>
 
   <!-- ═══════════════════════════════════════════
+       NAV / LAYOUT
+  ═══════════════════════════════════════════ -->
+  <Color x:Key="ColorNavItemSelected">#E2DDD4</Color>
+  <SolidColorBrush x:Key="BrushNavItemSelected" Color="{StaticResource ColorNavItemSelected}"/>
+
+  <!-- ═══════════════════════════════════════════
        BRUSHES — SEMANTIC
   ═══════════════════════════════════════════ -->
   <SolidColorBrush x:Key="BrushAmber"           Color="{StaticResource ColorAmber}"/>
@@ -74,5 +80,18 @@
   <SolidColorBrush x:Key="BrushAmberText"       Color="{StaticResource ColorAmberText}"/>
   <SolidColorBrush x:Key="BrushStatusIdle"      Color="{StaticResource ColorStatusIdle}"/>
   <SolidColorBrush x:Key="BrushEmergencyText"   Color="{StaticResource ColorButtonDanger}"/>
+
+  <!-- ═══════════════════════════════════════════
+       ACCENT OVERRIDE — replace Fluent's system blue with warm brown
+       These keys are read by FluentTheme to derive all accent-tinted
+       control states (CheckBox fill, TextBox focus ring, etc.).
+  ═══════════════════════════════════════════ -->
+  <Color x:Key="SystemAccentColor">#6B4F35</Color>
+  <Color x:Key="SystemAccentColorLight1">#8B6F55</Color>
+  <Color x:Key="SystemAccentColorLight2">#AB9075</Color>
+  <Color x:Key="SystemAccentColorLight3">#CBB095</Color>
+  <Color x:Key="SystemAccentColorDark1">#5A4228</Color>
+  <Color x:Key="SystemAccentColorDark2">#4A3520</Color>
+  <Color x:Key="SystemAccentColorDark3">#3A2818</Color>
 
 </ResourceDictionary>

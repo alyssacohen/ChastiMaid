@@ -58,23 +58,14 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- New-item row state (used by Phase 2 UserControl) ---
     [Reactive] private string _newItemName = string.Empty;
-    [Reactive] private bool _newItemLayerUndies;
-    [Reactive] private bool _newItemLayerBase;
-    [Reactive] private bool _newItemLayerExtra;
-    [Reactive] private bool _newItemLayerOuter;
-    [Reactive] private bool _newItemLayerGears;
+    [Reactive] private bool _newItemAnyLayerChecked;
     [Reactive] private string _newItemSlots = string.Empty;
 
     public bool IsDirty => IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty;
     public ReadOnlyObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems => _filteredWardrobeItems;
 
-    // Layer filter active-state helpers (bound to ToggleButton.IsChecked in WardrobeToolbar)
-    public bool LayerFilterAll => WardrobeLayerFilter is null;
-    public bool LayerFilterUndies => WardrobeLayerFilter == "undies";
-    public bool LayerFilterBase => WardrobeLayerFilter == "base";
-    public bool LayerFilterExtra => WardrobeLayerFilter == "extra";
-    public bool LayerFilterOuter => WardrobeLayerFilter == "outer";
-    public bool LayerFilterGears => WardrobeLayerFilter == "gears";
+    public IReadOnlyList<LayerFilterChipVm> LayerFilterChips { get; private set; } = [];
+    public IReadOnlyList<LayerToggleVm> NewItemLayerToggles { get; private set; } = [];
 
     // --- Tab selection with interception ---
     private int _selectedTabIndex;
@@ -90,12 +81,12 @@ public partial class SettingsViewModel : ViewModelBase
     // --- Commands ---
     public ICommand SaveCommand { get; }
     public ICommand BackCommand { get; }
+    public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
     public ICommand AddPunishmentCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
-    public ICommand SetLayerFilterCommand { get; }
 
     public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo)
     {
@@ -148,16 +139,21 @@ public partial class SettingsViewModel : ViewModelBase
 
         TakeSnapshot();
 
-        // Notify layer-filter bool helpers when the filter string changes
+        NewItemLayerToggles = WardrobeLayer.All.Select(l => new LayerToggleVm(l)).ToList();
+        var toggleChanges = NewItemLayerToggles
+            .Select(t => t.WhenAnyValue(x => x.IsChecked).Select(_ => System.Reactive.Unit.Default))
+            .Merge();
+        toggleChanges.Subscribe(_ => NewItemAnyLayerChecked = NewItemLayerToggles.Any(t => t.IsChecked));
+
+        LayerFilterChips = new LayerFilterChipVm[] { new(null, "All", () => WardrobeLayerFilter = null) }
+            .Concat(WardrobeLayer.All.Select(l => new LayerFilterChipVm(l.Key, l.DisplayName, () => WardrobeLayerFilter = l.Key)))
+            .ToList();
+
         this.WhenAnyValue(x => x.WardrobeLayerFilter)
-            .Subscribe(_ =>
+            .Subscribe(filter =>
             {
-                this.RaisePropertyChanged(nameof(LayerFilterAll));
-                this.RaisePropertyChanged(nameof(LayerFilterUndies));
-                this.RaisePropertyChanged(nameof(LayerFilterBase));
-                this.RaisePropertyChanged(nameof(LayerFilterExtra));
-                this.RaisePropertyChanged(nameof(LayerFilterOuter));
-                this.RaisePropertyChanged(nameof(LayerFilterGears));
+                foreach (var chip in LayerFilterChips)
+                    chip.IsActive = chip.Key == filter;
             });
 
         Observable.Merge(
@@ -178,19 +174,19 @@ public partial class SettingsViewModel : ViewModelBase
 
         SaveCommand = ReactiveCommand.Create(Save);
         BackCommand = ReactiveCommand.CreateFromTask(ConfirmBack);
+        SetTabCommand = ReactiveCommand.Create<string?>(
+            s => { if (int.TryParse(s, out var i)) SelectedTabIndex = i; });
         AddChoreCommand = ReactiveCommand.Create(() =>
             Chores.Add(WireChild(new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)), () => IsChoresDirty = true)));
         AddPunishmentCommand = ReactiveCommand.Create(() =>
             Punishments.Add(WireChild(new PunishmentEditViewModel(new PunishmentTemplate(), id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true)));
         var canAddWardrobe = this.WhenAnyValue(
             x => x.NewItemName,
-            x => x.NewItemLayerUndies, x => x.NewItemLayerBase, x => x.NewItemLayerExtra,
-            x => x.NewItemLayerOuter, x => x.NewItemLayerGears,
+            x => x.NewItemAnyLayerChecked,
             x => x.NewItemSlots,
-            (name, u, b, e, o, g, slots) =>
-                !string.IsNullOrWhiteSpace(name) && (u || b || e || o || g) && !string.IsNullOrWhiteSpace(slots));
+            (name, anyLayer, slots) =>
+                !string.IsNullOrWhiteSpace(name) && anyLayer && !string.IsNullOrWhiteSpace(slots));
         AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
-        SetLayerFilterCommand = ReactiveCommand.Create<string?>(layer => WardrobeLayerFilter = layer);
         AddOutfitRuleCommand = ReactiveCommand.Create(() =>
             OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(new OutfitRule(), AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
         DeleteSelectedWardrobeItemsCommand = ReactiveCommand.Create(
@@ -244,12 +240,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void AddWardrobeItemFromNewRow()
     {
-        var layers = new List<string>();
-        if (NewItemLayerUndies) layers.Add("undies");
-        if (NewItemLayerBase) layers.Add("base");
-        if (NewItemLayerExtra) layers.Add("extra");
-        if (NewItemLayerOuter) layers.Add("outer");
-        if (NewItemLayerGears) layers.Add("gears");
+        var layers = NewItemLayerToggles.Where(t => t.IsChecked).Select(t => t.Key).ToList();
 
         var item = new ClothingItem
         {
@@ -264,9 +255,8 @@ public partial class SettingsViewModel : ViewModelBase
         WireWardrobeItem(vm);
         WardrobeItems.Add(vm);
 
-        // Clear new-item fields
         NewItemName = string.Empty;
-        NewItemLayerUndies = NewItemLayerBase = NewItemLayerExtra = NewItemLayerOuter = NewItemLayerGears = false;
+        foreach (var t in NewItemLayerToggles) t.IsChecked = false;
         NewItemSlots = string.Empty;
 
         IsWardrobeDirty = true;
@@ -283,7 +273,9 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     private static bool MatchesWardrobeFilter(WardrobeEditViewModel item, string nameFilter, string? layerFilter) =>
-        (string.IsNullOrEmpty(nameFilter) || item.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase))
+        (string.IsNullOrEmpty(nameFilter)
+            || item.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)
+            || item.TagList.Any(t => t.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)))
         && (layerFilter is null || item.ActiveLayers.Any(l => l.Equals(layerFilter, StringComparison.OrdinalIgnoreCase)));
 
     // --- Generic helpers ---
@@ -383,6 +375,34 @@ public record ClothingItemOption(int Id, string Name)
     public override string ToString() => Name;
 }
 
+public class LayerFilterChipVm(string? key, string displayName, Action onSelect) : ReactiveObject
+{
+    public string? Key { get; } = key;
+    public string DisplayName { get; } = displayName;
+
+    private bool _isActive;
+    public bool IsActive
+    {
+        get => _isActive;
+        set => this.RaiseAndSetIfChanged(ref _isActive, value);
+    }
+
+    public ICommand SelectCommand { get; } = ReactiveCommand.Create(onSelect);
+}
+
+public class LayerToggleVm(WardrobeLayer layer) : ReactiveObject
+{
+    public string Key { get; } = layer.Key;
+    public string DisplayName { get; } = layer.DisplayName;
+
+    private bool _isChecked;
+    public bool IsChecked
+    {
+        get => _isChecked;
+        set => this.RaiseAndSetIfChanged(ref _isChecked, value);
+    }
+}
+
 public partial class ChoreEditViewModel : ViewModelBase
 {
     public int Id { get; }
@@ -451,6 +471,7 @@ public partial class WardrobeEditViewModel : ViewModelBase
     // Passthrough for filter logic and read-only chip display in the table row
     public IReadOnlyList<string> ActiveLayers => _layersCollection;
     public IReadOnlyList<string> SlotList     => _slotsCollection;
+    public IReadOnlyList<string> TagList      => _tagsCollection;
 
     public ICommand ToggleExpandedCommand { get; }
     public ICommand DeleteCommand { get; }

@@ -1,15 +1,9 @@
+using ChastiMaid.Models;
+
 namespace ChastiMaid.ViewModels;
 
 public class OutfitViewModel : ViewModelBase
 {
-    private static readonly (string Label, string Key)[] LayerDefs =
-    [
-        ("UNDERWEAR", "undies"),
-        ("EXTRA",     "extra"),
-        ("BASE",      "base"),
-        ("OUTERWEAR", "outer"),
-        ("ACCESSORIES", "gears"),
-    ];
 
     public IReadOnlyList<OutfitLayerViewModel> Layers { get; }
 
@@ -59,7 +53,7 @@ public class OutfitViewModel : ViewModelBase
             }
         }
 
-        var layers = LayerDefs.Select(def =>
+        var layers = WardrobeLayer.All.Select(def =>
         {
             if (layerItems.TryGetValue(def.Key, out var items) && items.Count > 0)
                 return new OutfitLayerViewModel(def.Label, items[0].Name, items[0].Detail);

@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -19,7 +18,6 @@ public partial class SettingsView : UserControl
 
         vm.Chores.CollectionChanged += (_, a) => OnItemAdded(a, ChoresScroll);
         vm.Punishments.CollectionChanged += (_, a) => OnItemAdded(a, PunishmentsScroll);
-        vm.WardrobeItems.CollectionChanged += (_, a) => OnItemAdded(a, WardrobeScroll);
         vm.OutfitRules.CollectionChanged += (_, a) => OnItemAdded(a, RulesScroll);
     }
 

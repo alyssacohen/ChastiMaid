@@ -5,7 +5,7 @@ using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.Repositories;
 
-public class SaveRepository(LiteDatabase db) : ISaveRepository
+public class SaveRepository(LiteDatabase db)
 {
     private ILiteCollection<ClothingItem> Wardrobe => db.GetCollection<ClothingItem>("wardrobe");
     private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
@@ -66,7 +66,7 @@ public class SaveRepository(LiteDatabase db) : ISaveRepository
     /// Creates a new save slot by snapshotting the current profile data.
     /// Profile changes after this point will not affect the save.
     public static SaveRepository CreateFromProfile(
-        IProfileRepository profile,
+        ProfileRepository profile,
         DatabaseService dbService,
         string slotName,
         decimal initialDebt)

@@ -46,21 +46,12 @@ public partial class ChipViewModel : ViewModelBase
 
 public class LayerGroupViewModel
 {
-    private static readonly Dictionary<string, (string Display, string Desc)> _meta = new()
-    {
-        ["undies"] = ("Underwear",   "foundation · choose freely"),
-        ["extra"]  = ("Extra",       "suspenders, garters · optional unless required by hosiery"),
-        ["base"]   = ("Base",        "hosiery, slip · choose at most one pair"),
-        ["outer"]  = ("Outerwear",   "dress, skirt, blouse"),
-        ["gears"]  = ("Accessories", "shoes, jewellery · multiple allowed"),
-    };
-
     public LayerGroupViewModel(string layerKey)
     {
         LayerKey = layerKey;
-        var (display, desc) = _meta.GetValueOrDefault(layerKey, (layerKey, ""));
-        DisplayName = display;
-        Description = desc;
+        var def = WardrobeLayer.FindByKey(layerKey);
+        DisplayName = def?.DisplayName ?? layerKey;
+        Description = def?.Description ?? "";
     }
 
     public string LayerKey { get; }

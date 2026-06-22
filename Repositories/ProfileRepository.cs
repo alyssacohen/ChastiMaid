@@ -3,7 +3,7 @@ using LiteDB;
 
 namespace ChastiMaid.Repositories;
 
-public class ProfileRepository(LiteDatabase db) : IProfileRepository
+public class ProfileRepository(LiteDatabase db)
 {
     private ILiteCollection<ClothingItem> Wardrobe => db.GetCollection<ClothingItem>("wardrobe");
     private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");

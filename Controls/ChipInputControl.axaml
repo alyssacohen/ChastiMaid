@@ -16,7 +16,7 @@
 
       <WrapPanel Name="ChipWrapPanel"
                  Orientation="Horizontal"
-                 VerticalAlignment="Top">
+                 VerticalAlignment="Center">
 
         <!-- Chips rendered in code-behind -->
         <ItemsControl Name="ChipList"
@@ -58,6 +58,7 @@
                  FontSize="13"
                  Foreground="{DynamicResource TextSecondary}"
                  VerticalAlignment="Center"
+                 VerticalContentAlignment="Center"
                  Text="{Binding InputText}"
                  PlaceholderText="{Binding Placeholder}"/>
 

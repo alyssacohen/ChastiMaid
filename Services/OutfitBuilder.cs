@@ -9,14 +9,8 @@ namespace ChastiMaid.Services;
 /// </summary>
 public class OutfitBuilder
 {
-    private static readonly Dictionary<string, double> DefaultLayerProbability = new()
-    {
-        ["undies"] = 1.0,
-        ["extra"]  = 0.7,
-        ["base"]   = 1.0,
-        ["outer"]  = 1.0,
-        ["gears"]  = 0.5,
-    };
+    private static readonly Dictionary<string, double> DefaultLayerProbability =
+        WardrobeLayer.All.ToDictionary(l => l.Key, l => l.Probability);
 
     private const int MaxFillAttemptsPerLayer = 10;
 

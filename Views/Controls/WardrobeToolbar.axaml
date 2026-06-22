@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:models="using:ChastiMaid.Models"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeToolbar">
 
@@ -15,48 +16,29 @@
                      VerticalContentAlignment="Center" />
 
             <TextBlock Grid.Column="1"
-                       Classes="BodySmall"
+                       Classes="Body"
                        Text="Layer:"
                        VerticalAlignment="Center"
                        Margin="16,0,8,0" />
 
-            <WrapPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
-                <ToggleButton Classes="filterChip"
-                              Content="All"
-                              IsChecked="{Binding LayerFilterAll}"
-                              Command="{Binding SetLayerFilterCommand}"
-                              CommandParameter="{x:Null}"
-                              Margin="0,0,4,0" />
-                <ToggleButton Classes="filterChip"
-                              Content="undies"
-                              IsChecked="{Binding LayerFilterUndies}"
-                              Command="{Binding SetLayerFilterCommand}"
-                              CommandParameter="undies"
-                              Margin="0,0,4,0" />
-                <ToggleButton Classes="filterChip"
-                              Content="base"
-                              IsChecked="{Binding LayerFilterBase}"
-                              Command="{Binding SetLayerFilterCommand}"
-                              CommandParameter="base"
-                              Margin="0,0,4,0" />
-                <ToggleButton Classes="filterChip"
-                              Content="extra"
-                              IsChecked="{Binding LayerFilterExtra}"
-                              Command="{Binding SetLayerFilterCommand}"
-                              CommandParameter="extra"
-                              Margin="0,0,4,0" />
-                <ToggleButton Classes="filterChip"
-                              Content="outer"
-                              IsChecked="{Binding LayerFilterOuter}"
-                              Command="{Binding SetLayerFilterCommand}"
-                              CommandParameter="outer"
-                              Margin="0,0,4,0" />
-                <ToggleButton Classes="filterChip"
-                              Content="gears"
-                              IsChecked="{Binding LayerFilterGears}"
-                              Command="{Binding SetLayerFilterCommand}"
-                              CommandParameter="gears" />
-            </WrapPanel>
+            <ItemsControl Grid.Column="2"
+                          ItemsSource="{Binding LayerFilterChips}"
+                          VerticalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:LayerFilterChipVm">
+                        <ToggleButton Classes="filterChip"
+                                      Content="{Binding DisplayName}"
+                                      IsChecked="{Binding IsActive}"
+                                      Command="{Binding SelectCommand}"
+                                      Margin="0,0,4,0" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
             <Button Grid.Column="4"
                     Classes="Primary"

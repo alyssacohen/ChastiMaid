@@ -3,14 +3,16 @@
              x:Class="ChastiMaid.Views.Controls.DirtyTabHeader"
              x:Name="Root">
 
-    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-        <Panel Width="14" Height="14">
-            <Ellipse Width="10" Height="10" Fill="{DynamicResource AmberBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                     IsVisible="{Binding #Root.IsDirty}" />
-        </Panel>
-        <TextBlock Text="{Binding #Root.Text}" IsVisible="{Binding !#Root.IsDirty}" />
-        <TextBlock Text="{Binding #Root.Text}" Foreground="{DynamicResource AmberBrush}" IsVisible="{Binding #Root.IsDirty}" />
-        <Panel Width="14" />
+    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+        <TextBlock Classes="Body" Text="{Binding #Root.Text}"
+                   IsVisible="{Binding !#Root.IsDirty}" />
+        <TextBlock Classes="Body" Text="{Binding #Root.Text}"
+                   Foreground="{DynamicResource BrushAmber}"
+                   IsVisible="{Binding #Root.IsDirty}" />
+        <Ellipse Width="6" Height="6"
+                 Fill="{DynamicResource BrushAmber}"
+                 VerticalAlignment="Center"
+                 IsVisible="{Binding #Root.IsDirty}" />
     </StackPanel>
 
 </UserControl>

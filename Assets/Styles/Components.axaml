@@ -35,10 +35,11 @@
     <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}"/>
     <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
     <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="CornerRadius" Value="4"/>
-    <Setter Property="Padding" Value="8,0"/>
+    <Setter Property="Padding" Value="10,0"/>
+    <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Height" Value="30"/>
     <Setter Property="BorderThickness" Value="0"/>
   </Style>
@@ -46,6 +47,54 @@
   <Style Selector="ToggleButton.filterChip:checked">
     <Setter Property="Background" Value="{DynamicResource BrushChipSelected}"/>
     <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
+  </Style>
+
+  <!-- ──────────────────────────────────────────────────────────
+       navItem — ToggleButton for the Settings left-column nav
+  ────────────────────────────────────────────────────────────── -->
+  <Style Selector="ToggleButton.navItem">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="3,0,0,0"/>
+    <Setter Property="CornerRadius" Value="0"/>
+    <Setter Property="Height" Value="44"/>
+    <Setter Property="Padding" Value="16,0,16,0"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+  </Style>
+
+  <!-- Child TextBlocks inherit the nav item foreground (overrides Typography classes) -->
+  <Style Selector="ToggleButton.navItem TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+    <Setter Property="FontFamily" Value="Inter"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+  </Style>
+
+  <Style Selector="ToggleButton.navItem:pointerover">
+    <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+  </Style>
+
+  <Style Selector="ToggleButton.navItem:pointerover TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+  </Style>
+
+  <!-- Selected state: subtle background highlight + left accent bar -->
+  <Style Selector="ToggleButton.navItem:checked">
+    <Setter Property="Background" Value="{DynamicResource BrushNavItemSelected}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+  </Style>
+
+  <Style Selector="ToggleButton.navItem:checked TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
   </Style>
 
 </Styles>

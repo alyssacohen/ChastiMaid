@@ -5,7 +5,8 @@ namespace ChastiMaid.Models;
 /// </summary>
 public class Outfit
 {
-    public static readonly List<string> LayersOrder = ["undies", "extra", "base", "outer", "gears"];
+    public static readonly IReadOnlyList<string> LayersOrder =
+        WardrobeLayer.All.OrderBy(l => l.Order).Select(l => l.Key).ToList();
 
     private readonly List<ClothingItem> _items = [];
     private readonly Dictionary<int, string> _itemLayer = [];       // itemId -> layer
