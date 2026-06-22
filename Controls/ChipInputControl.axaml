@@ -28,19 +28,22 @@
           </ItemsControl.ItemsPanel>
           <ItemsControl.ItemTemplate>
             <DataTemplate>
-              <Border Classes="chip"
+              <Border Background="{DynamicResource BrushChipDefault}"
+                      CornerRadius="4"
+                      Padding="6,2"
                       Margin="0,2,4,2"
                       VerticalAlignment="Center">
-                <StackPanel Orientation="Horizontal" Spacing="4">
-                  <TextBlock Classes="chip-label"
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                  <TextBlock Classes="BodySmall"
                              VerticalAlignment="Center"
                              Text="{Binding}"/>
-                  <Button Background="Transparent"
+                  <Button MinHeight="0"
+                          Background="Transparent"
                           BorderThickness="0"
-                          Padding="6,0"
+                          Padding="2,0"
                           VerticalAlignment="Center"
                           FontSize="13"
-                          Foreground="{DynamicResource TextMuted}"
+                          Foreground="{DynamicResource TextSecondary}"
                           Content="×"/>
                 </StackPanel>
               </Border>

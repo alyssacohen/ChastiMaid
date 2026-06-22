@@ -69,8 +69,10 @@
   <!-- ═══════════════════════════════════════════
        NAV / LAYOUT
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorNavItemSelected">#E2DDD4</Color>
+  <Color x:Key="ColorNavItemSelected">#DDD8CE</Color>
+  <Color x:Key="ColorNavItemBorder">#312B28</Color>
   <SolidColorBrush x:Key="BrushNavItemSelected" Color="{StaticResource ColorNavItemSelected}"/>
+  <SolidColorBrush x:Key="BrushNavItemBorder"   Color="{StaticResource ColorNavItemBorder}"/>
 
   <!-- ═══════════════════════════════════════════
        BRUSHES — SEMANTIC

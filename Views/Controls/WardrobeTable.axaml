@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+    <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:controls="using:ChastiMaid.Controls"
@@ -81,6 +81,7 @@
                                     <!-- Layer chips -->
                                     <ItemsControl Grid.Column="2"
                                                   ItemsSource="{Binding ActiveLayers}"
+                                                  IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">
                                         <ItemsControl.ItemsPanel>
@@ -105,6 +106,7 @@
                                     <!-- Slot chips -->
                                     <ItemsControl Grid.Column="3"
                                                   ItemsSource="{Binding SlotList}"
+                                                  IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">
                                         <ItemsControl.ItemsPanel>
@@ -129,6 +131,7 @@
                                     <!-- Tag chips -->
                                     <ItemsControl Grid.Column="4"
                                                   ItemsSource="{Binding TagList}"
+                                                  IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">
                                         <ItemsControl.ItemsPanel>
@@ -159,7 +162,7 @@
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center">
                                         <Panel>
-                                            <ic:SymbolIcon Symbol="ChevronRight"
+                                            <ic:SymbolIcon Symbol="Edit"
                                                            FontSize="14"
                                                            IsVisible="{Binding !IsExpanded}" />
                                             <ic:SymbolIcon Symbol="ChevronDown"
@@ -175,6 +178,10 @@
                                     Background="{DynamicResource BrushSurfaceSubtle}"
                                     Padding="40,8,8,8">
                                 <StackPanel Spacing="10">
+                                    <StackPanel Spacing="2">
+                                        <TextBlock Classes="LabelUI" Text="NAME" />
+                                        <TextBox Text="{Binding Name}" />
+                                    </StackPanel>
                                     <Grid ColumnDefinitions="120,120">
                                         <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
                                             <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
