@@ -122,5 +122,5 @@ Where:
 
 ## Settings UI
 The Settings view provides tabs for:
-- **Wardrobe**: add/edit/delete clothing items (name, layers as checkboxes, slots, multiplier, weight, tags)
+- **Wardrobe**: add/edit/delete clothing items (name, layers, slots, multiplier, weight, tags)
 - **Outfit Rules**: add/edit/delete requires/incompatible relationships between items

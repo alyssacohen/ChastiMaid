@@ -1,11 +1,10 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:models="using:ChastiMaid.Models"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeToolbar">
 
-    <Border Background="{DynamicResource BrushSurfaceBase}" Padding="8,4">
+    <Border Background="{DynamicResource BrushSurfaceBase}" Padding="20,4">
         <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" VerticalAlignment="Center">
 
             <TextBox Grid.Column="0"
@@ -40,12 +39,14 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <!--
             <Button Grid.Column="4"
                     Classes="Primary"
                     Content="+ Add item"
                     Command="{Binding AddWardrobeItemCommand}"
                     MinHeight="44"
                     VerticalAlignment="Center" />
+            -->
 
         </Grid>
     </Border>

@@ -8,7 +8,7 @@
   <Panel>
 
     <Grid Margin="40"
-          ColumnDefinitions="*,340">
+          ColumnDefinitions="60*,40*">
 
       <!-- ── LEFT COLUMN ── -->
       <Grid Grid.Column="0"
