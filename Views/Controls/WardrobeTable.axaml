@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:controls="using:ChastiMaid.Controls"
-             xmlns:converters="using:ChastiMaid.Views.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput"
              x:DataType="vm:SettingsViewModel"
@@ -54,7 +53,7 @@
                         <StackPanel>
 
                             <!-- Part A: always-visible row -->
-                            <Border Background="{Binding IsEvenRow, Converter={x:Static converters:IsEvenRowConverter.Instance}}"
+                            <Border Classes.even="{Binding IsEvenRow}"
                                     MinHeight="44"
                                     Padding="12, 0">
                                 <Grid VerticalAlignment="Center">
@@ -82,7 +81,7 @@
 
                                     <!-- Layer chips -->
                                     <ItemsControl Grid.Column="2"
-                                                  ItemsSource="{Binding ActiveLayers}"
+                                                  ItemsSource="{Binding Layers}"
                                                   IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">
@@ -107,7 +106,7 @@
 
                                     <!-- Slot chips -->
                                     <ItemsControl Grid.Column="3"
-                                                  ItemsSource="{Binding SlotList}"
+                                                  ItemsSource="{Binding Slots}"
                                                   IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">
@@ -132,7 +131,7 @@
 
                                     <!-- Tag chips -->
                                     <ItemsControl Grid.Column="4"
-                                                  ItemsSource="{Binding TagList}"
+                                                  ItemsSource="{Binding Tags}"
                                                   IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">

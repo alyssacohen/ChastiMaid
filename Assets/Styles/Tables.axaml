@@ -6,13 +6,8 @@
     <Setter Property="MinHeight" Value="48"/>
   </Style>
 
-  <!-- TableRow.even — primary background (white) -->
-  <Style Selector="Grid.TableRow.even">
-    <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}"/>
-  </Style>
-
-  <!-- TableRow.odd — subtle alternating background -->
-  <Style Selector="Grid.TableRow.odd">
+  <!-- Border.even — alternating row background in wardrobe table -->
+  <Style Selector="Border.even">
     <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}"/>
   </Style>
 

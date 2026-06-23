@@ -274,8 +274,8 @@ public partial class SettingsViewModel : ViewModelBase
     private static bool MatchesWardrobeFilter(WardrobeEditViewModel item, string nameFilter, string? layerFilter) =>
         (string.IsNullOrEmpty(nameFilter)
             || item.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)
-            || item.TagList.Any(t => t.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)))
-        && (layerFilter is null || item.ActiveLayers.Any(l => l.Equals(layerFilter, StringComparison.OrdinalIgnoreCase)));
+            || item.Tags.Any(t => t.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)))
+        && (layerFilter is null || item.Layers.Any(l => l.Equals(layerFilter, StringComparison.OrdinalIgnoreCase)));
 
     // --- Generic helpers ---
     private static T WireChild<T>(T vm, Action markDirty) where T : INotifyPropertyChanged
@@ -466,11 +466,6 @@ public partial class WardrobeEditViewModel : ViewModelBase
     public IEnumerable<string> LayerSuggestions { get; }
     public IEnumerable<string> SlotSuggestions  { get; }
     public IEnumerable<string> TagSuggestions   { get; }
-
-    // Aliases for filter logic and read-only chip display in the collapsed table row
-    public IReadOnlyList<string> ActiveLayers => Layers;
-    public IReadOnlyList<string> SlotList     => Slots;
-    public IReadOnlyList<string> TagList      => Tags;
 
     public ICommand ToggleExpandedCommand { get; }
     public ICommand DeleteCommand { get; }
