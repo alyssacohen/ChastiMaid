@@ -4,6 +4,7 @@
              xmlns:controls="using:ChastiMaid.Controls"
              xmlns:converters="using:ChastiMaid.Views.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeTable">
 
@@ -16,8 +17,8 @@
                     <ColumnDefinition Width="44" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="140" />
-                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="44" />
                 </Grid.ColumnDefinitions>
 
@@ -54,14 +55,15 @@
 
                             <!-- Part A: always-visible row -->
                             <Border Background="{Binding IsEvenRow, Converter={x:Static converters:IsEvenRowConverter.Instance}}"
-                                    MinHeight="44">
+                                    MinHeight="44"
+                                    Padding="12, 0">
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="44" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="160" />
-                                        <ColumnDefinition Width="140" />
-                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="160" />
+                                        <ColumnDefinition Width="160" />
                                         <ColumnDefinition Width="44" />
                                     </Grid.ColumnDefinitions>
 
@@ -201,17 +203,23 @@
 
                                     <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="LAYERS" />
-                                        <controls:ChipInputControl DataContext="{Binding LayersChipInput}" />
+                                        <tagInput:TagInput Tags="{Binding Layers}"
+                                                           Suggestions="{Binding LayerSuggestions}"
+                                                           Placeholder="aggiungi layer..."/>
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="SLOTS" />
-                                        <controls:ChipInputControl DataContext="{Binding SlotsChipInput}" />
+                                        <tagInput:TagInput Tags="{Binding Slots}"
+                                                           Suggestions="{Binding SlotSuggestions}"
+                                                           Placeholder="aggiungi slot..."/>
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="TAGS" />
-                                        <controls:ChipInputControl DataContext="{Binding TagsChipInput}" />
+                                        <tagInput:TagInput Tags="{Binding Tags}"
+                                                           Suggestions="{Binding TagSuggestions}"
+                                                           Placeholder="aggiungi tag..."/>
                                     </StackPanel>
 
                                     <Button Classes="Danger compact"

@@ -1,0 +1,115 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="using:System"
+        xmlns:local="using:ChastiMaid.Controls"
+        xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput">
+
+  <Style Selector="tagInput|TagInput">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid RowDefinitions="Auto,Auto">
+
+          <!-- Row 0: chip wrap panel + inline TextBox -->
+          <Border Grid.Row="0"
+                  Name="PART_ContainerBorder"
+                  Background="Transparent"
+                  BorderBrush="{DynamicResource BrushBorderSubtle}"
+                  BorderThickness="0,0,0,1"
+                  Padding="0,4,0,6">
+            <local:WrapPanelWithTrailingItem Name="PART_ChipPanel">
+              <TextBox Name="PART_InputBox"
+                       PlaceholderText="{TemplateBinding Placeholder}"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       Padding="4,2"
+                       MinWidth="120"
+                       FontFamily="Inter"
+                       FontSize="13"
+                       Foreground="{DynamicResource TextSecondary}"
+                       VerticalAlignment="Center"
+                       VerticalContentAlignment="Center"/>
+            </local:WrapPanelWithTrailingItem>
+          </Border>
+
+          <!-- Row 1: autocomplete dropdown -->
+          <Border Grid.Row="1"
+                  Name="PART_DropdownPanel"
+                  IsVisible="{TemplateBinding IsDropdownOpen}"
+                  Background="{DynamicResource BrushSurfaceBase}"
+                  BorderThickness="0"
+                  CornerRadius="0,0,6,6"
+                  Padding="0,4,0,8"
+                  ZIndex="100"
+                  BoxShadow="0 4 12 0 #1A2C2118">
+            <StackPanel Spacing="0">
+              <TextBlock Classes="LabelUI"
+                         Text="GIÀ USATI IN QUESTO PROGETTO"
+                         Margin="8,0,0,6"/>
+              <ListBox Name="PART_SuggestionList"
+                       ItemsSource="{TemplateBinding FilteredSuggestions}"
+                       SelectedIndex="{TemplateBinding HighlightedIndex}"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       Padding="0">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="system:String">
+                    <TextBlock Classes="Body"
+                               VerticalAlignment="Center"
+                               Text="{Binding}"/>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerTheme>
+                  <ControlTheme TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="8,0"/>
+                    <Setter Property="Height" Value="32"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style Selector="^:selected /template/ ContentPresenter">
+                      <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}"/>
+                    </Style>
+                    <Style Selector="^:pointerover /template/ ContentPresenter">
+                      <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}"/>
+                    </Style>
+                  </ControlTheme>
+                </ListBox.ItemContainerTheme>
+              </ListBox>
+            </StackPanel>
+          </Border>
+
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+
+    <!-- Focus state: accent bottom border -->
+    <Style Selector="^:focus-within /template/ Border#PART_ContainerBorder">
+      <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}"/>
+      <Setter Property="BorderThickness" Value="0,0,0,2"/>
+    </Style>
+
+    <!-- Strip FluentTheme chrome from the ghost TextBox inside the chip container.
+         Cross-template selectors reach into the TextBox's own ControlTemplate to
+         suppress PART_BorderElement across all interaction states.                 -->
+    <Style Selector="^/template/ TextBox#PART_InputBox /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="MinHeight" Value="0"/>
+    </Style>
+    <Style Selector="^/template/ TextBox#PART_InputBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style Selector="^/template/ TextBox#PART_InputBox:focus-within /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style Selector="^/template/ TextBox#PART_InputBox:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+  </Style>
+
+</Styles>

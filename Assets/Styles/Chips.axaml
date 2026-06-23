@@ -34,13 +34,17 @@
     <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
   </Style>
 
-  <!-- delete button inside an editable chip — always visible, not just on hover -->
-  <Style Selector="Border.chip Button">
+  <!-- × indicator — always visible; whole chip is the click target via Tapped -->
+  <Style Selector="Border.chip TextBlock.chip-x">
+    <Setter Property="FontSize" Value="11"/>
     <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-    <Setter Property="Opacity" Value="1"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="4,0,0,0"/>
   </Style>
-  <Style Selector="Border.chip Button:pointerover">
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+
+  <!-- Whole chip highlights on hover -->
+  <Style Selector="Border.chip:pointerover">
+    <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}"/>
   </Style>
 
   <!-- ──────────────────────────────────────────────────────────

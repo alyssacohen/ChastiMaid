@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using ChastiMaid.Controls;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
@@ -196,9 +195,9 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Wardrobe helpers ---
 
-    private IEnumerable<string> AllUsedTags   => WardrobeItems.SelectMany(w => w.TagsChipInput.Values).Distinct().OrderBy(s => s);
-    private IEnumerable<string> AllUsedLayers => WardrobeItems.SelectMany(w => w.LayersChipInput.Values).Distinct().OrderBy(s => s);
-    private IEnumerable<string> AllUsedSlots  => WardrobeItems.SelectMany(w => w.SlotsChipInput.Values).Distinct().OrderBy(s => s);
+    private IEnumerable<string> AllUsedTags   => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);
+    private IEnumerable<string> AllUsedLayers => WardrobeItems.SelectMany(w => w.Layers).Distinct().OrderBy(s => s);
+    private IEnumerable<string> AllUsedSlots  => WardrobeItems.SelectMany(w => w.Slots).Distinct().OrderBy(s => s);
 
     private void WireWardrobeItem(WardrobeEditViewModel vm)
     {
@@ -216,9 +215,9 @@ public partial class SettingsViewModel : ViewModelBase
                     break;
             }
         };
-        vm.LayersChipInput.Values.CollectionChanged += (_, _) => IsWardrobeDirty = true;
-        vm.SlotsChipInput.Values.CollectionChanged  += (_, _) => IsWardrobeDirty = true;
-        vm.TagsChipInput.Values.CollectionChanged   += (_, _) => IsWardrobeDirty = true;
+        vm.Layers.CollectionChanged += (_, _) => IsWardrobeDirty = true;
+        vm.Slots.CollectionChanged  += (_, _) => IsWardrobeDirty = true;
+        vm.Tags.CollectionChanged   += (_, _) => IsWardrobeDirty = true;
     }
 
     private void RemoveWardrobeItem(int id)
@@ -460,18 +459,18 @@ public partial class WardrobeEditViewModel : ViewModelBase
     [Reactive] private bool _isExpanded;
     [Reactive] private bool _isEvenRow;
 
-    private readonly ObservableCollection<string> _layersCollection;
-    private readonly ObservableCollection<string> _slotsCollection;
-    private readonly ObservableCollection<string> _tagsCollection;
+    public ObservableCollection<string> Layers { get; }
+    public ObservableCollection<string> Slots  { get; }
+    public ObservableCollection<string> Tags   { get; }
 
-    public ChipInputViewModel LayersChipInput { get; }
-    public ChipInputViewModel SlotsChipInput  { get; }
-    public ChipInputViewModel TagsChipInput   { get; }
+    public IEnumerable<string> LayerSuggestions { get; }
+    public IEnumerable<string> SlotSuggestions  { get; }
+    public IEnumerable<string> TagSuggestions   { get; }
 
-    // Passthrough for filter logic and read-only chip display in the table row
-    public IReadOnlyList<string> ActiveLayers => _layersCollection;
-    public IReadOnlyList<string> SlotList     => _slotsCollection;
-    public IReadOnlyList<string> TagList      => _tagsCollection;
+    // Aliases for filter logic and read-only chip display in the collapsed table row
+    public IReadOnlyList<string> ActiveLayers => Layers;
+    public IReadOnlyList<string> SlotList     => Slots;
+    public IReadOnlyList<string> TagList      => Tags;
 
     public ICommand ToggleExpandedCommand { get; }
     public ICommand DeleteCommand { get; }
@@ -488,13 +487,13 @@ public partial class WardrobeEditViewModel : ViewModelBase
         _multiplier = item.Multiplier;
         _weight     = item.Weight;
 
-        _layersCollection = new(item.Layers);
-        _slotsCollection  = new(item.Slots);
-        _tagsCollection   = new(item.Tags);
+        Layers = new(item.Layers);
+        Slots  = new(item.Slots);
+        Tags   = new(item.Tags);
 
-        LayersChipInput = new(_layersCollection) { Placeholder = "aggiungi layer...", Suggestions = layerSuggestions ?? [] };
-        SlotsChipInput  = new(_slotsCollection)  { Placeholder = "aggiungi slot...",  Suggestions = slotSuggestions  ?? [] };
-        TagsChipInput   = new(_tagsCollection)   { Placeholder = "aggiungi tag...",   Suggestions = tagSuggestions   ?? [] };
+        LayerSuggestions = layerSuggestions ?? [];
+        SlotSuggestions  = slotSuggestions  ?? [];
+        TagSuggestions   = tagSuggestions   ?? [];
 
         DeleteCommand         = ReactiveCommand.Create(() => onDelete(Id));
         ToggleExpandedCommand = ReactiveCommand.Create(() => { IsExpanded = !IsExpanded; });
@@ -504,9 +503,9 @@ public partial class WardrobeEditViewModel : ViewModelBase
     {
         Id         = Id,
         Name       = Name,
-        Layers     = [.. _layersCollection],
-        Slots      = [.. _slotsCollection],
-        Tags       = [.. _tagsCollection],
+        Layers     = [.. Layers],
+        Slots      = [.. Slots],
+        Tags       = [.. Tags],
         Multiplier = Multiplier,
         Weight     = Weight
     };
