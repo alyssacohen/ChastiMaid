@@ -26,6 +26,7 @@
                        FontFamily="Inter"
                        FontSize="13"
                        Foreground="{DynamicResource TextSecondary}"
+                       SelectionForegroundBrush="White"
                        VerticalAlignment="Center"
                        VerticalContentAlignment="Center"/>
             </local:WrapPanelWithTrailingItem>

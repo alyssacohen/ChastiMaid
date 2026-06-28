@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
-using ChastiMaid.Services;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -55,16 +54,24 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _wardrobeSelectedCount;
     private ReadOnlyObservableCollection<WardrobeEditViewModel> _filteredWardrobeItems = null!;
 
-    // --- New-item row state (used by Phase 2 UserControl) ---
+    // --- New-item panel state ---
     [Reactive] private string _newItemName = string.Empty;
-    [Reactive] private bool _newItemAnyLayerChecked;
-    [Reactive] private string _newItemSlots = string.Empty;
+    [Reactive] private decimal _newItemMultiplier = 1.0m;
+    [Reactive] private decimal _newItemWeight = 1.0m;
+    [Reactive] private bool _isAddingNewItem;
+
+    public ObservableCollection<string> NewItemLayers { get; } = [];
+    public ObservableCollection<string> NewItemSlots  { get; } = [];
+    public ObservableCollection<string> NewItemTags   { get; } = [];
+
+    public IEnumerable<string> NewItemLayerSuggestions => AllUsedLayers;
+    public IEnumerable<string> NewItemSlotSuggestions  => AllUsedSlots;
+    public IEnumerable<string> NewItemTagSuggestions   => AllUsedTags;
 
     public bool IsDirty => IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty;
     public ReadOnlyObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems => _filteredWardrobeItems;
 
     public IReadOnlyList<LayerFilterChipVm> LayerFilterChips { get; private set; } = [];
-    public IReadOnlyList<LayerToggleVm> NewItemLayerToggles { get; private set; } = [];
 
     // --- Tab selection with interception ---
     private int _selectedTabIndex;
@@ -83,6 +90,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
     public ICommand AddPunishmentCommand { get; }
+    public ICommand ShowAddItemPanelCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
@@ -137,12 +145,6 @@ public partial class SettingsViewModel : ViewModelBase
 
         TakeSnapshot();
 
-        NewItemLayerToggles = WardrobeLayer.All.Select(l => new LayerToggleVm(l)).ToList();
-        var toggleChanges = NewItemLayerToggles
-            .Select(t => t.WhenAnyValue(x => x.IsChecked).Select(_ => System.Reactive.Unit.Default))
-            .Merge();
-        toggleChanges.Subscribe(_ => NewItemAnyLayerChecked = NewItemLayerToggles.Any(t => t.IsChecked));
-
         LayerFilterChips = new LayerFilterChipVm[] { new(null, "All", () => WardrobeLayerFilter = null) }
             .Concat(WardrobeLayer.All.Select(l => new LayerFilterChipVm(l.Key, l.DisplayName, () => WardrobeLayerFilter = l.Key)))
             .ToList();
@@ -178,12 +180,8 @@ public partial class SettingsViewModel : ViewModelBase
             Chores.Add(WireChild(new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)), () => IsChoresDirty = true)));
         AddPunishmentCommand = ReactiveCommand.Create(() =>
             Punishments.Add(WireChild(new PunishmentEditViewModel(new PunishmentTemplate(), id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)), () => IsPunishmentsDirty = true)));
-        var canAddWardrobe = this.WhenAnyValue(
-            x => x.NewItemName,
-            x => x.NewItemAnyLayerChecked,
-            x => x.NewItemSlots,
-            (name, anyLayer, slots) =>
-                !string.IsNullOrWhiteSpace(name) && anyLayer && !string.IsNullOrWhiteSpace(slots));
+        ShowAddItemPanelCommand = ReactiveCommand.Create(() => IsAddingNewItem = true);
+        var canAddWardrobe = this.WhenAnyValue(x => x.NewItemName, name => !string.IsNullOrWhiteSpace(name));
         AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
         AddOutfitRuleCommand = ReactiveCommand.Create(() =>
             OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(new OutfitRule(), AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
@@ -239,15 +237,14 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void AddWardrobeItemFromNewRow()
     {
-        var layers = NewItemLayerToggles.Where(t => t.IsChecked).Select(t => t.Key).ToList();
-
         var item = new ClothingItem
         {
-            Name = NewItemName,
-            Layers = layers,
-            Slots = NewItemSlots.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList(),
-            Multiplier = 1.0,
-            Weight = 1.0
+            Name       = NewItemName,
+            Layers     = [.. NewItemLayers],
+            Slots      = [.. NewItemSlots],
+            Tags       = [.. NewItemTags],
+            Multiplier = (double)NewItemMultiplier,
+            Weight     = (double)NewItemWeight,
         };
 
         var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id), AllUsedTags, AllUsedLayers, AllUsedSlots, ExpandWardrobeItem);
@@ -255,8 +252,12 @@ public partial class SettingsViewModel : ViewModelBase
         WardrobeItems.Add(vm);
 
         NewItemName = string.Empty;
-        foreach (var t in NewItemLayerToggles) t.IsChecked = false;
-        NewItemSlots = string.Empty;
+        NewItemMultiplier = 1.0m;
+        NewItemWeight = 1.0m;
+        NewItemLayers.Clear();
+        NewItemSlots.Clear();
+        NewItemTags.Clear();
+        IsAddingNewItem = false;
 
         IsWardrobeDirty = true;
     }

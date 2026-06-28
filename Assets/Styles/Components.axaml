@@ -123,4 +123,97 @@
     <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}"/>
   </Style>
 
+  <!-- ──────────────────────────────────────────────────────────
+       TextBox.underline — bottom border only, same visual as TagInput
+  ────────────────────────────────────────────────────────────── -->
+  <Style Selector="TextBox.underline">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0,4,0,6"/>
+    <Setter Property="CornerRadius" Value="0"/>
+  </Style>
+  <Style Selector="TextBox.underline /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    <Setter Property="MinHeight" Value="0"/>
+    <Setter Property="CornerRadius" Value="0"/>
+  </Style>
+  <Style Selector="TextBox.underline:focus /template/ Border#PART_BorderElement,
+                   TextBox.underline:focus-within /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+  </Style>
+  <Style Selector="TextBox.underline:pointerover /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <!-- ──────────────────────────────────────────────────────────
+       NumericUpDown.underline — bottom border only, spinner icon-only
+  ────────────────────────────────────────────────────────────── -->
+  <Style Selector="NumericUpDown.underline">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="CornerRadius" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+  </Style>
+  <Style Selector="NumericUpDown.underline /template/ ButtonSpinner">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    <Setter Property="CornerRadius" Value="0"/>
+  </Style>
+  <Style Selector="NumericUpDown.underline:focus-within /template/ ButtonSpinner">
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+  </Style>
+  <!-- Strip inner TextBox chrome using descendant selector (works across template boundaries) -->
+  <Style Selector="NumericUpDown.underline TextBox /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="MinHeight" Value="0"/>
+  </Style>
+  <Style Selector="NumericUpDown.underline TextBox:focus /template/ Border#PART_BorderElement,
+                   NumericUpDown.underline TextBox:focus-within /template/ Border#PART_BorderElement,
+                   NumericUpDown.underline TextBox:pointerover /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+  <!-- Spinner buttons: icon-only, no border/background -->
+  <Style Selector="NumericUpDown.underline RepeatButton">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="4,0"/>
+  </Style>
+  <Style Selector="NumericUpDown.underline RepeatButton:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <!-- ──────────────────────────────────────────────────────────
+       NumericUpDown.stacked-spinner — vertical up/down chevrons
+  ────────────────────────────────────────────────────────────── -->
+  <Style Selector="NumericUpDown.stacked-spinner StackPanel#PART_SpinnerPanel">
+    <Setter Property="Orientation" Value="Vertical"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Spacing" Value="2"/>
+  </Style>
+  <!-- Restore symmetric padding so stacked buttons stay tap-friendly -->
+  <Style Selector="NumericUpDown.stacked-spinner RepeatButton">
+    <Setter Property="Padding" Value="4,2"/>
+  </Style>
+
+  <!-- ──────────────────────────────────────────────────────────
+       Global: white foreground on selected text (all TextBoxes)
+       NumericUpDown selector needed because its inner TextBox lives
+       inside a ControlTemplate where the generic TextBox style can
+       be outranked by the Fluent ControlTheme setter.
+  ────────────────────────────────────────────────────────────── -->
+  <Style Selector="TextBox">
+    <Setter Property="SelectionForegroundBrush" Value="White"/>
+  </Style>
+  <Style Selector="NumericUpDown TextBox">
+    <Setter Property="SelectionForegroundBrush" Value="White"/>
+  </Style>
+
 </Styles>

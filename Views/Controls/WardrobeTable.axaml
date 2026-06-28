@@ -3,6 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeTable">
 
@@ -14,7 +15,7 @@
 
         <!-- ── Sticky header ──────────────────────────────────────────── -->
         <Border Grid.Row="0" Background="{DynamicResource BrushSurfaceBase}" Padding="0,4">
-            <Grid>
+            <Grid Margin="12,0,12,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="44" />
                     <ColumnDefinition Width="*" />
@@ -28,8 +29,7 @@
                           x:Name="SelectAllCheckBox"
                           MinWidth="44" MinHeight="44"
                           HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Margin="4,0"/>
+                          VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1" Text="NAME"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
@@ -77,9 +77,20 @@
                                     <TextBlock Grid.Column="1"
                                                Classes="Body"
                                                Text="{Binding Name}"
+                                               IsVisible="{Binding !IsExpanded}"
                                                VerticalAlignment="Center"
                                                Margin="4,0"
                                                TextTrimming="CharacterEllipsis" />
+
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="2"
+                                                IsVisible="{Binding IsExpanded}"
+                                                VerticalAlignment="Center"
+                                                Margin="4,4">
+                                        <TextBlock Classes="LabelUI" Text="NAME" />
+                                        <TextBox Classes="underline"
+                                                 Text="{Binding Name}" />
+                                    </StackPanel>
 
                                     <!-- Layer chips -->
                                     <ItemsControl Grid.Column="2"
@@ -105,6 +116,34 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+
+                                    <!-- Multiplier + Weight inline (expanded only) -->
+                                    <StackPanel Grid.Column="3" Grid.ColumnSpan="2"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Spacing="12"
+                                                IsVisible="{Binding IsExpanded}"
+                                                Margin="0,4">
+                                        <StackPanel Spacing="2">
+                                            <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
+                                            <NumericUpDown Classes="underline stacked-spinner"
+                                                           Value="{Binding Multiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                           FormatString="0.0"
+                                                           Increment="0.1"
+                                                           Minimum="0"
+                                                           Width="110" />
+                                        </StackPanel>
+                                        <StackPanel Spacing="2">
+                                            <TextBlock Classes="LabelUI" Text="WEIGHT" />
+                                            <NumericUpDown Classes="underline stacked-spinner"
+                                                           Value="{Binding Weight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                           FormatString="0.0"
+                                                           Increment="0.1"
+                                                           Minimum="0"
+                                                           Width="110" />
+                                        </StackPanel>
+                                    </StackPanel>
 
                                     <!-- Slot chips -->
                                     <ItemsControl Grid.Column="3"
@@ -178,27 +217,6 @@
                                     Padding="40,8,8,8">
                                 <StackPanel Spacing="10">
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="NAME" />
-                                        <TextBox Text="{Binding Name}" />
-                                    </StackPanel>
-                                    <Grid ColumnDefinitions="120,120">
-                                        <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                            <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
-                                            <NumericUpDown Value="{Binding Multiplier}"
-                                                           FormatString="0.0"
-                                                           Increment="0.1"
-                                                           Minimum="0" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Spacing="2">
-                                            <TextBlock Classes="LabelUI" Text="WEIGHT" />
-                                            <NumericUpDown Value="{Binding Weight}"
-                                                           FormatString="0.0"
-                                                           Increment="0.1"
-                                                           Minimum="0" />
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="LAYERS" />
                                         <tagInput:TagInput Tags="{Binding Layers}"
                                                            Suggestions="{Binding LayerSuggestions}"
@@ -239,62 +257,80 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <!-- ── New-item row ────────────────────────────────────────────── -->
+        <!-- ── Add-item footer ────────────────────────────────────────── -->
         <Border Grid.Row="3"
                 BorderBrush="{DynamicResource BrushBorderSubtle}"
                 BorderThickness="0,1,0,0"
-                Background="{DynamicResource BrushSurfaceSubtle}"
-                Margin="0,0,0,0">
-            <Grid Margin="0,4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="44" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="140" />
-                    <ColumnDefinition Width="120" />
-                    <ColumnDefinition Width="44" />
-                </Grid.ColumnDefinitions>
+                Background="{DynamicResource BrushSurfaceSubtle}">
+            <StackPanel>
 
-                <TextBox Grid.Column="1"
-                         Text="{Binding NewItemName}"
-                         PlaceholderText="New item name…"
-                         MinHeight="44"
-                         VerticalContentAlignment="Center" />
+                <!-- Trigger button — visible when panel is closed -->
+                <Button Classes="Ghost compact"
+                        Content="+ Add Item"
+                        Command="{Binding ShowAddItemPanelCommand}"
+                        IsVisible="{Binding !IsAddingNewItem}"
+                        Margin="12,6"
+                        HorizontalAlignment="Left" />
 
-                <ItemsControl Grid.Column="2"
-                              ItemsSource="{Binding NewItemLayerToggles}"
-                              VerticalAlignment="Center"
-                              Margin="8,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="vm:LayerToggleVm">
-                            <CheckBox Content="{Binding DisplayName}"
-                                      IsChecked="{Binding IsChecked}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <!-- Detail panel — mirrors expanded row (Part B) -->
+                <Border IsVisible="{Binding IsAddingNewItem}"
+                        Padding="40,8,8,8">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="LabelUI" Text="NAME" />
+                            <TextBox Classes="underline"
+                                     Text="{Binding NewItemName}" />
+                        </StackPanel>
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="LabelUI" Text="LAYERS" />
+                            <tagInput:TagInput Tags="{Binding NewItemLayers}"
+                                               Suggestions="{Binding NewItemLayerSuggestions}"
+                                               Placeholder="add layer..." />
+                        </StackPanel>
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="LabelUI" Text="SLOTS" />
+                            <tagInput:TagInput Tags="{Binding NewItemSlots}"
+                                               Suggestions="{Binding NewItemSlotSuggestions}"
+                                               Placeholder="add slot..." />
+                        </StackPanel>
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="LabelUI" Text="TAGS" />
+                            <tagInput:TagInput Tags="{Binding NewItemTags}"
+                                               Suggestions="{Binding NewItemTagSuggestions}"
+                                               Placeholder="add tag..." />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="12">
+                            <StackPanel Spacing="2">
+                                <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
+                                <NumericUpDown Classes="underline stacked-spinner"
+                                               Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                               FormatString="0.0"
+                                               Increment="0.1"
+                                               Minimum="0"
+                                               Width="110" />
+                            </StackPanel>
+                            <StackPanel Spacing="2">
+                                <TextBlock Classes="LabelUI" Text="WEIGHT" />
+                                <NumericUpDown Classes="underline stacked-spinner"
+                                               Value="{Binding NewItemWeight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                               FormatString="0.0"
+                                               Increment="0.1"
+                                               Minimum="0"
+                                               Width="110" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Classes="Primary compact"
+                                Content="Add Item"
+                                Command="{Binding AddWardrobeItemCommand}"
+                                HorizontalAlignment="Right" />
+                        <TextBlock Classes="Caption"
+                                   FontStyle="Italic"
+                                   Text="Multiplier and weight affect outfit scoring. Tags are used by outfit rules." />
+                    </StackPanel>
+                </Border>
 
-                <TextBox Grid.Column="3"
-                         Text="{Binding NewItemSlots}"
-                         PlaceholderText="torso, legs…"
-                         MinHeight="44"
-                         VerticalContentAlignment="Center"
-                         Margin="4,0" />
-
-                <!-- Column 4 (TAGS): added after creation via expand -->
-
-                <Button Grid.Column="5"
-                        Content="↵"
-                        Command="{Binding AddWardrobeItemCommand}"
-                        MinHeight="44"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center" />
-
-            </Grid>
+            </StackPanel>
         </Border>
 
     </Grid>
