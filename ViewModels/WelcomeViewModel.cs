@@ -1,6 +1,6 @@
 using System.Windows.Input;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;

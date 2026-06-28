@@ -87,14 +87,10 @@
     <Setter Property="FontSize" Value="13"/>
     <Setter Property="FontWeight" Value="Medium"/>
   </Style>
-
-  <Style Selector="RadioButton.navItem:pointerover">
-    <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}"/>
+      
+  <Style Selector="RadioButton.navItem:pointerover, RadioButton.navItem:focus">
     <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-  </Style>
-
-  <Style Selector="RadioButton.navItem:pointerover TextBlock">
-    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BrushNavItemBorder}"/>
   </Style>
 
   <!-- Selected state: subtle background highlight + left accent bar -->
@@ -107,6 +103,24 @@
   <Style Selector="RadioButton.navItem:checked TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
     <Setter Property="FontWeight" Value="SemiBold"/>
+  </Style>
+
+  <!-- tableRowExpander — clickable row in the Wardrobe table -->
+  <Style Selector="Button.tableRowExpander">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="12,0"/>
+    <Setter Property="MinHeight" Value="44"/>
+    <Setter Property="CornerRadius" Value="0"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.tableRowExpander /template/ ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Button.tableRowExpander:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}"/>
   </Style>
 
 </Styles>

@@ -86,6 +86,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
+    public ICommand CollapseExpandedWardrobeItemCommand { get; }
 
     public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo)
     {
@@ -117,15 +118,13 @@ public partial class SettingsViewModel : ViewModelBase
         var initSlots  = allWardrobe.SelectMany(i => i.Slots).Distinct().OrderBy(s => s).ToList();
         foreach (var w in allWardrobe)
         {
-            var vm = new WardrobeEditViewModel(w, id => RemoveWardrobeItem(id), initTags, initLayers, initSlots);
+            var vm = new WardrobeEditViewModel(w, id => RemoveWardrobeItem(id), initTags, initLayers, initSlots, ExpandWardrobeItem);
             WireWardrobeItem(vm);
             WardrobeItems.Add(vm);
             AvailableItems.Add(new ClothingItemOption(w.Id, w.Name));
         }
         foreach (var r in _repo.GetOutfitRules())
             OutfitRules.Add(WireChild(new OutfitRuleEditViewModel(r, AvailableItems, id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true));
-
-        UpdateRowParities();
 
         // Filtered wardrobe view — reactive to filter controls
         WardrobeItems.ToObservableChangeSet()
@@ -168,7 +167,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
         Punishments.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
-        WardrobeItems.CollectionChanged += (_, _) => { IsWardrobeDirty = true; UpdateRowParities(); UpdateSelectedCount(); };
+        WardrobeItems.CollectionChanged += (_, _) => { IsWardrobeDirty = true; UpdateSelectedCount(); };
         OutfitRules.CollectionChanged += (_, _) => IsRulesDirty = true;
 
         SaveCommand = ReactiveCommand.Create(Save);
@@ -191,10 +190,11 @@ public partial class SettingsViewModel : ViewModelBase
         DeleteSelectedWardrobeItemsCommand = ReactiveCommand.Create(
             DeleteSelectedWardrobeItems,
             this.WhenAnyValue(x => x.WardrobeSelectedCount, n => n > 0));
+        CollapseExpandedWardrobeItemCommand = ReactiveCommand.Create(
+            () => { foreach (var item in WardrobeItems) item.IsExpanded = false; });
     }
 
     // --- Wardrobe helpers ---
-
     private IEnumerable<string> AllUsedTags   => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);
     private IEnumerable<string> AllUsedLayers => WardrobeItems.SelectMany(w => w.Layers).Distinct().OrderBy(s => s);
     private IEnumerable<string> AllUsedSlots  => WardrobeItems.SelectMany(w => w.Slots).Distinct().OrderBy(s => s);
@@ -228,10 +228,10 @@ public partial class SettingsViewModel : ViewModelBase
         if (id > 0) _repo.DeleteClothingItem(id);
     }
 
-    private void UpdateRowParities()
+    private void ExpandWardrobeItem(WardrobeEditViewModel target)
     {
-        for (int i = 0; i < WardrobeItems.Count; i++)
-            WardrobeItems[i].IsEvenRow = i % 2 == 0;
+        foreach (var item in WardrobeItems) item.IsExpanded = false;
+        target.IsExpanded = true;
     }
 
     private void UpdateSelectedCount() =>
@@ -250,7 +250,7 @@ public partial class SettingsViewModel : ViewModelBase
             Weight = 1.0
         };
 
-        var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id), AllUsedTags, AllUsedLayers, AllUsedSlots);
+        var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id), AllUsedTags, AllUsedLayers, AllUsedSlots, ExpandWardrobeItem);
         WireWardrobeItem(vm);
         WardrobeItems.Add(vm);
 
@@ -457,7 +457,6 @@ public partial class WardrobeEditViewModel : ViewModelBase
     [Reactive] private double _weight;
     [Reactive] private bool _isSelected;
     [Reactive] private bool _isExpanded;
-    [Reactive] private bool _isEvenRow;
 
     public ObservableCollection<string> Layers { get; }
     public ObservableCollection<string> Slots  { get; }
@@ -475,7 +474,8 @@ public partial class WardrobeEditViewModel : ViewModelBase
         Action<int> onDelete,
         IEnumerable<string>? tagSuggestions   = null,
         IEnumerable<string>? layerSuggestions = null,
-        IEnumerable<string>? slotSuggestions  = null)
+        IEnumerable<string>? slotSuggestions  = null,
+        Action<WardrobeEditViewModel>? onExpandRequest = null)
     {
         Id          = item.Id;
         _name       = item.Name;
@@ -491,7 +491,11 @@ public partial class WardrobeEditViewModel : ViewModelBase
         TagSuggestions   = tagSuggestions   ?? [];
 
         DeleteCommand         = ReactiveCommand.Create(() => onDelete(Id));
-        ToggleExpandedCommand = ReactiveCommand.Create(() => { IsExpanded = !IsExpanded; });
+        ToggleExpandedCommand = ReactiveCommand.Create(() =>
+        {
+            if (!IsExpanded) onExpandRequest?.Invoke(this);
+            else             IsExpanded = false;
+        });
     }
 
     public ClothingItem ToModel() => new()

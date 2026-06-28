@@ -403,7 +403,6 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     // --- New dashboard command handlers ---
-
     private void OnStartTask(TaskItemViewModel task)
     {
         var choreVm = Chores.FirstOrDefault(c => c.ChoreId == task.ChoreId);

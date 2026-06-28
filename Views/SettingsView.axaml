@@ -79,6 +79,7 @@
                     <Button Content="Back"
                             Command="{Binding BackCommand}"
                             Classes="Ghost"
+                            HorizontalContentAlignment="Center"
                             HorizontalAlignment="Stretch" />
                 </StackPanel>
 

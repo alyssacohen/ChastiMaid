@@ -1,11 +1,14 @@
     <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:controls="using:ChastiMaid.Controls"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeTable">
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Escape" Command="{Binding CollapseExpandedWardrobeItemCommand}" />
+    </UserControl.KeyBindings>
 
     <Grid RowDefinitions="Auto,1,*,Auto">
 
@@ -25,11 +28,11 @@
                           x:Name="SelectAllCheckBox"
                           MinWidth="44" MinHeight="44"
                           HorizontalAlignment="Center"
-                          VerticalAlignment="Center" />
+                          VerticalAlignment="Center"
+                          Margin="4,0"/>
                 <TextBlock Grid.Column="1" Text="NAME"
                            Classes="LabelUI"
-                           VerticalAlignment="Center"
-                           Margin="4,0" />
+                           VerticalAlignment="Center" />
                 <TextBlock Grid.Column="2" Text="LAYERS"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
@@ -53,9 +56,8 @@
                         <StackPanel>
 
                             <!-- Part A: always-visible row -->
-                            <Border Classes.even="{Binding IsEvenRow}"
-                                    MinHeight="44"
-                                    Padding="12, 0">
+                            <Button Classes="tableRowExpander"
+                                    Command="{Binding ToggleExpandedCommand}">
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="44" />
@@ -155,24 +157,20 @@
                                     </ItemsControl>
 
                                     <!-- Expand/collapse chevron -->
-                                    <Button Grid.Column="5"
-                                            Command="{Binding ToggleExpandedCommand}"
-                                            Width="44" Height="44"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            HorizontalContentAlignment="Center"
-                                            VerticalContentAlignment="Center">
-                                        <Panel>
-                                            <ic:SymbolIcon Symbol="Edit"
-                                                           FontSize="14"
-                                                           IsVisible="{Binding !IsExpanded}" />
-                                            <ic:SymbolIcon Symbol="ChevronDown"
-                                                           FontSize="14"
-                                                           IsVisible="{Binding IsExpanded}" />
-                                        </Panel>
-                                    </Button>
+                                    <ic:SymbolIcon Grid.Column="5"
+                                                   Symbol="ChevronRight"
+                                                   FontSize="14"
+                                                   IsVisible="{Binding !IsExpanded}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+                                    <ic:SymbolIcon Grid.Column="5"
+                                                   Symbol="ChevronDown"
+                                                   FontSize="14"
+                                                   IsVisible="{Binding IsExpanded}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
                                 </Grid>
-                            </Border>
+                            </Button>
 
                             <!-- Part B: expanded detail panel -->
                             <Border IsVisible="{Binding IsExpanded}"

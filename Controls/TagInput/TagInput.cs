@@ -4,7 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -25,12 +24,12 @@ public class TagInput : TemplatedControl
     private INotifyCollectionChanged?               _subscribedCollection;
 
     // ── StyledProperties ──────────────────────────────────────────────────
-
     public static readonly StyledProperty<IList<string>?> TagsProperty =
         AvaloniaProperty.Register<TagInput, IList<string>?>(nameof(Tags));
 
     public static readonly StyledProperty<IEnumerable<string>> SuggestionsProperty =
-        AvaloniaProperty.Register<TagInput, IEnumerable<string>>(nameof(Suggestions),
+        AvaloniaProperty.Register<TagInput, IEnumerable<string>>(
+            nameof(Suggestions),
             defaultValue: Array.Empty<string>());
 
     public static readonly StyledProperty<string?> PlaceholderProperty =
@@ -46,14 +45,14 @@ public class TagInput : TemplatedControl
         AvaloniaProperty.Register<TagInput, bool>(nameof(IsDropdownOpen));
 
     public static readonly StyledProperty<IEnumerable<string>> FilteredSuggestionsProperty =
-        AvaloniaProperty.Register<TagInput, IEnumerable<string>>(nameof(FilteredSuggestions),
+        AvaloniaProperty.Register<TagInput, IEnumerable<string>>(
+            nameof(FilteredSuggestions),
             defaultValue: Array.Empty<string>());
 
     public static readonly StyledProperty<int> HighlightedIndexProperty =
         AvaloniaProperty.Register<TagInput, int>(nameof(HighlightedIndex), defaultValue: -1);
 
     // ── Public accessors ──────────────────────────────────────────────────
-
     public IList<string>?       Tags                { get => GetValue(TagsProperty);                set => SetValue(TagsProperty, value); }
     public IEnumerable<string>  Suggestions         { get => GetValue(SuggestionsProperty);         set => SetValue(SuggestionsProperty, value); }
     public string?              Placeholder         { get => GetValue(PlaceholderProperty);         set => SetValue(PlaceholderProperty, value); }
@@ -64,7 +63,6 @@ public class TagInput : TemplatedControl
     public int                  HighlightedIndex    { get => GetValue(HighlightedIndexProperty);    set => SetValue(HighlightedIndexProperty, value); }
 
     // ── Template ──────────────────────────────────────────────────────────
-
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
@@ -79,6 +77,7 @@ public class TagInput : TemplatedControl
             if (_textInputHandler is not null)
                 _inputBox.RemoveHandler(InputElement.TextInputEvent, _textInputHandler);
         }
+
         if (_suggestionList is not null)
             _suggestionList.PointerPressed -= OnSuggestionPressed;
 
@@ -126,7 +125,6 @@ public class TagInput : TemplatedControl
     }
 
     // ── Collection subscription ──────────────────────────────────────────
-
     private void SubscribeToTags(IList<string>? tags)
     {
         if (_subscribedCollection is not null)
@@ -134,18 +132,20 @@ public class TagInput : TemplatedControl
             _subscribedCollection.CollectionChanged -= OnTagsCollectionChanged;
             _subscribedCollection = null;
         }
-        if (tags is INotifyCollectionChanged col)
+
+        if (tags is not INotifyCollectionChanged col)
         {
-            col.CollectionChanged += OnTagsCollectionChanged;
-            _subscribedCollection  = col;
+            return;
         }
+
+        col.CollectionChanged += OnTagsCollectionChanged;
+        _subscribedCollection  = col;
     }
 
     private void OnTagsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
         Dispatcher.UIThread.Post(RebuildChips);
 
     // ── Chip building ────────────────────────────────────────────────────
-
     private void RebuildChips()
     {
         if (_chipPanel is null) return;
@@ -168,7 +168,7 @@ public class TagInput : TemplatedControl
             CornerRadius      = new CornerRadius(4),
             Height            = 30,
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-            Cursor            = new Cursor(StandardCursorType.Hand)
+            Cursor            = new Cursor(StandardCursorType.Hand),
         };
         chip.Classes.Add("chip");
 
@@ -182,7 +182,7 @@ public class TagInput : TemplatedControl
         {
             Orientation = Avalonia.Layout.Orientation.Horizontal,
             Spacing     = 0,
-            Children    = { label, xLabel }
+            Children    = { label, xLabel },
         };
 
         var capturedIndex = index;
@@ -192,7 +192,6 @@ public class TagInput : TemplatedControl
     }
 
     // ── Text input interception ──────────────────────────────────────────
-
     private void OnInputTextInput(object? sender, TextInputEventArgs e)
     {
         var sep = Separator;
@@ -204,7 +203,6 @@ public class TagInput : TemplatedControl
     }
 
     // ── Keyboard handling ────────────────────────────────────────────────
-
     private void OnInputKeyDown(object? sender, KeyEventArgs e)
     {
         switch (e.Key)
@@ -275,7 +273,6 @@ public class TagInput : TemplatedControl
     }
 
     // ── Focus ─────────────────────────────────────────────────────────────
-
     private void OnInputGotFocus(object? sender, FocusChangedEventArgs e) =>
         PseudoClasses.Set(":focus-within", true);
 
@@ -291,7 +288,6 @@ public class TagInput : TemplatedControl
     }
 
     // ── Autocomplete ─────────────────────────────────────────────────────
-
     private void UpdateFilteredSuggestions()
     {
         var input = _inputText.Trim();
@@ -321,7 +317,6 @@ public class TagInput : TemplatedControl
     }
 
     // ── Chip operations ──────────────────────────────────────────────────
-
     private void CommitInput()
     {
         var value = _inputText.Trim();

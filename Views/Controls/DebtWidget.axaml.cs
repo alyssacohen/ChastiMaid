@@ -6,7 +6,6 @@ namespace ChastiMaid.Views.Controls;
 public partial class DebtWidget : UserControl
 {
     // ── StyledProperties ────────────────────────────────────────────────────
-
     public static readonly StyledProperty<decimal> DebtTotalProperty =
         AvaloniaProperty.Register<DebtWidget, decimal>(nameof(DebtTotal));
 
@@ -20,7 +19,6 @@ public partial class DebtWidget : UserControl
         AvaloniaProperty.Register<DebtWidget, double>(nameof(DebtProgress));
 
     // ── Public accessors ────────────────────────────────────────────────────
-
     public decimal DebtTotal
     {
         get => GetValue(DebtTotalProperty);
@@ -46,14 +44,12 @@ public partial class DebtWidget : UserControl
     }
 
     // ── Constructor ──────────────────────────────────────────────────────────
-
     public DebtWidget()
     {
         InitializeComponent();
     }
 
     // ── Derived property refresh ─────────────────────────────────────────────
-
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);

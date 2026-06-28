@@ -8,7 +8,6 @@ namespace ChastiMaid.Views.Controls;
 public partial class OutfitDrawer : UserControl
 {
     // ── IsOpen StyledProperty ───────────────────────────────────────────────
-
     public static readonly StyledProperty<bool> IsOpenProperty =
         AvaloniaProperty.Register<OutfitDrawer, bool>(nameof(IsOpen));
 
@@ -19,7 +18,6 @@ public partial class OutfitDrawer : UserControl
     }
 
     // ── Outfit StyledProperty (avoids overriding DataContext from parent) ───
-
     public static readonly StyledProperty<OutfitViewModel?> OutfitProperty =
         AvaloniaProperty.Register<OutfitDrawer, OutfitViewModel?>(nameof(Outfit));
 
@@ -30,7 +28,6 @@ public partial class OutfitDrawer : UserControl
     }
 
     // ── Layers (derived from Outfit, bindable from AXAML) ──────────────────
-
     public static readonly StyledProperty<IReadOnlyList<OutfitLayerViewModel>> LayersProperty =
         AvaloniaProperty.Register<OutfitDrawer, IReadOnlyList<OutfitLayerViewModel>>(
             nameof(Layers), defaultValue: []);
@@ -42,11 +39,9 @@ public partial class OutfitDrawer : UserControl
     }
 
     // ── CloseRequested event ────────────────────────────────────────────────
-
     public event EventHandler? CloseRequested;
 
     // ── Constructor ──────────────────────────────────────────────────────────
-
     public OutfitDrawer()
     {
         InitializeComponent();
@@ -54,7 +49,6 @@ public partial class OutfitDrawer : UserControl
     }
 
     // ── Property sync ────────────────────────────────────────────────────────
-
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -65,7 +59,6 @@ public partial class OutfitDrawer : UserControl
     }
 
     // ── Handlers ─────────────────────────────────────────────────────────────
-
     private void OnScrimClick(object? sender, RoutedEventArgs e)
     {
         CloseRequested?.Invoke(this, EventArgs.Empty);
