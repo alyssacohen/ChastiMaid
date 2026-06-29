@@ -19,9 +19,15 @@ public partial class WardrobeTable : UserControl
 
     private void OnSelectAllChanged(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is not SettingsViewModel vm) return;
+        if (DataContext is not SettingsViewModel vm)
+        {
+            return;
+        }
+
         var selected = (sender as CheckBox)?.IsChecked == true;
         foreach (var item in vm.FilteredWardrobeItems)
+        {
             item.IsSelected = selected;
+        }
     }
 }

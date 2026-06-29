@@ -4,29 +4,29 @@
              xmlns:local="using:ChastiMaid"
              RequestedThemeVariant="Light">
 
-  <Application.DataTemplates>
-    <local:ViewLocator/>
-  </Application.DataTemplates>
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
 
-  <Application.Styles>
-    <FluentTheme/>
-    <!-- Styles-rooted files: Typography, Buttons, Chips, Tables -->
-    <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Typography.axaml"/>
-    <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Buttons.axaml"/>
-    <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Chips.axaml"/>
-    <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Tables.axaml"/>
-    <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Components.axaml"/>
-    <StyleInclude Source="avares://ChastiMaid/Controls/TagInput/TagInputTheme.axaml"/>
-  </Application.Styles>
+    <Application.Styles>
+        <FluentTheme />
+        <!-- Styles-rooted files: Typography, Buttons, Chips, Tables -->
+        <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Typography.axaml" />
+        <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Buttons.axaml" />
+        <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Chips.axaml" />
+        <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Tables.axaml" />
+        <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Components.axaml" />
+        <StyleInclude Source="avares://ChastiMaid/Controls/TagInput/TagInputTheme.axaml" />
+    </Application.Styles>
 
-  <Application.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <!-- ResourceDictionary-rooted files: Colors must come first -->
-        <ResourceInclude Source="avares://ChastiMaid/Assets/Styles/Colors.axaml"/>
-        <ResourceInclude Source="avares://ChastiMaid/Assets/Styles/Spacing.axaml"/>
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </Application.Resources>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- ResourceDictionary-rooted files: Colors must come first -->
+                <ResourceInclude Source="avares://ChastiMaid/Assets/Styles/Colors.axaml" />
+                <ResourceInclude Source="avares://ChastiMaid/Assets/Styles/Spacing.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 
 </Application>

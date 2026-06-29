@@ -9,12 +9,18 @@ namespace ChastiMaid.Views;
 
 public partial class SettingsView : UserControl
 {
-    public SettingsView() => InitializeComponent();
+    public SettingsView()
+    {
+        InitializeComponent();
+    }
 
     protected override void OnDataContextChanged(EventArgs e)
     {
         base.OnDataContextChanged(e);
-        if (DataContext is not SettingsViewModel vm) return;
+        if (DataContext is not SettingsViewModel vm)
+        {
+            return;
+        }
 
         vm.Chores.CollectionChanged += (_, a) => OnItemAdded(a, ChoresScroll);
         vm.Punishments.CollectionChanged += (_, a) => OnItemAdded(a, PunishmentsScroll);
@@ -23,7 +29,10 @@ public partial class SettingsView : UserControl
 
     private static void OnItemAdded(NotifyCollectionChangedEventArgs args, ScrollViewer scroll)
     {
-        if (args.Action is not NotifyCollectionChangedAction.Add) return;
+        if (args.Action is not NotifyCollectionChangedAction.Add)
+        {
+            return;
+        }
 
         Dispatcher.UIThread.Post(() =>
         {

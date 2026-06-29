@@ -10,12 +10,6 @@ public partial class WebcamPreviewControl : UserControl
     public static readonly StyledProperty<WebcamPreviewService?> ServiceProperty =
         AvaloniaProperty.Register<WebcamPreviewControl, WebcamPreviewService?>(nameof(Service));
 
-    public WebcamPreviewService? Service
-    {
-        get => GetValue(ServiceProperty);
-        set => SetValue(ServiceProperty, value);
-    }
-
     private IDisposable? _bitmapSub;
     private IDisposable? _frameSub;
 
@@ -24,10 +18,19 @@ public partial class WebcamPreviewControl : UserControl
         InitializeComponent();
     }
 
+    public WebcamPreviewService? Service
+    {
+        get => GetValue(ServiceProperty);
+        set => SetValue(ServiceProperty, value);
+    }
+
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property != ServiceProperty) return;
+        if (change.Property != ServiceProperty)
+        {
+            return;
+        }
 
         _bitmapSub?.Dispose();
         _frameSub?.Dispose();

@@ -12,23 +12,21 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
-    private readonly WebcamPreviewService _webcam;
 
-    public string OutfitSummary { get; }
-    public WebcamPreviewService Webcam => _webcam;
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private int _countdown;
 
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _isPreviewing;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _isRecording;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _noWebcam;
-    [Reactive(SetModifier = AccessModifier.Private)] private int _countdown;
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _isPreviewing;
 
-    public bool IsInitial => !IsPreviewing && !IsRecording && !NoWebcam;
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _isRecording;
 
-    public ICommand ConfirmOutfitCommand { get; }
-    public ICommand RecordCommand { get; }
-    public ICommand SkipCommand { get; }
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _noWebcam;
 
-    public ConfirmOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit outfit, double bonusPercent = 1.0)
+    public ConfirmOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit outfit,
+        double bonusPercent = 1.0)
         : this(mainVm, saveRepo, bonusPercent)
     {
         OutfitSummary = outfit.ToString();
@@ -41,6 +39,11 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
             state.OutfitBonusPercent = bonusPercent;
             saveRepo.SaveGameState(state);
         }
+
+        OutfitVm = OutfitViewModel.FromString(OutfitSummary);
+        var itemCount = OutfitVm.Layers.Count(l => l.HasItem);
+        MultiplierDisplay = $"×{bonusPercent * outfit.TotalMultiplier:F2}";
+        ItemCountDisplay = $"{itemCount} items · {itemCount} layers covered";
     }
 
     /// <summary>Used when outfit is already locked — reads summary from saved state.</summary>
@@ -48,7 +51,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
     {
         _mainVm = mainVm;
         _saveRepo = saveRepo;
-        _webcam = mainVm.Webcam;
+        Webcam = mainVm.Webcam;
 
         var state = saveRepo.GetGameState();
         OutfitSummary = state?.CurrentOutfit ?? "";
@@ -56,11 +59,28 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         ConfirmOutfitCommand = ReactiveCommand.Create(OnOutfitConfirmed);
         RecordCommand = ReactiveCommand.CreateFromTask(OnRecord);
         SkipCommand = ReactiveCommand.Create(NavigateToSafeLock);
+
+        OutfitVm = OutfitViewModel.FromString(OutfitSummary);
+        var itemCount = OutfitVm.Layers.Count(l => l.HasItem);
+        MultiplierDisplay = $"×{state?.EffectiveMultiplier ?? 1.0:F2}";
+        ItemCountDisplay = $"{itemCount} items · {itemCount} layers covered";
     }
+
+    public string OutfitSummary { get; }
+    public OutfitViewModel OutfitVm { get; private set; } = new([]);
+    public string MultiplierDisplay { get; private set; } = "×1.00";
+    public string ItemCountDisplay { get; private set; } = "";
+    public WebcamPreviewService Webcam { get; }
+
+    public bool IsInitial => !IsPreviewing && !IsRecording && !NoWebcam;
+
+    public ICommand ConfirmOutfitCommand { get; }
+    public ICommand RecordCommand { get; }
+    public ICommand SkipCommand { get; }
 
     private void OnOutfitConfirmed()
     {
-        if (!_webcam.Start())
+        if (!Webcam.Start())
         {
             NoWebcam = true;
             this.RaisePropertyChanged(nameof(IsInitial));
@@ -84,7 +104,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
 
         try
         {
-            await _webcam.RecordVideoAsync(videoPath, 5, new Progress<int>(r => Countdown = r));
+            await Webcam.RecordVideoAsync(videoPath, 5, new Progress<int>(r => Countdown = r));
 
             if (state is not null)
             {
@@ -92,14 +112,17 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
                 _saveRepo.SaveGameState(state);
             }
         }
-        catch { /* Recording failed — proceed anyway */ }
+        catch
+        {
+            /* Recording failed — proceed anyway */
+        }
 
         NavigateToSafeLock();
     }
 
     private void NavigateToSafeLock()
     {
-        _webcam.Stop();
+        Webcam.Stop();
 
         var state = _saveRepo.GetGameState();
         if (state?.IsSafeLocked == true)

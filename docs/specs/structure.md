@@ -1,6 +1,7 @@
 # Project Structure
 
 ## Root
+
 ```
 ChastiMaid/
 ├── Assets/          # Static assets (icons, images)
@@ -25,9 +26,10 @@ ChastiMaid/
 
 - All ViewModels inherit from `ViewModelBase` (which extends `ReactiveObject`)
 - ViewLocator maps ViewModels to Views by replacing `ViewModel` with `View` in the fully qualified type name
-  - e.g. `ChastiMaid.ViewModels.WelcomeViewModel` → `ChastiMaid.Views.WelcomeView`
+    - e.g. `ChastiMaid.ViewModels.WelcomeViewModel` → `ChastiMaid.Views.WelcomeView`
 - Each View has a paired `.axaml` + `.axaml.cs` code-behind
-- Navigation is handled by `MainWindowViewModel.CurrentPage` (a `ViewModelBase`), rendered via `TransitioningContentControl`
+- Navigation is handled by `MainWindowViewModel.CurrentPage` (a `ViewModelBase`), rendered via
+  `TransitioningContentControl`
 
 ## Adding New Pages
 
@@ -36,6 +38,7 @@ ChastiMaid/
 3. Set `MainWindowViewModel.CurrentPage` to an instance of the new ViewModel to navigate to it
 
 ## Naming
+
 - ViewModels: `PascalCase` + `ViewModel` suffix
 - Views: `PascalCase` + `View` suffix (must match ViewModel name for ViewLocator to work)
 - Files follow the same naming as their contained class

@@ -1,349 +1,378 @@
-
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap');
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-.root {
-  font-family: 'Inter', var(--font-sans);
-  font-weight: 400;
-  padding: 2rem 0 1.5rem;
-  max-width: 660px;
-  background: #2C2C2A;
-}
+    .root {
+        font-family: 'Inter', var(--font-sans);
+        font-weight: 400;
+        padding: 2rem 0 1.5rem;
+        max-width: 660px;
+        background: #2C2C2A;
+    }
 
-.page-title {
-  font-family: 'Instrument Serif', var(--font-serif);
-  font-size: 28px;
-  font-weight: 400;
-  font-style: normal;
-  color: var(--color-text-primary);
-  letter-spacing: 0.01em;
-  margin-bottom: 4px;
-}
+    .page-title {
+        font-family: 'Instrument Serif', var(--font-serif);
+        font-size: 28px;
+        font-weight: 400;
+        font-style: normal;
+        color: var(--color-text-primary);
+        letter-spacing: 0.01em;
+        margin-bottom: 4px;
+    }
 
-.page-sub {
-  font-family: 'Inter', var(--font-sans);
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  margin-bottom: 2rem;
-}
+    .page-sub {
+        font-family: 'Inter', var(--font-sans);
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+        margin-bottom: 2rem;
+    }
 
-.layer-block {
-  margin-bottom: 1.75rem;
-}
+    .layer-block {
+        margin-bottom: 1.75rem;
+    }
 
-.layer-header {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 0.5px solid var(--color-border-tertiary);
-}
+    .layer-header {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 0.5px solid var(--color-border-tertiary);
+    }
 
-.layer-name {
-  font-family: 'Instrument Serif', var(--font-serif);
-  font-size: 15px;
-  font-style: italic;
-  color: var(--color-text-secondary);
-  letter-spacing: 0.02em;
-}
+    .layer-name {
+        font-family: 'Instrument Serif', var(--font-serif);
+        font-size: 15px;
+        font-style: italic;
+        color: var(--color-text-secondary);
+        letter-spacing: 0.02em;
+    }
 
-.layer-rule {
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: var(--color-text-tertiary);
-}
+    .layer-rule {
+        font-size: 11px;
+        font-weight: 300;
+        letter-spacing: 0.05em;
+        color: var(--color-text-tertiary);
+    }
 
-.items-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  padding: 2px 0;
-}
+    .items-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        padding: 2px 0;
+    }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: 2px;
-  background: transparent;
-  font-family: 'Inter', var(--font-sans);
-  font-size: 12.5px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: var(--color-text-primary);
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s, opacity 0.12s;
-  user-select: none;
-}
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border: 0.5px solid var(--color-border-tertiary);
+        border-radius: 2px;
+        background: transparent;
+        font-family: 'Inter', var(--font-sans);
+        font-size: 12.5px;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        color: var(--color-text-primary);
+        cursor: pointer;
+        transition: background 0.12s, border-color 0.12s, color 0.12s, opacity 0.12s;
+        user-select: none;
+    }
 
-.chip:hover {
-  background: var(--color-background-secondary);
-  border-color: var(--color-border-secondary);
-}
+    .chip:hover {
+        background: var(--color-background-secondary);
+        border-color: var(--color-border-secondary);
+    }
 
-.chip.selected {
-  background: #F1EFE8;
-  border-color: #888780;
-  color: #2C2C2A;
-}
+    .chip.selected {
+        background: #F1EFE8;
+        border-color: #888780;
+        color: #2C2C2A;
+    }
 
-.chip.required {
-  border-color: #BA7517;
-  background: #FAEEDA;
-  color: #633806;
-}
+    .chip.required {
+        border-color: #BA7517;
+        background: #FAEEDA;
+        color: #633806;
+    }
 
-.chip.disabled {
-  opacity: 0.32;
-  cursor: not-allowed;
-  pointer-events: none;
-  border-style: dashed;
-}
+    .chip.disabled {
+        opacity: 0.32;
+        cursor: not-allowed;
+        pointer-events: none;
+        border-style: dashed;
+    }
 
-.chip-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  border: 0.5px solid var(--color-border-secondary);
-  flex-shrink: 0;
-}
+    .chip-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        border: 0.5px solid var(--color-border-secondary);
+        flex-shrink: 0;
+    }
 
-.chip.selected .chip-dot { background: #5F5E5A; border-color: #5F5E5A; }
-.chip.required .chip-dot { background: #BA7517; border-color: #BA7517; }
+    .chip.selected .chip-dot {
+        background: #5F5E5A;
+        border-color: #5F5E5A;
+    }
 
-.status-block {
-  margin-top: 1.75rem;
-  padding: 14px 16px;
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: 2px;
-  background: var(--color-background-secondary);
-}
+    .chip.required .chip-dot {
+        background: #BA7517;
+        border-color: #BA7517;
+    }
 
-.status-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 12.5px;
-  line-height: 1.5;
-}
+    .status-block {
+        margin-top: 1.75rem;
+        padding: 14px 16px;
+        border: 0.5px solid var(--color-border-tertiary);
+        border-radius: 2px;
+        background: var(--color-background-secondary);
+    }
 
-.status-icon {
-  font-size: 14px;
-  margin-top: 1px;
-  flex-shrink: 0;
-}
+    .status-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 12.5px;
+        line-height: 1.5;
+    }
 
-.status-text { color: var(--color-text-secondary); }
-.status-text strong { color: var(--color-text-primary); font-weight: 500; }
-.status-warn { color: #854F0B; }
-.status-warn strong { color: #633806; font-weight: 500; }
+    .status-icon {
+        font-size: 14px;
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
 
-.divider-thin {
-  height: 0.5px;
-  background: var(--color-border-tertiary);
-  margin: 10px 0;
-}
+    .status-text {
+        color: var(--color-text-secondary);
+    }
 
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1.75rem;
-  padding-top: 1.25rem;
-  border-top: 0.5px solid var(--color-border-tertiary);
-}
+    .status-text strong {
+        color: var(--color-text-primary);
+        font-weight: 500;
+    }
 
-.actions-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  color: var(--color-text-secondary);
-}
+    .status-warn {
+        color: #854F0B;
+    }
 
-.sel-count {
-  font-family: 'Instrument Serif', var(--font-serif);
-  font-size: 22px;
-  font-style: italic;
-  color: var(--color-text-primary);
-}
+    .status-warn strong {
+        color: #633806;
+        font-weight: 500;
+    }
 
-.actions-right { display: flex; gap: 8px; }
+    .divider-thin {
+        height: 0.5px;
+        background: var(--color-border-tertiary);
+        margin: 10px 0;
+    }
 
-.btn-ghost {
-  padding: 7px 16px;
-  border: 0.5px solid var(--color-border-secondary);
-  border-radius: 2px;
-  background: transparent;
-  font-family: 'Inter', var(--font-sans);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
+    .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.75rem;
+        padding-top: 1.25rem;
+        border-top: 0.5px solid var(--color-border-tertiary);
+    }
 
-.btn-primary {
-  padding: 7px 20px;
-  border: 0.5px solid #5F5E5A;
-  border-radius: 2px;
-  background: #2C2C2A;
-  font-family: 'Inter', var(--font-sans);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #F1EFE8;
-  cursor: pointer;
-}
+    .actions-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: 0.04em;
+        color: var(--color-text-secondary);
+    }
 
-.legend {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
+    .sel-count {
+        font-family: 'Instrument Serif', var(--font-serif);
+        font-size: 22px;
+        font-style: italic;
+        color: var(--color-text-primary);
+    }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: var(--color-text-tertiary);
-}
+    .actions-right {
+        display: flex;
+        gap: 8px;
+    }
 
-.legend-chip-demo {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  border-radius: 2px;
-  font-size: 11px;
-}
+    .btn-ghost {
+        padding: 7px 16px;
+        border: 0.5px solid var(--color-border-secondary);
+        border-radius: 2px;
+        background: transparent;
+        font-family: 'Inter', var(--font-sans);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        padding: 7px 20px;
+        border: 0.5px solid #5F5E5A;
+        border-radius: 2px;
+        background: #2C2C2A;
+        font-family: 'Inter', var(--font-sans);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #F1EFE8;
+        cursor: pointer;
+    }
+
+    .legend {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 300;
+        letter-spacing: 0.05em;
+        color: var(--color-text-tertiary);
+    }
+
+    .legend-chip-demo {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 2px;
+        font-size: 11px;
+    }
 </style>
 
 <div class="root">
-  <h2 class="sr-only">Outfit builder — select garments by layer to compose an outfit</h2>
+    <h2 class="sr-only">Outfit builder — select garments by layer to compose an outfit</h2>
 
-  <p class="page-title">Compose an outfit</p>
-  <p class="page-sub">Select items by layer</p>
+    <p class="page-title">Compose an outfit</p>
+    <p class="page-sub">Select items by layer</p>
 
-  <div class="legend">
-    <div class="legend-item">
-      <div class="legend-chip-demo" style="border:0.5px solid #888780;background:#F1EFE8;color:#2C2C2A;">
-        <span style="width:5px;height:5px;border-radius:50%;background:#5F5E5A;flex-shrink:0;display:inline-block"></span>item
-      </div>
-      selected
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-chip-demo" style="border:0.5px solid #888780;background:#F1EFE8;color:#2C2C2A;">
+                <span
+                    style="width:5px;height:5px;border-radius:50%;background:#5F5E5A;flex-shrink:0;display:inline-block"></span>item
+            </div>
+            selected
+        </div>
+        <div class="legend-item">
+            <div class="legend-chip-demo" style="border:0.5px solid #BA7517;background:#FAEEDA;color:#633806;">
+                <span
+                    style="width:5px;height:5px;border-radius:50%;background:#BA7517;flex-shrink:0;display:inline-block"></span>item
+            </div>
+            required
+        </div>
+        <div class="legend-item">
+            <div class="legend-chip-demo"
+                 style="border:0.5px dashed var(--color-border-tertiary);opacity:0.4;color:var(--color-text-secondary);">
+                item
+            </div>
+            unavailable
+        </div>
     </div>
-    <div class="legend-item">
-      <div class="legend-chip-demo" style="border:0.5px solid #BA7517;background:#FAEEDA;color:#633806;">
-        <span style="width:5px;height:5px;border-radius:50%;background:#BA7517;flex-shrink:0;display:inline-block"></span>item
-      </div>
-      required
-    </div>
-    <div class="legend-item">
-      <div class="legend-chip-demo" style="border:0.5px dashed var(--color-border-tertiary);opacity:0.4;color:var(--color-text-secondary);">
-        item
-      </div>
-      unavailable
-    </div>
-  </div>
 
-  <div class="layer-block">
-    <div class="layer-header">
-      <span class="layer-name">Underwear</span>
-      <span class="layer-rule">foundation · choose freely</span>
+    <div class="layer-block">
+        <div class="layer-header">
+            <span class="layer-name">Underwear</span>
+            <span class="layer-rule">foundation · choose freely</span>
+        </div>
+        <div class="items-wrap">
+            <div class="chip selected"><span class="chip-dot"></span>Corset with suspender straps — ivory</div>
+            <div class="chip"><span class="chip-dot"></span>Longline bralette — black</div>
+            <div class="chip disabled"><span class="chip-dot"></span>Strapless bustier</div>
+            <div class="chip"><span class="chip-dot"></span>Brief — ivory</div>
+            <div class="chip"><span class="chip-dot"></span>Brief — black</div>
+        </div>
     </div>
-    <div class="items-wrap">
-      <div class="chip selected"><span class="chip-dot"></span>Corset with suspender straps — ivory</div>
-      <div class="chip"><span class="chip-dot"></span>Longline bralette — black</div>
-      <div class="chip disabled"><span class="chip-dot"></span>Strapless bustier</div>
-      <div class="chip"><span class="chip-dot"></span>Brief — ivory</div>
-      <div class="chip"><span class="chip-dot"></span>Brief — black</div>
-    </div>
-  </div>
 
-  <div class="layer-block">
-    <div class="layer-header">
-      <span class="layer-name">Extra</span>
-      <span class="layer-rule">suspenders, garters · optional unless required by hosiery</span>
+    <div class="layer-block">
+        <div class="layer-header">
+            <span class="layer-name">Extra</span>
+            <span class="layer-rule">suspenders, garters · optional unless required by hosiery</span>
+        </div>
+        <div class="items-wrap">
+            <div class="chip disabled"><span class="chip-dot"></span>Satin garter belt — ivory</div>
+            <div class="chip disabled"><span class="chip-dot"></span>Lace garter belt — black</div>
+        </div>
     </div>
-    <div class="items-wrap">
-      <div class="chip disabled"><span class="chip-dot"></span>Satin garter belt — ivory</div>
-      <div class="chip disabled"><span class="chip-dot"></span>Lace garter belt — black</div>
-    </div>
-  </div>
 
-  <div class="layer-block">
-    <div class="layer-header">
-      <span class="layer-name">Base</span>
-      <span class="layer-rule">hosiery, slip · choose at most one pair</span>
+    <div class="layer-block">
+        <div class="layer-header">
+            <span class="layer-name">Base</span>
+            <span class="layer-rule">hosiery, slip · choose at most one pair</span>
+        </div>
+        <div class="items-wrap">
+            <div class="chip selected"><span class="chip-dot"></span>Seamed stockings — champagne</div>
+            <div class="chip"><span class="chip-dot"></span>Sheer stockings — nude</div>
+            <div class="chip"><span class="chip-dot"></span>Sheer stockings — black</div>
+            <div class="chip disabled"><span class="chip-dot"></span>Hold-ups — lace top</div>
+            <div class="chip"><span class="chip-dot"></span>Half-slip — ivory</div>
+        </div>
     </div>
-    <div class="items-wrap">
-      <div class="chip selected"><span class="chip-dot"></span>Seamed stockings — champagne</div>
-      <div class="chip"><span class="chip-dot"></span>Sheer stockings — nude</div>
-      <div class="chip"><span class="chip-dot"></span>Sheer stockings — black</div>
-      <div class="chip disabled"><span class="chip-dot"></span>Hold-ups — lace top</div>
-      <div class="chip"><span class="chip-dot"></span>Half-slip — ivory</div>
-    </div>
-  </div>
 
-  <div class="layer-block">
-    <div class="layer-header">
-      <span class="layer-name">Outerwear</span>
-      <span class="layer-rule">dress, skirt, blouse</span>
+    <div class="layer-block">
+        <div class="layer-header">
+            <span class="layer-name">Outerwear</span>
+            <span class="layer-rule">dress, skirt, blouse</span>
+        </div>
+        <div class="items-wrap">
+            <div class="chip"><span class="chip-dot"></span>Tea dress — blush</div>
+            <div class="chip"><span class="chip-dot"></span>Pencil skirt — charcoal</div>
+            <div class="chip"><span class="chip-dot"></span>Silk blouse — ivory</div>
+            <div class="chip"><span class="chip-dot"></span>Wrap dress — navy</div>
+        </div>
     </div>
-    <div class="items-wrap">
-      <div class="chip"><span class="chip-dot"></span>Tea dress — blush</div>
-      <div class="chip"><span class="chip-dot"></span>Pencil skirt — charcoal</div>
-      <div class="chip"><span class="chip-dot"></span>Silk blouse — ivory</div>
-      <div class="chip"><span class="chip-dot"></span>Wrap dress — navy</div>
-    </div>
-  </div>
 
-  <div class="layer-block">
-    <div class="layer-header">
-      <span class="layer-name">Accessories</span>
-      <span class="layer-rule">shoes, jewellery · multiple allowed</span>
+    <div class="layer-block">
+        <div class="layer-header">
+            <span class="layer-name">Accessories</span>
+            <span class="layer-rule">shoes, jewellery · multiple allowed</span>
+        </div>
+        <div class="items-wrap">
+            <div class="chip"><span class="chip-dot"></span>Heeled mules — blush</div>
+            <div class="chip"><span class="chip-dot"></span>Ankle-strap heels — black</div>
+            <div class="chip"><span class="chip-dot"></span>Pearl earrings</div>
+            <div class="chip selected"><span class="chip-dot"></span>Choker — velvet black</div>
+        </div>
     </div>
-    <div class="items-wrap">
-      <div class="chip"><span class="chip-dot"></span>Heeled mules — blush</div>
-      <div class="chip"><span class="chip-dot"></span>Ankle-strap heels — black</div>
-      <div class="chip"><span class="chip-dot"></span>Pearl earrings</div>
-      <div class="chip selected"><span class="chip-dot"></span>Choker — velvet black</div>
-    </div>
-  </div>
 
-  <div class="status-block">
-    <div class="status-row status-warn">
-      <i class="ti ti-alert-circle status-icon" aria-hidden="true"></i>
-      <span class="status-text"><strong>Seamed stockings</strong> require a suspender attachment. <strong>Corset with suspender straps</strong> is selected — requirement satisfied. A garter belt is no longer needed but remains available.</span>
+    <div class="status-block">
+        <div class="status-row status-warn">
+            <i aria-hidden="true" class="ti ti-alert-circle status-icon"></i>
+            <span class="status-text"><strong>Seamed stockings</strong> require a suspender attachment. <strong>Corset with suspender straps</strong> is selected — requirement satisfied. A garter belt is no longer needed but remains available.</span>
+        </div>
     </div>
-  </div>
 
-  <div class="actions">
-    <div class="actions-left">
-      <span class="sel-count">3</span>
-      <span>items selected</span>
+    <div class="actions">
+        <div class="actions-left">
+            <span class="sel-count">3</span>
+            <span>items selected</span>
+        </div>
+        <div class="actions-right">
+            <button class="btn-ghost">Clear</button>
+            <button class="btn-primary">Integrate outfit</button>
+            <button class="btn-primary">Save outfit</button>
+            <button class="btn-ghost">Back</button>
+        </div>
     </div>
-    <div class="actions-right">
-      <button class="btn-ghost">Clear</button>
-      <button class="btn-primary">Integrate outfit</button>
-      <button class="btn-primary">Save outfit</button>
-      <button class="btn-ghost">Back</button>
-    </div>
-  </div>
 </div>

@@ -6,12 +6,6 @@ namespace ChastiMaid.ViewModels;
 
 public class TaskItemViewModel : ViewModelBase
 {
-    public int ChoreId { get; }
-    public string Name { get; }
-    public TimeSpan EstimatedDuration { get; }
-    public string EstimatedDurationLabel { get; }
-    public ICommand StartCommand { get; }
-
     public TaskItemViewModel(Chore chore, Action<TaskItemViewModel> onStart)
     {
         ChoreId = chore.Id;
@@ -20,4 +14,10 @@ public class TaskItemViewModel : ViewModelBase
         EstimatedDurationLabel = "";
         StartCommand = ReactiveCommand.Create(() => onStart(this));
     }
+
+    public int ChoreId { get; }
+    public string Name { get; }
+    public TimeSpan EstimatedDuration { get; }
+    public string EstimatedDurationLabel { get; }
+    public ICommand StartCommand { get; }
 }

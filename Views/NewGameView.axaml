@@ -20,10 +20,12 @@
 
         <StackPanel Spacing="4">
             <TextBlock Classes="Body" HorizontalAlignment="Center">
-                <Run Text="Initial debt: " Foreground="{DynamicResource TextMuted}" /><Run Text="{Binding DebtRange}" />
+                <Run Text="Initial debt: " Foreground="{DynamicResource TextMuted}" />
+                <Run Text="{Binding DebtRange}" />
             </TextBlock>
             <TextBlock Classes="Body" HorizontalAlignment="Center">
-                <Run Text="Daily interest: " Foreground="{DynamicResource TextMuted}" /><Run Text="{Binding InterestRate}" />
+                <Run Text="Daily interest: " Foreground="{DynamicResource TextMuted}" />
+                <Run Text="{Binding InterestRate}" />
             </TextBlock>
         </StackPanel>
 

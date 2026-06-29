@@ -1,6 +1,8 @@
 # Impossible questions
+
 This is a list of questions that the app should present to the user is in Idle Mode
-The user can answer yes or no, but there is no right answer, there is a positive or negative outcome for each answer, choosen at random.
+The user can answer yes or no, but there is no right answer, there is a positive or negative outcome for each answer,
+choosen at random.
 In case of a negative outcome, the app will assign a light punishment.
 
 ## List of impossible questions:

@@ -3,80 +3,184 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
              x:DataType="vm:ConfirmOutfitViewModel"
-             x:Class="ChastiMaid.Views.ConfirmOutfitView">
+             x:Class="ChastiMaid.Views.ConfirmOutfitView"
+             Background="{DynamicResource BrushWindowBackground}">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MaxWidth="600"
-                Margin="40"
-                Spacing="16">
+    <Grid RowDefinitions="Auto,*,Auto">
 
-        <TextBlock Classes="PageTitle"
-                   Text="Confirm Outfit"
-                   HorizontalAlignment="Center" />
+        <!-- Row 0: Top section — confirmation controls (state-dependent) -->
+        <StackPanel Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    MaxWidth="640"
+                    Margin="{StaticResource SpacingXxlThickness}"
+                    Spacing="{StaticResource SpacingLg}">
 
-        <!-- Initial state -->
-        <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
-            <TextBlock Classes="Body"
-                       Text="Go change into the outfit below.&#10;When you are ready, press the button to confirm."
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
-            <TextBlock Classes="Body"
-                       Text="{Binding OutfitSummary}"
-                       TextWrapping="Wrap"
-                       Opacity="0.9"
-                       Margin="0,8"
+            <TextBlock Classes="PageTitle"
+                       Text="Outfit Confirmed"
                        HorizontalAlignment="Center" />
-            <Button Content="I'm wearing the outfit, continue"
+
+            <!-- Initial state: prompt to go change -->
+            <StackPanel Spacing="{StaticResource SpacingMd}"
+                        IsVisible="{Binding IsInitial}">
+                <TextBlock Classes="EmployerVoice"
+                           Text="Go change into the outfit below. When you are ready, press the button to confirm."
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center" />
+            </StackPanel>
+
+            <!-- Preview state: webcam check before recording -->
+            <StackPanel Spacing="{StaticResource SpacingMd}"
+                        IsVisible="{Binding IsPreviewing}"
+                        HorizontalAlignment="Center">
+                <TextBlock Classes="Caption"
+                           Text="Check yourself in the preview, then press Record."
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center" />
+                <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                        Width="480"
+                                        Height="360" />
+                <Button Classes="Primary"
+                        Content="🔴 Record (5s)"
+                        Command="{Binding RecordCommand}"
+                        HorizontalAlignment="Center" />
+                <Button Classes="Ghost"
+                        Content="Skip"
+                        Command="{Binding SkipCommand}"
+                        HorizontalAlignment="Center"
+                        Opacity="0.6" />
+            </StackPanel>
+
+            <!-- Recording state: countdown + live preview -->
+            <StackPanel Spacing="{StaticResource SpacingMd}"
+                        IsVisible="{Binding IsRecording}"
+                        HorizontalAlignment="Center">
+                <TextBlock Classes="Body"
+                           Text="Recording... Strike a pose!"
+                           HorizontalAlignment="Center" />
+                <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                        Width="480"
+                                        Height="360" />
+                <TextBlock Classes="NumberLarge"
+                           Text="{Binding Countdown, StringFormat={}{0}s}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <!-- No webcam state -->
+            <StackPanel Spacing="{StaticResource SpacingMd}"
+                        IsVisible="{Binding NoWebcam}"
+                        HorizontalAlignment="Center">
+                <TextBlock Classes="Body"
+                           Text="No webcam detected."
+                           HorizontalAlignment="Center" />
+                <TextBlock Classes="Caption"
+                           Text="The outfit video cannot be recorded. You can skip this step and continue."
+                           TextWrapping="Wrap"
+                           TextAlignment="Center" />
+                <Button Classes="Primary"
+                        Content="Skip"
+                        Command="{Binding SkipCommand}"
+                        HorizontalAlignment="Center" />
+            </StackPanel>
+
+        </StackPanel>
+
+        <!-- Row 1: Bottom section — layer cards + multiplier row (fixed, does not reflow) -->
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel HorizontalAlignment="Center"
+                        MaxWidth="720"
+                        Margin="{StaticResource SpacingXxlThickness}"
+                        Spacing="{StaticResource SpacingMd}">
+
+                <!-- Layer cards -->
+                <ItemsControl ItemsSource="{Binding OutfitVm.Layers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="{StaticResource SpacingMd}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:OutfitLayerViewModel">
+                            <Border Background="{StaticResource BrushSurfaceBase}"
+                                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="{StaticResource SpacingMdThickness}">
+                                <Grid ColumnDefinitions="160,*">
+
+                                    <!-- Left: layer category + selected item name -->
+                                    <StackPanel Grid.Column="0"
+                                                Spacing="{StaticResource SpacingXs}"
+                                                VerticalAlignment="Center"
+                                                Margin="0,0,12,0">
+                                        <TextBlock Classes="LabelUI"
+                                                   Text="{Binding LayerLabel}" />
+                                        <TextBlock Classes="BodySmall"
+                                                   Text="{Binding ItemName}"
+                                                   Foreground="{DynamicResource TextAccent}" />
+                                    </StackPanel>
+
+                                    <!-- Right: chip badge showing item + body zones -->
+                                    <WrapPanel Grid.Column="1"
+                                               VerticalAlignment="Center">
+                                        <Border Classes="chip selected"
+                                                IsVisible="{Binding HasItem}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="{StaticResource SpacingXs}">
+                                                <TextBlock Classes="chip-label"
+                                                           Text="{Binding ItemName}" />
+                                                <TextBlock Classes="BodySmall"
+                                                           Text="{Binding ItemDetail}"
+                                                           Foreground="{DynamicResource TextMuted}"
+                                                           VerticalAlignment="Center"
+                                                           IsVisible="{Binding ItemDetail,
+                                                               Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Multiplier row -->
+                <Border Background="{DynamicResource BrushSurfaceMuted}"
+                        CornerRadius="6"
+                        Padding="{StaticResource SpacingMdThickness}">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource SpacingMd}">
+                        <TextBlock Classes="Caption"
+                                   Text="Total Multiplier"
+                                   Foreground="{DynamicResource TextMuted}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="SectionTitle"
+                                   Text="{Binding MultiplierDisplay}"
+                                   Foreground="{DynamicResource TextAccent}" />
+                        <Rectangle Width="1"
+                                   Height="20"
+                                   Fill="{DynamicResource BrushBorderSubtle}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Caption"
+                                   Text="{Binding ItemCountDisplay}"
+                                   Foreground="{DynamicResource TextMuted}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+        
+        <StackPanel Grid.Row="2" Spacing="{StaticResource SpacingMd}"
+                    IsVisible="{Binding IsInitial}">
+            <Button Classes="Primary"
+                    Content="I'm wearing the outfit, continue"
                     Command="{Binding ConfirmOutfitCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
+                    HorizontalAlignment="Center" />
         </StackPanel>
 
-        <!-- Preview: webcam + Record -->
-        <StackPanel Spacing="16" IsVisible="{Binding IsPreviewing}" HorizontalAlignment="Center">
-            <TextBlock Classes="Caption"
-                       Text="Check yourself in the preview, then press Record."
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
-            <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
-            <Button Content="🔴 Record (5s)"
-                    Command="{Binding RecordCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
-            <Button Content="Skip"
-                    Command="{Binding SkipCommand}"
-                    Classes="Ghost"
-                    HorizontalAlignment="Center"
-                    Opacity="0.6" />
-        </StackPanel>
-
-        <!-- Recording: countdown + live preview -->
-        <StackPanel Spacing="16" IsVisible="{Binding IsRecording}" HorizontalAlignment="Center">
-            <TextBlock Classes="Body"
-                       Text="Recording... Strike a pose!"
-                       HorizontalAlignment="Center" />
-            <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
-            <TextBlock Text="{Binding Countdown, StringFormat={}{0}s}"
-                       Classes="NumberLarge"
-                       HorizontalAlignment="Center" />
-        </StackPanel>
-
-        <!-- No webcam -->
-        <StackPanel Spacing="16" IsVisible="{Binding NoWebcam}" HorizontalAlignment="Center">
-            <TextBlock Classes="Body"
-                       Text="No webcam detected."
-                       HorizontalAlignment="Center" />
-            <TextBlock Classes="Caption"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       Text="The outfit video cannot be recorded. You can skip this step and continue." />
-            <Button Content="Skip"
-                    Command="{Binding SkipCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
-        </StackPanel>
-
-    </StackPanel>
+    </Grid>
 
 </UserControl>

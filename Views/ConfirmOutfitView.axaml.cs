@@ -4,5 +4,8 @@ namespace ChastiMaid.Views;
 
 public partial class ConfirmOutfitView : UserControl
 {
-    public ConfirmOutfitView() => InitializeComponent();
+    public ConfirmOutfitView()
+    {
+        InitializeComponent();
+    }
 }

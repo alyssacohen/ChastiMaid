@@ -18,61 +18,61 @@ ide: QDNET
 #Specify inspection profile for code analysis
 # "qodana.recommended" catches real issues without overwhelming a learner with style pedantry
 profile:
-  name: qodana.recommended
+    name: qodana.recommended
 
 # Custom enabled inspections focused on correctness, security, and async patterns
 include:
-  # Security & Correctness (non-negotiable)
-  - name: NullReferenceException
-  - name: RedundantAssignment
-  - name: UnusedVariable
-  - name: ConstantNullCoalescing
-  - name: PossibleNullReferenceException
-  
-  # Async patterns (critical for responsive UI, especially on Surface Go)
-  - name: AsyncVoidMethod
-  - name: UnusedAsyncReturnValue
-  - name: UnobservedTaskException
-  
-  # Reactive programming & disposal (key to ReactiveUI / DynamicData)
-  - name: PotentialNullReferenceException
-  - name: AccessToDisposedClosure
-  - name: IDisposableRealizationProblem
+    # Security & Correctness (non-negotiable)
+    -   name: NullReferenceException
+    -   name: RedundantAssignment
+    -   name: UnusedVariable
+    -   name: ConstantNullCoalescing
+    -   name: PossibleNullReferenceException
+    
+    # Async patterns (critical for responsive UI, especially on Surface Go)
+    -   name: AsyncVoidMethod
+    -   name: UnusedAsyncReturnValue
+    -   name: UnobservedTaskException
+    
+    # Reactive programming & disposal (key to ReactiveUI / DynamicData)
+    -   name: PotentialNullReferenceException
+    -   name: AccessToDisposedClosure
+    -   name: IDisposableRealizationProblem
 
 # Disable or suppress inspections that generate excessive noise for learning projects
 exclude:
-  # Suppress naming convention warnings in test files (focus on core logic first)
-  - name: InconsistentNaming
-    paths:
-      - "**/*Tests.cs"
-      - "**/*Test.cs"
-  
-  # XAML auto-generated files and build artifacts
-  - name: RedundantUsingDirective
-    paths:
-      - "**/bin/**"
-      - "**/obj/**"
-      - "**/*.g.cs"
-      - "**/*.xaml.cs"
-  
-  # Suppress overly strict C# style warnings (learn idioms first, optimize style later)
-  - name: ReplaceWithStringIsNullOrEmpty
-    paths:
-      - "**/*.cs"
+    # Suppress naming convention warnings in test files (focus on core logic first)
+    -   name: InconsistentNaming
+        paths:
+            - "**/*Tests.cs"
+            - "**/*Test.cs"
+    
+    # XAML auto-generated files and build artifacts
+    -   name: RedundantUsingDirective
+        paths:
+            - "**/bin/**"
+            - "**/obj/**"
+            - "**/*.g.cs"
+            - "**/*.xaml.cs"
+    
+    # Suppress overly strict C# style warnings (learn idioms first, optimize style later)
+    -   name: ReplaceWithStringIsNullOrEmpty
+        paths:
+            - "**/*.cs"
 
 # Quality gates: fail CI/CD only for serious issues
 # This allows you to learn incrementally without perfectionism blocking progress
 failureConditions:
-  severityThresholds:
-    critical: 0      # Zero tolerance for critical issues (security, NRE, data corruption)
-    high: 5          # Max 5 high-severity (serious logic bugs, async traps)
-    moderate: 25     # Max 25 moderate (code quality, performance hints)
-    any: 75          # Max 75 total issues (prevents unbounded growth)
-  
-  # Uncomment these when you add unit tests to your project
-  # testCoverageThresholds:
-  #   fresh: 50      # Min 50% coverage on newly written code
-  #   total: 30      # Min 30% overall coverage (pragmatic for a solo project)
+    severityThresholds:
+        critical: 0      # Zero tolerance for critical issues (security, NRE, data corruption)
+        high: 5          # Max 5 high-severity (serious logic bugs, async traps)
+        moderate: 25     # Max 25 moderate (code quality, performance hints)
+        any: 75          # Max 75 total issues (prevents unbounded growth)
+    
+    # Uncomment these when you add unit tests to your project
+    # testCoverageThresholds:
+    #   fresh: 50      # Min 50% coverage on newly written code
+    #   total: 30      # Min 30% overall coverage (pragmatic for a solo project)
 
 # Optional: run linting in CI/CD before test execution
 # bootstrap: dotnet build -c Release

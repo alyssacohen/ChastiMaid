@@ -21,14 +21,20 @@ public class SaveSlotManager(DatabaseService dbService)
             {
                 using var saveDb = dbService.OpenSave(slotName);
                 var state = saveDb.GetCollection<GameState>("game_state").FindById(1);
-                if (state is null) continue;
-                slots.Add(new SaveSlotInfo(slotName, state.StartedAt, state.LastSessionAt, state.CurrentDebt, state.IsCompleted, state.IsSafeLocked));
+                if (state is null)
+                {
+                    continue;
+                }
+
+                slots.Add(new SaveSlotInfo(slotName, state.StartedAt, state.LastSessionAt, state.CurrentDebt,
+                    state.IsCompleted, state.IsSafeLocked));
             }
             catch
             {
                 // Corrupt or incompatible save file — skip
             }
         }
+
         return slots;
     }
 
@@ -39,6 +45,8 @@ public class SaveSlotManager(DatabaseService dbService)
         // Also delete the media folder (outfit video, safe combo, etc.)
         var mediaDir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
         if (Directory.Exists(mediaDir))
-            Directory.Delete(mediaDir, recursive: true);
+        {
+            Directory.Delete(mediaDir, true);
+        }
     }
 }

@@ -14,14 +14,18 @@ public partial class DashboardView : UserControl
         OutfitDrawerControl.CloseRequested += (_, _) =>
         {
             if (DataContext is DashboardViewModel vm)
+            {
                 vm.IsOutfitDrawerOpen = false;
+            }
         };
 
         // Mirror Bounds.Width to IsLandscape on the ViewModel
         this.GetObservable(BoundsProperty).Subscribe(bounds =>
         {
             if (DataContext is DashboardViewModel vm)
+            {
                 vm.IsLandscape = bounds.Width > 900;
+            }
         });
     }
 }

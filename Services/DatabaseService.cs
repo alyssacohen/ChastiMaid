@@ -5,8 +5,8 @@ using LiteDB;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Manages encrypted LiteDB connections for profile and save slot databases.
-/// All files are stored under data/ relative to the executable.
+///     Manages encrypted LiteDB connections for profile and save slot databases.
+///     All files are stored under data/ relative to the executable.
 /// </summary>
 public class DatabaseService : IDisposable
 {
@@ -21,6 +21,11 @@ public class DatabaseService : IDisposable
         Path.Combine(DataDir, "saves");
 
     private LiteDatabase? _profileDb;
+
+    public void Dispose()
+    {
+        _profileDb?.Dispose();
+    }
 
     private static string DerivePassword()
     {
@@ -44,7 +49,11 @@ public class DatabaseService : IDisposable
 
     public LiteDatabase OpenProfile()
     {
-        if (_profileDb is not null) return _profileDb;
+        if (_profileDb is not null)
+        {
+            return _profileDb;
+        }
+
         Directory.CreateDirectory(DataDir);
         _profileDb = new LiteDatabase(BuildConnectionString(Path.Combine(DataDir, "profile.db")));
         return _profileDb;
@@ -57,16 +66,19 @@ public class DatabaseService : IDisposable
         return new LiteDatabase(BuildConnectionString(path));
     }
 
-    public IEnumerable<string> ListSaveSlots() =>
-        Directory.Exists(SavesDir)
+    public IEnumerable<string> ListSaveSlots()
+    {
+        return Directory.Exists(SavesDir)
             ? Directory.EnumerateFiles(SavesDir, "*.db").Select(f => Path.GetFileNameWithoutExtension(f)!)
             : [];
+    }
 
     public void DeleteSave(string slotName)
     {
         var path = Path.Combine(SavesDir, $"{slotName}.db");
-        if (File.Exists(path)) File.Delete(path);
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
     }
-
-    public void Dispose() => _profileDb?.Dispose();
 }

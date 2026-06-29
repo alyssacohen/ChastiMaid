@@ -1,105 +1,105 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        TYPOGRAPHY SCALE — ChastiMaid
        Cormorant Garamond : display (3 classes only)
        Inter              : all UI text
   ═══════════════════════════════════════════ -->
 
-  <!-- PageTitle — main heading of each page (one per page) -->
-  <Style Selector="TextBlock.PageTitle">
-    <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond"/>
-    <Setter Property="FontSize" Value="32"/>
-    <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="LineHeight" Value="38"/>
-    <Setter Property="LetterSpacing" Value="0.32"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
-  </Style>
+    <!-- PageTitle — main heading of each page (one per page) -->
+    <Style Selector="TextBlock.PageTitle">
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
+        <Setter Property="FontSize" Value="48" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="LineHeight" Value="52" />
+        <Setter Property="LetterSpacing" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
 
-  <!-- SectionTitle — widget headers, internal section headings -->
-  <Style Selector="TextBlock.SectionTitle">
-    <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond"/>
-    <Setter Property="FontSize" Value="22"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="FontStyle" Value="Italic"/>
-    <Setter Property="LineHeight" Value="29"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
-  </Style>
+    <!-- SectionTitle — widget headers, internal section headings -->
+    <Style Selector="TextBlock.SectionTitle">
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="LineHeight" Value="29" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
 
-  <!-- Heading — panel title, dialog header -->
-  <Style Selector="TextBlock.Heading">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="15"/>
-    <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="LineHeight" Value="21"/>
-    <Setter Property="LetterSpacing" Value="-0.15"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
-  </Style>
+    <!-- Heading — panel title, dialog header -->
+    <Style Selector="TextBlock.Heading">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="LineHeight" Value="21" />
+        <Setter Property="LetterSpacing" Value="-0.15" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
 
-  <!-- Subheading — subtitle, group label -->
-  <Style Selector="TextBlock.Subheading">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="Medium"/>
-    <Setter Property="LineHeight" Value="20"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-  </Style>
+    <!-- Subheading — subtitle, group label -->
+    <Style Selector="TextBlock.Subheading">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+    </Style>
 
-  <!-- Body — general text, table cell values -->
-  <Style Selector="TextBlock.Body">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="LineHeight" Value="20"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-  </Style>
+    <!-- Body — general text, table cell values -->
+    <Style Selector="TextBlock.Body">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+    </Style>
 
-  <!-- BodySmall — metadata, secondary text in rows -->
-  <Style Selector="TextBlock.BodySmall">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="12"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="LineHeight" Value="18"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-  </Style>
+    <!-- BodySmall — metadata, secondary text in rows -->
+    <Style Selector="TextBlock.BodySmall">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+    </Style>
 
-  <!-- Caption — timestamp, footnote, hint below field -->
-  <Style Selector="TextBlock.Caption">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="11"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="LineHeight" Value="15"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-  </Style>
+    <!-- Caption — timestamp, footnote, hint below field -->
+    <Style Selector="TextBlock.Caption">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="LineHeight" Value="15" />
+        <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+    </Style>
 
-  <!-- LabelUI — column header, form label (UPPERCASE text set at content level) -->
-  <Style Selector="TextBlock.LabelUI">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="11"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="LineHeight" Value="15"/>
-    <Setter Property="LetterSpacing" Value="0.66"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-  </Style>
+    <!-- LabelUI — column header, form label (UPPERCASE text set at content level) -->
+    <Style Selector="TextBlock.LabelUI">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="LineHeight" Value="15" />
+        <Setter Property="LetterSpacing" Value="0.66" />
+        <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+    </Style>
 
-  <!-- NumberLarge — debt widget, prominent counters -->
-  <Style Selector="TextBlock.NumberLarge">
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="28"/>
-    <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="LineHeight" Value="31"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
-  </Style>
+    <!-- NumberLarge — debt widget, prominent counters -->
+    <Style Selector="TextBlock.NumberLarge">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="LineHeight" Value="31" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
 
-  <!-- EmployerVoice — character dialogue, in-UI quotes -->
-  <Style Selector="TextBlock.EmployerVoice">
-    <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="FontStyle" Value="Italic"/>
-    <Setter Property="LineHeight" Value="21"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextAccent}"/>
-  </Style>
+    <!-- EmployerVoice — character dialogue, in-UI quotes -->
+    <Style Selector="TextBlock.EmployerVoice">
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="LineHeight" Value="24" />
+        <Setter Property="Foreground" Value="{DynamicResource TextAccent}" />
+    </Style>
 
 </Styles>

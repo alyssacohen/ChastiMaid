@@ -3,51 +3,141 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Dialogs"
              x:DataType="vm:StartSessionViewModel"
-             x:Class="ChastiMaid.Views.StartSessionView">
+             x:Class="ChastiMaid.Views.StartSessionView"
+             Background="{DynamicResource BrushWindowBackground}">
 
     <Panel>
 
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    MaxWidth="480"
-                    Margin="40"
-                    Spacing="16">
+        <Grid RowDefinitions="Auto,*,Auto">
 
-            <TextBlock Classes="PageTitle"
-                       Text="Today's Outfit"
-                       HorizontalAlignment="Center" />
-
-            <TextBlock Classes="EmployerVoice"
-                       Text="I have taken the liberty of choosing your attire. I am sure you will like it."
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
-
-            <TextBlock Classes="Body"
-                       Text="{Binding ProposedOutfit}"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
-
-            <StackPanel Orientation="Horizontal"
+            <!-- Row 0: Top section — proposal controls -->
+            <StackPanel Grid.Row="0"
                         HorizontalAlignment="Center"
-                        Spacing="8">
-                <Button Content="Accept"
-                        Command="{Binding AcceptCommand}"
-                        Classes="Primary" />
-                <Button Content="Regenerate"
-                        Command="{Binding RegenerateCommand}"
-                        Classes="Ghost"
-                        IsEnabled="{Binding CanRegenOrModify}" />
-                <Button Content="Modify"
-                        Command="{Binding ModifyCommand}"
-                        Classes="Ghost"
-                        IsEnabled="{Binding CanRegenOrModify}" />
-                <Button Content="Quit"
-                        Command="{Binding QuitCommand}"
-                        Classes="Ghost" />
+                        MaxWidth="640"
+                        Margin="{StaticResource SpacingXxlThickness}"
+                        Spacing="{StaticResource SpacingLg}">
+
+                <TextBlock Classes="PageTitle"
+                           Text="Today's Outfit"
+                           HorizontalAlignment="Center" />
+
+                <TextBlock Classes="EmployerVoice"
+                           Text="I have taken the liberty of choosing your attire. I am sure you will like it."
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center" />
+
+        
             </StackPanel>
 
-        </StackPanel>
+            <!-- Row 1: Bottom section — layer cards + multiplier row -->
+            <ScrollViewer Grid.Row="1"
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel HorizontalAlignment="Center"
+                            MaxWidth="720"
+                            Margin="{StaticResource SpacingXxlThickness}"
+                            Spacing="{StaticResource SpacingMd}">
+
+                    <!-- Layer cards -->
+                    <ItemsControl ItemsSource="{Binding OutfitVm.Layers}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="{StaticResource SpacingMd}" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:OutfitLayerViewModel">
+                                <Border Background="{StaticResource BrushSurfaceBase}"
+                                        BorderBrush="{DynamicResource BrushBorderSubtle}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="{StaticResource SpacingMdThickness}">
+                                    <Grid ColumnDefinitions="160,*">
+
+                                        <!-- Left: layer category + selected item name -->
+                                        <StackPanel Grid.Column="0"
+                                                    Spacing="{StaticResource SpacingXs}"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,12,0">
+                                            <TextBlock Classes="LabelUI"
+                                                       Text="{Binding LayerLabel}" />
+                                            <TextBlock Classes="BodySmall"
+                                                       Text="{Binding ItemName}"
+                                                       Foreground="{DynamicResource TextAccent}" />
+                                        </StackPanel>
+
+                                        <!-- Right: chip badge showing item + body zones -->
+                                        <WrapPanel Grid.Column="1"
+                                                   VerticalAlignment="Center">
+                                            <Border Classes="chip selected"
+                                                    IsVisible="{Binding HasItem}">
+                                                <StackPanel Orientation="Horizontal"
+                                                            Spacing="{StaticResource SpacingXs}">
+                                                    <TextBlock Classes="chip-label"
+                                                               Text="{Binding ItemName}" />
+                                                    <TextBlock Classes="BodySmall"
+                                                               Text="{Binding ItemDetail}"
+                                                               Foreground="{DynamicResource TextMuted}"
+                                                               VerticalAlignment="Center"
+                                                               IsVisible="{Binding ItemDetail,
+                                                                   Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                                </StackPanel>
+                                            </Border>
+                                        </WrapPanel>
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Multiplier row -->
+                    <Border Background="{DynamicResource BrushSurfaceMuted}"
+                            CornerRadius="6"
+                            Padding="{StaticResource SpacingMdThickness}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Spacing="{StaticResource SpacingMd}">
+                            <TextBlock Classes="Caption"
+                                       Text="Total Multiplier"
+                                       Foreground="{DynamicResource TextMuted}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="SectionTitle"
+                                       Text="{Binding MultiplierDisplay}"
+                                       Foreground="{DynamicResource TextAccent}" />
+                            <Rectangle Width="1"
+                                       Height="20"
+                                       Fill="{DynamicResource BrushBorderSubtle}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption"
+                                       Text="{Binding ItemCountDisplay}"
+                                       Foreground="{DynamicResource TextMuted}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+            
+            <StackPanel Grid.Row="2" Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="{StaticResource SpacingMd}">
+                <Button Classes="Primary"
+                        Content="Accept"
+                        Command="{Binding AcceptCommand}" />
+                <Button Classes="Ghost"
+                        Content="Regenerate"
+                        Command="{Binding RegenerateCommand}"
+                        IsEnabled="{Binding CanRegenOrModify}" />
+                <Button Classes="Ghost"
+                        Content="Modify"
+                        Command="{Binding ModifyCommand}"
+                        IsEnabled="{Binding CanRegenOrModify}" />
+                <Button Classes="Ghost"
+                        Content="Quit"
+                        Command="{Binding QuitCommand}" />
+            </StackPanel>
+
+        </Grid>
 
         <!-- Confirmation dialog overlay -->
         <ContentControl Content="{Binding ActiveDialog}"

@@ -1,10 +1,13 @@
 # Task: Wardrobe Table Redesign — Phase 3 of 3
+
 # Wire everything into SettingsView + style polish
 
 ## Prerequisites
+
 Phases 1 and 2 must be complete and the project must build cleanly.
 
 ## Context
+
 Read `docs/design/wardrobe/WARDROBE_TABLE_SPEC.md` (full spec).
 Read `docs/design/wardrobe/wardrobe-settings.svg` (visual reference).
 
@@ -35,14 +38,14 @@ The `TabItem.Header` with `DirtyTabHeader` must be preserved unchanged.
 
 Check whether these brush/style keys exist. Add only what is missing:
 
-| Key | Value |
-|---|---|
-| `ChipBackgroundBrush` | `#DDD8CE` (warm grey chip fill) |
-| `ChipTextBrush` | `#4A4240` |
-| `DangerBackgroundBrush` | `#F5D8D0` |
-| `DangerBorderBrush` | `#C84820` |
-| `DangerTextBrush` | `#8A2010` |
-| `AccentSubtleBrush` | `#F0EAE0` (expanded row warm tint) |
+| Key                     | Value                              |
+|-------------------------|------------------------------------|
+| `ChipBackgroundBrush`   | `#DDD8CE` (warm grey chip fill)    |
+| `ChipTextBrush`         | `#4A4240`                          |
+| `DangerBackgroundBrush` | `#F5D8D0`                          |
+| `DangerBorderBrush`     | `#C84820`                          |
+| `DangerTextBrush`       | `#8A2010`                          |
+| `AccentSubtleBrush`     | `#F0EAE0` (expanded row warm tint) |
 
 Add a global `.danger` button style to App.axaml following the same
 template-level pattern used by `.delete` and `.primary`. It should apply
@@ -50,6 +53,7 @@ template-level pattern used by `.delete` and `.primary`. It should apply
 `DangerBorderBrush` border at 1px.
 
 Add a global `.chip` toggle button style if not already present:
+
 - Normal: `ChipBackgroundBrush` bg, `ChipTextBrush` fg, rounded (radius 9)
 - `:checked` / active state: `PrimaryTextBrush` bg, `PageBackgroundBrush` fg
 - All state overrides must be at template level (inside `ControlTemplate`),
@@ -61,8 +65,9 @@ Add a global `.chip` toggle button style if not already present:
 
 Open the app, navigate to Settings › Wardrobe.
 Confirm:
+
 - The toolbar stays fixed above the scroll area
-- The bulk bar stays fixed below the scroll area  
+- The bulk bar stays fixed below the scroll area
 - Only the table rows scroll
 - Expanding a row pushes subsequent rows down (no clipping)
 - The new-item row scrolls with the list and stays visible at the bottom
@@ -73,6 +78,7 @@ Confirm:
 
 In `WardrobeTable.axaml` and `WardrobeToolbar.axaml`, verify every
 interactive element has `MinHeight="44"`. Add it explicitly where missing:
+
 - Row checkboxes
 - Expand chevron buttons
 - Filter chips

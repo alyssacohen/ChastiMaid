@@ -12,8 +12,8 @@ public class MediaCaptureService
     }
 
     /// <summary>
-    /// Records a video from the webcam for the specified duration.
-    /// Saves in AVI (MJPG) format at the given path.
+    ///     Records a video from the webcam for the specified duration.
+    ///     Saves in AVI (MJPG) format at the given path.
     /// </summary>
     public static async Task RecordVideoAsync(
         string outputPath,
@@ -26,7 +26,10 @@ public class MediaCaptureService
         await Task.Run(() =>
         {
             using var cap = new VideoCapture(0);
-            if (!cap.IsOpened()) throw new InvalidOperationException("Webcam not available.");
+            if (!cap.IsOpened())
+            {
+                throw new InvalidOperationException("Webcam not available.");
+            }
 
             var fps = cap.Fps > 0 ? cap.Fps : 30.0;
             var width = cap.FrameWidth;
@@ -43,7 +46,11 @@ public class MediaCaptureService
             {
                 ct.ThrowIfCancellationRequested();
                 cap.Read(frame);
-                if (frame.Empty()) continue;
+                if (frame.Empty())
+                {
+                    continue;
+                }
+
                 writer.Write(frame);
 
                 var elapsed = (int)(i / fps);
@@ -62,10 +69,18 @@ public class MediaCaptureService
         return await Task.Run(() =>
         {
             using var cap = new VideoCapture(0);
-            if (!cap.IsOpened()) return false;
+            if (!cap.IsOpened())
+            {
+                return false;
+            }
+
             using var frame = new Mat();
             cap.Read(frame);
-            if (frame.Empty()) return false;
+            if (frame.Empty())
+            {
+                return false;
+            }
+
             Cv2.ImWrite(outputPath, frame);
             return true;
         }, ct);

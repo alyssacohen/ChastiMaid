@@ -11,6 +11,11 @@ public partial class DirtyTabHeader : UserControl
     public static readonly StyledProperty<bool> IsDirtyProperty =
         AvaloniaProperty.Register<DirtyTabHeader, bool>(nameof(IsDirty));
 
+    public DirtyTabHeader()
+    {
+        InitializeComponent();
+    }
+
     public string Text
     {
         get => GetValue(TextProperty);
@@ -21,10 +26,5 @@ public partial class DirtyTabHeader : UserControl
     {
         get => GetValue(IsDirtyProperty);
         set => SetValue(IsDirtyProperty, value);
-    }
-
-    public DirtyTabHeader()
-    {
-        InitializeComponent();
     }
 }

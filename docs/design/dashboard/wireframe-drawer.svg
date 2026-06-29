@@ -1,98 +1,117 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="420" height="780" viewBox="0 0 420 780">
 
-  <!-- ═══════════════════════════════════════
-       ChastiMaid — Outfit Drawer (Open)
-       PORTRAIT  ·  420 × 780 px
-       Drawer slides in from the right edge;
-       left portion dimmed, not interactive.
-       ═══════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════
+         ChastiMaid — Outfit Drawer (Open)
+         PORTRAIT  ·  420 × 780 px
+         Drawer slides in from the right edge;
+         left portion dimmed, not interactive.
+         ═══════════════════════════════════════ -->
 
-  <!-- ── FADED DASHBOARD BACKGROUND ─────────── -->
-  <rect width="420" height="780" fill="#F5F0E8"/>
-  <!-- Muted status bar -->
-  <rect width="420" height="50" fill="#EDE8DE" opacity="0.5"/>
-  <!-- Muted debt widget placeholder -->
-  <rect x="16" y="62" width="388" height="112" rx="4" fill="#E8E0D0" opacity="0.35"/>
-  <!-- Muted tasks placeholder -->
-  <rect x="16" y="190" width="388" height="210" rx="2" fill="#E8E0D0" opacity="0.25"/>
-  <!-- Muted punishment button -->
-  <rect x="16" y="408" width="388" height="48" rx="4" fill="#F5E6C8" opacity="0.25"/>
-  <!-- Muted action bar -->
-  <rect y="716" width="420" height="64" fill="#EDE8DE" opacity="0.5"/>
+    <!-- ── FADED DASHBOARD BACKGROUND ─────────── -->
+    <rect width="420" height="780" fill="#F5F0E8"/>
+    <!-- Muted status bar -->
+    <rect width="420" height="50" fill="#EDE8DE" opacity="0.5"/>
+    <!-- Muted debt widget placeholder -->
+    <rect x="16" y="62" width="388" height="112" rx="4" fill="#E8E0D0" opacity="0.35"/>
+    <!-- Muted tasks placeholder -->
+    <rect x="16" y="190" width="388" height="210" rx="2" fill="#E8E0D0" opacity="0.25"/>
+    <!-- Muted punishment button -->
+    <rect x="16" y="408" width="388" height="48" rx="4" fill="#F5E6C8" opacity="0.25"/>
+    <!-- Muted action bar -->
+    <rect y="716" width="420" height="64" fill="#EDE8DE" opacity="0.5"/>
 
-  <!-- ── SCRIM (dims non-drawer area) ─────────── -->
-  <rect x="0" y="0" width="132" height="780" fill="#2C2C2C" opacity="0.28"/>
+    <!-- ── SCRIM (dims non-drawer area) ─────────── -->
+    <rect x="0" y="0" width="132" height="780" fill="#2C2C2C" opacity="0.28"/>
 
-  <!-- ── DRAWER SHADOW (left edge) ────────────── -->
-  <rect x="128" y="0" width="6" height="780" fill="#2C2C2C" opacity="0.08"/>
+    <!-- ── DRAWER SHADOW (left edge) ────────────── -->
+    <rect x="128" y="0" width="6" height="780" fill="#2C2C2C" opacity="0.08"/>
 
-  <!-- ── DRAWER PANEL ──────────────────────────── -->
-  <rect x="134" y="0" width="286" height="780" fill="#F5F0E8"/>
-  <line x1="134" y1="0" x2="134" y2="780" stroke="#C8B898" stroke-width="1"/>
+    <!-- ── DRAWER PANEL ──────────────────────────── -->
+    <rect x="134" y="0" width="286" height="780" fill="#F5F0E8"/>
+    <line x1="134" y1="0" x2="134" y2="780" stroke="#C8B898" stroke-width="1"/>
 
-  <!-- Drawer header -->
-  <rect x="134" y="0" width="286" height="52" fill="#EDE8DE"/>
-  <line x1="134" y1="52" x2="420" y2="52" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="154" y="26" dominant-baseline="middle"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic" fill="#2C2C2C">Current Outfit</text>
-  <!-- Close button -->
-  <rect x="384" y="12" width="28" height="28" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="398" y="26" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="16" fill="#5A5550">×</text>
+    <!-- Drawer header -->
+    <rect x="134" y="0" width="286" height="52" fill="#EDE8DE"/>
+    <line x1="134" y1="52" x2="420" y2="52" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="154" y="26" dominant-baseline="middle"
+          font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic" fill="#2C2C2C">Current Outfit
+    </text>
+    <!-- Close button -->
+    <rect x="384" y="12" width="28" height="28" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="398" y="26" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="16" fill="#5A5550">×
+    </text>
 
-  <!-- ── OUTFIT LAYERS ─────────────────────────── -->
-  <!-- Each layer: caption label + item name (read-only, not editable here) -->
+    <!-- ── OUTFIT LAYERS ─────────────────────────── -->
+    <!-- Each layer: caption label + item name (read-only, not editable here) -->
 
-  <!-- Layer 1: UNDERWEAR (y 52–132) -->
-  <line x1="148" y1="52" x2="408" y2="52" stroke="#C8C0B0" stroke-width="0.3"/>
-  <text x="154" y="72" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">UNDERWEAR</text>
-  <text x="154" y="92" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Cotton slip</text>
-  <text x="154" y="108" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">White · Cotton</text>
+    <!-- Layer 1: UNDERWEAR (y 52–132) -->
+    <line x1="148" y1="52" x2="408" y2="52" stroke="#C8C0B0" stroke-width="0.3"/>
+    <text x="154" y="72" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">UNDERWEAR
+    </text>
+    <text x="154" y="92" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Cotton slip
+    </text>
+    <text x="154" y="108" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">White · Cotton
+    </text>
 
-  <!-- Layer 2: EXTRA (y 132–212) -->
-  <line x1="148" y1="132" x2="408" y2="132" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="154" y="152" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">EXTRA</text>
-  <text x="154" y="172" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#A09A94">(none)</text>
+    <!-- Layer 2: EXTRA (y 132–212) -->
+    <line x1="148" y1="132" x2="408" y2="132" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="154" y="152" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">EXTRA
+    </text>
+    <text x="154" y="172" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#A09A94">(none)
+    </text>
 
-  <!-- Layer 3: BASE (y 212–292) -->
-  <line x1="148" y1="212" x2="408" y2="212" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="154" y="232" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">BASE</text>
-  <text x="154" y="252" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Maid dress</text>
-  <text x="154" y="268" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Black · Polyester blend</text>
+    <!-- Layer 3: BASE (y 212–292) -->
+    <line x1="148" y1="212" x2="408" y2="212" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="154" y="232" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">BASE
+    </text>
+    <text x="154" y="252" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Maid dress
+    </text>
+    <text x="154" y="268" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Black · Polyester blend
+    </text>
 
-  <!-- Layer 4: OUTERWEAR (y 292–372) -->
-  <line x1="148" y1="292" x2="408" y2="292" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="154" y="312" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">OUTERWEAR</text>
-  <text x="154" y="332" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#A09A94">(none)</text>
+    <!-- Layer 4: OUTERWEAR (y 292–372) -->
+    <line x1="148" y1="292" x2="408" y2="292" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="154" y="312" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">OUTERWEAR
+    </text>
+    <text x="154" y="332" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#A09A94">(none)
+    </text>
 
-  <!-- Layer 5: ACCESSORIES (y 372–520, may show multiple items) -->
-  <line x1="148" y1="372" x2="408" y2="372" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="154" y="392" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">ACCESSORIES</text>
-  <!-- Item 1 -->
-  <text x="154" y="412" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">White apron</text>
-  <text x="154" y="428" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Cotton · Full bib</text>
-  <!-- Item 2 -->
-  <line x1="162" y1="440" x2="408" y2="440" stroke="#C8C0B0" stroke-width="0.3"/>
-  <text x="154" y="456" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Maid cap</text>
-  <text x="154" y="472" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">White · Lace trim</text>
+    <!-- Layer 5: ACCESSORIES (y 372–520, may show multiple items) -->
+    <line x1="148" y1="372" x2="408" y2="372" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="154" y="392" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" letter-spacing="1" fill="#9A9288">ACCESSORIES
+    </text>
+    <!-- Item 1 -->
+    <text x="154" y="412" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">White apron
+    </text>
+    <text x="154" y="428" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Cotton · Full bib
+    </text>
+    <!-- Item 2 -->
+    <line x1="162" y1="440" x2="408" y2="440" stroke="#C8C0B0" stroke-width="0.3"/>
+    <text x="154" y="456" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Maid cap
+    </text>
+    <text x="154" y="472" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">White · Lace trim
+    </text>
 
-  <!-- Canvas label -->
-  <text x="210" y="772" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-style="italic" fill="#C0B8AC">Portrait — Outfit Drawer (Open)</text>
+    <!-- Canvas label -->
+    <text x="210" y="772" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-style="italic" fill="#C0B8AC">Portrait —
+        Outfit Drawer (Open)
+    </text>
 
 </svg>

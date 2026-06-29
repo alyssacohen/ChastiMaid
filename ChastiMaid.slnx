@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="ChastiMaid.csproj" />
-  <Project Path="ChastiMaid.Tests/ChastiMaid.Tests.csproj" />
+    <Project Path="ChastiMaid.csproj"/>
+    <Project Path="ChastiMaid.Tests/ChastiMaid.Tests.csproj"/>
 </Solution>

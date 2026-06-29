@@ -5,28 +5,23 @@ using static ChastiMaid.Services.GameClock;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Manages the session game loop: periodic idle wage and random-interval check-in popups.
-/// Supports pause/resume for the idle ↔ busy mode transition.
+///     Manages the session game loop: periodic idle wage and random-interval check-in popups.
+///     Supports pause/resume for the idle ↔ busy mode transition.
 /// </summary>
 public class SessionLoopService : IDisposable
 {
+    private readonly Random _random = new();
     private readonly SaveRepository _saveRepo;
     private readonly GameSettings _settings;
-    private readonly Random _random = new();
 
     private CancellationTokenSource? _cts;
-    private Task? _wageTask;
-    private Task? _popupTask;
 
     private bool _missedSinceLastWage;
-    private DateTime _lastWageTime;
+    private Task? _popupTask;
+    private Task? _wageTask;
 
     public Action? OnIdleWagePaid;
     public Action? OnPopupTriggered;
-
-    public DateTime LastWageTime => _lastWageTime;
-    public int WageIntervalMinutes => _settings.IdleWageIntervalMinutes;
-    public double OutfitBonus { get; set; } = 1.0;
 
     public SessionLoopService(SaveRepository saveRepo, GameSettings settings)
     {
@@ -34,11 +29,21 @@ public class SessionLoopService : IDisposable
         _settings = settings;
     }
 
+    public DateTime LastWageTime { get; private set; }
+
+    public int WageIntervalMinutes => _settings.IdleWageIntervalMinutes;
+    public double OutfitBonus { get; set; } = 1.0;
+
+    public void Dispose()
+    {
+        Stop();
+    }
+
     public void Start()
     {
         Stop();
         _missedSinceLastWage = false;
-        _lastWageTime = UtcNow();
+        LastWageTime = UtcNow();
         _cts = new CancellationTokenSource();
         _wageTask = RunWageLoop(_cts.Token);
         _popupTask = RunPopupLoop(_cts.Token);
@@ -54,12 +59,15 @@ public class SessionLoopService : IDisposable
     }
 
     /// <summary>Pauses the timers (for busy mode).</summary>
-    public void Pause() => Stop();
+    public void Pause()
+    {
+        Stop();
+    }
 
     /// <summary>Resumes the timers (returning to idle mode). Resets the wage clock.</summary>
     public void Resume()
     {
-        _lastWageTime = UtcNow();
+        LastWageTime = UtcNow();
         _cts = new CancellationTokenSource();
         _wageTask = RunWageLoop(_cts.Token);
         _popupTask = RunPopupLoop(_cts.Token);
@@ -68,7 +76,9 @@ public class SessionLoopService : IDisposable
     public void ReportPopupResult(bool answered)
     {
         if (!answered)
+        {
             _missedSinceLastWage = true;
+        }
     }
 
     private async Task RunWageLoop(CancellationToken ct)
@@ -77,7 +87,10 @@ public class SessionLoopService : IDisposable
         while (!ct.IsCancellationRequested)
         {
             await Task.Delay(interval, ct);
-            if (ct.IsCancellationRequested) break;
+            if (ct.IsCancellationRequested)
+            {
+                break;
+            }
 
             if (!_missedSinceLastWage)
             {
@@ -88,11 +101,12 @@ public class SessionLoopService : IDisposable
                     state.CurrentDebt = Math.Max(0, state.CurrentDebt - wage);
                     _saveRepo.SaveGameState(state);
                 }
+
                 OnIdleWagePaid?.Invoke();
             }
 
             _missedSinceLastWage = false;
-            _lastWageTime = UtcNow();
+            LastWageTime = UtcNow();
         }
     }
 
@@ -102,10 +116,12 @@ public class SessionLoopService : IDisposable
         {
             var delaySec = _random.Next(_settings.PopupMinIntervalSeconds, _settings.PopupMaxIntervalSeconds + 1);
             await Task.Delay(TimeSpan.FromSeconds(delaySec), ct);
-            if (ct.IsCancellationRequested) break;
+            if (ct.IsCancellationRequested)
+            {
+                break;
+            }
+
             OnPopupTriggered?.Invoke();
         }
     }
-
-    public void Dispose() => Stop();
 }

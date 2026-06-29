@@ -15,12 +15,17 @@ public partial class WelcomeView : UserControl
         base.OnDataContextChanged(e);
 
         var exitLabel = this.FindControl<TextBlock>("ExitLabel");
-        if (exitLabel is null) return;
+        if (exitLabel is null)
+        {
+            return;
+        }
 
         exitLabel.PointerPressed += (_, _) =>
         {
             if (DataContext is WelcomeViewModel vm)
+            {
                 vm.ExitCommand.Execute(null);
+            }
         };
     }
 }

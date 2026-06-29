@@ -8,15 +8,9 @@ namespace ChastiMaid.ViewModels;
 
 public class CameraSetupViewModel : ViewModelBase
 {
+    private readonly Chore _chore;
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
-    private readonly Chore _chore;
-
-    public string ChoreName => _chore.Name;
-    public WebcamPreviewService Webcam => _mainVm.Webcam;
-
-    public ICommand ConfirmCommand { get; }
-    public ICommand CancelCommand { get; }
 
     public CameraSetupViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Chore chore)
     {
@@ -38,4 +32,10 @@ public class CameraSetupViewModel : ViewModelBase
             _mainVm.NavigateTo(new DashboardViewModel(mainVm, saveRepo));
         });
     }
+
+    public string ChoreName => _chore.Name;
+    public WebcamPreviewService Webcam => _mainVm.Webcam;
+
+    public ICommand ConfirmCommand { get; }
+    public ICommand CancelCommand { get; }
 }

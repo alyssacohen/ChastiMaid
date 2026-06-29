@@ -4,5 +4,8 @@ namespace ChastiMaid.Views;
 
 public partial class SafeLockView : UserControl
 {
-    public SafeLockView() => InitializeComponent();
+    public SafeLockView()
+    {
+        InitializeComponent();
+    }
 }

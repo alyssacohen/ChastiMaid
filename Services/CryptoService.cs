@@ -3,8 +3,8 @@ using System.Security.Cryptography;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// AES-256-GCM file encryption.
-/// File format: [12-byte nonce][16-byte tag][ciphertext]
+///     AES-256-GCM file encryption.
+///     File format: [12-byte nonce][16-byte tag][ciphertext]
 /// </summary>
 public static class CryptoService
 {

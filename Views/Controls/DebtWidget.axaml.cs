@@ -18,6 +18,12 @@ public partial class DebtWidget : UserControl
     public static readonly StyledProperty<double> DebtProgressProperty =
         AvaloniaProperty.Register<DebtWidget, double>(nameof(DebtProgress));
 
+    // ── Constructor ──────────────────────────────────────────────────────────
+    public DebtWidget()
+    {
+        InitializeComponent();
+    }
+
     // ── Public accessors ────────────────────────────────────────────────────
     public decimal DebtTotal
     {
@@ -43,12 +49,6 @@ public partial class DebtWidget : UserControl
         private set => SetValue(DebtProgressProperty, value);
     }
 
-    // ── Constructor ──────────────────────────────────────────────────────────
-    public DebtWidget()
-    {
-        InitializeComponent();
-    }
-
     // ── Derived property refresh ─────────────────────────────────────────────
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -56,7 +56,7 @@ public partial class DebtWidget : UserControl
         if (change.Property == DebtTotalProperty || change.Property == DebtSettledProperty)
         {
             DebtRemaining = DebtTotal - DebtSettled;
-            DebtProgress  = DebtTotal > 0
+            DebtProgress = DebtTotal > 0
                 ? Math.Clamp((double)(DebtSettled / DebtTotal), 0.0, 1.0)
                 : 0.0;
         }

@@ -9,25 +9,19 @@ using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
-public enum ChipState { Normal, Selected, Required, Disabled }
+public enum ChipState
+{
+    Normal,
+    Selected,
+    Required,
+    Disabled,
+}
 
 public partial class ChipViewModel : ViewModelBase
 {
-    public ClothingItem Item { get; }
-    public string Layer { get; }
-    public string Name => Item.Name;
-    public int ItemId => Item.Id;
-
     [Reactive] private ChipState _state;
 
-    public bool IsSelected => State is ChipState.Selected;
-    public bool IsRequired => State is ChipState.Required;
-    public bool IsDisabled => State is ChipState.Disabled;
-    public bool IsNormal => State is ChipState.Normal;
-
-    public ICommand ToggleCommand { get; }
-
-    public ChipViewModel(ClothingItem item, string layer, Action<ChipViewModel> onToggle)
+    public ChipViewModel(ClothingItem item, int layer, Action<ChipViewModel> onToggle)
     {
         Item = item;
         Layer = layer;
@@ -42,19 +36,31 @@ public partial class ChipViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(IsNormal));
         });
     }
+
+    public ClothingItem Item { get; }
+    public int Layer { get; }
+    public string Name => Item.Name;
+    public int ItemId => Item.Id;
+
+    public bool IsSelected => State is ChipState.Selected;
+    public bool IsRequired => State is ChipState.Required;
+    public bool IsDisabled => State is ChipState.Disabled;
+    public bool IsNormal => State is ChipState.Normal;
+
+    public ICommand ToggleCommand { get; }
 }
 
 public class LayerGroupViewModel
 {
-    public LayerGroupViewModel(string layerKey)
+    public LayerGroupViewModel(int layerOrder)
     {
-        LayerKey = layerKey;
-        var def = WardrobeLayer.FindByKey(layerKey);
-        DisplayName = def?.DisplayName ?? layerKey;
+        LayerOrder = layerOrder;
+        var def = WardrobeLayer.FindByOrder(layerOrder);
+        DisplayName = def?.DisplayName ?? layerOrder.ToString();
         Description = def?.Description ?? "";
     }
 
-    public string LayerKey { get; }
+    public int LayerOrder { get; }
     public string DisplayName { get; }
     public string Description { get; }
     public ObservableCollection<ChipViewModel> Chips { get; } = [];
@@ -62,27 +68,21 @@ public class LayerGroupViewModel
 
 public partial class ChangeOutfitViewModel : ViewModelBase
 {
-    private readonly MainWindowViewModel _mainVm;
-    private readonly SaveRepository _saveRepo;
-    private readonly Outfit _currentOutfit;
-    private readonly double _bonusPercent;
     private readonly List<ClothingItem> _allItems;
     private readonly List<OutfitRule> _allRules;
-
-    public ObservableCollection<LayerGroupViewModel> Layers { get; } = [];
-
-    [Reactive] private string _statusMessage = "";
+    private readonly double _bonusPercent;
+    private readonly Outfit _currentOutfit;
+    private readonly MainWindowViewModel _mainVm;
+    private readonly SaveRepository _saveRepo;
+    [Reactive] private bool _canFinalize = true;
     [Reactive] private bool _hasWarning;
     [Reactive] private bool _isViolation;
-    [Reactive] private bool _canFinalize = true;
     [Reactive] private int _selectedCount;
 
-    public ICommand IntegrateCommand { get; }
-    public ICommand SaveOutfitCommand { get; }
-    public ICommand ClearCommand { get; }
-    public ICommand BackCommand { get; }
+    [Reactive] private string _statusMessage = "";
 
-    public ChangeOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit currentOutfit, double bonusPercent)
+    public ChangeOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit currentOutfit,
+        double bonusPercent)
     {
         _mainVm = mainVm;
         _saveRepo = saveRepo;
@@ -97,9 +97,16 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         IntegrateCommand = ReactiveCommand.Create(Integrate);
         SaveOutfitCommand = ReactiveCommand.Create(SaveOutfit);
         ClearCommand = ReactiveCommand.Create(ClearSelection);
-        BackCommand = ReactiveCommand.Create(
-            () => _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, _saveRepo, _currentOutfit)));
+        BackCommand = ReactiveCommand.Create(() =>
+            _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, _saveRepo, _currentOutfit)));
     }
+
+    public ObservableCollection<LayerGroupViewModel> Layers { get; } = [];
+
+    public ICommand IntegrateCommand { get; }
+    public ICommand SaveOutfitCommand { get; }
+    public ICommand ClearCommand { get; }
+    public ICommand BackCommand { get; }
 
     private void BuildLayers()
     {
@@ -107,15 +114,23 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         {
             var group = new LayerGroupViewModel(layer);
             foreach (var item in _allItems.Where(i => i.Layers.Contains(layer)))
+            {
                 group.Chips.Add(new ChipViewModel(item, layer, OnChipToggled));
+            }
+
             if (group.Chips.Count > 0)
+            {
                 Layers.Add(group);
+            }
         }
     }
 
     private void OnChipToggled(ChipViewModel chip)
     {
-        if (chip.State is ChipState.Disabled) return;
+        if (chip.State is ChipState.Disabled)
+        {
+            return;
+        }
 
         chip.State = chip.State is ChipState.Selected ? ChipState.Normal : ChipState.Selected;
 
@@ -132,13 +147,18 @@ public partial class ChangeOutfitViewModel : ViewModelBase
 
         // 1. Reset all non-selected chips to Normal
         foreach (var chip in AllChips().Where(c => c.State is not ChipState.Selected))
+        {
             chip.State = ChipState.Normal;
+        }
 
         // 2. Disable other copies of the same item (multi-layer duplicates)
         foreach (var sel in selectedChips)
         {
-            foreach (var copy in AllChips().Where(c => c.ItemId == sel.ItemId && c != sel && c.State is ChipState.Normal))
+            foreach (var copy in AllChips()
+                         .Where(c => c.ItemId == sel.ItemId && c != sel && c.State is ChipState.Normal))
+            {
                 copy.State = ChipState.Disabled;
+            }
         }
 
         // 3. Disable slot conflicts on the same layer
@@ -146,10 +166,10 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         {
             var slots = sel.Item.Slots.ToHashSet();
             foreach (var chip in AllChips().Where(c =>
-                c != sel &&
-                c.Layer == sel.Layer &&
-                c.State is ChipState.Normal &&
-                c.Item.Slots.Any(slots.Contains)))
+                         c != sel &&
+                         c.Layer == sel.Layer &&
+                         c.State is ChipState.Normal &&
+                         c.Item.Slots.Any(slots.Contains)))
             {
                 chip.State = ChipState.Disabled;
             }
@@ -166,17 +186,23 @@ public partial class ChangeOutfitViewModel : ViewModelBase
                 var source = _allItems.FirstOrDefault(i => i.Id == rule.ItemId);
                 var related = _allItems.FirstOrDefault(i => i.Id == rule.RelatedItemId);
                 if (source is not null && related is not null)
+                {
                     violations.Add($"{source.Name} and {related.Name} cannot be worn together.");
+                }
             }
             else if (aSelected)
             {
                 foreach (var chip in FindChips(rule.RelatedItemId).Where(c => c.State is ChipState.Normal))
+                {
                     chip.State = ChipState.Disabled;
+                }
             }
             else if (bSelected)
             {
                 foreach (var chip in FindChips(rule.ItemId).Where(c => c.State is ChipState.Normal))
+                {
                     chip.State = ChipState.Disabled;
+                }
             }
         }
 
@@ -184,11 +210,21 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         var processedRequires = new HashSet<int>();
         foreach (var rule in _allRules.Where(r => r.Relation == OutfitRelation.Requires))
         {
-            if (!selectedIds.Contains(rule.ItemId)) continue;
-            if (!processedRequires.Add(rule.ItemId)) continue;
+            if (!selectedIds.Contains(rule.ItemId))
+            {
+                continue;
+            }
+
+            if (!processedRequires.Add(rule.ItemId))
+            {
+                continue;
+            }
 
             var source = _allItems.FirstOrDefault(i => i.Id == rule.ItemId);
-            if (source is null) continue;
+            if (source is null)
+            {
+                continue;
+            }
 
             var requiredIds = _allRules
                 .Where(r => r.ItemId == rule.ItemId && r.Relation == OutfitRelation.Requires)
@@ -212,9 +248,14 @@ public partial class ChangeOutfitViewModel : ViewModelBase
                 var allReqNames = requiredIds
                     .Select(id => _allItems.FirstOrDefault(i => i.Id == id)?.Name)
                     .Where(n => n is not null);
-                var msg = $"{source.Name} requires one of: {string.Join(", ", allReqNames)}. {satisfierName} is selected — requirement satisfied.";
+                var msg =
+                    $"{source.Name} requires one of: {string.Join(", ", allReqNames)}. {satisfierName} is selected — requirement satisfied.";
                 if (otherNames.Count > 0)
-                    msg += $" {string.Join(", ", otherNames)} {(otherNames.Count == 1 ? "remains" : "remain")} available.";
+                {
+                    msg +=
+                        $" {string.Join(", ", otherNames)} {(otherNames.Count == 1 ? "remains" : "remain")} available.";
+                }
+
                 infos.Add(msg);
             }
             else
@@ -222,7 +263,9 @@ public partial class ChangeOutfitViewModel : ViewModelBase
                 foreach (var reqId in requiredIds)
                 {
                     foreach (var chip in FindChips(reqId).Where(c => c.State is ChipState.Normal))
+                    {
                         chip.State = ChipState.Required;
+                    }
                 }
 
                 var reqNames = requiredIds
@@ -285,9 +328,13 @@ public partial class ChangeOutfitViewModel : ViewModelBase
             var layers = chip.Item.Layers.OrderByDescending(l => l == chip.Layer);
             foreach (var layer in layers)
             {
-                if (outfit.AddItemOnLayer(chip.Item, layer)) break;
+                if (outfit.AddItemOnLayer(chip.Item, layer))
+                {
+                    break;
+                }
             }
         }
+
         return outfit;
     }
 
@@ -302,22 +349,32 @@ public partial class ChangeOutfitViewModel : ViewModelBase
             state.OutfitMultiplier = outfit.TotalMultiplier;
             _saveRepo.SaveGameState(state);
         }
+
         _mainVm.NavigateTo(new ConfirmOutfitViewModel(_mainVm, _saveRepo, outfit, _bonusPercent));
     }
 
     private void ClearSelection()
     {
         foreach (var chip in AllChips())
+        {
             chip.State = ChipState.Normal;
+        }
+
         ValidateRules();
     }
 
-    private List<ClothingItem> GetSelectedItems() =>
-        AllChips().Where(c => c.State is ChipState.Selected).Select(c => c.Item).ToList();
+    private List<ClothingItem> GetSelectedItems()
+    {
+        return AllChips().Where(c => c.State is ChipState.Selected).Select(c => c.Item).ToList();
+    }
 
-    private IEnumerable<ChipViewModel> FindChips(int itemId) =>
-        AllChips().Where(c => c.ItemId == itemId);
+    private IEnumerable<ChipViewModel> FindChips(int itemId)
+    {
+        return AllChips().Where(c => c.ItemId == itemId);
+    }
 
-    private IEnumerable<ChipViewModel> AllChips() =>
-        Layers.SelectMany(l => l.Chips);
+    private IEnumerable<ChipViewModel> AllChips()
+    {
+        return Layers.SelectMany(l => l.Chips);
+    }
 }

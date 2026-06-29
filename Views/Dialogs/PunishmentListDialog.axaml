@@ -1,7 +1,6 @@
 <dialogs:BaseDialog xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
-                    xmlns:vm="using:ChastiMaid.ViewModels"
                     x:Class="ChastiMaid.Views.Dialogs.PunishmentListDialog"
                     x:CompileBindings="False"
                     WindowDecorations="None"

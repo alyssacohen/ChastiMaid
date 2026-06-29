@@ -19,14 +19,14 @@ public class PunishmentTemplate
     public decimal? DebtIncrease { get; set; }
 
     public PunishmentDuration? OutfitForceDuration { get; set; }
-    public List<int>? ForcedClothingItemIds { get; set; }  // required subset
-    public bool ForceFullOutfit { get; set; }               // true = entire outfit is fixed
+    public List<int>? ForcedClothingItemIds { get; set; } // required subset
+    public bool ForceFullOutfit { get; set; } // true = entire outfit is fixed
 
     public PunishmentDuration? MultiplierPenaltyDuration { get; set; }
-    public double? MultiplierPenaltyFactor { get; set; }    // e.g. 0.5 halves the bonus
+    public double? MultiplierPenaltyFactor { get; set; } // e.g. 0.5 halves the bonus
 
-    public List<int>? RequiredChoreIds { get; set; }        // specific chores; null = pick from list
-    public int? RequiredChoreCount { get; set; }            // how many random chores to assign
+    public List<int>? RequiredChoreIds { get; set; } // specific chores; null = pick from list
+    public int? RequiredChoreCount { get; set; } // how many random chores to assign
 }
 
 /// <summary>Active punishment instance inside a save slot.</summary>

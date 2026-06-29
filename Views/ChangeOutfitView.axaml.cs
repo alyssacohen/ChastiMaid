@@ -4,5 +4,8 @@ namespace ChastiMaid.Views;
 
 public partial class ChangeOutfitView : UserControl
 {
-    public ChangeOutfitView() => InitializeComponent();
+    public ChangeOutfitView()
+    {
+        InitializeComponent();
+    }
 }

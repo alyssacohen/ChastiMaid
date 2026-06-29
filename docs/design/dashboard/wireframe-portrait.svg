@@ -1,133 +1,167 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="420" height="780" viewBox="0 0 420 780">
 
-  <!-- ═══════════════════════════════════════
-       ChastiMaid — Dashboard (Idle State)
-       PORTRAIT  ·  420 × 780 px
-       Represents ~1200 × 1800 device pixels
-       ═══════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════
+         ChastiMaid — Dashboard (Idle State)
+         PORTRAIT  ·  420 × 780 px
+         Represents ~1200 × 1800 device pixels
+         ═══════════════════════════════════════ -->
 
-  <!-- Page background -->
-  <rect width="420" height="780" fill="#F5F0E8"/>
+    <!-- Page background -->
+    <rect width="420" height="780" fill="#F5F0E8"/>
 
-  <!-- ── STATUS BAR ─────────────────────────── -->
-  <rect width="420" height="50" fill="#EDE8DE"/>
-  <line x1="0" y1="50" x2="420" y2="50" stroke="#C8C0B0" stroke-width="0.5"/>
-  <!-- Idle status dot + label -->
-  <circle cx="22" cy="25" r="5" fill="#7CB87C"/>
-  <text x="34" y="25" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Idle</text>
-  <!-- Outfit drawer shortcut (top-right of status bar) -->
-  <rect x="306" y="10" width="102" height="30" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="357" y="25" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#5A5550">Outfit  ▸</text>
+    <!-- ── STATUS BAR ─────────────────────────── -->
+    <rect width="420" height="50" fill="#EDE8DE"/>
+    <line x1="0" y1="50" x2="420" y2="50" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- Idle status dot + label -->
+    <circle cx="22" cy="25" r="5" fill="#7CB87C"/>
+    <text x="34" y="25" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Idle
+    </text>
+    <!-- Outfit drawer shortcut (top-right of status bar) -->
+    <rect x="306" y="10" width="102" height="30" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="357" y="25" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#5A5550">Outfit ▸
+    </text>
 
-  <!-- ── DEBT WIDGET ────────────────────────── -->
-  <rect x="16" y="62" width="388" height="112" rx="4" fill="#E8E0D0" stroke="#C8B898" stroke-width="0.75"/>
-  <!-- Title (Instrument Serif style: Georgia used for wireframe) -->
-  <text x="32" y="82" dominant-baseline="middle"
-        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic" fill="#5A5550">Outstanding Balance</text>
-  <!-- Settled (left) -->
-  <text x="32" y="104" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#7A7268">Settled</text>
-  <text x="32" y="123" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="20" font-weight="300" fill="#2C2C2C">340 pts</text>
-  <!-- Remaining (right) -->
-  <text x="388" y="104" dominant-baseline="middle" text-anchor="end"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#7A7268">Remaining</text>
-  <text x="388" y="123" dominant-baseline="middle" text-anchor="end"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="20" font-weight="300" fill="#2C2C2C">180 pts</text>
-  <!-- Segmented progress bar (settled = dark left; remaining = light right) -->
-  <rect x="32" y="136" width="356" height="6" rx="3" fill="#D0C8BC"/>
-  <!-- 340/520 = 65.4% → 233 px filled -->
-  <rect x="32" y="136" width="233" height="6" rx="3" fill="#2C2C2C"/>
-  <!-- Total incurred footer -->
-  <text x="32" y="160" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Total incurred: 520 pts</text>
+    <!-- ── DEBT WIDGET ────────────────────────── -->
+    <rect x="16" y="62" width="388" height="112" rx="4" fill="#E8E0D0" stroke="#C8B898" stroke-width="0.75"/>
+    <!-- Title (Instrument Serif style: Georgia used for wireframe) -->
+    <text x="32" y="82" dominant-baseline="middle"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic" fill="#5A5550">Outstanding
+        Balance
+    </text>
+    <!-- Settled (left) -->
+    <text x="32" y="104" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#7A7268">Settled
+    </text>
+    <text x="32" y="123" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="20" font-weight="300" fill="#2C2C2C">340 pts
+    </text>
+    <!-- Remaining (right) -->
+    <text x="388" y="104" dominant-baseline="middle" text-anchor="end"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#7A7268">Remaining
+    </text>
+    <text x="388" y="123" dominant-baseline="middle" text-anchor="end"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="20" font-weight="300" fill="#2C2C2C">180 pts
+    </text>
+    <!-- Segmented progress bar (settled = dark left; remaining = light right) -->
+    <rect x="32" y="136" width="356" height="6" rx="3" fill="#D0C8BC"/>
+    <!-- 340/520 = 65.4% → 233 px filled -->
+    <rect x="32" y="136" width="233" height="6" rx="3" fill="#2C2C2C"/>
+    <!-- Total incurred footer -->
+    <text x="32" y="160" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Total incurred: 520 pts
+    </text>
 
-  <!-- ── TASKS SECTION ──────────────────────── -->
-  <!-- Section header -->
-  <text x="20" y="202" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="14" font-weight="500" fill="#2C2C2C">Tasks</text>
-  <!-- Count badge -->
-  <rect x="60" y="192" width="22" height="18" rx="9" fill="#2C2C2C"/>
-  <text x="71" y="201" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#F5F0E8">3</text>
-  <!-- Section divider -->
-  <line x1="16" y1="216" x2="404" y2="216" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- ── TASKS SECTION ──────────────────────── -->
+    <!-- Section header -->
+    <text x="20" y="202" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="14" font-weight="500" fill="#2C2C2C">Tasks
+    </text>
+    <!-- Count badge -->
+    <rect x="60" y="192" width="22" height="18" rx="9" fill="#2C2C2C"/>
+    <text x="71" y="201" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#F5F0E8">3
+    </text>
+    <!-- Section divider -->
+    <line x1="16" y1="216" x2="404" y2="216" stroke="#C8C0B0" stroke-width="0.5"/>
 
-  <!-- Task row 1 -->
-  <text x="20" y="249" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Iron the uniform</text>
-  <text x="20" y="265" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Est. 20 min</text>
-  <rect x="334" y="232" width="74" height="34" rx="4" fill="#2C2C2C"/>
-  <text x="371" y="249" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#F5F0E8">Start</text>
-  <line x1="16" y1="276" x2="404" y2="276" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- Task row 1 -->
+    <text x="20" y="249" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Iron the uniform
+    </text>
+    <text x="20" y="265" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Est. 20 min
+    </text>
+    <rect x="334" y="232" width="74" height="34" rx="4" fill="#2C2C2C"/>
+    <text x="371" y="249" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#F5F0E8">Start
+    </text>
+    <line x1="16" y1="276" x2="404" y2="276" stroke="#C8C0B0" stroke-width="0.5"/>
 
-  <!-- Task row 2 -->
-  <text x="20" y="309" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Polish silver</text>
-  <text x="20" y="325" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Est. 30 min</text>
-  <rect x="334" y="292" width="74" height="34" rx="4" fill="#2C2C2C"/>
-  <text x="371" y="309" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#F5F0E8">Start</text>
-  <line x1="16" y1="336" x2="404" y2="336" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- Task row 2 -->
+    <text x="20" y="309" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Polish silver
+    </text>
+    <text x="20" y="325" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Est. 30 min
+    </text>
+    <rect x="334" y="292" width="74" height="34" rx="4" fill="#2C2C2C"/>
+    <text x="371" y="309" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#F5F0E8">Start
+    </text>
+    <line x1="16" y1="336" x2="404" y2="336" stroke="#C8C0B0" stroke-width="0.5"/>
 
-  <!-- Task row 3 -->
-  <text x="20" y="369" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Fold laundry</text>
-  <text x="20" y="385" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Est. 15 min</text>
-  <rect x="334" y="352" width="74" height="34" rx="4" fill="#2C2C2C"/>
-  <text x="371" y="369" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#F5F0E8">Start</text>
-  <line x1="16" y1="396" x2="404" y2="396" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- Task row 3 -->
+    <text x="20" y="369" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" fill="#2C2C2C">Fold laundry
+    </text>
+    <text x="20" y="385" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="10" fill="#9A9288">Est. 15 min
+    </text>
+    <rect x="334" y="352" width="74" height="34" rx="4" fill="#2C2C2C"/>
+    <text x="371" y="369" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#F5F0E8">Start
+    </text>
+    <line x1="16" y1="396" x2="404" y2="396" stroke="#C8C0B0" stroke-width="0.5"/>
 
-  <!-- ── PUNISHMENT BUTTON ───────────────────── -->
-  <!-- Active only when count > 0; amber accent signals attention -->
-  <rect x="16" y="408" width="388" height="48" rx="4" fill="#F5E6C8" stroke="#C8882A" stroke-width="1"/>
-  <text x="32" y="432" dominant-baseline="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="500" fill="#8A5A10">Punishments</text>
-  <circle cx="372" cy="432" r="14" fill="#C8882A"/>
-  <text x="372" y="432" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="600" fill="#F5F0E8">2</text>
+    <!-- ── PUNISHMENT BUTTON ───────────────────── -->
+    <!-- Active only when count > 0; amber accent signals attention -->
+    <rect x="16" y="408" width="388" height="48" rx="4" fill="#F5E6C8" stroke="#C8882A" stroke-width="1"/>
+    <text x="32" y="432" dominant-baseline="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="500" fill="#8A5A10">Punishments
+    </text>
+    <circle cx="372" cy="432" r="14" fill="#C8882A"/>
+    <text x="372" y="432" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="600" fill="#F5F0E8">2
+    </text>
 
-  <!-- Scrollable area indicator -->
-  <text x="210" y="570" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#C8C0B0">· · ·</text>
-  <text x="210" y="590" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-style="italic" fill="#C8C0B0">scrollable content area</text>
+    <!-- Scrollable area indicator -->
+    <text x="210" y="570" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#C8C0B0">· · ·
+    </text>
+    <text x="210" y="590" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-style="italic" fill="#C8C0B0">scrollable
+        content area
+    </text>
 
-  <!-- ── ACTION BAR (pinned bottom) ─────────── -->
-  <rect y="716" width="420" height="64" fill="#EDE8DE"/>
-  <line x1="0" y1="716" x2="420" y2="716" stroke="#C8B898" stroke-width="0.75"/>
-  <!-- Request Permission -->
-  <rect x="8" y="726" width="92" height="42" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="54" y="743" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Request</text>
-  <text x="54" y="757" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Permission</text>
-  <!-- Shop -->
-  <rect x="108" y="726" width="92" height="42" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="154" y="747" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Shop</text>
-  <!-- End Session -->
-  <rect x="208" y="726" width="92" height="42" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
-  <text x="254" y="743" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">End</text>
-  <text x="254" y="757" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Session</text>
-  <!-- Emergency Break (distinct: warm red tint, stronger border) -->
-  <rect x="308" y="726" width="104" height="42" rx="4" fill="#F5D8D0" stroke="#C84820" stroke-width="1.25"/>
-  <text x="360" y="743" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="600" fill="#8A2010">Emergency</text>
-  <text x="360" y="757" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="600" fill="#8A2010">Break</text>
+    <!-- ── ACTION BAR (pinned bottom) ─────────── -->
+    <rect y="716" width="420" height="64" fill="#EDE8DE"/>
+    <line x1="0" y1="716" x2="420" y2="716" stroke="#C8B898" stroke-width="0.75"/>
+    <!-- Request Permission -->
+    <rect x="8" y="726" width="92" height="42" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="54" y="743" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Request
+    </text>
+    <text x="54" y="757" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Permission
+    </text>
+    <!-- Shop -->
+    <rect x="108" y="726" width="92" height="42" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="154" y="747" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Shop
+    </text>
+    <!-- End Session -->
+    <rect x="208" y="726" width="92" height="42" rx="4" fill="#DDD8CE" stroke="#C8C0B0" stroke-width="0.5"/>
+    <text x="254" y="743" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">End
+    </text>
+    <text x="254" y="757" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#2C2C2C">Session
+    </text>
+    <!-- Emergency Break (distinct: warm red tint, stronger border) -->
+    <rect x="308" y="726" width="104" height="42" rx="4" fill="#F5D8D0" stroke="#C84820" stroke-width="1.25"/>
+    <text x="360" y="743" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="600" fill="#8A2010">Emergency
+    </text>
+    <text x="360" y="757" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="600" fill="#8A2010">Break
+    </text>
 
-  <!-- Canvas label -->
-  <text x="210" y="772" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-style="italic" fill="#C0B8AC">Portrait — Dashboard (Idle State)</text>
+    <!-- Canvas label -->
+    <text x="210" y="772" dominant-baseline="middle" text-anchor="middle"
+          font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-style="italic" fill="#C0B8AC">Portrait —
+        Dashboard (Idle State)
+    </text>
 
 </svg>

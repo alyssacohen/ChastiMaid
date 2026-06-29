@@ -9,9 +9,15 @@ public class ProfileRepositoryTests : IDisposable
     private readonly LiteDatabase _db = new(":memory:");
     private readonly ProfileRepository _repo;
 
-    public ProfileRepositoryTests() => _repo = new ProfileRepository(_db);
+    public ProfileRepositoryTests()
+    {
+        _repo = new ProfileRepository(_db);
+    }
 
-    public void Dispose() => _db.Dispose();
+    public void Dispose()
+    {
+        _db.Dispose();
+    }
 
     [Fact]
     public void GetWardrobe_Initially_ReturnsEmpty()
@@ -22,7 +28,8 @@ public class ProfileRepositoryTests : IDisposable
     [Fact]
     public void SaveClothingItem_ThenGetWardrobe_ContainsItem()
     {
-        _repo.SaveClothingItem(new ClothingItem { Id = 1, Name = "test shirt", Layers = ["outer"], Slots = ["torso"] });
+        _repo.SaveClothingItem(new ClothingItem
+            { Id = 1, Name = "test shirt", Layers = [3], Slots = ["torso"] });
 
         var wardrobe = _repo.GetWardrobe();
         Assert.Single(wardrobe);
@@ -32,7 +39,8 @@ public class ProfileRepositoryTests : IDisposable
     [Fact]
     public void DeleteClothingItem_RemovesItem()
     {
-        _repo.SaveClothingItem(new ClothingItem { Id = 1, Name = "to delete", Layers = ["outer"], Slots = ["torso"] });
+        _repo.SaveClothingItem(new ClothingItem
+            { Id = 1, Name = "to delete", Layers = [3], Slots = ["torso"] });
         _repo.DeleteClothingItem(1);
 
         Assert.Empty(_repo.GetWardrobe());
@@ -41,8 +49,10 @@ public class ProfileRepositoryTests : IDisposable
     [Fact]
     public void SaveClothingItem_Upsert_UpdatesExisting()
     {
-        _repo.SaveClothingItem(new ClothingItem { Id = 1, Name = "original", Layers = ["outer"], Slots = ["torso"] });
-        _repo.SaveClothingItem(new ClothingItem { Id = 1, Name = "updated",  Layers = ["outer"], Slots = ["torso"] });
+        _repo.SaveClothingItem(
+            new ClothingItem { Id = 1, Name = "original", Layers = [3], Slots = ["torso"] });
+        _repo.SaveClothingItem(new ClothingItem
+            { Id = 1, Name = "updated", Layers = [3], Slots = ["torso"] });
 
         var wardrobe = _repo.GetWardrobe();
         Assert.Single(wardrobe);
@@ -64,7 +74,7 @@ public class ProfileRepositoryTests : IDisposable
         _repo.SaveGameSettings(saved);
 
         var loaded = _repo.GetGameSettings();
-        Assert.Equal(0.05, loaded.DailyInterestRate, precision: 5);
+        Assert.Equal(0.05, loaded.DailyInterestRate, 5);
     }
 
     [Fact]

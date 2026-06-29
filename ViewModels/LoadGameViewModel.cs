@@ -9,19 +9,6 @@ namespace ChastiMaid.ViewModels;
 
 public class SlotCardViewModel : ViewModelBase
 {
-    public int SlotNumber { get; }
-    public bool IsEmpty { get; }
-    public string SlotName { get; }
-    public string SavedAt { get; }
-    public string DebtDisplay { get; }
-    public string SafeStatus { get; }
-    public bool IsSafeLocked { get; }
-    public bool IsCompleted { get; }
-    public string CompletedLabel => IsCompleted ? "✓ Completed" : "";
-
-    public ICommand LoadCommand { get; }
-    public ICommand DeleteCommand { get; }
-
     // Empty slot
     public SlotCardViewModel(int number)
     {
@@ -51,17 +38,27 @@ public class SlotCardViewModel : ViewModelBase
         LoadCommand = ReactiveCommand.CreateFromTask(() => parent.LoadSlot(slot.SlotName), canLoad);
         DeleteCommand = ReactiveCommand.CreateFromTask(() => parent.ConfirmDeleteSlot(this));
     }
+
+    public int SlotNumber { get; }
+    public bool IsEmpty { get; }
+    public string SlotName { get; }
+    public string SavedAt { get; }
+    public string DebtDisplay { get; }
+    public string SafeStatus { get; }
+    public bool IsSafeLocked { get; }
+    public bool IsCompleted { get; }
+    public string CompletedLabel => IsCompleted ? "✓ Completed" : "";
+
+    public ICommand LoadCommand { get; }
+    public ICommand DeleteCommand { get; }
 }
 
 public partial class LoadGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
 
-    public ObservableCollection<SlotCardViewModel> Slots { get; } = [];
-
-    [Reactive(SetModifier = AccessModifier.Private)] private ConfirmDialogViewModel? _activeDialog;
-
-    public ICommand BackCommand { get; }
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private ConfirmDialogViewModel? _activeDialog;
 
     public LoadGameViewModel(MainWindowViewModel mainVm)
     {
@@ -71,6 +68,10 @@ public partial class LoadGameViewModel : ViewModelBase
 
         BackCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
     }
+
+    public ObservableCollection<SlotCardViewModel> Slots { get; } = [];
+
+    public ICommand BackCommand { get; }
 
     public void RefreshSlots()
     {
@@ -98,10 +99,10 @@ public partial class LoadGameViewModel : ViewModelBase
         catch (Exception ex)
         {
             var dialog = new ConfirmDialogViewModel(
-                title: "Load Error",
-                message: $"Could not load \"{slotName}\". The save file may be corrupted.\n\n{ex.Message}",
-                confirmLabel: "OK",
-                cancelLabel: null);
+                "Load Error",
+                $"Could not load \"{slotName}\". The save file may be corrupted.\n\n{ex.Message}",
+                "OK",
+                null);
 
             ActiveDialog = dialog;
             await dialog.Result;
@@ -116,16 +117,19 @@ public partial class LoadGameViewModel : ViewModelBase
             : $"Delete \"{slot.SlotName}\"? This game will be marked as failed.";
 
         var dialog = new ConfirmDialogViewModel(
-            title: "Delete Save",
-            message: message,
-            confirmLabel: "Delete",
-            cancelLabel: "Cancel");
+            "Delete Save",
+            message,
+            "Delete",
+            "Cancel");
 
         ActiveDialog = dialog;
         var confirmed = await dialog.Result;
         ActiveDialog = null;
 
-        if (!confirmed) return;
+        if (!confirmed)
+        {
+            return;
+        }
 
         _mainVm.SaveSlotManager.DeleteSlot(slot.SlotName);
 

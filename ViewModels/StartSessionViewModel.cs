@@ -10,28 +10,24 @@ namespace ChastiMaid.ViewModels;
 
 public partial class StartSessionViewModel : ViewModelBase
 {
+    private readonly ActivePunishment? _forcedOutfitPunishment;
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
-    private Outfit _outfit;
+    [Reactive] private ConfirmDialogViewModel? _activeDialog;
     private double _currentBonus = 1.0;
-    private int _regenCount;
-    private ActivePunishment? _forcedOutfitPunishment;
+    private double _outfitMultiplier = 1.0;
 
-    [Reactive] private string _proposedOutfit = "";
-
-    public string DebtDisplay { get; }
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _isForced;
 
     [Reactive] private bool _isLocked;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _isForced;
-    [Reactive] private ConfirmDialogViewModel? _activeDialog;
+    private Outfit _outfit;
 
-    /// <summary>True while the outfit can be regenerated or manually modified.</summary>
-    public bool CanRegenOrModify => !IsLocked && !IsForced;
-
-    public ICommand AcceptCommand { get; }
-    public ICommand RegenerateCommand { get; }
-    public ICommand ModifyCommand { get; }
-    public ICommand QuitCommand { get; }
+    [Reactive] private string _proposedOutfit = "";
+    [Reactive] private OutfitViewModel _outfitVm = new([]);
+    [Reactive] private string _multiplierDisplay = "×1.00";
+    [Reactive] private string _itemCountDisplay = "";
+    private int _regenCount;
 
     public StartSessionViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit? outfit = null)
     {
@@ -48,7 +44,10 @@ public partial class StartSessionViewModel : ViewModelBase
             {
                 var rate = (decimal)state.DailyInterestRate;
                 for (var i = 0; i < days; i++)
+                {
                     state.CurrentDebt += Math.Round(state.CurrentDebt * rate, 0);
+                }
+
                 saveRepo.SaveGameState(state);
             }
         }
@@ -60,6 +59,7 @@ public partial class StartSessionViewModel : ViewModelBase
             _outfit = new Outfit();
             _proposedOutfit = state.CurrentOutfit ?? "";
             _currentBonus = state.OutfitBonusPercent;
+            _outfitMultiplier = state.OutfitMultiplier;
             _isLocked = true;
         }
         else
@@ -117,7 +117,11 @@ public partial class StartSessionViewModel : ViewModelBase
                     _proposedOutfit = _outfit.ToString();
                 }
             }
+
+            _outfitMultiplier = _outfit.TotalMultiplier;
         }
+
+        RefreshDisplayProperties();
 
         this.WhenAnyValue(x => x.IsLocked, x => x.IsForced)
             .Subscribe(_ => this.RaisePropertyChanged(nameof(CanRegenOrModify)));
@@ -125,8 +129,26 @@ public partial class StartSessionViewModel : ViewModelBase
         AcceptCommand = ReactiveCommand.Create(Accept);
         RegenerateCommand = ReactiveCommand.CreateFromTask(ConfirmRegenerate);
         ModifyCommand = ReactiveCommand.CreateFromTask(ConfirmModify);
-        QuitCommand = ReactiveCommand.Create(
-            () => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
+        QuitCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
+    }
+
+    public string DebtDisplay { get; }
+
+    /// <summary>True while the outfit can be regenerated or manually modified.</summary>
+    public bool CanRegenOrModify => !IsLocked && !IsForced;
+
+    public ICommand AcceptCommand { get; }
+    public ICommand RegenerateCommand { get; }
+    public ICommand ModifyCommand { get; }
+    public ICommand QuitCommand { get; }
+
+    private void RefreshDisplayProperties()
+    {
+        OutfitVm = OutfitViewModel.FromString(_proposedOutfit);
+        var effective = _currentBonus * _outfitMultiplier;
+        MultiplierDisplay = $"×{effective:F2}";
+        var itemCount = OutfitVm.Layers.Count(l => l.HasItem);
+        ItemCountDisplay = $"{itemCount} items · {itemCount} layers covered";
     }
 
     /// <summary>Builds an Outfit from a fixed list of items without the builder.</summary>
@@ -137,9 +159,13 @@ public partial class StartSessionViewModel : ViewModelBase
         {
             foreach (var layer in Outfit.LayersOrder.Where(l => item.Layers.Contains(l)))
             {
-                if (outfit.AddItemOnLayer(item, layer)) break;
+                if (outfit.AddItemOnLayer(item, layer))
+                {
+                    break;
+                }
             }
         }
+
         return outfit;
     }
 
@@ -151,7 +177,10 @@ public partial class StartSessionViewModel : ViewModelBase
         {
             remaining.Sessions = (remaining.Sessions ?? 0) - 1;
             if ((remaining.Sessions ?? 0) <= 0)
+            {
                 _forcedOutfitPunishment.IsResolved = true;
+            }
+
             _saveRepo.SaveActivePunishment(_forcedOutfitPunishment);
         }
 
@@ -163,15 +192,18 @@ public partial class StartSessionViewModel : ViewModelBase
         var penalty = _regenCount == 0 ? 0.5 : 0.5;
         var resultBonus = _currentBonus * penalty;
         var dialog = new ConfirmDialogViewModel(
-            title: "Regenerate Outfit",
-            message: $"Regenerating will reduce your bonus to {resultBonus * 100:F0}% of the base multiplier. Proceed?",
-            confirmLabel: "Regenerate",
-            cancelLabel: "Cancel");
+            "Regenerate Outfit",
+            $"Regenerating will reduce your bonus to {resultBonus * 100:F0}% of the base multiplier. Proceed?",
+            "Regenerate",
+            "Cancel");
         ActiveDialog = dialog;
         var confirmed = await dialog.Result;
         ActiveDialog = null;
 
-        if (!confirmed) return;
+        if (!confirmed)
+        {
+            return;
+        }
 
         _saveRepo.RejectItems(_outfit.Items);
         _currentBonus = resultBonus;
@@ -179,26 +211,33 @@ public partial class StartSessionViewModel : ViewModelBase
 
         var builder = new OutfitBuilder(_saveRepo.GetWardrobe(), _saveRepo.GetOutfitRules());
         _outfit = builder.Build();
+        _outfitMultiplier = _outfit.TotalMultiplier;
         ProposedOutfit = _outfit.ToString();
+        RefreshDisplayProperties();
 
         // After 2 regenerations, lock automatically
         if (_regenCount >= 2)
+        {
             LockAndProceed();
+        }
     }
 
     private async Task ConfirmModify()
     {
         var resultBonus = _currentBonus * 0.2;
         var dialog = new ConfirmDialogViewModel(
-            title: "Modify Outfit",
-            message: $"Manually choosing clothes will reduce your bonus to {resultBonus * 100:F0}% of the base multiplier and lock the outfit. Proceed?",
-            confirmLabel: "Modify",
-            cancelLabel: "Cancel");
+            "Modify Outfit",
+            $"Manually choosing clothes will reduce your bonus to {resultBonus * 100:F0}% of the base multiplier and lock the outfit. Proceed?",
+            "Modify",
+            "Cancel");
         ActiveDialog = dialog;
         var confirmed = await dialog.Result;
         ActiveDialog = null;
 
-        if (!confirmed) return;
+        if (!confirmed)
+        {
+            return;
+        }
 
         _currentBonus = resultBonus;
         _mainVm.NavigateTo(new ChangeOutfitViewModel(_mainVm, _saveRepo, _outfit, _currentBonus));

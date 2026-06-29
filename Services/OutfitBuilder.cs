@@ -4,26 +4,28 @@ using ChastiMaid.Repositories;
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Builds a coherent Outfit from available clothing items and rules.
-/// Ported from the Python OutfitBuilder prototype.
+///     Builds a coherent Outfit from available clothing items and rules.
+///     Ported from the Python OutfitBuilder prototype.
 /// </summary>
 public class OutfitBuilder
 {
-    private static readonly Dictionary<string, double> DefaultLayerProbability =
-        WardrobeLayer.All.ToDictionary(l => l.Key, l => l.Probability);
-
     private const int MaxFillAttemptsPerLayer = 10;
 
+    private static readonly Dictionary<int, double> DefaultLayerProbability =
+        WardrobeLayer.All.ToDictionary(l => l.Order, l => l.Probability);
+
     private readonly List<ClothingItem> _allItems;
-    private readonly Dictionary<int, (HashSet<int> Requires, HashSet<int> Incompatible)> _rules;
-    private readonly Dictionary<string, double> _layerProbability;
+    private readonly Dictionary<int, double> _layerProbability;
+    private readonly List<ClothingItem> _pickingList = [];
     private readonly Random _random;
+    private readonly Dictionary<int, (HashSet<int> Requires, HashSet<int> Incompatible)> _rules;
 
     private readonly List<ClothingItem> _seedItems = [];
-    private readonly List<ClothingItem> _pickingList = [];
 
     public OutfitBuilder(ProfileRepository repo, int? randomSeed = null)
-        : this(repo.GetWardrobe(), repo.GetOutfitRules(), randomSeed) { }
+        : this(repo.GetWardrobe(), repo.GetOutfitRules(), randomSeed)
+    {
+    }
 
     public OutfitBuilder(List<ClothingItem> items, List<OutfitRule> rules, int? randomSeed = null)
     {
@@ -51,7 +53,9 @@ public class OutfitBuilder
         void Ensure(int id)
         {
             if (!_rules.ContainsKey(id))
+            {
                 _rules[id] = (new HashSet<int>(), new HashSet<int>());
+            }
         }
     }
 
@@ -59,8 +63,15 @@ public class OutfitBuilder
     {
         foreach (var item in items)
         {
-            if (!_seedItems.Contains(item)) _seedItems.Add(item);
-            if (!_pickingList.Contains(item)) _pickingList.Add(item);
+            if (!_seedItems.Contains(item))
+            {
+                _seedItems.Add(item);
+            }
+
+            if (!_pickingList.Contains(item))
+            {
+                _pickingList.Add(item);
+            }
         }
     }
 
@@ -78,14 +89,23 @@ public class OutfitBuilder
         foreach (var layer in Outfit.LayersOrder)
         {
             var prob = _layerProbability.GetValueOrDefault(layer, 1.0);
-            if (_random.NextDouble() >= prob) continue;
+            if (_random.NextDouble() >= prob)
+            {
+                continue;
+            }
 
             // Place seed items on this layer
             foreach (var seed in unplaced.ToList())
             {
-                if (!seed.Layers.Contains(layer)) continue;
+                if (!seed.Layers.Contains(layer))
+                {
+                    continue;
+                }
+
                 if (outfit.AddItemOnLayer(seed, layer))
+                {
                     unplaced.Remove(seed);
+                }
             }
 
             // Fill layer with random candidates (exclude items incompatible with already-placed items)
@@ -96,7 +116,10 @@ public class OutfitBuilder
                     .Where(i => i.Layers.Contains(layer) && outfit.CanAddOnLayer(i, layer))
                     .Where(i => !_rules.TryGetValue(i.Id, out var r) || !r.Incompatible.Any(placedIds.Contains))
                     .ToList();
-                if (candidates.Count == 0) break;
+                if (candidates.Count == 0)
+                {
+                    break;
+                }
 
                 var chosen = WeightedChoice(candidates);
                 outfit.AddItemOnLayer(chosen, layer);
@@ -117,7 +140,10 @@ public class OutfitBuilder
 
                 var occupying = outfit.ItemsInLayer(layer, seed.Slots).ToList();
                 var replaceable = occupying.FirstOrDefault(i => !_seedItems.Contains(i));
-                if (replaceable is null) continue;
+                if (replaceable is null)
+                {
+                    continue;
+                }
 
                 outfit.RemoveItem(replaceable);
                 if (outfit.AddItemOnLayer(seed, layer))
@@ -139,14 +165,28 @@ public class OutfitBuilder
             changed = false;
             foreach (var item in _pickingList.ToList())
             {
-                if (!_rules.TryGetValue(item.Id, out var rule) || rule.Requires.Count == 0) continue;
-                if (_pickingList.Any(i => rule.Requires.Contains(i.Id))) continue;
+                if (!_rules.TryGetValue(item.Id, out var rule) || rule.Requires.Count == 0)
+                {
+                    continue;
+                }
+
+                if (_pickingList.Any(i => rule.Requires.Contains(i.Id)))
+                {
+                    continue;
+                }
 
                 var required = _allItems.Where(i => rule.Requires.Contains(i.Id)).ToList();
-                if (required.Count == 0) continue;
+                if (required.Count == 0)
+                {
+                    continue;
+                }
 
                 var picked = WeightedChoice(required);
-                if (_pickingList.Contains(picked)) continue;
+                if (_pickingList.Contains(picked))
+                {
+                    continue;
+                }
+
                 _pickingList.Add(picked);
                 changed = true;
             }
@@ -161,8 +201,12 @@ public class OutfitBuilder
         foreach (var item in items)
         {
             cumulative += item.Weight;
-            if (roll <= cumulative) return item;
+            if (roll <= cumulative)
+            {
+                return item;
+            }
         }
+
         return items[^1];
     }
 }

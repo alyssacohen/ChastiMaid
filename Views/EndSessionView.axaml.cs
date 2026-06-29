@@ -4,5 +4,8 @@ namespace ChastiMaid.Views;
 
 public partial class EndSessionView : UserControl
 {
-    public EndSessionView() => InitializeComponent();
+    public EndSessionView()
+    {
+        InitializeComponent();
+    }
 }

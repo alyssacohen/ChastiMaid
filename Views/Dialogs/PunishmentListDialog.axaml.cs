@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ChastiMaid.ViewModels;
 
@@ -6,8 +7,6 @@ namespace ChastiMaid.Views.Dialogs;
 
 public partial class PunishmentListDialog : BaseDialog
 {
-    public PunishmentItemViewModel? SelectedPunishment { get; private set; }
-
     public PunishmentListDialog()
     {
         InitializeComponent();
@@ -18,14 +17,19 @@ public partial class PunishmentListDialog : BaseDialog
         DataContext = punishments;
     }
 
+    public PunishmentItemViewModel? SelectedPunishment { get; private set; }
+
     private void StartButton_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is Avalonia.Controls.Button { DataContext: PunishmentItemViewModel pvm })
+        if (sender is Button { DataContext: PunishmentItemViewModel pvm })
         {
             SelectedPunishment = pvm;
             Confirm();
         }
     }
 
-    private void OnDismissClick(object? sender, RoutedEventArgs e) => Dismiss();
+    private void OnDismissClick(object? sender, RoutedEventArgs e)
+    {
+        Dismiss();
+    }
 }

@@ -13,20 +13,16 @@ namespace ChastiMaid.ViewModels;
 
 public partial class EndSessionViewModel : ViewModelBase
 {
+    private readonly string _encPath;
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
     private readonly string _slotName;
-    private readonly string _encPath;
 
-    public bool HasSafeCombo { get; }
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private Bitmap? _comboImage;
 
-    [Reactive(SetModifier = AccessModifier.Private)] private Bitmap? _comboImage;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _showingCombo;
-
-    public ICommand ShowComboAndCloseCommand { get; }
-    public ICommand CloseWithoutComboCommand { get; }
-    public ICommand CancelCommand { get; }
-    public ICommand ConfirmCloseCommand { get; }
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _showingCombo;
 
     public EndSessionViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
     {
@@ -43,6 +39,13 @@ public partial class EndSessionViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(Cancel);
         ConfirmCloseCommand = ReactiveCommand.Create(Shutdown);
     }
+
+    public bool HasSafeCombo { get; }
+
+    public ICommand ShowComboAndCloseCommand { get; }
+    public ICommand CloseWithoutComboCommand { get; }
+    public ICommand CancelCommand { get; }
+    public ICommand ConfirmCloseCommand { get; }
 
     private void RevealCombo(GameState? state)
     {
@@ -82,7 +85,9 @@ public partial class EndSessionViewModel : ViewModelBase
 
         // If not revealing the combo, shut down immediately
         if (!safeUnlocked)
+        {
             Shutdown();
+        }
     }
 
     private void Cancel()
@@ -93,6 +98,8 @@ public partial class EndSessionViewModel : ViewModelBase
     private static void Shutdown()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
             desktop.Shutdown();
+        }
     }
 }

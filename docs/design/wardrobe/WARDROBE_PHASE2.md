@@ -1,11 +1,14 @@
 # Task: Wardrobe Table Redesign — Phase 2 of 3
+
 # New UserControls: WardrobeToolbar, WardrobeTable, WardrobeBulkBar
 
 ## Prerequisites
+
 Phase 1 must be complete and the project must build cleanly before
 starting this phase.
 
 ## Context
+
 Read `docs/design/wardrobe/WARDROBE_TABLE_SPEC.md` (full spec).
 Read `docs/design/wardrobe/wardrobe-settings.svg` (visual reference).
 
@@ -19,18 +22,19 @@ yet — that is Phase 3.
 A single-row horizontal layout. `DataContext` is `SettingsViewModel`.
 
 Contents left to right:
+
 - `TextBox` bound to `WardrobeNameFilter`, placeholder "Filter by name or tag…",
   width 240, `MinHeight="44"`
 - Label `TextBlock` "Layer:" with `VerticalAlignment="Center"`, left margin 16
 - `WrapPanel` of six toggle items for: All, undies, base, extra, outer, gears.
   Each is a `ToggleButton` with class `.chip`.
-  - "All" is active when `WardrobeLayerFilter` is null; clicking it sets
-    `WardrobeLayerFilter = null`
-  - Each named layer is active when `WardrobeLayerFilter == "layername"`;
-    clicking sets `WardrobeLayerFilter = "layername"`
-  - Only one can be active at a time (radio behavior via commands, not
-    a RadioButton group — ToggleButton + Command is cleaner in MVVM)
-  - `MinHeight="44"`, `Padding="12,0"`
+    - "All" is active when `WardrobeLayerFilter` is null; clicking it sets
+      `WardrobeLayerFilter = null`
+    - Each named layer is active when `WardrobeLayerFilter == "layername"`;
+      clicking sets `WardrobeLayerFilter = "layername"`
+    - Only one can be active at a time (radio behavior via commands, not
+      a RadioButton group — ToggleButton + Command is cleaner in MVVM)
+    - `MinHeight="44"`, `Padding="12,0"`
 - Spacer (`Grid` stretch column or `HorizontalAlignment="Right"` on next item)
 - `Button Classes="primary"` with content "+ Add item",
   `Command="{Binding AddWardrobeItemCommand}"`, `MinHeight="44"`
@@ -42,6 +46,7 @@ Contents left to right:
 `DataContext` is `SettingsViewModel`.
 
 ### Header row
+
 `Grid` with five columns matching the spec (40 / * / 200 / 180 / 44).
 Fixed above the scroll area (not inside the ScrollViewer).
 
@@ -54,6 +59,7 @@ Fixed above the scroll area (not inside the ScrollViewer).
 Separator `Border` at the bottom of the header.
 
 ### Data rows — ItemsControl
+
 `ItemsControl ItemsSource="{Binding FilteredWardrobeItems}"`.
 
 Each item uses a `DataTemplate` (or promote to a separate
@@ -63,6 +69,7 @@ Each item uses a `DataTemplate` (or promote to a separate
 Use a `StackPanel` (Orientation=Vertical) per item.
 
 Part A — always visible, `MinHeight="44"`:
+
 ```
 Grid (same 5-column definition as header)
   [0] CheckBox bound to IsSelected
@@ -71,12 +78,15 @@ Grid (same 5-column definition as header)
   [3] ItemsControl bound to SlotList → chips
   [4] Button (chevron ›/⌄) Command=ToggleExpandedCommand
 ```
+
 Background alternates via `IsEvenRow`:
-- true  → `{DynamicResource CardBackgroundBrush}`
+
+- true → `{DynamicResource CardBackgroundBrush}`
 - false → `{DynamicResource PageBackgroundBrush}`
-Use a `DataTrigger` or a value converter — no code-behind.
+  Use a `DataTrigger` or a value converter — no code-behind.
 
 Part B — expanded panel, `IsVisible="{Binding IsExpanded}"`:
+
 ```
 Border (AccentSubtleBrush or nearest warm token, left-indent 40)
   StackPanel Spacing="8"
@@ -91,12 +101,14 @@ Border (AccentSubtleBrush or nearest warm token, left-indent 40)
 ```
 
 ### New-item row (pinned below ItemsControl, inside same StackPanel or
+
 as a sibling after the ItemsControl)
 
 Visual: dashed `Border` (`BorderBrush` at 50% opacity, `BorderThickness="1"`,
 `CornerRadius="2"`), warm tinted background.
 
 Grid (same 5-column definition):
+
 ```
 [0] (empty — no checkbox)
 [1] TextBox bound to SettingsViewModel.NewItemName,
@@ -111,6 +123,7 @@ Grid (same 5-column definition):
 ```
 
 Add to `SettingsViewModel` (Phase 1 did not include these — add now):
+
 ```
 [Reactive] string NewItemName
 [Reactive] bool NewItemLayerUndies
@@ -120,6 +133,7 @@ Add to `SettingsViewModel` (Phase 1 did not include these — add now):
 [Reactive] bool NewItemLayerGears
 [Reactive] string NewItemSlots
 ```
+
 `AddWardrobeItemCommand`: read the `NewItemX` properties, build a new
 `WardrobeEditViewModel`, add to `WardrobeItems`, clear all `NewItemX`
 properties, set `IsWardrobeDirty = true`.

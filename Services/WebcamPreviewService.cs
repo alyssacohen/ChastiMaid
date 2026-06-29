@@ -1,32 +1,54 @@
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia.Threading;
 using OpenCvSharp;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
+using Size = OpenCvSharp.Size;
 
 namespace ChastiMaid.Services;
 
 /// <summary>
-/// Manages the webcam: live preview on a WriteableBitmap plus video recording and photo capture
-/// from the same open VideoCapture. Implements INotifyPropertyChanged via ReactiveObject.
+///     Manages the webcam: live preview on a WriteableBitmap plus video recording and photo capture
+///     from the same open VideoCapture. Implements INotifyPropertyChanged via ReactiveObject.
 /// </summary>
 public partial class WebcamPreviewService : ReactiveObject, IDisposable
 {
     private VideoCapture? _capture;
+
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private long _frameCount;
+
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _isRunning;
+
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private WriteableBitmap? _previewBitmap;
+
     private CancellationTokenSource? _previewCts;
     private Task? _previewTask;
 
-    [Reactive(SetModifier = AccessModifier.Private)] private WriteableBitmap? _previewBitmap;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _isRunning;
-    [Reactive(SetModifier = AccessModifier.Private)] private long _frameCount;
+    public void Dispose()
+    {
+        Stop();
+    }
 
     /// <summary>Opens the webcam and starts the preview loop. Returns false if unavailable.</summary>
     public bool Start()
     {
-        if (_capture is not null) return true;
+        if (_capture is not null)
+        {
+            return true;
+        }
 
         var cap = new VideoCapture(0);
-        if (!cap.IsOpened()) { cap.Dispose(); return false; }
+        if (!cap.IsOpened())
+        {
+            cap.Dispose();
+            return false;
+        }
 
         _capture = cap;
         _previewCts = new CancellationTokenSource();
@@ -42,9 +64,17 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         using var frame = new Mat();
         while (!ct.IsCancellationRequested)
         {
-            if (_capture is null || !_capture.IsOpened()) break;
+            if (_capture is null || !_capture.IsOpened())
+            {
+                break;
+            }
+
             _capture.Read(frame);
-            if (frame.Empty()) { Thread.Sleep(30); continue; }
+            if (frame.Empty())
+            {
+                Thread.Sleep(30);
+                continue;
+            }
 
             CopyFrameToBitmap(frame);
             Thread.Sleep(33); // ~30 fps
@@ -62,16 +92,19 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         var stride = w * 4;
         var size = stride * h;
         var pixels = new byte[size];
-        System.Runtime.InteropServices.Marshal.Copy(bgra.Data, pixels, 0, size);
+        Marshal.Copy(bgra.Data, pixels, 0, size);
 
         // Post only the byte[] to the UI thread — no Mat reference crosses the thread boundary
-        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        Dispatcher.UIThread.Post(() =>
         {
-            if (_previewBitmap is null || _previewBitmap.PixelSize.Width != w || _previewBitmap.PixelSize.Height != h)
-                PreviewBitmap = new WriteableBitmap(new PixelSize(w, h), new Vector(96, 96), Avalonia.Platform.PixelFormat.Bgra8888);
+            if (_previewBitmap is null || _previewBitmap.PixelSize.Width != w ||
+                _previewBitmap.PixelSize.Height != h)
+            {
+                PreviewBitmap = new WriteableBitmap(new PixelSize(w, h), new Vector(96, 96), PixelFormat.Bgra8888);
+            }
 
             using var fb = _previewBitmap!.Lock();
-            System.Runtime.InteropServices.Marshal.Copy(pixels, 0, fb.Address, size);
+            Marshal.Copy(pixels, 0, fb.Address, size);
             FrameCount++;
         });
     }
@@ -80,7 +113,15 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     private void StopPreviewLoop()
     {
         _previewCts?.Cancel();
-        try { _previewTask?.Wait(1000); } catch { /* ignore */ }
+        try
+        {
+            _previewTask?.Wait(1000);
+        }
+        catch
+        {
+            /* ignore */
+        }
+
         _previewCts?.Dispose();
         _previewCts = null;
         _previewTask = null;
@@ -89,17 +130,24 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     /// <summary>Restarts the preview loop (VideoCapture must already be open).</summary>
     private void StartPreviewLoop()
     {
-        if (_capture is null || !_capture.IsOpened()) return;
+        if (_capture is null || !_capture.IsOpened())
+        {
+            return;
+        }
+
         _previewCts = new CancellationTokenSource();
         var ct = _previewCts.Token;
         _previewTask = Task.Run(() => PreviewLoop(ct), ct);
     }
 
     /// <summary>Records a video for the specified duration using the already-open VideoCapture.</summary>
-    public async Task RecordVideoAsync(string outputPath, int durationSeconds, IProgress<int>? progress = null, CancellationToken ct = default)
+    public async Task RecordVideoAsync(string outputPath, int durationSeconds, IProgress<int>? progress = null,
+        CancellationToken ct = default)
     {
         if (_capture is null || !_capture.IsOpened())
+        {
             throw new InvalidOperationException("Webcam not started.");
+        }
 
         // Stop the preview loop for exclusive access to the VideoCapture
         StopPreviewLoop();
@@ -114,7 +162,7 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                 var width = _capture.FrameWidth;
                 var height = _capture.FrameHeight;
 
-                using var writer = new VideoWriter(outputPath, FourCC.MJPG, fps, new OpenCvSharp.Size(width, height));
+                using var writer = new VideoWriter(outputPath, FourCC.MJPG, fps, new Size(width, height));
                 using var frame = new Mat();
 
                 var totalFrames = (int)(fps * durationSeconds);
@@ -124,7 +172,11 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                 {
                     ct.ThrowIfCancellationRequested();
                     _capture.Read(frame);
-                    if (frame.Empty()) continue;
+                    if (frame.Empty())
+                    {
+                        continue;
+                    }
+
                     writer.Write(frame);
 
                     // Keep the preview updated during recording
@@ -146,7 +198,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     /// <summary>Captures a single frame and saves it as an image.</summary>
     public async Task<bool> CaptureFrameAsync(string outputPath, CancellationToken ct = default)
     {
-        if (_capture is null || !_capture.IsOpened()) return false;
+        if (_capture is null || !_capture.IsOpened())
+        {
+            return false;
+        }
 
         // Stop the preview loop for exclusive access
         StopPreviewLoop();
@@ -159,7 +214,11 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             {
                 using var frame = new Mat();
                 _capture.Read(frame);
-                if (frame.Empty()) return false;
+                if (frame.Empty())
+                {
+                    return false;
+                }
+
                 Cv2.ImWrite(outputPath, frame);
                 return true;
             }, ct);
@@ -180,6 +239,4 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         IsRunning = false;
     }
-
-    public void Dispose() => Stop();
 }

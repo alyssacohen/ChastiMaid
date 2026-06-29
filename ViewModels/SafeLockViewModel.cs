@@ -12,13 +12,29 @@ public partial class SafeLockViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
-    private readonly WebcamPreviewService _webcam;
 
-    public WebcamPreviewService Webcam => _webcam;
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _isDone;
 
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _isPreviewing;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _noWebcam;
-    [Reactive(SetModifier = AccessModifier.Private)] private bool _isDone;
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _isPreviewing;
+
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private bool _noWebcam;
+
+    public SafeLockViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
+    {
+        _mainVm = mainVm;
+        _saveRepo = saveRepo;
+        Webcam = mainVm.Webcam;
+
+        StartCameraCommand = ReactiveCommand.Create(OnStartCamera);
+        CaptureCommand = ReactiveCommand.CreateFromTask(CapturePhoto);
+        SkipCommand = ReactiveCommand.Create(StartSession);
+        ContinueCommand = ReactiveCommand.Create(StartSession);
+    }
+
+    public WebcamPreviewService Webcam { get; }
 
     public bool IsInitial => !IsPreviewing && !NoWebcam && !IsDone;
 
@@ -27,21 +43,9 @@ public partial class SafeLockViewModel : ViewModelBase
     public ICommand SkipCommand { get; }
     public ICommand ContinueCommand { get; }
 
-    public SafeLockViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
-    {
-        _mainVm = mainVm;
-        _saveRepo = saveRepo;
-        _webcam = mainVm.Webcam;
-
-        StartCameraCommand = ReactiveCommand.Create(OnStartCamera);
-        CaptureCommand = ReactiveCommand.CreateFromTask(CapturePhoto);
-        SkipCommand = ReactiveCommand.Create(StartSession);
-        ContinueCommand = ReactiveCommand.Create(StartSession);
-    }
-
     private void OnStartCamera()
     {
-        if (!_webcam.Start())
+        if (!Webcam.Start())
         {
             NoWebcam = true;
             this.RaisePropertyChanged(nameof(IsInitial));
@@ -62,7 +66,7 @@ public partial class SafeLockViewModel : ViewModelBase
 
         try
         {
-            if (!await _webcam.CaptureFrameAsync(tempPath))
+            if (!await Webcam.CaptureFrameAsync(tempPath))
             {
                 SetNoWebcam();
                 return;
@@ -85,21 +89,21 @@ public partial class SafeLockViewModel : ViewModelBase
             return;
         }
 
-        _webcam.Stop();
+        Webcam.Stop();
         IsPreviewing = false;
         IsDone = true;
     }
 
     private void SetNoWebcam()
     {
-        _webcam.Stop();
+        Webcam.Stop();
         IsPreviewing = false;
         NoWebcam = true;
     }
 
     private void StartSession()
     {
-        _webcam.Stop();
+        Webcam.Stop();
         var state = _saveRepo.GetGameState();
         _saveRepo.AddSession(new Session
         {

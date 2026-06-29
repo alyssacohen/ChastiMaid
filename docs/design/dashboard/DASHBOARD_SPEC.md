@@ -2,12 +2,12 @@
 
 ## Wireframe references
 
-| File | Describes |
-|---|---|
-| `wireframe-portrait.svg` | Dashboard in portrait orientation |
+| File                      | Describes                          |
+|---------------------------|------------------------------------|
+| `wireframe-portrait.svg`  | Dashboard in portrait orientation  |
 | `wireframe-landscape.svg` | Dashboard in landscape orientation |
-| `wireframe-drawer.svg` | Outfit drawer open (portrait) |
-| `wireframe-dialog.svg` | Punishment list dialog (portrait) |
+| `wireframe-drawer.svg`    | Outfit drawer open (portrait)      |
+| `wireframe-dialog.svg`    | Punishment list dialog (portrait)  |
 
 ---
 
@@ -30,26 +30,26 @@
 
 ### Color values
 
-| Key | Hex | Usage |
-|---|---|---|
-| `ColorPageBackground` | `#F5F0E8` | Main page background (warm ivory) |
-| `ColorSurface` | `#EDE8DE` | Status bar, action bar, left rail |
-| `ColorCard` | `#E8E0D0` | Debt widget card |
-| `ColorButtonSecondary` | `#DDD8CE` | Secondary buttons |
-| `ColorProgressTrack` | `#D0C8BC` | Debt bar track |
-| `ColorBorder` | `#C8C0B0` | Standard dividers and borders |
-| `ColorBorderWarm` | `#C8B898` | Card and action bar borders |
-| `ColorTextPrimary` | `#2C2C2C` | Main text, filled buttons |
-| `ColorTextSecondary` | `#5A5550` | Subtitles, section labels |
-| `ColorTextHint` | `#9A9288` | Timestamps, estimated durations |
-| `ColorTextMuted` | `#C0B8AC` | Scroll indicators, canvas labels |
-| `ColorAmber` | `#C8882A` | Punishment badge and border — warnings only |
-| `ColorAmberBackground` | `#F5E6C8` | Punishment button fill, dialog header |
-| `ColorAmberText` | `#8A5A10` | Text on amber background |
-| `ColorEmergency` | `#C84820` | Emergency Break border |
-| `ColorEmergencyBackground` | `#F5D8D0` | Emergency Break fill |
-| `ColorEmergencyText` | `#8A2010` | Emergency Break label |
-| `ColorStatusIdle` | `#7CB87C` | Green dot in status bar |
+| Key                        | Hex       | Usage                                       |
+|----------------------------|-----------|---------------------------------------------|
+| `ColorPageBackground`      | `#F5F0E8` | Main page background (warm ivory)           |
+| `ColorSurface`             | `#EDE8DE` | Status bar, action bar, left rail           |
+| `ColorCard`                | `#E8E0D0` | Debt widget card                            |
+| `ColorButtonSecondary`     | `#DDD8CE` | Secondary buttons                           |
+| `ColorProgressTrack`       | `#D0C8BC` | Debt bar track                              |
+| `ColorBorder`              | `#C8C0B0` | Standard dividers and borders               |
+| `ColorBorderWarm`          | `#C8B898` | Card and action bar borders                 |
+| `ColorTextPrimary`         | `#2C2C2C` | Main text, filled buttons                   |
+| `ColorTextSecondary`       | `#5A5550` | Subtitles, section labels                   |
+| `ColorTextHint`            | `#9A9288` | Timestamps, estimated durations             |
+| `ColorTextMuted`           | `#C0B8AC` | Scroll indicators, canvas labels            |
+| `ColorAmber`               | `#C8882A` | Punishment badge and border — warnings only |
+| `ColorAmberBackground`     | `#F5E6C8` | Punishment button fill, dialog header       |
+| `ColorAmberText`           | `#8A5A10` | Text on amber background                    |
+| `ColorEmergency`           | `#C84820` | Emergency Break border                      |
+| `ColorEmergencyBackground` | `#F5D8D0` | Emergency Break fill                        |
+| `ColorEmergencyText`       | `#8A2010` | Emergency Break label                       |
+| `ColorStatusIdle`          | `#7CB87C` | Green dot in status bar                     |
 
 Add a corresponding `SolidColorBrush` resource for each colour (e.g. `PageBackgroundBrush`,
 `SurfaceBrush`, `AmberBrush`, etc.) following the same naming pattern already in use.
@@ -88,21 +88,21 @@ Top-to-bottom, single column:
    Right: "Outfit ▸" button (opens the drawer).
 
 2. **Scrollable area** (`ScrollViewer` filling remaining height):
-   - `DebtWidget` UserControl (16px side margin, 16px top margin)
-   - **Tasks section**: header row ("Tasks" label + count badge) + divider +
-     `ItemsControl` of task rows. Each row: name + estimated duration (left),
-     "Start" dark button (right). `MinHeight="56"` per row. Thin divider between rows.
-   - **Punishment button**: full-width, amber styling (`ColorAmberBackground` fill,
-     `ColorAmber` border), count badge (amber circle, white number) on the right.
-     Active only when `HasPendingPunishments = true`; disabled and unstyled otherwise.
+    - `DebtWidget` UserControl (16px side margin, 16px top margin)
+    - **Tasks section**: header row ("Tasks" label + count badge) + divider +
+      `ItemsControl` of task rows. Each row: name + estimated duration (left),
+      "Start" dark button (right). `MinHeight="56"` per row. Thin divider between rows.
+    - **Punishment button**: full-width, amber styling (`ColorAmberBackground` fill,
+      `ColorAmber` border), count badge (amber circle, white number) on the right.
+      Active only when `HasPendingPunishments = true`; disabled and unstyled otherwise.
 
 3. **Action bar** — pinned at bottom, `ColorSurface` background, thin warm top border.
    Four buttons in a row (left to right):
-   - Request Permission
-   - Shop
-   - End Session
-   - **Emergency Break** — visually distinct: `ColorEmergencyBackground` fill,
-     `ColorEmergency` border (1.25px), `ColorEmergencyText` label, SemiBold weight.
+    - Request Permission
+    - Shop
+    - End Session
+    - **Emergency Break** — visually distinct: `ColorEmergencyBackground` fill,
+      `ColorEmergency` border (1.25px), `ColorEmergencyText` label, SemiBold weight.
 
 4. **OutfitDrawer** — renders as the topmost child of the root `Panel`, overlaying
    everything. Hidden when closed. See §6.
@@ -156,21 +156,24 @@ drive the fill width from `DebtProgress` (0.0–1.0).
 Overlays the entire view from the right edge. Fixed width ~290px, full parent height.
 
 ### Closed state
+
 `IsVisible="False"` (or opacity 0 with a transition — animation can be added later).
 
 ### Open state
+
 - **Scrim**: full-size semi-transparent rectangle behind the panel
   (`#2C2C2C`, ~28% opacity). Tapping the scrim closes the drawer.
 - **Drawer panel**: `ColorPageBackground`, left border (`ColorBorderWarm`), right-anchored.
-  - **Header** (~52px): `ColorSurface`, "Current Outfit" title
-    (DisplayFontFamily, italic, SubtitleFontSize), × close button (32×32px, top-right).
-  - **Layer list** (scrollable `ItemsControl`): one row per dressing layer.
+    - **Header** (~52px): `ColorSurface`, "Current Outfit" title
+      (DisplayFontFamily, italic, SubtitleFontSize), × close button (32×32px, top-right).
+    - **Layer list** (scrollable `ItemsControl`): one row per dressing layer.
 
 ### Layer rows (see `wireframe-drawer.svg`)
 
 Five layers in fixed order: UNDERWEAR, EXTRA, BASE, OUTERWEAR, ACCESSORIES.
 
 Each row contains:
+
 - Layer name: all-caps, `CaptionFontSize`, `ColorTextHint`, letter-spacing +1
 - Item name: `BodyFontSize`, `ColorTextPrimary`. If no item assigned: "(none)" in `ColorTextHint`
 - Item detail (when present): `CaptionFontSize`, `ColorTextHint` (e.g. "Black · Polyester blend")
@@ -210,6 +213,7 @@ The amber header is the same for all dialogs in this app.
 ### PunishmentListDialog content
 
 An `ItemsControl` of punishment rows. Each row:
+
 - **Name**: `BodyFontSize`, `TextPrimary`
 - **Label**: "Assigned DD Mon · Expires DD Mon" or "· No expiry" — `CaptionFontSize`, `TextHint`
 - **Start button** (right): 64×34px, dark fill, `MinHeight="44"` via padding
@@ -223,46 +227,49 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 
 ### Properties
 
-| Property | Type | Notes |
-|---|---|---|
-| `DebtTotal` | `decimal` | `[Reactive]` |
-| `DebtSettled` | `decimal` | `[Reactive]` |
-| `DebtRemaining` | `decimal` | Computed: `DebtTotal - DebtSettled` |
-| `DebtProgress` | `double` | Computed: `DebtSettled / DebtTotal`, range 0–1 |
-| `Tasks` | `ObservableCollection<TaskItemViewModel>` | |
-| `Punishments` | `ObservableCollection<PunishmentItemViewModel>` | |
-| `PendingPunishmentsCount` | `int` | `[ObservableAsProperty]`, derived from `Punishments.Count` |
-| `HasPendingPunishments` | `bool` | `[ObservableAsProperty]`, true when count > 0 |
-| `IsOutfitDrawerOpen` | `bool` | `[Reactive]` |
-| `CurrentOutfit` | `OutfitViewModel?` | `[Reactive]`, bound to the drawer |
+| Property                  | Type                                            | Notes                                                      |
+|---------------------------|-------------------------------------------------|------------------------------------------------------------|
+| `DebtTotal`               | `decimal`                                       | `[Reactive]`                                               |
+| `DebtSettled`             | `decimal`                                       | `[Reactive]`                                               |
+| `DebtRemaining`           | `decimal`                                       | Computed: `DebtTotal - DebtSettled`                        |
+| `DebtProgress`            | `double`                                        | Computed: `DebtSettled / DebtTotal`, range 0–1             |
+| `Tasks`                   | `ObservableCollection<TaskItemViewModel>`       |                                                            |
+| `Punishments`             | `ObservableCollection<PunishmentItemViewModel>` |                                                            |
+| `PendingPunishmentsCount` | `int`                                           | `[ObservableAsProperty]`, derived from `Punishments.Count` |
+| `HasPendingPunishments`   | `bool`                                          | `[ObservableAsProperty]`, true when count > 0              |
+| `IsOutfitDrawerOpen`      | `bool`                                          | `[Reactive]`                                               |
+| `CurrentOutfit`           | `OutfitViewModel?`                              | `[Reactive]`, bound to the drawer                          |
 
 ### Commands
 
-| Command | Parameter type | Enabled when | Action |
-|---|---|---|---|
-| `StartTaskCommand` | `TaskItemViewModel` | Always | Navigate to active task view |
-| `OpenPunishmentsCommand` | — | `HasPendingPunishments` | Open `PunishmentListDialog` |
-| `StartPunishmentCommand` | `PunishmentItemViewModel` | Always | Close dialog + navigate to punishment view |
-| `ToggleOutfitDrawerCommand` | — | Always | Toggle `IsOutfitDrawerOpen` |
-| `RequestPermissionCommand` | — | Always | Open permission request dialog (spec TBD) |
-| `OpenShopCommand` | — | Always | Open shop dialog (spec TBD) |
-| `EndSessionCommand` | — | Always | Confirm then navigate to session-end view |
-| `EmergencyBreakCommand` | — | Always | Brief confirm → log event → navigate to emergency/end view |
+| Command                     | Parameter type            | Enabled when            | Action                                                     |
+|-----------------------------|---------------------------|-------------------------|------------------------------------------------------------|
+| `StartTaskCommand`          | `TaskItemViewModel`       | Always                  | Navigate to active task view                               |
+| `OpenPunishmentsCommand`    | —                         | `HasPendingPunishments` | Open `PunishmentListDialog`                                |
+| `StartPunishmentCommand`    | `PunishmentItemViewModel` | Always                  | Close dialog + navigate to punishment view                 |
+| `ToggleOutfitDrawerCommand` | —                         | Always                  | Toggle `IsOutfitDrawerOpen`                                |
+| `RequestPermissionCommand`  | —                         | Always                  | Open permission request dialog (spec TBD)                  |
+| `OpenShopCommand`           | —                         | Always                  | Open shop dialog (spec TBD)                                |
+| `EndSessionCommand`         | —                         | Always                  | Confirm then navigate to session-end view                  |
+| `EmergencyBreakCommand`     | —                         | Always                  | Brief confirm → log event → navigate to emergency/end view |
 
 ### Child ViewModels
 
 **TaskItemViewModel**
+
 - `Name: string`
 - `EstimatedDuration: TimeSpan`
 - `EstimatedDurationLabel: string` — "Est. N min", empty string if zero
 
 **PunishmentItemViewModel**
+
 - `Name: string`
 - `AssignedDate: DateOnly`
 - `ExpiryDate: DateOnly?`
 - `AssignedLabel: string` — "Assigned DD Mon · Expires DD Mon" or "· No expiry"
 
 **OutfitLayerViewModel**
+
 - `LayerLabel: string` — e.g. "UNDERWEAR" (displayed all-caps)
 - `ItemName: string` — defaults to "(none)"
 - `ItemDetail: string` — fabric/color description; empty if no item assigned
@@ -272,28 +279,28 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 
 ## 9. Interactions
 
-| Trigger | Expected behavior |
-|---|---|
-| Tap **Start** on a task | Navigate to active task view |
-| Tap **Punishments** button | Open `PunishmentListDialog` |
-| Tap **Start** inside punishment dialog | Close dialog, navigate to punishment execution view |
-| Tap **Outfit ▸** / **Current Outfit ▸** | Toggle `IsOutfitDrawerOpen` |
-| Tap scrim while drawer is open | Close drawer (same toggle command) |
-| Tap **Request Permission** | Open permission request dialog (spec TBD) |
-| Tap **Shop** | Open shop dialog (spec TBD) |
-| Tap **End Session** | Show confirmation dialog; on confirm navigate to session-end view |
-| Tap **Emergency Break** | Brief confirmation; on confirm log event and navigate immediately |
+| Trigger                                 | Expected behavior                                                 |
+|-----------------------------------------|-------------------------------------------------------------------|
+| Tap **Start** on a task                 | Navigate to active task view                                      |
+| Tap **Punishments** button              | Open `PunishmentListDialog`                                       |
+| Tap **Start** inside punishment dialog  | Close dialog, navigate to punishment execution view               |
+| Tap **Outfit ▸** / **Current Outfit ▸** | Toggle `IsOutfitDrawerOpen`                                       |
+| Tap scrim while drawer is open          | Close drawer (same toggle command)                                |
+| Tap **Request Permission**              | Open permission request dialog (spec TBD)                         |
+| Tap **Shop**                            | Open shop dialog (spec TBD)                                       |
+| Tap **End Session**                     | Show confirmation dialog; on confirm navigate to session-end view |
+| Tap **Emergency Break**                 | Brief confirmation; on confirm log event and navigate immediately |
 
 ---
 
 ## 10. Empty states
 
-| Element | Empty state |
-|---|---|
-| Tasks list (0 tasks) | Centered `TextBlock`: "No pending tasks", `CaptionFontSize`, `TextHint` |
-| Punishments button (0 punishments) | `IsEnabled=false`, amber styling hidden, badge hidden |
-| Outfit layer with no item | "(none)" in `TextHint` — handled in `OutfitLayerViewModel` |
-| Debt at zero | Progress bar shows empty track, numbers show "0 pts" — no special handling needed |
+| Element                            | Empty state                                                                       |
+|------------------------------------|-----------------------------------------------------------------------------------|
+| Tasks list (0 tasks)               | Centered `TextBlock`: "No pending tasks", `CaptionFontSize`, `TextHint`           |
+| Punishments button (0 punishments) | `IsEnabled=false`, amber styling hidden, badge hidden                             |
+| Outfit layer with no item          | "(none)" in `TextHint` — handled in `OutfitLayerViewModel`                        |
+| Debt at zero                       | Progress bar shows empty track, numbers show "0 pts" — no special handling needed |
 
 ---
 

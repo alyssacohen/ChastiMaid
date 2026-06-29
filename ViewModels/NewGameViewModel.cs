@@ -1,6 +1,5 @@
 using System.Windows.Input;
 using ChastiMaid.Repositories;
-using ChastiMaid.Services;
 using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;
@@ -8,13 +7,6 @@ namespace ChastiMaid.ViewModels;
 public class NewGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
-
-    public string DebtRange { get; }
-    public string InterestRate { get; }
-
-    public ICommand StartGameCommand { get; }
-    public ICommand SettingsCommand { get; }
-    public ICommand BackCommand { get; }
 
     public NewGameViewModel(MainWindowViewModel mainVm)
     {
@@ -33,10 +25,16 @@ public class NewGameViewModel : ViewModelBase
             mainVm.NavigateTo(new StartSessionViewModel(mainVm, saveRepo));
         });
 
-        BackCommand = ReactiveCommand.Create(
-            () => mainVm.NavigateTo(new WelcomeViewModel(mainVm)));
+        BackCommand = ReactiveCommand.Create(() => mainVm.NavigateTo(new WelcomeViewModel(mainVm)));
 
-        SettingsCommand = ReactiveCommand.Create(
-            () => mainVm.NavigateTo(new SettingsViewModel(mainVm, () => new NewGameViewModel(mainVm))));
+        SettingsCommand = ReactiveCommand.Create(() =>
+            mainVm.NavigateTo(new SettingsViewModel(mainVm, () => new NewGameViewModel(mainVm))));
     }
+
+    public string DebtRange { get; }
+    public string InterestRate { get; }
+
+    public ICommand StartGameCommand { get; }
+    public ICommand SettingsCommand { get; }
+    public ICommand BackCommand { get; }
 }

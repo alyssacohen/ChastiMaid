@@ -2,7 +2,11 @@ using LiteDB;
 
 namespace ChastiMaid.Models;
 
-public enum OutfitRelation { Requires, Incompatible }
+public enum OutfitRelation
+{
+    Requires,
+    Incompatible,
+}
 
 public class OutfitRule
 {

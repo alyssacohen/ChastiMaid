@@ -1,219 +1,221 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <!-- dialogOverlay — full-screen semi-transparent backdrop -->
-  <Style Selector="Panel.dialogOverlay">
-    <Setter Property="Background" Value="#80000000"/>
-    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-    <Setter Property="VerticalAlignment" Value="Stretch"/>
-  </Style>
+    <!-- dialogOverlay — full-screen semi-transparent backdrop -->
+    <Style Selector="Panel.dialogOverlay">
+        <Setter Property="Background" Value="#80000000" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
 
-  <!-- dialogBox — centred modal card inside a dialogOverlay -->
-  <Style Selector="Border.dialogBox">
-    <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}"/>
-    <Setter Property="CornerRadius" Value="8"/>
-    <Setter Property="BoxShadow" Value="0 8 32 0 #30000000"/>
-    <Setter Property="Padding" Value="24"/>
-    <Setter Property="MinWidth" Value="320"/>
-    <Setter Property="MaxWidth" Value="480"/>
-    <Setter Property="HorizontalAlignment" Value="Center"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-  </Style>
+    <!-- dialogBox — centred modal card inside a dialogOverlay -->
+    <Style Selector="Border.dialogBox">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BoxShadow" Value="0 8 32 0 #30000000" />
+        <Setter Property="Padding" Value="24" />
+        <Setter Property="MinWidth" Value="320" />
+        <Setter Property="MaxWidth" Value="480" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 
-  <!-- card — surface card with subtle border (Settings forms) -->
-  <Style Selector="Border.card">
-    <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
-    <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="CornerRadius" Value="6"/>
-    <Setter Property="Padding" Value="16"/>
-    <Setter Property="Margin" Value="0,0,0,8"/>
-  </Style>
+    <!-- card — surface card with subtle border (Settings forms) -->
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
 
-  <!-- filterChip — ToggleButton chip for layer filters (WardrobeToolbar) -->
-  <Style Selector="ToggleButton.filterChip">
-    <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="12"/>
-    <Setter Property="FontWeight" Value="Medium"/>
-    <Setter Property="CornerRadius" Value="4"/>
-    <Setter Property="Padding" Value="10,0"/>
-    <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="Height" Value="30"/>
-    <Setter Property="BorderThickness" Value="0"/>
-  </Style>
+    <!-- filterChip — ToggleButton chip for layer filters (WardrobeToolbar) -->
+    <Style Selector="ToggleButton.filterChip">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
 
-  <Style Selector="ToggleButton.filterChip:checked">
-    <Setter Property="Background" Value="{DynamicResource BrushChipSelected}"/>
-    <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}"/>
-  </Style>
+    <Style Selector="ToggleButton.filterChip:checked">
+        <Setter Property="Background" Value="{DynamicResource BrushChipSelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
+    </Style>
 
-  <!-- ──────────────────────────────────────────────────────────
+    <!-- ──────────────────────────────────────────────────────────
        navItem — ToggleButton for the Settings left-column nav
   ────────────────────────────────────────────────────────────── -->
-  <Style Selector="RadioButton.navItem">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="3,0,0,0"/>
-    <Setter Property="CornerRadius" Value="0"/>
-    <Setter Property="Height" Value="44"/>
-    <Setter Property="Padding" Value="16,0,16,0"/>
-    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="Medium"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}">
-          <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Content="{TemplateBinding Content}"
-                            Margin="{TemplateBinding Padding}"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
+    <Style Selector="RadioButton.navItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="3,0,0,0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Height" Value="44" />
+        <Setter Property="Padding" Value="16,0,16,0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      Margin="{TemplateBinding Padding}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
 
-  <!-- Child TextBlocks inherit the nav item foreground (overrides Typography classes) -->
-  <Style Selector="RadioButton.navItem TextBlock">
-    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-    <Setter Property="FontFamily" Value="Inter"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="Medium"/>
-  </Style>
-      
-  <Style Selector="RadioButton.navItem:pointerover, RadioButton.navItem:focus">
-    <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushNavItemBorder}"/>
-  </Style>
+    <!-- Child TextBlocks inherit the nav item foreground (overrides Typography classes) -->
+    <Style Selector="RadioButton.navItem TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
 
-  <!-- Selected state: subtle background highlight + left accent bar -->
-  <Style Selector="RadioButton.navItem:checked">
-    <Setter Property="Background" Value="{DynamicResource BrushNavItemSelected}"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushNavItemBorder}"/>
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
-  </Style>
+    <Style Selector="RadioButton.navItem:pointerover, RadioButton.navItem:focus">
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushNavItemBorder}" />
+    </Style>
 
-  <Style Selector="RadioButton.navItem:checked TextBlock">
-    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
-    <Setter Property="FontWeight" Value="SemiBold"/>
-  </Style>
+    <!-- Selected state: subtle background highlight + left accent bar -->
+    <Style Selector="RadioButton.navItem:checked">
+        <Setter Property="Background" Value="{DynamicResource BrushNavItemSelected}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushNavItemBorder}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
 
-  <!-- tableRowExpander — clickable row in the Wardrobe table -->
-  <Style Selector="Button.tableRowExpander">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="Padding" Value="12,0"/>
-    <Setter Property="MinHeight" Value="44"/>
-    <Setter Property="CornerRadius" Value="0"/>
-    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-  </Style>
-  <Style Selector="Button.tableRowExpander /template/ ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  <Style Selector="Button.tableRowExpander:pointerover /template/ ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}"/>
-  </Style>
+    <Style Selector="RadioButton.navItem:checked TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
 
-  <!-- ──────────────────────────────────────────────────────────
+    <!-- tableRowExpander — clickable row in the Wardrobe table -->
+    <Style Selector="Button.tableRowExpander">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.tableRowExpander /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Button.tableRowExpander:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}" />
+    </Style>
+
+    <!-- ──────────────────────────────────────────────────────────
        TextBox.underline — bottom border only, same visual as TagInput
   ────────────────────────────────────────────────────────────── -->
-  <Style Selector="TextBox.underline">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="Padding" Value="0,4,0,6"/>
-    <Setter Property="CornerRadius" Value="0"/>
-  </Style>
-  <Style Selector="TextBox.underline /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
-    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-    <Setter Property="MinHeight" Value="0"/>
-    <Setter Property="CornerRadius" Value="0"/>
-  </Style>
-  <Style Selector="TextBox.underline:focus /template/ Border#PART_BorderElement,
+    <Style Selector="TextBox.underline">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0,4,0,6" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="TextBox.underline /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style
+        Selector="TextBox.underline:focus /template/ Border#PART_BorderElement,
                    TextBox.underline:focus-within /template/ Border#PART_BorderElement">
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}"/>
-    <Setter Property="BorderThickness" Value="0,0,0,2"/>
-  </Style>
-  <Style Selector="TextBox.underline:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+    </Style>
+    <Style Selector="TextBox.underline:pointerover /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
 
-  <!-- ──────────────────────────────────────────────────────────
+    <!-- ──────────────────────────────────────────────────────────
        NumericUpDown.underline — bottom border only, spinner icon-only
   ────────────────────────────────────────────────────────────── -->
-  <Style Selector="NumericUpDown.underline">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="CornerRadius" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="VerticalContentAlignment" Value="Center" />
-  </Style>
-  <Style Selector="NumericUpDown.underline /template/ ButtonSpinner">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}"/>
-    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-    <Setter Property="CornerRadius" Value="0"/>
-  </Style>
-  <Style Selector="NumericUpDown.underline:focus-within /template/ ButtonSpinner">
-    <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}"/>
-    <Setter Property="BorderThickness" Value="0,0,0,2"/>
-  </Style>
-  <!-- Strip inner TextBox chrome using descendant selector (works across template boundaries) -->
-  <Style Selector="NumericUpDown.underline TextBox /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="MinHeight" Value="0"/>
-  </Style>
-  <Style Selector="NumericUpDown.underline TextBox:focus /template/ Border#PART_BorderElement,
+    <Style Selector="NumericUpDown.underline">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="NumericUpDown.underline /template/ ButtonSpinner">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="NumericUpDown.underline:focus-within /template/ ButtonSpinner">
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushButtonPrimary}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+    </Style>
+    <!-- Strip inner TextBox chrome using descendant selector (works across template boundaries) -->
+    <Style Selector="NumericUpDown.underline TextBox /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+    <Style
+        Selector="NumericUpDown.underline TextBox:focus /template/ Border#PART_BorderElement,
                    NumericUpDown.underline TextBox:focus-within /template/ Border#PART_BorderElement,
                    NumericUpDown.underline TextBox:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-  </Style>
-  <!-- Spinner buttons: icon-only, no border/background -->
-  <Style Selector="NumericUpDown.underline RepeatButton">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="Padding" Value="4,0"/>
-  </Style>
-  <Style Selector="NumericUpDown.underline RepeatButton:pointerover /template/ ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <!-- Spinner buttons: icon-only, no border/background -->
+    <Style Selector="NumericUpDown.underline RepeatButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="4,0" />
+    </Style>
+    <Style Selector="NumericUpDown.underline RepeatButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
 
-  <!-- ──────────────────────────────────────────────────────────
+    <!-- ──────────────────────────────────────────────────────────
        NumericUpDown.stacked-spinner — vertical up/down chevrons
   ────────────────────────────────────────────────────────────── -->
-  <Style Selector="NumericUpDown.stacked-spinner StackPanel#PART_SpinnerPanel">
-    <Setter Property="Orientation" Value="Vertical"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-    <Setter Property="Spacing" Value="2"/>
-  </Style>
-  <!-- Restore symmetric padding so stacked buttons stay tap-friendly -->
-  <Style Selector="NumericUpDown.stacked-spinner RepeatButton">
-    <Setter Property="Padding" Value="4,2"/>
-  </Style>
+    <Style Selector="NumericUpDown.stacked-spinner StackPanel#PART_SpinnerPanel">
+        <Setter Property="Orientation" Value="Vertical" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Spacing" Value="2" />
+    </Style>
+    <!-- Restore symmetric padding so stacked buttons stay tap-friendly -->
+    <Style Selector="NumericUpDown.stacked-spinner RepeatButton">
+        <Setter Property="Padding" Value="4,2" />
+    </Style>
 
-  <!-- ──────────────────────────────────────────────────────────
+    <!-- ──────────────────────────────────────────────────────────
        Global: white foreground on selected text (all TextBoxes)
        NumericUpDown selector needed because its inner TextBox lives
        inside a ControlTemplate where the generic TextBox style can
        be outranked by the Fluent ControlTheme setter.
   ────────────────────────────────────────────────────────────── -->
-  <Style Selector="TextBox">
-    <Setter Property="SelectionForegroundBrush" Value="White"/>
-  </Style>
-  <Style Selector="NumericUpDown TextBox">
-    <Setter Property="SelectionForegroundBrush" Value="White"/>
-  </Style>
+    <Style Selector="TextBox">
+        <Setter Property="SelectionForegroundBrush" Value="White" />
+    </Style>
+    <Style Selector="NumericUpDown TextBox">
+        <Setter Property="SelectionForegroundBrush" Value="White" />
+    </Style>
 
 </Styles>

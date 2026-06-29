@@ -1,6 +1,7 @@
 # ChastiMaid — Settings › Wardrobe: Table Redesign Spec
 
 ## Wireframe reference
+
 `docs/design/wardrobe/wardrobe-settings.svg`
 
 ---
@@ -28,21 +29,21 @@ plus targeted modifications to `WardrobeEditViewModel`.
 
 Use only existing brush/style keys. Do not hardcode colors in views.
 
-| Role | Key to use |
-|---|---|
-| Page background | `PageBackgroundBrush` |
-| Panel / nav tint | `SurfaceBrush` |
-| Card / table background | `CardBackgroundBrush` |
-| Header row fill | `SurfaceBrush` |
-| Alternating row tint | `CardBackgroundBrush` (odd) / `PageBackgroundBrush` (even) |
-| Expanded row fill | `AccentSubtleBrush` (or closest warm tint in tokens) |
-| Separator lines | `BorderBrush` |
-| Primary text | `PrimaryTextBrush` |
-| Hint / muted text | `TextHintBrush` |
-| Layer / slot chips | `ChipBackgroundBrush` + `ChipTextBrush` |
-| Active chip (filter) | `PrimaryTextBrush` bg + `PageBackgroundBrush` text |
-| Delete button | `DangerBackgroundBrush` + `DangerTextBrush` |
-| Dashed input borders | `BorderBrush` at 50% opacity |
+| Role                    | Key to use                                                 |
+|-------------------------|------------------------------------------------------------|
+| Page background         | `PageBackgroundBrush`                                      |
+| Panel / nav tint        | `SurfaceBrush`                                             |
+| Card / table background | `CardBackgroundBrush`                                      |
+| Header row fill         | `SurfaceBrush`                                             |
+| Alternating row tint    | `CardBackgroundBrush` (odd) / `PageBackgroundBrush` (even) |
+| Expanded row fill       | `AccentSubtleBrush` (or closest warm tint in tokens)       |
+| Separator lines         | `BorderBrush`                                              |
+| Primary text            | `PrimaryTextBrush`                                         |
+| Hint / muted text       | `TextHintBrush`                                            |
+| Layer / slot chips      | `ChipBackgroundBrush` + `ChipTextBrush`                    |
+| Active chip (filter)    | `PrimaryTextBrush` bg + `PageBackgroundBrush` text         |
+| Delete button           | `DangerBackgroundBrush` + `DangerTextBrush`                |
+| Dashed input borders    | `BorderBrush` at 50% opacity                               |
 
 Typography classes: `.fieldLabel` (column headers), body size for cell text,
 `.small` for chip text. All already defined.
@@ -89,13 +90,13 @@ Touch target: all chips and the Add button `MinHeight="44"`.
 
 Fixed (not scrolled). Columns:
 
-| Col | Width | Content |
-|---|---|---|
-| Checkbox | 40 | `CheckBox` — select/deselect all visible rows |
-| Name | `*` (fills remaining) | "NAME" label |
-| Layers | 200 | "LAYERS" label |
-| Slots | 180 | "SLOTS" label |
-| Expand | 44 | "⋮" (decorative) |
+| Col      | Width                 | Content                                       |
+|----------|-----------------------|-----------------------------------------------|
+| Checkbox | 40                    | `CheckBox` — select/deselect all visible rows |
+| Name     | `*` (fills remaining) | "NAME" label                                  |
+| Layers   | 200                   | "LAYERS" label                                |
+| Slots    | 180                   | "SLOTS" label                                 |
+| Expand   | 44                    | "⋮" (decorative)                              |
 
 ### 5b. Data rows
 
@@ -103,6 +104,7 @@ Each row is a `WardrobeRowView` (DataTemplate or UserControl, Claude Code's
 choice based on complexity). It renders in two states:
 
 **Collapsed (default)**
+
 - Checkbox bound to `WardrobeEditViewModel.IsSelected`
 - Name text
 - Layers: one pill chip per layer value, using `ItemsControl` + chip style

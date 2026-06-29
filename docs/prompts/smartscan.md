@@ -2,6 +2,7 @@
 
 Every 10 minutes, scan all directories in the ChastiMaid project.
 Analyze C# files for:
+
 1. Naming convention violations (PascalCase for classes, camelCase for variables)
 2. Missing XML documentation comments (///)
 3. StyleCop violations

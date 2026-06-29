@@ -4,7 +4,10 @@ namespace ChastiMaid.Tests.Services;
 
 public class GameClockTests : IDisposable
 {
-    public void Dispose() => GameClock.Reset();
+    public void Dispose()
+    {
+        GameClock.Reset();
+    }
 
     [Fact]
     public void UtcNow_WithNoOffset_IsCloseToRealTime()

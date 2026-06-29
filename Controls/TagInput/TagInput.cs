@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -11,17 +12,9 @@ namespace ChastiMaid.Controls.TagInput;
 
 public class TagInput : TemplatedControl
 {
-    private const string PartChipPanel      = "PART_ChipPanel";
-    private const string PartInputBox       = "PART_InputBox";
+    private const string PartChipPanel = "PART_ChipPanel";
+    private const string PartInputBox = "PART_InputBox";
     private const string PartSuggestionList = "PART_SuggestionList";
-
-    private WrapPanelWithTrailingItem?              _chipPanel;
-    private TextBox?                                _inputBox;
-    private ListBox?                                _suggestionList;
-    private EventHandler<TextInputEventArgs>?       _textInputHandler;
-    private string                                  _inputText = string.Empty;
-    private CancellationTokenSource?                _filterCts;
-    private INotifyCollectionChanged?               _subscribedCollection;
 
     // ── StyledProperties ──────────────────────────────────────────────────
     public static readonly StyledProperty<IList<string>?> TagsProperty =
@@ -30,16 +23,16 @@ public class TagInput : TemplatedControl
     public static readonly StyledProperty<IEnumerable<string>> SuggestionsProperty =
         AvaloniaProperty.Register<TagInput, IEnumerable<string>>(
             nameof(Suggestions),
-            defaultValue: Array.Empty<string>());
+            Array.Empty<string>());
 
     public static readonly StyledProperty<string?> PlaceholderProperty =
         AvaloniaProperty.Register<TagInput, string?>(nameof(Placeholder));
 
     public static readonly StyledProperty<string> SeparatorProperty =
-        AvaloniaProperty.Register<TagInput, string>(nameof(Separator), defaultValue: ",");
+        AvaloniaProperty.Register<TagInput, string>(nameof(Separator), ",");
 
     public static readonly StyledProperty<bool> AllowDuplicatesProperty =
-        AvaloniaProperty.Register<TagInput, bool>(nameof(AllowDuplicates), defaultValue: false);
+        AvaloniaProperty.Register<TagInput, bool>(nameof(AllowDuplicates), false);
 
     public static readonly StyledProperty<bool> IsDropdownOpenProperty =
         AvaloniaProperty.Register<TagInput, bool>(nameof(IsDropdownOpen));
@@ -47,20 +40,67 @@ public class TagInput : TemplatedControl
     public static readonly StyledProperty<IEnumerable<string>> FilteredSuggestionsProperty =
         AvaloniaProperty.Register<TagInput, IEnumerable<string>>(
             nameof(FilteredSuggestions),
-            defaultValue: Array.Empty<string>());
+            Array.Empty<string>());
 
     public static readonly StyledProperty<int> HighlightedIndexProperty =
-        AvaloniaProperty.Register<TagInput, int>(nameof(HighlightedIndex), defaultValue: -1);
+        AvaloniaProperty.Register<TagInput, int>(nameof(HighlightedIndex), -1);
+
+    private WrapPanelWithTrailingItem? _chipPanel;
+    private CancellationTokenSource? _filterCts;
+    private TextBox? _inputBox;
+    private string _inputText = string.Empty;
+    private INotifyCollectionChanged? _subscribedCollection;
+    private ListBox? _suggestionList;
+    private EventHandler<TextInputEventArgs>? _textInputHandler;
 
     // ── Public accessors ──────────────────────────────────────────────────
-    public IList<string>?       Tags                { get => GetValue(TagsProperty);                set => SetValue(TagsProperty, value); }
-    public IEnumerable<string>  Suggestions         { get => GetValue(SuggestionsProperty);         set => SetValue(SuggestionsProperty, value); }
-    public string?              Placeholder         { get => GetValue(PlaceholderProperty);         set => SetValue(PlaceholderProperty, value); }
-    public string               Separator           { get => GetValue(SeparatorProperty);           set => SetValue(SeparatorProperty, value); }
-    public bool                 AllowDuplicates     { get => GetValue(AllowDuplicatesProperty);     set => SetValue(AllowDuplicatesProperty, value); }
-    public bool                 IsDropdownOpen      { get => GetValue(IsDropdownOpenProperty);      set => SetValue(IsDropdownOpenProperty, value); }
-    public IEnumerable<string>  FilteredSuggestions { get => GetValue(FilteredSuggestionsProperty); set => SetValue(FilteredSuggestionsProperty, value); }
-    public int                  HighlightedIndex    { get => GetValue(HighlightedIndexProperty);    set => SetValue(HighlightedIndexProperty, value); }
+    public IList<string>? Tags
+    {
+        get => GetValue(TagsProperty);
+        set => SetValue(TagsProperty, value);
+    }
+
+    public IEnumerable<string> Suggestions
+    {
+        get => GetValue(SuggestionsProperty);
+        set => SetValue(SuggestionsProperty, value);
+    }
+
+    public string? Placeholder
+    {
+        get => GetValue(PlaceholderProperty);
+        set => SetValue(PlaceholderProperty, value);
+    }
+
+    public string Separator
+    {
+        get => GetValue(SeparatorProperty);
+        set => SetValue(SeparatorProperty, value);
+    }
+
+    public bool AllowDuplicates
+    {
+        get => GetValue(AllowDuplicatesProperty);
+        set => SetValue(AllowDuplicatesProperty, value);
+    }
+
+    public bool IsDropdownOpen
+    {
+        get => GetValue(IsDropdownOpenProperty);
+        set => SetValue(IsDropdownOpenProperty, value);
+    }
+
+    public IEnumerable<string> FilteredSuggestions
+    {
+        get => GetValue(FilteredSuggestionsProperty);
+        set => SetValue(FilteredSuggestionsProperty, value);
+    }
+
+    public int HighlightedIndex
+    {
+        get => GetValue(HighlightedIndexProperty);
+        set => SetValue(HighlightedIndexProperty, value);
+    }
 
     // ── Template ──────────────────────────────────────────────────────────
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -70,20 +110,24 @@ public class TagInput : TemplatedControl
         // Detach old handlers before resolving new parts
         if (_inputBox is not null)
         {
-            _inputBox.GotFocus    -= OnInputGotFocus;
-            _inputBox.LostFocus   -= OnInputLostFocus;
-            _inputBox.RemoveHandler(InputElement.KeyDownEvent, OnInputKeyDown);
+            _inputBox.GotFocus -= OnInputGotFocus;
+            _inputBox.LostFocus -= OnInputLostFocus;
+            _inputBox.RemoveHandler(KeyDownEvent, OnInputKeyDown);
             _inputBox.TextChanged -= OnInputTextChanged;
             if (_textInputHandler is not null)
-                _inputBox.RemoveHandler(InputElement.TextInputEvent, _textInputHandler);
+            {
+                _inputBox.RemoveHandler(TextInputEvent, _textInputHandler);
+            }
         }
 
         if (_suggestionList is not null)
+        {
             _suggestionList.PointerPressed -= OnSuggestionPressed;
+        }
 
         // Resolve parts
-        _chipPanel      = e.NameScope.Find<WrapPanelWithTrailingItem>(PartChipPanel);
-        _inputBox       = e.NameScope.Find<TextBox>(PartInputBox);
+        _chipPanel = e.NameScope.Find<WrapPanelWithTrailingItem>(PartChipPanel);
+        _inputBox = e.NameScope.Find<TextBox>(PartInputBox);
         _suggestionList = e.NameScope.Find<ListBox>(PartSuggestionList);
 
         if (_chipPanel is not null && _inputBox is not null)
@@ -94,16 +138,18 @@ public class TagInput : TemplatedControl
 
         if (_inputBox is not null)
         {
-            _inputBox.GotFocus    += OnInputGotFocus;
-            _inputBox.LostFocus   += OnInputLostFocus;
-            _inputBox.AddHandler(InputElement.KeyDownEvent, OnInputKeyDown, RoutingStrategies.Tunnel);
+            _inputBox.GotFocus += OnInputGotFocus;
+            _inputBox.LostFocus += OnInputLostFocus;
+            _inputBox.AddHandler(KeyDownEvent, OnInputKeyDown, RoutingStrategies.Tunnel);
             _inputBox.TextChanged += OnInputTextChanged;
-            _textInputHandler      = OnInputTextInput;
-            _inputBox.AddHandler(InputElement.TextInputEvent, _textInputHandler, RoutingStrategies.Tunnel);
+            _textInputHandler = OnInputTextInput;
+            _inputBox.AddHandler(TextInputEvent, _textInputHandler, RoutingStrategies.Tunnel);
         }
 
         if (_suggestionList is not null)
+        {
             _suggestionList.PointerPressed += OnSuggestionPressed;
+        }
 
         SubscribeToTags(Tags);
         RebuildChips();
@@ -139,50 +185,62 @@ public class TagInput : TemplatedControl
         }
 
         col.CollectionChanged += OnTagsCollectionChanged;
-        _subscribedCollection  = col;
+        _subscribedCollection = col;
     }
 
-    private void OnTagsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
+    private void OnTagsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
         Dispatcher.UIThread.Post(RebuildChips);
+    }
 
     // ── Chip building ────────────────────────────────────────────────────
     private void RebuildChips()
     {
-        if (_chipPanel is null) return;
+        if (_chipPanel is null)
+        {
+            return;
+        }
 
         var toRemove = _chipPanel.Children.Where(c => c != _chipPanel.TrailingItem).ToList();
         foreach (var c in toRemove)
+        {
             _chipPanel.Children.Remove(c);
+        }
 
         var tags = Tags;
-        if (tags is null) return;
+        if (tags is null)
+        {
+            return;
+        }
 
-        for (int i = 0; i < tags.Count; i++)
+        for (var i = 0; i < tags.Count; i++)
+        {
             _chipPanel.Children.Insert(i, BuildChipBorder(tags[i], i));
+        }
     }
 
     private Border BuildChipBorder(string value, int index)
     {
         var chip = new Border
         {
-            CornerRadius      = new CornerRadius(4),
-            Height            = 30,
-            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-            Cursor            = new Cursor(StandardCursorType.Hand),
+            CornerRadius = new CornerRadius(4),
+            Height = 30,
+            VerticalAlignment = VerticalAlignment.Center,
+            Cursor = new Cursor(StandardCursorType.Hand),
         };
         chip.Classes.Add("chip");
 
-        var label = new TextBlock { Text = value, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
+        var label = new TextBlock { Text = value, VerticalAlignment = VerticalAlignment.Center };
         label.Classes.Add("chip-label");
 
-        var xLabel = new TextBlock { Text = "×", VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
+        var xLabel = new TextBlock { Text = "×", VerticalAlignment = VerticalAlignment.Center };
         xLabel.Classes.Add("chip-x");
 
         chip.Child = new StackPanel
         {
-            Orientation = Avalonia.Layout.Orientation.Horizontal,
-            Spacing     = 0,
-            Children    = { label, xLabel },
+            Orientation = Orientation.Horizontal,
+            Spacing = 0,
+            Children = { label, xLabel },
         };
 
         var capturedIndex = index;
@@ -208,8 +266,15 @@ public class TagInput : TemplatedControl
         switch (e.Key)
         {
             case Key.Enter:
-                if (IsDropdownOpen) ConfirmHighlighted();
-                else CommitInput();
+                if (IsDropdownOpen)
+                {
+                    ConfirmHighlighted();
+                }
+                else
+                {
+                    CommitInput();
+                }
+
                 e.Handled = true;
                 break;
 
@@ -219,10 +284,15 @@ public class TagInput : TemplatedControl
                     CommitInput();
                     e.Handled = true;
                 }
+
                 break;
 
             case Key.Escape:
-                if (_inputBox is not null) _inputBox.Text = string.Empty;
+                if (_inputBox is not null)
+                {
+                    _inputBox.Text = string.Empty;
+                }
+
                 _inputText = string.Empty;
                 CloseDropdown();
                 e.Handled = true;
@@ -238,6 +308,7 @@ public class TagInput : TemplatedControl
                         e.Handled = true;
                     }
                 }
+
                 break;
 
             case Key.Up:
@@ -258,7 +329,7 @@ public class TagInput : TemplatedControl
 
         _filterCts?.Cancel();
         _filterCts = new CancellationTokenSource();
-        var token  = _filterCts.Token;
+        var token = _filterCts.Token;
 
         Dispatcher.UIThread.InvokeAsync(async () =>
         {
@@ -266,15 +337,21 @@ public class TagInput : TemplatedControl
             {
                 await Task.Delay(80, token);
                 if (!token.IsCancellationRequested)
+                {
                     UpdateFilteredSuggestions();
+                }
             }
-            catch (TaskCanceledException) { }
+            catch (TaskCanceledException)
+            {
+            }
         });
     }
 
     // ── Focus ─────────────────────────────────────────────────────────────
-    private void OnInputGotFocus(object? sender, FocusChangedEventArgs e) =>
+    private void OnInputGotFocus(object? sender, FocusChangedEventArgs e)
+    {
         PseudoClasses.Set(":focus-within", true);
+    }
 
     private void OnInputLostFocus(object? sender, FocusChangedEventArgs e)
     {
@@ -283,7 +360,9 @@ public class TagInput : TemplatedControl
         {
             await Task.Delay(150);
             if (_inputBox is not null && !_inputBox.IsFocused)
+            {
                 CloseDropdown();
+            }
         });
     }
 
@@ -294,72 +373,108 @@ public class TagInput : TemplatedControl
         if (string.IsNullOrEmpty(input))
         {
             FilteredSuggestions = Array.Empty<string>();
-            IsDropdownOpen      = false;
+            IsDropdownOpen = false;
             return;
         }
 
         IEnumerable<string> tags = Tags ?? Array.Empty<string>();
         var results = Suggestions
             .Where(s => s.StartsWith(input, StringComparison.OrdinalIgnoreCase)
-                     && !tags.Contains(s, StringComparer.OrdinalIgnoreCase))
+                        && !tags.Contains(s, StringComparer.OrdinalIgnoreCase))
             .OrderBy(s => s)
             .ToList();
 
         FilteredSuggestions = results;
-        IsDropdownOpen      = results.Count > 0;
+        IsDropdownOpen = results.Count > 0;
     }
 
     private void OnSuggestionPressed(object? sender, PointerPressedEventArgs e)
     {
         var item = (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>();
         if (item?.DataContext is string text)
+        {
             CommitSuggestion(text);
+        }
     }
 
     // ── Chip operations ──────────────────────────────────────────────────
     private void CommitInput()
     {
         var value = _inputText.Trim();
-        if (string.IsNullOrEmpty(value)) return;
+        if (string.IsNullOrEmpty(value))
+        {
+            return;
+        }
+
         var tags = Tags;
-        if (tags is null) return;
+        if (tags is null)
+        {
+            return;
+        }
+
         if (AllowDuplicates || !tags.Contains(value, StringComparer.OrdinalIgnoreCase))
+        {
             tags.Add(value);
-        if (_inputBox is not null) _inputBox.Text = string.Empty;
-        _inputText       = string.Empty;
-        IsDropdownOpen   = false;
+        }
+
+        if (_inputBox is not null)
+        {
+            _inputBox.Text = string.Empty;
+        }
+
+        _inputText = string.Empty;
+        IsDropdownOpen = false;
         HighlightedIndex = -1;
     }
 
     private void CommitSuggestion(string value)
     {
         var tags = Tags;
-        if (tags is null) return;
+        if (tags is null)
+        {
+            return;
+        }
+
         if (AllowDuplicates || !tags.Contains(value, StringComparer.OrdinalIgnoreCase))
+        {
             tags.Add(value);
-        if (_inputBox is not null) _inputBox.Text = string.Empty;
-        _inputText       = string.Empty;
-        IsDropdownOpen   = false;
+        }
+
+        if (_inputBox is not null)
+        {
+            _inputBox.Text = string.Empty;
+        }
+
+        _inputText = string.Empty;
+        IsDropdownOpen = false;
         HighlightedIndex = -1;
     }
 
     private void RemoveChip(int index)
     {
         var tags = Tags;
-        if (tags is null || index < 0 || index >= tags.Count) return;
+        if (tags is null || index < 0 || index >= tags.Count)
+        {
+            return;
+        }
+
         tags.RemoveAt(index);
     }
 
     private void CloseDropdown()
     {
-        IsDropdownOpen   = false;
+        IsDropdownOpen = false;
         HighlightedIndex = -1;
     }
 
     private void MoveHighlight(int delta)
     {
         var count = FilteredSuggestions.Count();
-        if (count == 0) return;
+        if (count == 0)
+        {
+            return;
+        }
+
         HighlightedIndex = Math.Clamp(HighlightedIndex + delta, 0, count - 1);
     }
 
@@ -367,8 +482,12 @@ public class TagInput : TemplatedControl
     {
         var list = FilteredSuggestions.ToList();
         if (HighlightedIndex >= 0 && HighlightedIndex < list.Count)
+        {
             CommitSuggestion(list[HighlightedIndex]);
+        }
         else
+        {
             CommitInput();
+        }
     }
 }

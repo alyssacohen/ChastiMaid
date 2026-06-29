@@ -3,9 +3,9 @@ using Avalonia.Controls;
 namespace ChastiMaid.Views.Dialogs;
 
 /// <summary>
-/// Base Window for all modal dialogs in ChastiMaid.
-/// Provides <see cref="Confirm"/> and <see cref="Dismiss"/> helpers and
-/// a <see cref="DialogResult"/> flag set before closing.
+///     Base Window for all modal dialogs in ChastiMaid.
+///     Provides <see cref="Confirm" /> and <see cref="Dismiss" /> helpers and
+///     a <see cref="DialogResult" /> flag set before closing.
 /// </summary>
 public class BaseDialog : Window
 {

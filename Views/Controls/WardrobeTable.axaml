@@ -1,4 +1,4 @@
-    <UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
@@ -94,7 +94,7 @@
 
                                     <!-- Layer chips -->
                                     <ItemsControl Grid.Column="2"
-                                                  ItemsSource="{Binding Layers}"
+                                                  ItemsSource="{Binding LayerDisplayNames}"
                                                   IsVisible="{Binding !IsExpanded}"
                                                   VerticalAlignment="Center"
                                                   Margin="0,4">
@@ -218,23 +218,35 @@
                                 <StackPanel Spacing="10">
                                     <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="LAYERS" />
-                                        <tagInput:TagInput Tags="{Binding Layers}"
-                                                           Suggestions="{Binding LayerSuggestions}"
-                                                           Placeholder="aggiungi layer..."/>
+                                        <ItemsControl ItemsSource="{Binding LayerToggles}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:LayerToggleVm">
+                                                    <ToggleButton Classes="filterChip"
+                                                                  Content="{Binding DisplayName}"
+                                                                  IsChecked="{Binding IsChecked}"
+                                                                  Margin="0,0,4,4" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="SLOTS" />
                                         <tagInput:TagInput Tags="{Binding Slots}"
                                                            Suggestions="{Binding SlotSuggestions}"
-                                                           Placeholder="aggiungi slot..."/>
+                                                           Placeholder="aggiungi slot..." />
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="TAGS" />
                                         <tagInput:TagInput Tags="{Binding Tags}"
                                                            Suggestions="{Binding TagSuggestions}"
-                                                           Placeholder="aggiungi tag..."/>
+                                                           Placeholder="aggiungi tag..." />
                                     </StackPanel>
 
                                     <Button Classes="Danger compact"
@@ -276,16 +288,52 @@
                 <Border IsVisible="{Binding IsAddingNewItem}"
                         Padding="40,8,8,8">
                     <StackPanel Spacing="10">
-                        <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="NAME" />
-                            <TextBox Classes="underline"
-                                     Text="{Binding NewItemName}" />
-                        </StackPanel>
+                        <!-- Name + Multiplier/Weight inline — mirrors Part A expanded row -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,12,0">
+                                <TextBlock Classes="LabelUI" Text="NAME" />
+                                <TextBox Classes="underline"
+                                         Text="{Binding NewItemName}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                        Spacing="12" VerticalAlignment="Bottom">
+                                <StackPanel Spacing="2">
+                                    <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
+                                    <NumericUpDown Classes="underline stacked-spinner"
+                                                   Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                   FormatString="0.0"
+                                                   Increment="0.1"
+                                                   Minimum="0"
+                                                   Width="110" />
+                                </StackPanel>
+                                <StackPanel Spacing="2">
+                                    <TextBlock Classes="LabelUI" Text="WEIGHT" />
+                                    <NumericUpDown Classes="underline stacked-spinner"
+                                                   Value="{Binding NewItemWeight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                   FormatString="0.0"
+                                                   Increment="0.1"
+                                                   Minimum="0"
+                                                   Width="110" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
                         <StackPanel Spacing="2">
                             <TextBlock Classes="LabelUI" Text="LAYERS" />
-                            <tagInput:TagInput Tags="{Binding NewItemLayers}"
-                                               Suggestions="{Binding NewItemLayerSuggestions}"
-                                               Placeholder="add layer..." />
+                            <ItemsControl ItemsSource="{Binding NewItemLayerToggles}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:LayerToggleVm">
+                                        <ToggleButton Classes="filterChip"
+                                                      Content="{Binding DisplayName}"
+                                                      IsChecked="{Binding IsChecked}"
+                                                      Margin="0,0,4,4" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                         <StackPanel Spacing="2">
                             <TextBlock Classes="LabelUI" Text="SLOTS" />
@@ -299,34 +347,14 @@
                                                Suggestions="{Binding NewItemTagSuggestions}"
                                                Placeholder="add tag..." />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="12">
-                            <StackPanel Spacing="2">
-                                <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
-                                <NumericUpDown Classes="underline stacked-spinner"
-                                               Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
-                                               FormatString="0.0"
-                                               Increment="0.1"
-                                               Minimum="0"
-                                               Width="110" />
-                            </StackPanel>
-                            <StackPanel Spacing="2">
-                                <TextBlock Classes="LabelUI" Text="WEIGHT" />
-                                <NumericUpDown Classes="underline stacked-spinner"
-                                               Value="{Binding NewItemWeight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
-                                               FormatString="0.0"
-                                               Increment="0.1"
-                                               Minimum="0"
-                                               Width="110" />
-                            </StackPanel>
-                        </StackPanel>
+
                         <Button Classes="Primary compact"
                                 Content="Add Item"
                                 Command="{Binding AddWardrobeItemCommand}"
                                 HorizontalAlignment="Right" />
                         <TextBlock Classes="Caption"
                                    FontStyle="Italic"
-                                   Text="Multiplier and weight affect outfit scoring. Tags are used by outfit rules." />
+                                   Text="Multiplier affect outfit scoring, Weight is the probability a clothing item is choosen." />
                     </StackPanel>
                 </Border>
 

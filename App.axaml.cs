@@ -9,10 +9,10 @@ using ChastiMaid.Views;
 
 namespace ChastiMaid;
 
-public partial class App : Application
+public class App : Application
 {
-    private DatabaseService? _databaseService;
     private AutoSaveService? _autoSaveService;
+    private DatabaseService? _databaseService;
     private WebcamPreviewService? _webcamService;
 
     public override void Initialize()
@@ -34,7 +34,8 @@ public partial class App : Application
             _autoSaveService = new AutoSaveService();
             _webcamService = new WebcamPreviewService();
 
-            mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager, _autoSaveService, _webcamService);
+            mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager,
+                _autoSaveService, _webcamService);
             desktop.MainWindow = mainWindow;
             ApplyWindowGeometry(mainWindow);
 
@@ -51,24 +52,23 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// Applies startup window size based on command-line flags.
-    ///
-    /// --portrait   800×1200  (Surface Go portrait,  150% DPI logical pixels)
-    /// --landscape  1200×800  (Surface Go landscape, 150% DPI logical pixels)
-    /// No flag      normal startup (maximized or last saved state)
+    ///     Applies startup window size based on command-line flags.
+    ///     --portrait   800×1200  (Surface Go portrait,  150% DPI logical pixels)
+    ///     --landscape  1200×800  (Surface Go landscape, 150% DPI logical pixels)
+    ///     No flag      normal startup (maximized or last saved state)
     /// </summary>
     private static void ApplyWindowGeometry(Window window)
     {
         if (Program.ForcePortrait)
         {
-            window.Width  = 800;
+            window.Width = 800;
             window.Height = 1200;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             window.WindowState = WindowState.Normal;
         }
         else if (Program.ForceLandscape)
         {
-            window.Width  = 1200;
+            window.Width = 1200;
             window.Height = 800;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             window.WindowState = WindowState.Normal;

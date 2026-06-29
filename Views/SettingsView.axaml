@@ -9,362 +9,385 @@
 
     <Panel>
 
-    <!-- ══ Root grid: nav column | content column ══════════════ -->
-    <Grid ColumnDefinitions="240,*">
+        <!-- ══ Root grid: nav column | content column ══════════════ -->
+        <Grid ColumnDefinitions="240,*">
 
-        <!-- ── LEFT NAV PANEL ─────────────────────────────────── -->
-        <Border Grid.Column="0"
-                Background="{DynamicResource BrushSurfaceMuted}"
-                BorderBrush="{DynamicResource BrushBorderSubtle}"
-                BorderThickness="0,0,1,0">
-            <Grid RowDefinitions="Auto,*,Auto">
+            <!-- ── LEFT NAV PANEL ─────────────────────────────────── -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource BrushSurfaceMuted}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,0,1,0">
+                <Grid RowDefinitions="Auto,*,Auto">
 
-                <!-- Nav header -->
-                <StackPanel Grid.Row="0" Margin="0,20,0,0">
-                    <TextBlock Classes="PageTitle"
-                               Text="Settings"
-                               Margin="16,0,16,12" />
-                    <Border Height="1"
-                            Background="{DynamicResource BrushBorderSubtle}"
-                            Margin="12,0,12,8" />
-                </StackPanel>
+                    <!-- Nav header -->
+                    <StackPanel Grid.Row="0" Margin="0,20,0,0">
+                        <TextBlock Classes="PageTitle"
+                                   Text="Settings"
+                                   Margin="16,0,16,12" />
+                        <Border Height="1"
+                                Background="{DynamicResource BrushBorderSubtle}"
+                                Margin="12,0,12,8" />
+                    </StackPanel>
 
-                <!-- Nav items -->
-                <StackPanel Grid.Row="1" Spacing="0">
-                    <RadioButton Classes="navItem"
-                                  Command="{Binding SetTabCommand}"
-                                  CommandParameter="0"
-                                  IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
-                        <views:DirtyTabHeader Text="General" IsDirty="{Binding IsGeneralDirty}" />
-                    </RadioButton>
-                    <RadioButton Classes="navItem"
-                                  Command="{Binding SetTabCommand}"
-                                  CommandParameter="1"
-                                  IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
-                        <views:DirtyTabHeader Text="Chores" IsDirty="{Binding IsChoresDirty}" />
-                    </RadioButton>
-                    <RadioButton Classes="navItem"
-                                  Command="{Binding SetTabCommand}"
-                                  CommandParameter="2"
-                                  IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
-                        <views:DirtyTabHeader Text="Punishments" IsDirty="{Binding IsPunishmentsDirty}" />
-                    </RadioButton>
-                    <RadioButton Classes="navItem"
-                                  Command="{Binding SetTabCommand}"
-                                  CommandParameter="3"
-                                  IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
-                        <views:DirtyTabHeader Text="Wardrobe" IsDirty="{Binding IsWardrobeDirty}" />
-                    </RadioButton>
-                    <RadioButton Classes="navItem"
-                                  Command="{Binding SetTabCommand}"
-                                  CommandParameter="4"
-                                  IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
-                        <views:DirtyTabHeader Text="Outfit Rules" IsDirty="{Binding IsRulesDirty}" />
-                    </RadioButton>
-                </StackPanel>
+                    <!-- Nav items -->
+                    <StackPanel Grid.Row="1" Spacing="0">
+                        <RadioButton Classes="navItem"
+                                     Command="{Binding SetTabCommand}"
+                                     CommandParameter="0"
+                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
+                            <views:DirtyTabHeader Text="General" IsDirty="{Binding IsGeneralDirty}" />
+                        </RadioButton>
+                        <RadioButton Classes="navItem"
+                                     Command="{Binding SetTabCommand}"
+                                     CommandParameter="1"
+                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
+                            <views:DirtyTabHeader Text="Chores" IsDirty="{Binding IsChoresDirty}" />
+                        </RadioButton>
+                        <RadioButton Classes="navItem"
+                                     Command="{Binding SetTabCommand}"
+                                     CommandParameter="2"
+                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
+                            <views:DirtyTabHeader Text="Punishments" IsDirty="{Binding IsPunishmentsDirty}" />
+                        </RadioButton>
+                        <RadioButton Classes="navItem"
+                                     Command="{Binding SetTabCommand}"
+                                     CommandParameter="3"
+                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
+                            <views:DirtyTabHeader Text="Wardrobe" IsDirty="{Binding IsWardrobeDirty}" />
+                        </RadioButton>
+                        <RadioButton Classes="navItem"
+                                     Command="{Binding SetTabCommand}"
+                                     CommandParameter="4"
+                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
+                            <views:DirtyTabHeader Text="Outfit Rules" IsDirty="{Binding IsRulesDirty}" />
+                        </RadioButton>
+                    </StackPanel>
 
-                <!-- Save / Back at bottom of nav -->
-                <StackPanel Grid.Row="2" Margin="12,0,12,20" Spacing="8">
-                    <Border Height="1"
-                            Background="{DynamicResource BrushBorderSubtle}"
-                            Margin="0,0,0,4" />
-                    <Button Command="{Binding SaveCommand}"
-                            Classes="Primary"
-                            HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                            <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="16" />
-                            <TextBlock Text="Save" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Button>
-                    <Button Content="Back"
-                            Command="{Binding BackCommand}"
-                            Classes="Ghost"
-                            HorizontalContentAlignment="Center"
-                            HorizontalAlignment="Stretch" />
-                </StackPanel>
+                    <!-- Save / Back at bottom of nav -->
+                    <StackPanel Grid.Row="2" Margin="12,0,12,20" Spacing="8">
+                        <Border Height="1"
+                                Background="{DynamicResource BrushBorderSubtle}"
+                                Margin="0,0,0,4" />
+                        <Button Command="{Binding SaveCommand}"
+                                Classes="Primary"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="16" />
+                                <TextBlock Text="Save" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Content="Back"
+                                Command="{Binding BackCommand}"
+                                Classes="Ghost"
+                                HorizontalContentAlignment="Center"
+                                HorizontalAlignment="Stretch" />
+                    </StackPanel>
 
-            </Grid>
-        </Border>
+                </Grid>
+            </Border>
 
-        <!-- ── CONTENT AREA ───────────────────────────────────── -->
-        <Panel Grid.Column="1">
+            <!-- ── CONTENT AREA ───────────────────────────────────── -->
+            <Panel Grid.Column="1">
 
-            <!-- ==================== GENERAL ==================== -->
-            <ScrollViewer IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0}"
-                          Padding="24,0,32,0"
-                          HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Spacing="0" Margin="0,0,0,24">
-                    <TextBlock Classes="SectionTitle" Text="General" Margin="0,20,0,8" />
-                    <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,16" />
+                <!-- ==================== GENERAL ==================== -->
+                <ScrollViewer
+                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0}"
+                    Padding="24,0,32,0"
+                    HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Spacing="0" Margin="0,0,0,24">
+                        <TextBlock Classes="SectionTitle" Text="General" Margin="0,20,0,8" />
+                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,16" />
 
-                    <!-- Player -->
-                    <TextBlock Classes="Heading" Text="Player" Margin="0,0,0,8" />
-                    <Border Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Name" VerticalAlignment="Center" />
-                                <TextBox Grid.Column="1" Text="{Binding PlayerName}" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Auto-save (min)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding AutoSaveInterval}" Minimum="1" Maximum="60" FormatString="0" />
-                            </Grid>
-                        </StackPanel>
-                    </Border>
+                        <!-- Player -->
+                        <TextBlock Classes="Heading" Text="Player" Margin="0,0,0,8" />
+                        <Border Classes="card">
+                            <StackPanel Spacing="8">
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Name" VerticalAlignment="Center" />
+                                    <TextBox Grid.Column="1" Text="{Binding PlayerName}" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Auto-save (min)" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding AutoSaveInterval}" Minimum="1"
+                                                   Maximum="60" FormatString="0" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                    <!-- Game Balance -->
-                    <TextBlock Classes="Heading" Text="Game Balance" Margin="0,8,0,8" />
-                    <Border Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Min debt" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding MinDebt}" Minimum="0" Increment="50" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Max debt" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding MaxDebt}" Minimum="0" Increment="50" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Daily interest rate" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding DailyInterestRate}" Minimum="0" Maximum="1" Increment="0.01" FormatString="0.00" />
-                            </Grid>
-                        </StackPanel>
-                    </Border>
+                        <!-- Game Balance -->
+                        <TextBlock Classes="Heading" Text="Game Balance" Margin="0,8,0,8" />
+                        <Border Classes="card">
+                            <StackPanel Spacing="8">
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Min debt" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding MinDebt}" Minimum="0" Increment="50"
+                                                   FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Max debt" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding MaxDebt}" Minimum="0" Increment="50"
+                                                   FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Daily interest rate"
+                                               VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding DailyInterestRate}" Minimum="0"
+                                                   Maximum="1" Increment="0.01" FormatString="0.00" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                    <!-- Session Timing -->
-                    <TextBlock Classes="Heading" Text="Session Timing" Margin="0,8,0,8" />
-                    <Border Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Idle wage amount" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding IdleWageAmount}" Minimum="0" Increment="1" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Wage interval (min)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding IdleWageInterval}" Minimum="1" Maximum="120" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Popup min (sec)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding PopupMinInterval}" Minimum="10" Increment="10" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Popup max (sec)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding PopupMaxInterval}" Minimum="10" Increment="10" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Popup timeout (sec)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding PopupTimeout}" Minimum="5" Maximum="60" FormatString="0" />
-                            </Grid>
-                        </StackPanel>
-                    </Border>
+                        <!-- Session Timing -->
+                        <TextBlock Classes="Heading" Text="Session Timing" Margin="0,8,0,8" />
+                        <Border Classes="card">
+                            <StackPanel Spacing="8">
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Idle wage amount" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding IdleWageAmount}" Minimum="0"
+                                                   Increment="1" FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Wage interval (min)"
+                                               VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding IdleWageInterval}" Minimum="1"
+                                                   Maximum="120" FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Popup min (sec)" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding PopupMinInterval}" Minimum="10"
+                                                   Increment="10" FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Popup max (sec)" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding PopupMaxInterval}" Minimum="10"
+                                                   Increment="10" FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Popup timeout (sec)"
+                                               VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding PopupTimeout}" Minimum="5"
+                                                   Maximum="60" FormatString="0" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                    <!-- Capture -->
-                    <TextBlock Classes="Heading" Text="Capture" Margin="0,8,0,8" />
-                    <Border Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Capture min (sec)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding CaptureMinInterval}" Minimum="1" FormatString="0" />
-                            </Grid>
-                            <Grid ColumnDefinitions="160,*">
-                                <TextBlock Classes="BodySmall" Text="Capture max (sec)" VerticalAlignment="Center" />
-                                <NumericUpDown Grid.Column="1" Value="{Binding CaptureMaxInterval}" Minimum="1" FormatString="0" />
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </ScrollViewer>
+                        <!-- Capture -->
+                        <TextBlock Classes="Heading" Text="Capture" Margin="0,8,0,8" />
+                        <Border Classes="card">
+                            <StackPanel Spacing="8">
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Capture min (sec)" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding CaptureMinInterval}" Minimum="1"
+                                                   FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="Capture max (sec)" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Value="{Binding CaptureMaxInterval}" Minimum="1"
+                                                   FormatString="0" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
 
-            <!-- ==================== CHORES ==================== -->
-            <Grid IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1}"
-                  RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
-                <StackPanel Grid.Row="0">
-                    <TextBlock Classes="SectionTitle" Text="Chores" Margin="0,20,0,8" />
-                    <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
-                </StackPanel>
-                <ScrollViewer Grid.Row="1" Name="ChoresScroll">
-                    <ItemsControl ItemsSource="{Binding Chores}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="vm:ChoreEditViewModel">
-                                <Border Classes="card">
-                                    <Grid ColumnDefinitions="*,Auto">
-                                        <StackPanel Grid.Column="0" Spacing="8">
-                                            <Grid ColumnDefinitions="*,100,100">
-                                                <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                    <TextBlock Classes="LabelUI" Text="NAME" />
-                                                    <TextBox Text="{Binding Name}" PlaceholderText="Chore name" />
+                <!-- ==================== CHORES ==================== -->
+                <Grid
+                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1}"
+                    RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Classes="SectionTitle" Text="Chores" Margin="0,20,0,8" />
+                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="1" Name="ChoresScroll">
+                        <ItemsControl ItemsSource="{Binding Chores}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoreEditViewModel">
+                                    <Border Classes="card">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackPanel Grid.Column="0" Spacing="8">
+                                                <Grid ColumnDefinitions="*,100,100">
+                                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                                                        <TextBlock Classes="LabelUI" Text="NAME" />
+                                                        <TextBox Text="{Binding Name}" PlaceholderText="Chore name" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
+                                                        <TextBlock Classes="LabelUI" Text="VALUE" />
+                                                        <TextBox Text="{Binding Value}" PlaceholderText="0" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="2" Spacing="2">
+                                                        <TextBlock Classes="LabelUI" Text="FREQ. (DAYS)" />
+                                                        <TextBox Text="{Binding FrequencyDays}" PlaceholderText="0" />
+                                                    </StackPanel>
+                                                </Grid>
+                                                <StackPanel Spacing="2">
+                                                    <TextBlock Classes="LabelUI" Text="DESCRIPTION" />
+                                                    <TextBox Text="{Binding Description}"
+                                                             PlaceholderText="Optional description" />
                                                 </StackPanel>
-                                                <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                    <TextBlock Classes="LabelUI" Text="VALUE" />
-                                                    <TextBox Text="{Binding Value}" PlaceholderText="0" />
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="2" Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="FREQ. (DAYS)" />
-                                                    <TextBox Text="{Binding FrequencyDays}" PlaceholderText="0" />
-                                                </StackPanel>
-                                            </Grid>
-                                            <StackPanel Spacing="2">
-                                                <TextBlock Classes="LabelUI" Text="DESCRIPTION" />
-                                                <TextBox Text="{Binding Description}" PlaceholderText="Optional description" />
                                             </StackPanel>
-                                        </StackPanel>
-                                        <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
-                                                VerticalAlignment="Center" Margin="12,0,0,0" />
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-                <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                        <TextBlock Text="Add Chore" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-
-            <!-- ==================== PUNISHMENTS ==================== -->
-            <Grid IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}"
-                  RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
-                <StackPanel Grid.Row="0">
-                    <TextBlock Classes="SectionTitle" Text="Punishments" Margin="0,20,0,8" />
-                    <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
-                </StackPanel>
-                <ScrollViewer Grid.Row="1" Name="PunishmentsScroll">
-                    <ItemsControl ItemsSource="{Binding Punishments}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="vm:PunishmentEditViewModel">
-                                <Border Classes="card">
-                                    <Grid ColumnDefinitions="*,Auto">
-                                        <StackPanel Grid.Column="0" Spacing="8">
-                                            <StackPanel Spacing="2">
-                                                <TextBlock Classes="LabelUI" Text="NAME" />
-                                                <TextBox Text="{Binding Name}" PlaceholderText="Punishment name" />
-                                            </StackPanel>
-                                            <Grid ColumnDefinitions="*,*">
-                                                <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                    <TextBlock Classes="LabelUI" Text="DEBT INCREASE" />
-                                                    <NumericUpDown Value="{Binding DebtIncrease}" FormatString="0" />
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="1" Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="REQUIRED CHORES" />
-                                                    <NumericUpDown Value="{Binding RequiredChoreCount}" FormatString="0" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
-                                        <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
-                                                VerticalAlignment="Center" Margin="12,0,0,0" />
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-                <Button Grid.Row="2" Command="{Binding AddPunishmentCommand}" Classes="Add">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                        <TextBlock Text="Add Punishment" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-
-            <!-- ==================== WARDROBE ==================== -->
-            <Grid IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}"
-                  RowDefinitions="Auto,Auto,*,Auto" Margin="16,0,16,8">
-                <StackPanel Grid.Row="0">
-                    <TextBlock Classes="SectionTitle" Text="Wardrobe" Margin="0,20,0,8" />
-                    <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
-                </StackPanel>
-                <views:WardrobeToolbar Grid.Row="1" Margin="0,0,0,8" />
-                <views:WardrobeTable Grid.Row="2" />
-                <views:WardrobeBulkBar Grid.Row="3" Margin="0,8,0,0" />
-            </Grid>
-
-            <!-- ==================== OUTFIT RULES ==================== -->
-            <Grid IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}"
-                  RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
-                <StackPanel Grid.Row="0">
-                    <TextBlock Classes="SectionTitle" Text="Outfit Rules" Margin="0,20,0,8" />
-                    <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
-                </StackPanel>
-                <ScrollViewer Grid.Row="1" Name="RulesScroll">
-                    <ItemsControl ItemsSource="{Binding OutfitRules}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="vm:OutfitRuleEditViewModel">
-                                <Border Classes="card">
-                                    <Grid ColumnDefinitions="*,Auto,*,Auto">
-                                        <ComboBox Grid.Column="0"
-                                                  ItemsSource="{Binding AvailableItems}"
-                                                  SelectedItem="{Binding Item}"
-                                                  PlaceholderText="Select item"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Center" />
-                                        <ComboBox Grid.Column="1"
-                                                  ItemsSource="{x:Static vm:OutfitRuleEditViewModel.RelationOptions}"
-                                                  SelectedItem="{Binding Relation}"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Center"
-                                                  Margin="8,0" />
-                                        <ComboBox Grid.Column="2"
-                                                  ItemsSource="{Binding AvailableItems}"
-                                                  SelectedItem="{Binding RelatedItem}"
-                                                  PlaceholderText="Select item"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Center" />
-                                        <Button Grid.Column="3"
-                                                Command="{Binding DeleteCommand}"
-                                                Classes="Delete"
-                                                Margin="8,0,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                VerticalAlignment="Center" />
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-                <Button Grid.Row="2" Command="{Binding AddOutfitRuleCommand}" Classes="Add">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                        <TextBlock Text="Add Rule" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-
-        </Panel>
-
-    </Grid>
-
-    <!-- Dialog overlay (floats above everything) -->
-    <Panel IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}"
-           Classes="dialogOverlay">
-        <Border Classes="dialogBox">
-            <StackPanel Spacing="16" DataContext="{Binding ActiveDialog}">
-                <TextBlock Classes="Heading"
-                           Text="{Binding (vm:SaveDialogViewModel).Title, FallbackValue=''}"
-                           HorizontalAlignment="Center" />
-                <TextBlock Classes="Body"
-                           Text="{Binding (vm:SaveDialogViewModel).Message, FallbackValue=''}"
-                           TextAlignment="Center"
-                           Opacity="0.85"
-                           TextWrapping="Wrap" />
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center"
-                            Spacing="8"
-                            Margin="0,8,0,0">
-                    <Button Content="Discard" Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}" Classes="Ghost" />
-                    <Button Command="{Binding (vm:SaveDialogViewModel).SaveCommand}" Classes="Primary">
+                                            <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
+                                                    VerticalAlignment="Center" Margin="12,0,0,0" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="18" />
-                            <TextBlock Text="Save" VerticalAlignment="Center" />
+                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                            <TextBlock Text="Add Chore" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
-                    <Button Content="Cancel" Command="{Binding (vm:SaveDialogViewModel).CancelCommand}" Classes="Ghost" />
+                </Grid>
+
+                <!-- ==================== PUNISHMENTS ==================== -->
+                <Grid
+                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}"
+                    RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Classes="SectionTitle" Text="Punishments" Margin="0,20,0,8" />
+                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="1" Name="PunishmentsScroll">
+                        <ItemsControl ItemsSource="{Binding Punishments}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:PunishmentEditViewModel">
+                                    <Border Classes="card">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackPanel Grid.Column="0" Spacing="8">
+                                                <StackPanel Spacing="2">
+                                                    <TextBlock Classes="LabelUI" Text="NAME" />
+                                                    <TextBox Text="{Binding Name}" PlaceholderText="Punishment name" />
+                                                </StackPanel>
+                                                <Grid ColumnDefinitions="*,*">
+                                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                                                        <TextBlock Classes="LabelUI" Text="DEBT INCREASE" />
+                                                        <NumericUpDown Value="{Binding DebtIncrease}" FormatString="0" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" Spacing="2">
+                                                        <TextBlock Classes="LabelUI" Text="REQUIRED CHORES" />
+                                                        <NumericUpDown Value="{Binding RequiredChoreCount}"
+                                                                       FormatString="0" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
+                                                    VerticalAlignment="Center" Margin="12,0,0,0" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Button Grid.Row="2" Command="{Binding AddPunishmentCommand}" Classes="Add">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                            <TextBlock Text="Add Punishment" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!-- ==================== WARDROBE ==================== -->
+                <Grid
+                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}"
+                    RowDefinitions="Auto,Auto,*,Auto" Margin="16,0,16,8">
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Classes="SectionTitle" Text="Wardrobe" Margin="0,20,0,8" />
+                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+                    </StackPanel>
+                    <views:WardrobeToolbar Grid.Row="1" Margin="0,0,0,8" />
+                    <views:WardrobeTable Grid.Row="2" />
+                    <views:WardrobeBulkBar Grid.Row="3" Margin="0,8,0,0" />
+                </Grid>
+
+                <!-- ==================== OUTFIT RULES ==================== -->
+                <Grid
+                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}"
+                    RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Classes="SectionTitle" Text="Outfit Rules" Margin="0,20,0,8" />
+                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="1" Name="RulesScroll">
+                        <ItemsControl ItemsSource="{Binding OutfitRules}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:OutfitRuleEditViewModel">
+                                    <Border Classes="card">
+                                        <Grid ColumnDefinitions="*,Auto,*,Auto">
+                                            <ComboBox Grid.Column="0"
+                                                      ItemsSource="{Binding AvailableItems}"
+                                                      SelectedItem="{Binding Item}"
+                                                      PlaceholderText="Select item"
+                                                      HorizontalAlignment="Stretch"
+                                                      VerticalAlignment="Center" />
+                                            <ComboBox Grid.Column="1"
+                                                      ItemsSource="{x:Static vm:OutfitRuleEditViewModel.RelationOptions}"
+                                                      SelectedItem="{Binding Relation}"
+                                                      HorizontalAlignment="Stretch"
+                                                      VerticalAlignment="Center"
+                                                      Margin="8,0" />
+                                            <ComboBox Grid.Column="2"
+                                                      ItemsSource="{Binding AvailableItems}"
+                                                      SelectedItem="{Binding RelatedItem}"
+                                                      PlaceholderText="Select item"
+                                                      HorizontalAlignment="Stretch"
+                                                      VerticalAlignment="Center" />
+                                            <Button Grid.Column="3"
+                                                    Command="{Binding DeleteCommand}"
+                                                    Classes="Delete"
+                                                    Margin="8,0,0,0"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Button Grid.Row="2" Command="{Binding AddOutfitRuleCommand}" Classes="Add">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                            <TextBlock Text="Add Rule" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+            </Panel>
+
+        </Grid>
+
+        <!-- Dialog overlay (floats above everything) -->
+        <Panel IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}"
+               Classes="dialogOverlay">
+            <Border Classes="dialogBox">
+                <StackPanel Spacing="16" DataContext="{Binding ActiveDialog}">
+                    <TextBlock Classes="Heading"
+                               Text="{Binding (vm:SaveDialogViewModel).Title, FallbackValue=''}"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Classes="Body"
+                               Text="{Binding (vm:SaveDialogViewModel).Message, FallbackValue=''}"
+                               TextAlignment="Center"
+                               Opacity="0.85"
+                               TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="8"
+                                Margin="0,8,0,0">
+                        <Button Content="Discard" Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
+                                Classes="Ghost" />
+                        <Button Command="{Binding (vm:SaveDialogViewModel).SaveCommand}" Classes="Primary">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="18" />
+                                <TextBlock Text="Save" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Content="Cancel" Command="{Binding (vm:SaveDialogViewModel).CancelCommand}"
+                                Classes="Ghost" />
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </Border>
-    </Panel>
+            </Border>
+        </Panel>
 
     </Panel>
 

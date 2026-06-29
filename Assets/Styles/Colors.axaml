@@ -1,99 +1,99 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        BASE COLORS
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorBackground">#FAF7F2</Color>
-  <Color x:Key="ColorSurfaceBase">#FFFFFF</Color>
-  <Color x:Key="ColorSurfaceSubtle">#FAF7F2</Color>
-  <Color x:Key="ColorSurfaceMuted">#F2EDE4</Color>
+    <Color x:Key="ColorBackground">#FAF7F2</Color>
+    <Color x:Key="ColorSurfaceBase">#FFFFFF</Color>
+    <Color x:Key="ColorSurfaceSubtle">#FAF7F2</Color>
+    <Color x:Key="ColorSurfaceMuted">#F2EDE4</Color>
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        TEXT COLORS
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorTextPrimary">#2C2118</Color>
-  <Color x:Key="ColorTextSecondary">#4A3F35</Color>
-  <Color x:Key="ColorTextMuted">#9A8A78</Color>
-  <Color x:Key="ColorTextAccent">#6B4F35</Color>
+    <Color x:Key="ColorTextPrimary">#2C2118</Color>
+    <Color x:Key="ColorTextSecondary">#4A3F35</Color>
+    <Color x:Key="ColorTextMuted">#9A8A78</Color>
+    <Color x:Key="ColorTextAccent">#6B4F35</Color>
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        INTERACTIVE COLORS
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorButtonPrimary">#6B4F35</Color>
-  <Color x:Key="ColorButtonPrimaryText">#FAF7F2</Color>
-  <Color x:Key="ColorButtonDanger">#8B3A2A</Color>
-  <Color x:Key="ColorBorderSubtle">#C8B99A</Color>
-  <Color x:Key="ColorChipSelected">#6B4F35</Color>
-  <Color x:Key="ColorChipRequired">#8B3A2A</Color>
+    <Color x:Key="ColorButtonPrimary">#6B4F35</Color>
+    <Color x:Key="ColorButtonPrimaryText">#FAF7F2</Color>
+    <Color x:Key="ColorButtonDanger">#8B3A2A</Color>
+    <Color x:Key="ColorBorderSubtle">#C8B99A</Color>
+    <Color x:Key="ColorChipSelected">#6B4F35</Color>
+    <Color x:Key="ColorChipRequired">#8B3A2A</Color>
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        BRUSHES — SURFACES
   ═══════════════════════════════════════════ -->
-  <SolidColorBrush x:Key="BrushWindowBackground" Color="{StaticResource ColorBackground}"/>
-  <SolidColorBrush x:Key="BrushSurfaceBase"      Color="{StaticResource ColorSurfaceBase}"/>
-  <SolidColorBrush x:Key="BrushSurfaceSubtle"    Color="{StaticResource ColorSurfaceSubtle}"/>
-  <SolidColorBrush x:Key="BrushSurfaceMuted"     Color="{StaticResource ColorSurfaceMuted}"/>
+    <SolidColorBrush x:Key="BrushWindowBackground" Color="{StaticResource ColorBackground}" />
+    <SolidColorBrush x:Key="BrushSurfaceBase" Color="{StaticResource ColorSurfaceBase}" />
+    <SolidColorBrush x:Key="BrushSurfaceSubtle" Color="{StaticResource ColorSurfaceSubtle}" />
+    <SolidColorBrush x:Key="BrushSurfaceMuted" Color="{StaticResource ColorSurfaceMuted}" />
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        BRUSHES — TEXT
   ═══════════════════════════════════════════ -->
-  <SolidColorBrush x:Key="TextPrimary"   Color="{StaticResource ColorTextPrimary}"/>
-  <SolidColorBrush x:Key="TextSecondary" Color="{StaticResource ColorTextSecondary}"/>
-  <SolidColorBrush x:Key="TextMuted"     Color="{StaticResource ColorTextMuted}"/>
-  <SolidColorBrush x:Key="TextAccent"    Color="{StaticResource ColorTextAccent}"/>
+    <SolidColorBrush x:Key="TextPrimary" Color="{StaticResource ColorTextPrimary}" />
+    <SolidColorBrush x:Key="TextSecondary" Color="{StaticResource ColorTextSecondary}" />
+    <SolidColorBrush x:Key="TextMuted" Color="{StaticResource ColorTextMuted}" />
+    <SolidColorBrush x:Key="TextAccent" Color="{StaticResource ColorTextAccent}" />
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        BRUSHES — INTERACTIVE
   ═══════════════════════════════════════════ -->
-  <SolidColorBrush x:Key="BrushButtonPrimary"     Color="{StaticResource ColorButtonPrimary}"/>
-  <SolidColorBrush x:Key="BrushButtonPrimaryText" Color="{StaticResource ColorButtonPrimaryText}"/>
-  <SolidColorBrush x:Key="BrushButtonDanger"      Color="{StaticResource ColorButtonDanger}"/>
-  <SolidColorBrush x:Key="BrushBorderSubtle"      Color="{StaticResource ColorBorderSubtle}"/>
-  <SolidColorBrush x:Key="BrushChipDefault"       Color="{StaticResource ColorSurfaceMuted}"/>
-  <SolidColorBrush x:Key="BrushChipSelected"      Color="{StaticResource ColorChipSelected}"/>
-  <SolidColorBrush x:Key="BrushChipRequired"      Color="{StaticResource ColorChipRequired}"/>
+    <SolidColorBrush x:Key="BrushButtonPrimary" Color="{StaticResource ColorButtonPrimary}" />
+    <SolidColorBrush x:Key="BrushButtonPrimaryText" Color="{StaticResource ColorButtonPrimaryText}" />
+    <SolidColorBrush x:Key="BrushButtonDanger" Color="{StaticResource ColorButtonDanger}" />
+    <SolidColorBrush x:Key="BrushBorderSubtle" Color="{StaticResource ColorBorderSubtle}" />
+    <SolidColorBrush x:Key="BrushChipDefault" Color="{StaticResource ColorSurfaceMuted}" />
+    <SolidColorBrush x:Key="BrushChipSelected" Color="{StaticResource ColorChipSelected}" />
+    <SolidColorBrush x:Key="BrushChipRequired" Color="{StaticResource ColorChipRequired}" />
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        SEMANTIC COLORS — AMBER / WARNING
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorAmber">#8B6914</Color>
-  <Color x:Key="ColorAmberSurface">#FEF5DC</Color>
-  <Color x:Key="ColorAmberText">#4A3507</Color>
+    <Color x:Key="ColorAmber">#8B6914</Color>
+    <Color x:Key="ColorAmberSurface">#FEF5DC</Color>
+    <Color x:Key="ColorAmberText">#4A3507</Color>
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        SEMANTIC COLORS — STATUS / FEEDBACK
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorStatusIdle">#5B8F6A</Color>
+    <Color x:Key="ColorStatusIdle">#5B8F6A</Color>
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        NAV / LAYOUT
   ═══════════════════════════════════════════ -->
-  <Color x:Key="ColorNavItemSelected">#DDD8CE</Color>
-  <Color x:Key="ColorNavItemBorder">#312B28</Color>
-  <SolidColorBrush x:Key="BrushNavItemSelected" Color="{StaticResource ColorNavItemSelected}"/>
-  <SolidColorBrush x:Key="BrushNavItemBorder"   Color="{StaticResource ColorNavItemBorder}"/>
+    <Color x:Key="ColorNavItemSelected">#DDD8CE</Color>
+    <Color x:Key="ColorNavItemBorder">#312B28</Color>
+    <SolidColorBrush x:Key="BrushNavItemSelected" Color="{StaticResource ColorNavItemSelected}" />
+    <SolidColorBrush x:Key="BrushNavItemBorder" Color="{StaticResource ColorNavItemBorder}" />
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        BRUSHES — SEMANTIC
   ═══════════════════════════════════════════ -->
-  <SolidColorBrush x:Key="BrushAmber"           Color="{StaticResource ColorAmber}"/>
-  <SolidColorBrush x:Key="BrushAmberBackground" Color="{StaticResource ColorAmberSurface}"/>
-  <SolidColorBrush x:Key="BrushAmberText"       Color="{StaticResource ColorAmberText}"/>
-  <SolidColorBrush x:Key="BrushStatusIdle"      Color="{StaticResource ColorStatusIdle}"/>
-  <SolidColorBrush x:Key="BrushEmergencyText"   Color="{StaticResource ColorButtonDanger}"/>
+    <SolidColorBrush x:Key="BrushAmber" Color="{StaticResource ColorAmber}" />
+    <SolidColorBrush x:Key="BrushAmberBackground" Color="{StaticResource ColorAmberSurface}" />
+    <SolidColorBrush x:Key="BrushAmberText" Color="{StaticResource ColorAmberText}" />
+    <SolidColorBrush x:Key="BrushStatusIdle" Color="{StaticResource ColorStatusIdle}" />
+    <SolidColorBrush x:Key="BrushEmergencyText" Color="{StaticResource ColorButtonDanger}" />
 
-  <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
        ACCENT OVERRIDE — replace Fluent's system blue with warm brown
        These keys are read by FluentTheme to derive all accent-tinted
        control states (CheckBox fill, TextBox focus ring, etc.).
   ═══════════════════════════════════════════ -->
-  <Color x:Key="SystemAccentColor">#6B4F35</Color>
-  <Color x:Key="SystemAccentColorLight1">#8B6F55</Color>
-  <Color x:Key="SystemAccentColorLight2">#AB9075</Color>
-  <Color x:Key="SystemAccentColorLight3">#CBB095</Color>
-  <Color x:Key="SystemAccentColorDark1">#5A4228</Color>
-  <Color x:Key="SystemAccentColorDark2">#4A3520</Color>
-  <Color x:Key="SystemAccentColorDark3">#3A2818</Color>
+    <Color x:Key="SystemAccentColor">#6B4F35</Color>
+    <Color x:Key="SystemAccentColorLight1">#8B6F55</Color>
+    <Color x:Key="SystemAccentColorLight2">#AB9075</Color>
+    <Color x:Key="SystemAccentColorLight3">#CBB095</Color>
+    <Color x:Key="SystemAccentColorDark1">#5A4228</Color>
+    <Color x:Key="SystemAccentColorDark2">#4A3520</Color>
+    <Color x:Key="SystemAccentColorDark3">#3A2818</Color>
 
 </ResourceDictionary>

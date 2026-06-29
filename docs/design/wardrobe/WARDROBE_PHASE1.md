@@ -1,7 +1,9 @@
 # Task: Wardrobe Table Redesign — Phase 1 of 3
+
 # Extend WardrobeEditViewModel
 
 ## Context
+
 Read `docs/design/wardrobe/WARDROBE_TABLE_SPEC.md` before starting.
 Read `docs/design/wardrobe/wardrobe-settings.svg` as visual reference.
 
@@ -46,6 +48,7 @@ Add the properties and commands listed below. Do not remove or rename
 anything existing.
 
 **New filter state:**
+
 ```
 string WardrobeNameFilter    — [Reactive], default string.Empty
 string? WardrobeLayerFilter  — [Reactive], default null  (null = All)
@@ -54,6 +57,7 @@ string? WardrobeLayerFilter  — [Reactive], default null  (null = All)
 **FilteredWardrobeItems:**
 Use DynamicData to build a filtered observable collection derived from
 `WardrobeItems`. The filter function:
+
 - name match: `WardrobeNameFilter` is empty, OR `item.Name` contains it
   (OrdinalIgnoreCase)
 - layer match: `WardrobeLayerFilter` is null, OR `item.ActiveLayers`
@@ -63,9 +67,11 @@ Bind the result to a `ReadOnlyObservableCollection<WardrobeEditViewModel>`
 field, exposed as a public property `FilteredWardrobeItems`.
 
 **WardrobeSelectedCount:**
+
 ```csharp
 public IObservable<int> WardrobeSelectedCount { get; }
 ```
+
 Derived via DynamicData AutoRefresh on `IsSelected`, `.ToCollection()`,
 `.Select(items => items.Count(x => x.IsSelected))`.
 

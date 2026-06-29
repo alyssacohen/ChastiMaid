@@ -4,5 +4,8 @@ namespace ChastiMaid.Views;
 
 public partial class GameCompleteView : UserControl
 {
-    public GameCompleteView() => InitializeComponent();
+    public GameCompleteView()
+    {
+        InitializeComponent();
+    }
 }

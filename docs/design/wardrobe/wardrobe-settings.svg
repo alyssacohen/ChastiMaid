@@ -1,264 +1,346 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="780" viewBox="0 0 900 780">
 
-  <!-- ═══════════════════════════════════════
-       ChastiMaid — Settings › Wardrobe
-       900 × 780 px  ·  warm light theme
-       Cormorant Garamond display / Inter UI
-       ═══════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════
+         ChastiMaid — Settings › Wardrobe
+         900 × 780 px  ·  warm light theme
+         Cormorant Garamond display / Inter UI
+         ═══════════════════════════════════════ -->
 
-  <!-- Background -->
-  <rect width="900" height="780" fill="#F5F0E8"/>
+    <!-- Background -->
+    <rect width="900" height="780" fill="#F5F0E8"/>
 
-  <!-- ── LEFT NAV PANEL ─────────────────── -->
-  <rect x="0" y="0" width="180" height="780" fill="#EDE8DE"/>
-  <line x1="180" y1="0" x2="180" y2="780" stroke="#C8C0B0" stroke-width="0.75"/>
+    <!-- ── LEFT NAV PANEL ─────────────────── -->
+    <rect x="0" y="0" width="180" height="780" fill="#EDE8DE"/>
+    <line x1="180" y1="0" x2="180" y2="780" stroke="#C8C0B0" stroke-width="0.75"/>
 
-  <!-- Nav title -->
-  <text x="24" y="36" font-family="'Georgia',serif" font-size="15" font-weight="600" fill="#2C2420" letter-spacing="0.5">Settings</text>
-  <line x1="16" y1="46" x2="164" y2="46" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- Nav title -->
+    <text x="24" y="36" font-family="'Georgia',serif" font-size="15" font-weight="600" fill="#2C2420"
+          letter-spacing="0.5">Settings
+    </text>
+    <line x1="16" y1="46" x2="164" y2="46" stroke="#C8C0B0" stroke-width="0.5"/>
 
-  <!-- General -->
-  <text x="24" y="72" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">General</text>
+    <!-- General -->
+    <text x="24" y="72" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">General</text>
 
-  <!-- Chores -->
-  <text x="24" y="102" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">Chores</text>
+    <!-- Chores -->
+    <text x="24" y="102" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">Chores</text>
 
-  <!-- Punishments -->
-  <text x="24" y="132" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">Punishments</text>
+    <!-- Punishments -->
+    <text x="24" y="132" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">Punishments</text>
 
-  <!-- Wardrobe — ACTIVE -->
-  <rect x="0" y="144" width="180" height="34" fill="#DDD8CE"/>
-  <rect x="0" y="144" width="3" height="34" fill="#2C2420"/>
-  <text x="24" y="166" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420" font-weight="600">Wardrobe</text>
+    <!-- Wardrobe — ACTIVE -->
+    <rect x="0" y="144" width="180" height="34" fill="#DDD8CE"/>
+    <rect x="0" y="144" width="3" height="34" fill="#2C2420"/>
+    <text x="24" y="166" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420" font-weight="600">Wardrobe
+    </text>
 
-  <!-- Outfit Rules -->
-  <text x="24" y="202" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">Outfit Rules</text>
+    <!-- Outfit Rules -->
+    <text x="24" y="202" font-family="'Segoe UI',sans-serif" font-size="12" fill="#9A9288">Outfit Rules</text>
 
-  <!-- Save / Back buttons at bottom of nav -->
-  <rect x="16" y="710" width="148" height="32" rx="3" fill="#2C2420"/>
-  <text x="90" y="730" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="12" fill="#F5F0E8">Save</text>
-  <rect x="16" y="750" width="148" height="22" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="90" y="765" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#6A6260">Back</text>
+    <!-- Save / Back buttons at bottom of nav -->
+    <rect x="16" y="710" width="148" height="32" rx="3" fill="#2C2420"/>
+    <text x="90" y="730" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="12" fill="#F5F0E8">Save
+    </text>
+    <rect x="16" y="750" width="148" height="22" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="90" y="765" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#6A6260">Back
+    </text>
 
-  <!-- ── MAIN CONTENT AREA ───────────────── -->
-  <!-- Section heading -->
-  <text x="208" y="36" font-family="'Georgia',serif" font-size="20" fill="#2C2420" letter-spacing="0.3">Wardrobe</text>
-  <line x1="208" y1="46" x2="880" y2="46" stroke="#C8C0B0" stroke-width="0.5"/>
+    <!-- ── MAIN CONTENT AREA ───────────────── -->
+    <!-- Section heading -->
+    <text x="208" y="36" font-family="'Georgia',serif" font-size="20" fill="#2C2420" letter-spacing="0.3">Wardrobe
+    </text>
+    <line x1="208" y1="46" x2="880" y2="46" stroke="#C8C0B0" stroke-width="0.5"/>
 
-  <!-- ── TOOLBAR ─────────────────────────── -->
-  <!-- Filter/search bar -->
-  <rect x="208" y="58" width="240" height="30" rx="3" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="222" y="77" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0">Filter by name or tag…</text>
-  <text x="434" y="77" font-family="'Segoe UI',sans-serif" font-size="12" fill="#C8C0B0">⌕</text>
+    <!-- ── TOOLBAR ─────────────────────────── -->
+    <!-- Filter/search bar -->
+    <rect x="208" y="58" width="240" height="30" rx="3" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="222" y="77" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0">Filter by name or tag…</text>
+    <text x="434" y="77" font-family="'Segoe UI',sans-serif" font-size="12" fill="#C8C0B0">⌕</text>
 
-  <!-- Layer filter chips -->
-  <text x="462" y="77" font-family="'Segoe UI',sans-serif" font-size="10" fill="#9A9288">Layer:</text>
+    <!-- Layer filter chips -->
+    <text x="462" y="77" font-family="'Segoe UI',sans-serif" font-size="10" fill="#9A9288">Layer:</text>
 
-  <!-- chip: All (active) -->
-  <rect x="497" y="60" width="28" height="26" rx="3" fill="#2C2420"/>
-  <text x="511" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#F5F0E8">All</text>
+    <!-- chip: All (active) -->
+    <rect x="497" y="60" width="28" height="26" rx="3" fill="#2C2420"/>
+    <text x="511" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#F5F0E8">All
+    </text>
 
-  <!-- chip: undies -->
-  <rect x="531" y="60" width="42" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="552" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">undies</text>
+    <!-- chip: undies -->
+    <rect x="531" y="60" width="42" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="552" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">undies
+    </text>
 
-  <!-- chip: base -->
-  <rect x="579" y="60" width="34" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="596" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">base</text>
+    <!-- chip: base -->
+    <rect x="579" y="60" width="34" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="596" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">base
+    </text>
 
-  <!-- chip: extra -->
-  <rect x="619" y="60" width="36" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="637" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">extra</text>
+    <!-- chip: extra -->
+    <rect x="619" y="60" width="36" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="637" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">extra
+    </text>
 
-  <!-- chip: outer -->
-  <rect x="661" y="60" width="37" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="679" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">outer</text>
+    <!-- chip: outer -->
+    <rect x="661" y="60" width="37" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="679" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">outer
+    </text>
 
-  <!-- chip: gears -->
-  <rect x="704" y="60" width="37" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="722" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">gears</text>
+    <!-- chip: gears -->
+    <rect x="704" y="60" width="37" height="26" rx="3" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="722" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#6A6260">gears
+    </text>
 
-  <!-- Add item button -->
-  <rect x="798" y="58" width="82" height="30" rx="3" fill="#2C2420"/>
-  <text x="839" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#F5F0E8">+ Add item</text>
+    <!-- Add item button -->
+    <rect x="798" y="58" width="82" height="30" rx="3" fill="#2C2420"/>
+    <text x="839" y="77" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#F5F0E8">+ Add
+        item
+    </text>
 
-  <!-- ── TABLE ───────────────────────────── -->
-  <rect x="208" y="98" width="672" height="596" rx="3" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
+    <!-- ── TABLE ───────────────────────────── -->
+    <rect x="208" y="98" width="672" height="596" rx="3" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
 
-  <!-- Column header row -->
-  <rect x="208" y="98" width="672" height="30" rx="3" fill="#EDE8DE"/>
-  <rect x="208" y="113" width="672" height="15" fill="#EDE8DE"/>
-  <line x1="208" y1="128" x2="880" y2="128" stroke="#C8C0B0" stroke-width="0.75"/>
+    <!-- Column header row -->
+    <rect x="208" y="98" width="672" height="30" rx="3" fill="#EDE8DE"/>
+    <rect x="208" y="113" width="672" height="15" fill="#EDE8DE"/>
+    <line x1="208" y1="128" x2="880" y2="128" stroke="#C8C0B0" stroke-width="0.75"/>
 
-  <!-- Select-all checkbox -->
-  <rect x="222" y="109" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <!-- Select-all checkbox -->
+    <rect x="222" y="109" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
 
-  <!-- Col labels -->
-  <text x="248" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260" letter-spacing="0.8">NAME</text>
-  <text x="428" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260" letter-spacing="0.8">LAYERS</text>
-  <text x="608" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260" letter-spacing="0.8">SLOTS</text>
-  <text x="826" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260" letter-spacing="0.8">⋮</text>
+    <!-- Col labels -->
+    <text x="248" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260"
+          letter-spacing="0.8">NAME
+    </text>
+    <text x="428" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260"
+          letter-spacing="0.8">LAYERS
+    </text>
+    <text x="608" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260"
+          letter-spacing="0.8">SLOTS
+    </text>
+    <text x="826" y="118" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#6A6260"
+          letter-spacing="0.8">⋮
+    </text>
 
-  <!-- Column separators -->
-  <line x1="416" y1="98" x2="416" y2="694" stroke="#E8E2D8" stroke-width="0.5"/>
-  <line x1="596" y1="98" x2="596" y2="694" stroke="#E8E2D8" stroke-width="0.5"/>
-  <line x1="814" y1="98" x2="814" y2="694" stroke="#E8E2D8" stroke-width="0.5"/>
+    <!-- Column separators -->
+    <line x1="416" y1="98" x2="416" y2="694" stroke="#E8E2D8" stroke-width="0.5"/>
+    <line x1="596" y1="98" x2="596" y2="694" stroke="#E8E2D8" stroke-width="0.5"/>
+    <line x1="814" y1="98" x2="814" y2="694" stroke="#E8E2D8" stroke-width="0.5"/>
 
-  <!-- ── ROW 1: panties ── -->
-  <rect x="209" y="128" width="670" height="38" fill="#FFFFFF"/>
-  <line x1="208" y1="166" x2="880" y2="166" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="141" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="152" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">panties</text>
-  <rect x="428" y="135" width="40" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="448" y="148" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">undies</text>
-  <rect x="608" y="135" width="38" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="627" y="148" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">crotch</text>
-  <text x="834" y="152" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 1: panties ── -->
+    <rect x="209" y="128" width="670" height="38" fill="#FFFFFF"/>
+    <line x1="208" y1="166" x2="880" y2="166" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="141" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="152" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">panties</text>
+    <rect x="428" y="135" width="40" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="448" y="148" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">
+        undies
+    </text>
+    <rect x="608" y="135" width="38" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="627" y="148" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">
+        crotch
+    </text>
+    <text x="834" y="152" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- ── ROW 2: bra ── -->
-  <rect x="209" y="166" width="670" height="38" fill="#FAFAF8"/>
-  <line x1="208" y1="204" x2="880" y2="204" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="179" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="190" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">bra</text>
-  <rect x="428" y="173" width="40" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="448" y="186" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">undies</text>
-  <rect x="608" y="173" width="35" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="625" y="186" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">torso</text>
-  <text x="834" y="190" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 2: bra ── -->
+    <rect x="209" y="166" width="670" height="38" fill="#FAFAF8"/>
+    <line x1="208" y1="204" x2="880" y2="204" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="179" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="190" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">bra</text>
+    <rect x="428" y="173" width="40" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="448" y="186" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">
+        undies
+    </text>
+    <rect x="608" y="173" width="35" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="625" y="186" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">torso
+    </text>
+    <text x="834" y="190" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- ── ROW 3: black stockings — multi-layer ── -->
-  <rect x="209" y="204" width="670" height="38" fill="#FFFFFF"/>
-  <line x1="208" y1="242" x2="880" y2="242" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="217" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="228" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">black stockings</text>
-  <rect x="428" y="211" width="34" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="445" y="224" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">base</text>
-  <rect x="468" y="211" width="36" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="486" y="224" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">extra</text>
-  <rect x="608" y="211" width="30" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="623" y="224" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">legs</text>
-  <text x="834" y="228" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 3: black stockings — multi-layer ── -->
+    <rect x="209" y="204" width="670" height="38" fill="#FFFFFF"/>
+    <line x1="208" y1="242" x2="880" y2="242" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="217" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="228" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">black stockings</text>
+    <rect x="428" y="211" width="34" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="445" y="224" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">base
+    </text>
+    <rect x="468" y="211" width="36" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="486" y="224" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">extra
+    </text>
+    <rect x="608" y="211" width="30" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="623" y="224" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">legs
+    </text>
+    <text x="834" y="228" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- ── ROW 4: short maid uniform ── -->
-  <rect x="209" y="242" width="670" height="38" fill="#FAFAF8"/>
-  <line x1="208" y1="280" x2="880" y2="280" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="255" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="266" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">short maid uniform</text>
-  <rect x="428" y="249" width="36" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="446" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">outer</text>
-  <rect x="608" y="249" width="35" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="625" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">torso</text>
-  <rect x="648" y="249" width="28" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="662" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">legs</text>
-  <rect x="681" y="249" width="32" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="697" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">arms</text>
-  <text x="834" y="266" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 4: short maid uniform ── -->
+    <rect x="209" y="242" width="670" height="38" fill="#FAFAF8"/>
+    <line x1="208" y1="280" x2="880" y2="280" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="255" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="266" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">short maid uniform</text>
+    <rect x="428" y="249" width="36" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="446" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">outer
+    </text>
+    <rect x="608" y="249" width="35" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="625" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">torso
+    </text>
+    <rect x="648" y="249" width="28" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="662" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">legs
+    </text>
+    <rect x="681" y="249" width="32" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="697" y="262" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">arms
+    </text>
+    <text x="834" y="266" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- ── ROW 5: nylon catsuit — EXPANDED ── -->
-  <rect x="209" y="280" width="670" height="38" fill="#F0EAE0"/>
-  <line x1="208" y1="318" x2="880" y2="318" stroke="#C8C0B0" stroke-width="0.5"/>
-  <rect x="222" y="293" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="304" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">nylon catsuit</text>
-  <rect x="428" y="287" width="34" height="18" rx="9" fill="#2C2420"/>
-  <text x="445" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#F5F0E8">base</text>
-  <rect x="608" y="287" width="35" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="625" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">torso</text>
-  <rect x="648" y="287" width="28" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="662" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">legs</text>
-  <rect x="681" y="287" width="32" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="697" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">arms</text>
-  <text x="834" y="304" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#2C2420">⌄</text>
+    <!-- ── ROW 5: nylon catsuit — EXPANDED ── -->
+    <rect x="209" y="280" width="670" height="38" fill="#F0EAE0"/>
+    <line x1="208" y1="318" x2="880" y2="318" stroke="#C8C0B0" stroke-width="0.5"/>
+    <rect x="222" y="293" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="304" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">nylon catsuit</text>
+    <rect x="428" y="287" width="34" height="18" rx="9" fill="#2C2420"/>
+    <text x="445" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#F5F0E8">base
+    </text>
+    <rect x="608" y="287" width="35" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="625" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">torso
+    </text>
+    <rect x="648" y="287" width="28" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="662" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">legs
+    </text>
+    <rect x="681" y="287" width="32" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="697" y="300" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">arms
+    </text>
+    <text x="834" y="304" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#2C2420">⌄
+    </text>
 
-  <!-- Expanded detail panel -->
-  <rect x="209" y="318" width="670" height="76" fill="#F7F3EC"/>
-  <line x1="208" y1="394" x2="880" y2="394" stroke="#C8C0B0" stroke-width="0.75"/>
+    <!-- Expanded detail panel -->
+    <rect x="209" y="318" width="670" height="76" fill="#F7F3EC"/>
+    <line x1="208" y1="394" x2="880" y2="394" stroke="#C8C0B0" stroke-width="0.75"/>
 
-  <text x="248" y="336" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#9A9288" letter-spacing="0.6">MULTIPLIER</text>
-  <rect x="248" y="342" width="60" height="22" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="278" y="357" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">1.3</text>
+    <text x="248" y="336" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#9A9288"
+          letter-spacing="0.6">MULTIPLIER
+    </text>
+    <rect x="248" y="342" width="60" height="22" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="278" y="357" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">1.3
+    </text>
 
-  <text x="326" y="336" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#9A9288" letter-spacing="0.6">WEIGHT</text>
-  <rect x="326" y="342" width="60" height="22" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="356" y="357" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">0.7</text>
+    <text x="326" y="336" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#9A9288"
+          letter-spacing="0.6">WEIGHT
+    </text>
+    <rect x="326" y="342" width="60" height="22" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="356" y="357" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">0.7
+    </text>
 
-  <text x="404" y="336" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#9A9288" letter-spacing="0.6">TAGS</text>
-  <rect x="404" y="342" width="200" height="22" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
-  <rect x="409" y="347" width="28" height="12" rx="6" fill="#DDD8CE"/>
-  <text x="423" y="356" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="9" fill="#4A4240">tight</text>
-  <rect x="441" y="347" width="34" height="12" rx="6" fill="#DDD8CE"/>
-  <text x="458" y="356" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="9" fill="#4A4240">shiny</text>
-  <text x="480" y="357" font-family="'Segoe UI',sans-serif" font-size="10" fill="#C8C0B0">+ tag</text>
+    <text x="404" y="336" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#9A9288"
+          letter-spacing="0.6">TAGS
+    </text>
+    <rect x="404" y="342" width="200" height="22" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="0.75"/>
+    <rect x="409" y="347" width="28" height="12" rx="6" fill="#DDD8CE"/>
+    <text x="423" y="356" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="9" fill="#4A4240">tight
+    </text>
+    <rect x="441" y="347" width="34" height="12" rx="6" fill="#DDD8CE"/>
+    <text x="458" y="356" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="9" fill="#4A4240">shiny
+    </text>
+    <text x="480" y="357" font-family="'Segoe UI',sans-serif" font-size="10" fill="#C8C0B0">+ tag</text>
 
-  <rect x="748" y="342" width="112" height="22" rx="2" fill="#F5D8D0" stroke="#C84820" stroke-width="0.75"/>
-  <text x="804" y="357" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#8A2010">Delete item</text>
+    <rect x="748" y="342" width="112" height="22" rx="2" fill="#F5D8D0" stroke="#C84820" stroke-width="0.75"/>
+    <text x="804" y="357" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#8A2010">Delete
+        item
+    </text>
 
-  <text x="248" y="384" font-family="'Segoe UI',sans-serif" font-size="10" font-style="italic" fill="#B8B0A4">Multiplier and weight affect outfit scoring. Tags are used by outfit rules.</text>
+    <text x="248" y="384" font-family="'Segoe UI',sans-serif" font-size="10" font-style="italic" fill="#B8B0A4">
+        Multiplier and weight affect outfit scoring. Tags are used by outfit rules.
+    </text>
 
-  <!-- ── ROW 6: maid headband ── -->
-  <rect x="209" y="394" width="670" height="38" fill="#FAFAF8"/>
-  <line x1="208" y1="432" x2="880" y2="432" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="407" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="418" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">maid headband</text>
-  <rect x="428" y="401" width="37" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="446" y="414" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">gears</text>
-  <rect x="608" y="401" width="30" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="623" y="414" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">head</text>
-  <text x="834" y="418" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 6: maid headband ── -->
+    <rect x="209" y="394" width="670" height="38" fill="#FAFAF8"/>
+    <line x1="208" y1="432" x2="880" y2="432" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="407" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="418" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">maid headband</text>
+    <rect x="428" y="401" width="37" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="446" y="414" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">gears
+    </text>
+    <rect x="608" y="401" width="30" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="623" y="414" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">head
+    </text>
+    <text x="834" y="418" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- ── ROW 7: black heels ── -->
-  <rect x="209" y="432" width="670" height="38" fill="#FFFFFF"/>
-  <line x1="208" y1="470" x2="880" y2="470" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="445" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="456" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">black heels</text>
-  <rect x="428" y="439" width="37" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="446" y="452" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">gears</text>
-  <rect x="608" y="439" width="28" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="622" y="452" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">feet</text>
-  <text x="834" y="456" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 7: black heels ── -->
+    <rect x="209" y="432" width="670" height="38" fill="#FFFFFF"/>
+    <line x1="208" y1="470" x2="880" y2="470" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="445" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="456" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">black heels</text>
+    <rect x="428" y="439" width="37" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="446" y="452" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">gears
+    </text>
+    <rect x="608" y="439" width="28" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="622" y="452" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">feet
+    </text>
+    <text x="834" y="456" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- ── ROW 8: pearl necklace ── -->
-  <rect x="209" y="470" width="670" height="38" fill="#FAFAF8"/>
-  <line x1="208" y1="508" x2="880" y2="508" stroke="#EDE8DE" stroke-width="0.5"/>
-  <rect x="222" y="483" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
-  <text x="248" y="494" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">pearl necklace</text>
-  <rect x="428" y="477" width="37" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="446" y="490" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">gears</text>
-  <rect x="608" y="477" width="30" height="18" rx="9" fill="#DDD8CE"/>
-  <text x="623" y="490" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">neck</text>
-  <text x="834" y="494" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›</text>
+    <!-- ── ROW 8: pearl necklace ── -->
+    <rect x="209" y="470" width="670" height="38" fill="#FAFAF8"/>
+    <line x1="208" y1="508" x2="880" y2="508" stroke="#EDE8DE" stroke-width="0.5"/>
+    <rect x="222" y="483" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#C8C0B0" stroke-width="1"/>
+    <text x="248" y="494" font-family="'Segoe UI',sans-serif" font-size="12" fill="#2C2420">pearl necklace</text>
+    <rect x="428" y="477" width="37" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="446" y="490" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">gears
+    </text>
+    <rect x="608" y="477" width="30" height="18" rx="9" fill="#DDD8CE"/>
+    <text x="623" y="490" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#4A4240">neck
+    </text>
+    <text x="834" y="494" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="14" fill="#B8B0A4">›
+    </text>
 
-  <!-- · · · more rows ellipsis · · · -->
-  <rect x="209" y="508" width="670" height="28" fill="#FFFFFF"/>
-  <text x="544" y="526" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0" font-style="italic">· · · 13 more items · · ·</text>
+    <!-- · · · more rows ellipsis · · · -->
+    <rect x="209" y="508" width="670" height="28" fill="#FFFFFF"/>
+    <text x="544" y="526" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0"
+          font-style="italic">· · · 13 more items · · ·
+    </text>
 
-  <!-- ── NEW ITEM ROW ── -->
-  <rect x="209" y="536" width="670" height="42" fill="#F7F3EC"/>
-  <line x1="208" y1="536" x2="880" y2="536" stroke="#C8C0B0" stroke-width="0.75"/>
-  <line x1="208" y1="578" x2="880" y2="578" stroke="#C8C0B0" stroke-width="0.75"/>
+    <!-- ── NEW ITEM ROW ── -->
+    <rect x="209" y="536" width="670" height="42" fill="#F7F3EC"/>
+    <line x1="208" y1="536" x2="880" y2="536" stroke="#C8C0B0" stroke-width="0.75"/>
+    <line x1="208" y1="578" x2="880" y2="578" stroke="#C8C0B0" stroke-width="0.75"/>
 
-  <rect x="234" y="547" width="164" height="24" rx="2" fill="#FFFFFF" stroke="#A09890" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="246" y="563" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0">New item name…</text>
+    <rect x="234" y="547" width="164" height="24" rx="2" fill="#FFFFFF" stroke="#A09890" stroke-width="1"
+          stroke-dasharray="3,2"/>
+    <text x="246" y="563" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0">New item name…</text>
 
-  <rect x="428" y="547" width="60" height="24" rx="3" fill="#FFFFFF" stroke="#A09890" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="458" y="563" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#C8C0B0">+ layer</text>
+    <rect x="428" y="547" width="60" height="24" rx="3" fill="#FFFFFF" stroke="#A09890" stroke-width="1"
+          stroke-dasharray="3,2"/>
+    <text x="458" y="563" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#C8C0B0">+
+        layer
+    </text>
 
-  <rect x="608" y="547" width="56" height="24" rx="3" fill="#FFFFFF" stroke="#A09890" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="636" y="563" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#C8C0B0">+ slot</text>
+    <rect x="608" y="547" width="56" height="24" rx="3" fill="#FFFFFF" stroke="#A09890" stroke-width="1"
+          stroke-dasharray="3,2"/>
+    <text x="636" y="563" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="10" fill="#C8C0B0">+
+        slot
+    </text>
 
-  <rect x="778" y="547" width="86" height="24" rx="2" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
-  <text x="821" y="563" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#9A9288">↵  Add</text>
+    <rect x="778" y="547" width="86" height="24" rx="2" fill="#EDE8DE" stroke="#C8C0B0" stroke-width="0.75"/>
+    <text x="821" y="563" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#9A9288">↵ Add
+    </text>
 
-  <!-- ── BULK ACTION BAR ── -->
-  <rect x="208" y="586" width="672" height="32" rx="3" fill="#2C2420"/>
-  <text x="228" y="607" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0">0 items selected</text>
-  <rect x="720" y="594" width="112" height="18" rx="2" fill="#C84820"/>
-  <text x="776" y="607" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#FFFFFF">Delete selected</text>
+    <!-- ── BULK ACTION BAR ── -->
+    <rect x="208" y="586" width="672" height="32" rx="3" fill="#2C2420"/>
+    <text x="228" y="607" font-family="'Segoe UI',sans-serif" font-size="11" fill="#C8C0B0">0 items selected</text>
+    <rect x="720" y="594" width="112" height="18" rx="2" fill="#C84820"/>
+    <text x="776" y="607" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="11" fill="#FFFFFF">Delete
+        selected
+    </text>
 
-  <!-- ── SCROLLBAR ── -->
-  <rect x="876" y="128" width="4" height="470" rx="2" fill="#EDE8DE"/>
-  <rect x="876" y="128" width="4" height="88" rx="2" fill="#C8C0B0"/>
+    <!-- ── SCROLLBAR ── -->
+    <rect x="876" y="128" width="4" height="470" rx="2" fill="#EDE8DE"/>
+    <rect x="876" y="128" width="4" height="88" rx="2" fill="#C8C0B0"/>
 
-  <!-- Canvas label -->
-  <text x="544" y="770" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="9" font-style="italic" fill="#C0B8AC">Settings › Wardrobe — compact table with expandable detail rows</text>
+    <!-- Canvas label -->
+    <text x="544" y="770" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="9" font-style="italic"
+          fill="#C0B8AC">Settings › Wardrobe — compact table with expandable detail rows
+    </text>
 
 </svg>

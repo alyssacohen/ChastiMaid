@@ -17,8 +17,11 @@ public static class TriviaBank
         new("Which ocean is the largest?", ["Atlantic", "Indian", "Arctic", "Pacific"], 3),
         new("What gas do plants absorb?", ["Oxygen", "Nitrogen", "Carbon dioxide", "Helium"], 2),
         new("How many days are in a leap year?", ["364", "365", "366", "367"], 2),
-        new("What is the boiling point of water in °C?", ["90", "95", "100", "110"], 2),
+        new("What is the boiling point of water in °C?", ["90", "95", "100", "110"], 2)
     ];
 
-    public static TriviaQuestion GetRandom() => Questions[Rng.Next(Questions.Count)];
+    public static TriviaQuestion GetRandom()
+    {
+        return Questions[Rng.Next(Questions.Count)];
+    }
 }
