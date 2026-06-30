@@ -30,16 +30,16 @@
                           MinWidth="44" MinHeight="44"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center" />
-                <TextBlock Grid.Column="1" Text="NAME"
+                <TextBlock Grid.Column="1" Text="{conv:UpperCase Name}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
-                <TextBlock Grid.Column="2" Text="LAYERS"
+                <TextBlock Grid.Column="2" Text="{conv:UpperCase Layers}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
-                <TextBlock Grid.Column="3" Text="SLOTS"
+                <TextBlock Grid.Column="3" Text="{conv:UpperCase Slots}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
-                <TextBlock Grid.Column="4" Text="TAGS"
+                <TextBlock Grid.Column="4" Text="{conv:UpperCase Tags}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
             </Grid>
@@ -87,7 +87,7 @@
                                                 IsVisible="{Binding IsExpanded}"
                                                 VerticalAlignment="Center"
                                                 Margin="4,4">
-                                        <TextBlock Classes="LabelUI" Text="NAME" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase Name}" />
                                         <TextBox Classes="underline"
                                                  Text="{Binding Name}" />
                                     </StackPanel>
@@ -126,7 +126,7 @@
                                                 IsVisible="{Binding IsExpanded}"
                                                 Margin="0,4">
                                         <StackPanel Spacing="2">
-                                            <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
+                                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase Multiplier}" />
                                             <NumericUpDown Classes="underline stacked-spinner"
                                                            Value="{Binding Multiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                            FormatString="0.0"
@@ -135,7 +135,7 @@
                                                            Width="110" />
                                         </StackPanel>
                                         <StackPanel Spacing="2">
-                                            <TextBlock Classes="LabelUI" Text="WEIGHT" />
+                                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase Weight}" />
                                             <NumericUpDown Classes="underline stacked-spinner"
                                                            Value="{Binding Weight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                            FormatString="0.0"
@@ -217,7 +217,7 @@
                                     Padding="40,8,8,8">
                                 <StackPanel Spacing="10">
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="LAYERS" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase Layers}" />
                                         <ItemsControl ItemsSource="{Binding LayerToggles}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -236,14 +236,14 @@
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="SLOTS" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase Slots}" />
                                         <tagInput:TagInput Tags="{Binding Slots}"
                                                            Suggestions="{Binding SlotSuggestions}"
                                                            Placeholder="aggiungi slot..." />
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="TAGS" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase Tags}" />
                                         <tagInput:TagInput Tags="{Binding Tags}"
                                                            Suggestions="{Binding TagSuggestions}"
                                                            Placeholder="aggiungi tag..." />
@@ -291,14 +291,14 @@
                         <!-- Name + Multiplier/Weight inline — mirrors Part A expanded row -->
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,12,0">
-                                <TextBlock Classes="LabelUI" Text="NAME" />
+                                <TextBlock Classes="LabelUI" Text="{conv:UpperCase Name}" />
                                 <TextBox Classes="underline"
                                          Text="{Binding NewItemName}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal"
                                         Spacing="12" VerticalAlignment="Bottom">
                                 <StackPanel Spacing="2">
-                                    <TextBlock Classes="LabelUI" Text="MULTIPLIER" />
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase Multiplier}" />
                                     <NumericUpDown Classes="underline stacked-spinner"
                                                    Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                    FormatString="0.0"
@@ -307,7 +307,7 @@
                                                    Width="110" />
                                 </StackPanel>
                                 <StackPanel Spacing="2">
-                                    <TextBlock Classes="LabelUI" Text="WEIGHT" />
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase Weight}" />
                                     <NumericUpDown Classes="underline stacked-spinner"
                                                    Value="{Binding NewItemWeight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                    FormatString="0.0"
@@ -318,7 +318,7 @@
                             </StackPanel>
                         </Grid>
                         <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="LAYERS" />
+                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase Layers}" />
                             <ItemsControl ItemsSource="{Binding NewItemLayerToggles}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -336,13 +336,13 @@
                             </ItemsControl>
                         </StackPanel>
                         <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="SLOTS" />
+                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase Slots}" />
                             <tagInput:TagInput Tags="{Binding NewItemSlots}"
                                                Suggestions="{Binding NewItemSlotSuggestions}"
                                                Placeholder="add slot..." />
                         </StackPanel>
                         <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="TAGS" />
+                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase Tags}" />
                             <tagInput:TagInput Tags="{Binding NewItemTags}"
                                                Suggestions="{Binding NewItemTagSuggestions}"
                                                Placeholder="add tag..." />

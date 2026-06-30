@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:system="using:System"
         xmlns:local="using:ChastiMaid.Controls"
-        xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput">
+        xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput"
+        xmlns:conv="using:ChastiMaid.Views.Converters">
 
     <Style Selector="tagInput|TagInput">
         <Setter Property="Template">
@@ -44,7 +45,7 @@
                             BoxShadow="0 4 12 0 #1A2C2118">
                         <StackPanel Spacing="0">
                             <TextBlock Classes="LabelUI"
-                                       Text="GIÀ USATI IN QUESTO PROGETTO"
+                                       Text="{conv:UpperCase Già usati in questo progetto}"
                                        Margin="8,0,0,6" />
                             <ListBox Name="PART_SuggestionList"
                                      ItemsSource="{TemplateBinding FilteredSuggestions}"

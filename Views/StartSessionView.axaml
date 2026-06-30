@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Dialogs"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:StartSessionViewModel"
              x:Class="ChastiMaid.Views.StartSessionView"
              Background="{DynamicResource BrushWindowBackground}">
@@ -59,7 +60,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="0,0,12,0">
                                             <TextBlock Classes="LabelUI"
-                                                       Text="{Binding LayerLabel}" />
+                                                       Text="{Binding LayerLabel, Converter={x:Static conv:UpperCaseConverter.Instance}}" />
                                             <TextBlock Classes="BodySmall"
                                                        Text="{Binding LayerIndex}"
                                                        Foreground="{StaticResource TextAccent}" />

@@ -207,20 +207,20 @@
                                             <StackPanel Grid.Column="0" Spacing="8">
                                                 <Grid ColumnDefinitions="*,100,100">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="NAME" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Name}" />
                                                         <TextBox Text="{Binding Name}" PlaceholderText="Chore name" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="VALUE" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Value}" />
                                                         <TextBox Text="{Binding Value}" PlaceholderText="0" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2" Spacing="2">
-                                                        <TextBlock Classes="LabelUI" Text="FREQ. (DAYS)" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Freq. (Days)}" />
                                                         <TextBox Text="{Binding FrequencyDays}" PlaceholderText="0" />
                                                     </StackPanel>
                                                 </Grid>
                                                 <StackPanel Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="DESCRIPTION" />
+                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase Description}" />
                                                     <TextBox Text="{Binding Description}"
                                                              PlaceholderText="Optional description" />
                                                 </StackPanel>
@@ -257,16 +257,16 @@
                                         <Grid ColumnDefinitions="*,Auto">
                                             <StackPanel Grid.Column="0" Spacing="8">
                                                 <StackPanel Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="NAME" />
+                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase Name}" />
                                                     <TextBox Text="{Binding Name}" PlaceholderText="Punishment name" />
                                                 </StackPanel>
                                                 <Grid ColumnDefinitions="*,*">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="DEBT INCREASE" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Debt Increase}" />
                                                         <NumericUpDown Value="{Binding DebtIncrease}" FormatString="0" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2">
-                                                        <TextBlock Classes="LabelUI" Text="REQUIRED CHORES" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Required Chores}" />
                                                         <NumericUpDown Value="{Binding RequiredChoreCount}"
                                                                        FormatString="0" />
                                                     </StackPanel>

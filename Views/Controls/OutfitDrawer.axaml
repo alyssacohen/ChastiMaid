@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:Class="ChastiMaid.Views.Controls.OutfitDrawer"
              x:Name="DrawerRoot">
 
@@ -65,7 +66,7 @@
                                     <StackPanel Spacing="2" Margin="16,12">
 
                                         <TextBlock Classes="LabelUI"
-                                                   Text="{Binding LayerLabel}"
+                                                   Text="{Binding LayerLabel, Converter={x:Static conv:UpperCaseConverter.Instance}}"
                                                    Opacity="0.7" />
 
                                         <TextBlock Classes="Body"

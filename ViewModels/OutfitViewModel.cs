@@ -18,7 +18,7 @@ public class OutfitViewModel : ViewModelBase
     /// </summary>
     public static OutfitViewModel FromString(string? outfitText)
     {
-        var layerItems = new Dictionary<int, List<(string Name, string Detail)>>();
+        var layerItems = new Dictionary<int, List<(string Name, IReadOnlyList<string> Zones)>>();
 
         if (!string.IsNullOrWhiteSpace(outfitText))
         {
@@ -36,16 +36,17 @@ public class OutfitViewModel : ViewModelBase
                     // "• Item Name (slot1, slot2)"
                     var content = line[1..].Trim();
                     var parenIdx = content.LastIndexOf('(');
-                    string name, detail;
+                    string name;
+                    List<string> zones;
                     if (parenIdx > 0 && content.EndsWith(')'))
                     {
                         name = content[..parenIdx].Trim();
-                        detail = content[(parenIdx + 1)..^1];
+                        zones = content[(parenIdx + 1)..^1].Split(',').Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
                     }
                     else
                     {
                         name = content;
-                        detail = "";
+                        zones = [];
                     }
 
                     if (!layerItems.ContainsKey(currentLayer.Value))
@@ -53,7 +54,7 @@ public class OutfitViewModel : ViewModelBase
                         layerItems[currentLayer.Value] = [];
                     }
 
-                    layerItems[currentLayer.Value].Add((name, detail));
+                    layerItems[currentLayer.Value].Add((name, zones));
                 }
             }
         }
@@ -62,10 +63,10 @@ public class OutfitViewModel : ViewModelBase
         {
             if (layerItems.TryGetValue(def.Order, out var items) && items.Count > 0)
             {
-                return new OutfitLayerViewModel(def.Label, def.Order, items[0].Name, items[0].Detail);
+                return new OutfitLayerViewModel(def.DisplayName, def.Order, items[0].Name, items[0].Zones);
             }
 
-            return new OutfitLayerViewModel(def.Label, def.Order);
+            return new OutfitLayerViewModel(def.DisplayName, def.Order);
         }).ToList();
 
         return new OutfitViewModel(layers);
