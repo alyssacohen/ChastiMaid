@@ -53,7 +53,7 @@
                                         Padding="{StaticResource SpacingMdThickness}">
                                     <Grid ColumnDefinitions="160,*">
 
-                                        <!-- Left: layer category + selected item name -->
+                                        <!-- Left: layer category + layer index -->
                                         <StackPanel Grid.Column="0"
                                                     Spacing="{StaticResource SpacingXs}"
                                                     VerticalAlignment="Center"
@@ -61,24 +61,26 @@
                                             <TextBlock Classes="LabelUI"
                                                        Text="{Binding LayerLabel}" />
                                             <TextBlock Classes="BodySmall"
-                                                       Text="{Binding ItemName}"
-                                                       Foreground="{DynamicResource TextAccent}" />
+                                                       Text="{Binding LayerIndex}"
+                                                       Foreground="{StaticResource TextAccent}" />
                                         </StackPanel>
 
-                                        <!-- Right: chip badge showing item + body zones -->
+                                        <!-- Right: chip badge showing item name + body zones -->
                                         <WrapPanel Grid.Column="1"
                                                    VerticalAlignment="Center">
-                                            <Border Classes="chip selected"
+                                            <Border Classes="chip info"
+                                                    Background="{StaticResource BrushSurfaceMuted}"
+                                                    BorderBrush="{StaticResource BrushBorderSubtle}"
+                                                    BorderThickness="1"
                                                     IsVisible="{Binding HasItem}">
-                                                <StackPanel Orientation="Horizontal"
-                                                            Spacing="{StaticResource SpacingXs}">
+                                                <StackPanel Spacing="{StaticResource SpacingXs}">
                                                     <TextBlock Classes="chip-label"
+                                                               Foreground="{StaticResource TextPrimary}"
                                                                Text="{Binding ItemName}" />
                                                     <TextBlock Classes="BodySmall"
-                                                               Text="{Binding ItemDetail}"
-                                                               Foreground="{DynamicResource TextMuted}"
-                                                               VerticalAlignment="Center"
-                                                               IsVisible="{Binding ItemDetail,
+                                                               Foreground="{StaticResource TextMuted}"
+                                                               Text="{Binding ZonesDisplay}"
+                                                               IsVisible="{Binding ZonesDisplay,
                                                                    Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                                                 </StackPanel>
                                             </Border>
@@ -101,9 +103,9 @@
                                        Text="Total Multiplier"
                                        Foreground="{DynamicResource TextMuted}"
                                        VerticalAlignment="Center" />
-                            <TextBlock Classes="SectionTitle"
+                            <TextBlock Classes="NumberMedium"
                                        Text="{Binding MultiplierDisplay}"
-                                       Foreground="{DynamicResource TextAccent}" />
+                                       Foreground="{StaticResource TextAccent}" />
                             <Rectangle Width="1"
                                        Height="20"
                                        Fill="{DynamicResource BrushBorderSubtle}"
@@ -120,7 +122,8 @@
             
             <StackPanel Grid.Row="2" Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Spacing="{StaticResource SpacingMd}">
+                        Spacing="{StaticResource SpacingMd}"
+                        Margin="{StaticResource SpacingButtonStripThickness}">
                 <Button Classes="Primary"
                         Content="Accept"
                         Command="{Binding AcceptCommand}" />

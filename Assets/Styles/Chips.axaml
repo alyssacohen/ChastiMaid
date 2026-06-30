@@ -43,6 +43,13 @@
         <Setter Property="Margin" Value="4,0,0,0" />
     </Style>
 
+    <!-- chip.info — two-line display chip (outfit proposal/confirm); auto height -->
+    <Style Selector="Border.chip.info">
+        <Setter Property="Height" Value="NaN" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Padding" Value="8,6" />
+    </Style>
+
     <!-- Whole chip highlights on hover -->
     <Style Selector="Border.chip:pointerover">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}" />

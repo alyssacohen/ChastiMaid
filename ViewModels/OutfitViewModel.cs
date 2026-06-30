@@ -62,10 +62,10 @@ public class OutfitViewModel : ViewModelBase
         {
             if (layerItems.TryGetValue(def.Order, out var items) && items.Count > 0)
             {
-                return new OutfitLayerViewModel(def.Label, items[0].Name, items[0].Detail);
+                return new OutfitLayerViewModel(def.Label, def.Order, items[0].Name, items[0].Detail);
             }
 
-            return new OutfitLayerViewModel(def.Label);
+            return new OutfitLayerViewModel(def.Label, def.Order);
         }).ToList();
 
         return new OutfitViewModel(layers);

@@ -20,6 +20,9 @@
     <Thickness x:Key="SpacingXlThickness">24</Thickness>
     <Thickness x:Key="SpacingXxlThickness">40</Thickness>
 
+    <!-- Button strip: more bottom breathing room than top -->
+    <Thickness x:Key="SpacingButtonStripThickness">0,20,0,36</Thickness>
+
     <!-- ═══════════════════════════════════════════
        LAYOUT CONSTANTS
   ═══════════════════════════════════════════ -->

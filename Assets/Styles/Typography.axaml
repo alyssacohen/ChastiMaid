@@ -83,6 +83,15 @@
         <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
     </Style>
 
+    <!-- NumberMedium — multiplier values, mid-size metrics -->
+    <Style Selector="TextBlock.NumberMedium">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="LineHeight" Value="26" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+
     <!-- NumberLarge — debt widget, prominent counters -->
     <Style Selector="TextBlock.NumberLarge">
         <Setter Property="FontFamily" Value="Inter" />

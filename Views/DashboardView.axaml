@@ -367,7 +367,7 @@
 
             <TextBlock Grid.Row="0"
                        Text="{Binding BusyChoreName}"
-                       Classes="Heading"
+                       Classes="PageTitle"
                        HorizontalAlignment="Center"
                        Margin="0,24" />
 
