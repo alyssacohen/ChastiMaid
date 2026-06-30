@@ -41,9 +41,10 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         }
 
         OutfitVm = OutfitViewModel.FromString(OutfitSummary);
-        var itemCount = OutfitVm.Layers.Count(l => l.HasItem);
+        var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
+        var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
         MultiplierDisplay = $"×{bonusPercent * outfit.TotalMultiplier:F2}";
-        ItemCountDisplay = $"{itemCount} items · {itemCount} layers covered";
+        ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
     }
 
     /// <summary>Used when outfit is already locked — reads summary from saved state.</summary>
@@ -61,9 +62,10 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         SkipCommand = ReactiveCommand.Create(NavigateToSafeLock);
 
         OutfitVm = OutfitViewModel.FromString(OutfitSummary);
-        var itemCount = OutfitVm.Layers.Count(l => l.HasItem);
+        var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
+        var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
         MultiplierDisplay = $"×{state?.EffectiveMultiplier ?? 1.0:F2}";
-        ItemCountDisplay = $"{itemCount} items · {itemCount} layers covered";
+        ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
     }
 
     public string OutfitSummary { get; }

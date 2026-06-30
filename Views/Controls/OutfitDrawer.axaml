@@ -69,17 +69,23 @@
                                                    Text="{Binding LayerLabel, Converter={x:Static conv:UpperCaseConverter.Instance}}"
                                                    Opacity="0.7" />
 
-                                        <TextBlock Classes="Body"
-                                                   Text="{Binding ItemName}"
-                                                   IsVisible="{Binding HasItem}" />
+                                        <ItemsControl ItemsSource="{Binding Items}"
+                                                      IsVisible="{Binding HasItems}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:OutfitLayerItem">
+                                                    <StackPanel Margin="0,0,0,4">
+                                                        <TextBlock Classes="Body"
+                                                                   Text="{Binding Name}" />
+                                                        <TextBlock Classes="Caption"
+                                                                   Text="{Binding ZonesDisplay}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
 
                                         <TextBlock Classes="Caption"
                                                    Text="(none)"
-                                                   IsVisible="{Binding !HasItem}" />
-
-                                        <TextBlock Classes="Caption"
-                                                   Text="{Binding ItemDetail}"
-                                                   IsVisible="{Binding HasItem}" />
+                                                   IsVisible="{Binding !HasItems}" />
 
                                     </StackPanel>
 

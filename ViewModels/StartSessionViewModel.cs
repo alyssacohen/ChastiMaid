@@ -147,8 +147,9 @@ public partial class StartSessionViewModel : ViewModelBase
         OutfitVm = OutfitViewModel.FromString(_proposedOutfit);
         var effective = _currentBonus * _outfitMultiplier;
         MultiplierDisplay = $"×{effective:F2}";
-        var itemCount = OutfitVm.Layers.Count(l => l.HasItem);
-        ItemCountDisplay = $"{itemCount} items · {itemCount} layers covered";
+        var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
+        var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
+        ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
     }
 
     /// <summary>Builds an Outfit from a fixed list of items without the builder.</summary>

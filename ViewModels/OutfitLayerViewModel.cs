@@ -1,21 +1,22 @@
 namespace ChastiMaid.ViewModels;
 
+public record OutfitLayerItem(string Name, IReadOnlyList<string> Zones)
+{
+    public string ZonesDisplay => string.Join(" · ", Zones);
+}
+
 public class OutfitLayerViewModel : ViewModelBase
 {
-    public OutfitLayerViewModel(string layerLabel, int layerOrder, string itemName = "(none)", IReadOnlyList<string>? zones = null)
+    public OutfitLayerViewModel(string layerLabel, int layerOrder, IReadOnlyList<OutfitLayerItem>? items = null)
     {
         LayerLabel = layerLabel;
         LayerOrder = layerOrder;
-        ItemName = itemName;
-        Zones = zones ?? [];
+        Items = items ?? [];
     }
 
     public string LayerLabel { get; }
     public int LayerOrder { get; }
-    public string ItemName { get; }
-    public IReadOnlyList<string> Zones { get; }
-    public bool HasItem => ItemName != "(none)";
+    public IReadOnlyList<OutfitLayerItem> Items { get; }
+    public bool HasItems => Items.Count > 0;
     public string LayerIndex => $"Layer {LayerOrder}";
-    public string ItemDetail => string.Join(", ", Zones);
-    public string ZonesDisplay => string.Join(" · ", Zones);
 }

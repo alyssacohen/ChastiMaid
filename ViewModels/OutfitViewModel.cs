@@ -61,12 +61,10 @@ public class OutfitViewModel : ViewModelBase
 
         var layers = WardrobeLayer.All.Select(def =>
         {
-            if (layerItems.TryGetValue(def.Order, out var items) && items.Count > 0)
-            {
-                return new OutfitLayerViewModel(def.DisplayName, def.Order, items[0].Name, items[0].Zones);
-            }
-
-            return new OutfitLayerViewModel(def.DisplayName, def.Order);
+            var items = layerItems.TryGetValue(def.Order, out var list)
+                ? list.Select(i => new OutfitLayerItem(i.Name, i.Zones)).ToList()
+                : [];
+            return new OutfitLayerViewModel(def.DisplayName, def.Order, items);
         }).ToList();
 
         return new OutfitViewModel(layers);
