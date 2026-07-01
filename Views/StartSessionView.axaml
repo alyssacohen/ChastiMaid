@@ -79,8 +79,7 @@
                                                 <DataTemplate x:DataType="vm:OutfitLayerItem">
                                                     <Border Classes="chip info"
                                                             Background="{StaticResource BrushSurfaceMuted}"
-                                                            BorderBrush="{StaticResource BrushBorderSubtle}"
-                                                            BorderThickness="1">
+                                                            BorderBrush="{StaticResource BrushBorderSubtle}">
                                                         <StackPanel Spacing="{StaticResource SpacingXs}">
                                                             <TextBlock Classes="chip-label"
                                                                        Foreground="{StaticResource TextPrimary}"

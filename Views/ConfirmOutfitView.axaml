@@ -9,7 +9,7 @@
 
     <Grid RowDefinitions="Auto,*,Auto">
 
-        <!-- Row 0: Top section — confirmation controls (state-dependent) -->
+        <!-- Row 0: Top section -->
         <StackPanel Grid.Row="0"
                     HorizontalAlignment="Center"
                     MaxWidth="640"
@@ -134,8 +134,7 @@
                                             <DataTemplate x:DataType="vm:OutfitLayerItem">
                                                 <Border Classes="chip info"
                                                         Background="{StaticResource BrushSurfaceMuted}"
-                                                        BorderBrush="{StaticResource BrushBorderSubtle}"
-                                                        BorderThickness="1">
+                                                        BorderBrush="{StaticResource BrushBorderSubtle}">
                                                     <StackPanel Spacing="{StaticResource SpacingXs}">
                                                         <TextBlock Classes="chip-label"
                                                                    Foreground="{StaticResource TextPrimary}"

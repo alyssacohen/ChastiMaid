@@ -126,7 +126,8 @@ public partial class SettingsViewModel : ViewModelBase
 
         LayerFilterChips = new LayerFilterChipVm[] { new(null, "All", () => WardrobeLayerFilter = null) }
             .Concat(WardrobeLayer.All.Select(l =>
-                new LayerFilterChipVm(l.Order, l.DisplayName, () => WardrobeLayerFilter = l.Order)))
+                new LayerFilterChipVm(l.Order, l.DisplayName,
+                    () => WardrobeLayerFilter = WardrobeLayerFilter == l.Order ? null : l.Order)))
             .ToList();
 
         this.WhenAnyValue(x => x.WardrobeLayerFilter)

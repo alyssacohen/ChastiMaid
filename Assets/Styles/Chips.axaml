@@ -48,6 +48,8 @@
         <Setter Property="Height" Value="NaN" />
         <Setter Property="MinHeight" Value="30" />
         <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Margin" Value="4, 0" />
+        <Setter Property="BorderThickness" Value="1" />
     </Style>
 
     <!-- Whole chip highlights on hover -->

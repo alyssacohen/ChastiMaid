@@ -32,7 +32,7 @@
                     <DataTemplate DataType="vm:LayerFilterChipVm">
                         <ToggleButton Classes="filterChip"
                                       Content="{Binding DisplayName}"
-                                      IsChecked="{Binding IsActive}"
+                                      IsChecked="{Binding IsActive, Mode=OneWay}"
                                       Command="{Binding SelectCommand}"
                                       Margin="0,0,4,0" />
                     </DataTemplate>
