@@ -84,8 +84,7 @@
                                     Command="{Binding DeleteCommand}"
                                     Classes="Delete"
                                     Margin="8,0,0,0"
-                                    IsVisible="{Binding !IsEmpty}"
-                                    Padding="16,12">
+                                    IsVisible="{Binding !IsEmpty}">
                                 <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
                             </Button>
 
