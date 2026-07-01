@@ -35,7 +35,7 @@
                           HorizontalScrollBarVisibility="Disabled">
                 <StackPanel HorizontalAlignment="Center"
                             MaxWidth="720"
-                            Margin="{StaticResource SpacingXxlThickness}"
+                            Margin="{StaticResource SpacingLgThickness}"
                             Spacing="{StaticResource SpacingMd}">
 
                     <!-- Layer cards -->

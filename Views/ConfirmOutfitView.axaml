@@ -12,7 +12,7 @@
 
         <Grid RowDefinitions="Auto,*,Auto">
 
-        <!-- Row 0: Top section — confirmation controls -->
+        <!-- Row 0: Top section -->
         <StackPanel Grid.Row="0"
                     HorizontalAlignment="Center"
                     MaxWidth="640"
@@ -35,7 +35,7 @@
                       HorizontalScrollBarVisibility="Disabled">
             <StackPanel HorizontalAlignment="Center"
                         MaxWidth="720"
-                        Margin="{StaticResource SpacingXxlThickness}"
+                        Margin="{StaticResource SpacingLgThickness}"
                         Spacing="{StaticResource SpacingMd}">
 
                 <!-- Layer cards -->
