@@ -100,7 +100,8 @@ public partial class StartSessionViewModel : ViewModelBase
             else
             {
                 // Priority 2: item rejection threshold — generate non-editable outfit
-                var overThreshold = wardrobe.Where(i => i.RejectionCount >= 5).ToList();
+                var overThreshold = wardrobe.Where(i => i.RejectionCount >= WardrobeBalance.RejectionForceThreshold)
+                    .ToList();
                 if (overThreshold.Count > 0)
                 {
                     _isForced = true;

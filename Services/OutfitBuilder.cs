@@ -9,13 +9,8 @@ namespace ChastiMaid.Services;
 /// </summary>
 public class OutfitBuilder
 {
-    private const int MaxFillAttemptsPerLayer = 10;
-
-    private static readonly Dictionary<int, double> DefaultLayerProbability =
-        WardrobeLayer.All.ToDictionary(l => l.Order, l => l.Probability);
-
     private readonly List<ClothingItem> _allItems;
-    private readonly Dictionary<int, double> _layerProbability;
+    private readonly IReadOnlyDictionary<int, double> _layerProbability;
     private readonly List<ClothingItem> _pickingList = [];
     private readonly Random _random;
     private readonly Dictionary<int, (HashSet<int> Requires, HashSet<int> Incompatible)> _rules;
@@ -31,7 +26,7 @@ public class OutfitBuilder
     {
         _allItems = items;
         _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
-        _layerProbability = DefaultLayerProbability;
+        _layerProbability = WardrobeBalance.LayerProbability;
 
         _rules = [];
         foreach (var rule in rules)
@@ -109,7 +104,7 @@ public class OutfitBuilder
             }
 
             // Fill layer with random candidates (exclude items incompatible with already-placed items)
-            for (var attempt = 0; attempt < MaxFillAttemptsPerLayer; attempt++)
+            for (var attempt = 0; attempt < WardrobeBalance.MaxFillAttemptsPerLayer; attempt++)
             {
                 var placedIds = outfit.Items.Select(i => i.Id).ToHashSet();
                 var candidates = remaining.Values

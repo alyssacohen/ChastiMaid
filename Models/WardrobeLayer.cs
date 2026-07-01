@@ -7,16 +7,15 @@ namespace ChastiMaid.Models;
 public record WardrobeLayer(
     int Order,
     string DisplayName,
-    string Description,
-    double Probability)
+    string Description)
 {
     public static readonly IReadOnlyList<WardrobeLayer> All =
     [
-        new(0, "Underwear", "foundation · choose freely", 1.0),
-        new(1, "Extra", "suspenders, garters · optional unless required by hosiery", 0.7),
-        new(2, "Base", "hosiery, slip · choose at most one pair", 1.0),
-        new(3, "Outerwear", "dress, skirt, blouse", 1.0),
-        new(4, "Accessories", "shoes, jewellery · multiple allowed", 0.5)
+        new(0, "Underwear", "foundation · choose freely"),
+        new(1, "Extra", "suspenders, garters · optional unless required by hosiery"),
+        new(2, "Base", "hosiery, slip · choose at most one pair"),
+        new(3, "Outerwear", "dress, skirt, blouse"),
+        new(4, "Accessories", "shoes, jewellery · multiple allowed")
     ];
 
     public static WardrobeLayer? FindByOrder(int order)

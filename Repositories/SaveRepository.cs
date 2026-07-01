@@ -64,7 +64,9 @@ public class SaveRepository(LiteDatabase db)
     {
         foreach (var item in items)
         {
-            item.Weight = Math.Max(0.1, item.Weight - 0.1);
+            item.Weight = Math.Max(
+                WardrobeBalance.AcceptWeightFloor,
+                item.Weight - WardrobeBalance.AcceptWeightDecrement);
             if (item.RejectionCount > 0)
             {
                 item.RejectionCount--;
@@ -78,7 +80,7 @@ public class SaveRepository(LiteDatabase db)
     {
         foreach (var item in items)
         {
-            item.Weight += 0.3;
+            item.Weight += WardrobeBalance.RejectWeightIncrement;
             item.RejectionCount++;
             Wardrobe.Update(item);
         }
