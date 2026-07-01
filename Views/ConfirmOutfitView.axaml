@@ -2,14 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
+             xmlns:d="using:ChastiMaid.Views.Dialogs"
              xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:ConfirmOutfitViewModel"
              x:Class="ChastiMaid.Views.ConfirmOutfitView"
              Background="{DynamicResource BrushWindowBackground}">
 
-    <Grid RowDefinitions="Auto,*,Auto">
+    <Panel>
 
-        <!-- Row 0: Top section — confirmation controls (state-dependent) -->
+        <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Row 0: Top section — confirmation controls -->
         <StackPanel Grid.Row="0"
                     HorizontalAlignment="Center"
                     MaxWidth="640"
@@ -20,68 +23,10 @@
                        Text="Outfit Confirmed"
                        HorizontalAlignment="Center" />
 
-            <!-- Initial state: prompt to go change -->
-            <StackPanel Spacing="{StaticResource SpacingMd}"
-                        IsVisible="{Binding IsInitial}">
-                <TextBlock Classes="EmployerVoice"
-                           Text="Go change into the outfit below. When you are ready, press the button to confirm."
-                           HorizontalAlignment="Center"
-                           TextAlignment="Center" />
-            </StackPanel>
-
-            <!-- Preview state: webcam check before recording -->
-            <StackPanel Spacing="{StaticResource SpacingMd}"
-                        IsVisible="{Binding IsPreviewing}"
-                        HorizontalAlignment="Center">
-                <TextBlock Classes="Caption"
-                           Text="Check yourself in the preview, then press Record."
-                           HorizontalAlignment="Center"
-                           TextAlignment="Center" />
-                <v:WebcamPreviewControl Service="{Binding Webcam}"
-                                        Width="480"
-                                        Height="360" />
-                <Button Classes="Primary"
-                        Content="🔴 Record (5s)"
-                        Command="{Binding RecordCommand}"
-                        HorizontalAlignment="Center" />
-                <Button Classes="Ghost"
-                        Content="Skip"
-                        Command="{Binding SkipCommand}"
-                        HorizontalAlignment="Center"
-                        Opacity="0.6" />
-            </StackPanel>
-
-            <!-- Recording state: countdown + live preview -->
-            <StackPanel Spacing="{StaticResource SpacingMd}"
-                        IsVisible="{Binding IsRecording}"
-                        HorizontalAlignment="Center">
-                <TextBlock Classes="Body"
-                           Text="Recording... Strike a pose!"
-                           HorizontalAlignment="Center" />
-                <v:WebcamPreviewControl Service="{Binding Webcam}"
-                                        Width="480"
-                                        Height="360" />
-                <TextBlock Classes="NumberLarge"
-                           Text="{Binding Countdown, StringFormat={}{0}s}"
-                           HorizontalAlignment="Center" />
-            </StackPanel>
-
-            <!-- No webcam state -->
-            <StackPanel Spacing="{StaticResource SpacingMd}"
-                        IsVisible="{Binding NoWebcam}"
-                        HorizontalAlignment="Center">
-                <TextBlock Classes="Body"
-                           Text="No webcam detected."
-                           HorizontalAlignment="Center" />
-                <TextBlock Classes="Caption"
-                           Text="The outfit video cannot be recorded. You can skip this step and continue."
-                           TextWrapping="Wrap"
-                           TextAlignment="Center" />
-                <Button Classes="Primary"
-                        Content="Skip"
-                        Command="{Binding SkipCommand}"
-                        HorizontalAlignment="Center" />
-            </StackPanel>
+            <TextBlock Classes="EmployerVoice"
+                       Text="Go change into the outfit below. When you are ready, press the button to confirm."
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center" />
 
         </StackPanel>
 
@@ -186,7 +131,6 @@
         </ScrollViewer>
         
         <StackPanel Grid.Row="2" Spacing="{StaticResource SpacingMd}"
-                    IsVisible="{Binding IsInitial}"
                     Margin="{StaticResource SpacingButtonStripThickness}">
             <Button Classes="Primary"
                     Content="I'm wearing the outfit, continue"
@@ -194,6 +138,18 @@
                     HorizontalAlignment="Center" />
         </StackPanel>
 
-    </Grid>
+        </Grid>
+
+        <!-- Webcam capture dialog overlay -->
+        <ContentControl Content="{Binding ActiveDialog}"
+                        IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <ContentControl.ContentTemplate>
+                <DataTemplate DataType="vm:WebcamCaptureDialogViewModel">
+                    <d:WebcamCaptureDialog />
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
+
+    </Panel>
 
 </UserControl>
