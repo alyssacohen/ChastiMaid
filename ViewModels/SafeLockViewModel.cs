@@ -16,11 +16,8 @@ public partial class SafeLockViewModel : ViewModelBase
     [Reactive(SetModifier = AccessModifier.Private)]
     private bool _isDone;
 
-    [Reactive(SetModifier = AccessModifier.Private)]
-    private bool _isPreviewing;
-
-    [Reactive(SetModifier = AccessModifier.Private)]
-    private bool _noWebcam;
+    [Reactive]
+    private WebcamCaptureDialogViewModel? _activeDialog;
 
     public SafeLockViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
     {
@@ -28,35 +25,20 @@ public partial class SafeLockViewModel : ViewModelBase
         _saveRepo = saveRepo;
         Webcam = mainVm.Webcam;
 
-        StartCameraCommand = ReactiveCommand.Create(OnStartCamera);
-        CaptureCommand = ReactiveCommand.CreateFromTask(CapturePhoto);
+        StartCameraCommand = ReactiveCommand.CreateFromTask(OnStartCamera);
         SkipCommand = ReactiveCommand.Create(StartSession);
         ContinueCommand = ReactiveCommand.Create(StartSession);
     }
 
     public WebcamPreviewService Webcam { get; }
 
-    public bool IsInitial => !IsPreviewing && !NoWebcam && !IsDone;
+    public bool IsInitial => !IsDone;
 
     public ICommand StartCameraCommand { get; }
-    public ICommand CaptureCommand { get; }
     public ICommand SkipCommand { get; }
     public ICommand ContinueCommand { get; }
 
-    private void OnStartCamera()
-    {
-        if (!Webcam.Start())
-        {
-            NoWebcam = true;
-            this.RaisePropertyChanged(nameof(IsInitial));
-            return;
-        }
-
-        IsPreviewing = true;
-        this.RaisePropertyChanged(nameof(IsInitial));
-    }
-
-    private async Task CapturePhoto()
+    private async Task OnStartCamera()
     {
         var state = _saveRepo.GetGameState();
         var slotName = state?.SlotName ?? "unknown";
@@ -64,16 +46,24 @@ public partial class SafeLockViewModel : ViewModelBase
         var tempPath = Path.Combine(dir, "safe_combo_temp.png");
         var encPath = Path.Combine(dir, "safe_combo.enc");
 
+        var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Photo, tempPath,
+            "Point the camera at the combination, then press Capture.",
+            "The combination photo cannot be captured. You can continue without locking the safe.",
+            "Continue without safe");
+        ActiveDialog = dialog;
+        var capturedPath = await dialog.Result;
+        ActiveDialog = null;
+
+        if (capturedPath is null)
+        {
+            StartSession();
+            return;
+        }
+
         try
         {
-            if (!await Webcam.CaptureFrameAsync(tempPath))
-            {
-                SetNoWebcam();
-                return;
-            }
-
-            CryptoService.EncryptFile(tempPath, encPath);
-            File.Delete(tempPath);
+            CryptoService.EncryptFile(capturedPath, encPath);
+            File.Delete(capturedPath);
 
             if (state is not null)
             {
@@ -82,23 +72,12 @@ public partial class SafeLockViewModel : ViewModelBase
             }
 
             _mainVm.AutoSaveService.TriggerSave();
+            IsDone = true;
         }
         catch
         {
-            SetNoWebcam();
-            return;
+            StartSession();
         }
-
-        Webcam.Stop();
-        IsPreviewing = false;
-        IsDone = true;
-    }
-
-    private void SetNoWebcam()
-    {
-        Webcam.Stop();
-        IsPreviewing = false;
-        NoWebcam = true;
     }
 
     private void StartSession()

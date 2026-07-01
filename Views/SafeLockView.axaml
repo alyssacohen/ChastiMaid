@@ -1,85 +1,66 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:v="using:ChastiMaid.Views.Controls"
+             xmlns:d="using:ChastiMaid.Views.Dialogs"
              x:DataType="vm:SafeLockViewModel"
              x:Class="ChastiMaid.Views.SafeLockView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MaxWidth="600"
-                Margin="40"
-                Spacing="16">
+    <Panel>
 
-        <TextBlock Classes="PageTitle"
-                   Text="Safe Lock"
-                   HorizontalAlignment="Center" />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="600"
+                    Margin="40"
+                    Spacing="16">
 
-        <!-- Initial: instructions + start camera -->
-        <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
-            <TextBlock Classes="EmployerVoice"
-                       Text="Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it."
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
-            <Button Content="Start Camera"
-                    Command="{Binding StartCameraCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
-            <Button Content="Skip (no safe)"
-                    Command="{Binding SkipCommand}"
-                    Classes="Ghost"
-                    HorizontalAlignment="Center"
-                    Opacity="0.6" />
-        </StackPanel>
-
-        <!-- Preview: webcam + Capture -->
-        <StackPanel Spacing="16" IsVisible="{Binding IsPreviewing}" HorizontalAlignment="Center">
-            <TextBlock Classes="Caption"
-                       Text="Point the camera at the combination, then press Capture."
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center" />
-            <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
-            <Button Content="📸 Capture"
-                    Command="{Binding CaptureCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
-            <Button Content="Skip (no safe)"
-                    Command="{Binding SkipCommand}"
-                    Classes="Ghost"
-                    HorizontalAlignment="Center"
-                    Opacity="0.6" />
-        </StackPanel>
-
-        <!-- No webcam -->
-        <StackPanel Spacing="16" IsVisible="{Binding NoWebcam}" HorizontalAlignment="Center">
-            <TextBlock Classes="Body"
-                       Text="No webcam detected."
+            <TextBlock Classes="PageTitle"
+                       Text="Safe Lock"
                        HorizontalAlignment="Center" />
-            <TextBlock Classes="Caption"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       Text="The combination photo cannot be captured. You can continue without locking the safe." />
-            <Button Content="Continue without safe"
-                    Command="{Binding SkipCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
+
+            <!-- Initial: instructions + start camera -->
+            <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
+                <TextBlock Classes="EmployerVoice"
+                           Text="Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it."
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center" />
+                <Button Content="Start Camera"
+                        Command="{Binding StartCameraCommand}"
+                        HorizontalAlignment="Center"
+                        Classes="Primary" />
+                <Button Content="Skip (no safe)"
+                        Command="{Binding SkipCommand}"
+                        Classes="Ghost"
+                        HorizontalAlignment="Center"
+                        Opacity="0.6" />
+            </StackPanel>
+
+            <!-- Done -->
+            <StackPanel Spacing="16" IsVisible="{Binding IsDone}" HorizontalAlignment="Center">
+                <TextBlock Classes="Body"
+                           Text="🔒 Safe locked!"
+                           HorizontalAlignment="Center" />
+                <TextBlock Classes="Caption"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Text="The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe." />
+                <Button Content="Start Session"
+                        Command="{Binding ContinueCommand}"
+                        HorizontalAlignment="Center"
+                        Classes="Primary" />
+            </StackPanel>
+
         </StackPanel>
 
-        <!-- Done -->
-        <StackPanel Spacing="16" IsVisible="{Binding IsDone}" HorizontalAlignment="Center">
-            <TextBlock Classes="Body"
-                       Text="🔒 Safe locked!"
-                       HorizontalAlignment="Center" />
-            <TextBlock Classes="Caption"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       Text="The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe." />
-            <Button Content="Start Session"
-                    Command="{Binding ContinueCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary" />
-        </StackPanel>
+        <!-- Webcam capture dialog overlay -->
+        <ContentControl Content="{Binding ActiveDialog}"
+                        IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <ContentControl.ContentTemplate>
+                <DataTemplate DataType="vm:WebcamCaptureDialogViewModel">
+                    <d:WebcamCaptureDialog />
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
 
-    </StackPanel>
+    </Panel>
 
 </UserControl>
