@@ -5,7 +5,7 @@ using ChastiMaid.ViewModels;
 
 namespace ChastiMaid.Views.Dialogs;
 
-public partial class PunishmentListDialog : BaseDialog
+public partial class PunishmentListDialog : Window
 {
     public PunishmentListDialog()
     {
@@ -18,18 +18,21 @@ public partial class PunishmentListDialog : BaseDialog
     }
 
     public PunishmentItemViewModel? SelectedPunishment { get; private set; }
+    public bool DialogResult { get; private set; }
 
     private void StartButton_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button { DataContext: PunishmentItemViewModel pvm })
         {
             SelectedPunishment = pvm;
-            Confirm();
+            DialogResult = true;
+            Close();
         }
     }
 
     private void OnDismissClick(object? sender, RoutedEventArgs e)
     {
-        Dismiss();
+        DialogResult = false;
+        Close();
     }
 }

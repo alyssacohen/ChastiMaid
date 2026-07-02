@@ -338,7 +338,7 @@ public partial class DashboardViewModel : ViewModelBase
         }
 
         // Webcam available — navigate to camera setup
-        if (MediaCaptureService.DetectWebcam())
+        if (WebcamPreviewService.DetectWebcam())
         {
             _mainVm.NavigateTo(new CameraSetupViewModel(_mainVm, _saveRepo, chore));
         }
@@ -434,13 +434,13 @@ public partial class DashboardViewModel : ViewModelBase
                     if (_random.Next(2) == 0)
                     {
                         var path = Path.Combine(dir, $"chore_{timestamp}.png");
-                        await MediaCaptureService.CaptureFrameAsync(path, ct);
+                        await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct);
                     }
                     else
                     {
                         var duration = _random.Next(3, 11);
                         var path = Path.Combine(dir, $"chore_{timestamp}.avi");
-                        await MediaCaptureService.RecordVideoAsync(path, duration, ct: ct);
+                        await WebcamPreviewService.RecordVideoStandaloneAsync(path, duration, ct: ct);
                     }
                 }
                 catch (OperationCanceledException)

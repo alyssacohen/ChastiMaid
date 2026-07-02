@@ -1,14 +1,13 @@
-<dialogs:BaseDialog xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
-                    x:Class="ChastiMaid.Views.Dialogs.PunishmentListDialog"
-                    x:CompileBindings="False"
-                    WindowDecorations="None"
-                    SizeToContent="Height"
-                    Width="380"
-                    WindowStartupLocation="CenterOwner"
-                    Background="Transparent"
-                    CanResize="False">
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ChastiMaid.Views.Dialogs.PunishmentListDialog"
+        x:CompileBindings="False"
+        WindowDecorations="None"
+        SizeToContent="Height"
+        Width="380"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent"
+        CanResize="False">
 
     <Border Background="{DynamicResource BrushWindowBackground}"
             CornerRadius="8"
@@ -93,4 +92,4 @@
         </DockPanel>
     </Border>
 
-</dialogs:BaseDialog>
+</Window>
