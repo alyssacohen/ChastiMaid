@@ -39,7 +39,6 @@
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="10,0" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="30" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
@@ -61,7 +60,6 @@
         <Setter Property="Padding" Value="16,0,16,0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
         <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="FontSize" Value="13" />
@@ -114,7 +112,6 @@
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style Selector="Button.tableRowExpander /template/ ContentPresenter">
         <Setter Property="Background" Value="Transparent" />

@@ -1,12 +1,17 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- Default content alignment for all buttons, chips and toggle/radio controls —
+         content is centered vertically unless a more specific style says otherwise. -->
+    <Style Selector="Button, ToggleButton, RadioButton">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
     <!-- Primary — main confirm/save actions -->
     <Style Selector="Button.Primary">
         <Setter Property="Background" Value="{DynamicResource BrushButtonPrimary}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiLight" />
         <Setter Property="Height" Value="44" />
@@ -20,7 +25,6 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiLight" />
         <Setter Property="Height" Value="44" />
@@ -35,7 +39,6 @@
         <Setter Property="Background" Value="{DynamicResource BrushButtonDanger}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="Regular" />
         <Setter Property="Height" Value="44" />
@@ -49,7 +52,6 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Regular" />
         <Setter Property="Height" Value="32" />
@@ -64,7 +66,6 @@
         <Setter Property="Background" Value="{DynamicResource BrushAmber}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiLight" />
         <Setter Property="Height" Value="44" />
@@ -78,7 +79,6 @@
         <Setter Property="Background" Value="{DynamicResource BrushButtonDanger}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Height" Value="44" />
@@ -92,7 +92,6 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonDanger}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="Height" Value="44" />
         <Setter Property="Padding" Value="8,0" />
@@ -105,7 +104,6 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Regular" />
         <Setter Property="Height" Value="44" />
