@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:WebcamCaptureDialogViewModel"
              x:Class="ChastiMaid.Views.Dialogs.WebcamCaptureDialog">
 
@@ -34,7 +35,7 @@
                             IsVisible="{Binding IsRecording}"
                             HorizontalAlignment="Center">
                     <TextBlock Classes="Body"
-                               Text="Recording... Strike a pose!"
+                               Text="{conv:Tr WebcamRecordingLabel}"
                                HorizontalAlignment="Center" />
                     <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
                     <TextBlock Classes="NumberLarge"
@@ -47,7 +48,7 @@
                             IsVisible="{Binding NoWebcam}"
                             HorizontalAlignment="Center">
                     <TextBlock Classes="Body"
-                               Text="No webcam detected."
+                               Text="{conv:Tr WebcamNotDetected}"
                                HorizontalAlignment="Center" />
                     <TextBlock Classes="Caption"
                                Text="{Binding NoWebcamMessage}"

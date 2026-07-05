@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:GameCompleteViewModel"
              x:Class="ChastiMaid.Views.GameCompleteView">
 
@@ -11,24 +12,24 @@
                 Spacing="16">
 
         <TextBlock Classes="PageTitle"
-                   Text="Game Complete!"
+                   Text="{conv:Tr GameCompleteTitle}"
                    HorizontalAlignment="Center" />
 
         <TextBlock Classes="EmployerVoice"
-                   Text="Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed."
+                   Text="{conv:Tr GameCompleteEmployerQuote}"
                    HorizontalAlignment="Center"
                    TextAlignment="Center" />
 
         <!-- Export buttons -->
         <StackPanel Spacing="12">
-            <Button Content="Export Outfit Video"
+            <Button Content="{conv:Tr GameCompleteExportVideo}"
                     Command="{Binding ExportOutfitVideoCommand}"
                     IsVisible="{Binding HasOutfitVideo}"
                     Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center" />
 
-            <Button Content="Export Safe Combination Photo"
+            <Button Content="{conv:Tr GameCompleteExportPhoto}"
                     Command="{Binding ExportSafePhotoCommand}"
                     IsVisible="{Binding HasSafePhoto}"
                     Classes="Ghost"
@@ -43,7 +44,7 @@
                    IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
         <!-- Finish -->
-        <Button Content="Finish and Free Slot"
+        <Button Content="{conv:Tr GameCompleteFinish}"
                 Command="{Binding FinishCommand}"
                 HorizontalAlignment="Center"
                 Classes="Primary" />

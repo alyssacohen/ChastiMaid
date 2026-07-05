@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
@@ -194,10 +195,10 @@ public partial class StartSessionViewModel : ViewModelBase
         var penalty = _regenCount == 0 ? 0.5 : 0.5;
         var resultBonus = _currentBonus * penalty;
         var dialog = new ConfirmDialogViewModel(
-            "Regenerate Outfit",
-            $"Regenerating will reduce your bonus to {resultBonus * 100:F0}% of the base multiplier. Proceed?",
-            "Regenerate",
-            "Cancel");
+            Resources.Get("StartSessionRegenerateOutfitTitle"),
+            string.Format(Resources.Get("StartSessionRegenerateMessageFormat"), resultBonus * 100),
+            Resources.Get("StartSessionRegenerate"),
+            Resources.Get("Cancel"));
         ActiveDialog = dialog;
         var confirmed = await dialog.Result;
         ActiveDialog = null;
@@ -228,10 +229,10 @@ public partial class StartSessionViewModel : ViewModelBase
     {
         var resultBonus = _currentBonus * 0.2;
         var dialog = new ConfirmDialogViewModel(
-            "Modify Outfit",
-            $"Manually choosing clothes will reduce your bonus to {resultBonus * 100:F0}% of the base multiplier and lock the outfit. Proceed?",
-            "Modify",
-            "Cancel");
+            Resources.Get("StartSessionModifyOutfitTitle"),
+            string.Format(Resources.Get("StartSessionModifyMessageFormat"), resultBonus * 100),
+            Resources.Get("StartSessionModify"),
+            Resources.Get("Cancel"));
         ActiveDialog = dialog;
         var confirmed = await dialog.Result;
         ActiveDialog = null;

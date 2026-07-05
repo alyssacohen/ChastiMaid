@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
@@ -116,14 +117,15 @@ public partial class DashboardViewModel : ViewModelBase
 
         CurrentDebt = state?.CurrentDebt ?? 0;
         DebtDisplay = FormatDebt(CurrentDebt);
-        InitialDebtDisplay = $"Initial: ${state?.InitialDebt ?? 0:F2}";
-        CurrentOutfit = state?.CurrentOutfit ?? "No outfit set";
+        InitialDebtDisplay = string.Format(Resources.Get("DashboardInitialDebtFormat"), state?.InitialDebt ?? 0);
+        CurrentOutfit = state?.CurrentOutfit ?? Resources.Get("DashboardNoOutfitSet");
 
         _outfitBonus = state?.EffectiveMultiplier ?? 1.0;
         var effectiveWage = Math.Round(_settings.IdleWageAmount * (decimal)_outfitBonus, 2);
         PayRate = Program.TestMode
-            ? $"Wage: ${effectiveWage:F2} / {_settings.IdleWageIntervalMinutes} min (${_settings.IdleWageAmount:F2} × {_outfitBonus:F2})"
-            : $"Wage: ${effectiveWage:F2} / {_settings.IdleWageIntervalMinutes} min";
+            ? string.Format(Resources.Get("DashboardWageDebugFormat"), effectiveWage,
+                _settings.IdleWageIntervalMinutes, _settings.IdleWageAmount, _outfitBonus)
+            : string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
 
         foreach (var chore in saveRepo.GetChores())
         {
@@ -233,7 +235,7 @@ public partial class DashboardViewModel : ViewModelBase
 
     private static string FormatDebt(decimal debt)
     {
-        return $"Debt: ${debt:F2}";
+        return string.Format(Resources.Get("DashboardDebtFormat"), debt);
     }
 
     private void RefreshDebt()
@@ -263,7 +265,7 @@ public partial class DashboardViewModel : ViewModelBase
             remaining = TimeSpan.Zero;
         }
 
-        TimeToNextWage = $"Next wage in {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+        TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
     // --- Trivia popup ---
@@ -338,7 +340,7 @@ public partial class DashboardViewModel : ViewModelBase
         }
 
         // Webcam available — navigate to camera setup
-        if (WebcamPreviewService.DetectWebcam())
+        if (WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex))
         {
             _mainVm.NavigateTo(new CameraSetupViewModel(_mainVm, _saveRepo, chore));
         }
@@ -434,13 +436,14 @@ public partial class DashboardViewModel : ViewModelBase
                     if (_random.Next(2) == 0)
                     {
                         var path = Path.Combine(dir, $"chore_{timestamp}.png");
-                        await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct);
+                        await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, _settings.SelectedCameraIndex);
                     }
                     else
                     {
                         var duration = _random.Next(3, 11);
                         var path = Path.Combine(dir, $"chore_{timestamp}.avi");
-                        await WebcamPreviewService.RecordVideoStandaloneAsync(path, duration, ct: ct);
+                        await WebcamPreviewService.RecordVideoStandaloneAsync(path, duration, ct: ct,
+                            cameraIndex: _settings.SelectedCameraIndex);
                     }
                 }
                 catch (OperationCanceledException)

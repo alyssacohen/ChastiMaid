@@ -7,18 +7,18 @@
     <Border Classes="card" Margin="0">
         <StackPanel Spacing="10">
 
-            <TextBlock Classes="SectionTitle" Text="Outstanding Balance" />
+            <TextBlock Classes="SectionTitle" Text="{conv:Tr DebtWidgetTitle}" />
 
             <Grid ColumnDefinitions="*,*">
 
                 <StackPanel Grid.Column="0" Spacing="2">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase Settled}" />
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr DebtWidgetSettled}}" />
                     <TextBlock Classes="NumberLarge"
                                Text="{Binding #Root.DebtSettled, StringFormat='${0:F2}'}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Spacing="2" HorizontalAlignment="Right">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase Remaining}"
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr DebtWidgetRemaining}}"
                                HorizontalAlignment="Right" />
                     <TextBlock Classes="NumberLarge"
                                Text="{Binding #Root.DebtRemaining, StringFormat='${0:F2}'}"
@@ -35,7 +35,7 @@
                          CornerRadius="3" />
 
             <TextBlock Classes="Caption"
-                       Text="{Binding #Root.DebtTotal, StringFormat='Total incurred: ${0:F2}'}" />
+                       Text="{Binding #Root.DebtTotal, StringFormat={conv:Tr DebtWidgetTotalIncurredFormat}}" />
 
         </StackPanel>
     </Border>

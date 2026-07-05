@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:NewGameViewModel"
              x:Class="ChastiMaid.Views.NewGameView">
 
@@ -11,37 +12,37 @@
                 Spacing="16">
 
         <TextBlock Classes="PageTitle"
-                   Text="New Game"
+                   Text="{conv:Tr WelcomeNewGame}"
                    HorizontalAlignment="Center" />
 
         <TextBlock Classes="Subheading"
-                   Text="Your game will start with these settings:"
+                   Text="{conv:Tr NewGameSettingsIntro}"
                    HorizontalAlignment="Center" />
 
         <StackPanel Spacing="4">
             <TextBlock Classes="Body" HorizontalAlignment="Center">
-                <Run Text="Initial debt: " Foreground="{DynamicResource TextMuted}" />
+                <Run Text="{conv:Tr NewGameInitialDebtLabel}" Foreground="{DynamicResource TextMuted}" />
                 <Run Text="{Binding DebtRange}" />
             </TextBlock>
             <TextBlock Classes="Body" HorizontalAlignment="Center">
-                <Run Text="Daily interest: " Foreground="{DynamicResource TextMuted}" />
+                <Run Text="{conv:Tr NewGameDailyInterestLabel}" Foreground="{DynamicResource TextMuted}" />
                 <Run Text="{Binding InterestRate}" />
             </TextBlock>
         </StackPanel>
 
-        <Button Content="Start Game"
+        <Button Content="{conv:Tr NewGameStartGame}"
                 Command="{Binding StartGameCommand}"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="Primary" />
 
-        <Button Content="Settings"
+        <Button Content="{conv:Tr WelcomeSettings}"
                 Command="{Binding SettingsCommand}"
                 Classes="Ghost"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center" />
 
-        <Button Content="Back"
+        <Button Content="{conv:Tr Back}"
                 Command="{Binding BackCommand}"
                 Classes="Ghost"
                 HorizontalAlignment="Stretch"

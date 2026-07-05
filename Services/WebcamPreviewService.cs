@@ -36,14 +36,14 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     }
 
     /// <summary>Opens the webcam and starts the preview loop. Returns false if unavailable.</summary>
-    public bool Start()
+    public bool Start(int cameraIndex = 0)
     {
         if (_capture is not null)
         {
             return true;
         }
 
-        var cap = new VideoCapture(0);
+        var cap = new VideoCapture(cameraIndex);
         if (!cap.IsOpened())
         {
             cap.Dispose();
@@ -241,10 +241,26 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     }
 
     /// <summary>Checks whether a webcam is available.</summary>
-    public static bool DetectWebcam()
+    public static bool DetectWebcam(int cameraIndex = 0)
     {
-        using var cap = new VideoCapture(0);
+        using var cap = new VideoCapture(cameraIndex);
         return cap.IsOpened();
+    }
+
+    /// <summary>Probes camera indices 0..maxProbe-1 and returns the ones that open successfully.</summary>
+    public static List<int> EnumerateCameras(int maxProbe = 5)
+    {
+        var found = new List<int>();
+        for (var i = 0; i < maxProbe; i++)
+        {
+            using var cap = new VideoCapture(i);
+            if (cap.IsOpened())
+            {
+                found.Add(i);
+            }
+        }
+
+        return found;
     }
 
     /// <summary>
@@ -255,13 +271,14 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         string outputPath,
         int durationSeconds,
         IProgress<int>? progress = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default,
+        int cameraIndex = 0)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
         await Task.Run(() =>
         {
-            using var cap = new VideoCapture(0);
+            using var cap = new VideoCapture(cameraIndex);
             if (!cap.IsOpened())
             {
                 throw new InvalidOperationException("Webcam not available.");
@@ -301,13 +318,14 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     ///     Opens its own VideoCapture (independent of any running preview) and captures a single frame,
     ///     saving it as an image.
     /// </summary>
-    public static async Task<bool> CaptureFrameStandaloneAsync(string outputPath, CancellationToken ct = default)
+    public static async Task<bool> CaptureFrameStandaloneAsync(string outputPath, CancellationToken ct = default,
+        int cameraIndex = 0)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
         return await Task.Run(() =>
         {
-            using var cap = new VideoCapture(0);
+            using var cap = new VideoCapture(cameraIndex);
             if (!cap.IsOpened())
             {
                 return false;

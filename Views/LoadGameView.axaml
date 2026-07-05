@@ -3,6 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
              xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:LoadGameViewModel"
              x:Class="ChastiMaid.Views.LoadGameView">
 
@@ -14,7 +15,7 @@
                     Spacing="16">
 
             <TextBlock Classes="PageTitle"
-                       Text="Load Game"
+                       Text="{conv:Tr WelcomeLoadGame}"
                        HorizontalAlignment="Center" />
 
             <ItemsControl ItemsSource="{Binding Slots}" Width="600">
@@ -73,7 +74,7 @@
                                     <!-- Empty slot label -->
                                     <TextBlock Grid.Column="1"
                                                Classes="Caption"
-                                               Text="Empty"
+                                               Text="{conv:Tr LoadGameEmptySlot}"
                                                VerticalAlignment="Center"
                                                IsVisible="{Binding IsEmpty}" />
                                 </Grid>
@@ -93,7 +94,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <Button Content="Back"
+            <Button Content="{conv:Tr Back}"
                     Command="{Binding BackCommand}"
                     Classes="Ghost"
                     HorizontalAlignment="Center" />

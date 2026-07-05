@@ -29,7 +29,7 @@
 
                     <TextBlock Classes="EmployerVoice"
                                TextWrapping="Wrap"
-                               Text="«Do come in. The door is unlocked. It always is... at first.»" />
+                               Text="{conv:Tr WelcomeQuote}" />
 
                 </StackPanel>
 
@@ -46,7 +46,7 @@
 
                             <TextBlock Classes="LabelUI"
                                        HorizontalAlignment="Center"
-                                       Text="{conv:UpperCase ⏩  Test Mode — Time Travel}" />
+                                       Text="{conv:UpperCase {conv:Tr WelcomeTestModeLabel}}" />
 
                             <TextBlock Classes="Caption"
                                        HorizontalAlignment="Center"
@@ -56,15 +56,15 @@
                                         HorizontalAlignment="Center"
                                         Spacing="8">
                                 <Button Classes="SmallGhost"
-                                        Content="+1 day"
+                                        Content="{conv:Tr WelcomePlusOneDay}"
                                         Command="{Binding TimeTravelCommand}"
                                         CommandParameter="1" />
                                 <Button Classes="SmallGhost"
-                                        Content="+3 days"
+                                        Content="{conv:Tr WelcomePlusThreeDays}"
                                         Command="{Binding TimeTravelCommand}"
                                         CommandParameter="3" />
                                 <Button Classes="SmallGhost"
-                                        Content="+7 days"
+                                        Content="{conv:Tr WelcomePlusSevenDays}"
                                         Command="{Binding TimeTravelCommand}"
                                         CommandParameter="7" />
                             </StackPanel>
@@ -84,7 +84,7 @@
                 <Button Classes="Primary"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        Content="Continue"
+                        Content="{conv:Tr WelcomeContinue}"
                         Command="{Binding ContinueCommand}" />
 
                 <Button Classes="Primary"
@@ -93,7 +93,7 @@
                         VerticalContentAlignment="Center"
                         FontSize="15"
                         Margin="0,12,0,0"
-                        Content="New Game"
+                        Content="{conv:Tr WelcomeNewGame}"
                         Command="{Binding NewGameCommand}" />
 
                 <Border Height="1"
@@ -103,19 +103,19 @@
                 <Button Classes="Ghost"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        Content="Load Game"
+                        Content="{conv:Tr WelcomeLoadGame}"
                         Command="{Binding LoadGameCommand}" />
 
                 <Button Classes="Ghost"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         Margin="0,12,0,0"
-                        Content="Settings"
+                        Content="{conv:Tr WelcomeSettings}"
                         Command="{Binding SettingsCommand}" />
 
                 <TextBlock Name="ExitLabel"
                            Classes="Caption"
-                           Text="Exit"
+                           Text="{conv:Tr WelcomeExit}"
                            HorizontalAlignment="Center"
                            Margin="0,20,0,0"
                            Cursor="Hand">

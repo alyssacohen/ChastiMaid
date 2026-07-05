@@ -15,7 +15,6 @@ Detailed domain specs live in `docs/specs/` (always-relevant design docs):
 - `gameplay.md` — game/session/dashboard flow, idle vs. busy mode, popups.
 - `wardrobe.md` — outfit generation, layers/slots, the daily lock + bonus/multiplier mechanic.
 - `punishments.md` — punishment types and severity scaling.
-- `tech.md` — conventions (also summarized below).
 
 ## Commands
 
@@ -41,9 +40,9 @@ Full keyboard and mouse, large screen. Used for development and testing.
 - Orientation: primarily landscape, but portrait must not break layouts.
 - Performance: low-power Intel Pentium Gold / 4 GB RAM — avoid heavy background work
   on the UI thread; keep animations simple.
-- Cameras: **two cameras** (front-facing and rear-facing). `MediaCaptureService` and
-  `WebcamPreviewService` must support camera enumeration and allow the user to select
-  which camera to use. The selected camera should be persisted in `GameSettings`.
+- Cameras: **two cameras** (front-facing and rear-facing). `WebcamPreviewService` supports camera
+  enumeration and lets the user select which camera to use. The selected camera is persisted in
+  `GameSettings` (`SelectedCameraIndex`).
 - No font scaling: instead of scaling font sizes to screen dimensions, layouts use
   generous padding/spacing so they breathe naturally on larger screens. Font size keys
   (`FontSizeBody`, `FontSizeDisplay`, etc.) are fixed constants.
@@ -80,11 +79,12 @@ profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` wit
   `Resume()` toggle for the idle↔busy transition. Exposes `OnIdleWagePaid`/`OnPopupTriggered` callbacks.
 - `AutoSaveService` — `TriggerSave()` for event-driven saves + a periodic timer; `Bind`/`Unbind` the active
   `SaveRepository`.
-- `GameClock` — **all in-game time must go through `GameClock.UtcNow()`/`Today`, never `DateTime.UtcNow` directly.** It
-  applies a test offset (`Advance`/`Reset`) so time-dependent mechanics (daily outfit lock, interest) can be
-  fast-forwarded in test mode.
-- `MediaCaptureService` / `WebcamPreviewService` — webcam capture (OpenCvSharp) for the photo/video check-ins;
-  `CryptoService` encrypts captured media and the safe-combination photo.
+- `GameClock` — **all time-dependent game mechanics (daily outfit lock, interest, idle wage, popup timing) must go
+  through `GameClock.UtcNow()`/`Today`, never `DateTime.UtcNow` directly.** It applies a test offset
+  (`Advance`/`Reset`) so these mechanics can be fast-forwarded in test mode. Timestamps used only for naming files
+  (e.g. capture filenames, save-slot names) are not game mechanics and may use `DateTime.Now` directly.
+- `WebcamPreviewService` — webcam capture (OpenCvSharp) for the photo/video check-ins, including camera enumeration
+  and selection; `CryptoService` encrypts captured media and the safe-combination photo.
 
 **OutfitBuilder** builds a randomized outfit from snapshot wardrobe items, honoring requires/incompatible rules, layer
 probabilities, per-layer slot exclusivity, and weighted selection. Accepting an outfit lowers item `Weight`; rejecting
@@ -106,8 +106,8 @@ multiplier is `OutfitMultiplier × OutfitBonusPercent`.
 - **Repositories and stateless managers use primary-constructor syntax**: `ProfileRepository(LiteDatabase db)`,
   `SaveRepository(LiteDatabase db)`, `SaveSlotManager(DatabaseService dbService)`.
 - **Stateful/lifecycle services use traditional constructors** — they own fields, timers, `CancellationTokenSource`,
-  `IDisposable`: `DatabaseService`, `AutoSaveService`, `SessionLoopService`, `OutfitBuilder`, `WebcamPreviewService`,
-  `MediaCaptureService`. Do not convert these to primary constructors.
+  `IDisposable`: `DatabaseService`, `AutoSaveService`, `SessionLoopService`, `OutfitBuilder`, `WebcamPreviewService`.
+  Do not convert these to primary constructors.
 
 ### MVVM / ReactiveUI
 
@@ -146,7 +146,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 **No inline styles.** Never hardcode colors, font sizes, or spacing directly in views. All tokens live in
 `Assets/Styles/`. Views assign classes and reference resources only.
 
-**No font scaling.** Typography uses fixed pixel values. `TypographyService.cs` is dead code — delete it if found.
+**No font scaling.** Typography uses fixed pixel values.
 
 **Font families** — referenced as embedded Avalonia assets, not installed system fonts:
 

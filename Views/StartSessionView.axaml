@@ -19,11 +19,11 @@
                         Spacing="{StaticResource SpacingLg}">
 
                 <TextBlock Classes="PageTitle"
-                           Text="Today's Outfit"
+                           Text="{conv:Tr StartSessionTitle}"
                            HorizontalAlignment="Center" />
 
                 <TextBlock Classes="EmployerVoice"
-                           Text="I have taken the liberty of choosing your attire. I am sure you will like it."
+                           Text="{conv:Tr StartSessionEmployerQuote}"
                            HorizontalAlignment="Center"
                            TextAlignment="Center" />
 
@@ -109,7 +109,7 @@
                                     HorizontalAlignment="Center"
                                     Spacing="{StaticResource SpacingMd}">
                             <TextBlock Classes="Caption"
-                                       Text="Total Multiplier"
+                                       Text="{conv:Tr StartSessionTotalMultiplier}"
                                        Foreground="{DynamicResource TextMuted}"
                                        VerticalAlignment="Center" />
                             <TextBlock Classes="NumberMedium"
@@ -134,18 +134,18 @@
                         Spacing="{StaticResource SpacingMd}"
                         Margin="{StaticResource SpacingButtonStripThickness}">
                 <Button Classes="Primary"
-                        Content="Accept"
+                        Content="{conv:Tr Accept}"
                         Command="{Binding AcceptCommand}" />
                 <Button Classes="Ghost"
-                        Content="Regenerate"
+                        Content="{conv:Tr StartSessionRegenerate}"
                         Command="{Binding RegenerateCommand}"
                         IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Classes="Ghost"
-                        Content="Modify"
+                        Content="{conv:Tr StartSessionModify}"
                         Command="{Binding ModifyCommand}"
                         IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Classes="Ghost"
-                        Content="Quit"
+                        Content="{conv:Tr StartSessionQuit}"
                         Command="{Binding QuitCommand}" />
             </StackPanel>
 

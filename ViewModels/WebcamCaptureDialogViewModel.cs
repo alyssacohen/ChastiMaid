@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using ChastiMaid.Localization;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
@@ -34,8 +35,10 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     private bool _noWebcam;
 
     public WebcamCaptureDialogViewModel(WebcamPreviewService webcam, WebcamCaptureMode mode, string outputPath,
-        string previewMessage, string noWebcamMessage, string skipLabel = "Skip", int videoDurationSeconds = 5)
+        string previewMessage, string noWebcamMessage, string? skipLabel = null, int videoDurationSeconds = 5,
+        int cameraIndex = 0)
     {
+        skipLabel ??= Resources.Get("WebcamSkipDefault");
         Webcam = webcam;
         Mode = mode;
         PreviewMessage = previewMessage;
@@ -47,7 +50,7 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
         CaptureCommand = ReactiveCommand.CreateFromTask(Capture);
         SkipCommand = ReactiveCommand.Create(() => Finish(null));
 
-        if (Webcam.Start())
+        if (Webcam.Start(cameraIndex))
         {
             IsPreviewing = true;
         }
@@ -62,7 +65,9 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     public string PreviewMessage { get; }
     public string NoWebcamMessage { get; }
     public string SkipLabel { get; }
-    public string CaptureLabel => Mode == WebcamCaptureMode.Photo ? "📸 Capture" : "🔴 Record (5s)";
+    public string CaptureLabel => Mode == WebcamCaptureMode.Photo
+        ? Resources.Get("WebcamCaptureLabelPhoto")
+        : Resources.Get("WebcamCaptureLabelVideo");
 
     public ICommand CaptureCommand { get; }
     public ICommand SkipCommand { get; }

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:controls="using:ChastiMaid.Views.Controls"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:DashboardViewModel"
              x:Class="ChastiMaid.Views.DashboardView"
              Background="{DynamicResource BrushWindowBackground}">
@@ -32,11 +33,11 @@
                             <Ellipse Width="10" Height="10"
                                      Fill="{DynamicResource BrushStatusIdle}" />
                             <TextBlock Classes="BodySmall"
-                                       Text="Idle"
+                                       Text="{conv:Tr DashboardStatusIdle}"
                                        VerticalAlignment="Center" />
                         </StackPanel>
                         <Button Grid.Column="2"
-                                Content="Outfit ▸"
+                                Content="{conv:Tr DashboardOutfitToggle}"
                                 Command="{Binding ToggleOutfitDrawerCommand}"
                                 Classes="SmallGhost"
                                 VerticalAlignment="Center" />
@@ -55,7 +56,7 @@
                             <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
                                 <TextBlock Grid.Column="0"
                                            Classes="Subheading"
-                                           Text="Tasks"
+                                           Text="{conv:Tr DashboardTasksHeading}"
                                            VerticalAlignment="Center" />
                                 <Border Grid.Column="1"
                                         Background="{DynamicResource BrushSurfaceBase}"
@@ -88,7 +89,7 @@
                                                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                                                 </StackPanel>
                                                 <Button Grid.Column="1"
-                                                        Content="Start"
+                                                        Content="{conv:Tr Start}"
                                                         Command="{Binding StartCommand}"
                                                         Classes="Primary compact"
                                                         MinHeight="44"
@@ -102,7 +103,7 @@
                             </ItemsControl>
 
                             <TextBlock Classes="Caption"
-                                       Text="No pending tasks"
+                                       Text="{conv:Tr DashboardNoPendingTasks}"
                                        HorizontalAlignment="Center"
                                        Margin="0,16">
                                 <TextBlock.IsVisible>
@@ -125,7 +126,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock Grid.Column="0"
                                            Classes="Body"
-                                           Text="Pending Punishments"
+                                           Text="{conv:Tr PendingPunishments}"
                                            VerticalAlignment="Center" />
                                 <Border Grid.Column="1"
                                         Background="{DynamicResource BrushAmberText}"
@@ -158,28 +159,28 @@
                     <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
 
                         <Button Grid.Column="0"
-                                Content="Request Permission"
+                                Content="{conv:Tr DashboardRequestPermission}"
                                 Command="{Binding RequestPermissionCommand}"
                                 Classes="Ghost compact"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center" />
 
                         <Button Grid.Column="1"
-                                Content="Shop"
+                                Content="{conv:Tr DashboardShop}"
                                 Command="{Binding OpenShopCommand}"
                                 Classes="Ghost compact"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center" />
 
                         <Button Grid.Column="2"
-                                Content="End Session"
+                                Content="{conv:Tr DashboardEndSession}"
                                 Command="{Binding EndSessionCommand}"
                                 Classes="Ghost compact"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center" />
 
                         <Button Grid.Column="3"
-                                Content="Emergency Break"
+                                Content="{conv:Tr DashboardEmergencyBreak}"
                                 Command="{Binding EmergencyBreakCommand}"
                                 Classes="Emergency compact"
                                 HorizontalAlignment="Stretch"
@@ -205,7 +206,7 @@
                         <Ellipse Width="10" Height="10"
                                  Fill="{DynamicResource BrushStatusIdle}" />
                         <TextBlock Classes="BodySmall"
-                                   Text="Idle"
+                                   Text="{conv:Tr DashboardStatusIdle}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                 </Border>
@@ -218,7 +219,7 @@
                         Padding="12">
                     <DockPanel>
                         <Button DockPanel.Dock="Bottom"
-                                Content="Current Outfit ▸"
+                                Content="{conv:Tr DashboardCurrentOutfitToggle}"
                                 Command="{Binding ToggleOutfitDrawerCommand}"
                                 Classes="Ghost"
                                 HorizontalAlignment="Stretch"
@@ -230,28 +231,28 @@
                                                  DebtSettled="{Binding DebtSettled}"
                                                  Margin="0,0,0,12" />
 
-                            <Button Content="Request Permission"
+                            <Button Content="{conv:Tr DashboardRequestPermission}"
                                     Command="{Binding RequestPermissionCommand}"
                                     Classes="Ghost compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
                                     MinHeight="44" />
 
-                            <Button Content="Shop"
+                            <Button Content="{conv:Tr DashboardShop}"
                                     Command="{Binding OpenShopCommand}"
                                     Classes="Ghost compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
                                     MinHeight="44" />
 
-                            <Button Content="End Session"
+                            <Button Content="{conv:Tr DashboardEndSession}"
                                     Command="{Binding EndSessionCommand}"
                                     Classes="Ghost compact"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
                                     MinHeight="44" />
 
-                            <Button Content="Emergency Break"
+                            <Button Content="{conv:Tr DashboardEmergencyBreak}"
                                     Command="{Binding EmergencyBreakCommand}"
                                     Classes="Emergency compact"
                                     HorizontalAlignment="Stretch"
@@ -268,7 +269,7 @@
                         <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
                             <TextBlock Grid.Column="0"
                                        Classes="Subheading"
-                                       Text="Tasks"
+                                       Text="{conv:Tr DashboardTasksHeading}"
                                        VerticalAlignment="Center" />
                             <Border Grid.Column="1"
                                     Background="{DynamicResource BrushSurfaceBase}"
@@ -301,7 +302,7 @@
                                                                        Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                                             </StackPanel>
                                             <Button Grid.Column="1"
-                                                    Content="Start"
+                                                    Content="{conv:Tr Start}"
                                                     Command="{Binding StartCommand}"
                                                     Classes="Primary compact"
                                                     MinHeight="44"
@@ -325,7 +326,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock Grid.Column="0"
                                            Classes="Body"
-                                           Text="Pending Punishments"
+                                           Text="{conv:Tr PendingPunishments}"
                                            VerticalAlignment="Center" />
                                 <Border Grid.Column="1"
                                         Background="{DynamicResource BrushAmberText}"
@@ -344,7 +345,7 @@
                             </Grid>
                         </Button>
 
-                        <Button Content="Complete Game"
+                        <Button Content="{conv:Tr DashboardCompleteGame}"
                                 Command="{Binding CompleteGameCommand}"
                                 IsVisible="{Binding CanComplete}"
                                 Classes="Primary"
@@ -387,7 +388,7 @@
                        VerticalAlignment="Center" />
 
             <Button Grid.Row="3"
-                    Content="End Chore"
+                    Content="{conv:Tr DashboardEndChore}"
                     Command="{Binding EndChoreCommand}"
                     HorizontalAlignment="Center"
                     Classes="Primary"
@@ -401,7 +402,7 @@
             <Border Classes="dialogBox" MaxWidth="500">
                 <StackPanel Spacing="16">
                     <TextBlock Classes="Caption"
-                               Text="{Binding PopupCountdown, StringFormat='Time: {0}s'}"
+                               Text="{Binding PopupCountdown, StringFormat={conv:Tr DashboardPopupCountdownFormat}}"
                                Foreground="{DynamicResource BrushEmergencyText}"
                                HorizontalAlignment="Center" />
                     <TextBlock Classes="Body"

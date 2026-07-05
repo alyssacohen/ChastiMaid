@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeBulkBar">
 
@@ -11,13 +12,13 @@
               Margin="16,0">
 
             <TextBlock Grid.Column="0"
-                       Text="{Binding WardrobeSelectedCount, StringFormat='{}{0} items selected'}"
+                       Text="{Binding WardrobeSelectedCount, StringFormat={conv:Tr WardrobeBulkSelectedFormat}}"
                        Foreground="{DynamicResource BrushWindowBackground}"
                        VerticalAlignment="Center" />
 
             <Button Grid.Column="1"
                     Classes="Danger compact"
-                    Content="Delete selected"
+                    Content="{conv:Tr WardrobeBulkDeleteSelected}"
                     Command="{Binding DeleteSelectedWardrobeItemsCommand}"
                     VerticalAlignment="Center" />
 

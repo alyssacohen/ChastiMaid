@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
@@ -47,9 +48,9 @@ public partial class SafeLockViewModel : ViewModelBase
         var encPath = Path.Combine(dir, "safe_combo.enc");
 
         var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Photo, tempPath,
-            "Point the camera at the combination, then press Capture.",
-            "The combination photo cannot be captured. You can continue without locking the safe.",
-            "Continue without safe");
+            Resources.Get("SafeLockPreviewMessage"),
+            Resources.Get("SafeLockNoWebcamMessage"),
+            Resources.Get("SafeLockContinueWithoutSafe"), cameraIndex: _saveRepo.GetGameSettings().SelectedCameraIndex);
         ActiveDialog = dialog;
         var capturedPath = await dialog.Result;
         ActiveDialog = null;

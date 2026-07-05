@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using ChastiMaid.Localization;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
@@ -99,9 +100,9 @@ public partial class LoadGameViewModel : ViewModelBase
         catch (Exception ex)
         {
             var dialog = new ConfirmDialogViewModel(
-                "Load Error",
-                $"Could not load \"{slotName}\". The save file may be corrupted.\n\n{ex.Message}",
-                "OK",
+                Resources.Get("LoadGameErrorTitle"),
+                string.Format(Resources.Get("LoadGameErrorMessageFormat"), slotName, ex.Message),
+                Resources.Get("Ok"),
                 null);
 
             ActiveDialog = dialog;
@@ -113,14 +114,14 @@ public partial class LoadGameViewModel : ViewModelBase
     public async Task ConfirmDeleteSlot(SlotCardViewModel slot)
     {
         var message = slot.IsSafeLocked
-            ? $"Delete \"{slot.SlotName}\"?\n\nWARNING: The safe is locked. Deleting this save will permanently destroy the encrypted combination photo. The combination will be lost forever."
-            : $"Delete \"{slot.SlotName}\"? This game will be marked as failed.";
+            ? string.Format(Resources.Get("LoadGameDeleteWarningLockedFormat"), slot.SlotName)
+            : string.Format(Resources.Get("LoadGameDeleteConfirmFormat"), slot.SlotName);
 
         var dialog = new ConfirmDialogViewModel(
-            "Delete Save",
+            Resources.Get("LoadGameDeleteSaveTitle"),
             message,
-            "Delete",
-            "Cancel");
+            Resources.Get("Delete"),
+            Resources.Get("Cancel"));
 
         ActiveDialog = dialog;
         var confirmed = await dialog.Result;

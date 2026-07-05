@@ -20,11 +20,11 @@
                     Spacing="{StaticResource SpacingLg}">
 
             <TextBlock Classes="PageTitle"
-                       Text="Outfit Confirmed"
+                       Text="{conv:Tr ConfirmOutfitTitle}"
                        HorizontalAlignment="Center" />
 
             <TextBlock Classes="EmployerVoice"
-                       Text="Go change into the outfit below. When you are ready, press the button to confirm."
+                       Text="{conv:Tr ConfirmOutfitEmployerQuote}"
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
 
@@ -109,7 +109,7 @@
                                 HorizontalAlignment="Center"
                                 Spacing="{StaticResource SpacingMd}">
                         <TextBlock Classes="Caption"
-                                   Text="Total Multiplier"
+                                   Text="{conv:Tr StartSessionTotalMultiplier}"
                                    Foreground="{DynamicResource TextMuted}"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="NumberMedium"
@@ -132,7 +132,7 @@
         <StackPanel Grid.Row="2" Spacing="{StaticResource SpacingMd}"
                     Margin="{StaticResource SpacingButtonStripThickness}">
             <Button Classes="Primary"
-                    Content="I'm wearing the outfit, continue"
+                    Content="{conv:Tr ConfirmOutfitConfirmButton}"
                     Command="{Binding ConfirmOutfitCommand}"
                     HorizontalAlignment="Center" />
         </StackPanel>

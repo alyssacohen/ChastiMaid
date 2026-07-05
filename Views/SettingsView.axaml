@@ -22,7 +22,7 @@
                     <!-- Nav header -->
                     <StackPanel Grid.Row="0" Margin="0,20,0,0">
                         <TextBlock Classes="PageTitle"
-                                   Text="Settings"
+                                   Text="{converters:Tr SettingsPageTitle}"
                                    Margin="16,0,16,12" />
                         <Border Height="1"
                                 Background="{DynamicResource BrushBorderSubtle}"
@@ -35,31 +35,31 @@
                                      Command="{Binding SetTabCommand}"
                                      CommandParameter="0"
                                      IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="General" IsDirty="{Binding IsGeneralDirty}" />
+                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabGeneral}" IsDirty="{Binding IsGeneralDirty}" />
                         </RadioButton>
                         <RadioButton Classes="navItem"
                                      Command="{Binding SetTabCommand}"
                                      CommandParameter="1"
                                      IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="Chores" IsDirty="{Binding IsChoresDirty}" />
+                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabChores}" IsDirty="{Binding IsChoresDirty}" />
                         </RadioButton>
                         <RadioButton Classes="navItem"
                                      Command="{Binding SetTabCommand}"
                                      CommandParameter="2"
                                      IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="Punishments" IsDirty="{Binding IsPunishmentsDirty}" />
+                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabPunishments}" IsDirty="{Binding IsPunishmentsDirty}" />
                         </RadioButton>
                         <RadioButton Classes="navItem"
                                      Command="{Binding SetTabCommand}"
                                      CommandParameter="3"
                                      IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="Wardrobe" IsDirty="{Binding IsWardrobeDirty}" />
+                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabWardrobe}" IsDirty="{Binding IsWardrobeDirty}" />
                         </RadioButton>
                         <RadioButton Classes="navItem"
                                      Command="{Binding SetTabCommand}"
                                      CommandParameter="4"
                                      IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="Outfit Rules" IsDirty="{Binding IsRulesDirty}" />
+                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabOutfitRules}" IsDirty="{Binding IsRulesDirty}" />
                         </RadioButton>
                     </StackPanel>
 
@@ -73,10 +73,10 @@
                                 HorizontalAlignment="Stretch">
                             <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
                                 <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="16" />
-                                <TextBlock Text="Save" VerticalAlignment="Center" />
+                                <TextBlock Text="{converters:Tr Save}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Content="Back"
+                        <Button Content="{converters:Tr Back}"
                                 Command="{Binding BackCommand}"
                                 Classes="Ghost"
                                 HorizontalContentAlignment="Center"
@@ -95,96 +95,118 @@
                     Padding="24,0,32,0"
                     HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Spacing="0" Margin="0,0,0,24">
-                        <TextBlock Classes="SectionTitle" Text="General" Margin="0,20,0,8" />
+                        <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabGeneral}" Margin="0,20,0,8" />
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,16" />
 
                         <!-- Player -->
-                        <TextBlock Classes="Heading" Text="Player" Margin="0,0,0,8" />
+                        <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPlayer}" Margin="0,0,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Name" VerticalAlignment="Center" />
-                                    <TextBox Grid.Column="1" Text="{Binding PlayerName}" />
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsFieldName}" VerticalAlignment="Center" />
+                                    <TextBox Grid.Column="1" Classes="underline" Text="{Binding PlayerName}" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Auto-save (min)" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding AutoSaveInterval}" Minimum="1"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsAutoSaveMin}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding AutoSaveInterval}" Minimum="1"
                                                    Maximum="60" FormatString="0" />
                                 </Grid>
                             </StackPanel>
                         </Border>
 
                         <!-- Game Balance -->
-                        <TextBlock Classes="Heading" Text="Game Balance" Margin="0,8,0,8" />
+                        <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingGameBalance}" Margin="0,8,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Min debt" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding MinDebt}" Minimum="0" Increment="50"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsMinDebt}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding MinDebt}" Minimum="0" Increment="50"
                                                    FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Max debt" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding MaxDebt}" Minimum="0" Increment="50"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsMaxDebt}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding MaxDebt}" Minimum="0" Increment="50"
                                                    FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Daily interest rate"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsDailyInterestRate}"
                                                VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding DailyInterestRate}" Minimum="0"
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding DailyInterestRate}" Minimum="0"
                                                    Maximum="1" Increment="0.01" FormatString="0.00" />
                                 </Grid>
                             </StackPanel>
                         </Border>
 
                         <!-- Session Timing -->
-                        <TextBlock Classes="Heading" Text="Session Timing" Margin="0,8,0,8" />
+                        <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingSessionTiming}" Margin="0,8,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Idle wage amount" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding IdleWageAmount}" Minimum="0"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsIdleWageAmount}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding IdleWageAmount}" Minimum="0"
                                                    Increment="1" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Wage interval (min)"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWageInterval}"
                                                VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding IdleWageInterval}" Minimum="1"
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding IdleWageInterval}" Minimum="1"
                                                    Maximum="120" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Popup min (sec)" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding PopupMinInterval}" Minimum="10"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsPopupMin}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding PopupMinInterval}" Minimum="10"
                                                    Increment="10" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Popup max (sec)" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding PopupMaxInterval}" Minimum="10"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsPopupMax}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding PopupMaxInterval}" Minimum="10"
                                                    Increment="10" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Popup timeout (sec)"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsPopupTimeout}"
                                                VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding PopupTimeout}" Minimum="5"
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding PopupTimeout}" Minimum="5"
                                                    Maximum="60" FormatString="0" />
                                 </Grid>
                             </StackPanel>
                         </Border>
 
                         <!-- Capture -->
-                        <TextBlock Classes="Heading" Text="Capture" Margin="0,8,0,8" />
+                        <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingCapture}" Margin="0,8,0,8" />
                         <Border Classes="card">
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Capture min (sec)" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding CaptureMinInterval}" Minimum="1"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCaptureMin}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding CaptureMinInterval}" Minimum="1"
                                                    FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
-                                    <TextBlock Classes="BodySmall" Text="Capture max (sec)" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Value="{Binding CaptureMaxInterval}" Minimum="1"
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCaptureMax}" VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding CaptureMaxInterval}" Minimum="1"
                                                    FormatString="0" />
                                 </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCamera}" VerticalAlignment="Center" />
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableCameras}"
+                                              SelectedItem="{Binding SelectedCameraIndex}"
+                                              HorizontalAlignment="Stretch" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Language -->
+                        <TextBlock Classes="Heading" Text="{converters:Tr LanguageHeading}" Margin="0,8,0,8" />
+                        <Border Classes="card">
+                            <StackPanel Spacing="8">
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr LanguageFieldLabel}"
+                                               VerticalAlignment="Center" />
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}"
+                                              SelectedItem="{Binding SelectedLanguage}"
+                                              HorizontalAlignment="Stretch" />
+                                </Grid>
+                                <TextBlock Classes="Caption" Text="{converters:Tr LanguageRestartNotice}"
+                                           TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -195,7 +217,7 @@
                     IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1}"
                     RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
                     <StackPanel Grid.Row="0">
-                        <TextBlock Classes="SectionTitle" Text="Chores" Margin="0,20,0,8" />
+                        <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabChores}" Margin="0,20,0,8" />
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" Name="ChoresScroll">
@@ -207,22 +229,22 @@
                                             <StackPanel Grid.Column="0" Spacing="8">
                                                 <Grid ColumnDefinitions="*,100,100">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Name}" />
-                                                        <TextBox Text="{Binding Name}" PlaceholderText="Chore name" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
+                                                        <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsChoreNamePlaceholder}" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Value}" />
-                                                        <TextBox Text="{Binding Value}" PlaceholderText="0" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldValue}}" />
+                                                        <TextBox Classes="underline" Text="{Binding Value}" PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2" Spacing="2">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Freq. (Days)}" />
-                                                        <TextBox Text="{Binding FrequencyDays}" PlaceholderText="0" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldFreqDays}}" />
+                                                        <TextBox Classes="underline" Text="{Binding FrequencyDays}" PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
                                                     </StackPanel>
                                                 </Grid>
                                                 <StackPanel Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase Description}" />
-                                                    <TextBox Text="{Binding Description}"
-                                                             PlaceholderText="Optional description" />
+                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDescription}}" />
+                                                    <TextBox Classes="underline" Text="{Binding Description}"
+                                                             PlaceholderText="{converters:Tr SettingsOptionalDescriptionPlaceholder}" />
                                                 </StackPanel>
                                             </StackPanel>
                                             <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
@@ -236,7 +258,7 @@
                     <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                            <TextBlock Text="Add Chore" VerticalAlignment="Center" />
+                            <TextBlock Text="{converters:Tr SettingsAddChore}" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -246,7 +268,7 @@
                     IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}"
                     RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
                     <StackPanel Grid.Row="0">
-                        <TextBlock Classes="SectionTitle" Text="Punishments" Margin="0,20,0,8" />
+                        <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabPunishments}" Margin="0,20,0,8" />
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" Name="PunishmentsScroll">
@@ -257,17 +279,17 @@
                                         <Grid ColumnDefinitions="*,Auto">
                                             <StackPanel Grid.Column="0" Spacing="8">
                                                 <StackPanel Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase Name}" />
-                                                    <TextBox Text="{Binding Name}" PlaceholderText="Punishment name" />
+                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
+                                                    <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsPunishmentNamePlaceholder}" />
                                                 </StackPanel>
                                                 <Grid ColumnDefinitions="*,*">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Debt Increase}" />
-                                                        <NumericUpDown Value="{Binding DebtIncrease}" FormatString="0" />
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDebtIncrease}}" />
+                                                        <NumericUpDown Classes="underline stacked-spinner" Value="{Binding DebtIncrease}" FormatString="0" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase Required Chores}" />
-                                                        <NumericUpDown Value="{Binding RequiredChoreCount}"
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRequiredChores}}" />
+                                                        <NumericUpDown Classes="underline stacked-spinner" Value="{Binding RequiredChoreCount}"
                                                                        FormatString="0" />
                                                     </StackPanel>
                                                 </Grid>
@@ -283,7 +305,7 @@
                     <Button Grid.Row="2" Command="{Binding AddPunishmentCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                            <TextBlock Text="Add Punishment" VerticalAlignment="Center" />
+                            <TextBlock Text="{converters:Tr SettingsAddPunishment}" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -293,7 +315,7 @@
                     IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}"
                     RowDefinitions="Auto,Auto,*,Auto" Margin="16,0,16,8">
                     <StackPanel Grid.Row="0">
-                        <TextBlock Classes="SectionTitle" Text="Wardrobe" Margin="0,20,0,8" />
+                        <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabWardrobe}" Margin="0,20,0,8" />
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
                     </StackPanel>
                     <views:WardrobeToolbar Grid.Row="1" Margin="0,0,0,8" />
@@ -306,7 +328,7 @@
                     IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}"
                     RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
                     <StackPanel Grid.Row="0">
-                        <TextBlock Classes="SectionTitle" Text="Outfit Rules" Margin="0,20,0,8" />
+                        <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabOutfitRules}" Margin="0,20,0,8" />
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" Name="RulesScroll">
@@ -318,7 +340,7 @@
                                             <ComboBox Grid.Column="0"
                                                       ItemsSource="{Binding AvailableItems}"
                                                       SelectedItem="{Binding Item}"
-                                                      PlaceholderText="Select item"
+                                                      PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
                                                       HorizontalAlignment="Stretch"
                                                       VerticalAlignment="Center" />
                                             <ComboBox Grid.Column="1"
@@ -330,7 +352,7 @@
                                             <ComboBox Grid.Column="2"
                                                       ItemsSource="{Binding AvailableItems}"
                                                       SelectedItem="{Binding RelatedItem}"
-                                                      PlaceholderText="Select item"
+                                                      PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
                                                       HorizontalAlignment="Stretch"
                                                       VerticalAlignment="Center" />
                                             <Button Grid.Column="3"
@@ -348,7 +370,7 @@
                     <Button Grid.Row="2" Command="{Binding AddOutfitRuleCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                            <TextBlock Text="Add Rule" VerticalAlignment="Center" />
+                            <TextBlock Text="{converters:Tr SettingsAddRule}" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -374,15 +396,15 @@
                                 HorizontalAlignment="Center"
                                 Spacing="8"
                                 Margin="0,8,0,0">
-                        <Button Content="Discard" Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
+                        <Button Content="{converters:Tr SettingsDiscard}" Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
                                 Classes="Ghost" />
                         <Button Command="{Binding (vm:SaveDialogViewModel).SaveCommand}" Classes="Primary">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="18" />
-                                <TextBlock Text="Save" VerticalAlignment="Center" />
+                                <TextBlock Text="{converters:Tr Save}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Content="Cancel" Command="{Binding (vm:SaveDialogViewModel).CancelCommand}"
+                        <Button Content="{converters:Tr Cancel}" Command="{Binding (vm:SaveDialogViewModel).CancelCommand}"
                                 Classes="Ghost" />
                     </StackPanel>
                 </StackPanel>

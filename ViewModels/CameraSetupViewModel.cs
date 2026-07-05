@@ -18,7 +18,7 @@ public class CameraSetupViewModel : ViewModelBase
         _saveRepo = saveRepo;
         _chore = chore;
 
-        _mainVm.Webcam.Start();
+        _mainVm.Webcam.Start(saveRepo.GetGameSettings().SelectedCameraIndex);
 
         ConfirmCommand = ReactiveCommand.Create(() =>
         {

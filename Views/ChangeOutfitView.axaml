@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:ChangeOutfitViewModel"
              x:Class="ChastiMaid.Views.ChangeOutfitView"
              Background="{DynamicResource BrushWindowBackground}">
@@ -13,7 +14,7 @@
             <StackPanel Margin="48,36,48,24" MaxWidth="660">
 
                 <TextBlock Classes="PageTitle"
-                           Text="Compose an outfit"
+                           Text="{conv:Tr ChangeOutfitTitle}"
                            HorizontalAlignment="Left" />
 
                 <!-- Legend -->
@@ -22,48 +23,38 @@
 
                         <!-- Selected state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
-                            <Border Background="{DynamicResource BrushSurfaceBase}"
-                                    BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1"
-                                    CornerRadius="2" Padding="8,4,12,4">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <Ellipse Width="5" Height="5"
-                                             Fill="{DynamicResource TextSecondary}"
-                                             VerticalAlignment="Center" />
-                                    <TextBlock Classes="BodySmall" Text="item" />
-                                </StackPanel>
+                            <Border Background="{DynamicResource BrushChipSelected}"
+                                    CornerRadius="4" Padding="10,0" Height="30">
+                                <TextBlock Classes="BodySmall"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}"
+                                           Foreground="{DynamicResource BrushButtonPrimaryText}"
+                                           VerticalAlignment="Center" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="selected" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendSelected}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Required state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
-                            <Border Background="{DynamicResource BrushAmberBackground}"
-                                    BorderBrush="{DynamicResource BrushAmber}" BorderThickness="1"
-                                    CornerRadius="2" Padding="8,4,12,4">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <Ellipse Width="5" Height="5"
-                                             Fill="{DynamicResource BrushAmber}"
-                                             VerticalAlignment="Center" />
-                                    <TextBlock Classes="BodySmall"
-                                               Text="item"
-                                               Foreground="{DynamicResource BrushAmberText}" />
-                                </StackPanel>
+                            <Border Background="{DynamicResource BrushChipRequired}"
+                                    CornerRadius="4" Padding="10,0" Height="30">
+                                <TextBlock Classes="BodySmall"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}"
+                                           Foreground="{DynamicResource BrushButtonPrimaryText}"
+                                           VerticalAlignment="Center" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="required" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendRequired}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Unavailable state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center" Opacity="0.28">
-                            <Border BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1"
-                                    CornerRadius="2" Padding="8,4,12,4">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <Ellipse Width="5" Height="5"
-                                             Fill="{DynamicResource TextMuted}"
-                                             VerticalAlignment="Center" />
-                                    <TextBlock Classes="BodySmall" Text="item" />
-                                </StackPanel>
+                            <Border Background="{DynamicResource BrushChipDefault}"
+                                    CornerRadius="4" Padding="10,0" Height="30">
+                                <TextBlock Classes="BodySmall"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}"
+                                           Foreground="{DynamicResource TextSecondary}"
+                                           VerticalAlignment="Center" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="unavailable" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendUnavailable}" VerticalAlignment="Center" />
                         </StackPanel>
 
                     </StackPanel>
@@ -102,12 +93,7 @@
                                                     Classes.selected="{Binding IsSelected}"
                                                     Classes.required="{Binding IsRequired}"
                                                     Classes.disabled="{Binding IsDisabled}">
-                                                <StackPanel Orientation="Horizontal" Spacing="7">
-                                                    <Ellipse Width="5" Height="5"
-                                                             Fill="{Binding $parent[Button].Foreground}"
-                                                             VerticalAlignment="Center" />
-                                                    <TextBlock Text="{Binding Name}" />
-                                                </StackPanel>
+                                                <TextBlock Text="{Binding Name}" />
                                             </Button>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -156,18 +142,18 @@
                                    Text="{Binding SelectedCount}"
                                    FontStyle="Italic" />
                         <TextBlock Classes="Caption"
-                                   Text="items selected"
+                                   Text="{conv:Tr ChangeOutfitItemsSelectedLabel}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal"
                                 HorizontalAlignment="Right" Spacing="8">
-                        <Button Content="Clear" Command="{Binding ClearCommand}"
+                        <Button Content="{conv:Tr ChangeOutfitClear}" Command="{Binding ClearCommand}"
                                 Classes="Ghost compact" />
-                        <Button Content="Back" Command="{Binding BackCommand}"
+                        <Button Content="{conv:Tr Back}" Command="{Binding BackCommand}"
                                 Classes="Ghost compact" />
-                        <Button Content="Integrate" Command="{Binding IntegrateCommand}"
+                        <Button Content="{conv:Tr ChangeOutfitIntegrate}" Command="{Binding IntegrateCommand}"
                                 Classes="Primary" IsEnabled="{Binding CanFinalize}" />
-                        <Button Content="Save outfit" Command="{Binding SaveOutfitCommand}"
+                        <Button Content="{conv:Tr ChangeOutfitSaveOutfit}" Command="{Binding SaveOutfitCommand}"
                                 Classes="Primary" IsEnabled="{Binding CanFinalize}" />
                     </StackPanel>
                 </Grid>

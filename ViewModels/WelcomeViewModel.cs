@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using ChastiMaid.Localization;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using static ChastiMaid.Services.GameClock;
@@ -39,9 +40,9 @@ public partial class WelcomeViewModel : ViewModelBase
             if (slots.Count >= 5)
             {
                 var dialog = new ConfirmDialogViewModel(
-                    "No Free Slots",
-                    "All 5 save slots are occupied. Please complete or delete an existing game before starting a new one.",
-                    "OK",
+                    Resources.Get("WelcomeNoFreeSlotsTitle"),
+                    Resources.Get("WelcomeNoFreeSlotsMessage"),
+                    Resources.Get("Ok"),
                     null);
                 ActiveDialog = dialog;
                 await dialog.Result;

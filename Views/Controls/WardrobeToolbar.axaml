@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeToolbar">
 
@@ -9,14 +10,14 @@
 
             <TextBox Grid.Column="0"
                      Text="{Binding WardrobeNameFilter}"
-                     PlaceholderText="Filter by name or tag…"
+                     PlaceholderText="{conv:Tr WardrobeFilterPlaceholder}"
                      Width="240"
                      MinHeight="44"
                      VerticalContentAlignment="Center" />
 
             <TextBlock Grid.Column="1"
                        Classes="Body"
-                       Text="Layer:"
+                       Text="{conv:Tr WardrobeLayerLabel}"
                        VerticalAlignment="Center"
                        Margin="16,0,8,0" />
 

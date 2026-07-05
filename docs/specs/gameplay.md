@@ -44,11 +44,13 @@ Here the user can delete unwanted saves with warning and confirm request, becaus
 picture with the safe combination could be lost forever.
 
 2.4 Settings
-Here the user can change the game settings:
-- Clothing items with rules
-- Chores list with name, recommended frequency, value and completion time
-- Game balance: min/max initial debt and daily interest rate
-- Other settings (to be added)
+Here the user can change the game settings, organized in tabs:
+- General: player name, auto-save interval, game balance (min/max initial debt and daily interest
+  rate), idle wage amount/interval, popup check-in timing, capture/camera settings
+- Chores: chores list with name, recommended frequency, value and completion time
+- Punishments: punishment templates and severity
+- Wardrobe: clothing items with rules
+- Outfit Rules: requires/incompatible relationships between items
 
 2.5 Exit
 Exit the app

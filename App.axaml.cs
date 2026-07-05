@@ -1,3 +1,4 @@
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -30,6 +31,7 @@ public class App : Application
             var profileDb = _databaseService.OpenProfile();
             var profileRepo = new ProfileRepository(profileDb);
             DataSeeder.SeedIfEmpty(profileRepo);
+            ApplyLanguage(profileRepo.GetGameSettings().Language);
             var slotManager = new SaveSlotManager(_databaseService);
             _autoSaveService = new AutoSaveService();
             _webcamService = new WebcamPreviewService();
@@ -49,6 +51,21 @@ public class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private static readonly string[] SupportedLanguages = ["en", "it"];
+
+    /// <summary>
+    ///     Resolves the persisted language preference ("system", "en", or "it") to a UI culture
+    ///     and sets <see cref="CultureInfo.CurrentUICulture" /> before any view is constructed.
+    /// </summary>
+    private static void ApplyLanguage(string language)
+    {
+        var code = language == "system"
+            ? SupportedLanguages.FirstOrDefault(l => CultureInfo.InstalledUICulture.TwoLetterISOLanguageName == l) ?? "en"
+            : language;
+
+        CultureInfo.CurrentUICulture = new CultureInfo(SupportedLanguages.Contains(code) ? code : "en");
     }
 
     /// <summary>

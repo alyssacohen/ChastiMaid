@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LanguageSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LanguageItalian" xml:space="preserve">
+    <value>Italian</value>
+  </data>
+  <data name="LanguageRestartNotice" xml:space="preserve">
+    <value>Restart the application for the new language to take effect.</value>
+  </data>
+  <data name="LanguageHeading" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageFieldLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+
+  <!-- WelcomeView -->
+  <data name="WelcomeQuote" xml:space="preserve">
+      <value>Please, come in. The door is unlocked. It always is... at first.</value>
+  </data>
+  <data name="WelcomeTestModeLabel" xml:space="preserve">
+    <value>⏩  Test Mode — Time Travel</value>
+  </data>
+  <data name="WelcomePlusOneDay" xml:space="preserve">
+    <value>+1 day</value>
+  </data>
+  <data name="WelcomePlusThreeDays" xml:space="preserve">
+    <value>+3 days</value>
+  </data>
+  <data name="WelcomePlusSevenDays" xml:space="preserve">
+    <value>+7 days</value>
+  </data>
+  <data name="WelcomeContinue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="WelcomeNewGame" xml:space="preserve">
+    <value>New Game</value>
+  </data>
+  <data name="WelcomeLoadGame" xml:space="preserve">
+    <value>Load Game</value>
+  </data>
+  <data name="WelcomeSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="WelcomeExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+
+  <!-- WebcamCaptureDialog -->
+  <data name="WebcamRecordingLabel" xml:space="preserve">
+    <value>Recording... Strike a pose!</value>
+  </data>
+  <data name="WebcamNotDetected" xml:space="preserve">
+    <value>No webcam detected.</value>
+  </data>
+
+  <!-- PunishmentListDialog / Dashboard (shared) -->
+  <data name="PendingPunishments" xml:space="preserve">
+    <value>Pending Punishments</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+
+  <!-- DashboardView -->
+  <data name="DashboardStatusIdle" xml:space="preserve">
+    <value>Idle</value>
+  </data>
+  <data name="DashboardOutfitToggle" xml:space="preserve">
+    <value>Outfit ▸</value>
+  </data>
+  <data name="DashboardCurrentOutfitToggle" xml:space="preserve">
+    <value>Current Outfit ▸</value>
+  </data>
+  <data name="DashboardTasksHeading" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="DashboardNoPendingTasks" xml:space="preserve">
+    <value>No pending tasks</value>
+  </data>
+  <data name="DashboardRequestPermission" xml:space="preserve">
+    <value>Request Permission</value>
+  </data>
+  <data name="DashboardShop" xml:space="preserve">
+    <value>Shop</value>
+  </data>
+  <data name="DashboardEndSession" xml:space="preserve">
+    <value>End Session</value>
+  </data>
+  <data name="DashboardEmergencyBreak" xml:space="preserve">
+    <value>Emergency Break</value>
+  </data>
+  <data name="DashboardCompleteGame" xml:space="preserve">
+    <value>Complete Game</value>
+  </data>
+  <data name="DashboardEndChore" xml:space="preserve">
+    <value>End Chore</value>
+  </data>
+  <data name="DashboardPopupCountdownFormat" xml:space="preserve">
+    <value>Time: {0}s</value>
+  </data>
+
+  <!-- StartSessionView -->
+  <data name="StartSessionTitle" xml:space="preserve">
+    <value>Today's Outfit</value>
+  </data>
+  <data name="StartSessionEmployerQuote" xml:space="preserve">
+    <value>I have taken the liberty of choosing your attire. I am sure you will like it.</value>
+  </data>
+  <data name="StartSessionTotalMultiplier" xml:space="preserve">
+    <value>Total Multiplier</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="StartSessionRegenerate" xml:space="preserve">
+    <value>Regenerate</value>
+  </data>
+  <data name="StartSessionModify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="StartSessionQuit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+
+  <!-- WardrobeTable -->
+  <data name="WardrobeColName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="WardrobeColLayers" xml:space="preserve">
+    <value>Layers</value>
+  </data>
+  <data name="WardrobeColSlots" xml:space="preserve">
+    <value>Slots</value>
+  </data>
+  <data name="WardrobeColTags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="WardrobeColMultiplier" xml:space="preserve">
+    <value>Multiplier</value>
+  </data>
+  <data name="WardrobeColWeight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="WardrobePlaceholderAddSlot" xml:space="preserve">
+    <value>add slot...</value>
+  </data>
+  <data name="WardrobePlaceholderAddTag" xml:space="preserve">
+    <value>add tag...</value>
+  </data>
+  <data name="WardrobeDeleteItem" xml:space="preserve">
+    <value>Delete item</value>
+  </data>
+  <data name="WardrobeItemHelpText" xml:space="preserve">
+    <value>Multiplier and weight affect outfit scoring. Tags are used by outfit rules.</value>
+  </data>
+  <data name="WardrobeAddItemTrigger" xml:space="preserve">
+    <value>+ Add Item</value>
+  </data>
+  <data name="WardrobeAddItemConfirm" xml:space="preserve">
+    <value>Add Item</value>
+  </data>
+  <data name="WardrobeNewItemHelpText" xml:space="preserve">
+    <value>Multiplier affects outfit scoring, Weight is the probability a clothing item is chosen.</value>
+  </data>
+
+  <!-- ChangeOutfitView -->
+  <data name="ChangeOutfitTitle" xml:space="preserve">
+    <value>Compose an outfit</value>
+  </data>
+  <data name="ChangeOutfitLegendItem" xml:space="preserve">
+    <value>item</value>
+  </data>
+  <data name="ChangeOutfitLegendSelected" xml:space="preserve">
+    <value>selected</value>
+  </data>
+  <data name="ChangeOutfitLegendRequired" xml:space="preserve">
+    <value>required</value>
+  </data>
+  <data name="ChangeOutfitLegendUnavailable" xml:space="preserve">
+    <value>unavailable</value>
+  </data>
+  <data name="ChangeOutfitItemsSelectedLabel" xml:space="preserve">
+    <value>items selected</value>
+  </data>
+  <data name="ChangeOutfitClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="ChangeOutfitIntegrate" xml:space="preserve">
+    <value>Integrate</value>
+  </data>
+  <data name="ChangeOutfitSaveOutfit" xml:space="preserve">
+    <value>Save outfit</value>
+  </data>
+
+  <!-- ConfirmOutfitView -->
+  <data name="ConfirmOutfitTitle" xml:space="preserve">
+    <value>Outfit Confirmed</value>
+  </data>
+  <data name="ConfirmOutfitEmployerQuote" xml:space="preserve">
+    <value>Go change into the outfit below. When you are ready, press the button to confirm.</value>
+  </data>
+  <data name="ConfirmOutfitConfirmButton" xml:space="preserve">
+    <value>I'm wearing the outfit, continue</value>
+  </data>
+
+  <!-- SettingsView: nav / shared -->
+  <data name="SettingsPageTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsTabGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsTabChores" xml:space="preserve">
+    <value>Chores</value>
+  </data>
+  <data name="SettingsTabPunishments" xml:space="preserve">
+    <value>Punishments</value>
+  </data>
+  <data name="SettingsTabWardrobe" xml:space="preserve">
+    <value>Wardrobe</value>
+  </data>
+  <data name="SettingsTabOutfitRules" xml:space="preserve">
+    <value>Outfit Rules</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+
+  <!-- SettingsView: General tab -->
+  <data name="SettingsHeadingPlayer" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="SettingsFieldName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SettingsAutoSaveMin" xml:space="preserve">
+    <value>Auto-save (min)</value>
+  </data>
+  <data name="SettingsHeadingGameBalance" xml:space="preserve">
+    <value>Game Balance</value>
+  </data>
+  <data name="SettingsMinDebt" xml:space="preserve">
+    <value>Min debt</value>
+  </data>
+  <data name="SettingsMaxDebt" xml:space="preserve">
+    <value>Max debt</value>
+  </data>
+  <data name="SettingsDailyInterestRate" xml:space="preserve">
+    <value>Daily interest rate</value>
+  </data>
+  <data name="SettingsHeadingSessionTiming" xml:space="preserve">
+    <value>Session Timing</value>
+  </data>
+  <data name="SettingsIdleWageAmount" xml:space="preserve">
+    <value>Idle wage amount</value>
+  </data>
+  <data name="SettingsWageInterval" xml:space="preserve">
+    <value>Wage interval (min)</value>
+  </data>
+  <data name="SettingsPopupMin" xml:space="preserve">
+    <value>Popup min (sec)</value>
+  </data>
+  <data name="SettingsPopupMax" xml:space="preserve">
+    <value>Popup max (sec)</value>
+  </data>
+  <data name="SettingsPopupTimeout" xml:space="preserve">
+    <value>Popup timeout (sec)</value>
+  </data>
+  <data name="SettingsHeadingCapture" xml:space="preserve">
+    <value>Capture</value>
+  </data>
+  <data name="SettingsCaptureMin" xml:space="preserve">
+    <value>Capture min (sec)</value>
+  </data>
+  <data name="SettingsCaptureMax" xml:space="preserve">
+    <value>Capture max (sec)</value>
+  </data>
+  <data name="SettingsCamera" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+
+  <!-- SettingsView: Chores tab -->
+  <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
+    <value>Chore name</value>
+  </data>
+  <data name="SettingsFieldValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="SettingsPlaceholderZero" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="SettingsFieldFreqDays" xml:space="preserve">
+    <value>Freq. (Days)</value>
+  </data>
+  <data name="SettingsFieldDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="SettingsOptionalDescriptionPlaceholder" xml:space="preserve">
+    <value>Optional description</value>
+  </data>
+  <data name="SettingsAddChore" xml:space="preserve">
+    <value>Add Chore</value>
+  </data>
+
+  <!-- SettingsView: Punishments tab -->
+  <data name="SettingsPunishmentNamePlaceholder" xml:space="preserve">
+    <value>Punishment name</value>
+  </data>
+  <data name="SettingsFieldDebtIncrease" xml:space="preserve">
+    <value>Debt Increase</value>
+  </data>
+  <data name="SettingsFieldRequiredChores" xml:space="preserve">
+    <value>Required Chores</value>
+  </data>
+  <data name="SettingsAddPunishment" xml:space="preserve">
+    <value>Add Punishment</value>
+  </data>
+
+  <!-- SettingsView: Outfit Rules tab -->
+  <data name="SettingsSelectItemPlaceholder" xml:space="preserve">
+    <value>Select item</value>
+  </data>
+  <data name="SettingsAddRule" xml:space="preserve">
+    <value>Add Rule</value>
+  </data>
+
+  <!-- SettingsView: unsaved-changes dialog -->
+  <data name="SettingsDiscard" xml:space="preserve">
+    <value>Discard</value>
+  </data>
+
+  <!-- CameraSetupView -->
+  <data name="CameraSetupTitle" xml:space="preserve">
+    <value>Position the camera</value>
+  </data>
+  <data name="CameraSetupFrameFormat" xml:space="preserve">
+    <value>Frame your work area for: {0}</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+
+  <!-- GameCompleteView -->
+  <data name="GameCompleteTitle" xml:space="preserve">
+    <value>Game Complete!</value>
+  </data>
+  <data name="GameCompleteEmployerQuote" xml:space="preserve">
+    <value>Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed.</value>
+  </data>
+  <data name="GameCompleteExportVideo" xml:space="preserve">
+    <value>Export Outfit Video</value>
+  </data>
+  <data name="GameCompleteExportPhoto" xml:space="preserve">
+    <value>Export Safe Combination Photo</value>
+  </data>
+  <data name="GameCompleteFinish" xml:space="preserve">
+    <value>Finish and Free Slot</value>
+  </data>
+
+  <!-- EndSessionView -->
+  <data name="EndSessionConfirmQuestion" xml:space="preserve">
+    <value>Are you sure you want to end this session?</value>
+  </data>
+  <data name="EndSessionShowComboAndClose" xml:space="preserve">
+    <value>Show Safe Combination and Close</value>
+  </data>
+  <data name="EndSessionInterestNotice" xml:space="preserve">
+    <value>A daily interest will be applied until you resume your session.</value>
+  </data>
+  <data name="EndSessionCloseWithoutCombo" xml:space="preserve">
+    <value>Close Without Combination</value>
+  </data>
+  <data name="EndSessionYourCombo" xml:space="preserve">
+    <value>Your Safe Combination</value>
+  </data>
+  <data name="EndSessionComboSavedNotice" xml:space="preserve">
+    <value>The combination has been saved alongside your session media.</value>
+  </data>
+  <data name="EndSessionCloseApp" xml:space="preserve">
+    <value>Close Application</value>
+  </data>
+
+  <!-- LoadGameView -->
+  <data name="LoadGameEmptySlot" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+
+  <!-- WebcamPreviewControl -->
+  <data name="WebcamNoSignal" xml:space="preserve">
+    <value>No webcam signal</value>
+  </data>
+
+  <!-- OutfitDrawer -->
+  <data name="OutfitDrawerTitle" xml:space="preserve">
+    <value>Current Outfit</value>
+  </data>
+  <data name="OutfitDrawerCloseTooltip" xml:space="preserve">
+    <value>Close drawer</value>
+  </data>
+  <data name="OutfitDrawerNoneLabel" xml:space="preserve">
+    <value>(none)</value>
+  </data>
+
+  <!-- WardrobeToolbar -->
+  <data name="WardrobeFilterPlaceholder" xml:space="preserve">
+    <value>Filter by name or tag…</value>
+  </data>
+  <data name="WardrobeLayerLabel" xml:space="preserve">
+    <value>Layer:</value>
+  </data>
+
+  <!-- DebtWidget -->
+  <data name="DebtWidgetTitle" xml:space="preserve">
+    <value>Outstanding Balance</value>
+  </data>
+  <data name="DebtWidgetSettled" xml:space="preserve">
+    <value>Settled</value>
+  </data>
+  <data name="DebtWidgetRemaining" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="DebtWidgetTotalIncurredFormat" xml:space="preserve">
+    <value>Total incurred: ${0:F2}</value>
+  </data>
+
+  <!-- NewGameView -->
+  <data name="NewGameSettingsIntro" xml:space="preserve">
+    <value>Your game will start with these settings:</value>
+  </data>
+  <data name="NewGameInitialDebtLabel" xml:space="preserve">
+    <value>Initial debt: </value>
+  </data>
+  <data name="NewGameDailyInterestLabel" xml:space="preserve">
+    <value>Daily interest: </value>
+  </data>
+  <data name="NewGameStartGame" xml:space="preserve">
+    <value>Start Game</value>
+  </data>
+
+  <!-- WardrobeBulkBar -->
+  <data name="WardrobeBulkSelectedFormat" xml:space="preserve">
+    <value>{0} items selected</value>
+  </data>
+  <data name="WardrobeBulkDeleteSelected" xml:space="preserve">
+    <value>Delete selected</value>
+  </data>
+
+  <!-- SafeLockView -->
+  <data name="SafeLockTitle" xml:space="preserve">
+    <value>Safe Lock</value>
+  </data>
+  <data name="SafeLockInstructions" xml:space="preserve">
+    <value>Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it.</value>
+  </data>
+  <data name="SafeLockStartCamera" xml:space="preserve">
+    <value>Start Camera</value>
+  </data>
+  <data name="SafeLockSkip" xml:space="preserve">
+    <value>Skip (no safe)</value>
+  </data>
+  <data name="SafeLockLockedMessage" xml:space="preserve">
+    <value>🔒 Safe locked!</value>
+  </data>
+  <data name="SafeLockEncryptedNotice" xml:space="preserve">
+    <value>The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe.</value>
+  </data>
+  <data name="SafeLockStartSession" xml:space="preserve">
+    <value>Start Session</value>
+  </data>
+
+  <!-- DashboardViewModel -->
+  <data name="DashboardInitialDebtFormat" xml:space="preserve">
+    <value>Initial: ${0:F2}</value>
+  </data>
+  <data name="DashboardNoOutfitSet" xml:space="preserve">
+    <value>No outfit set</value>
+  </data>
+  <data name="DashboardWageFormat" xml:space="preserve">
+    <value>Wage: ${0:F2} / {1} min</value>
+  </data>
+  <data name="DashboardWageDebugFormat" xml:space="preserve">
+    <value>Wage: ${0:F2} / {1} min (${2:F2} × {3:F2})</value>
+  </data>
+  <data name="DashboardDebtFormat" xml:space="preserve">
+    <value>Debt: ${0:F2}</value>
+  </data>
+  <data name="DashboardNextWageFormat" xml:space="preserve">
+    <value>Next wage in {0:D2}:{1:D2}</value>
+  </data>
+
+  <!-- SafeLockViewModel -->
+  <data name="SafeLockPreviewMessage" xml:space="preserve">
+    <value>Point the camera at the combination, then press Capture.</value>
+  </data>
+  <data name="SafeLockNoWebcamMessage" xml:space="preserve">
+    <value>The combination photo cannot be captured. You can continue without locking the safe.</value>
+  </data>
+  <data name="SafeLockContinueWithoutSafe" xml:space="preserve">
+    <value>Continue without safe</value>
+  </data>
+
+  <!-- WebcamCaptureDialogViewModel -->
+  <data name="WebcamSkipDefault" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="WebcamCaptureLabelPhoto" xml:space="preserve">
+    <value>📸 Capture</value>
+  </data>
+  <data name="WebcamCaptureLabelVideo" xml:space="preserve">
+    <value>🔴 Record (5s)</value>
+  </data>
+
+  <!-- SettingsViewModel -->
+  <data name="SettingsUnsavedTabMessage" xml:space="preserve">
+    <value>You have unsaved changes in this tab.</value>
+  </data>
+  <data name="SettingsUnsavedGeneralMessage" xml:space="preserve">
+    <value>You have unsaved changes. What would you like to do?</value>
+  </data>
+  <data name="SettingsUnsavedChangesTitle" xml:space="preserve">
+    <value>Unsaved Changes</value>
+  </data>
+
+  <!-- ConfirmOutfitViewModel -->
+  <data name="ConfirmOutfitItemCountFormat" xml:space="preserve">
+    <value>{0} items · {1} layers covered</value>
+  </data>
+  <data name="ConfirmOutfitPreviewMessage" xml:space="preserve">
+    <value>Check yourself in the preview, then press Record.</value>
+  </data>
+  <data name="ConfirmOutfitNoWebcamMessage" xml:space="preserve">
+    <value>The outfit video cannot be recorded. You can skip this step and continue.</value>
+  </data>
+
+  <!-- Generic dialog buttons -->
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+
+  <!-- LoadGameViewModel -->
+  <data name="LoadGameErrorTitle" xml:space="preserve">
+    <value>Load Error</value>
+  </data>
+  <data name="LoadGameErrorMessageFormat" xml:space="preserve">
+    <value>Could not load "{0}". The save file may be corrupted.
+
+{1}</value>
+  </data>
+  <data name="LoadGameDeleteSaveTitle" xml:space="preserve">
+    <value>Delete Save</value>
+  </data>
+  <data name="LoadGameDeleteWarningLockedFormat" xml:space="preserve">
+    <value>Delete "{0}"?
+
+WARNING: The safe is locked. Deleting this save will permanently destroy the encrypted combination photo. The combination will be lost forever.</value>
+  </data>
+  <data name="LoadGameDeleteConfirmFormat" xml:space="preserve">
+    <value>Delete "{0}"? This game will be marked as failed.</value>
+  </data>
+
+  <!-- GameCompleteViewModel -->
+  <data name="GameCompleteVideoExportedStatus" xml:space="preserve">
+    <value>Outfit video exported.</value>
+  </data>
+  <data name="GameCompleteExportPhotoDialogTitle" xml:space="preserve">
+    <value>Export Safe Combination</value>
+  </data>
+  <data name="GameCompletePhotoExportedStatus" xml:space="preserve">
+    <value>Safe combination photo exported.</value>
+  </data>
+
+  <!-- StartSessionViewModel -->
+  <data name="StartSessionRegenerateOutfitTitle" xml:space="preserve">
+    <value>Regenerate Outfit</value>
+  </data>
+  <data name="StartSessionRegenerateMessageFormat" xml:space="preserve">
+    <value>Regenerating will reduce your bonus to {0:F0}% of the base multiplier. Proceed?</value>
+  </data>
+  <data name="StartSessionModifyOutfitTitle" xml:space="preserve">
+    <value>Modify Outfit</value>
+  </data>
+  <data name="StartSessionModifyMessageFormat" xml:space="preserve">
+    <value>Manually choosing clothes will reduce your bonus to {0:F0}% of the base multiplier and lock the outfit. Proceed?</value>
+  </data>
+
+  <!-- WelcomeViewModel -->
+  <data name="WelcomeNoFreeSlotsTitle" xml:space="preserve">
+    <value>No Free Slots</value>
+  </data>
+  <data name="WelcomeNoFreeSlotsMessage" xml:space="preserve">
+    <value>All 5 save slots are occupied. Please complete or delete an existing game before starting a new one.</value>
+  </data>
+
+  <!-- GameCompleteViewModel: file picker filter names -->
+  <data name="GameCompleteAviVideoFilter" xml:space="preserve">
+    <value>AVI Video</value>
+  </data>
+  <data name="GameCompletePngImageFilter" xml:space="preserve">
+    <value>PNG Image</value>
+  </data>
+</root>

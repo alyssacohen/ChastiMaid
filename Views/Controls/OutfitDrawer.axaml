@@ -40,7 +40,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock Grid.Column="0"
                                    Classes="SectionTitle"
-                                   Text="Current Outfit"
+                                   Text="{conv:Tr OutfitDrawerTitle}"
                                    VerticalAlignment="Center" />
                         <Button Grid.Column="1"
                                 Click="OnScrimClick"
@@ -49,7 +49,7 @@
                                 CornerRadius="16"
                                 Classes="Ghost"
                                 VerticalAlignment="Center"
-                                ToolTip.Tip="Close drawer">
+                                ToolTip.Tip="{conv:Tr OutfitDrawerCloseTooltip}">
                             <TextBlock Text="✕" FontSize="14"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
@@ -84,7 +84,7 @@
                                         </ItemsControl>
 
                                         <TextBlock Classes="Caption"
-                                                   Text="(none)"
+                                                   Text="{conv:Tr OutfitDrawerNoneLabel}"
                                                    IsVisible="{Binding !HasItems}" />
 
                                     </StackPanel>

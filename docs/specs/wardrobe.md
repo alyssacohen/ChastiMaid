@@ -149,5 +149,9 @@ Where:
 
 The Settings view provides tabs for:
 
+- **General**: player name, auto-save interval, game balance (min/max initial debt, daily interest
+  rate), idle wage amount/interval, popup check-in timing, and capture/camera settings
+- **Chores**: add/edit/delete chores (name, recommended frequency, value, completion time)
+- **Punishments**: add/edit/delete punishment templates and their severity
 - **Wardrobe**: add/edit/delete clothing items (name, layers, slots, multiplier, weight, tags)
 - **Outfit Rules**: add/edit/delete requires/incompatible relationships between items

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:d="using:ChastiMaid.Views.Dialogs"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:SafeLockViewModel"
              x:Class="ChastiMaid.Views.SafeLockView">
 
@@ -14,20 +15,20 @@
                     Spacing="16">
 
             <TextBlock Classes="PageTitle"
-                       Text="Safe Lock"
+                       Text="{conv:Tr SafeLockTitle}"
                        HorizontalAlignment="Center" />
 
             <!-- Initial: instructions + start camera -->
             <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
                 <TextBlock Classes="EmployerVoice"
-                           Text="Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it."
+                           Text="{conv:Tr SafeLockInstructions}"
                            HorizontalAlignment="Center"
                            TextAlignment="Center" />
-                <Button Content="Start Camera"
+                <Button Content="{conv:Tr SafeLockStartCamera}"
                         Command="{Binding StartCameraCommand}"
                         HorizontalAlignment="Center"
                         Classes="Primary" />
-                <Button Content="Skip (no safe)"
+                <Button Content="{conv:Tr SafeLockSkip}"
                         Command="{Binding SkipCommand}"
                         Classes="Ghost"
                         HorizontalAlignment="Center"
@@ -37,13 +38,13 @@
             <!-- Done -->
             <StackPanel Spacing="16" IsVisible="{Binding IsDone}" HorizontalAlignment="Center">
                 <TextBlock Classes="Body"
-                           Text="🔒 Safe locked!"
+                           Text="{conv:Tr SafeLockLockedMessage}"
                            HorizontalAlignment="Center" />
                 <TextBlock Classes="Caption"
                            TextWrapping="Wrap"
                            TextAlignment="Center"
-                           Text="The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe." />
-                <Button Content="Start Session"
+                           Text="{conv:Tr SafeLockEncryptedNotice}" />
+                <Button Content="{conv:Tr SafeLockStartSession}"
                         Command="{Binding ContinueCommand}"
                         HorizontalAlignment="Center"
                         Classes="Primary" />

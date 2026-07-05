@@ -10,6 +10,9 @@ public class GameSettings
     public string PlayerName { get; set; } = "";
     public int AutoSaveIntervalMinutes { get; set; } = 10;
 
+    // Localization: "system", "en", or "it". Requires a restart to take effect.
+    public string Language { get; set; } = "system";
+
     // Game balance
     public decimal MinDebt { get; set; } = 500;
     public decimal MaxDebt { get; set; } = 1000;
@@ -27,6 +30,9 @@ public class GameSettings
     // Busy mode capture
     public int BusyCaptureMinIntervalSeconds { get; set; } = 3;
     public int BusyCaptureMaxIntervalSeconds { get; set; } = 10;
+
+    // Camera
+    public int SelectedCameraIndex { get; set; }
 
     public decimal RollDebt(Random? rng = null)
     {

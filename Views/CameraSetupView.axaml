@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:CameraSetupViewModel"
              x:Class="ChastiMaid.Views.CameraSetupView">
 
@@ -12,11 +13,11 @@
                 Spacing="16">
 
         <TextBlock Classes="PageTitle"
-                   Text="Position the camera"
+                   Text="{conv:Tr CameraSetupTitle}"
                    HorizontalAlignment="Center" />
 
         <TextBlock Classes="Body"
-                   Text="{Binding ChoreName, StringFormat='Frame your work area for: {0}'}"
+                   Text="{Binding ChoreName, StringFormat={conv:Tr CameraSetupFrameFormat}}"
                    HorizontalAlignment="Center" />
 
         <v:WebcamPreviewControl Service="{Binding Webcam}"
@@ -26,10 +27,10 @@
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     Spacing="8">
-            <Button Content="Confirm"
+            <Button Content="{conv:Tr Confirm}"
                     Command="{Binding ConfirmCommand}"
                     Classes="Primary" />
-            <Button Content="Cancel"
+            <Button Content="{conv:Tr Cancel}"
                     Command="{Binding CancelCommand}"
                     Classes="Ghost" />
         </StackPanel>

@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
+using ChastiMaid.Localization;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
@@ -36,19 +37,19 @@ public partial class GameCompleteViewModel : ViewModelBase
 
         ExportOutfitVideoCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dest = await PickSaveFile("Export Outfit Video", "outfit.avi", ("AVI Video", ["avi"]));
+            var dest = await PickSaveFile(Resources.Get("GameCompleteExportVideo"), "outfit.avi", (Resources.Get("GameCompleteAviVideoFilter"), ["avi"]));
             if (dest is null)
             {
                 return;
             }
 
             File.Copy(videoPath, dest, true);
-            StatusMessage = "Outfit video exported.";
+            StatusMessage = Resources.Get("GameCompleteVideoExportedStatus");
         });
 
         ExportSafePhotoCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dest = await PickSaveFile("Export Safe Combination", "safe_combo.png", ("PNG Image", ["png"]));
+            var dest = await PickSaveFile(Resources.Get("GameCompleteExportPhotoDialogTitle"), "safe_combo.png", (Resources.Get("GameCompletePngImageFilter"), ["png"]));
             if (dest is null)
             {
                 return;
@@ -56,7 +57,7 @@ public partial class GameCompleteViewModel : ViewModelBase
 
             var decrypted = CryptoService.DecryptFile(encPath);
             await File.WriteAllBytesAsync(dest, decrypted);
-            StatusMessage = "Safe combination photo exported.";
+            StatusMessage = Resources.Get("GameCompletePhotoExportedStatus");
         });
 
         FinishCommand = ReactiveCommand.Create(Finish);

@@ -3,8 +3,10 @@ using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
+using ChastiMaid.Services;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -48,12 +50,14 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _popupMaxInterval;
     [Reactive] private int _popupMinInterval;
     [Reactive] private int _popupTimeout;
+    [Reactive] private int _selectedCameraIndex;
+    [Reactive] private LanguageOption _selectedLanguage = null!;
 
     // --- Tab selection with interception ---
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int) _snapshot;
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, LanguageOption) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -79,6 +83,13 @@ public partial class SettingsViewModel : ViewModelBase
         _popupTimeout = s.PopupTimeoutSeconds;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
+        _selectedCameraIndex = s.SelectedCameraIndex;
+        _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
+        AvailableCameras = WebcamPreviewService.EnumerateCameras();
+        if (AvailableCameras.Count == 0)
+        {
+            AvailableCameras = [0];
+        }
 
         foreach (var c in _repo.GetChores())
         {
@@ -145,7 +156,9 @@ public partial class SettingsViewModel : ViewModelBase
                 (_, _, _, _, _, _) => Unit.Default).Merge(this.WhenAnyValue(
                 x => x.IdleWageInterval, x => x.PopupMinInterval, x => x.PopupMaxInterval,
                 x => x.PopupTimeout, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
-                (_, _, _, _, _, _) => Unit.Default))
+                (_, _, _, _, _, _) => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedCameraIndex)
+                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedLanguage)
+                .Select(_ => Unit.Default))
             .Subscribe(_ => UpdateGeneralDirty());
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
@@ -200,6 +213,15 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
     public ObservableCollection<ClothingItemOption> AvailableItems { get; } = [];
+
+    public IReadOnlyList<int> AvailableCameras { get; private set; } = [0];
+
+    public IReadOnlyList<LanguageOption> AvailableLanguages { get; } =
+    [
+        new("system", Resources.Get("LanguageSystem")),
+        new("en", Resources.Get("LanguageEnglish")),
+        new("it", Resources.Get("LanguageItalian")),
+    ];
 
     public ObservableCollection<string> NewItemSlots { get; } = [];
     public ObservableCollection<string> NewItemTags { get; } = [];
@@ -375,7 +397,7 @@ public partial class SettingsViewModel : ViewModelBase
             return;
         }
 
-        switch (await ShowSaveDialog("You have unsaved changes in this tab."))
+        switch (await ShowSaveDialog(Resources.Get("SettingsUnsavedTabMessage")))
         {
             case SaveDialogResult.Save:
                 Save();
@@ -400,7 +422,7 @@ public partial class SettingsViewModel : ViewModelBase
             return;
         }
 
-        switch (await ShowSaveDialog("You have unsaved changes. What would you like to do?"))
+        switch (await ShowSaveDialog(Resources.Get("SettingsUnsavedGeneralMessage")))
         {
             case SaveDialogResult.Save:
                 Save();
@@ -413,7 +435,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private async Task<SaveDialogResult> ShowSaveDialog(string message)
     {
-        var dialog = new SaveDialogViewModel("Unsaved Changes", message);
+        var dialog = new SaveDialogViewModel(Resources.Get("SettingsUnsavedChangesTitle"), message);
         ActiveDialog = dialog;
         var result = await dialog.Result;
         ActiveDialog = null;
@@ -426,11 +448,12 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int) CurrentValues()
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, LanguageOption)
+        CurrentValues()
     {
         return (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
             _idleWageInterval, _popupMinInterval, _popupMaxInterval, _popupTimeout, _captureMinInterval,
-            _captureMaxInterval);
+            _captureMaxInterval, _selectedCameraIndex, _selectedLanguage);
     }
 
     private void UpdateGeneralDirty()
@@ -461,6 +484,8 @@ public partial class SettingsViewModel : ViewModelBase
         s.PopupTimeoutSeconds = PopupTimeout;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
+        s.SelectedCameraIndex = SelectedCameraIndex;
+        s.Language = SelectedLanguage.Code;
         _repo.SaveGameSettings(s);
 
         foreach (var c in Chores)
@@ -490,6 +515,14 @@ public record ClothingItemOption(int Id, string Name)
     public override string ToString()
     {
         return Name;
+    }
+}
+
+public record LanguageOption(string Code, string DisplayName)
+{
+    public override string ToString()
+    {
+        return DisplayName;
     }
 }
 

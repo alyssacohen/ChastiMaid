@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
@@ -35,7 +36,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
         var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
         MultiplierDisplay = $"×{bonusPercent * outfit.TotalMultiplier:F2}";
-        ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
+        ItemCountDisplay = string.Format(Resources.Get("ConfirmOutfitItemCountFormat"), totalItems, layersCovered);
     }
 
     /// <summary>Used when outfit is already locked — reads summary from saved state.</summary>
@@ -54,7 +55,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
         var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
         MultiplierDisplay = $"×{state?.EffectiveMultiplier ?? 1.0:F2}";
-        ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
+        ItemCountDisplay = string.Format(Resources.Get("ConfirmOutfitItemCountFormat"), totalItems, layersCovered);
     }
 
     public string OutfitSummary { get; }
@@ -73,8 +74,9 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         var videoPath = Path.Combine(dir, "outfit.avi");
 
         var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Video, videoPath,
-            "Check yourself in the preview, then press Record.",
-            "The outfit video cannot be recorded. You can skip this step and continue.");
+            Resources.Get("ConfirmOutfitPreviewMessage"),
+            Resources.Get("ConfirmOutfitNoWebcamMessage"),
+            cameraIndex: _saveRepo.GetGameSettings().SelectedCameraIndex);
         ActiveDialog = dialog;
         var recordedPath = await dialog.Result;
         ActiveDialog = null;
