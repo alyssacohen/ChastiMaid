@@ -92,6 +92,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         _allRules = saveRepo.GetOutfitRules();
 
         BuildLayers();
+        PreselectCurrentOutfit();
         ValidateRules();
 
         IntegrateCommand = ReactiveCommand.Create(Integrate);
@@ -121,6 +122,19 @@ public partial class ChangeOutfitViewModel : ViewModelBase
             if (group.Chips.Count > 0)
             {
                 Layers.Add(group);
+            }
+        }
+    }
+
+    private void PreselectCurrentOutfit()
+    {
+        foreach (var item in _currentOutfit.Items)
+        {
+            var layer = _currentOutfit.LayerOf(item);
+            var chip = AllChips().FirstOrDefault(c => c.ItemId == item.Id && c.Layer == layer);
+            if (chip is not null)
+            {
+                chip.State = ChipState.Selected;
             }
         }
     }

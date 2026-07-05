@@ -82,6 +82,51 @@ public class OutfitBuilderTests
     }
 
     [Fact]
+    public void Build_RequiresRule_RequiredItemPresent_WhenItemPickedByRandomFill()
+    {
+        // No seeds at all: girdle can only end up in the outfit via the random-fill step,
+        // which used to bypass ResolveRequiredRules entirely.
+        var girdle = MakeItem(1, "girdle", [0], ["waist"]);
+        var stockings = MakeItem(2, "stockings", [2], ["legs"]);
+        var rules = new List<OutfitRule> { Requires(1, 2) };
+
+        for (var seed = 0; seed < 30; seed++)
+        {
+            var builder = new OutfitBuilder([girdle, stockings], rules, seed);
+            var outfit = builder.Build();
+
+            var ids = outfit.Items.Select(i => i.Id).ToHashSet();
+            if (ids.Contains(1))
+            {
+                Assert.True(ids.Contains(2), $"girdle present without required stockings (seed {seed})");
+            }
+        }
+    }
+
+    [Fact]
+    public void Build_RequiresRule_FillerDropped_WhenRequiredHasNoFreeSlot()
+    {
+        // pants is a seed that permanently occupies the only slot stockings could use,
+        // so girdle's requirement can never be satisfied: girdle itself must be dropped
+        // if it's ever picked up as a random filler.
+        var girdle = MakeItem(1, "girdle", [0], ["waist"]);
+        var stockings = MakeItem(2, "stockings", [2], ["legs"]);
+        var pants = MakeItem(3, "pants", [2], ["legs"]);
+        var rules = new List<OutfitRule> { Requires(1, 2) };
+
+        for (var seed = 0; seed < 30; seed++)
+        {
+            var builder = new OutfitBuilder([girdle, stockings, pants], rules, seed);
+            builder.AddSeedItems([pants]);
+            var outfit = builder.Build();
+
+            var ids = outfit.Items.Select(i => i.Id).ToHashSet();
+            Assert.Contains(3, ids);
+            Assert.False(ids.Contains(1), $"girdle present despite unmet requires (seed {seed})");
+        }
+    }
+
+    [Fact]
     public void Build_SeedItem_AlwaysInOutfit()
     {
         var choker = MakeItem(1, "choker", [4], ["neck"]);
