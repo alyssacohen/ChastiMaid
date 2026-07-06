@@ -108,8 +108,9 @@
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsAutoSaveMin}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding AutoSaveInterval}" Minimum="1"
-                                                   Maximum="60" FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding AutoSaveInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                   Minimum="1" Maximum="60" FormatString="0" />
                                 </Grid>
                             </StackPanel>
                         </Border>
@@ -120,19 +121,22 @@
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsMinDebt}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding MinDebt}" Minimum="0" Increment="50"
-                                                   FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding MinDebt, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                   Minimum="0" Increment="50" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsMaxDebt}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding MaxDebt}" Minimum="0" Increment="50"
-                                                   FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding MaxDebt, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                   Minimum="0" Increment="50" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsDailyInterestRate}"
                                                VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding DailyInterestRate}" Minimum="0"
-                                                   Maximum="1" Increment="0.01" FormatString="0.00" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding DailyInterestRate, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                   Minimum="0" Maximum="1" Increment="0.01" FormatString="0.00" />
                                 </Grid>
                             </StackPanel>
                         </Border>
@@ -143,30 +147,35 @@
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsIdleWageAmount}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding IdleWageAmount}" Minimum="0"
-                                                   Increment="1" FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding IdleWageAmount, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                   Minimum="0" Increment="1" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWageInterval}"
                                                VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding IdleWageInterval}" Minimum="1"
-                                                   Maximum="120" FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding IdleWageInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                   Minimum="1" Maximum="120" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsPopupMin}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding PopupMinInterval}" Minimum="10"
-                                                   Increment="10" FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding PopupMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=10}"
+                                                   Minimum="10" Increment="10" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsPopupMax}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding PopupMaxInterval}" Minimum="10"
-                                                   Increment="10" FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding PopupMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=10}"
+                                                   Minimum="10" Increment="10" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsPopupTimeout}"
                                                VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding PopupTimeout}" Minimum="5"
-                                                   Maximum="60" FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding PopupTimeout, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=5}"
+                                                   Minimum="5" Maximum="60" FormatString="0" />
                                 </Grid>
                             </StackPanel>
                         </Border>
@@ -177,13 +186,15 @@
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCaptureMin}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding CaptureMinInterval}" Minimum="1"
-                                                   FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding CaptureMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                   Minimum="1" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCaptureMax}" VerticalAlignment="Center" />
-                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Value="{Binding CaptureMaxInterval}" Minimum="1"
-                                                   FormatString="0" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding CaptureMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                   Minimum="1" FormatString="0" />
                                 </Grid>
                                 <Grid ColumnDefinitions="160,*">
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCamera}" VerticalAlignment="Center" />
@@ -234,11 +245,15 @@
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
                                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldValue}}" />
-                                                        <TextBox Classes="underline" Text="{Binding Value}" PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                                        <TextBox Classes="underline"
+                                                                 Text="{Binding Value, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
+                                                                 PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2" Spacing="2">
                                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldFreqDays}}" />
-                                                        <TextBox Classes="underline" Text="{Binding FrequencyDays}" PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                                        <TextBox Classes="underline"
+                                                                 Text="{Binding FrequencyDays, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=1}"
+                                                                 PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
                                                     </StackPanel>
                                                 </Grid>
                                                 <StackPanel Spacing="2">
@@ -285,12 +300,15 @@
                                                 <Grid ColumnDefinitions="*,*">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
                                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDebtIncrease}}" />
-                                                        <NumericUpDown Classes="underline stacked-spinner" Value="{Binding DebtIncrease}" FormatString="0" />
+                                                        <NumericUpDown Classes="underline stacked-spinner"
+                                                                       Value="{Binding DebtIncrease, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                                       Minimum="0" FormatString="0" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" Spacing="2">
                                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRequiredChores}}" />
-                                                        <NumericUpDown Classes="underline stacked-spinner" Value="{Binding RequiredChoreCount}"
-                                                                       FormatString="0" />
+                                                        <NumericUpDown Classes="underline stacked-spinner"
+                                                                       Value="{Binding RequiredChoreCount, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                                       Minimum="0" FormatString="0" />
                                                     </StackPanel>
                                                 </Grid>
                                             </StackPanel>

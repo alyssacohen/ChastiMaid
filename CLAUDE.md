@@ -118,6 +118,14 @@ multiplier is `OutfitMultiplier × OutfitBonusPercent`.
 - Use of `ReactiveUI.SourceGenerators`. Is already referenced in the `.csproj.
 - Keep business logic in Services/Models, not ViewModels. (`WebcamPreviewService` is intentionally a `ReactiveObject` so
   its preview bitmap can be data-bound.)
+- **Numeric fields must never crash on empty input.** `NumericUpDown.Value` is `decimal?`; a non-nullable
+  `int`/`decimal`/`double` ViewModel property bound directly to it throws `InvalidCastException` when the
+  user clears the field (a `TextBox.Text` bound to a non-nullable numeric property throws
+  `FormatException` the same way). Any new numeric field bound to a non-nullable `int`/`decimal`/`double`
+  property MUST use the appropriate converter with a `ConverterParameter` set to the field's minimum, so
+  clearing the field silently resets it to that minimum instead of crashing:
+  - `NumericUpDown.Value` → `Converter={x:Static converters:NullableNumericConverter.Instance}`
+  - `TextBox.Text` → `Converter={x:Static converters:NumericTextConverter.Instance}`
 
 ### Comments
 

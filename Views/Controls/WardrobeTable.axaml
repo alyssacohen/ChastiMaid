@@ -128,7 +128,7 @@
                                         <StackPanel Spacing="2">
                                             <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColMultiplier}}" />
                                             <NumericUpDown Classes="underline stacked-spinner"
-                                                           Value="{Binding Multiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                           Value="{Binding Multiplier, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                            FormatString="0.0"
                                                            Increment="0.1"
                                                            Minimum="0"
@@ -137,7 +137,7 @@
                                         <StackPanel Spacing="2">
                                             <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColWeight}}" />
                                             <NumericUpDown Classes="underline stacked-spinner"
-                                                           Value="{Binding Weight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                           Value="{Binding Weight, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                            FormatString="0.0"
                                                            Increment="0.1"
                                                            Minimum="0"
@@ -300,7 +300,7 @@
                                 <StackPanel Spacing="2">
                                     <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColMultiplier}}" />
                                     <NumericUpDown Classes="underline stacked-spinner"
-                                                   Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                   Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                    FormatString="0.0"
                                                    Increment="0.1"
                                                    Minimum="0"
@@ -309,7 +309,7 @@
                                 <StackPanel Spacing="2">
                                     <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColWeight}}" />
                                     <NumericUpDown Classes="underline stacked-spinner"
-                                                   Value="{Binding NewItemWeight, Converter={x:Static conv:NullableDecimalConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
+                                                   Value="{Binding NewItemWeight, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                    FormatString="0.0"
                                                    Increment="0.1"
                                                    Minimum="0"
