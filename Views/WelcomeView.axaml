@@ -90,7 +90,6 @@
                 <Button Classes="Primary"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
                         FontSize="15"
                         Margin="0,12,0,0"
                         Content="{conv:Tr WelcomeNewGame}"

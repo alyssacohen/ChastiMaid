@@ -1,16 +1,24 @@
-# Default: normalizza tutto a LF nel repository
-* text=auto eol=lf
-
-# File Windows-specifici che devono restare CRLF
-*.bat text eol=crlf
-*.cmd text eol=crlf
-*.ps1 text eol=crlf
-
-# File binari: nessuna conversione
-*.png binary
-*.jpg binary
-*.ico binary
-*.ttf binary
-*.woff binary
-*.woff2 binary
+# Default: normalizza tutto a LF nel repository
+* text=auto eol=lf
+
+# File Windows-specifici che devono restare CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Explicitly declare source files as text with LF endings
+*.cs text eol=lf
+*.xaml text eol=lf
+*.csproj text eol=lf
+*.sln text eol=crlf
+*.json text eol=lf
+*.md text eol=lf
+
+# File binari: nessuna conversione
+*.png binary
+*.jpg binary
+*.ico binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
 *.pdf binary
