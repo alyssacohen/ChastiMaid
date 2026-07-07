@@ -16,7 +16,19 @@ namespace ChastiMaid.Services;
 /// </summary>
 public partial class WebcamPreviewService : ReactiveObject, IDisposable
 {
+    private const int PixelateRegionWidth = 240;
+    private const int PixelateRegionHeight = 80;
+    private const int PixelateBlockSize = 20;
+
     private VideoCapture? _capture;
+
+    /// <summary>
+    ///     When true, a centered 240x80 region of the preview frame is heavily pixelated before display,
+    ///     so the user can frame a shot (e.g. a safe combination) without being able to read it.
+    ///     Only affects the live preview bitmap — frames captured via CaptureFrameAsync are read fresh
+    ///     from the camera and are never pixelated.
+    /// </summary>
+    public bool PixelateCenterOverlay { get; set; }
 
     [Reactive(SetModifier = AccessModifier.Private)]
     private long _frameCount;
@@ -49,6 +61,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             cap.Dispose();
             return false;
         }
+
+        // ponytail: drop any stale bitmap from a prior session so the control shows
+        // "no signal" instead of a leftover (possibly unpixelated) frame until the first fresh one arrives
+        PreviewBitmap = null;
 
         _capture = cap;
         _previewCts = new CancellationTokenSource();
@@ -83,6 +99,11 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
     private void CopyFrameToBitmap(Mat frame)
     {
+        if (PixelateCenterOverlay)
+        {
+            PixelateCenter(frame);
+        }
+
         // Convert BGR → BGRA and copy pixels into a byte[] on the current (background) thread
         using var bgra = new Mat();
         Cv2.CvtColor(frame, bgra, ColorConversionCodes.BGR2BGRA);
@@ -107,6 +128,31 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             Marshal.Copy(pixels, 0, fb.Address, size);
             FrameCount++;
         });
+    }
+
+    /// <summary>Heavily pixelates a centered region of the frame in place, in-frame only (preview never persisted).</summary>
+    private static void PixelateCenter(Mat frame)
+    {
+        var w = Math.Min(PixelateRegionWidth, frame.Width);
+        var h = Math.Min(PixelateRegionHeight, frame.Height);
+        if (w <= 0 || h <= 0)
+        {
+            return;
+        }
+
+        var x = (frame.Width - w) / 2;
+        var y = (frame.Height - h) / 2;
+
+        using var roi = new Mat(frame, new OpenCvSharp.Rect(x, y, w, h));
+        using var small = new Mat();
+        var smallSize = new Size(Math.Max(1, w / PixelateBlockSize), Math.Max(1, h / PixelateBlockSize));
+
+        Cv2.Resize(roi, small, smallSize, interpolation: InterpolationFlags.Linear);
+        Cv2.Resize(small, roi, roi.Size(), interpolation: InterpolationFlags.Nearest);
+
+        // Thin white guide border, baked in at the same coordinates as the pixelated region —
+        // avoids mapping between the control's display size and the raw camera frame's resolution
+        Cv2.Rectangle(frame, new OpenCvSharp.Rect(x, y, w, h), Scalar.White, thickness: 1);
     }
 
     /// <summary>Stops the preview loop and waits for it to finish. The VideoCapture stays open.</summary>

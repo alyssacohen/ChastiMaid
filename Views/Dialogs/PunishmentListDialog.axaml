@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:conv="using:ChastiMaid.Views.Converters"
+        xmlns:ic="using:FluentIcons.Avalonia"
         x:Class="ChastiMaid.Views.Dialogs.PunishmentListDialog"
         x:CompileBindings="False"
         WindowDecorations="None"
@@ -36,10 +37,10 @@
                             Classes="Ghost compact"
                             VerticalAlignment="Center"
                             ToolTip.Tip="{conv:Tr Close}">
-                        <TextBlock Text="✕" FontSize="14"
-                                   Foreground="{DynamicResource BrushAmberText}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
+                        <ic:SymbolIcon Symbol="Dismiss" IconVariant="Regular" FontSize="14"
+                                       Foreground="{DynamicResource BrushAmberText}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
                     </Button>
                 </Grid>
             </Border>

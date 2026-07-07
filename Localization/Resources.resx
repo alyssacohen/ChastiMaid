@@ -457,6 +457,15 @@
   <data name="LoadGameEmptySlot" xml:space="preserve">
     <value>Empty</value>
   </data>
+  <data name="LoadGameSafeLocked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="LoadGameSafeOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="LoadGameCompleted" xml:space="preserve">
+    <value>Completed</value>
+  </data>
 
   <!-- WebcamPreviewControl -->
   <data name="WebcamNoSignal" xml:space="preserve">
@@ -532,7 +541,7 @@
     <value>Skip (no safe)</value>
   </data>
   <data name="SafeLockLockedMessage" xml:space="preserve">
-    <value>🔒 Safe locked!</value>
+    <value>Safe locked!</value>
   </data>
   <data name="SafeLockEncryptedNotice" xml:space="preserve">
     <value>The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe.</value>
@@ -577,10 +586,10 @@
     <value>Skip</value>
   </data>
   <data name="WebcamCaptureLabelPhoto" xml:space="preserve">
-    <value>📸 Capture</value>
+    <value>Capture</value>
   </data>
   <data name="WebcamCaptureLabelVideo" xml:space="preserve">
-    <value>🔴 Record (5s)</value>
+    <value>Record (5s)</value>
   </data>
 
   <!-- SettingsViewModel -->

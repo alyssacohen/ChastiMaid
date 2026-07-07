@@ -61,14 +61,20 @@
                                             <TextBlock Classes="BodySmall"
                                                        Text="{Binding DebtDisplay}"
                                                        Opacity="0.85" />
-                                            <TextBlock Classes="BodySmall"
-                                                       Text="{Binding SafeStatus}"
-                                                       Opacity="0.85" />
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <ic:SymbolIcon Symbol="{Binding SafeIcon}" IconVariant="Regular" FontSize="14" />
+                                                <TextBlock Classes="BodySmall"
+                                                           Text="{Binding SafeStatus}"
+                                                           Opacity="0.85" />
+                                            </StackPanel>
                                         </StackPanel>
-                                        <TextBlock Classes="Caption"
-                                                   Text="{Binding CompletedLabel}"
-                                                   IsVisible="{Binding IsCompleted}"
-                                                   Margin="0,6,0,0" />
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="4"
+                                                    IsVisible="{Binding IsCompleted}"
+                                                    Margin="0,6,0,0">
+                                            <ic:SymbolIcon Symbol="Checkmark" IconVariant="Regular" FontSize="14" />
+                                            <TextBlock Classes="Caption" Text="{Binding CompletedLabel}" />
+                                        </StackPanel>
                                     </StackPanel>
 
                                     <!-- Empty slot label -->

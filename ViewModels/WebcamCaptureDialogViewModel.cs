@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
+using FluentIcons.Common;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -36,7 +37,7 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
 
     public WebcamCaptureDialogViewModel(WebcamPreviewService webcam, WebcamCaptureMode mode, string outputPath,
         string previewMessage, string noWebcamMessage, string? skipLabel = null, int videoDurationSeconds = 5,
-        int cameraIndex = 0)
+        int cameraIndex = 0, bool pixelateCenterOverlay = false)
     {
         skipLabel ??= Resources.Get("WebcamSkipDefault");
         Webcam = webcam;
@@ -49,6 +50,8 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
 
         CaptureCommand = ReactiveCommand.CreateFromTask(Capture);
         SkipCommand = ReactiveCommand.Create(() => Finish(null));
+
+        Webcam.PixelateCenterOverlay = pixelateCenterOverlay;
 
         if (Webcam.Start(cameraIndex))
         {
@@ -68,6 +71,7 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     public string CaptureLabel => Mode == WebcamCaptureMode.Photo
         ? Resources.Get("WebcamCaptureLabelPhoto")
         : Resources.Get("WebcamCaptureLabelVideo");
+    public Symbol CaptureIcon => Mode == WebcamCaptureMode.Photo ? Symbol.Camera : Symbol.Record;
 
     public ICommand CaptureCommand { get; }
     public ICommand SkipCommand { get; }
@@ -113,6 +117,7 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     private void Finish(string? path)
     {
         Webcam.Stop();
+        Webcam.PixelateCenterOverlay = false;
         _tcs.TrySetResult(path);
     }
 }

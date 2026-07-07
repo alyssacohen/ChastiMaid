@@ -457,6 +457,15 @@
   <data name="LoadGameEmptySlot" xml:space="preserve">
     <value>Vuoto</value>
   </data>
+  <data name="LoadGameSafeLocked" xml:space="preserve">
+    <value>Bloccata</value>
+  </data>
+  <data name="LoadGameSafeOpen" xml:space="preserve">
+    <value>Aperta</value>
+  </data>
+  <data name="LoadGameCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
 
   <!-- WebcamPreviewControl -->
   <data name="WebcamNoSignal" xml:space="preserve">
@@ -532,7 +541,7 @@
     <value>Salta (nessuna cassaforte)</value>
   </data>
   <data name="SafeLockLockedMessage" xml:space="preserve">
-    <value>🔒 Cassaforte bloccata!</value>
+    <value>Cassaforte bloccata!</value>
   </data>
   <data name="SafeLockEncryptedNotice" xml:space="preserve">
     <value>La foto della combinazione è stata cifrata e archiviata. La rivedrai solo a partita completata o se scegli di sbloccare la cassaforte.</value>
@@ -577,10 +586,10 @@
     <value>Salta</value>
   </data>
   <data name="WebcamCaptureLabelPhoto" xml:space="preserve">
-    <value>📸 Cattura</value>
+    <value>Cattura</value>
   </data>
   <data name="WebcamCaptureLabelVideo" xml:space="preserve">
-    <value>🔴 Registra (5s)</value>
+    <value>Registra (5s)</value>
   </data>
 
   <!-- SettingsViewModel -->
