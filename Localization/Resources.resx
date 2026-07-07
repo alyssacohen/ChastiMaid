@@ -559,10 +559,13 @@
     <value>Safe locked!</value>
   </data>
   <data name="SafeLockEncryptedNotice" xml:space="preserve">
-    <value>The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe.</value>
+      <value>The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe. You can retry to take the combination photo if you are not sure of the first try.</value>
   </data>
   <data name="SafeLockStartSession" xml:space="preserve">
     <value>Start Session</value>
+  </data>
+  <data name="SafeLockRetryCapture" xml:space="preserve">
+    <value>Retry Capture</value>
   </data>
 
   <!-- DashboardViewModel -->

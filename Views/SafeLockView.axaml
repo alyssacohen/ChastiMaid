@@ -20,7 +20,7 @@
                        HorizontalAlignment="Center" />
 
             <!-- Initial: instructions + start camera -->
-            <StackPanel Spacing="16" IsVisible="{Binding IsInitial}">
+            <StackPanel Spacing="16" IsVisible="{Binding !IsDone}">
                 <TextBlock Classes="EmployerVoice"
                            Text="{conv:Tr SafeLockInstructions}"
                            HorizontalAlignment="Center"
@@ -38,18 +38,23 @@
 
             <!-- Done -->
             <StackPanel Spacing="16" IsVisible="{Binding IsDone}" HorizontalAlignment="Center">
+                <TextBlock Classes="EmployerVoice"
+                        Text="{conv:Tr SafeLockEncryptedNotice}"           
+                        TextWrapping="Wrap"
+                        HorizontalAlignment="Center"
+                        TextAlignment="Center" />
                 <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
                     <ic:SymbolIcon Symbol="LockClosed" IconVariant="Regular" FontSize="16" />
                     <TextBlock Classes="Body" Text="{conv:Tr SafeLockLockedMessage}" />
                 </StackPanel>
-                <TextBlock Classes="Caption"
-                           TextWrapping="Wrap"
-                           TextAlignment="Center"
-                           Text="{conv:Tr SafeLockEncryptedNotice}" />
                 <Button Content="{conv:Tr SafeLockStartSession}"
                         Command="{Binding ContinueCommand}"
                         HorizontalAlignment="Center"
                         Classes="Primary" />
+                <Button Content="{conv:Tr SafeLockRetryCapture}"
+                        Command="{Binding StartCameraCommand}"
+                        HorizontalAlignment="Center"
+                        Classes="Ghost" />
             </StackPanel>
 
         </StackPanel>

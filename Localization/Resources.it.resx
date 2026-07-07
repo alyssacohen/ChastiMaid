@@ -559,10 +559,13 @@
     <value>Cassaforte bloccata!</value>
   </data>
   <data name="SafeLockEncryptedNotice" xml:space="preserve">
-    <value>La foto della combinazione è stata cifrata e archiviata. La rivedrai solo a partita completata o se scegli di sbloccare la cassaforte.</value>
+      <value>La foto della combinazione è stata cifrata e archiviata. La rivedrai solo a partita completata o se scegli di sbloccare la cassaforte. Puoi riprovare a scattare la foto della combinazione se non hai certezza che il primo tentativo sia venuto bene.</value>
   </data>
   <data name="SafeLockStartSession" xml:space="preserve">
     <value>Avvia sessione</value>
+  </data>
+  <data name="SafeLockRetryCapture" xml:space="preserve">
+    <value>Riprova scatto</value>
   </data>
 
   <!-- DashboardViewModel -->

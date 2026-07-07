@@ -33,8 +33,6 @@ public partial class SafeLockViewModel : ViewModelBase
 
     public WebcamPreviewService Webcam { get; }
 
-    public bool IsInitial => !IsDone;
-
     public ICommand StartCameraCommand { get; }
     public ICommand SkipCommand { get; }
     public ICommand ContinueCommand { get; }
