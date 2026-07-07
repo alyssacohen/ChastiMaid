@@ -567,6 +567,7 @@ public partial class ChoreEditViewModel : ViewModelBase
 {
     [Reactive] private string _description = "";
     [Reactive] private int _frequencyDays;
+    [Reactive] private int _minCompletionMinutes;
     [Reactive] private string _name = "";
     [Reactive] private decimal _value;
 
@@ -577,16 +578,22 @@ public partial class ChoreEditViewModel : ViewModelBase
         _description = chore.Description;
         _value = chore.Value;
         _frequencyDays = chore.FrequencyDays;
+        _minCompletionMinutes = chore.MinCompletionMinutes;
+        LastCompletedAt = chore.LastCompletedAt;
         DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
     }
 
     public int Id { get; }
+    public DateTime? LastCompletedAt { get; }
     public ICommand DeleteCommand { get; }
 
     public Chore ToModel()
     {
         return new Chore
-            { Id = Id, Name = Name, Description = Description, Value = Value, FrequencyDays = FrequencyDays };
+        {
+            Id = Id, Name = Name, Description = Description, Value = Value, FrequencyDays = FrequencyDays,
+            MinCompletionMinutes = MinCompletionMinutes, LastCompletedAt = LastCompletedAt,
+        };
     }
 }
 

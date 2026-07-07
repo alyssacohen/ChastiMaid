@@ -92,6 +92,18 @@ public class SaveRepository(LiteDatabase db)
         Chores.Insert(chore);
     }
 
+    public void UpdateChoreCompletion(int choreId, DateTime completedAt)
+    {
+        var chore = Chores.FindById(choreId);
+        if (chore is null)
+        {
+            return;
+        }
+
+        chore.LastCompletedAt = completedAt;
+        Chores.Update(chore);
+    }
+
     // --- Active punishments ---
     public List<ActivePunishment> GetActivePunishments()
     {
@@ -101,6 +113,45 @@ public class SaveRepository(LiteDatabase db)
     public void SaveActivePunishment(ActivePunishment punishment)
     {
         ActivePunishments.Upsert(punishment);
+    }
+
+    /// <summary>Assigns a random configured punishment template, applying its immediate debt increase.</summary>
+    public void AssignRandomPunishment()
+    {
+        var templates = GetPunishmentTemplates();
+        if (templates.Count == 0)
+        {
+            return;
+        }
+
+        var template = templates[Random.Shared.Next(templates.Count)];
+
+        if (template.DebtIncrease is { } increase)
+        {
+            var state = GetGameState();
+            if (state is not null)
+            {
+                state.CurrentDebt += increase;
+                SaveGameState(state);
+            }
+        }
+
+        SaveActivePunishment(new ActivePunishment
+        {
+            TemplateId = template.Id,
+            TemplateName = template.Name,
+            AssignedAt = UtcNow(),
+            DebtApplied = template.DebtIncrease is not null,
+            RemainingOutfitForce = template.OutfitForceDuration,
+            ForcedClothingItemIds = template.ForcedClothingItemIds,
+            ForceFullOutfit = template.ForceFullOutfit,
+            RemainingMultiplierPenalty = template.MultiplierPenaltyDuration,
+            MultiplierPenaltyFactor = template.MultiplierPenaltyFactor,
+            PendingChoreIds = template.RequiredChoreIds
+                ?? (template.RequiredChoreCount is { } n
+                    ? GetChores().Select(c => c.Id).OrderBy(_ => Random.Shared.Next()).Take(n).ToList()
+                    : null),
+        });
     }
 
     // --- Sessions ---

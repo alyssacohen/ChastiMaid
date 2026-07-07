@@ -3,6 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:controls="using:ChastiMaid.Views.Controls"
              xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:ic="using:FluentIcons.Avalonia"
              x:DataType="vm:DashboardViewModel"
              x:Class="ChastiMaid.Views.DashboardView"
              Background="{DynamicResource BrushWindowBackground}">
@@ -51,6 +52,20 @@
                         <controls:DebtWidget DebtTotal="{Binding DebtTotal}"
                                              DebtSettled="{Binding DebtSettled}" />
 
+                        <!-- Chore rejected feedback -->
+                        <Border Background="{DynamicResource BrushAmberBackground}"
+                                BorderBrush="{DynamicResource BrushAmber}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="12,8"
+                                IsVisible="{Binding ChoreResultMessage,
+                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                            <TextBlock Classes="BodySmall"
+                                       Text="{Binding ChoreResultMessage}"
+                                       Foreground="{DynamicResource BrushAmberText}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+
                         <!-- Tasks section -->
                         <StackPanel Spacing="0">
                             <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
@@ -76,25 +91,43 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="vm:TaskItemViewModel">
                                         <StackPanel>
-                                            <Grid ColumnDefinitions="*,Auto" MinHeight="56">
-                                                <StackPanel Grid.Column="0"
-                                                            VerticalAlignment="Center"
-                                                            Spacing="2"
-                                                            Margin="0,0,8,0">
-                                                    <TextBlock Classes="Body"
-                                                               Text="{Binding Name}" />
-                                                    <TextBlock Classes="Caption"
-                                                               Text="{Binding EstimatedDurationLabel}"
-                                                               IsVisible="{Binding EstimatedDurationLabel,
-                                                                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                                                </StackPanel>
-                                                <Button Grid.Column="1"
+                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
+                                                <Ellipse Grid.Column="0"
+                                                         Width="8" Height="8"
+                                                         Margin="0,0,10,0"
+                                                         VerticalAlignment="Center"
+                                                         Fill="{Binding StatusBrushKey,
+                                                                Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Classes="Body"
+                                                           Text="{Binding Name}"
+                                                           VerticalAlignment="Center" />
+                                                <Button Grid.Column="2"
+                                                        Command="{Binding ToggleExpandedCommand}"
+                                                        Classes="SmallGhost"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,4,0">
+                                                    <ic:SymbolIcon Symbol="ChevronDown"
+                                                                   IconVariant="Regular"
+                                                                   FontSize="14" />
+                                                </Button>
+                                                <Button Grid.Column="3"
                                                         Content="{conv:Tr Start}"
                                                         Command="{Binding StartCommand}"
                                                         Classes="Primary compact"
                                                         MinHeight="44"
                                                         VerticalAlignment="Center" />
                                             </Grid>
+                                            <StackPanel IsVisible="{Binding IsExpanded}"
+                                                        Margin="18,0,0,10"
+                                                        Spacing="2">
+                                                <TextBlock Classes="Caption"
+                                                           Text="{Binding LastCompletedLabel}"
+                                                           Foreground="{Binding StatusBrushKey,
+                                                                        Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
+                                                <TextBlock Classes="Caption"
+                                                           Text="{Binding FrequencyLabel}" />
+                                            </StackPanel>
                                             <Border Height="0.5"
                                                     Background="{DynamicResource BrushBorderSubtle}" />
                                         </StackPanel>
@@ -266,6 +299,20 @@
                 <ScrollViewer Grid.Row="1" Grid.Column="1">
                     <StackPanel Margin="16,16,16,0" Spacing="20">
 
+                        <!-- Chore rejected feedback -->
+                        <Border Background="{DynamicResource BrushAmberBackground}"
+                                BorderBrush="{DynamicResource BrushAmber}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="12,8"
+                                IsVisible="{Binding ChoreResultMessage,
+                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                            <TextBlock Classes="BodySmall"
+                                       Text="{Binding ChoreResultMessage}"
+                                       Foreground="{DynamicResource BrushAmberText}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+
                         <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
                             <TextBlock Grid.Column="0"
                                        Classes="Subheading"
@@ -289,25 +336,43 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                     <StackPanel>
-                                        <Grid ColumnDefinitions="*,Auto" MinHeight="56">
-                                            <StackPanel Grid.Column="0"
-                                                        VerticalAlignment="Center"
-                                                        Spacing="2"
-                                                        Margin="0,0,8,0">
-                                                <TextBlock Classes="Body"
-                                                           Text="{Binding Name}" />
-                                                <TextBlock Classes="Caption"
-                                                           Text="{Binding EstimatedDurationLabel}"
-                                                           IsVisible="{Binding EstimatedDurationLabel,
-                                                                       Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                                            </StackPanel>
-                                            <Button Grid.Column="1"
+                                        <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
+                                            <Ellipse Grid.Column="0"
+                                                     Width="8" Height="8"
+                                                     Margin="0,0,10,0"
+                                                     VerticalAlignment="Center"
+                                                     Fill="{Binding StatusBrushKey,
+                                                            Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
+                                            <TextBlock Grid.Column="1"
+                                                       Classes="Body"
+                                                       Text="{Binding Name}"
+                                                       VerticalAlignment="Center" />
+                                            <Button Grid.Column="2"
+                                                    Command="{Binding ToggleExpandedCommand}"
+                                                    Classes="SmallGhost"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,4,0">
+                                                <ic:SymbolIcon Symbol="ChevronDown"
+                                                               IconVariant="Regular"
+                                                               FontSize="14" />
+                                            </Button>
+                                            <Button Grid.Column="3"
                                                     Content="{conv:Tr Start}"
                                                     Command="{Binding StartCommand}"
                                                     Classes="Primary compact"
                                                     MinHeight="44"
                                                     VerticalAlignment="Center" />
                                         </Grid>
+                                        <StackPanel IsVisible="{Binding IsExpanded}"
+                                                    Margin="18,0,0,10"
+                                                    Spacing="2">
+                                            <TextBlock Classes="Caption"
+                                                       Text="{Binding LastCompletedLabel}"
+                                                       Foreground="{Binding StatusBrushKey,
+                                                                    Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
+                                            <TextBlock Classes="Caption"
+                                                       Text="{Binding FrequencyLabel}" />
+                                        </StackPanel>
                                         <Border Height="0.5"
                                                 Background="{DynamicResource BrushBorderSubtle}" />
                                     </StackPanel>

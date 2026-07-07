@@ -56,6 +56,7 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private string _busyChoreValueDisplay = "";
     [Reactive] private string _busyElapsed = "00:00";
     private CancellationTokenSource? _captureCts;
+    [Reactive] private string _choreResultMessage = "";
     private DateTime _choreStartTime;
     private DispatcherTimer? _choreTimer;
 
@@ -127,11 +128,7 @@ public partial class DashboardViewModel : ViewModelBase
                 _settings.IdleWageIntervalMinutes, _settings.IdleWageAmount, _outfitBonus)
             : string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
 
-        foreach (var chore in saveRepo.GetChores())
-        {
-            Chores.Add(new ChoreItemViewModel(chore, _outfitBonus, OnStartChore));
-            Tasks.Add(new TaskItemViewModel(chore, OnStartTask));
-        }
+        LoadChores();
 
         foreach (var punishment in saveRepo.GetActivePunishments())
         {
@@ -238,6 +235,26 @@ public partial class DashboardViewModel : ViewModelBase
         return string.Format(Resources.Get("DashboardDebtFormat"), debt);
     }
 
+    private void LoadChores()
+    {
+        Chores.Clear();
+        Tasks.Clear();
+        foreach (var chore in _saveRepo.GetChores())
+        {
+            Chores.Add(new ChoreItemViewModel(chore, _outfitBonus, OnStartChore));
+            Tasks.Add(new TaskItemViewModel(chore, OnStartTask));
+        }
+    }
+
+    private void RefreshPunishments()
+    {
+        Punishments.Clear();
+        foreach (var punishment in _saveRepo.GetActivePunishments())
+        {
+            Punishments.Add(new PunishmentItemViewModel(punishment));
+        }
+    }
+
     private void RefreshDebt()
     {
         var state = _saveRepo.GetGameState();
@@ -329,6 +346,8 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
+        ChoreResultMessage = "";
+
         // Stop timers before navigating away
         _sessionLoop.Pause();
         _countdownTimer?.Stop();
@@ -393,18 +412,39 @@ public partial class DashboardViewModel : ViewModelBase
         _choreTimer = null;
         StopSilentCapture();
 
-        var state = _saveRepo.GetGameState();
-        if (state is not null)
+        var elapsed = UtcNow() - _choreStartTime;
+        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChore.ChoreId);
+        var tooEarly = chore is not null && elapsed.TotalMinutes < chore.MinCompletionMinutes;
+
+        if (tooEarly)
         {
-            var credit = Math.Round(_activeChore.Value * (decimal)_outfitBonus, 0);
-            state.CurrentDebt = Math.Max(0, state.CurrentDebt - credit);
-            _saveRepo.SaveGameState(state);
+            _saveRepo.AssignRandomPunishment();
+            RefreshPunishments();
+            ChoreResultMessage = Resources.Get("DashboardChoreRejectedMessage");
+        }
+        else
+        {
+            var state = _saveRepo.GetGameState();
+            if (state is not null)
+            {
+                var credit = Math.Round(_activeChore.Value * (decimal)_outfitBonus, 0);
+                state.CurrentDebt = Math.Max(0, state.CurrentDebt - credit);
+                _saveRepo.SaveGameState(state);
+            }
+
+            if (chore is not null)
+            {
+                _saveRepo.UpdateChoreCompletion(chore.Id, UtcNow());
+            }
+
+            ChoreResultMessage = "";
         }
 
         _activeChore = null;
         IsBusy = false;
         IsIdle = true;
         RefreshDebt();
+        LoadChores();
 
         _sessionLoop.Resume();
         _countdownTimer?.Start();

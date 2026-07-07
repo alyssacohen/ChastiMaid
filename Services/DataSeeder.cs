@@ -151,13 +151,13 @@ public static class DataSeeder
 
         var chores = new List<Chore>
         {
-            new() { Id = 1, Name = "Dusting", Value = 10, FrequencyDays = 1 },
-            new() { Id = 2, Name = "Sweeping the floor", Value = 15, FrequencyDays = 1 },
-            new() { Id = 3, Name = "Mopping the floor", Value = 20, FrequencyDays = 7 },
-            new() { Id = 4, Name = "Making the bed", Value = 5, FrequencyDays = 1 },
-            new() { Id = 5, Name = "Cooking", Value = 15, FrequencyDays = 1 },
-            new() { Id = 6, Name = "Cleaning the bathroom", Value = 25, FrequencyDays = 7 },
-            new() { Id = 7, Name = "Mending socks", Value = 20, FrequencyDays = 7 },
+            new() { Id = 1, Name = "Dusting", Value = 10, FrequencyDays = 1, MinCompletionMinutes = 5 },
+            new() { Id = 2, Name = "Sweeping the floor", Value = 15, FrequencyDays = 1, MinCompletionMinutes = 8 },
+            new() { Id = 3, Name = "Mopping the floor", Value = 20, FrequencyDays = 7, MinCompletionMinutes = 15 },
+            new() { Id = 4, Name = "Making the bed", Value = 5, FrequencyDays = 1, MinCompletionMinutes = 3 },
+            new() { Id = 5, Name = "Cooking", Value = 15, FrequencyDays = 1, MinCompletionMinutes = 20 },
+            new() { Id = 6, Name = "Cleaning the bathroom", Value = 25, FrequencyDays = 7, MinCompletionMinutes = 20 },
+            new() { Id = 7, Name = "Mending socks", Value = 20, FrequencyDays = 7, MinCompletionMinutes = 10 },
         };
 
         foreach (var chore in chores)

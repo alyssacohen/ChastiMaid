@@ -144,6 +144,18 @@
   <data name="DashboardNoPendingTasks" xml:space="preserve">
     <value>No pending tasks</value>
   </data>
+  <data name="TaskLastCompletedDaysAgo" xml:space="preserve">
+    <value>Last done: {0} days ago</value>
+  </data>
+  <data name="TaskNeverCompleted" xml:space="preserve">
+    <value>Never done</value>
+  </data>
+  <data name="TaskSuggestedFrequencyDays" xml:space="preserve">
+    <value>Suggested every {0} days</value>
+  </data>
+  <data name="DashboardChoreRejectedMessage" xml:space="preserve">
+    <value>Too fast — chore rejected, no credit given.</value>
+  </data>
   <data name="DashboardRequestPermission" xml:space="preserve">
     <value>Request Permission</value>
   </data>
@@ -364,6 +376,9 @@
   </data>
   <data name="SettingsFieldFreqDays" xml:space="preserve">
     <value>Freq. (Days)</value>
+  </data>
+  <data name="SettingsFieldMinCompletionMinutes" xml:space="preserve">
+    <value>Min. Time (min)</value>
   </data>
   <data name="SettingsFieldDescription" xml:space="preserve">
     <value>Description</value>

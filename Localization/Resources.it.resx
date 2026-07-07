@@ -144,6 +144,18 @@
   <data name="DashboardNoPendingTasks" xml:space="preserve">
     <value>Nessun compito in sospeso</value>
   </data>
+  <data name="TaskLastCompletedDaysAgo" xml:space="preserve">
+    <value>Ultima volta: {0} giorni fa</value>
+  </data>
+  <data name="TaskNeverCompleted" xml:space="preserve">
+    <value>Mai completato</value>
+  </data>
+  <data name="TaskSuggestedFrequencyDays" xml:space="preserve">
+    <value>Consigliato ogni {0} giorni</value>
+  </data>
+  <data name="DashboardChoreRejectedMessage" xml:space="preserve">
+    <value>Troppo veloce — compito rifiutato, nessun credito assegnato.</value>
+  </data>
   <data name="DashboardRequestPermission" xml:space="preserve">
     <value>Richiedi permesso</value>
   </data>
@@ -364,6 +376,9 @@
   </data>
   <data name="SettingsFieldFreqDays" xml:space="preserve">
     <value>Freq. (giorni)</value>
+  </data>
+  <data name="SettingsFieldMinCompletionMinutes" xml:space="preserve">
+    <value>Tempo min. (min)</value>
   </data>
   <data name="SettingsFieldDescription" xml:space="preserve">
     <value>Descrizione</value>

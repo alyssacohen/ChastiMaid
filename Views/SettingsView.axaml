@@ -238,7 +238,7 @@
                                     <Border Classes="card">
                                         <Grid ColumnDefinitions="*,Auto">
                                             <StackPanel Grid.Column="0" Spacing="8">
-                                                <Grid ColumnDefinitions="*,100,100">
+                                                <Grid ColumnDefinitions="*,100,100,100">
                                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
                                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
                                                         <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsChoreNamePlaceholder}" />
@@ -249,10 +249,16 @@
                                                                  Text="{Binding Value, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
                                                                  PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
                                                     </StackPanel>
-                                                    <StackPanel Grid.Column="2" Spacing="2">
+                                                    <StackPanel Grid.Column="2" Spacing="2" Margin="0,0,8,0">
                                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldFreqDays}}" />
                                                         <TextBox Classes="underline"
                                                                  Text="{Binding FrequencyDays, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=1}"
+                                                                 PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="3" Spacing="2">
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldMinCompletionMinutes}}" />
+                                                        <TextBox Classes="underline"
+                                                                 Text="{Binding MinCompletionMinutes, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
                                                                  PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
                                                     </StackPanel>
                                                 </Grid>
