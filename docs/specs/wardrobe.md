@@ -12,11 +12,11 @@ earning multiplier during sessions.
 Each item in the wardrobe has:
 
 - **Name**: display name
-- **Layers**: which layers this item can be placed on (one or more of: `undies`, `base`, `extra`, `outer`, `gears`)
+- **Layers**: which layers this item can be placed on (one or more of: `underwear`, `extra`, `base`, `outerwear`, `accessories`)
 - **Slots**: body slots this item occupies (e.g. `torso`, `legs`, `arms`, `crotch`, `waist`, `head`, `neck`, `feet`)
 - **Multiplier**: earning multiplier contribution (1.0 = neutral, >1.0 = bonus, <1.0 = penalty)
 - **Weight**: probability weight for random selection (higher = more likely to be picked)
-- **Tags**: descriptive tags (e.g. `maid`, `lingerie`, `fetish`, `casual`)
+- **Tags**: descriptive tags useful to apply filters (e.g. `maid`, `lingerie`, `classic`, `casual`)
 
 ### OutfitRule
 
@@ -68,7 +68,7 @@ Slots represent body areas. Two items cannot occupy the same slot on the same la
 
 1. **Resolve required rules**: if any seed item has a "requires" rule, pick one of the required items and add
    it to the picking list. Repeat until no new requirements are found.
-2. **Build outfit layer by layer** (in order: undies → extra → base → outer → gears):
+2. **Build outfit layer by layer** (in order: underwear → extra → base → outerwear → accessories):
     - Roll probability for the layer; skip if failed
     - Place seed/required items that belong to this layer
     - Fill remaining slots with random weighted candidates (up to 10 attempts per layer)
@@ -76,9 +76,14 @@ Slots represent body areas. Two items cannot occupy the same slot on the same la
    replacing non-seed items in case of conflict.
 
 ### Weighted Selection
-
 Items are chosen randomly with probability proportional to their `Weight` value.
 `Weight` vary when items are accepted or rejected.
+
+### Unwanted clothings (already implemented)
+The app keep track of how many times each item has been rejected. The count can decrease by 1 if the
+item is included in a subsequent outfit and accepted, but it can never be negative. If the count reaches 5,
+a non-editable outfit is generated and locked for the next session (already implemented, to be balanced).
+
 
 ## Session Flow: Outfit Proposal
 
@@ -145,13 +150,3 @@ Where:
 - **Save DB**: snapshot of wardrobe and rules at game creation time (used during gameplay)
 - **GameState**: stores `CurrentOutfit` (string), `OutfitLockedDate`, `OutfitBonusPercent`, `OutfitMultiplier`
 
-## Settings UI
-
-The Settings view provides tabs for:
-
-- **General**: player name, auto-save interval, game balance (min/max initial debt, daily interest
-  rate), idle wage amount/interval, popup check-in timing, and capture/camera settings
-- **Chores**: add/edit/delete chores (name, recommended frequency, value, completion time)
-- **Punishments**: add/edit/delete punishment templates and their severity
-- **Wardrobe**: add/edit/delete clothing items (name, layers, slots, multiplier, weight, tags)
-- **Outfit Rules**: add/edit/delete requires/incompatible relationships between items

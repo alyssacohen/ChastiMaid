@@ -101,16 +101,18 @@ The app will show a dashboard with the following elements:
 In this mode, the user is "available", the app checks if she is there by opening every 3 to 10 minutes (at random)
 a popup with a bell sound asking to do one of the following things:
 
-1. To pose for the camera (will take a picture)
+1. To pose for the camera (will give some instruction and take a picture)
 2. To record a video of a curtsy
 3. To read a motivational quote (will use text-to-speech to verify that is read aloud)
 4. To keel in front of the camera for a random time between 1 and 5 minutes while taking pictures at random intervals
 5. To answer an "impossible question"
+6. To get hydrated
+7. (optional) Plug and play popup
 
 If the user don't confirm the popup in time (15 seconds from the ringing bell), the app will assign a punishment.
 Every 30 minutes in "idle mode", without missing a popup, the app will reduce the debt by a small amount.
 
-When in "idle mode", the user can choose to start a chore from the list to earn some credits.
+When in "idle mode", the user can choose to start a chore from the list to earn some credits or to start a punishment.
 A popup will ask the user to position the camera to frame the working area and then confirm, a timer will then start to
 track how long the chore takes.
 
@@ -118,13 +120,14 @@ track how long the chore takes.
 
 The app will show a page with the following elements:
 
-* Header
+* Title
     - Chore name
 * Subheader
     - Chore description
     - Chore value (virtual currency)
 * Center of page
     - Time elapsed (a big timer)
+    - Motivational quotes (EmployerVoice) in Edwardian style
 * Footer
     - End chore button
 
@@ -132,4 +135,44 @@ In this mode, the user is "busy", the app checks if she is working by silently t
 seconds) at random intervals between a min and a max configured in the settings.
 When the chore is finished, the user can click the button and the value will be subtracted from the debt.
 
+
 ### Busy mode (cornertime)
+This mode is active when the user chooses to perform a cornertime punsihment.
+The app will show instructions to frame the corner where the user will stay and then track for movement until
+the end and take pictures or short videos like during chores.
+
+### Busy mode (Writing lines)
+This mode is active when the user is performing a writing lines punishment.
+The app will show the UI to perform this punishment and will take some pictures while the user performs it.
+
+## Diaper play (optional)
+Can be enabled/disabled in General Settings.
+
+When enabled, the user must select frome the wardrobe one or more "diaper" type garments (the user may have multiple variants such as disposable, cloth, pull-ups, medical, etc.).
+
+When this mode is active and one of these garments is present in the day's outfit, the application will:
+- Revoke bathroom access permissions
+- Increase the frequency of hydration reminder notifications
+
+## Plug and play (optional)
+Can be enabled/disabled in General Settings.
+
+When enabled, the user must select one or more accessories from their wardrobe that can be worn for a specified duration (min/max time for each item).
+
+If not already equipped and without conflict with currently worn items, one of the "Idle mode" popups may prompt the user to put on one of these accessories until further notice.
+
+After the required time has elapsed (randomly chosen between the item's min and max duration), another popup will instruct the user to remove the accessory.
+
+If the session ends before the accessory is removed, it will be included as a seed for the next session.
+
+If already implemented, Forced Outfits take priority over Plug and Play accessories: when a complete mandatory outfit is present, Plug and Play accessories are simply ignored.
+
+## Settings UI
+The Settings view provides tabs for:
+
+- **General**: player name, auto-save interval, game balance (min/max initial debt, daily interest
+  rate), idle wage amount/interval, popup check-in timing, and capture/camera settings
+- **Chores**: add/edit/delete chores (name, description, recommended frequency, value, completion time)
+- **Punishments**: Show all punishments types and set parameters
+- **Wardrobe**: add/edit/delete clothing items (name, layers, slots, multiplier, weight, tags)
+- **Outfit Rules**: add/edit/delete requires/incompatible relationships between items
