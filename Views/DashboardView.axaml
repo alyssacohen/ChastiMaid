@@ -461,11 +461,12 @@
         </Grid>
 
         <!-- ══════════════════════════════════════════════════════
-             TRIVIA POPUP overlay
+             IMPOSSIBLE QUESTION POPUP overlay
              ══════════════════════════════════════════════════════ -->
         <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay">
             <Border Classes="dialogBox" MaxWidth="500">
-                <StackPanel Spacing="16">
+              <Panel>
+                <StackPanel Spacing="16" IsVisible="{Binding !IsShowingPopupOutcome}">
                     <TextBlock Classes="Caption"
                                Text="{Binding PopupCountdown, StringFormat={conv:Tr DashboardPopupCountdownFormat}}"
                                Foreground="{DynamicResource BrushEmergencyText}"
@@ -488,6 +489,14 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsShowingPopupOutcome}">
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{Binding PopupOutcomeMessage}"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+              </Panel>
             </Border>
         </Panel>
 

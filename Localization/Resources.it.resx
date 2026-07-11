@@ -178,6 +178,134 @@
     <value>Tempo: {0}s</value>
   </data>
 
+  <!-- Impossible Questions popup -->
+  <data name="ImpossibleQuestionYes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="ImpossibleQuestionNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ImpossibleQuestionDiligence" xml:space="preserve">
+    <value>Siete state diligenti nei vostri doveri, oggi?</value>
+  </data>
+  <data name="ImpossibleQuestionDiligenceYesPositive" xml:space="preserve">
+    <value>L'operosità vi si addice.</value>
+  </data>
+  <data name="ImpossibleQuestionDiligenceYesNegative" xml:space="preserve">
+    <value>L'orgoglio per il proprio lavoro genera compiacimento. Guardatevene.</value>
+  </data>
+  <data name="ImpossibleQuestionDiligenceNoPositive" xml:space="preserve">
+    <value>La vostra franchezza vi fa onore. Ora rimediate.</value>
+  </data>
+  <data name="ImpossibleQuestionDiligenceNoNegative" xml:space="preserve">
+    <value>Avete confessato l'ozio con fin troppa chiarezza.</value>
+  </data>
+  <data name="ImpossibleQuestionPerfection" xml:space="preserve">
+    <value>Ritenete che il vostro lavoro odierno sia stato privo di difetti?</value>
+  </data>
+  <data name="ImpossibleQuestionPerfectionYesPositive" xml:space="preserve">
+    <value>La fiducia nella propria arte è cosa ammirevole.</value>
+  </data>
+  <data name="ImpossibleQuestionPerfectionYesNegative" xml:space="preserve">
+    <value>La perfezione appartiene al divino, non alla servitù domestica. Riconsiderate.</value>
+  </data>
+  <data name="ImpossibleQuestionPerfectionNoPositive" xml:space="preserve">
+    <value>L'umiltà è la prima virtù di un buon servizio.</value>
+  </data>
+  <data name="ImpossibleQuestionPerfectionNoNegative" xml:space="preserve">
+    <value>Allora avete ammesso il fallimento. Assai insoddisfacente.</value>
+  </data>
+  <data name="ImpossibleQuestionContentment" xml:space="preserve">
+    <value>Siete contenta del vostro servizio?</value>
+  </data>
+  <data name="ImpossibleQuestionContentmentYesPositive" xml:space="preserve">
+    <value>Una domestica contenta è il fondamento di una casa ben governata.</value>
+  </data>
+  <data name="ImpossibleQuestionContentmentYesNegative" xml:space="preserve">
+    <value>La contentezza genera pigrizia. Bisogna sempre aspirare a di più.</value>
+  </data>
+  <data name="ImpossibleQuestionContentmentNoPositive" xml:space="preserve">
+    <value>Bene. L'insoddisfazione è la vera madre del miglioramento.</value>
+  </data>
+  <data name="ImpossibleQuestionContentmentNoNegative" xml:space="preserve">
+    <value>Una domestica scontenta è una domestica infedele.</value>
+  </data>
+  <data name="ImpossibleQuestionInitiative" xml:space="preserve">
+    <value>Avete agito di vostra iniziativa, oggi?</value>
+  </data>
+  <data name="ImpossibleQuestionInitiativeYesPositive" xml:space="preserve">
+    <value>L'iniziativa è cosa quanto mai lodevole nel servizio.</value>
+  </data>
+  <data name="ImpossibleQuestionInitiativeYesNegative" xml:space="preserve">
+    <value>Non foste assunta per pensare, bensì per servire.</value>
+  </data>
+  <data name="ImpossibleQuestionInitiativeNoPositive" xml:space="preserve">
+    <value>Attendere istruzioni denota un'ammirevole compostezza.</value>
+  </data>
+  <data name="ImpossibleQuestionInitiativeNoNegative" xml:space="preserve">
+    <value>Una domestica priva di iniziativa è poco più che un mobile costoso.</value>
+  </data>
+  <data name="ImpossibleQuestionFatigue" xml:space="preserve">
+    <value>Siete affaticata?</value>
+  </data>
+  <data name="ImpossibleQuestionFatigueYesPositive" xml:space="preserve">
+    <value>Il lavoro pesante lascia il suo segno. Potete concedervi un breve riposo.</value>
+  </data>
+  <data name="ImpossibleQuestionFatigueYesNegative" xml:space="preserve">
+    <value>Una domestica del vostro rango non ha motivo di essere stanca a quest'ora.</value>
+  </data>
+  <data name="ImpossibleQuestionFatigueNoPositive" xml:space="preserve">
+    <value>Il vigore si addice a una buona domestica.</value>
+  </data>
+  <data name="ImpossibleQuestionFatigueNoNegative" xml:space="preserve">
+    <value>Allora, evidentemente, non avete lavorato abbastanza.</value>
+  </data>
+  <data name="ImpossibleQuestionComplaints" xml:space="preserve">
+    <value>Avete lamentele riguardo alle vostre condizioni attuali?</value>
+  </data>
+  <data name="ImpossibleQuestionComplaintsYesPositive" xml:space="preserve">
+    <value>Una casa che non ascolta la propria servitù è mal governata. Parlate.</value>
+  </data>
+  <data name="ImpossibleQuestionComplaintsYesNegative" xml:space="preserve">
+    <value>Quanta ingratitudine. In molte invidierebbero la vostra posizione.</value>
+  </data>
+  <data name="ImpossibleQuestionComplaintsNoPositive" xml:space="preserve">
+    <value>Quanto siete accomodante.</value>
+  </data>
+  <data name="ImpossibleQuestionComplaintsNoNegative" xml:space="preserve">
+    <value>Sospetto. Il silenzio, il più delle volte, cela i lamenti più grandi.</value>
+  </data>
+  <data name="ImpossibleQuestionImprovement" xml:space="preserve">
+    <value>Ritenete di necessitare ulteriore istruzione?</value>
+  </data>
+  <data name="ImpossibleQuestionImprovementYesPositive" xml:space="preserve">
+    <value>Un'allieva volenterosa è una gioia da istruire.</value>
+  </data>
+  <data name="ImpossibleQuestionImprovementYesNegative" xml:space="preserve">
+    <value>Dopo tutto questo tempo? Quanto profondamente deludente.</value>
+  </data>
+  <data name="ImpossibleQuestionImprovementNoPositive" xml:space="preserve">
+    <value>L'autosufficienza è una virtù assai ammirevole.</value>
+  </data>
+  <data name="ImpossibleQuestionImprovementNoNegative" xml:space="preserve">
+    <value>Al contrario — chi si crede al di là di ogni correzione ne ha il bisogno più urgente.</value>
+  </data>
+  <data name="ImpossibleQuestionVirtue" xml:space="preserve">
+    <value>Avete nutrito pensieri sconvenienti, oggi?</value>
+  </data>
+  <data name="ImpossibleQuestionVirtueYesPositive" xml:space="preserve">
+    <value>L'onestà, persino nella confessione, è una virtù.</value>
+  </data>
+  <data name="ImpossibleQuestionVirtueYesNegative" xml:space="preserve">
+    <value>La disciplina della mente deve precedere quella delle mani.</value>
+  </data>
+  <data name="ImpossibleQuestionVirtueNoPositive" xml:space="preserve">
+    <value>Quanto siete rispettabile.</value>
+  </data>
+  <data name="ImpossibleQuestionVirtueNoNegative" xml:space="preserve">
+    <value>O mi ingannate, o vi manca l'immaginazione per trasgredire. Nessuna delle due vi fa onore.</value>
+  </data>
+
   <!-- StartSessionView -->
   <data name="StartSessionTitle" xml:space="preserve">
     <value>L'abito di oggi</value>

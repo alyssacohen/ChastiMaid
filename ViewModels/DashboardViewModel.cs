@@ -60,7 +60,7 @@ public partial class DashboardViewModel : ViewModelBase
     private DateTime _choreStartTime;
     private DispatcherTimer? _choreTimer;
 
-    private int _correctAnswerIndex;
+    private ImpossibleQuestion? _currentQuestion;
 
     [Reactive] private decimal _currentDebt;
     [Reactive] private OutfitViewModel? _currentOutfitVm;
@@ -79,8 +79,9 @@ public partial class DashboardViewModel : ViewModelBase
     // --- Outfit drawer ---
     [Reactive] private bool _isOutfitDrawerOpen;
 
-    // --- Trivia popup ---
+    // --- Idle popup: Impossible Questions ---
     [Reactive] private bool _isPopupVisible;
+    [Reactive] private bool _isShowingPopupOutcome;
 
     [Reactive] private string _payRate = "";
 
@@ -88,7 +89,9 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private int _pendingPunishmentsCount;
     [Reactive] private ObservableCollection<string> _popupAnswers = [];
     [Reactive] private int _popupCountdown;
+    [Reactive] private string _popupOutcomeMessage = "";
     [Reactive] private string _popupQuestion = "";
+    private DispatcherTimer? _popupOutcomeTimer;
     private DispatcherTimer? _popupTimer;
     [Reactive] private string _timeToNextWage = "";
 
@@ -152,7 +155,7 @@ public partial class DashboardViewModel : ViewModelBase
         _sessionLoop = new SessionLoopService(saveRepo, _settings);
         _sessionLoop.OutfitBonus = _outfitBonus;
         _sessionLoop.OnIdleWagePaid = () => Dispatcher.UIThread.Post(RefreshDebt);
-        _sessionLoop.OnPopupTriggered = () => Dispatcher.UIThread.Post(ShowTriviaPopup);
+        _sessionLoop.OnPopupTriggered = () => Dispatcher.UIThread.Post(ShowIdlePopup);
 
         _countdownTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _countdownTimer.Tick += (_, _) => UpdateWageCountdown();
@@ -285,19 +288,29 @@ public partial class DashboardViewModel : ViewModelBase
         TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
-    // --- Trivia popup ---
-    private void ShowTriviaPopup()
+    // --- Idle popup: Impossible Questions ---
+    private void ShowIdlePopup()
     {
         if (IsPopupVisible || IsBusy)
         {
             return;
         }
 
-        var trivia = TriviaBank.GetRandom();
-        PopupQuestion = trivia.Question;
-        PopupAnswers = new ObservableCollection<string>(trivia.Answers);
-        _correctAnswerIndex = trivia.CorrectIndex;
+        // TODO(popup-types): pick among enabled idle popup types here once more than one exists
+        ShowImpossibleQuestionPopup();
+    }
+
+    private void ShowImpossibleQuestionPopup()
+    {
+        _currentQuestion = ImpossibleQuestionBank.GetRandom();
+        PopupQuestion = Resources.Get(_currentQuestion.QuestionKey);
+        PopupAnswers =
+        [
+            Resources.Get("ImpossibleQuestionYes"),
+            Resources.Get("ImpossibleQuestionNo")
+        ];
         PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
         if (OperatingSystem.IsWindows())
@@ -313,6 +326,8 @@ public partial class DashboardViewModel : ViewModelBase
             PopupCountdown--;
             if (PopupCountdown <= 0)
             {
+                _popupTimer?.Stop();
+                _popupTimer = null;
                 ClosePopup(false);
             }
         };
@@ -321,21 +336,49 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void OnAnswer(string answer)
     {
-        if (!IsPopupVisible)
+        if (!IsPopupVisible || _currentQuestion is null)
         {
             return;
         }
 
-        var correct = _correctAnswerIndex < PopupAnswers.Count && PopupAnswers[_correctAnswerIndex] == answer;
-        ClosePopup(correct);
+        _popupTimer?.Stop();
+        _popupTimer = null;
+
+        var isYes = PopupAnswers.Count > 0 && answer == PopupAnswers[0];
+        var positive = ImpossibleQuestionBank.RollOutcome();
+        var outcomeKey = isYes
+            ? (positive ? _currentQuestion.YesPositiveKey : _currentQuestion.YesNegativeKey)
+            : (positive ? _currentQuestion.NoPositiveKey : _currentQuestion.NoNegativeKey);
+
+        PopupOutcomeMessage = Resources.Get(outcomeKey);
+        IsShowingPopupOutcome = true;
+
+        _popupOutcomeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+        _popupOutcomeTimer.Tick += (_, _) =>
+        {
+            _popupOutcomeTimer?.Stop();
+            _popupOutcomeTimer = null;
+            ClosePopup(positive);
+        };
+        _popupOutcomeTimer.Start();
     }
 
-    private void ClosePopup(bool correct)
+    private void ClosePopup(bool positive)
     {
         _popupTimer?.Stop();
         _popupTimer = null;
+        _popupOutcomeTimer?.Stop();
+        _popupOutcomeTimer = null;
         IsPopupVisible = false;
-        _sessionLoop.ReportPopupResult(correct);
+        IsShowingPopupOutcome = false;
+        _currentQuestion = null;
+        _sessionLoop.ReportPopupResult(positive);
+
+        if (!positive)
+        {
+            _saveRepo.AssignRandomPunishment();
+            RefreshPunishments();
+        }
     }
 
     // --- Chore start → naviga a CameraSetupView ---
@@ -549,6 +592,7 @@ public partial class DashboardViewModel : ViewModelBase
         _sessionLoop.Stop();
         _countdownTimer?.Stop();
         _popupTimer?.Stop();
+        _popupOutcomeTimer?.Stop();
         _choreTimer?.Stop();
         StopSilentCapture();
         _mainVm.Webcam.Stop();
