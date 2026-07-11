@@ -5,7 +5,6 @@ using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -40,7 +39,7 @@ public partial class StartSessionViewModel : ViewModelBase
         // Daily interest: accrues only if safe is open (combination known)
         if (state is not null && !state.IsSafeLocked && state.CurrentDebt > 0)
         {
-            var days = (int)(UtcNow() - state.LastSessionAt).TotalDays;
+            var days = (int)(DateTime.UtcNow - state.LastSessionAt).TotalDays;
             if (days > 0)
             {
                 var rate = (decimal)state.DailyInterestRate;
@@ -55,7 +54,7 @@ public partial class StartSessionViewModel : ViewModelBase
 
         DebtDisplay = $"Debt: ${state?.CurrentDebt:F2}";
 
-        if (state?.OutfitLockedDate?.Date == UtcNow().Date)
+        if (state?.OutfitLockedDate?.Date == DateTime.UtcNow.Date)
         {
             _outfit = new Outfit();
             _proposedOutfit = state.CurrentOutfit ?? "";
@@ -252,7 +251,7 @@ public partial class StartSessionViewModel : ViewModelBase
         if (state is not null && !_isLocked)
         {
             state.CurrentOutfit = _outfit.ToString();
-            state.OutfitLockedDate = UtcNow();
+            state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = _currentBonus;
             state.OutfitMultiplier = _outfit.TotalMultiplier;
             _saveRepo.SaveGameState(state);

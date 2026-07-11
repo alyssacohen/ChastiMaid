@@ -4,7 +4,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using ChastiMaid.Localization;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -14,8 +13,6 @@ public partial class WelcomeViewModel : ViewModelBase
 
     [Reactive(SetModifier = AccessModifier.Private)]
     private ConfirmDialogViewModel? _activeDialog;
-
-    [Reactive] private string _clockOffset = "";
 
     public WelcomeViewModel(MainWindowViewModel mainVm)
     {
@@ -63,12 +60,6 @@ public partial class WelcomeViewModel : ViewModelBase
 
         SettingsCommand = ReactiveCommand.Create(() =>
             _mainVm.NavigateTo(new SettingsViewModel(_mainVm, () => new WelcomeViewModel(_mainVm))));
-
-        TimeTravelCommand = ReactiveCommand.Create<string>(days =>
-        {
-            Advance(TimeSpan.FromDays(int.Parse(days)));
-            ClockOffset = $"⏩ +{UtcNow() - DateTime.UtcNow:d\\.hh\\:mm} ahead";
-        });
     }
 
     public bool HasActiveGame { get; }
@@ -78,7 +69,4 @@ public partial class WelcomeViewModel : ViewModelBase
     public ICommand NewGameCommand { get; }
     public ICommand SettingsCommand { get; }
     public ICommand ExitCommand { get; }
-    public ICommand TimeTravelCommand { get; }
-
-    public bool IsTestMode => Program.TestMode;
 }

@@ -7,7 +7,6 @@ using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -73,7 +72,7 @@ public partial class EndSessionViewModel : ViewModelBase
         var current = sessions.LastOrDefault(s => s.EndedAt is null);
         if (current is not null)
         {
-            current.EndedAt = UtcNow();
+            current.EndedAt = DateTime.UtcNow;
             current.DebtAtEnd = _saveRepo.GetGameState()?.CurrentDebt ?? 0;
             current.SafeUnlocked = safeUnlocked;
             _saveRepo.UpdateSession(current);

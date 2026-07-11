@@ -11,14 +11,6 @@
         "ChastiMaid — Portrait (800×1200 · Surface Go)": {
             "commandName": "Project",
             "commandLineArgs": "--portrait"
-        },
-        "ChastiMaid — Test mode": {
-            "commandName": "Project",
-            "commandLineArgs": "--test"
-        },
-        "ChastiMaid — Portrait + Test": {
-            "commandName": "Project",
-            "commandLineArgs": "--portrait --test"
         }
     }
 }

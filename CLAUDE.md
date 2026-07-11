@@ -79,10 +79,6 @@ profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` wit
   `Resume()` toggle for the idle↔busy transition. Exposes `OnIdleWagePaid`/`OnPopupTriggered` callbacks.
 - `AutoSaveService` — `TriggerSave()` for event-driven saves + a periodic timer; `Bind`/`Unbind` the active
   `SaveRepository`.
-- `GameClock` — **all time-dependent game mechanics (daily outfit lock, interest, idle wage, popup timing) must go
-  through `GameClock.UtcNow()`/`Today`, never `DateTime.UtcNow` directly.** It applies a test offset
-  (`Advance`/`Reset`) so these mechanics can be fast-forwarded in test mode. Timestamps used only for naming files
-  (e.g. capture filenames, save-slot names) are not game mechanics and may use `DateTime.Now` directly.
 - `WebcamPreviewService` — webcam capture (OpenCvSharp) for the photo/video check-ins, including camera enumeration
   and selection; `CryptoService` encrypts captured media and the safe-combination photo.
 

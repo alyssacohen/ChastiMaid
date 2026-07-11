@@ -1,6 +1,5 @@
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.Services;
 
@@ -43,7 +42,7 @@ public class SessionLoopService : IDisposable
     {
         Stop();
         _missedSinceLastWage = false;
-        LastWageTime = UtcNow();
+        LastWageTime = DateTime.UtcNow;
         _cts = new CancellationTokenSource();
         _wageTask = RunWageLoop(_cts.Token);
         _popupTask = RunPopupLoop(_cts.Token);
@@ -67,7 +66,7 @@ public class SessionLoopService : IDisposable
     /// <summary>Resumes the timers (returning to idle mode). Resets the wage clock.</summary>
     public void Resume()
     {
-        LastWageTime = UtcNow();
+        LastWageTime = DateTime.UtcNow;
         _cts = new CancellationTokenSource();
         _wageTask = RunWageLoop(_cts.Token);
         _popupTask = RunPopupLoop(_cts.Token);
@@ -106,7 +105,7 @@ public class SessionLoopService : IDisposable
             }
 
             _missedSinceLastWage = false;
-            LastWageTime = UtcNow();
+            LastWageTime = DateTime.UtcNow;
         }
     }
 

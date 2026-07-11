@@ -5,7 +5,6 @@ using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -27,7 +26,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         if (state is not null)
         {
             state.CurrentOutfit = OutfitSummary;
-            state.OutfitLockedDate = UtcNow();
+            state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = bonusPercent;
             saveRepo.SaveGameState(state);
         }
@@ -98,9 +97,8 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
             // Safe already locked — skip SafeLock, create session, and navigate to dashboard
             _saveRepo.AddSession(new Session
             {
-                StartedAt = UtcNow(),
+                StartedAt = DateTime.UtcNow,
                 DebtAtStart = state.CurrentDebt,
-                IsTestSession = Program.TestMode,
             });
             _mainVm.NavigateTo(new DashboardViewModel(_mainVm, _saveRepo));
         }

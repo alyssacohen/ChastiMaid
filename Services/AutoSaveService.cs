@@ -1,5 +1,4 @@
 using ChastiMaid.Repositories;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.Services;
 
@@ -49,7 +48,7 @@ public class AutoSaveService : IDisposable
                 return;
             }
 
-            state.LastSessionAt = UtcNow();
+            state.LastSessionAt = DateTime.UtcNow;
             _saveRepo.SaveGameState(state);
         }
         catch (ObjectDisposedException)

@@ -5,7 +5,6 @@ using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -358,7 +357,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         if (state is not null)
         {
             state.CurrentOutfit = outfit.ToString();
-            state.OutfitLockedDate = UtcNow();
+            state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = _bonusPercent;
             state.OutfitMultiplier = outfit.TotalMultiplier;
             _saveRepo.SaveGameState(state);

@@ -10,7 +10,6 @@ using ChastiMaid.Services;
 using ChastiMaid.Views.Dialogs;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -23,9 +22,7 @@ public class ChoreItemViewModel : ViewModelBase
         Description = chore.Description;
         Value = chore.Value;
         var effective = Math.Round(chore.Value * (decimal)multiplier, 2);
-        ValueDisplay = Program.TestMode
-            ? $"${effective:F2} (${chore.Value:F2} × {multiplier:F2})"
-            : $"${effective:F2}";
+        ValueDisplay = $"${effective:F2}";
         StartChoreCommand = ReactiveCommand.Create(() => onStart(this));
     }
 
@@ -116,7 +113,7 @@ public partial class DashboardViewModel : ViewModelBase
         var state = saveRepo.GetGameState();
         if (state is not null)
         {
-            state.LastSessionAt = UtcNow();
+            state.LastSessionAt = DateTime.UtcNow;
             saveRepo.SaveGameState(state);
         }
 
@@ -127,10 +124,7 @@ public partial class DashboardViewModel : ViewModelBase
 
         _outfitBonus = state?.EffectiveMultiplier ?? 1.0;
         var effectiveWage = Math.Round(_settings.IdleWageAmount * (decimal)_outfitBonus, 2);
-        PayRate = Program.TestMode
-            ? string.Format(Resources.Get("DashboardWageDebugFormat"), effectiveWage,
-                _settings.IdleWageIntervalMinutes, _settings.IdleWageAmount, _outfitBonus)
-            : string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
+        PayRate = string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
 
         LoadChores();
 
@@ -280,7 +274,7 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
-        var elapsed = UtcNow() - _sessionLoop.LastWageTime;
+        var elapsed = DateTime.UtcNow - _sessionLoop.LastWageTime;
         var interval = TimeSpan.FromMinutes(_sessionLoop.WageIntervalMinutes);
         var remaining = interval - elapsed;
         if (remaining < TimeSpan.Zero)
@@ -306,7 +300,7 @@ public partial class DashboardViewModel : ViewModelBase
 
     private bool IsHydrationAvailable()
     {
-        return UtcNow() - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
+        return DateTime.UtcNow - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
     }
 
     private void ShowIdlePopup()
@@ -373,7 +367,7 @@ public partial class DashboardViewModel : ViewModelBase
     private void ShowHydrationPopup()
     {
         _currentPopupKind = IdlePopupKind.Hydration;
-        _lastHydrationPopupAt = UtcNow();
+        _lastHydrationPopupAt = DateTime.UtcNow;
         PopupQuestion = Resources.Get(HydrationReminderBank.GetRandom());
         PopupAnswers = [Resources.Get("HydrationConfirm")];
         PopupCountdown = _settings.PopupTimeoutSeconds;
@@ -539,16 +533,14 @@ public partial class DashboardViewModel : ViewModelBase
         IsBusy = true;
         BusyChoreName = _activeChore.Name;
         BusyChoreDescription = _activeChore.Description;
-        BusyChoreValueDisplay = Program.TestMode
-            ? $"${Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2):F2} (${_activeChore.Value:F2} × {_outfitBonus:F2})"
-            : $"${Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2):F2}";
-        _choreStartTime = UtcNow();
+        BusyChoreValueDisplay = $"${Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2):F2}";
+        _choreStartTime = DateTime.UtcNow;
         BusyElapsed = "00:00";
 
         _choreTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _choreTimer.Tick += (_, _) =>
         {
-            var elapsed = UtcNow() - _choreStartTime;
+            var elapsed = DateTime.UtcNow - _choreStartTime;
             BusyElapsed = $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
         };
         _choreTimer.Start();
@@ -567,7 +559,7 @@ public partial class DashboardViewModel : ViewModelBase
         _choreTimer = null;
         StopSilentCapture();
 
-        var elapsed = UtcNow() - _choreStartTime;
+        var elapsed = DateTime.UtcNow - _choreStartTime;
         var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChore.ChoreId);
         var tooEarly = chore is not null && elapsed.TotalMinutes < chore.MinCompletionMinutes;
 
@@ -589,7 +581,7 @@ public partial class DashboardViewModel : ViewModelBase
 
             if (chore is not null)
             {
-                _saveRepo.UpdateChoreCompletion(chore.Id, UtcNow());
+                _saveRepo.UpdateChoreCompletion(chore.Id, DateTime.UtcNow);
             }
 
             ChoreResultMessage = "";

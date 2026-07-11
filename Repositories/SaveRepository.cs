@@ -1,7 +1,6 @@
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 using LiteDB;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.Repositories;
 
@@ -140,7 +139,7 @@ public class SaveRepository(LiteDatabase db)
         {
             TemplateId = template.Id,
             TemplateName = template.Name,
-            AssignedAt = UtcNow(),
+            AssignedAt = DateTime.UtcNow,
             DebtApplied = template.DebtIncrease is not null,
             RemainingOutfitForce = template.OutfitForceDuration,
             ForcedClothingItemIds = template.ForcedClothingItemIds,
@@ -209,8 +208,8 @@ public class SaveRepository(LiteDatabase db)
             InitialDebt = initialDebt,
             CurrentDebt = initialDebt,
             DailyInterestRate = settings.DailyInterestRate,
-            StartedAt = UtcNow(),
-            LastSessionAt = UtcNow(),
+            StartedAt = DateTime.UtcNow,
+            LastSessionAt = DateTime.UtcNow,
         });
 
         return save;

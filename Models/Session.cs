@@ -10,5 +10,4 @@ public class Session
     public decimal DebtAtStart { get; set; }
     public decimal DebtAtEnd { get; set; }
     public bool SafeUnlocked { get; set; }
-    public bool IsTestSession { get; set; }
 }

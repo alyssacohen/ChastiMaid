@@ -81,18 +81,6 @@
   <data name="WelcomeQuote" xml:space="preserve">
       <value>Accomodati pure. La porta è aperta... per ora.</value>
   </data>
-  <data name="WelcomeTestModeLabel" xml:space="preserve">
-    <value>⏩  Modalità test — Viaggio nel tempo</value>
-  </data>
-  <data name="WelcomePlusOneDay" xml:space="preserve">
-    <value>+1 giorno</value>
-  </data>
-  <data name="WelcomePlusThreeDays" xml:space="preserve">
-    <value>+3 giorni</value>
-  </data>
-  <data name="WelcomePlusSevenDays" xml:space="preserve">
-    <value>+7 giorni</value>
-  </data>
   <data name="WelcomeContinue" xml:space="preserve">
     <value>Continua</value>
   </data>
@@ -728,9 +716,6 @@
   </data>
   <data name="DashboardWageFormat" xml:space="preserve">
     <value>Paga: ${0:F2} / {1} min</value>
-  </data>
-  <data name="DashboardWageDebugFormat" xml:space="preserve">
-    <value>Paga: ${0:F2} / {1} min (${2:F2} × {3:F2})</value>
   </data>
   <data name="DashboardDebtFormat" xml:space="preserve">
     <value>Debito: ${0:F2}</value>

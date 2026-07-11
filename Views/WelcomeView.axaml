@@ -13,11 +13,9 @@
 
             <!-- ── LEFT COLUMN ── -->
             <Grid Grid.Column="0"
-                  RowDefinitions="*,Auto">
+                  RowDefinitions="*">
 
-                <!-- Row 0: title + quote -->
-                <StackPanel Grid.Row="0"
-                            VerticalAlignment="Top"
+                <StackPanel VerticalAlignment="Top"
                             Spacing="0">
 
                     <TextBlock Classes="PageTitle"
@@ -30,47 +28,6 @@
                     <TextBlock Classes="EmployerVoice"
                                TextWrapping="Wrap"
                                Text="{conv:Tr WelcomeQuote}" />
-
-                </StackPanel>
-
-                <!-- Row 1: test mode panel (auto-height, bottom-anchored) -->
-                <StackPanel Grid.Row="1"
-                            IsVisible="{Binding IsTestMode}">
-
-                    <Border BorderBrush="{DynamicResource BrushBorderSubtle}"
-                            BorderThickness="1"
-                            CornerRadius="4"
-                            Padding="{StaticResource SpacingLgThickness}"
-                            Margin="0,0,80,0">
-                        <StackPanel Spacing="8">
-
-                            <TextBlock Classes="LabelUI"
-                                       HorizontalAlignment="Center"
-                                       Text="{conv:UpperCase {conv:Tr WelcomeTestModeLabel}}" />
-
-                            <TextBlock Classes="Caption"
-                                       HorizontalAlignment="Center"
-                                       Text="{Binding ClockOffset}" />
-
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        Spacing="8">
-                                <Button Classes="SmallGhost"
-                                        Content="{conv:Tr WelcomePlusOneDay}"
-                                        Command="{Binding TimeTravelCommand}"
-                                        CommandParameter="1" />
-                                <Button Classes="SmallGhost"
-                                        Content="{conv:Tr WelcomePlusThreeDays}"
-                                        Command="{Binding TimeTravelCommand}"
-                                        CommandParameter="3" />
-                                <Button Classes="SmallGhost"
-                                        Content="{conv:Tr WelcomePlusSevenDays}"
-                                        Command="{Binding TimeTravelCommand}"
-                                        CommandParameter="7" />
-                            </StackPanel>
-
-                        </StackPanel>
-                    </Border>
 
                 </StackPanel>
 

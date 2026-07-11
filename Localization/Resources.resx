@@ -81,18 +81,6 @@
   <data name="WelcomeQuote" xml:space="preserve">
       <value>Please, come in. The door is unlocked. It always is... at first.</value>
   </data>
-  <data name="WelcomeTestModeLabel" xml:space="preserve">
-    <value>⏩  Test Mode — Time Travel</value>
-  </data>
-  <data name="WelcomePlusOneDay" xml:space="preserve">
-    <value>+1 day</value>
-  </data>
-  <data name="WelcomePlusThreeDays" xml:space="preserve">
-    <value>+3 days</value>
-  </data>
-  <data name="WelcomePlusSevenDays" xml:space="preserve">
-    <value>+7 days</value>
-  </data>
   <data name="WelcomeContinue" xml:space="preserve">
     <value>Continue</value>
   </data>
@@ -728,9 +716,6 @@
   </data>
   <data name="DashboardWageFormat" xml:space="preserve">
     <value>Wage: ${0:F2} / {1} min</value>
-  </data>
-  <data name="DashboardWageDebugFormat" xml:space="preserve">
-    <value>Wage: ${0:F2} / {1} min (${2:F2} × {3:F2})</value>
   </data>
   <data name="DashboardDebtFormat" xml:space="preserve">
     <value>Debt: ${0:F2}</value>

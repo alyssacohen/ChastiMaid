@@ -3,7 +3,6 @@ using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -29,7 +28,7 @@ public partial class TaskItemViewModel : ViewModelBase
     public ICommand ToggleExpandedCommand { get; }
 
     public string LastCompletedLabel => LastCompletedAt is { } d
-        ? string.Format(Resources.Get("TaskLastCompletedDaysAgo"), (UtcNow() - d).Days)
+        ? string.Format(Resources.Get("TaskLastCompletedDaysAgo"), (DateTime.UtcNow - d).Days)
         : Resources.Get("TaskNeverCompleted");
 
     public string FrequencyLabel => string.Format(Resources.Get("TaskSuggestedFrequencyDays"), FrequencyDays);
@@ -44,7 +43,7 @@ public partial class TaskItemViewModel : ViewModelBase
                 return "BrushButtonDanger";
             }
 
-            var daysSince = (UtcNow() - d).Days;
+            var daysSince = (DateTime.UtcNow - d).Days;
             if (daysSince <= FrequencyDays)
             {
                 return "BrushStatusIdle";

@@ -5,7 +5,6 @@ using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using static ChastiMaid.Services.GameClock;
 
 namespace ChastiMaid.ViewModels;
 
@@ -86,9 +85,8 @@ public partial class SafeLockViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         _saveRepo.AddSession(new Session
         {
-            StartedAt = UtcNow(),
+            StartedAt = DateTime.UtcNow,
             DebtAtStart = state?.CurrentDebt ?? 0,
-            IsTestSession = Program.TestMode,
         });
         _mainVm.NavigateTo(new DashboardViewModel(_mainVm, _saveRepo));
     }
