@@ -27,6 +27,9 @@ public class GameSettings
     public int PopupMaxIntervalSeconds { get; set; } = 600;
     public int PopupTimeoutSeconds { get; set; } = 15;
 
+    // Hydration popup — minimum time between hydration reminders, independent of the general popup cycle
+    public int HydrationMinIntervalMinutes { get; set; } = 60;
+
     // Busy mode capture
     public int BusyCaptureMinIntervalSeconds { get; set; } = 3;
     public int BusyCaptureMaxIntervalSeconds { get; set; } = 10;

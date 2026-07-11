@@ -306,6 +306,26 @@
     <value>O mi ingannate, o vi manca l'immaginazione per trasgredire. Nessuna delle due vi fa onore.</value>
   </data>
 
+  <!-- Hydration popup -->
+  <data name="HydrationConfirm" xml:space="preserve">
+    <value>Fatto</value>
+  </data>
+  <data name="HydrationReminderHousehold" xml:space="preserve">
+    <value>Il corpo, come la casa, richiede la propria manutenzione. Andate a bere qualcosa.</value>
+  </data>
+  <data name="HydrationReminderRoutine" xml:space="preserve">
+    <value>Una breve pausa per bere non è ozio.</value>
+  </data>
+  <data name="HydrationReminderDuty" xml:space="preserve">
+    <value>Anche la diligenza necessita di nutrimento. Occupatevi della vostra sete.</value>
+  </data>
+  <data name="HydrationReminderPause" xml:space="preserve">
+    <value>Potete fermarvi a bere. Non ne penserò peggio di voi.</value>
+  </data>
+  <data name="HydrationConfirmedMessage" xml:space="preserve">
+    <value>Molto bene.</value>
+  </data>
+
   <!-- StartSessionView -->
   <data name="StartSessionTitle" xml:space="preserve">
     <value>L'abito di oggi</value>
@@ -478,6 +498,9 @@
   </data>
   <data name="SettingsPopupTimeout" xml:space="preserve">
     <value>Timeout popup (sec)</value>
+  </data>
+  <data name="SettingsHydrationMinInterval" xml:space="preserve">
+    <value>Intervallo min. idratazione (min)</value>
   </data>
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Cattura</value>

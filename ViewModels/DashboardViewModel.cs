@@ -93,6 +93,7 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private string _popupQuestion = "";
     private DispatcherTimer? _popupOutcomeTimer;
     private DispatcherTimer? _popupTimer;
+    private bool _pendingOutcomePositive;
     [Reactive] private string _timeToNextWage = "";
 
     /// <summary>Standard constructor — enters idle mode.</summary>
@@ -164,6 +165,7 @@ public partial class DashboardViewModel : ViewModelBase
         CompleteGameCommand =
             ReactiveCommand.Create(() => _mainVm.NavigateTo(new GameCompleteViewModel(_mainVm, _saveRepo)));
         AnswerCommand = ReactiveCommand.Create<string>(OnAnswer);
+        DismissPopupOutcomeCommand = ReactiveCommand.Create(DismissPopupOutcome);
         EndChoreCommand = ReactiveCommand.Create(OnEndChore);
 
         var canOpenPunishments = this.WhenAnyValue(x => x.PendingPunishmentsCount, c => c > 0);
@@ -216,6 +218,7 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand EndSessionCommand { get; }
     public ICommand CompleteGameCommand { get; }
     public ICommand AnswerCommand { get; }
+    public ICommand DismissPopupOutcomeCommand { get; }
     public ICommand EndChoreCommand { get; }
 
     // --- New dashboard commands ---
@@ -288,7 +291,24 @@ public partial class DashboardViewModel : ViewModelBase
         TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
-    // --- Idle popup: Impossible Questions ---
+    // --- Idle popup: Impossible Questions / Hydration ---
+    private enum IdlePopupKind
+    {
+        ImpossibleQuestion,
+        Hydration
+    }
+
+    private static readonly IdlePopupKind[] EnabledIdlePopupKinds =
+        [IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration];
+
+    private IdlePopupKind _currentPopupKind;
+    private DateTime _lastHydrationPopupAt = DateTime.MinValue;
+
+    private bool IsHydrationAvailable()
+    {
+        return UtcNow() - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
+    }
+
     private void ShowIdlePopup()
     {
         if (IsPopupVisible || IsBusy)
@@ -296,12 +316,28 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
-        // TODO(popup-types): pick among enabled idle popup types here once more than one exists
-        ShowImpossibleQuestionPopup();
+        var candidates = IsHydrationAvailable()
+            ? EnabledIdlePopupKinds
+            : EnabledIdlePopupKinds.Where(k => k != IdlePopupKind.Hydration).ToArray();
+        if (candidates.Length == 0)
+        {
+            return;
+        }
+
+        switch (candidates[_random.Next(candidates.Length)])
+        {
+            case IdlePopupKind.ImpossibleQuestion:
+                ShowImpossibleQuestionPopup();
+                break;
+            case IdlePopupKind.Hydration:
+                ShowHydrationPopup();
+                break;
+        }
     }
 
     private void ShowImpossibleQuestionPopup()
     {
+        _currentPopupKind = IdlePopupKind.ImpossibleQuestion;
         _currentQuestion = ImpossibleQuestionBank.GetRandom();
         PopupQuestion = Resources.Get(_currentQuestion.QuestionKey);
         PopupAnswers =
@@ -334,9 +370,58 @@ public partial class DashboardViewModel : ViewModelBase
         _popupTimer.Start();
     }
 
+    private void ShowHydrationPopup()
+    {
+        _currentPopupKind = IdlePopupKind.Hydration;
+        _lastHydrationPopupAt = UtcNow();
+        PopupQuestion = Resources.Get(HydrationReminderBank.GetRandom());
+        PopupAnswers = [Resources.Get("HydrationConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+#pragma warning disable CA1416
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+#pragma warning restore CA1416
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
     private void OnAnswer(string answer)
     {
-        if (!IsPopupVisible || _currentQuestion is null)
+        if (!IsPopupVisible)
+        {
+            return;
+        }
+
+        switch (_currentPopupKind)
+        {
+            case IdlePopupKind.ImpossibleQuestion:
+                OnImpossibleQuestionAnswer(answer);
+                break;
+            case IdlePopupKind.Hydration:
+                OnHydrationConfirm();
+                break;
+        }
+    }
+
+    private void OnImpossibleQuestionAnswer(string answer)
+    {
+        if (_currentQuestion is null)
         {
             return;
         }
@@ -351,6 +436,21 @@ public partial class DashboardViewModel : ViewModelBase
             : (positive ? _currentQuestion.NoPositiveKey : _currentQuestion.NoNegativeKey);
 
         PopupOutcomeMessage = Resources.Get(outcomeKey);
+        ShowPopupOutcome(positive);
+    }
+
+    private void OnHydrationConfirm()
+    {
+        _popupTimer?.Stop();
+        _popupTimer = null;
+
+        PopupOutcomeMessage = Resources.Get("HydrationConfirmedMessage");
+        ShowPopupOutcome(true);
+    }
+
+    private void ShowPopupOutcome(bool positive)
+    {
+        _pendingOutcomePositive = positive;
         IsShowingPopupOutcome = true;
 
         _popupOutcomeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
@@ -361,6 +461,18 @@ public partial class DashboardViewModel : ViewModelBase
             ClosePopup(positive);
         };
         _popupOutcomeTimer.Start();
+    }
+
+    private void DismissPopupOutcome()
+    {
+        if (!IsShowingPopupOutcome)
+        {
+            return;
+        }
+
+        _popupOutcomeTimer?.Stop();
+        _popupOutcomeTimer = null;
+        ClosePopup(_pendingOutcomePositive);
     }
 
     private void ClosePopup(bool positive)

@@ -463,8 +463,10 @@
         <!-- ══════════════════════════════════════════════════════
              IMPOSSIBLE QUESTION POPUP overlay
              ══════════════════════════════════════════════════════ -->
-        <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay">
-            <Border Classes="dialogBox" MaxWidth="500">
+        <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay"
+               PointerPressed="OnPopupOverlayPointerPressed">
+            <Border Classes="dialogBox" MaxWidth="500"
+                    PointerPressed="OnPopupDialogBoxPointerPressed">
               <Panel>
                 <StackPanel Spacing="16" IsVisible="{Binding !IsShowingPopupOutcome}">
                     <TextBlock Classes="Caption"
