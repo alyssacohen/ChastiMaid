@@ -203,16 +203,23 @@
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────
-       Global: white foreground on selected text (all TextBoxes)
+       Global: light selection highlight on all TextBoxes.
+       TextBox.SelectionForegroundBrush (swapping the TEXT to a light
+       color) is inert on the pinned Avalonia 12.0.5 — it's a known
+       upstream regression (AvaloniaUI/Avalonia#21460) where selected
+       text never repaints in the new brush. So instead of fighting
+       that, the HIGHLIGHT itself is tinted light (accent-light) and
+       the text keeps its normal dark Foreground, which stays legible
+       without depending on the buggy property.
        NumericUpDown selector needed because its inner TextBox lives
-       inside a ControlTemplate where the generic TextBox style can
-       be outranked by the Fluent ControlTheme setter.
+       inside a ControlTemplate, where a more specific selector may
+       be required to outrank the Fluent ControlTheme setter.
   ────────────────────────────────────────────────────────────── -->
     <Style Selector="TextBox">
-        <Setter Property="SelectionForegroundBrush" Value="White" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource SystemAccentColorLight3}" />
     </Style>
     <Style Selector="NumericUpDown TextBox">
-        <Setter Property="SelectionForegroundBrush" Value="White" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource SystemAccentColorLight3}" />
     </Style>
 
 </Styles>

@@ -96,4 +96,18 @@
     <Color x:Key="SystemAccentColorDark2">#4A3520</Color>
     <Color x:Key="SystemAccentColorDark3">#3A2818</Color>
 
+    <!-- ═══════════════════════════════════════════
+       ACCENT-ON-DARK TEXT PAIRS — FluentTheme renders these
+       states (ComboBoxItem selected row) with the accent color
+       above as their Background. Without this override the
+       Foreground stays FluentTheme's default dark text, which is
+       unreadable on the warm-brown accent. Pair: light text on
+       the dark accent background, matching BrushChipSelected's
+       existing dark-bg/light-text convention.
+  ═══════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="ComboBoxItemForegroundSelected" Color="{StaticResource ColorButtonPrimaryText}" />
+    <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedPointerOver" Color="{StaticResource ColorButtonPrimaryText}" />
+    <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedPressed" Color="{StaticResource ColorButtonPrimaryText}" />
+    <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedDisabled" Color="{StaticResource ColorButtonPrimaryText}" />
+
 </ResourceDictionary>
