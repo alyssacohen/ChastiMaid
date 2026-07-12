@@ -100,12 +100,22 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private int _poseCountdown;
     [Reactive] private Bitmap? _capturedPosePhoto;
 
-    // Responsive sizing, recalculated on window resize (see DashboardView.axaml.cs)
+    // Responsive sizing, recalculated on window resize (see DashboardView.axaml.cs) — shared by
+    // every idle popup that shows a live webcam preview (Pose for Camera, Curtsy, ...)
     [Reactive] private double _popupDialogMaxHeight = 420;
-    [Reactive] private double _posePreviewWidth = 280;
-    [Reactive] private double _posePreviewHeight = 420;
+    [Reactive] private double _popupPreviewWidth = 280;
+    [Reactive] private double _popupPreviewHeight = 420;
     private DispatcherTimer? _poseCountdownTimer;
     private ClothingItem? _currentPoseItem;
+
+    // --- Idle popup: Curtsy (video di riverenza) ---
+    [Reactive] private bool _isCurtsyCountdownActive;
+    [Reactive] private bool _isCurtsyRecordingActive;
+    [Reactive] private bool _isCurtsyPopupActive;
+    [Reactive] private int _curtsyCountdown;
+    [Reactive] private int _curtsyRecordingSecondsLeft;
+    private DispatcherTimer? _curtsyCountdownTimer;
+    private CancellationTokenSource? _curtsyRecordingCts;
 
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
@@ -223,7 +233,11 @@ public partial class DashboardViewModel : ViewModelBase
 
     public string CurrentOutfit { get; }
     public WebcamPreviewService Webcam => _mainVm.Webcam;
-    public bool IsShowingQuestionPanel => !IsShowingPopupOutcome && !IsPoseCountdownActive;
+
+    public bool IsShowingQuestionPanel =>
+        !IsShowingPopupOutcome && !IsPoseCountdownActive && !IsCurtsyCountdownActive && !IsCurtsyRecordingActive;
+
+    public bool IsWebcamPreviewNeededInQuestionPanel => IsPoseForCameraPopupActive || IsCurtsyPopupActive;
 
     public ICommand EndSessionCommand { get; }
     public ICommand CompleteGameCommand { get; }
@@ -301,16 +315,17 @@ public partial class DashboardViewModel : ViewModelBase
         TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
-    // --- Idle popup: Impossible Questions / Hydration / Pose for Camera ---
+    // --- Idle popup: Impossible Questions / Hydration / Pose for Camera / Curtsy ---
     private enum IdlePopupKind
     {
         ImpossibleQuestion,
         Hydration,
-        PoseForCamera
+        PoseForCamera,
+        Curtsy
     }
 
     private static readonly IdlePopupKind[] EnabledIdlePopupKinds =
-        [IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera];
+        [IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera, IdlePopupKind.Curtsy];
 
     private IdlePopupKind _currentPopupKind;
     private DateTime _lastHydrationPopupAt = DateTime.MinValue;
@@ -337,6 +352,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             IdlePopupKind.Hydration => IsHydrationAvailable(),
             IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
+            IdlePopupKind.Curtsy => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             _ => true
         };
     }
@@ -364,6 +380,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.PoseForCamera:
                 ShowPoseForCameraPopup();
+                break;
+            case IdlePopupKind.Curtsy:
+                ShowCurtsyPopup();
                 break;
         }
     }
@@ -445,6 +464,7 @@ public partial class DashboardViewModel : ViewModelBase
 
         _currentPopupKind = IdlePopupKind.PoseForCamera;
         IsPoseForCameraPopupActive = true;
+        this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentPoseItem = candidates[_random.Next(candidates.Count)];
         PopupQuestion = string.Format(Resources.Get(PoseForCameraInstructionBank.GetRandom()), _currentPoseItem.Name);
         PopupAnswers = [Resources.Get("PoseForCameraConfirm")];
@@ -474,6 +494,43 @@ public partial class DashboardViewModel : ViewModelBase
         _popupTimer.Start();
     }
 
+    private void ShowCurtsyPopup()
+    {
+        if (!_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
+        {
+            return;
+        }
+
+        _currentPopupKind = IdlePopupKind.Curtsy;
+        IsCurtsyPopupActive = true;
+        this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
+        PopupQuestion = Resources.Get(CurtsyInstructionBank.GetRandom());
+        PopupAnswers = [Resources.Get("CurtsyConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+#pragma warning disable CA1416
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+#pragma warning restore CA1416
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
     private void OnAnswer(string answer)
     {
         if (!IsPopupVisible)
@@ -491,6 +548,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.PoseForCamera:
                 OnPoseForCameraConfirm();
+                break;
+            case IdlePopupKind.Curtsy:
+                OnCurtsyConfirm();
                 break;
         }
     }
@@ -576,6 +636,75 @@ public partial class DashboardViewModel : ViewModelBase
         ShowPopupOutcome(true);
     }
 
+    private void OnCurtsyConfirm()
+    {
+        _popupTimer?.Stop();
+        _popupTimer = null;
+
+        IsCurtsyCountdownActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        CurtsyCountdown = 3;
+
+        _curtsyCountdownTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _curtsyCountdownTimer.Tick += async (_, _) =>
+        {
+            CurtsyCountdown--;
+            if (CurtsyCountdown <= 0)
+            {
+                _curtsyCountdownTimer?.Stop();
+                _curtsyCountdownTimer = null;
+                await StartCurtsyRecordingAsync();
+            }
+        };
+        _curtsyCountdownTimer.Start();
+    }
+
+    private async Task StartCurtsyRecordingAsync()
+    {
+        IsCurtsyCountdownActive = false;
+        IsCurtsyRecordingActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        CurtsyRecordingSecondsLeft = _settings.CurtsyVideoDurationSeconds;
+
+        var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
+        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
+        var path = Path.Combine(dir, $"curtsy_{timestamp}.avi");
+
+        _curtsyRecordingCts = new CancellationTokenSource();
+        var success = false;
+        try
+        {
+            await _mainVm.Webcam.RecordVideoAsync(path, _settings.CurtsyVideoDurationSeconds,
+                new Progress<int>(r => CurtsyRecordingSecondsLeft = r), _curtsyRecordingCts.Token);
+            success = true;
+        }
+        catch
+        {
+            /* Webcam unavailable/cancelled — treated as capture failure below */
+        }
+
+        _curtsyRecordingCts?.Dispose();
+        _curtsyRecordingCts = null;
+        IsCurtsyRecordingActive = false;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        _mainVm.Webcam.Stop();
+
+        if (success)
+        {
+            _saveRepo.SaveCurtsyCheckRecord(new CurtsyCheckRecord
+            {
+                VideoPath = path,
+                RecordedAt = DateTime.UtcNow,
+                Reviewed = false,
+                IsCompliant = null
+            });
+        }
+
+        PopupOutcomeMessage = Resources.Get(success ? "CurtsyCapturedMessage" : "CurtsyFailedMessage");
+        ShowPopupOutcome(true);
+    }
+
     private void OnImpossibleQuestionAnswer(string answer)
     {
         if (_currentQuestion is null)
@@ -641,7 +770,12 @@ public partial class DashboardViewModel : ViewModelBase
         _popupOutcomeTimer = null;
         _poseCountdownTimer?.Stop();
         _poseCountdownTimer = null;
-        if (IsPoseForCameraPopupActive)
+        _curtsyCountdownTimer?.Stop();
+        _curtsyCountdownTimer = null;
+        _curtsyRecordingCts?.Cancel();
+        _curtsyRecordingCts?.Dispose();
+        _curtsyRecordingCts = null;
+        if (IsPoseForCameraPopupActive || IsCurtsyPopupActive)
         {
             _mainVm.Webcam.Stop();
         }
@@ -650,7 +784,11 @@ public partial class DashboardViewModel : ViewModelBase
         IsShowingPopupOutcome = false;
         IsPoseCountdownActive = false;
         IsPoseForCameraPopupActive = false;
+        IsCurtsyCountdownActive = false;
+        IsCurtsyRecordingActive = false;
+        IsCurtsyPopupActive = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentQuestion = null;
         _currentPoseItem = null;
         CapturedPosePhoto?.Dispose();
@@ -875,6 +1013,9 @@ public partial class DashboardViewModel : ViewModelBase
         _popupTimer?.Stop();
         _popupOutcomeTimer?.Stop();
         _poseCountdownTimer?.Stop();
+        _curtsyCountdownTimer?.Stop();
+        _curtsyRecordingCts?.Cancel();
+        _curtsyRecordingCts?.Dispose();
         _choreTimer?.Stop();
         StopSilentCapture();
         _mainVm.Webcam.Stop();

@@ -184,6 +184,13 @@
                                                    Value="{Binding HydrationMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
                                                    Minimum="1" FormatString="0" />
                                 </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCurtsyVideoDuration}"
+                                               VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding CurtsyVideoDuration, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=2}"
+                                                   Minimum="2" Maximum="30" FormatString="0" />
+                                </Grid>
                             </StackPanel>
                         </Border>
 

@@ -381,6 +381,33 @@
   <data name="PoseForCameraFailedMessage" xml:space="preserve">
     <value>La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra occasione.</value>
   </data>
+
+  <!-- Curtsy popup -->
+  <data name="CurtsyConfirm" xml:space="preserve">
+    <value>Sono pronta</value>
+  </data>
+  <data name="CurtsyInstructionFormal" xml:space="preserve">
+    <value>Eseguirete una riverenza dinanzi alla macchina fotografica, affinché io possa constatarne il portamento.</value>
+  </data>
+  <data name="CurtsyInstructionGrace" xml:space="preserve">
+    <value>Alzatevi, e offritemi una riverenza appropriata. Fate in modo che sia eseguita con grazia.</value>
+  </data>
+  <data name="CurtsyInstructionRespect" xml:space="preserve">
+    <value>Un segno di rispetto è dovuto. Fate la riverenza dinanzi alla camera, e che sia registrata.</value>
+  </data>
+  <data name="CurtsyCountdownLabel" xml:space="preserve">
+    <value>Preparatevi.</value>
+  </data>
+  <data name="CurtsyRecordingLabel" xml:space="preserve">
+    <value>Si sta registrando.</value>
+  </data>
+  <data name="CurtsyCapturedMessage" xml:space="preserve">
+    <value>Molto bene. La riverenza è stata registrata.</value>
+  </data>
+  <data name="CurtsyFailedMessage" xml:space="preserve">
+    <value>La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra occasione.</value>
+  </data>
+
   <data name="StartSessionTitle" xml:space="preserve">
     <value>L'abito di oggi</value>
   </data>
@@ -545,6 +572,9 @@
   </data>
   <data name="SettingsHydrationMinInterval" xml:space="preserve">
     <value>Intervallo min. idratazione (min)</value>
+  </data>
+  <data name="SettingsCurtsyVideoDuration" xml:space="preserve">
+    <value>Durata video riverenza (sec)</value>
   </data>
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Cattura</value>

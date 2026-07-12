@@ -46,6 +46,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private decimal _newItemWeight = 1.0m;
 
     // --- General tab fields ---
+    [Reactive] private int _curtsyVideoDuration;
     [Reactive] private int _hydrationMinInterval;
     [Reactive] private string _playerName = "";
     [Reactive] private int _popupMaxInterval;
@@ -58,7 +59,7 @@ public partial class SettingsViewModel : ViewModelBase
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, LanguageOption) _snapshot;
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, LanguageOption) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -83,6 +84,7 @@ public partial class SettingsViewModel : ViewModelBase
         _popupMaxInterval = s.PopupMaxIntervalSeconds;
         _popupTimeout = s.PopupTimeoutSeconds;
         _hydrationMinInterval = s.HydrationMinIntervalMinutes;
+        _curtsyVideoDuration = s.CurtsyVideoDurationSeconds;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
         _selectedCameraIndex = s.SelectedCameraIndex;
@@ -159,6 +161,7 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.IdleWageInterval, x => x.PopupMinInterval, x => x.PopupMaxInterval,
                 x => x.PopupTimeout, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
                 (_, _, _, _, _, _) => Unit.Default)).Merge(this.WhenAnyValue(x => x.HydrationMinInterval)
+                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.CurtsyVideoDuration)
                 .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedCameraIndex)
                 .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedLanguage)
                 .Select(_ => Unit.Default))
@@ -451,12 +454,12 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, LanguageOption)
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, LanguageOption)
         CurrentValues()
     {
         return (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
             _idleWageInterval, _popupMinInterval, _popupMaxInterval, _popupTimeout, _hydrationMinInterval,
-            _captureMinInterval, _captureMaxInterval, _selectedCameraIndex, _selectedLanguage);
+            _curtsyVideoDuration, _captureMinInterval, _captureMaxInterval, _selectedCameraIndex, _selectedLanguage);
     }
 
     private void UpdateGeneralDirty()
@@ -486,6 +489,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.PopupMaxIntervalSeconds = PopupMaxInterval;
         s.PopupTimeoutSeconds = PopupTimeout;
         s.HydrationMinIntervalMinutes = HydrationMinInterval;
+        s.CurtsyVideoDurationSeconds = CurtsyVideoDuration;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
         s.SelectedCameraIndex = SelectedCameraIndex;

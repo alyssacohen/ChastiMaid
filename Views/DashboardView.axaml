@@ -474,11 +474,11 @@
                                Foreground="{DynamicResource BrushEmergencyText}"
                                HorizontalAlignment="Center" />
                     <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PosePreviewWidth}"
-                                                    Height="{Binding PosePreviewHeight}"
+                                                    Width="{Binding PopupPreviewWidth}"
+                                                    Height="{Binding PopupPreviewHeight}"
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center"
-                                                    IsVisible="{Binding IsPoseForCameraPopupActive}" />
+                                                    IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}" />
                     <TextBlock Classes="Body"
                                Text="{Binding PopupQuestion}"
                                TextWrapping="Wrap"
@@ -499,8 +499,8 @@
                 </StackPanel>
                 <StackPanel Spacing="16" IsVisible="{Binding IsPoseCountdownActive}">
                     <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PosePreviewWidth}"
-                                                    Height="{Binding PosePreviewHeight}"
+                                                    Width="{Binding PopupPreviewWidth}"
+                                                    Height="{Binding PopupPreviewHeight}"
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center" />
                     <TextBlock Classes="EmployerVoice"
@@ -511,10 +511,38 @@
                                Classes="NumberLarge"
                                HorizontalAlignment="Center" />
                 </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsCurtsyCountdownActive}">
+                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
+                                                    Width="{Binding PopupPreviewWidth}"
+                                                    Height="{Binding PopupPreviewHeight}"
+                                                    Stretch="UniformToFill"
+                                                    HorizontalAlignment="Center" />
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{conv:Tr CurtsyCountdownLabel}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding CurtsyCountdown}"
+                               Classes="NumberLarge"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsCurtsyRecordingActive}">
+                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
+                                                    Width="{Binding PopupPreviewWidth}"
+                                                    Height="{Binding PopupPreviewHeight}"
+                                                    Stretch="UniformToFill"
+                                                    HorizontalAlignment="Center" />
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{conv:Tr CurtsyRecordingLabel}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding CurtsyRecordingSecondsLeft}"
+                               Classes="NumberLarge"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
                 <StackPanel Spacing="16" IsVisible="{Binding IsShowingPopupOutcome}">
                     <Image Source="{Binding CapturedPosePhoto}"
-                           Width="{Binding PosePreviewWidth}"
-                           Height="{Binding PosePreviewHeight}"
+                           Width="{Binding PopupPreviewWidth}"
+                           Height="{Binding PopupPreviewHeight}"
                            Stretch="UniformToFill"
                            HorizontalAlignment="Center"
                            IsVisible="{Binding CapturedPosePhoto, Converter={x:Static ObjectConverters.IsNotNull}}" />

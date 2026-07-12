@@ -176,3 +176,6 @@ chastimaid-session.json
 
 ## Nimbalyst files
 /nimbalyst-local/
+
+## Claude Code local settings (machine-specific permissions)
+.claude/settings.local.json

@@ -30,6 +30,9 @@ public class GameSettings
     // Hydration popup — minimum time between hydration reminders, independent of the general popup cycle
     public int HydrationMinIntervalMinutes { get; set; } = 60;
 
+    // Curtsy popup — video recording duration
+    public int CurtsyVideoDurationSeconds { get; set; } = 5;
+
     // Busy mode capture
     public int BusyCaptureMinIntervalSeconds { get; set; } = 3;
     public int BusyCaptureMaxIntervalSeconds { get; set; } = 10;

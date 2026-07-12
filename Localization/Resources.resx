@@ -381,6 +381,33 @@
   <data name="PoseForCameraFailedMessage" xml:space="preserve">
     <value>The camera was not cooperative. We shall try again another time.</value>
   </data>
+
+  <!-- Curtsy popup -->
+  <data name="CurtsyConfirm" xml:space="preserve">
+    <value>I am ready</value>
+  </data>
+  <data name="CurtsyInstructionFormal" xml:space="preserve">
+    <value>You will perform a curtsy before the camera, that I may witness your deportment.</value>
+  </data>
+  <data name="CurtsyInstructionGrace" xml:space="preserve">
+    <value>Rise, and offer me a proper curtsy. See that it is done with grace.</value>
+  </data>
+  <data name="CurtsyInstructionRespect" xml:space="preserve">
+    <value>A show of respect is due. Curtsy before the camera, and let it be recorded.</value>
+  </data>
+  <data name="CurtsyCountdownLabel" xml:space="preserve">
+    <value>Prepare yourself.</value>
+  </data>
+  <data name="CurtsyRecordingLabel" xml:space="preserve">
+    <value>Recording now.</value>
+  </data>
+  <data name="CurtsyCapturedMessage" xml:space="preserve">
+    <value>Very well. The curtsy has been recorded.</value>
+  </data>
+  <data name="CurtsyFailedMessage" xml:space="preserve">
+    <value>The camera was not cooperative. We shall try again another time.</value>
+  </data>
+
   <data name="StartSessionTitle" xml:space="preserve">
     <value>Today's Outfit</value>
   </data>
@@ -545,6 +572,9 @@
   </data>
   <data name="SettingsHydrationMinInterval" xml:space="preserve">
     <value>Hydration min. interval (min)</value>
+  </data>
+  <data name="SettingsCurtsyVideoDuration" xml:space="preserve">
+    <value>Curtsy video duration (sec)</value>
   </data>
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Capture</value>

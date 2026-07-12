@@ -23,9 +23,10 @@ public partial class DashboardView : UserControl
             }
         };
 
-        // Mirror Bounds.Width to IsLandscape, and Bounds.Height to the pose-popup responsive
-        // sizing, on the ViewModel — recalculated on every resize so the popup never overflows
-        // the window regardless of orientation.
+        // Mirror Bounds.Width to IsLandscape, and Bounds.Height to the idle-popup responsive
+        // sizing (shared by every popup with a live webcam preview), on the ViewModel —
+        // recalculated on every resize so the popup never overflows the window regardless of
+        // orientation.
         this.GetObservable(BoundsProperty).Subscribe(bounds =>
         {
             if (DataContext is not DashboardViewModel vm)
@@ -43,8 +44,8 @@ public partial class DashboardView : UserControl
             var previewHeight = Math.Clamp(dialogMaxHeight - chromeReserve, 240, 640);
 
             vm.PopupDialogMaxHeight = dialogMaxHeight;
-            vm.PosePreviewHeight = previewHeight;
-            vm.PosePreviewWidth = previewHeight * previewAspect;
+            vm.PopupPreviewHeight = previewHeight;
+            vm.PopupPreviewWidth = previewHeight * previewAspect;
         });
 
         // Escape must dismiss the popup outcome regardless of what currently has keyboard focus,
