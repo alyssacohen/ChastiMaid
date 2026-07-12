@@ -52,6 +52,8 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _popupMaxInterval;
     [Reactive] private int _popupMinInterval;
     [Reactive] private int _popupTimeout;
+    [Reactive] private int _quoteListenTimeout;
+    [Reactive] private double _quoteRecognitionSensitivity;
     [Reactive] private int _selectedCameraIndex;
     [Reactive] private LanguageOption _selectedLanguage = null!;
 
@@ -59,7 +61,7 @@ public partial class SettingsViewModel : ViewModelBase
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, LanguageOption) _snapshot;
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, int, double, LanguageOption) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -85,6 +87,8 @@ public partial class SettingsViewModel : ViewModelBase
         _popupTimeout = s.PopupTimeoutSeconds;
         _hydrationMinInterval = s.HydrationMinIntervalMinutes;
         _curtsyVideoDuration = s.CurtsyVideoDurationSeconds;
+        _quoteListenTimeout = s.QuoteListenTimeoutSeconds;
+        _quoteRecognitionSensitivity = s.QuoteRecognitionMinConfidence;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
         _selectedCameraIndex = s.SelectedCameraIndex;
@@ -94,6 +98,13 @@ public partial class SettingsViewModel : ViewModelBase
         {
             AvailableCameras = [0];
         }
+
+        var availability = HardwareAvailabilityChecker.Check(_selectedCameraIndex);
+        WebcamStatusDisplay = Resources.Get(availability.HasWebcam ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
+        SpeechRecognitionStatusDisplay = Resources.Get(
+            availability.HasSpeechRecognizer && availability.HasMicrophone
+                ? "HardwareStatusAvailable"
+                : "HardwareStatusUnavailable");
 
         foreach (var c in _repo.GetChores())
         {
@@ -162,6 +173,8 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.PopupTimeout, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
                 (_, _, _, _, _, _) => Unit.Default)).Merge(this.WhenAnyValue(x => x.HydrationMinInterval)
                 .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.CurtsyVideoDuration)
+                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.QuoteListenTimeout)
+                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.QuoteRecognitionSensitivity)
                 .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedCameraIndex)
                 .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedLanguage)
                 .Select(_ => Unit.Default))
@@ -221,6 +234,8 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<ClothingItemOption> AvailableItems { get; } = [];
 
     public IReadOnlyList<int> AvailableCameras { get; private set; } = [0];
+    public string WebcamStatusDisplay { get; }
+    public string SpeechRecognitionStatusDisplay { get; }
 
     public IReadOnlyList<LanguageOption> AvailableLanguages { get; } =
     [
@@ -454,12 +469,13 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, LanguageOption)
+    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, int, double, LanguageOption)
         CurrentValues()
     {
         return (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
             _idleWageInterval, _popupMinInterval, _popupMaxInterval, _popupTimeout, _hydrationMinInterval,
-            _curtsyVideoDuration, _captureMinInterval, _captureMaxInterval, _selectedCameraIndex, _selectedLanguage);
+            _curtsyVideoDuration, _quoteListenTimeout, _captureMinInterval, _captureMaxInterval,
+            _selectedCameraIndex, _quoteRecognitionSensitivity, _selectedLanguage);
     }
 
     private void UpdateGeneralDirty()
@@ -490,6 +506,8 @@ public partial class SettingsViewModel : ViewModelBase
         s.PopupTimeoutSeconds = PopupTimeout;
         s.HydrationMinIntervalMinutes = HydrationMinInterval;
         s.CurtsyVideoDurationSeconds = CurtsyVideoDuration;
+        s.QuoteListenTimeoutSeconds = QuoteListenTimeout;
+        s.QuoteRecognitionMinConfidence = QuoteRecognitionSensitivity;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
         s.SelectedCameraIndex = SelectedCameraIndex;

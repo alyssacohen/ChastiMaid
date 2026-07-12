@@ -33,6 +33,10 @@ public class GameSettings
     // Curtsy popup — video recording duration
     public int CurtsyVideoDurationSeconds { get; set; } = 5;
 
+    // Motivational Quote popup — listening/typing window and speech recognition sensitivity
+    public int QuoteListenTimeoutSeconds { get; set; } = 20;
+    public double QuoteRecognitionMinConfidence { get; set; } = 0.6;
+
     // Busy mode capture
     public int BusyCaptureMinIntervalSeconds { get; set; } = 3;
     public int BusyCaptureMaxIntervalSeconds { get; set; } = 10;

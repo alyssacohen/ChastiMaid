@@ -191,6 +191,32 @@
                                                    Value="{Binding CurtsyVideoDuration, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=2}"
                                                    Minimum="2" Maximum="30" FormatString="0" />
                                 </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsQuoteListenTimeout}"
+                                               VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding QuoteListenTimeout, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=5}"
+                                                   Minimum="5" Maximum="120" FormatString="0" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsQuoteRecognitionSensitivity}"
+                                               VerticalAlignment="Center" />
+                                    <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                   Value="{Binding QuoteRecognitionSensitivity, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.6}"
+                                                   Minimum="0" Maximum="1" Increment="0.05" FormatString="0.00" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWebcamStatus}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1" Classes="BodySmall" Text="{Binding WebcamStatusDisplay}"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                                <Grid ColumnDefinitions="160,*">
+                                    <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsSpeechRecognitionStatus}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1" Classes="BodySmall" Text="{Binding SpeechRecognitionStatusDisplay}"
+                                               VerticalAlignment="Center" />
+                                </Grid>
                             </StackPanel>
                         </Border>
 

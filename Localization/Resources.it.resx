@@ -408,6 +408,64 @@
     <value>La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra occasione.</value>
   </data>
 
+  <!-- Motivational Quote popup -->
+  <data name="MotivationalQuoteConfirm" xml:space="preserve">
+    <value>Sono pronta</value>
+  </data>
+  <data name="MotivationalQuoteInstruction" xml:space="preserve">
+    <value>Leggete quanto segue ad alta voce, affinché io possa udirlo: «{0}»</value>
+  </data>
+  <data name="MotivationalQuoteDuty" xml:space="preserve">
+    <value>Il dovere non si affievolisce con la ripetizione; da essa si dimostra.</value>
+  </data>
+  <data name="MotivationalQuotePerseverance" xml:space="preserve">
+    <value>Un compito intrapreso con serietà è un compito già a metà.</value>
+  </data>
+  <data name="MotivationalQuoteDiscipline" xml:space="preserve">
+    <value>La disciplina non è che devozione con le maniche rimboccate.</value>
+  </data>
+  <data name="MotivationalQuoteGrace" xml:space="preserve">
+    <value>La grazia sotto un modesto peso è il segno più autentico dell'educazione.</value>
+  </data>
+  <data name="MotivationalQuoteListeningLabel" xml:space="preserve">
+    <value>Sto ascoltando.</value>
+  </data>
+  <data name="MotivationalQuoteAttemptsRemainingFormat" xml:space="preserve">
+    <value>{0} tentativi rimasti</value>
+  </data>
+  <data name="MotivationalQuoteTypingLabel" xml:space="preserve">
+    <value>Il microfono non si trova. Dovrete scriverlo invece.</value>
+  </data>
+  <data name="MotivationalQuoteTypeWatermark" xml:space="preserve">
+    <value>Digitate qui la citazione</value>
+  </data>
+  <data name="MotivationalQuoteSubmit" xml:space="preserve">
+    <value>Invia</value>
+  </data>
+  <data name="MotivationalQuoteSuccessMessage" xml:space="preserve">
+    <value>Ben detto.</value>
+  </data>
+  <data name="MotivationalQuoteFailedMessage" xml:space="preserve">
+    <value>Non era ciò che desideravo udire. Fate in modo di prestare maggiore attenzione la prossima volta.</value>
+  </data>
+
+  <!-- Pre-session hardware availability check -->
+  <data name="HardwareCheckTitle" xml:space="preserve">
+    <value>Una parola prima di cominciare</value>
+  </data>
+  <data name="HardwareCheckWebcamMissing" xml:space="preserve">
+    <value>Non è stata rilevata alcuna macchina fotografica. Talune mansioni che richiedono di essere osservate non saranno possibili finché non ne collegherete una.</value>
+  </data>
+  <data name="HardwareCheckSpeechRecognizerMissing" xml:space="preserve">
+    <value>Nessun motore di riconoscimento vocale è installato su questa macchina. Vi sarà chiesto di scrivere a mano qualunque citazione, anziché pronunciarla.</value>
+  </data>
+  <data name="HardwareCheckMicrophoneMissing" xml:space="preserve">
+    <value>Non è stato rilevato alcun microfono. Vi sarà chiesto di scrivere a mano qualunque citazione, anziché pronunciarla.</value>
+  </data>
+  <data name="HardwareCheckAcknowledge" xml:space="preserve">
+    <value>Molto bene</value>
+  </data>
+
   <data name="StartSessionTitle" xml:space="preserve">
     <value>L'abito di oggi</value>
   </data>
@@ -575,6 +633,24 @@
   </data>
   <data name="SettingsCurtsyVideoDuration" xml:space="preserve">
     <value>Durata video riverenza (sec)</value>
+  </data>
+  <data name="SettingsQuoteListenTimeout" xml:space="preserve">
+    <value>Finestra di ascolto citazione (sec)</value>
+  </data>
+  <data name="SettingsQuoteRecognitionSensitivity" xml:space="preserve">
+    <value>Sensibilità riconoscimento citazione</value>
+  </data>
+  <data name="SettingsWebcamStatus" xml:space="preserve">
+    <value>Webcam</value>
+  </data>
+  <data name="SettingsSpeechRecognitionStatus" xml:space="preserve">
+    <value>Riconoscimento vocale</value>
+  </data>
+  <data name="HardwareStatusAvailable" xml:space="preserve">
+    <value>Disponibile</value>
+  </data>
+  <data name="HardwareStatusUnavailable" xml:space="preserve">
+    <value>Non disponibile</value>
   </data>
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Cattura</value>

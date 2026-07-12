@@ -117,6 +117,18 @@ public partial class DashboardViewModel : ViewModelBase
     private DispatcherTimer? _curtsyCountdownTimer;
     private CancellationTokenSource? _curtsyRecordingCts;
 
+    // --- Idle popup: Motivational Quote ---
+    [Reactive] private bool _isQuotePopupActive;
+    [Reactive] private bool _isQuoteListeningActive;
+    [Reactive] private bool _isQuoteTypingActive;
+    [Reactive] private int _quoteListenCountdown;
+    [Reactive] private int _quoteAttemptsRemaining;
+    [Reactive] private string _quoteTypedAnswer = "";
+    private const int QuoteMaxAttempts = 3;
+    private string? _currentQuoteText;
+    private DispatcherTimer? _quoteListenTimer;
+    private CancellationTokenSource? _quoteListenCts;
+
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
         : this(mainVm, saveRepo, null)
@@ -184,6 +196,7 @@ public partial class DashboardViewModel : ViewModelBase
             ReactiveCommand.Create(() => _mainVm.NavigateTo(new GameCompleteViewModel(_mainVm, _saveRepo)));
         AnswerCommand = ReactiveCommand.Create<string>(OnAnswer);
         DismissPopupOutcomeCommand = ReactiveCommand.Create(DismissPopupOutcome);
+        SubmitQuoteTypedAnswerCommand = ReactiveCommand.Create(OnSubmitQuoteTypedAnswer);
         EndChoreCommand = ReactiveCommand.Create(OnEndChore);
 
         var canOpenPunishments = this.WhenAnyValue(x => x.PendingPunishmentsCount, c => c > 0);
@@ -235,7 +248,8 @@ public partial class DashboardViewModel : ViewModelBase
     public WebcamPreviewService Webcam => _mainVm.Webcam;
 
     public bool IsShowingQuestionPanel =>
-        !IsShowingPopupOutcome && !IsPoseCountdownActive && !IsCurtsyCountdownActive && !IsCurtsyRecordingActive;
+        !IsShowingPopupOutcome && !IsPoseCountdownActive && !IsCurtsyCountdownActive && !IsCurtsyRecordingActive &&
+        !IsQuoteListeningActive && !IsQuoteTypingActive;
 
     public bool IsWebcamPreviewNeededInQuestionPanel => IsPoseForCameraPopupActive || IsCurtsyPopupActive;
 
@@ -243,6 +257,7 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand CompleteGameCommand { get; }
     public ICommand AnswerCommand { get; }
     public ICommand DismissPopupOutcomeCommand { get; }
+    public ICommand SubmitQuoteTypedAnswerCommand { get; }
     public ICommand EndChoreCommand { get; }
 
     // --- New dashboard commands ---
@@ -315,17 +330,21 @@ public partial class DashboardViewModel : ViewModelBase
         TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
-    // --- Idle popup: Impossible Questions / Hydration / Pose for Camera / Curtsy ---
+    // --- Idle popup: Impossible Questions / Hydration / Pose for Camera / Curtsy / Motivational Quote ---
     private enum IdlePopupKind
     {
         ImpossibleQuestion,
         Hydration,
         PoseForCamera,
-        Curtsy
+        Curtsy,
+        MotivationalQuote
     }
 
     private static readonly IdlePopupKind[] EnabledIdlePopupKinds =
-        [IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera, IdlePopupKind.Curtsy];
+    [
+        IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera,
+        IdlePopupKind.Curtsy, IdlePopupKind.MotivationalQuote
+    ];
 
     private IdlePopupKind _currentPopupKind;
     private DateTime _lastHydrationPopupAt = DateTime.MinValue;
@@ -384,6 +403,9 @@ public partial class DashboardViewModel : ViewModelBase
             case IdlePopupKind.Curtsy:
                 ShowCurtsyPopup();
                 break;
+            case IdlePopupKind.MotivationalQuote:
+                ShowMotivationalQuotePopup();
+                break;
         }
     }
 
@@ -402,11 +424,9 @@ public partial class DashboardViewModel : ViewModelBase
         IsPopupVisible = true;
 
         if (OperatingSystem.IsWindows())
-#pragma warning disable CA1416
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-#pragma warning restore CA1416
 
         _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _popupTimer.Tick += (_, _) =>
@@ -433,11 +453,9 @@ public partial class DashboardViewModel : ViewModelBase
         IsPopupVisible = true;
 
         if (OperatingSystem.IsWindows())
-#pragma warning disable CA1416
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-#pragma warning restore CA1416
 
         _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _popupTimer.Tick += (_, _) =>
@@ -473,11 +491,9 @@ public partial class DashboardViewModel : ViewModelBase
         IsPopupVisible = true;
 
         if (OperatingSystem.IsWindows())
-#pragma warning disable CA1416
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-#pragma warning restore CA1416
 
         _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _popupTimer.Tick += (_, _) =>
@@ -511,11 +527,9 @@ public partial class DashboardViewModel : ViewModelBase
         IsPopupVisible = true;
 
         if (OperatingSystem.IsWindows())
-#pragma warning disable CA1416
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-#pragma warning restore CA1416
 
         _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _popupTimer.Tick += (_, _) =>
@@ -525,6 +539,36 @@ public partial class DashboardViewModel : ViewModelBase
             {
                 _popupTimer?.Stop();
                 _popupTimer = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
+    private void ShowMotivationalQuotePopup()
+    {
+        _currentPopupKind = IdlePopupKind.MotivationalQuote;
+        _currentQuoteText = Resources.Get(MotivationalQuoteBank.GetRandom());
+        PopupQuestion = string.Format(Resources.Get("MotivationalQuoteInstruction"), _currentQuoteText);
+        PopupAnswers = [Resources.Get("MotivationalQuoteConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                _currentQuoteText = null;
                 ClosePopup(false);
             }
         };
@@ -551,6 +595,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.Curtsy:
                 OnCurtsyConfirm();
+                break;
+            case IdlePopupKind.MotivationalQuote:
+                OnMotivationalQuoteConfirm();
                 break;
         }
     }
@@ -705,6 +752,107 @@ public partial class DashboardViewModel : ViewModelBase
         ShowPopupOutcome(true);
     }
 
+    private void OnMotivationalQuoteConfirm()
+    {
+        _popupTimer?.Stop();
+        _popupTimer = null;
+        IsQuotePopupActive = true;
+
+        if (SpeechRecognitionService.DetectMicrophone())
+        {
+            StartQuoteListening();
+        }
+        else
+        {
+            StartQuoteTyping();
+        }
+    }
+
+    private async void StartQuoteListening()
+    {
+        IsQuoteListeningActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        QuoteAttemptsRemaining = QuoteMaxAttempts;
+        QuoteListenCountdown = _settings.QuoteListenTimeoutSeconds;
+
+        _quoteListenTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _quoteListenTimer.Tick += (_, _) => QuoteListenCountdown--;
+        _quoteListenTimer.Start();
+
+        _quoteListenCts = new CancellationTokenSource();
+        var success = false;
+        try
+        {
+            success = await SpeechRecognitionService.ListenForPhraseAsync(
+                _currentQuoteText!,
+                QuoteMaxAttempts,
+                TimeSpan.FromSeconds(_settings.QuoteListenTimeoutSeconds),
+                _settings.QuoteRecognitionMinConfidence,
+                new Progress<int>(remaining => QuoteAttemptsRemaining = remaining),
+                _quoteListenCts.Token);
+        }
+        catch
+        {
+            /* Speech engine unavailable — a mismatch here IS punishable, unlike Pose/Curtsy's
+               technical-failure fallback, because verification is the whole point of this popup */
+        }
+
+        _quoteListenTimer?.Stop();
+        _quoteListenTimer = null;
+        _quoteListenCts?.Dispose();
+        _quoteListenCts = null;
+        IsQuoteListeningActive = false;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+
+        PopupOutcomeMessage = Resources.Get(success ? "MotivationalQuoteSuccessMessage" : "MotivationalQuoteFailedMessage");
+        ShowPopupOutcome(success);
+    }
+
+    private void StartQuoteTyping()
+    {
+        IsQuoteTypingActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        QuoteTypedAnswer = "";
+        QuoteListenCountdown = _settings.QuoteListenTimeoutSeconds;
+
+        _quoteListenTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _quoteListenTimer.Tick += (_, _) =>
+        {
+            QuoteListenCountdown--;
+            if (QuoteListenCountdown <= 0)
+            {
+                _quoteListenTimer?.Stop();
+                _quoteListenTimer = null;
+                FinishQuoteTyping(false);
+            }
+        };
+        _quoteListenTimer.Start();
+    }
+
+    private void OnSubmitQuoteTypedAnswer()
+    {
+        if (!IsQuoteTypingActive)
+        {
+            return;
+        }
+
+        var match = string.Equals(QuoteTypedAnswer.Trim(), _currentQuoteText?.Trim(), StringComparison.OrdinalIgnoreCase);
+        if (match)
+        {
+            _quoteListenTimer?.Stop();
+            _quoteListenTimer = null;
+            FinishQuoteTyping(true);
+        }
+    }
+
+    private void FinishQuoteTyping(bool success)
+    {
+        IsQuoteTypingActive = false;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        PopupOutcomeMessage = Resources.Get(success ? "MotivationalQuoteSuccessMessage" : "MotivationalQuoteFailedMessage");
+        ShowPopupOutcome(success);
+    }
+
     private void OnImpossibleQuestionAnswer(string answer)
     {
         if (_currentQuestion is null)
@@ -775,6 +923,11 @@ public partial class DashboardViewModel : ViewModelBase
         _curtsyRecordingCts?.Cancel();
         _curtsyRecordingCts?.Dispose();
         _curtsyRecordingCts = null;
+        _quoteListenTimer?.Stop();
+        _quoteListenTimer = null;
+        _quoteListenCts?.Cancel();
+        _quoteListenCts?.Dispose();
+        _quoteListenCts = null;
         if (IsPoseForCameraPopupActive || IsCurtsyPopupActive)
         {
             _mainVm.Webcam.Stop();
@@ -787,10 +940,15 @@ public partial class DashboardViewModel : ViewModelBase
         IsCurtsyCountdownActive = false;
         IsCurtsyRecordingActive = false;
         IsCurtsyPopupActive = false;
+        IsQuotePopupActive = false;
+        IsQuoteListeningActive = false;
+        IsQuoteTypingActive = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentQuestion = null;
         _currentPoseItem = null;
+        _currentQuoteText = null;
+        QuoteTypedAnswer = "";
         CapturedPosePhoto?.Dispose();
         CapturedPosePhoto = null;
         _sessionLoop.ReportPopupResult(positive);
@@ -1016,6 +1174,9 @@ public partial class DashboardViewModel : ViewModelBase
         _curtsyCountdownTimer?.Stop();
         _curtsyRecordingCts?.Cancel();
         _curtsyRecordingCts?.Dispose();
+        _quoteListenTimer?.Stop();
+        _quoteListenCts?.Cancel();
+        _quoteListenCts?.Dispose();
         _choreTimer?.Stop();
         StopSilentCapture();
         _mainVm.Webcam.Stop();

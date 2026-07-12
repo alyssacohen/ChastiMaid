@@ -460,9 +460,7 @@
                     Margin="0,0,0,24" />
         </Grid>
 
-        <!-- ══════════════════════════════════════════════════════
-             IMPOSSIBLE QUESTION POPUP overlay
-             ══════════════════════════════════════════════════════ -->
+        <!-- ##    POPUP OVERLAY    ## -->
         <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay"
                PointerPressed="OnPopupOverlayPointerPressed">
             <Border Classes="dialogBox" MaxWidth="500" MaxHeight="{Binding PopupDialogMaxHeight}"
@@ -538,6 +536,45 @@
                     <TextBlock Text="{Binding CurtsyRecordingSecondsLeft}"
                                Classes="NumberLarge"
                                HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsQuoteListeningActive}">
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{conv:Tr MotivationalQuoteListeningLabel}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Classes="Body"
+                               Text="{Binding PopupQuestion}"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding QuoteListenCountdown}"
+                               Classes="NumberLarge"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Classes="Caption"
+                               Text="{Binding QuoteAttemptsRemaining, StringFormat={conv:Tr MotivationalQuoteAttemptsRemainingFormat}}"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsQuoteTypingActive}">
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{conv:Tr MotivationalQuoteTypingLabel}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Classes="Body"
+                               Text="{Binding PopupQuestion}"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBox Classes="underline"
+                             Text="{Binding QuoteTypedAnswer}"
+                             PlaceholderText="{conv:Tr MotivationalQuoteTypeWatermark}" />
+                    <TextBlock Text="{Binding QuoteListenCountdown}"
+                               Classes="NumberLarge"
+                               HorizontalAlignment="Center" />
+                    <Button Content="{conv:Tr MotivationalQuoteSubmit}"
+                            Classes="Ghost"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding SubmitQuoteTypedAnswerCommand}" />
                 </StackPanel>
                 <StackPanel Spacing="16" IsVisible="{Binding IsShowingPopupOutcome}">
                     <Image Source="{Binding CapturedPosePhoto}"

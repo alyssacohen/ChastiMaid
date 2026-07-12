@@ -131,6 +131,52 @@ public partial class StartSessionViewModel : ViewModelBase
         RegenerateCommand = ReactiveCommand.CreateFromTask(ConfirmRegenerate);
         ModifyCommand = ReactiveCommand.CreateFromTask(ConfirmModify);
         QuitCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
+
+        ShowHardwareWarningIfNeeded(saveRepo);
+    }
+
+    /// <summary>
+    ///     Warns the player up front about missing optional hardware/software (webcam, speech
+    ///     recognizer, microphone) so it can be fixed before it silently disables idle popups
+    ///     mid-session. Shown only when something is actually missing.
+    /// </summary>
+    private void ShowHardwareWarningIfNeeded(SaveRepository saveRepo)
+    {
+        var settings = saveRepo.GetGameSettings();
+        var availability = HardwareAvailabilityChecker.Check(settings.SelectedCameraIndex);
+        if (!availability.HasAnyIssue)
+        {
+            return;
+        }
+
+        var lines = new List<string>();
+        if (!availability.HasWebcam)
+        {
+            lines.Add(Resources.Get("HardwareCheckWebcamMissing"));
+        }
+
+        if (!availability.HasSpeechRecognizer)
+        {
+            lines.Add(Resources.Get("HardwareCheckSpeechRecognizerMissing"));
+        }
+        else if (!availability.HasMicrophone)
+        {
+            lines.Add(Resources.Get("HardwareCheckMicrophoneMissing"));
+        }
+
+        var dialog = new ConfirmDialogViewModel(
+            Resources.Get("HardwareCheckTitle"),
+            string.Join("\n\n", lines),
+            Resources.Get("HardwareCheckAcknowledge"),
+            null);
+        ActiveDialog = dialog;
+        _ = DismissHardwareWarningAsync(dialog);
+    }
+
+    private async Task DismissHardwareWarningAsync(ConfirmDialogViewModel dialog)
+    {
+        await dialog.Result;
+        ActiveDialog = null;
     }
 
     public string DebtDisplay { get; }

@@ -408,6 +408,64 @@
     <value>The camera was not cooperative. We shall try again another time.</value>
   </data>
 
+  <!-- Motivational Quote popup -->
+  <data name="MotivationalQuoteConfirm" xml:space="preserve">
+    <value>I am ready</value>
+  </data>
+  <data name="MotivationalQuoteInstruction" xml:space="preserve">
+    <value>You will read the following aloud, that I may hear it spoken: "{0}"</value>
+  </data>
+  <data name="MotivationalQuoteDuty" xml:space="preserve">
+    <value>Duty is not diminished by repetition; it is proven by it.</value>
+  </data>
+  <data name="MotivationalQuotePerseverance" xml:space="preserve">
+    <value>A task begun in earnest is a task half completed.</value>
+  </data>
+  <data name="MotivationalQuoteDiscipline" xml:space="preserve">
+    <value>Discipline is merely devotion with its sleeves rolled up.</value>
+  </data>
+  <data name="MotivationalQuoteGrace" xml:space="preserve">
+    <value>Grace under a modest burden is the truest mark of breeding.</value>
+  </data>
+  <data name="MotivationalQuoteListeningLabel" xml:space="preserve">
+    <value>I am listening.</value>
+  </data>
+  <data name="MotivationalQuoteAttemptsRemainingFormat" xml:space="preserve">
+    <value>{0} attempts remaining</value>
+  </data>
+  <data name="MotivationalQuoteTypingLabel" xml:space="preserve">
+    <value>The microphone is not to be found. You will write it instead.</value>
+  </data>
+  <data name="MotivationalQuoteTypeWatermark" xml:space="preserve">
+    <value>Type the quotation here</value>
+  </data>
+  <data name="MotivationalQuoteSubmit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="MotivationalQuoteSuccessMessage" xml:space="preserve">
+    <value>Very well spoken.</value>
+  </data>
+  <data name="MotivationalQuoteFailedMessage" xml:space="preserve">
+    <value>That was not what I asked to hear. See that you attend more closely next time.</value>
+  </data>
+
+  <!-- Pre-session hardware availability check -->
+  <data name="HardwareCheckTitle" xml:space="preserve">
+    <value>A Word Before We Begin</value>
+  </data>
+  <data name="HardwareCheckWebcamMissing" xml:space="preserve">
+    <value>No camera could be found. Certain tasks requiring your likeness to be observed will not be possible until one is connected.</value>
+  </data>
+  <data name="HardwareCheckSpeechRecognizerMissing" xml:space="preserve">
+    <value>No speech recognition engine is installed upon this machine. You will be asked to write out any spoken citation by hand instead.</value>
+  </data>
+  <data name="HardwareCheckMicrophoneMissing" xml:space="preserve">
+    <value>No microphone could be found. You will be asked to write out any spoken citation by hand instead.</value>
+  </data>
+  <data name="HardwareCheckAcknowledge" xml:space="preserve">
+    <value>Very well</value>
+  </data>
+
   <data name="StartSessionTitle" xml:space="preserve">
     <value>Today's Outfit</value>
   </data>
@@ -575,6 +633,24 @@
   </data>
   <data name="SettingsCurtsyVideoDuration" xml:space="preserve">
     <value>Curtsy video duration (sec)</value>
+  </data>
+  <data name="SettingsQuoteListenTimeout" xml:space="preserve">
+    <value>Quote listening window (sec)</value>
+  </data>
+  <data name="SettingsQuoteRecognitionSensitivity" xml:space="preserve">
+    <value>Quote recognition sensitivity</value>
+  </data>
+  <data name="SettingsWebcamStatus" xml:space="preserve">
+    <value>Webcam</value>
+  </data>
+  <data name="SettingsSpeechRecognitionStatus" xml:space="preserve">
+    <value>Speech recognition</value>
+  </data>
+  <data name="HardwareStatusAvailable" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="HardwareStatusUnavailable" xml:space="preserve">
+    <value>Not available</value>
   </data>
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Capture</value>

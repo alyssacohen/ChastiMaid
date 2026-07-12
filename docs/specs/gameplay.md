@@ -103,7 +103,7 @@ a popup with a bell sound asking to do one of the following things:
 
 1. To pose for the camera (will give some instruction and take a picture)
 2. To record a video of a curtsy
-3. To read a motivational quote (will use text-to-speech to verify that is read aloud)
+3. To read a motivational quote (will use speech recognition to verify that is read aloud)
 4. To keel in front of the camera for a random time between 1 and 5 minutes while taking pictures at random intervals
 5. To answer an "impossible question"
 6. To get hydrated
