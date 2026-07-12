@@ -23,13 +23,28 @@ public partial class DashboardView : UserControl
             }
         };
 
-        // Mirror Bounds.Width to IsLandscape on the ViewModel
+        // Mirror Bounds.Width to IsLandscape, and Bounds.Height to the pose-popup responsive
+        // sizing, on the ViewModel — recalculated on every resize so the popup never overflows
+        // the window regardless of orientation.
         this.GetObservable(BoundsProperty).Subscribe(bounds =>
         {
-            if (DataContext is DashboardViewModel vm)
+            if (DataContext is not DashboardViewModel vm)
             {
-                vm.IsLandscape = bounds.Width > 900;
+                return;
             }
+
+            vm.IsLandscape = bounds.Width > 900;
+
+            const double verticalMargin = 64; // breathing room from the window's top/bottom edges
+            const double chromeReserve = 260; // countdown/instructions/button, padding, spacing
+            const double previewAspect = 320.0 / 480.0; // width/height, matches the requested crop ratio
+
+            var dialogMaxHeight = Math.Max(360, bounds.Height - verticalMargin);
+            var previewHeight = Math.Clamp(dialogMaxHeight - chromeReserve, 240, 640);
+
+            vm.PopupDialogMaxHeight = dialogMaxHeight;
+            vm.PosePreviewHeight = previewHeight;
+            vm.PosePreviewWidth = previewHeight * previewAspect;
         });
 
         // Escape must dismiss the popup outcome regardless of what currently has keyboard focus,

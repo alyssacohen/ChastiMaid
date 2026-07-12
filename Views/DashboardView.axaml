@@ -465,14 +465,20 @@
              ══════════════════════════════════════════════════════ -->
         <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay"
                PointerPressed="OnPopupOverlayPointerPressed">
-            <Border Classes="dialogBox" MaxWidth="500"
+            <Border Classes="dialogBox" MaxWidth="500" MaxHeight="{Binding PopupDialogMaxHeight}"
                     PointerPressed="OnPopupDialogBoxPointerPressed">
               <Panel>
-                <StackPanel Spacing="16" IsVisible="{Binding !IsShowingPopupOutcome}">
+                <StackPanel Spacing="16" IsVisible="{Binding IsShowingQuestionPanel}">
                     <TextBlock Classes="Caption"
                                Text="{Binding PopupCountdown, StringFormat={conv:Tr DashboardPopupCountdownFormat}}"
                                Foreground="{DynamicResource BrushEmergencyText}"
                                HorizontalAlignment="Center" />
+                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
+                                                    Width="{Binding PosePreviewWidth}"
+                                                    Height="{Binding PosePreviewHeight}"
+                                                    Stretch="UniformToFill"
+                                                    HorizontalAlignment="Center"
+                                                    IsVisible="{Binding IsPoseForCameraPopupActive}" />
                     <TextBlock Classes="Body"
                                Text="{Binding PopupQuestion}"
                                TextWrapping="Wrap"
@@ -491,7 +497,27 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsPoseCountdownActive}">
+                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
+                                                    Width="{Binding PosePreviewWidth}"
+                                                    Height="{Binding PosePreviewHeight}"
+                                                    Stretch="UniformToFill"
+                                                    HorizontalAlignment="Center" />
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{conv:Tr PoseForCameraCountdownLabel}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding PoseCountdown}"
+                               Classes="NumberLarge"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
                 <StackPanel Spacing="16" IsVisible="{Binding IsShowingPopupOutcome}">
+                    <Image Source="{Binding CapturedPosePhoto}"
+                           Width="{Binding PosePreviewWidth}"
+                           Height="{Binding PosePreviewHeight}"
+                           Stretch="UniformToFill"
+                           HorizontalAlignment="Center"
+                           IsVisible="{Binding CapturedPosePhoto, Converter={x:Static ObjectConverters.IsNotNull}}" />
                     <TextBlock Classes="EmployerVoice"
                                Text="{Binding PopupOutcomeMessage}"
                                TextWrapping="Wrap"

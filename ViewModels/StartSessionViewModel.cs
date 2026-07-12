@@ -251,6 +251,7 @@ public partial class StartSessionViewModel : ViewModelBase
         if (state is not null && !_isLocked)
         {
             state.CurrentOutfit = _outfit.ToString();
+            state.CurrentOutfitItemIds = _outfit.Items.Select(i => i.Id).ToList();
             state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = _currentBonus;
             state.OutfitMultiplier = _outfit.TotalMultiplier;

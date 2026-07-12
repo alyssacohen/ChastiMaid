@@ -357,6 +357,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         if (state is not null)
         {
             state.CurrentOutfit = outfit.ToString();
+            state.CurrentOutfitItemIds = outfit.Items.Select(i => i.Id).ToList();
             state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = _bonusPercent;
             state.OutfitMultiplier = outfit.TotalMultiplier;

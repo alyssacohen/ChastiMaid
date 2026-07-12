@@ -19,6 +19,7 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<Session> Sessions => db.GetCollection<Session>("sessions");
     private ILiteCollection<GameState> GameStates => db.GetCollection<GameState>("game_state");
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
+    private ILiteCollection<PoseCheckRecord> PoseChecks => db.GetCollection<PoseCheckRecord>("pose_checks");
 
     // --- GameState ---
     public GameState? GetGameState()
@@ -112,6 +113,17 @@ public class SaveRepository(LiteDatabase db)
     public void SaveActivePunishment(ActivePunishment punishment)
     {
         ActivePunishments.Upsert(punishment);
+    }
+
+    // --- Pose checks ---
+    public void SavePoseCheckRecord(PoseCheckRecord record)
+    {
+        PoseChecks.Upsert(record);
+    }
+
+    public List<PoseCheckRecord> GetPendingPoseChecks()
+    {
+        return PoseChecks.Find(r => !r.Reviewed).ToList();
     }
 
     /// <summary>Assigns a random configured punishment template, applying its immediate debt increase.</summary>

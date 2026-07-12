@@ -15,6 +15,7 @@ public class GameState
     public bool IsSafeLocked { get; set; }
     public string? OutfitVideoPath { get; set; }
     public string? CurrentOutfit { get; set; }
+    public List<int>? CurrentOutfitItemIds { get; set; }
 
     // Outfit lock: once set, outfit cannot be changed until the next day
     public DateTime? OutfitLockedDate { get; set; }

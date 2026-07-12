@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -76,10 +135,8 @@
   <data name="LanguageFieldLabel" xml:space="preserve">
     <value>Language</value>
   </data>
-
-  <!-- WelcomeView -->
   <data name="WelcomeQuote" xml:space="preserve">
-      <value>Please, come in. The door is unlocked. It always is... at first.</value>
+    <value>Please, come in. The door is unlocked. It always is... at first.</value>
   </data>
   <data name="WelcomeContinue" xml:space="preserve">
     <value>Continue</value>
@@ -96,16 +153,12 @@
   <data name="WelcomeExit" xml:space="preserve">
     <value>Exit</value>
   </data>
-
-  <!-- WebcamCaptureDialog -->
   <data name="WebcamRecordingLabel" xml:space="preserve">
     <value>Recording... Strike a pose!</value>
   </data>
   <data name="WebcamNotDetected" xml:space="preserve">
     <value>No webcam detected.</value>
   </data>
-
-  <!-- PunishmentListDialog / Dashboard (shared) -->
   <data name="PendingPunishments" xml:space="preserve">
     <value>Pending Punishments</value>
   </data>
@@ -115,8 +168,6 @@
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
-
-  <!-- DashboardView -->
   <data name="DashboardStatusIdle" xml:space="preserve">
     <value>Idle</value>
   </data>
@@ -154,7 +205,7 @@
     <value>End Session</value>
   </data>
   <data name="DashboardEmergencyBreak" xml:space="preserve">
-    <value>Emergency Break</value>
+    <value>Emergency Stop</value>
   </data>
   <data name="DashboardCompleteGame" xml:space="preserve">
     <value>Complete Game</value>
@@ -165,8 +216,6 @@
   <data name="DashboardPopupCountdownFormat" xml:space="preserve">
     <value>Time: {0}s</value>
   </data>
-
-  <!-- Impossible Questions popup -->
   <data name="ImpossibleQuestionYes" xml:space="preserve">
     <value>Yes</value>
   </data>
@@ -293,28 +342,45 @@
   <data name="ImpossibleQuestionVirtueNoNegative" xml:space="preserve">
     <value>Either you deceive me, or you lack the imagination to transgress. Neither reflects particularly well.</value>
   </data>
-
-  <!-- Hydration popup -->
   <data name="HydrationConfirm" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="HydrationReminderHousehold" xml:space="preserve">
-    <value>The body, like the house, requires its upkeep. Do go and drink something.</value>
+    <value>The body, like the house, requires its proper upkeep. Go and drink half a cup.</value>
   </data>
   <data name="HydrationReminderRoutine" xml:space="preserve">
-    <value>A moment's pause for water is no idleness.</value>
+    <value>A moment's pause for water is no idleness. Go and take five sips of your drink.</value>
   </data>
   <data name="HydrationReminderDuty" xml:space="preserve">
-    <value>Even diligence requires fuel. See to your thirst.</value>
+    <value>Even diligence requires fuel. Drink one cup.</value>
   </data>
   <data name="HydrationReminderPause" xml:space="preserve">
-    <value>You may pause to drink. I shall not think less of you for it.</value>
+    <value>You may pause to drink. I shall not think less of you for it. Drink half a glass.</value>
   </data>
   <data name="HydrationConfirmedMessage" xml:space="preserve">
     <value>Very well.</value>
   </data>
-
-  <!-- StartSessionView -->
+  <data name="PoseForCameraConfirm" xml:space="preserve">
+    <value>I am ready</value>
+  </data>
+  <data name="PoseForCameraInstructionFormal" xml:space="preserve">
+    <value>Present yourself before the camera and let {0} be plainly visible, that I may confirm it.</value>
+  </data>
+  <data name="PoseForCameraInstructionInspect" xml:space="preserve">
+    <value>I require a photograph in which {0} may be clearly inspected. See to it.</value>
+  </data>
+  <data name="PoseForCameraInstructionProof" xml:space="preserve">
+    <value>You will pose for the camera. {0} must appear in the frame as proof.</value>
+  </data>
+  <data name="PoseForCameraCountdownLabel" xml:space="preserve">
+    <value>Hold your pose.</value>
+  </data>
+  <data name="PoseForCameraCapturedMessage" xml:space="preserve">
+    <value>Very well. The photograph has been taken.</value>
+  </data>
+  <data name="PoseForCameraFailedMessage" xml:space="preserve">
+    <value>The camera was not cooperative. We shall try again another time.</value>
+  </data>
   <data name="StartSessionTitle" xml:space="preserve">
     <value>Today's Outfit</value>
   </data>
@@ -336,8 +402,6 @@
   <data name="StartSessionQuit" xml:space="preserve">
     <value>Quit</value>
   </data>
-
-  <!-- WardrobeTable -->
   <data name="WardrobeColName" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -377,8 +441,6 @@
   <data name="WardrobeNewItemHelpText" xml:space="preserve">
     <value>Multiplier affects outfit scoring, Weight is the probability a clothing item is chosen.</value>
   </data>
-
-  <!-- ChangeOutfitView -->
   <data name="ChangeOutfitTitle" xml:space="preserve">
     <value>Compose an outfit</value>
   </data>
@@ -409,8 +471,6 @@
   <data name="ChangeOutfitSaveOutfit" xml:space="preserve">
     <value>Save outfit</value>
   </data>
-
-  <!-- ConfirmOutfitView -->
   <data name="ConfirmOutfitTitle" xml:space="preserve">
     <value>Outfit Confirmed</value>
   </data>
@@ -418,10 +478,8 @@
     <value>Go change into the outfit below. When you are ready, press the button to confirm.</value>
   </data>
   <data name="ConfirmOutfitConfirmButton" xml:space="preserve">
-    <value>I'm wearing the outfit, continue</value>
+    <value>I am ready, Madame</value>
   </data>
-
-  <!-- SettingsView: nav / shared -->
   <data name="SettingsPageTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -446,8 +504,6 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-
-  <!-- SettingsView: General tab -->
   <data name="SettingsHeadingPlayer" xml:space="preserve">
     <value>Player</value>
   </data>
@@ -502,8 +558,6 @@
   <data name="SettingsCamera" xml:space="preserve">
     <value>Camera</value>
   </data>
-
-  <!-- SettingsView: Chores tab -->
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Chore name</value>
   </data>
@@ -528,8 +582,6 @@
   <data name="SettingsAddChore" xml:space="preserve">
     <value>Add Chore</value>
   </data>
-
-  <!-- SettingsView: Punishments tab -->
   <data name="SettingsPunishmentNamePlaceholder" xml:space="preserve">
     <value>Punishment name</value>
   </data>
@@ -542,21 +594,15 @@
   <data name="SettingsAddPunishment" xml:space="preserve">
     <value>Add Punishment</value>
   </data>
-
-  <!-- SettingsView: Outfit Rules tab -->
   <data name="SettingsSelectItemPlaceholder" xml:space="preserve">
     <value>Select item</value>
   </data>
   <data name="SettingsAddRule" xml:space="preserve">
     <value>Add Rule</value>
   </data>
-
-  <!-- SettingsView: unsaved-changes dialog -->
   <data name="SettingsDiscard" xml:space="preserve">
     <value>Discard</value>
   </data>
-
-  <!-- CameraSetupView -->
   <data name="CameraSetupTitle" xml:space="preserve">
     <value>Position the camera</value>
   </data>
@@ -566,13 +612,12 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
-
-  <!-- GameCompleteView -->
   <data name="GameCompleteTitle" xml:space="preserve">
     <value>Game Complete!</value>
   </data>
   <data name="GameCompleteEmployerQuote" xml:space="preserve">
-    <value>Congratulations! You have paid off your debt.&#10;You may export your session media before the save slot is freed.</value>
+    <value>Congratulations! You have paid off your debt.
+You may export your session media before the save slot is freed.</value>
   </data>
   <data name="GameCompleteExportVideo" xml:space="preserve">
     <value>Export Outfit Video</value>
@@ -583,8 +628,6 @@
   <data name="GameCompleteFinish" xml:space="preserve">
     <value>Finish and Free Slot</value>
   </data>
-
-  <!-- EndSessionView -->
   <data name="EndSessionConfirmQuestion" xml:space="preserve">
     <value>Are you sure you want to end this session?</value>
   </data>
@@ -606,8 +649,6 @@
   <data name="EndSessionCloseApp" xml:space="preserve">
     <value>Close Application</value>
   </data>
-
-  <!-- LoadGameView -->
   <data name="LoadGameEmptySlot" xml:space="preserve">
     <value>Empty</value>
   </data>
@@ -620,13 +661,9 @@
   <data name="LoadGameCompleted" xml:space="preserve">
     <value>Completed</value>
   </data>
-
-  <!-- WebcamPreviewControl -->
   <data name="WebcamNoSignal" xml:space="preserve">
     <value>No webcam signal</value>
   </data>
-
-  <!-- OutfitDrawer -->
   <data name="OutfitDrawerTitle" xml:space="preserve">
     <value>Current Outfit</value>
   </data>
@@ -636,16 +673,12 @@
   <data name="OutfitDrawerNoneLabel" xml:space="preserve">
     <value>(none)</value>
   </data>
-
-  <!-- WardrobeToolbar -->
   <data name="WardrobeFilterPlaceholder" xml:space="preserve">
     <value>Filter by name or tag…</value>
   </data>
   <data name="WardrobeLayerLabel" xml:space="preserve">
     <value>Layer:</value>
   </data>
-
-  <!-- DebtWidget -->
   <data name="DebtWidgetTitle" xml:space="preserve">
     <value>Outstanding Balance</value>
   </data>
@@ -658,8 +691,6 @@
   <data name="DebtWidgetTotalIncurredFormat" xml:space="preserve">
     <value>Total incurred: ${0:F2}</value>
   </data>
-
-  <!-- NewGameView -->
   <data name="NewGameSettingsIntro" xml:space="preserve">
     <value>Your game will start with these settings:</value>
   </data>
@@ -672,21 +703,18 @@
   <data name="NewGameStartGame" xml:space="preserve">
     <value>Start Game</value>
   </data>
-
-  <!-- WardrobeBulkBar -->
   <data name="WardrobeBulkSelectedFormat" xml:space="preserve">
     <value>{0} items selected</value>
   </data>
   <data name="WardrobeBulkDeleteSelected" xml:space="preserve">
     <value>Delete selected</value>
   </data>
-
-  <!-- SafeLockView -->
   <data name="SafeLockTitle" xml:space="preserve">
     <value>Safe Lock</value>
   </data>
   <data name="SafeLockInstructions" xml:space="preserve">
-    <value>Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it.</value>
+    <value>Place your distracting object inside the safe.
+Point the camera at the combination without looking at it.</value>
   </data>
   <data name="SafeLockStartCamera" xml:space="preserve">
     <value>Start Camera</value>
@@ -698,7 +726,7 @@
     <value>Safe locked!</value>
   </data>
   <data name="SafeLockEncryptedNotice" xml:space="preserve">
-      <value>The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe. You can retry to take the combination photo if you are not sure of the first try.</value>
+    <value>The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe. You can retry to take the combination photo if you are not sure of the first try.</value>
   </data>
   <data name="SafeLockStartSession" xml:space="preserve">
     <value>Start Session</value>
@@ -706,8 +734,6 @@
   <data name="SafeLockRetryCapture" xml:space="preserve">
     <value>Retry Capture</value>
   </data>
-
-  <!-- DashboardViewModel -->
   <data name="DashboardInitialDebtFormat" xml:space="preserve">
     <value>Initial: ${0:F2}</value>
   </data>
@@ -723,8 +749,6 @@
   <data name="DashboardNextWageFormat" xml:space="preserve">
     <value>Next wage in {0:D2}:{1:D2}</value>
   </data>
-
-  <!-- SafeLockViewModel -->
   <data name="SafeLockPreviewMessage" xml:space="preserve">
     <value>Point the camera at the combination, then press Capture.</value>
   </data>
@@ -734,8 +758,6 @@
   <data name="SafeLockContinueWithoutSafe" xml:space="preserve">
     <value>Continue without safe</value>
   </data>
-
-  <!-- WebcamCaptureDialogViewModel -->
   <data name="WebcamSkipDefault" xml:space="preserve">
     <value>Skip</value>
   </data>
@@ -745,8 +767,6 @@
   <data name="WebcamCaptureLabelVideo" xml:space="preserve">
     <value>Record (5s)</value>
   </data>
-
-  <!-- SettingsViewModel -->
   <data name="SettingsUnsavedTabMessage" xml:space="preserve">
     <value>You have unsaved changes in this tab.</value>
   </data>
@@ -756,8 +776,6 @@
   <data name="SettingsUnsavedChangesTitle" xml:space="preserve">
     <value>Unsaved Changes</value>
   </data>
-
-  <!-- ConfirmOutfitViewModel -->
   <data name="ConfirmOutfitItemCountFormat" xml:space="preserve">
     <value>{0} items · {1} layers covered</value>
   </data>
@@ -767,16 +785,12 @@
   <data name="ConfirmOutfitNoWebcamMessage" xml:space="preserve">
     <value>The outfit video cannot be recorded. You can skip this step and continue.</value>
   </data>
-
-  <!-- Generic dialog buttons -->
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
-
-  <!-- LoadGameViewModel -->
   <data name="LoadGameErrorTitle" xml:space="preserve">
     <value>Load Error</value>
   </data>
@@ -796,8 +810,6 @@ WARNING: The safe is locked. Deleting this save will permanently destroy the enc
   <data name="LoadGameDeleteConfirmFormat" xml:space="preserve">
     <value>Delete "{0}"? This game will be marked as failed.</value>
   </data>
-
-  <!-- GameCompleteViewModel -->
   <data name="GameCompleteVideoExportedStatus" xml:space="preserve">
     <value>Outfit video exported.</value>
   </data>
@@ -807,8 +819,6 @@ WARNING: The safe is locked. Deleting this save will permanently destroy the enc
   <data name="GameCompletePhotoExportedStatus" xml:space="preserve">
     <value>Safe combination photo exported.</value>
   </data>
-
-  <!-- StartSessionViewModel -->
   <data name="StartSessionRegenerateOutfitTitle" xml:space="preserve">
     <value>Regenerate Outfit</value>
   </data>
@@ -821,16 +831,12 @@ WARNING: The safe is locked. Deleting this save will permanently destroy the enc
   <data name="StartSessionModifyMessageFormat" xml:space="preserve">
     <value>Manually choosing clothes will reduce your bonus to {0:F0}% of the base multiplier and lock the outfit. Proceed?</value>
   </data>
-
-  <!-- WelcomeViewModel -->
   <data name="WelcomeNoFreeSlotsTitle" xml:space="preserve">
     <value>No Free Slots</value>
   </data>
   <data name="WelcomeNoFreeSlotsMessage" xml:space="preserve">
     <value>All 5 save slots are occupied. Please complete or delete an existing game before starting a new one.</value>
   </data>
-
-  <!-- GameCompleteViewModel: file picker filter names -->
   <data name="GameCompleteAviVideoFilter" xml:space="preserve">
     <value>AVI Video</value>
   </data>

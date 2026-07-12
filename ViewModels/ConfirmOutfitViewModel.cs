@@ -26,6 +26,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         if (state is not null)
         {
             state.CurrentOutfit = OutfitSummary;
+            state.CurrentOutfitItemIds = outfit.Items.Select(i => i.Id).ToList();
             state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = bonusPercent;
             saveRepo.SaveGameState(state);

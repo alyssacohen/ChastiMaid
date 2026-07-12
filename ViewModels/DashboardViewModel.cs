@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ChastiMaid.Localization;
 using ChastiMaid.Models;
@@ -92,6 +93,19 @@ public partial class DashboardViewModel : ViewModelBase
     private DispatcherTimer? _popupTimer;
     private bool _pendingOutcomePositive;
     [Reactive] private string _timeToNextWage = "";
+
+    // --- Idle popup: Pose for Camera ---
+    [Reactive] private bool _isPoseCountdownActive;
+    [Reactive] private bool _isPoseForCameraPopupActive;
+    [Reactive] private int _poseCountdown;
+    [Reactive] private Bitmap? _capturedPosePhoto;
+
+    // Responsive sizing, recalculated on window resize (see DashboardView.axaml.cs)
+    [Reactive] private double _popupDialogMaxHeight = 420;
+    [Reactive] private double _posePreviewWidth = 280;
+    [Reactive] private double _posePreviewHeight = 420;
+    private DispatcherTimer? _poseCountdownTimer;
+    private ClothingItem? _currentPoseItem;
 
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
@@ -208,6 +222,8 @@ public partial class DashboardViewModel : ViewModelBase
     public ObservableCollection<PunishmentItemViewModel> Punishments { get; } = [];
 
     public string CurrentOutfit { get; }
+    public WebcamPreviewService Webcam => _mainVm.Webcam;
+    public bool IsShowingQuestionPanel => !IsShowingPopupOutcome && !IsPoseCountdownActive;
 
     public ICommand EndSessionCommand { get; }
     public ICommand CompleteGameCommand { get; }
@@ -285,15 +301,16 @@ public partial class DashboardViewModel : ViewModelBase
         TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
-    // --- Idle popup: Impossible Questions / Hydration ---
+    // --- Idle popup: Impossible Questions / Hydration / Pose for Camera ---
     private enum IdlePopupKind
     {
         ImpossibleQuestion,
-        Hydration
+        Hydration,
+        PoseForCamera
     }
 
     private static readonly IdlePopupKind[] EnabledIdlePopupKinds =
-        [IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration];
+        [IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera];
 
     private IdlePopupKind _currentPopupKind;
     private DateTime _lastHydrationPopupAt = DateTime.MinValue;
@@ -303,6 +320,27 @@ public partial class DashboardViewModel : ViewModelBase
         return DateTime.UtcNow - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
     }
 
+    private bool IsPoseForCameraAvailable()
+    {
+        var itemIds = _saveRepo.GetGameState()?.CurrentOutfitItemIds;
+        if (itemIds is null || itemIds.Count == 0)
+        {
+            return false;
+        }
+
+        return WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex);
+    }
+
+    private bool IsKindAvailable(IdlePopupKind kind)
+    {
+        return kind switch
+        {
+            IdlePopupKind.Hydration => IsHydrationAvailable(),
+            IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
+            _ => true
+        };
+    }
+
     private void ShowIdlePopup()
     {
         if (IsPopupVisible || IsBusy)
@@ -310,9 +348,7 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
-        var candidates = IsHydrationAvailable()
-            ? EnabledIdlePopupKinds
-            : EnabledIdlePopupKinds.Where(k => k != IdlePopupKind.Hydration).ToArray();
+        var candidates = EnabledIdlePopupKinds.Where(IsKindAvailable).ToArray();
         if (candidates.Length == 0)
         {
             return;
@@ -325,6 +361,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.Hydration:
                 ShowHydrationPopup();
+                break;
+            case IdlePopupKind.PoseForCamera:
+                ShowPoseForCameraPopup();
                 break;
         }
     }
@@ -395,6 +434,46 @@ public partial class DashboardViewModel : ViewModelBase
         _popupTimer.Start();
     }
 
+    private void ShowPoseForCameraPopup()
+    {
+        var itemIds = _saveRepo.GetGameState()?.CurrentOutfitItemIds ?? [];
+        var candidates = _saveRepo.GetWardrobe().Where(i => itemIds.Contains(i.Id)).ToList();
+        if (candidates.Count == 0 || !_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
+        {
+            return;
+        }
+
+        _currentPopupKind = IdlePopupKind.PoseForCamera;
+        IsPoseForCameraPopupActive = true;
+        _currentPoseItem = candidates[_random.Next(candidates.Count)];
+        PopupQuestion = string.Format(Resources.Get(PoseForCameraInstructionBank.GetRandom()), _currentPoseItem.Name);
+        PopupAnswers = [Resources.Get("PoseForCameraConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+#pragma warning disable CA1416
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+#pragma warning restore CA1416
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                _currentPoseItem = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
     private void OnAnswer(string answer)
     {
         if (!IsPopupVisible)
@@ -410,7 +489,91 @@ public partial class DashboardViewModel : ViewModelBase
             case IdlePopupKind.Hydration:
                 OnHydrationConfirm();
                 break;
+            case IdlePopupKind.PoseForCamera:
+                OnPoseForCameraConfirm();
+                break;
         }
+    }
+
+    private void OnPoseForCameraConfirm()
+    {
+        _popupTimer?.Stop();
+        _popupTimer = null;
+
+        IsPoseCountdownActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+        PoseCountdown = 3;
+
+        _poseCountdownTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _poseCountdownTimer.Tick += async (_, _) =>
+        {
+            PoseCountdown--;
+            if (PoseCountdown <= 0)
+            {
+                _poseCountdownTimer?.Stop();
+                _poseCountdownTimer = null;
+                await CapturePoseAsync();
+            }
+        };
+        _poseCountdownTimer.Start();
+    }
+
+    private async Task CapturePoseAsync()
+    {
+        var item = _currentPoseItem;
+        _currentPoseItem = null;
+        IsPoseCountdownActive = false;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+
+        if (item is null)
+        {
+            _mainVm.Webcam.Stop();
+            PopupOutcomeMessage = Resources.Get("PoseForCameraFailedMessage");
+            ShowPopupOutcome(true);
+            return;
+        }
+
+        var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
+        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
+        var path = Path.Combine(dir, $"pose_{timestamp}.png");
+
+        var success = false;
+        try
+        {
+            success = await _mainVm.Webcam.CaptureFrameAsync(path);
+        }
+        catch
+        {
+            /* Webcam unavailable — treated as capture failure below */
+        }
+
+        _mainVm.Webcam.Stop();
+
+        if (success)
+        {
+            _saveRepo.SavePoseCheckRecord(new PoseCheckRecord
+            {
+                ItemId = item.Id,
+                ItemName = item.Name,
+                PhotoPath = path,
+                CapturedAt = DateTime.UtcNow,
+                Reviewed = false,
+                IsCompliant = null
+            });
+
+            try
+            {
+                CapturedPosePhoto = new Bitmap(path);
+            }
+            catch
+            {
+                CapturedPosePhoto = null;
+            }
+        }
+
+        PopupOutcomeMessage = Resources.Get(success ? "PoseForCameraCapturedMessage" : "PoseForCameraFailedMessage");
+        ShowPopupOutcome(true);
     }
 
     private void OnImpossibleQuestionAnswer(string answer)
@@ -446,6 +609,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _pendingOutcomePositive = positive;
         IsShowingPopupOutcome = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
 
         _popupOutcomeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _popupOutcomeTimer.Tick += (_, _) =>
@@ -475,9 +639,22 @@ public partial class DashboardViewModel : ViewModelBase
         _popupTimer = null;
         _popupOutcomeTimer?.Stop();
         _popupOutcomeTimer = null;
+        _poseCountdownTimer?.Stop();
+        _poseCountdownTimer = null;
+        if (IsPoseForCameraPopupActive)
+        {
+            _mainVm.Webcam.Stop();
+        }
+
         IsPopupVisible = false;
         IsShowingPopupOutcome = false;
+        IsPoseCountdownActive = false;
+        IsPoseForCameraPopupActive = false;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         _currentQuestion = null;
+        _currentPoseItem = null;
+        CapturedPosePhoto?.Dispose();
+        CapturedPosePhoto = null;
         _sessionLoop.ReportPopupResult(positive);
 
         if (!positive)
@@ -697,9 +874,11 @@ public partial class DashboardViewModel : ViewModelBase
         _countdownTimer?.Stop();
         _popupTimer?.Stop();
         _popupOutcomeTimer?.Stop();
+        _poseCountdownTimer?.Stop();
         _choreTimer?.Stop();
         StopSilentCapture();
         _mainVm.Webcam.Stop();
+        CapturedPosePhoto?.Dispose();
         _autoSave.StopTimer();
 
         _mainVm.NavigateTo(new EndSessionViewModel(_mainVm, _saveRepo));
