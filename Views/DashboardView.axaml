@@ -576,6 +576,32 @@
                             HorizontalContentAlignment="Center"
                             Command="{Binding SubmitQuoteTypedAnswerCommand}" />
                 </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsKneelFramingActive}">
+                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
+                                                    Width="{Binding PopupPreviewWidth}"
+                                                    Height="{Binding PopupPreviewHeight}"
+                                                    Stretch="UniformToFill"
+                                                    HorizontalAlignment="Center" />
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{conv:Tr KneelFramingLabel}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <Button Content="{conv:Tr KneelFramingConfirm}"
+                            Classes="Ghost"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding ConfirmKneelFramingCommand}" />
+                </StackPanel>
+                <StackPanel Spacing="16" IsVisible="{Binding IsKneelActive}">
+                    <TextBlock Classes="EmployerVoice"
+                               Text="{Binding PopupQuestion}"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding KneelCountdown}"
+                               Classes="NumberLarge"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
                 <StackPanel Spacing="16" IsVisible="{Binding IsShowingPopupOutcome}">
                     <Image Source="{Binding CapturedPosePhoto}"
                            Width="{Binding PopupPreviewWidth}"

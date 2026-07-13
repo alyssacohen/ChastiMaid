@@ -449,6 +449,35 @@
     <value>Non era ciò che desideravo udire. Fate in modo di prestare maggiore attenzione la prossima volta.</value>
   </data>
 
+  <!-- Kneel popup -->
+  <data name="KneelSummon" xml:space="preserve">
+    <value>La vostra presenza è richiesta. Presentatevi subito.</value>
+  </data>
+  <data name="KneelSummonConfirm" xml:space="preserve">
+    <value>Sono qui</value>
+  </data>
+  <data name="KneelFramingLabel" xml:space="preserve">
+    <value>Posizionate la fotocamera per inquadrare il luogo del vostro inginocchiamento.</value>
+  </data>
+  <data name="KneelFramingConfirm" xml:space="preserve">
+    <value>Posizione confermata</value>
+  </data>
+  <data name="KneelInstructionReflect" xml:space="preserve">
+    <value>Ora inginocchiatevi, guardate a terra e riflettete sui vostri errori.</value>
+  </data>
+  <data name="KneelInstructionHumility" xml:space="preserve">
+    <value>Inginocchiatevi dove siete, e trattenetevi un poco con la vostra umiltà.</value>
+  </data>
+  <data name="KneelInstructionStillness" xml:space="preserve">
+    <value>A terra, sulle ginocchia. L'immobilità vi si addice.</value>
+  </data>
+  <data name="KneelCompletedMessage" xml:space="preserve">
+    <value>Contrizione adeguata, per una volta.</value>
+  </data>
+  <data name="KneelFailedMessage" xml:space="preserve">
+    <value>La fotocamera non ha visto nulla della vostra penitenza. Un peccato.</value>
+  </data>
+
   <!-- Pre-session hardware availability check -->
   <data name="HardwareCheckTitle" xml:space="preserve">
     <value>Una parola prima di cominciare</value>

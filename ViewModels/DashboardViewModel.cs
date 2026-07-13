@@ -129,6 +129,14 @@ public partial class DashboardViewModel : ViewModelBase
     private DispatcherTimer? _quoteListenTimer;
     private CancellationTokenSource? _quoteListenCts;
 
+    // --- Idle popup: Kneel ---
+    [Reactive] private bool _isKneelPopupActive;
+    [Reactive] private bool _isKneelFramingActive;
+    [Reactive] private bool _isKneelActive;
+    [Reactive] private int _kneelCountdown;
+    private DispatcherTimer? _kneelCountdownTimer;
+    private CancellationTokenSource? _kneelCts;
+
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
         : this(mainVm, saveRepo, null)
@@ -197,6 +205,7 @@ public partial class DashboardViewModel : ViewModelBase
         AnswerCommand = ReactiveCommand.Create<string>(OnAnswer);
         DismissPopupOutcomeCommand = ReactiveCommand.Create(DismissPopupOutcome);
         SubmitQuoteTypedAnswerCommand = ReactiveCommand.Create(OnSubmitQuoteTypedAnswer);
+        ConfirmKneelFramingCommand = ReactiveCommand.Create(OnKneelFramingConfirm);
         EndChoreCommand = ReactiveCommand.Create(OnEndChore);
 
         var canOpenPunishments = this.WhenAnyValue(x => x.PendingPunishmentsCount, c => c > 0);
@@ -249,7 +258,7 @@ public partial class DashboardViewModel : ViewModelBase
 
     public bool IsShowingQuestionPanel =>
         !IsShowingPopupOutcome && !IsPoseCountdownActive && !IsCurtsyCountdownActive && !IsCurtsyRecordingActive &&
-        !IsQuoteListeningActive && !IsQuoteTypingActive;
+        !IsQuoteListeningActive && !IsQuoteTypingActive && !IsKneelFramingActive && !IsKneelActive;
 
     public bool IsWebcamPreviewNeededInQuestionPanel => IsPoseForCameraPopupActive || IsCurtsyPopupActive;
 
@@ -258,6 +267,7 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand AnswerCommand { get; }
     public ICommand DismissPopupOutcomeCommand { get; }
     public ICommand SubmitQuoteTypedAnswerCommand { get; }
+    public ICommand ConfirmKneelFramingCommand { get; }
     public ICommand EndChoreCommand { get; }
 
     // --- New dashboard commands ---
@@ -337,13 +347,14 @@ public partial class DashboardViewModel : ViewModelBase
         Hydration,
         PoseForCamera,
         Curtsy,
-        MotivationalQuote
+        MotivationalQuote,
+        Kneel
     }
 
     private static readonly IdlePopupKind[] EnabledIdlePopupKinds =
     [
         IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera,
-        IdlePopupKind.Curtsy, IdlePopupKind.MotivationalQuote
+        IdlePopupKind.Curtsy, IdlePopupKind.MotivationalQuote, IdlePopupKind.Kneel
     ];
 
     private IdlePopupKind _currentPopupKind;
@@ -372,6 +383,7 @@ public partial class DashboardViewModel : ViewModelBase
             IdlePopupKind.Hydration => IsHydrationAvailable(),
             IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
             IdlePopupKind.Curtsy => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
+            IdlePopupKind.Kneel => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             _ => true
         };
     }
@@ -405,6 +417,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.MotivationalQuote:
                 ShowMotivationalQuotePopup();
+                break;
+            case IdlePopupKind.Kneel:
+                ShowKneelPopup();
                 break;
         }
     }
@@ -575,6 +590,132 @@ public partial class DashboardViewModel : ViewModelBase
         _popupTimer.Start();
     }
 
+    private void ShowKneelPopup()
+    {
+        _currentPopupKind = IdlePopupKind.Kneel;
+        IsKneelPopupActive = true;
+        PopupQuestion = Resources.Get("KneelSummon");
+        PopupAnswers = [Resources.Get("KneelSummonConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
+    private void OnKneelConfirm()
+    {
+        _popupTimer?.Stop();
+        _popupTimer = null;
+
+        if (!_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
+        {
+            PopupOutcomeMessage = Resources.Get("KneelFailedMessage");
+            ShowPopupOutcome(true);
+            return;
+        }
+
+        IsKneelFramingActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+    }
+
+    private void OnKneelFramingConfirm()
+    {
+        if (!IsKneelFramingActive)
+        {
+            return;
+        }
+
+        _mainVm.Webcam.Stop();
+        IsKneelFramingActive = false;
+        IsKneelActive = true;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+
+        var totalSeconds = _random.Next(_settings.KneelMinDurationSeconds, _settings.KneelMaxDurationSeconds + 1);
+        KneelCountdown = totalSeconds;
+        PopupQuestion = Resources.Get(KneelInstructionBank.GetRandom());
+
+        _kneelCountdownTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _kneelCountdownTimer.Tick += (_, _) => KneelCountdown--;
+        _kneelCountdownTimer.Start();
+
+        RunKneelCaptureSessionAsync(totalSeconds);
+    }
+
+    private async void RunKneelCaptureSessionAsync(int totalSeconds)
+    {
+        _kneelCts = new CancellationTokenSource();
+        var ct = _kneelCts.Token;
+        var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
+        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var photos = new List<string>();
+        var elapsed = 0;
+
+        try
+        {
+            while (elapsed < totalSeconds)
+            {
+                var wait = Math.Min(
+                    _random.Next(_settings.BusyCaptureMinIntervalSeconds, _settings.BusyCaptureMaxIntervalSeconds + 1),
+                    totalSeconds - elapsed);
+                await Task.Delay(TimeSpan.FromSeconds(wait), ct);
+                elapsed += wait;
+
+                try
+                {
+                    var path = Path.Combine(dir, $"kneel_{DateTime.Now:yyyyMMdd_HHmmss_fff}.png");
+                    if (await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, _settings.SelectedCameraIndex))
+                    {
+                        photos.Add(path);
+                    }
+                }
+                catch
+                {
+                    /* Webcam unavailable mid-session — ignore, no punishment */
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        _kneelCountdownTimer?.Stop();
+        _kneelCountdownTimer = null;
+        _kneelCts?.Dispose();
+        _kneelCts = null;
+        IsKneelActive = false;
+        this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
+
+        if (photos.Count > 0)
+        {
+            _saveRepo.SaveKneelCheckRecord(new KneelCheckRecord
+            {
+                PhotoPaths = photos,
+                StartedAt = DateTime.UtcNow.AddSeconds(-totalSeconds)
+            });
+        }
+
+        PopupOutcomeMessage = Resources.Get(photos.Count > 0 ? "KneelCompletedMessage" : "KneelFailedMessage");
+        ShowPopupOutcome(true);
+    }
+
     private void OnAnswer(string answer)
     {
         if (!IsPopupVisible)
@@ -598,6 +739,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.MotivationalQuote:
                 OnMotivationalQuoteConfirm();
+                break;
+            case IdlePopupKind.Kneel:
+                OnKneelConfirm();
                 break;
         }
     }
@@ -928,7 +1072,12 @@ public partial class DashboardViewModel : ViewModelBase
         _quoteListenCts?.Cancel();
         _quoteListenCts?.Dispose();
         _quoteListenCts = null;
-        if (IsPoseForCameraPopupActive || IsCurtsyPopupActive)
+        _kneelCountdownTimer?.Stop();
+        _kneelCountdownTimer = null;
+        _kneelCts?.Cancel();
+        _kneelCts?.Dispose();
+        _kneelCts = null;
+        if (IsPoseForCameraPopupActive || IsCurtsyPopupActive || IsKneelFramingActive)
         {
             _mainVm.Webcam.Stop();
         }
@@ -943,6 +1092,9 @@ public partial class DashboardViewModel : ViewModelBase
         IsQuotePopupActive = false;
         IsQuoteListeningActive = false;
         IsQuoteTypingActive = false;
+        IsKneelPopupActive = false;
+        IsKneelFramingActive = false;
+        IsKneelActive = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentQuestion = null;
@@ -1177,6 +1329,9 @@ public partial class DashboardViewModel : ViewModelBase
         _quoteListenTimer?.Stop();
         _quoteListenCts?.Cancel();
         _quoteListenCts?.Dispose();
+        _kneelCountdownTimer?.Stop();
+        _kneelCts?.Cancel();
+        _kneelCts?.Dispose();
         _choreTimer?.Stop();
         StopSilentCapture();
         _mainVm.Webcam.Stop();

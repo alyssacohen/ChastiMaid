@@ -21,6 +21,7 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
     private ILiteCollection<PoseCheckRecord> PoseChecks => db.GetCollection<PoseCheckRecord>("pose_checks");
     private ILiteCollection<CurtsyCheckRecord> CurtsyChecks => db.GetCollection<CurtsyCheckRecord>("curtsy_checks");
+    private ILiteCollection<KneelCheckRecord> KneelChecks => db.GetCollection<KneelCheckRecord>("kneel_checks");
 
     // --- GameState ---
     public GameState? GetGameState()
@@ -136,6 +137,17 @@ public class SaveRepository(LiteDatabase db)
     public List<CurtsyCheckRecord> GetPendingCurtsyChecks()
     {
         return CurtsyChecks.Find(r => !r.Reviewed).ToList();
+    }
+
+    // --- Kneel checks ---
+    public void SaveKneelCheckRecord(KneelCheckRecord record)
+    {
+        KneelChecks.Upsert(record);
+    }
+
+    public List<KneelCheckRecord> GetPendingKneelChecks()
+    {
+        return KneelChecks.Find(r => !r.Reviewed).ToList();
     }
 
     /// <summary>Assigns a random configured punishment template, applying its immediate debt increase.</summary>
