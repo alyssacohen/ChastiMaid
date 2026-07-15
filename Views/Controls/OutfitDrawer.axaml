@@ -58,6 +58,22 @@
                     </Grid>
                 </Border>
 
+                <!-- Footer: current outfit multiplier -->
+                <Border DockPanel.Dock="Bottom"
+                        Background="{DynamicResource BrushSurfaceBase}"
+                        Padding="16,12">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Classes="Caption"
+                                   Text="{conv:Tr StartSessionTotalMultiplier}"
+                                   Foreground="{DynamicResource TextMuted}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="{Binding #DrawerRoot.MultiplierDisplay}"
+                                   Foreground="{DynamicResource TextAccent}"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+
                 <!-- Layer list -->
                 <ScrollViewer>
                     <ItemsControl ItemsSource="{Binding #DrawerRoot.Layers}">
@@ -76,7 +92,11 @@
                                                 <DataTemplate x:DataType="vm:OutfitLayerItem">
                                                     <StackPanel Margin="0,0,0,4">
                                                         <TextBlock Classes="Body"
-                                                                   Text="{Binding Name}" />
+                                                                   Text="{Binding Name}"
+                                                                   IsVisible="{Binding !IsPlugAndPlay}" />
+                                                        <TextBlock Classes="plugAndPlayName"
+                                                                   Text="{Binding Name}"
+                                                                   IsVisible="{Binding IsPlugAndPlay}" />
                                                         <TextBlock Classes="Caption"
                                                                    Text="{Binding ZonesDisplay}" />
                                                     </StackPanel>

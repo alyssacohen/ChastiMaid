@@ -333,38 +333,72 @@
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" Name="PunishmentsScroll">
-                        <ItemsControl ItemsSource="{Binding Punishments}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vm:PunishmentEditViewModel">
-                                    <Border Classes="card">
-                                        <Grid ColumnDefinitions="*,Auto">
-                                            <StackPanel Grid.Column="0" Spacing="8">
-                                                <StackPanel Spacing="2">
-                                                    <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
-                                                    <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsPunishmentNamePlaceholder}" />
-                                                </StackPanel>
-                                                <Grid ColumnDefinitions="*,*">
-                                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDebtIncrease}}" />
+                        <StackPanel Spacing="16">
+                            <Border Classes="card">
+                                <StackPanel Spacing="12">
+                                    <CheckBox Content="{converters:Tr SettingsPlugAndPlayEnabled}"
+                                              IsChecked="{Binding PlugAndPlayEnabled}" />
+                                    <ItemsControl ItemsSource="{Binding PlugAndPlayItems}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:PlugAndPlayItemEditViewModel">
+                                                <Grid ColumnDefinitions="Auto,*,100,100" Margin="0,4">
+                                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsEligible}"
+                                                              VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Column="1" Classes="Body" Text="{Binding Name}"
+                                                               VerticalAlignment="Center" Margin="8,0" />
+                                                    <StackPanel Grid.Column="2" Spacing="2" Margin="0,0,8,0"
+                                                                IsVisible="{Binding IsEligible}">
+                                                        <TextBlock Classes="Caption" Text="{converters:Tr SettingsPlugAndPlayMinMinutes}" />
                                                         <NumericUpDown Classes="underline stacked-spinner"
-                                                                       Value="{Binding DebtIncrease, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
-                                                                       Minimum="0" FormatString="0" />
+                                                                       Value="{Binding MinDurationMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                                       Minimum="1" FormatString="0" />
                                                     </StackPanel>
-                                                    <StackPanel Grid.Column="1" Spacing="2">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRequiredChores}}" />
+                                                    <StackPanel Grid.Column="3" Spacing="2"
+                                                                IsVisible="{Binding IsEligible}">
+                                                        <TextBlock Classes="Caption" Text="{converters:Tr SettingsPlugAndPlayMaxMinutes}" />
                                                         <NumericUpDown Classes="underline stacked-spinner"
-                                                                       Value="{Binding RequiredChoreCount, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
-                                                                       Minimum="0" FormatString="0" />
+                                                                       Value="{Binding MaxDurationMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                                       Minimum="1" FormatString="0" />
                                                     </StackPanel>
                                                 </Grid>
-                                            </StackPanel>
-                                            <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
-                                                    VerticalAlignment="Center" Margin="12,0,0,0" />
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                            <ItemsControl ItemsSource="{Binding Punishments}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:PunishmentEditViewModel">
+                                        <Border Classes="card">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Grid.Column="0" Spacing="8">
+                                                    <StackPanel Spacing="2">
+                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
+                                                        <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsPunishmentNamePlaceholder}" />
+                                                    </StackPanel>
+                                                    <Grid ColumnDefinitions="*,*">
+                                                        <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDebtIncrease}}" />
+                                                            <NumericUpDown Classes="underline stacked-spinner"
+                                                                           Value="{Binding DebtIncrease, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                                           Minimum="0" FormatString="0" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="1" Spacing="2">
+                                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRequiredChores}}" />
+                                                            <NumericUpDown Classes="underline stacked-spinner"
+                                                                           Value="{Binding RequiredChoreCount, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                                                           Minimum="0" FormatString="0" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
+                                                        VerticalAlignment="Center" Margin="12,0,0,0" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                     </ScrollViewer>
                     <Button Grid.Row="2" Command="{Binding AddPunishmentCommand}" Classes="Add">
                         <StackPanel Orientation="Horizontal" Spacing="8">

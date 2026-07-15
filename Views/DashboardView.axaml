@@ -225,7 +225,7 @@
             </Grid>
 
             <!-- ── LANDSCAPE layout ── -->
-            <Grid ColumnDefinitions="260,*" RowDefinitions="Auto,*"
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*"
                   IsVisible="{Binding IsLandscape}">
 
                 <!-- Status bar (spans both columns) -->
@@ -624,7 +624,8 @@
              ══════════════════════════════════════════════════════ -->
         <controls:OutfitDrawer x:Name="OutfitDrawerControl"
                                IsOpen="{Binding IsOutfitDrawerOpen}"
-                               Outfit="{Binding CurrentOutfitVm}" />
+                               Outfit="{Binding CurrentOutfitVm}"
+                               MultiplierDisplay="{Binding OutfitMultiplierDisplay}" />
 
     </Panel>
 

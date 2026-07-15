@@ -478,6 +478,35 @@
     <value>La fotocamera non ha visto nulla della vostra penitenza. Un peccato.</value>
   </data>
 
+  <!-- Plug and Play popup -->
+  <data name="PlugAndPlayDonPromptFormat" xml:space="preserve">
+    <value>Indosserete {0} fino a nuovo ordine.</value>
+  </data>
+  <data name="PlugAndPlayDonConfirm" xml:space="preserve">
+    <value>Molto bene</value>
+  </data>
+  <data name="PlugAndPlayDonCompletedMessage" xml:space="preserve">
+    <value>Adeguatamente adornata. Fate in modo che resti così.</value>
+  </data>
+  <data name="PlugAndPlayRemovePromptFormat" xml:space="preserve">
+    <value>Potete ora rimuovere {0}.</value>
+  </data>
+  <data name="PlugAndPlayRemoveConfirm" xml:space="preserve">
+    <value>Rimosso</value>
+  </data>
+  <data name="PlugAndPlayRemoveCompletedMessage" xml:space="preserve">
+    <value>Preso atto.</value>
+  </data>
+  <data name="SettingsPlugAndPlayEnabled" xml:space="preserve">
+    <value>Abilita accessori Plug and Play</value>
+  </data>
+  <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
+    <value>Minuti min</value>
+  </data>
+  <data name="SettingsPlugAndPlayMaxMinutes" xml:space="preserve">
+    <value>Minuti max</value>
+  </data>
+
   <!-- Pre-session hardware availability check -->
   <data name="HardwareCheckTitle" xml:space="preserve">
     <value>Una parola prima di cominciare</value>
@@ -604,7 +633,7 @@
     <value>Compiti</value>
   </data>
   <data name="SettingsTabPunishments" xml:space="preserve">
-    <value>Punizioni</value>
+    <value>Popup e Punizioni</value>
   </data>
   <data name="SettingsTabWardrobe" xml:space="preserve">
     <value>Guardaroba</value>

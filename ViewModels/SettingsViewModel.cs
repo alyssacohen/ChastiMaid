@@ -31,6 +31,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _idleWageInterval;
     [Reactive] private bool _isAddingNewItem;
     [Reactive] private bool _isChoresDirty;
+    [Reactive] private bool _plugAndPlayEnabled;
 
     // --- Per-tab dirty flags ---
     [Reactive] private bool _isGeneralDirty;
@@ -92,6 +93,7 @@ public partial class SettingsViewModel : ViewModelBase
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
         _selectedCameraIndex = s.SelectedCameraIndex;
+        _plugAndPlayEnabled = s.PlugAndPlayEnabled;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
         AvailableCameras = WebcamPreviewService.EnumerateCameras();
         if (AvailableCameras.Count == 0)
@@ -116,6 +118,15 @@ public partial class SettingsViewModel : ViewModelBase
         {
             Punishments.Add(WireChild(
                 new PunishmentEditViewModel(p, id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)),
+                () => IsPunishmentsDirty = true));
+        }
+
+        var plugAndPlayConfigs = _repo.GetPlugAndPlayItems();
+        foreach (var w in _repo.GetWardrobe())
+        {
+            var existing = plugAndPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
+            PlugAndPlayItems.Add(WireChild(
+                new PlugAndPlayItemEditViewModel(w, existing),
                 () => IsPunishmentsDirty = true));
         }
 
@@ -180,6 +191,8 @@ public partial class SettingsViewModel : ViewModelBase
                 .Select(_ => Unit.Default))
             .Subscribe(_ => UpdateGeneralDirty());
 
+        this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
         Punishments.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
         WardrobeItems.CollectionChanged += (_, _) =>
@@ -229,6 +242,7 @@ public partial class SettingsViewModel : ViewModelBase
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
     public ObservableCollection<PunishmentEditViewModel> Punishments { get; } = [];
+    public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
     public ObservableCollection<ClothingItemOption> AvailableItems { get; } = [];
@@ -512,6 +526,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
         s.SelectedCameraIndex = SelectedCameraIndex;
         s.Language = SelectedLanguage.Code;
+        s.PlugAndPlayEnabled = PlugAndPlayEnabled;
         _repo.SaveGameSettings(s);
 
         foreach (var c in Chores)
@@ -532,6 +547,18 @@ public partial class SettingsViewModel : ViewModelBase
         foreach (var r in OutfitRules)
         {
             _repo.SaveOutfitRule(r.ToModel());
+        }
+
+        foreach (var p in PlugAndPlayItems)
+        {
+            if (p.IsEligible)
+            {
+                _repo.SavePlugAndPlayItem(p.ToModel());
+            }
+            else if (p.ConfigId is { } configId)
+            {
+                _repo.DeletePlugAndPlayItem(configId);
+            }
         }
     }
 }
@@ -648,6 +675,38 @@ public partial class PunishmentEditViewModel : ViewModelBase
             Id = Id, Name = Name,
             DebtIncrease = DebtIncrease > 0 ? DebtIncrease : null,
             RequiredChoreCount = RequiredChoreCount > 0 ? RequiredChoreCount : null,
+        };
+    }
+}
+
+public partial class PlugAndPlayItemEditViewModel : ViewModelBase
+{
+    [Reactive] private bool _isEligible;
+    [Reactive] private int _minDurationMinutes;
+    [Reactive] private int _maxDurationMinutes;
+
+    public PlugAndPlayItemEditViewModel(ClothingItem item, PlugAndPlayItemConfig? existing)
+    {
+        ClothingItemId = item.Id;
+        Name = item.Name;
+        ConfigId = existing?.Id;
+        _isEligible = existing is not null;
+        _minDurationMinutes = existing?.MinDurationMinutes ?? 30;
+        _maxDurationMinutes = existing?.MaxDurationMinutes ?? 120;
+    }
+
+    public int ClothingItemId { get; }
+    public string Name { get; }
+    public int? ConfigId { get; }
+
+    public PlugAndPlayItemConfig ToModel()
+    {
+        return new PlugAndPlayItemConfig
+        {
+            Id = ConfigId ?? 0,
+            ClothingItemId = ClothingItemId,
+            MinDurationMinutes = MinDurationMinutes,
+            MaxDurationMinutes = MaxDurationMinutes,
         };
     }
 }

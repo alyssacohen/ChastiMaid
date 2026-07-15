@@ -12,6 +12,9 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<PunishmentTemplate> PunishmentTemplates =>
         db.GetCollection<PunishmentTemplate>("punishment_templates");
 
+    private ILiteCollection<PlugAndPlayItemConfig> PlugAndPlayItems =>
+        db.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
+
     private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
@@ -73,6 +76,21 @@ public class ProfileRepository(LiteDatabase db)
     public void DeletePunishmentTemplate(int id)
     {
         PunishmentTemplates.Delete(id);
+    }
+
+    public List<PlugAndPlayItemConfig> GetPlugAndPlayItems()
+    {
+        return PlugAndPlayItems.FindAll().ToList();
+    }
+
+    public void SavePlugAndPlayItem(PlugAndPlayItemConfig item)
+    {
+        PlugAndPlayItems.Upsert(item);
+    }
+
+    public void DeletePlugAndPlayItem(int id)
+    {
+        PlugAndPlayItems.Delete(id);
     }
 
     public PlayerStats GetStats()

@@ -478,6 +478,35 @@
     <value>The camera saw nothing of your penance. A pity.</value>
   </data>
 
+  <!-- Plug and Play popup -->
+  <data name="PlugAndPlayDonPromptFormat" xml:space="preserve">
+    <value>You shall wear the {0} until further notice.</value>
+  </data>
+  <data name="PlugAndPlayDonConfirm" xml:space="preserve">
+    <value>Very well</value>
+  </data>
+  <data name="PlugAndPlayDonCompletedMessage" xml:space="preserve">
+    <value>Suitably adorned. See that it stays that way.</value>
+  </data>
+  <data name="PlugAndPlayRemovePromptFormat" xml:space="preserve">
+    <value>You may now remove the {0}.</value>
+  </data>
+  <data name="PlugAndPlayRemoveConfirm" xml:space="preserve">
+    <value>Removed</value>
+  </data>
+  <data name="PlugAndPlayRemoveCompletedMessage" xml:space="preserve">
+    <value>Duly noted.</value>
+  </data>
+  <data name="SettingsPlugAndPlayEnabled" xml:space="preserve">
+    <value>Enable Plug and Play accessories</value>
+  </data>
+  <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
+    <value>Min minutes</value>
+  </data>
+  <data name="SettingsPlugAndPlayMaxMinutes" xml:space="preserve">
+    <value>Max minutes</value>
+  </data>
+
   <!-- Pre-session hardware availability check -->
   <data name="HardwareCheckTitle" xml:space="preserve">
     <value>A Word Before We Begin</value>
@@ -604,7 +633,7 @@
     <value>Chores</value>
   </data>
   <data name="SettingsTabPunishments" xml:space="preserve">
-    <value>Punishments</value>
+    <value>Popup and Punishments</value>
   </data>
   <data name="SettingsTabWardrobe" xml:space="preserve">
     <value>Wardrobe</value>

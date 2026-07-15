@@ -23,6 +23,12 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<CurtsyCheckRecord> CurtsyChecks => db.GetCollection<CurtsyCheckRecord>("curtsy_checks");
     private ILiteCollection<KneelCheckRecord> KneelChecks => db.GetCollection<KneelCheckRecord>("kneel_checks");
 
+    private ILiteCollection<PlugAndPlayItemConfig> PlugAndPlayItems =>
+        db.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
+
+    private ILiteCollection<ActivePlugAndPlayAccessory> ActivePlugAndPlayAccessoryCollection =>
+        db.GetCollection<ActivePlugAndPlayAccessory>("active_plug_and_play_accessory");
+
     // --- GameState ---
     public GameState? GetGameState()
     {
@@ -150,6 +156,27 @@ public class SaveRepository(LiteDatabase db)
         return KneelChecks.Find(r => !r.Reviewed).ToList();
     }
 
+    // --- Plug and Play ---
+    public List<PlugAndPlayItemConfig> GetPlugAndPlayItems()
+    {
+        return PlugAndPlayItems.FindAll().ToList();
+    }
+
+    public ActivePlugAndPlayAccessory? GetActivePlugAndPlayAccessory()
+    {
+        return ActivePlugAndPlayAccessoryCollection.FindById(1);
+    }
+
+    public void SaveActivePlugAndPlayAccessory(ActivePlugAndPlayAccessory accessory)
+    {
+        ActivePlugAndPlayAccessoryCollection.Upsert(accessory);
+    }
+
+    public void ClearActivePlugAndPlayAccessory()
+    {
+        ActivePlugAndPlayAccessoryCollection.Delete(1);
+    }
+
     /// <summary>Assigns a random configured punishment template, applying its immediate debt increase.</summary>
     public void AssignRandomPunishment()
     {
@@ -231,6 +258,10 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot punishment templates
         var templatesCol = saveDb.GetCollection<PunishmentTemplate>("punishment_templates");
         templatesCol.InsertBulk(profile.GetPunishmentTemplates());
+
+        // Snapshot plug and play item configs
+        var plugAndPlayCol = saveDb.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
+        plugAndPlayCol.InsertBulk(profile.GetPlugAndPlayItems());
 
         // Snapshot game settings
         var settings = profile.GetGameSettings();

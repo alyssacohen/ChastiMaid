@@ -114,12 +114,44 @@ public partial class StartSessionViewModel : ViewModelBase
                 {
                     // Normal generation
                     var builder = new OutfitBuilder(wardrobe, rules);
+
+                    ClothingItem? plugAndPlaySeed = null;
+                    if (state?.PendingPlugAndPlaySeedItemId is { } seedId)
+                    {
+                        plugAndPlaySeed = wardrobe.FirstOrDefault(i => i.Id == seedId);
+                        if (plugAndPlaySeed is not null)
+                        {
+                            builder.AddSeedItems([plugAndPlaySeed]);
+                        }
+                    }
+
                     _outfit = outfit ?? builder.Build();
                     _proposedOutfit = _outfit.ToString();
+
+                    // Resume the paused Plug & Play countdown if the seed was actually placed
+                    if (plugAndPlaySeed is not null && _outfit.Items.Any(i => i.Id == plugAndPlaySeed.Id))
+                    {
+                        saveRepo.SaveActivePlugAndPlayAccessory(new ActivePlugAndPlayAccessory
+                        {
+                            ClothingItemId = plugAndPlaySeed.Id,
+                            DonnedAt = DateTime.UtcNow,
+                            RemoveAfterUtc = DateTime.UtcNow.AddMinutes(state?.PendingPlugAndPlayRemainingMinutes ?? 0)
+                        });
+                    }
                 }
             }
 
             _outfitMultiplier = _outfit.TotalMultiplier;
+
+            // The paused Plug & Play seed is consumed (placed or discarded) exactly once per
+            // generation — leave it untouched if the outfit was already locked for today (no
+            // generation happened on this construction) so a later same-day restart can still try.
+            if (state?.PendingPlugAndPlaySeedItemId is not null)
+            {
+                state.PendingPlugAndPlaySeedItemId = null;
+                state.PendingPlugAndPlayRemainingMinutes = null;
+                saveRepo.SaveGameState(state);
+            }
         }
 
         RefreshDisplayProperties();

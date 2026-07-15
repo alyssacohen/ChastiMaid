@@ -55,6 +55,18 @@
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
     </Style>
 
+    <!-- plugAndPlayName — outfit drawer highlight for a worn Plug & Play accessory. Deliberately
+         not TextBlock.Body.plugAndPlay: sharing .Body's selector would pit this Setter's
+         DynamicResource Foreground against .Body's own, which wins even over a locally-set
+         DynamicResource (unlike a plain literal value, which does override normally). -->
+    <Style Selector="TextBlock.plugAndPlayName">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushEmergencyText}" />
+    </Style>
+
     <!-- BodySmall — metadata, secondary text in rows -->
     <Style Selector="TextBlock.BodySmall">
         <Setter Property="FontFamily" Value="Inter" />

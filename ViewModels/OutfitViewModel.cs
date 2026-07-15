@@ -16,9 +16,9 @@ public class OutfitViewModel : ViewModelBase
     ///     <see cref="OutfitViewModel" /> with one row per dressing layer.
     ///     Section headers are int layer orders ("0:", "3:", etc.).
     /// </summary>
-    public static OutfitViewModel FromString(string? outfitText)
+    public static OutfitViewModel FromString(string? outfitText, ClothingItem? plugAndPlayItem = null)
     {
-        var layerItems = new Dictionary<int, List<(string Name, IReadOnlyList<string> Zones)>>();
+        var layerItems = new Dictionary<int, List<(string Name, IReadOnlyList<string> Zones, bool IsPlugAndPlay)>>();
 
         if (!string.IsNullOrWhiteSpace(outfitText))
         {
@@ -54,15 +54,27 @@ public class OutfitViewModel : ViewModelBase
                         layerItems[currentLayer.Value] = [];
                     }
 
-                    layerItems[currentLayer.Value].Add((name, zones));
+                    layerItems[currentLayer.Value].Add((name, zones, false));
                 }
             }
+        }
+
+        if (plugAndPlayItem is not null)
+        {
+            var layer = plugAndPlayItem.Layers.FirstOrDefault();
+            if (!layerItems.TryGetValue(layer, out var pnpList))
+            {
+                pnpList = [];
+                layerItems[layer] = pnpList;
+            }
+
+            pnpList.Add((plugAndPlayItem.Name, plugAndPlayItem.Slots, true));
         }
 
         var layers = WardrobeLayer.All.Select(def =>
         {
             var items = layerItems.TryGetValue(def.Order, out var list)
-                ? list.Select(i => new OutfitLayerItem(i.Name, i.Zones)).ToList()
+                ? list.Select(i => new OutfitLayerItem(i.Name, i.Zones, i.IsPlugAndPlay)).ToList()
                 : [];
             return new OutfitLayerViewModel(def.DisplayName, def.Order, items);
         }).ToList();

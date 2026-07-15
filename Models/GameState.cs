@@ -22,6 +22,11 @@ public class GameState
     public double OutfitBonusPercent { get; set; } = 1.0;
     public double OutfitMultiplier { get; set; } = 1.0;
 
+    // Set at EndSession if a Plug & Play accessory was still worn; consumed once by the next
+    // StartSessionViewModel outfit generation (seed item + resumed countdown), then cleared.
+    public int? PendingPlugAndPlaySeedItemId { get; set; }
+    public double? PendingPlugAndPlayRemainingMinutes { get; set; }
+
     /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
     [BsonIgnore]
     public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;

@@ -45,6 +45,9 @@ public class GameSettings
     public int KneelMinDurationSeconds { get; set; } = 60;
     public int KneelMaxDurationSeconds { get; set; } = 300;
 
+    // Plug and Play — enable/disable toggle (per-item eligibility/duration configured separately)
+    public bool PlugAndPlayEnabled { get; set; }
+
     // Camera
     public int SelectedCameraIndex { get; set; }
 

@@ -14,6 +14,18 @@ public class DatabaseService : IDisposable
     // Plaintext password for KeySource = "CM#9x!vQ2@mR8$kL5^nP0&wZ3*jY6%hT" is 81f07a67cfb52953de694133d2623e86
     private const string KeySource = "CM#9x!vQ2@mR8$kL5^nP0&wZ3*jY6%hT";
 
+    // LiteDB's default DateTime deserialization returns Kind=Local with the value shifted by the
+    // machine's local UTC offset instead of preserving the original UTC instant (confirmed via a
+    // round-trip probe). Every DateTime written in this app is DateTime.UtcNow-based, so recovering
+    // the true instant on read is a plain ToUniversalTime() call — this only affects how bytes
+    // already on disk are interpreted, not how they're written, so it's compatible with existing saves.
+    static DatabaseService()
+    {
+        BsonMapper.Global.RegisterType<DateTime>(
+            serialize: value => new BsonValue(value),
+            deserialize: bson => bson.AsDateTime.ToUniversalTime());
+    }
+
     private static readonly string DataDir =
         Path.Combine(AppContext.BaseDirectory, "data");
 

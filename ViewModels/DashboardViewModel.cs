@@ -137,6 +137,9 @@ public partial class DashboardViewModel : ViewModelBase
     private DispatcherTimer? _kneelCountdownTimer;
     private CancellationTokenSource? _kneelCts;
 
+    // --- Idle popup: Plug and Play ---
+    private ClothingItem? _currentPlugAndPlayCandidate;
+
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
         : this(mainVm, saveRepo, null)
@@ -167,6 +170,7 @@ public partial class DashboardViewModel : ViewModelBase
         CurrentOutfit = state?.CurrentOutfit ?? Resources.Get("DashboardNoOutfitSet");
 
         _outfitBonus = state?.EffectiveMultiplier ?? 1.0;
+        OutfitMultiplierDisplay = $"×{_outfitBonus:F2}";
         var effectiveWage = Math.Round(_settings.IdleWageAmount * (decimal)_outfitBonus, 2);
         PayRate = string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
 
@@ -189,7 +193,7 @@ public partial class DashboardViewModel : ViewModelBase
         DebtSettled = (state?.InitialDebt ?? 0) - (state?.CurrentDebt ?? 0);
 
         // Outfit drawer
-        CurrentOutfitVm = OutfitViewModel.FromString(state?.CurrentOutfit);
+        RefreshOutfitDisplay();
 
         _sessionLoop = new SessionLoopService(saveRepo, _settings);
         _sessionLoop.OutfitBonus = _outfitBonus;
@@ -243,6 +247,7 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     public string InitialDebtDisplay { get; }
+    public string OutfitMultiplierDisplay { get; }
 
     public bool CanComplete => CurrentDebt <= 0;
     public decimal DebtRemaining => DebtTotal - DebtSettled;
@@ -322,6 +327,14 @@ public partial class DashboardViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(DebtProgress));
     }
 
+    private void RefreshOutfitDisplay()
+    {
+        var state = _saveRepo.GetGameState();
+        var active = _saveRepo.GetActivePlugAndPlayAccessory();
+        var pnpItem = active is null ? null : _saveRepo.GetWardrobe().FirstOrDefault(i => i.Id == active.ClothingItemId);
+        CurrentOutfitVm = OutfitViewModel.FromString(state?.CurrentOutfit, pnpItem);
+    }
+
     private void UpdateWageCountdown()
     {
         if (!IsIdle)
@@ -340,7 +353,7 @@ public partial class DashboardViewModel : ViewModelBase
         TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
     }
 
-    // --- Idle popup: Impossible Questions / Hydration / Pose for Camera / Curtsy / Motivational Quote ---
+    // --- Idle popups
     private enum IdlePopupKind
     {
         ImpossibleQuestion,
@@ -348,13 +361,21 @@ public partial class DashboardViewModel : ViewModelBase
         PoseForCamera,
         Curtsy,
         MotivationalQuote,
-        Kneel
+        Kneel,
+        PlugAndPlayDon,
+        PlugAndPlayRemove
     }
 
     private static readonly IdlePopupKind[] EnabledIdlePopupKinds =
     [
-        IdlePopupKind.ImpossibleQuestion, IdlePopupKind.Hydration, IdlePopupKind.PoseForCamera,
-        IdlePopupKind.Curtsy, IdlePopupKind.MotivationalQuote, IdlePopupKind.Kneel
+        IdlePopupKind.ImpossibleQuestion,
+        IdlePopupKind.Hydration,
+        IdlePopupKind.PoseForCamera,
+        IdlePopupKind.Curtsy,
+        IdlePopupKind.MotivationalQuote,
+        IdlePopupKind.Kneel,
+        IdlePopupKind.PlugAndPlayDon,
+        IdlePopupKind.PlugAndPlayRemove
     ];
 
     private IdlePopupKind _currentPopupKind;
@@ -368,12 +389,62 @@ public partial class DashboardViewModel : ViewModelBase
     private bool IsPoseForCameraAvailable()
     {
         var itemIds = _saveRepo.GetGameState()?.CurrentOutfitItemIds;
-        if (itemIds is null || itemIds.Count == 0)
+        var hasOutfitItems = itemIds is not null && itemIds.Count > 0;
+        var hasActivePlugAndPlay = _saveRepo.GetActivePlugAndPlayAccessory() is not null;
+        if (!hasOutfitItems && !hasActivePlugAndPlay)
         {
             return false;
         }
 
         return WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex);
+    }
+
+    private bool ConflictsWithCurrentOutfit(ClothingItem candidate)
+    {
+        var wardrobe = _saveRepo.GetWardrobe();
+        var wornIds = _saveRepo.GetGameState()?.CurrentOutfitItemIds ?? [];
+        var worn = wardrobe.Where(i => wornIds.Contains(i.Id)).ToList();
+
+        if (worn.Any(w => w.Layers.Intersect(candidate.Layers).Any() && w.Slots.Intersect(candidate.Slots).Any()))
+        {
+            return true;
+        }
+
+        var rules = _saveRepo.GetOutfitRules();
+        return rules.Any(r => r.Relation == OutfitRelation.Incompatible &&
+            ((r.ItemId == candidate.Id && wornIds.Contains(r.RelatedItemId)) ||
+             (r.RelatedItemId == candidate.Id && wornIds.Contains(r.ItemId))));
+    }
+
+    private IEnumerable<ClothingItem> GetEligiblePlugAndPlayCandidates()
+    {
+        var wardrobe = _saveRepo.GetWardrobe();
+        return _saveRepo.GetPlugAndPlayItems()
+            .Select(c => wardrobe.FirstOrDefault(i => i.Id == c.ClothingItemId))
+            .Where(item => item is not null && !ConflictsWithCurrentOutfit(item))!;
+    }
+
+    private bool IsPlugAndPlayDonAvailable()
+    {
+        if (!_settings.PlugAndPlayEnabled || _saveRepo.GetActivePlugAndPlayAccessory() is not null)
+        {
+            return false;
+        }
+
+        var forced = _saveRepo.GetActivePunishments()
+            .FirstOrDefault(p => (p.RemainingOutfitForce?.Sessions ?? 0) > 0);
+        if (forced is { ForceFullOutfit: true })
+        {
+            return false;
+        }
+
+        return GetEligiblePlugAndPlayCandidates().Any();
+    }
+
+    private bool IsPlugAndPlayRemoveAvailable()
+    {
+        var active = _saveRepo.GetActivePlugAndPlayAccessory();
+        return active is not null && DateTime.UtcNow >= active.RemoveAfterUtc;
     }
 
     private bool IsKindAvailable(IdlePopupKind kind)
@@ -384,6 +455,8 @@ public partial class DashboardViewModel : ViewModelBase
             IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
             IdlePopupKind.Curtsy => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             IdlePopupKind.Kneel => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
+            IdlePopupKind.PlugAndPlayDon => IsPlugAndPlayDonAvailable(),
+            IdlePopupKind.PlugAndPlayRemove => IsPlugAndPlayRemoveAvailable(),
             _ => true
         };
     }
@@ -420,6 +493,12 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.Kneel:
                 ShowKneelPopup();
+                break;
+            case IdlePopupKind.PlugAndPlayDon:
+                ShowPlugAndPlayDonPopup();
+                break;
+            case IdlePopupKind.PlugAndPlayRemove:
+                ShowPlugAndPlayRemovePopup();
                 break;
         }
     }
@@ -489,7 +568,18 @@ public partial class DashboardViewModel : ViewModelBase
     private void ShowPoseForCameraPopup()
     {
         var itemIds = _saveRepo.GetGameState()?.CurrentOutfitItemIds ?? [];
-        var candidates = _saveRepo.GetWardrobe().Where(i => itemIds.Contains(i.Id)).ToList();
+        var wardrobe = _saveRepo.GetWardrobe();
+        var candidates = wardrobe.Where(i => itemIds.Contains(i.Id)).ToList();
+        var activePlugAndPlay = _saveRepo.GetActivePlugAndPlayAccessory();
+        if (activePlugAndPlay is not null)
+        {
+            var pnpItem = wardrobe.FirstOrDefault(i => i.Id == activePlugAndPlay.ClothingItemId);
+            if (pnpItem is not null)
+            {
+                candidates.Add(pnpItem);
+            }
+        }
+
         if (candidates.Count == 0 || !_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
         {
             return;
@@ -716,6 +806,112 @@ public partial class DashboardViewModel : ViewModelBase
         ShowPopupOutcome(true);
     }
 
+    private void ShowPlugAndPlayDonPopup()
+    {
+        var candidates = GetEligiblePlugAndPlayCandidates().ToList();
+        if (candidates.Count == 0)
+        {
+            return;
+        }
+
+        _currentPopupKind = IdlePopupKind.PlugAndPlayDon;
+        _currentPlugAndPlayCandidate = candidates[_random.Next(candidates.Count)];
+        PopupQuestion = string.Format(Resources.Get("PlugAndPlayDonPromptFormat"), _currentPlugAndPlayCandidate.Name);
+        PopupAnswers = [Resources.Get("PlugAndPlayDonConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                _currentPlugAndPlayCandidate = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
+    private void OnPlugAndPlayDonConfirm()
+    {
+        if (_currentPlugAndPlayCandidate is null)
+        {
+            return;
+        }
+
+        var config = _saveRepo.GetPlugAndPlayItems()
+            .FirstOrDefault(c => c.ClothingItemId == _currentPlugAndPlayCandidate.Id);
+        var durationMinutes = config is null
+            ? 0
+            : _random.Next(config.MinDurationMinutes, config.MaxDurationMinutes + 1);
+
+        _saveRepo.SaveActivePlugAndPlayAccessory(new ActivePlugAndPlayAccessory
+        {
+            ClothingItemId = _currentPlugAndPlayCandidate.Id,
+            DonnedAt = DateTime.UtcNow,
+            RemoveAfterUtc = DateTime.UtcNow.AddMinutes(durationMinutes)
+        });
+        _currentPlugAndPlayCandidate = null;
+        RefreshOutfitDisplay();
+
+        PopupOutcomeMessage = Resources.Get("PlugAndPlayDonCompletedMessage");
+        ShowPopupOutcome(true);
+    }
+
+    private void ShowPlugAndPlayRemovePopup()
+    {
+        var active = _saveRepo.GetActivePlugAndPlayAccessory();
+        var item = active is null ? null : _saveRepo.GetWardrobe().FirstOrDefault(i => i.Id == active.ClothingItemId);
+        if (item is null)
+        {
+            return;
+        }
+
+        _currentPopupKind = IdlePopupKind.PlugAndPlayRemove;
+        PopupQuestion = string.Format(Resources.Get("PlugAndPlayRemovePromptFormat"), item.Name);
+        PopupAnswers = [Resources.Get("PlugAndPlayRemoveConfirm")];
+        PopupCountdown = _settings.PopupTimeoutSeconds;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+
+        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _popupTimer.Tick += (_, _) =>
+        {
+            PopupCountdown--;
+            if (PopupCountdown <= 0)
+            {
+                _popupTimer?.Stop();
+                _popupTimer = null;
+                ClosePopup(false);
+            }
+        };
+        _popupTimer.Start();
+    }
+
+    private void OnPlugAndPlayRemoveConfirm()
+    {
+        _saveRepo.ClearActivePlugAndPlayAccessory();
+        RefreshOutfitDisplay();
+
+        PopupOutcomeMessage = Resources.Get("PlugAndPlayRemoveCompletedMessage");
+        ShowPopupOutcome(true);
+    }
+
     private void OnAnswer(string answer)
     {
         if (!IsPopupVisible)
@@ -742,6 +938,12 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.Kneel:
                 OnKneelConfirm();
+                break;
+            case IdlePopupKind.PlugAndPlayDon:
+                OnPlugAndPlayDonConfirm();
+                break;
+            case IdlePopupKind.PlugAndPlayRemove:
+                OnPlugAndPlayRemoveConfirm();
                 break;
         }
     }
@@ -1337,6 +1539,21 @@ public partial class DashboardViewModel : ViewModelBase
         _mainVm.Webcam.Stop();
         CapturedPosePhoto?.Dispose();
         _autoSave.StopTimer();
+
+        var activePlugAndPlay = _saveRepo.GetActivePlugAndPlayAccessory();
+        if (activePlugAndPlay is not null)
+        {
+            var state = _saveRepo.GetGameState();
+            if (state is not null)
+            {
+                var remainingMinutes = Math.Max(0, (activePlugAndPlay.RemoveAfterUtc - DateTime.UtcNow).TotalMinutes);
+                state.PendingPlugAndPlaySeedItemId = activePlugAndPlay.ClothingItemId;
+                state.PendingPlugAndPlayRemainingMinutes = remainingMinutes;
+                _saveRepo.SaveGameState(state);
+            }
+
+            _saveRepo.ClearActivePlugAndPlayAccessory();
+        }
 
         _mainVm.NavigateTo(new EndSessionViewModel(_mainVm, _saveRepo));
     }

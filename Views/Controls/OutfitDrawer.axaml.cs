@@ -20,6 +20,10 @@ public partial class OutfitDrawer : UserControl
         AvaloniaProperty.Register<OutfitDrawer, IReadOnlyList<OutfitLayerViewModel>>(
             nameof(Layers), []);
 
+    // ── MultiplierDisplay StyledProperty ────────────────────────────────────
+    public static readonly StyledProperty<string?> MultiplierDisplayProperty =
+        AvaloniaProperty.Register<OutfitDrawer, string?>(nameof(MultiplierDisplay));
+
     // ── Constructor ──────────────────────────────────────────────────────────
     public OutfitDrawer()
     {
@@ -43,6 +47,12 @@ public partial class OutfitDrawer : UserControl
     {
         get => GetValue(LayersProperty);
         private set => SetValue(LayersProperty, value);
+    }
+
+    public string? MultiplierDisplay
+    {
+        get => GetValue(MultiplierDisplayProperty);
+        set => SetValue(MultiplierDisplayProperty, value);
     }
 
     // ── CloseRequested event ────────────────────────────────────────────────

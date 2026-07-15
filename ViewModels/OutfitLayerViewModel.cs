@@ -1,6 +1,6 @@
 namespace ChastiMaid.ViewModels;
 
-public record OutfitLayerItem(string Name, IReadOnlyList<string> Zones)
+public record OutfitLayerItem(string Name, IReadOnlyList<string> Zones, bool IsPlugAndPlay = false)
 {
     public string ZonesDisplay => string.Join(" · ", Zones);
 }
