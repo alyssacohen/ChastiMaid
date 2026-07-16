@@ -333,13 +333,41 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         return cap.IsOpened();
     }
 
+    private static IReadOnlyList<string>? _cachedFriendlyNames;
+
+    /// <summary>
+    ///     Fetches the OS's video capture devices via the WinRT enumeration API (same one used by
+    ///     <see cref="SpeechRecognitionService" /> for microphones) and caches their friendly names for
+    ///     the process lifetime. This is fast and doesn't touch OpenCV, so it never triggers the
+    ///     dshow/obsensor backend-enumeration warnings that probing with <see cref="VideoCapture" /> does.
+    /// </summary>
+    private static async Task<IReadOnlyList<string>> GetFriendlyNamesAsync()
+    {
+        if (_cachedFriendlyNames is not null)
+        {
+            return _cachedFriendlyNames;
+        }
+
+        try
+        {
+            var devices = await WinRtAsyncExtensions.ToTask(DeviceInformation.FindAllAsync(DeviceClass.VideoCapture));
+            return _cachedFriendlyNames = devices.Select(d => d.Name).ToList();
+        }
+        catch (Exception)
+        {
+            return _cachedFriendlyNames = [];
+        }
+    }
+
     private static List<int>? _cachedCameraIndices;
 
     /// <summary>
-    ///     Probes camera indices 0..maxProbe-1 and returns the ones that open successfully. Each probe
-    ///     opens a real <see cref="VideoCapture" />, which is what triggers OpenCV's dshow/obsensor
-    ///     backend-enumeration warnings for indices with no camera attached — the result is cached for
-    ///     the lifetime of the process so the probing (and its warnings) happens only once per run.
+    ///     Returns the camera indices that actually open successfully. The number of indices to probe is
+    ///     bounded by the WinRT device count (via <see cref="GetFriendlyNamesAsync()" />) instead of a
+    ///     fixed guess, so a machine with e.g. one camera only opens <see cref="VideoCapture" /> once
+    ///     instead of blindly trying indices with nothing attached (each such probe triggers OpenCV's
+    ///     dshow/obsensor warnings and is noticeably slow). Falls back to probing <paramref name="maxProbe" />
+    ///     indices if WinRT enumeration fails or reports zero devices. Cached for the process lifetime.
     /// </summary>
     public static List<int> EnumerateCameras(int maxProbe = 5)
     {
@@ -348,8 +376,11 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             return _cachedCameraIndices;
         }
 
+        var deviceCount = Task.Run(async () => (await GetFriendlyNamesAsync()).Count).GetAwaiter().GetResult();
+        var probeCount = deviceCount > 0 ? deviceCount : maxProbe;
+
         var found = new List<int>();
-        for (var i = 0; i < maxProbe; i++)
+        for (var i = 0; i < probeCount; i++)
         {
             using var cap = new VideoCapture(i);
             if (cap.IsOpened())
@@ -361,33 +392,16 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         return _cachedCameraIndices = found;
     }
 
-    private static IReadOnlyList<string>? _cachedFriendlyNames;
-
     /// <summary>
-    ///     Best-effort human-friendly names for the given camera indices, sourced from the WinRT device
-    ///     enumeration API (same one used by <see cref="SpeechRecognitionService" /> for microphones).
-    ///     Names are matched positionally against <paramref name="indices" /> — both APIs enumerate the
-    ///     OS's video capture devices, but there is no formal guarantee their ordering lines up with
-    ///     OpenCV's dshow index order, so this is a helpful hint rather than an authoritative mapping.
-    ///     Falls back to a generic "Camera {index}" label per index if names can't be resolved. Cached
-    ///     for the process lifetime, same as <see cref="EnumerateCameras" />.
+    ///     Best-effort human-friendly names for the given camera indices. Names are matched positionally
+    ///     against <paramref name="indices" /> — both APIs enumerate the OS's video capture devices, but
+    ///     there is no formal guarantee their ordering lines up with OpenCV's dshow index order, so this is
+    ///     a helpful hint rather than an authoritative mapping. Falls back to a generic "Camera {index}"
+    ///     label per index if names can't be resolved.
     /// </summary>
     public static async Task<IReadOnlyList<string>> GetFriendlyNamesAsync(IReadOnlyList<int> indices)
     {
-        if (_cachedFriendlyNames is null)
-        {
-            try
-            {
-                var devices = await WinRtAsyncExtensions.ToTask(DeviceInformation.FindAllAsync(DeviceClass.VideoCapture));
-                _cachedFriendlyNames = devices.Select(d => d.Name).ToList();
-            }
-            catch (Exception)
-            {
-                _cachedFriendlyNames = [];
-            }
-        }
-
-        var names = _cachedFriendlyNames;
+        var names = await GetFriendlyNamesAsync();
         return indices.Select((idx, i) => i < names.Count ? names[i] : $"Camera {idx}").ToList();
     }
 
