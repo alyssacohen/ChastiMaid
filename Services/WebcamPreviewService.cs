@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -6,6 +7,7 @@ using Avalonia.Threading;
 using OpenCvSharp;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
+using Windows.Devices.Enumeration;
 using Size = OpenCvSharp.Size;
 
 namespace ChastiMaid.Services;
@@ -21,6 +23,7 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     private const int PixelateBlockSize = 20;
 
     private VideoCapture? _capture;
+    private int _currentCameraIndex = -1;
 
     /// <summary>
     ///     When true, a centered 240x80 region of the preview frame is heavily pixelated before display,
@@ -38,6 +41,42 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
     [Reactive(SetModifier = AccessModifier.Private)]
     private WriteableBitmap? _previewBitmap;
+
+    private IReadOnlyList<CameraOption> _availableCameras = [];
+
+    /// <summary>Cameras detected via <see cref="RefreshAvailableCamerasAsync" />, for a live camera-selector dropdown.</summary>
+    public IReadOnlyList<CameraOption> AvailableCameras
+    {
+        get => _availableCameras;
+        private set
+        {
+            this.RaiseAndSetIfChanged(ref _availableCameras, value);
+            this.RaisePropertyChanged(nameof(HasMultipleCameras));
+        }
+    }
+
+    private CameraOption? _selectedCamera;
+
+    /// <summary>
+    ///     The camera currently chosen for the live preview. Setting it to a different index than the one
+    ///     the preview is currently open on restarts the preview on the new camera (only while running —
+    ///     this choice is session-only and is never persisted to <c>GameSettings</c>).
+    /// </summary>
+    public CameraOption? SelectedCamera
+    {
+        get => _selectedCamera;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedCamera, value);
+            if (value is not null && value.Index != _currentCameraIndex && IsRunning)
+            {
+                Stop();
+                Start(value.Index);
+            }
+        }
+    }
+
+    public bool HasMultipleCameras => AvailableCameras.Count > 1;
 
     private CancellationTokenSource? _previewCts;
     private Task? _previewTask;
@@ -66,6 +105,7 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         // "no signal" instead of a leftover (possibly unpixelated) frame until the first fresh one arrives
         PreviewBitmap = null;
 
+        _currentCameraIndex = cameraIndex;
         _capture = cap;
         _previewCts = new CancellationTokenSource();
         var ct = _previewCts.Token;
@@ -293,9 +333,21 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         return cap.IsOpened();
     }
 
-    /// <summary>Probes camera indices 0..maxProbe-1 and returns the ones that open successfully.</summary>
+    private static List<int>? _cachedCameraIndices;
+
+    /// <summary>
+    ///     Probes camera indices 0..maxProbe-1 and returns the ones that open successfully. Each probe
+    ///     opens a real <see cref="VideoCapture" />, which is what triggers OpenCV's dshow/obsensor
+    ///     backend-enumeration warnings for indices with no camera attached — the result is cached for
+    ///     the lifetime of the process so the probing (and its warnings) happens only once per run.
+    /// </summary>
     public static List<int> EnumerateCameras(int maxProbe = 5)
     {
+        if (_cachedCameraIndices is not null)
+        {
+            return _cachedCameraIndices;
+        }
+
         var found = new List<int>();
         for (var i = 0; i < maxProbe; i++)
         {
@@ -306,7 +358,60 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             }
         }
 
-        return found;
+        return _cachedCameraIndices = found;
+    }
+
+    private static IReadOnlyList<string>? _cachedFriendlyNames;
+
+    /// <summary>
+    ///     Best-effort human-friendly names for the given camera indices, sourced from the WinRT device
+    ///     enumeration API (same one used by <see cref="SpeechRecognitionService" /> for microphones).
+    ///     Names are matched positionally against <paramref name="indices" /> — both APIs enumerate the
+    ///     OS's video capture devices, but there is no formal guarantee their ordering lines up with
+    ///     OpenCV's dshow index order, so this is a helpful hint rather than an authoritative mapping.
+    ///     Falls back to a generic "Camera {index}" label per index if names can't be resolved. Cached
+    ///     for the process lifetime, same as <see cref="EnumerateCameras" />.
+    /// </summary>
+    public static async Task<IReadOnlyList<string>> GetFriendlyNamesAsync(IReadOnlyList<int> indices)
+    {
+        if (_cachedFriendlyNames is null)
+        {
+            try
+            {
+                var devices = await WinRtAsyncExtensions.ToTask(DeviceInformation.FindAllAsync(DeviceClass.VideoCapture));
+                _cachedFriendlyNames = devices.Select(d => d.Name).ToList();
+            }
+            catch (Exception)
+            {
+                _cachedFriendlyNames = [];
+            }
+        }
+
+        var names = _cachedFriendlyNames;
+        return indices.Select((idx, i) => i < names.Count ? names[i] : $"Camera {idx}").ToList();
+    }
+
+    /// <summary>
+    ///     Probes cameras off the UI thread and populates <see cref="AvailableCameras" />/<see cref="SelectedCamera" />
+    ///     for a live camera-selector dropdown next to a preview. <paramref name="currentIndex" /> is the
+    ///     camera the preview is currently (or about to be) opened on.
+    /// </summary>
+    public async Task RefreshAvailableCamerasAsync(int currentIndex)
+    {
+        var indices = await Task.Run(() => EnumerateCameras());
+        if (indices.Count == 0)
+        {
+            indices = [currentIndex];
+        }
+
+        var names = await GetFriendlyNamesAsync(indices);
+        var options = indices.Zip(names, (idx, name) => new CameraOption(idx, name)).ToList();
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            AvailableCameras = options;
+            SelectedCamera = options.FirstOrDefault(c => c.Index == currentIndex) ?? options[0];
+        });
     }
 
     /// <summary>
@@ -387,5 +492,28 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             Cv2.ImWrite(outputPath, frame);
             return true;
         }, ct);
+    }
+}
+
+/// <summary>
+///     A camera choice for a live preview's camera-selector dropdown. Equality is based on
+///     <see cref="Index" /> only, so resolving a friendlier <see cref="DisplayName" /> asynchronously
+///     doesn't spuriously trigger unrelated change handlers.
+/// </summary>
+public record CameraOption(int Index, string DisplayName)
+{
+    public override string ToString()
+    {
+        return DisplayName;
+    }
+
+    public virtual bool Equals(CameraOption? other)
+    {
+        return other is not null && Index == other.Index;
+    }
+
+    public override int GetHashCode()
+    {
+        return Index.GetHashCode();
     }
 }

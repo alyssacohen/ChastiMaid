@@ -37,7 +37,7 @@ public partial class DashboardView : UserControl
             vm.IsLandscape = bounds.Width > 900;
 
             const double verticalMargin = 64; // breathing room from the window's top/bottom edges
-            const double chromeReserve = 260; // countdown/instructions/button, padding, spacing
+            const double chromeReserve = 300; // countdown/instructions/button/camera-selector, padding, spacing
             const double previewAspect = 320.0 / 480.0; // width/height, matches the requested crop ratio
 
             var dialogMaxHeight = Math.Max(360, bounds.Height - verticalMargin);

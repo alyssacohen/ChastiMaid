@@ -28,12 +28,15 @@ public class GameSettings
     public int PopupTimeoutSeconds { get; set; } = 15;
 
     // Hydration popup — minimum time between hydration reminders, independent of the general popup cycle
+    public bool HydrationEnabled { get; set; } = true;
     public int HydrationMinIntervalMinutes { get; set; } = 60;
 
     // Curtsy popup — video recording duration
+    public bool CurtsyEnabled { get; set; } = true;
     public int CurtsyVideoDurationSeconds { get; set; } = 5;
 
     // Motivational Quote popup — listening/typing window and speech recognition sensitivity
+    public bool QuoteReadingEnabled { get; set; } = true;
     public int QuoteListenTimeoutSeconds { get; set; } = 20;
     public double QuoteRecognitionMinConfidence { get; set; } = 0.6;
 

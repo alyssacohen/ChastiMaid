@@ -497,9 +497,6 @@
   <data name="PlugAndPlayRemoveCompletedMessage" xml:space="preserve">
     <value>Preso atto.</value>
   </data>
-  <data name="SettingsPlugAndPlayEnabled" xml:space="preserve">
-    <value>Abilita accessori Plug and Play</value>
-  </data>
   <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
     <value>Minuti min</value>
   </data>
@@ -671,6 +668,48 @@
   <data name="SettingsHeadingSessionTiming" xml:space="preserve">
     <value>Tempistiche sessione</value>
   </data>
+  <data name="SettingsHeadingPopupHardware" xml:space="preserve">
+    <value>Webcam e riconoscimento vocale</value>
+  </data>
+  <data name="SettingsHeadingPopupTiming" xml:space="preserve">
+    <value>Frequenza e timeout</value>
+  </data>
+  <data name="SettingsHeadingHydration" xml:space="preserve">
+    <value>Promemoria idratazione</value>
+  </data>
+  <data name="SettingsHydrationDescription" xml:space="preserve">
+    <value>Un promemoria: una cameriera assetata non è utile a nessuno. Basterà una pausa per bere.</value>
+  </data>
+  <data name="SettingsHeadingCurtsyVideo" xml:space="preserve">
+    <value>Video riverenza</value>
+  </data>
+  <data name="SettingsCurtsyDescription" xml:space="preserve">
+    <value>Un breve inchino, filmato per la cronaca — la grazia convince raramente senza un testimone.</value>
+  </data>
+  <data name="SettingsHeadingQuoteReading" xml:space="preserve">
+    <value>Lettura delle frasi</value>
+  </data>
+  <data name="SettingsQuoteReadingDescription" xml:space="preserve">
+    <value>Ella pronuncerà le parole richieste, con sufficiente chiarezza da convincere la macchina.</value>
+  </data>
+  <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
+    <value>Plug &amp; Play</value>
+  </data>
+  <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
+    <value>Certi accessori, una volta indossati, non si tolgono finché lei non giudica che abbiano assolto al loro scopo.</value>
+  </data>
+  <data name="SettingsEnabled" xml:space="preserve">
+    <value>Attivo</value>
+  </data>
+  <data name="SettingsDisabled" xml:space="preserve">
+    <value>Non attivo</value>
+  </data>
+  <data name="SettingsDetectedCameras" xml:space="preserve">
+    <value>Webcam rilevate</value>
+  </data>
+  <data name="SettingsNoCamerasDetected" xml:space="preserve">
+    <value>Nessuna webcam rilevata</value>
+  </data>
   <data name="SettingsIdleWageAmount" xml:space="preserve">
     <value>Importo paga a riposo</value>
   </data>
@@ -718,9 +757,6 @@
   </data>
   <data name="SettingsCaptureMax" xml:space="preserve">
     <value>Cattura max (sec)</value>
-  </data>
-  <data name="SettingsCamera" xml:space="preserve">
-    <value>Fotocamera</value>
   </data>
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Nome compito</value>

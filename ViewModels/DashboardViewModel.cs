@@ -383,7 +383,8 @@ public partial class DashboardViewModel : ViewModelBase
 
     private bool IsHydrationAvailable()
     {
-        return DateTime.UtcNow - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
+        return _settings.HydrationEnabled &&
+            DateTime.UtcNow - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
     }
 
     private bool IsPoseForCameraAvailable()
@@ -453,7 +454,8 @@ public partial class DashboardViewModel : ViewModelBase
         {
             IdlePopupKind.Hydration => IsHydrationAvailable(),
             IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
-            IdlePopupKind.Curtsy => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
+            IdlePopupKind.Curtsy => _settings.CurtsyEnabled && WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
+            IdlePopupKind.MotivationalQuote => _settings.QuoteReadingEnabled,
             IdlePopupKind.Kneel => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             IdlePopupKind.PlugAndPlayDon => IsPlugAndPlayDonAvailable(),
             IdlePopupKind.PlugAndPlayRemove => IsPlugAndPlayRemoveAvailable(),
@@ -585,6 +587,8 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
+        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_settings.SelectedCameraIndex);
+
         _currentPopupKind = IdlePopupKind.PoseForCamera;
         IsPoseForCameraPopupActive = true;
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
@@ -621,6 +625,8 @@ public partial class DashboardViewModel : ViewModelBase
         {
             return;
         }
+
+        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_settings.SelectedCameraIndex);
 
         _currentPopupKind = IdlePopupKind.Curtsy;
         IsCurtsyPopupActive = true;
@@ -720,6 +726,8 @@ public partial class DashboardViewModel : ViewModelBase
             ShowPopupOutcome(true);
             return;
         }
+
+        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_settings.SelectedCameraIndex);
 
         IsKneelFramingActive = true;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));

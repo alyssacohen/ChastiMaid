@@ -477,6 +477,10 @@
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center"
                                                     IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <TextBlock Classes="Body"
                                Text="{Binding PopupQuestion}"
                                TextWrapping="Wrap"
@@ -501,6 +505,10 @@
                                                     Height="{Binding PopupPreviewHeight}"
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <TextBlock Classes="EmployerVoice"
                                Text="{conv:Tr PoseForCameraCountdownLabel}"
                                TextAlignment="Center"
@@ -515,6 +523,10 @@
                                                     Height="{Binding PopupPreviewHeight}"
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <TextBlock Classes="EmployerVoice"
                                Text="{conv:Tr CurtsyCountdownLabel}"
                                TextAlignment="Center"
@@ -529,6 +541,11 @@
                                                     Height="{Binding PopupPreviewHeight}"
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              IsEnabled="False"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <TextBlock Classes="EmployerVoice"
                                Text="{conv:Tr CurtsyRecordingLabel}"
                                TextAlignment="Center"
@@ -582,6 +599,10 @@
                                                     Height="{Binding PopupPreviewHeight}"
                                                     Stretch="UniformToFill"
                                                     HorizontalAlignment="Center" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <TextBlock Classes="EmployerVoice"
                                Text="{conv:Tr KneelFramingLabel}"
                                TextAlignment="Center"

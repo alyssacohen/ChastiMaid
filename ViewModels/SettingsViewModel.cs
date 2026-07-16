@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Avalonia.Threading;
 using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
@@ -23,6 +24,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Dialog ---
     [Reactive] private ViewModelBase? _activeDialog;
+    [Reactive] private IReadOnlyList<CameraOption> _availableCameras = [];
     [Reactive] private int _autoSaveInterval;
     [Reactive] private int _captureMaxInterval;
     [Reactive] private int _captureMinInterval;
@@ -32,6 +34,11 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _isAddingNewItem;
     [Reactive] private bool _isChoresDirty;
     [Reactive] private bool _plugAndPlayEnabled;
+    [Reactive] private bool _hydrationEnabled;
+    [Reactive] private bool _curtsyEnabled;
+    [Reactive] private bool _quoteReadingEnabled;
+    [Reactive] private string _speechRecognitionStatusDisplay = "";
+    [Reactive] private string _webcamStatusDisplay = "";
 
     // --- Per-tab dirty flags ---
     [Reactive] private bool _isGeneralDirty;
@@ -55,14 +62,14 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _popupTimeout;
     [Reactive] private int _quoteListenTimeout;
     [Reactive] private double _quoteRecognitionSensitivity;
-    [Reactive] private int _selectedCameraIndex;
+    [Reactive] private CameraOption _selectedCamera = null!;
     [Reactive] private LanguageOption _selectedLanguage = null!;
 
     // --- Tab selection with interception ---
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, int, double, LanguageOption) _snapshot;
+    private (string, int, decimal, decimal, double, decimal, int, int, int, CameraOption, LanguageOption) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -86,27 +93,23 @@ public partial class SettingsViewModel : ViewModelBase
         _popupMinInterval = s.PopupMinIntervalSeconds;
         _popupMaxInterval = s.PopupMaxIntervalSeconds;
         _popupTimeout = s.PopupTimeoutSeconds;
+        _hydrationEnabled = s.HydrationEnabled;
         _hydrationMinInterval = s.HydrationMinIntervalMinutes;
+        _curtsyEnabled = s.CurtsyEnabled;
         _curtsyVideoDuration = s.CurtsyVideoDurationSeconds;
+        _quoteReadingEnabled = s.QuoteReadingEnabled;
         _quoteListenTimeout = s.QuoteListenTimeoutSeconds;
         _quoteRecognitionSensitivity = s.QuoteRecognitionMinConfidence;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
-        _selectedCameraIndex = s.SelectedCameraIndex;
         _plugAndPlayEnabled = s.PlugAndPlayEnabled;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
-        AvailableCameras = WebcamPreviewService.EnumerateCameras();
-        if (AvailableCameras.Count == 0)
-        {
-            AvailableCameras = [0];
-        }
 
-        var availability = HardwareAvailabilityChecker.Check(_selectedCameraIndex);
-        WebcamStatusDisplay = Resources.Get(availability.HasWebcam ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
-        SpeechRecognitionStatusDisplay = Resources.Get(
-            availability.HasSpeechRecognizer && availability.HasMicrophone
-                ? "HardwareStatusAvailable"
-                : "HardwareStatusUnavailable");
+        // Show a default immediately so Settings opens instantly; the real camera list and hardware
+        // status are probed off the UI thread and applied once ready (see LoadHardwareAvailability).
+        _selectedCamera = new CameraOption(s.SelectedCameraIndex, $"Camera {s.SelectedCameraIndex}");
+        AvailableCameras = [_selectedCamera];
+        _ = LoadHardwareAvailability(s.SelectedCameraIndex);
 
         foreach (var c in _repo.GetChores())
         {
@@ -122,7 +125,7 @@ public partial class SettingsViewModel : ViewModelBase
         }
 
         var plugAndPlayConfigs = _repo.GetPlugAndPlayItems();
-        foreach (var w in _repo.GetWardrobe())
+        foreach (var w in _repo.GetWardrobe().Where(w => w.Layers.Contains(4))) // 4 = Accessories layer
         {
             var existing = plugAndPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
             PlugAndPlayItems.Add(WireChild(
@@ -180,18 +183,22 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.PlayerName, x => x.AutoSaveInterval, x => x.MinDebt,
                 x => x.MaxDebt, x => x.DailyInterestRate, x => x.IdleWageAmount,
                 (_, _, _, _, _, _) => Unit.Default).Merge(this.WhenAnyValue(
-                x => x.IdleWageInterval, x => x.PopupMinInterval, x => x.PopupMaxInterval,
-                x => x.PopupTimeout, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
-                (_, _, _, _, _, _) => Unit.Default)).Merge(this.WhenAnyValue(x => x.HydrationMinInterval)
-                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.CurtsyVideoDuration)
-                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.QuoteListenTimeout)
-                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.QuoteRecognitionSensitivity)
-                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedCameraIndex)
-                .Select(_ => Unit.Default)).Merge(this.WhenAnyValue(x => x.SelectedLanguage)
-                .Select(_ => Unit.Default))
+                x => x.IdleWageInterval, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
+                x => x.SelectedCamera, x => x.SelectedLanguage,
+                (_, _, _, _, _) => Unit.Default))
             .Subscribe(_ => UpdateGeneralDirty());
 
         this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(
+                x => x.PopupMinInterval, x => x.PopupMaxInterval, x => x.PopupTimeout,
+                x => x.HydrationMinInterval, x => x.CurtsyVideoDuration, x => x.QuoteListenTimeout,
+                x => x.QuoteRecognitionSensitivity, (_, _, _, _, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.HydrationEnabled, x => x.CurtsyEnabled, x => x.QuoteReadingEnabled,
+                (_, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
         Punishments.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
@@ -239,6 +246,34 @@ public partial class SettingsViewModel : ViewModelBase
         });
     }
 
+    /// <summary>
+    ///     Probes cameras and other optional hardware off the UI thread, then applies the results once
+    ///     ready — see the constructor for why this isn't done synchronously.
+    /// </summary>
+    private async Task LoadHardwareAvailability(int persistedCameraIndex)
+    {
+        var indices = await Task.Run(() => WebcamPreviewService.EnumerateCameras());
+        if (indices.Count == 0)
+        {
+            indices = [persistedCameraIndex];
+        }
+
+        var names = await WebcamPreviewService.GetFriendlyNamesAsync(indices);
+        var options = indices.Zip(names, (idx, name) => new CameraOption(idx, name)).ToList();
+        var availability = HardwareAvailabilityChecker.Check(indices, persistedCameraIndex);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            AvailableCameras = options;
+            SelectedCamera = options.FirstOrDefault(c => c.Index == persistedCameraIndex) ?? options[0];
+            WebcamStatusDisplay = Resources.Get(availability.HasWebcam ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
+            SpeechRecognitionStatusDisplay = Resources.Get(
+                availability.HasSpeechRecognizer && availability.HasMicrophone
+                    ? "HardwareStatusAvailable"
+                    : "HardwareStatusUnavailable");
+        });
+    }
+
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
     public ObservableCollection<PunishmentEditViewModel> Punishments { get; } = [];
@@ -246,10 +281,6 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
     public ObservableCollection<ClothingItemOption> AvailableItems { get; } = [];
-
-    public IReadOnlyList<int> AvailableCameras { get; private set; } = [0];
-    public string WebcamStatusDisplay { get; }
-    public string SpeechRecognitionStatusDisplay { get; }
 
     public IReadOnlyList<LanguageOption> AvailableLanguages { get; } =
     [
@@ -483,13 +514,11 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, int, decimal, decimal, double, decimal, int, int, int, int, int, int, int, int, int, int, double, LanguageOption)
+    private (string, int, decimal, decimal, double, decimal, int, int, int, CameraOption, LanguageOption)
         CurrentValues()
     {
         return (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
-            _idleWageInterval, _popupMinInterval, _popupMaxInterval, _popupTimeout, _hydrationMinInterval,
-            _curtsyVideoDuration, _quoteListenTimeout, _captureMinInterval, _captureMaxInterval,
-            _selectedCameraIndex, _quoteRecognitionSensitivity, _selectedLanguage);
+            _idleWageInterval, _captureMinInterval, _captureMaxInterval, _selectedCamera, _selectedLanguage);
     }
 
     private void UpdateGeneralDirty()
@@ -518,13 +547,16 @@ public partial class SettingsViewModel : ViewModelBase
         s.PopupMinIntervalSeconds = PopupMinInterval;
         s.PopupMaxIntervalSeconds = PopupMaxInterval;
         s.PopupTimeoutSeconds = PopupTimeout;
+        s.HydrationEnabled = HydrationEnabled;
         s.HydrationMinIntervalMinutes = HydrationMinInterval;
+        s.CurtsyEnabled = CurtsyEnabled;
         s.CurtsyVideoDurationSeconds = CurtsyVideoDuration;
+        s.QuoteReadingEnabled = QuoteReadingEnabled;
         s.QuoteListenTimeoutSeconds = QuoteListenTimeout;
         s.QuoteRecognitionMinConfidence = QuoteRecognitionSensitivity;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
-        s.SelectedCameraIndex = SelectedCameraIndex;
+        s.SelectedCameraIndex = SelectedCamera.Index;
         s.Language = SelectedLanguage.Code;
         s.PlugAndPlayEnabled = PlugAndPlayEnabled;
         _repo.SaveGameSettings(s);

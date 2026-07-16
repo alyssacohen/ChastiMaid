@@ -20,6 +20,10 @@
                                HorizontalAlignment="Center"
                                TextAlignment="Center" />
                     <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <Button Classes="Primary"
                             Command="{Binding CaptureCommand}"
                             HorizontalAlignment="Center">
@@ -43,6 +47,11 @@
                                Text="{conv:Tr WebcamRecordingLabel}"
                                HorizontalAlignment="Center" />
                     <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
+                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                              IsEnabled="False"
+                              ItemsSource="{Binding Webcam.AvailableCameras}"
+                              SelectedItem="{Binding Webcam.SelectedCamera}"
+                              HorizontalAlignment="Stretch" />
                     <TextBlock Classes="NumberLarge"
                                Text="{Binding Countdown, StringFormat={}{0}s}"
                                HorizontalAlignment="Center" />

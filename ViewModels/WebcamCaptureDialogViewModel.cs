@@ -56,6 +56,7 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
         if (Webcam.Start(cameraIndex))
         {
             IsPreviewing = true;
+            _ = Webcam.RefreshAvailableCamerasAsync(cameraIndex);
         }
         else
         {

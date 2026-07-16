@@ -497,9 +497,6 @@
   <data name="PlugAndPlayRemoveCompletedMessage" xml:space="preserve">
     <value>Duly noted.</value>
   </data>
-  <data name="SettingsPlugAndPlayEnabled" xml:space="preserve">
-    <value>Enable Plug and Play accessories</value>
-  </data>
   <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
     <value>Min minutes</value>
   </data>
@@ -671,6 +668,48 @@
   <data name="SettingsHeadingSessionTiming" xml:space="preserve">
     <value>Session Timing</value>
   </data>
+  <data name="SettingsHeadingPopupHardware" xml:space="preserve">
+    <value>Webcam &amp; Speech Recognition</value>
+  </data>
+  <data name="SettingsHeadingPopupTiming" xml:space="preserve">
+    <value>Frequency &amp; Timeout</value>
+  </data>
+  <data name="SettingsHeadingHydration" xml:space="preserve">
+    <value>Hydration Reminders</value>
+  </data>
+  <data name="SettingsHydrationDescription" xml:space="preserve">
+    <value>A reminder that a parched maid is no use to anyone. She need only pause and drink.</value>
+  </data>
+  <data name="SettingsHeadingCurtsyVideo" xml:space="preserve">
+    <value>Curtsy Video</value>
+  </data>
+  <data name="SettingsCurtsyDescription" xml:space="preserve">
+    <value>A moment's curtsy, recorded for the record — grace so rarely convinces without a witness.</value>
+  </data>
+  <data name="SettingsHeadingQuoteReading" xml:space="preserve">
+    <value>Quote Reading</value>
+  </data>
+  <data name="SettingsQuoteReadingDescription" xml:space="preserve">
+    <value>She shall speak the words required of her, clearly enough for the machine to believe it.</value>
+  </data>
+  <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
+    <value>Plug &amp; Play</value>
+  </data>
+  <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
+    <value>Certain accessories, once donned, do not come off again until she is satisfied they have served their purpose.</value>
+  </data>
+  <data name="SettingsEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="SettingsDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="SettingsDetectedCameras" xml:space="preserve">
+    <value>Detected cameras</value>
+  </data>
+  <data name="SettingsNoCamerasDetected" xml:space="preserve">
+    <value>No cameras detected</value>
+  </data>
   <data name="SettingsIdleWageAmount" xml:space="preserve">
     <value>Idle wage amount</value>
   </data>
@@ -718,9 +757,6 @@
   </data>
   <data name="SettingsCaptureMax" xml:space="preserve">
     <value>Capture max (sec)</value>
-  </data>
-  <data name="SettingsCamera" xml:space="preserve">
-    <value>Camera</value>
   </data>
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Chore name</value>

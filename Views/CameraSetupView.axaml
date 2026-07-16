@@ -24,6 +24,12 @@
                                 Width="480" Height="360"
                                 HorizontalAlignment="Center" />
 
+        <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                  ItemsSource="{Binding Webcam.AvailableCameras}"
+                  SelectedItem="{Binding Webcam.SelectedCamera}"
+                  HorizontalAlignment="Center"
+                  MinWidth="240" />
+
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     Spacing="8">
