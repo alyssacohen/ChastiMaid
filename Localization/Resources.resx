@@ -692,6 +692,18 @@
   <data name="SettingsQuoteReadingDescription" xml:space="preserve">
     <value>She shall speak the words required of her, clearly enough for the machine to believe it.</value>
   </data>
+  <data name="SettingsHeadingKneel" xml:space="preserve">
+    <value>Kneel</value>
+  </data>
+  <data name="SettingsKneelDescription" xml:space="preserve">
+    <value>She shall kneel for exactly as long as decided, and the camera shall keep proof of it.</value>
+  </data>
+  <data name="SettingsKneelDurationLabel" xml:space="preserve">
+    <value>Duration min/max (sec)</value>
+  </data>
+  <data name="SettingsKneelPhotoIntervalLabel" xml:space="preserve">
+    <value>Photo interval min/max (sec)</value>
+  </data>
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
   </data>

@@ -44,9 +44,12 @@ public class GameSettings
     public int BusyCaptureMinIntervalSeconds { get; set; } = 3;
     public int BusyCaptureMaxIntervalSeconds { get; set; } = 10;
 
-    // Kneel popup — total duration range (spec: 1-5 minutes); photo interval reuses BusyCaptureMin/MaxIntervalSeconds
+    // Kneel popup — total duration range (spec: 1-5 minutes) and verification-photo interval
+    public bool KneelEnabled { get; set; } = true;
     public int KneelMinDurationSeconds { get; set; } = 60;
     public int KneelMaxDurationSeconds { get; set; } = 300;
+    public int KneelPhotoMinIntervalSeconds { get; set; } = 3;
+    public int KneelPhotoMaxIntervalSeconds { get; set; } = 10;
 
     // Plug and Play — enable/disable toggle (per-item eligibility/duration configured separately)
     public bool PlugAndPlayEnabled { get; set; }

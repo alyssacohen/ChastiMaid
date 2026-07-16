@@ -397,6 +397,40 @@
                                 </Border>
                             </StackPanel>
 
+                            <!-- Kneel -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingKneel}" />
+                                <Border Classes="card">
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Classes="EmployerVoice" Text="{converters:Tr SettingsKneelDescription}"
+                                                   TextWrapping="Wrap" />
+                                        <ToggleSwitch IsChecked="{Binding KneelEnabled}"
+                                                      OnContent="{converters:Tr SettingsEnabled}"
+                                                      OffContent="{converters:Tr SettingsDisabled}" />
+                                        <Grid ColumnDefinitions="160,*,*">
+                                            <TextBlock Grid.Column="0" Classes="BodySmall" Text="{converters:Tr SettingsKneelDurationLabel}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Margin="0,0,8,0"
+                                                           Value="{Binding KneelMinDuration, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                            <NumericUpDown Grid.Column="2" Classes="underline stacked-spinner"
+                                                           Value="{Binding KneelMaxDuration, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*,*">
+                                            <TextBlock Grid.Column="0" Classes="BodySmall" Text="{converters:Tr SettingsKneelPhotoIntervalLabel}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner" Margin="0,0,8,0"
+                                                           Value="{Binding KneelPhotoMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                            <NumericUpDown Grid.Column="2" Classes="underline stacked-spinner"
+                                                           Value="{Binding KneelPhotoMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
                             <!-- Plug & Play -->
                             <StackPanel Spacing="8">
                                 <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPlugAndPlay}" />

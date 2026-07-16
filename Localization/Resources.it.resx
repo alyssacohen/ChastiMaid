@@ -692,6 +692,18 @@
   <data name="SettingsQuoteReadingDescription" xml:space="preserve">
     <value>Ella pronuncerà le parole richieste, con sufficiente chiarezza da convincere la macchina.</value>
   </data>
+  <data name="SettingsHeadingKneel" xml:space="preserve">
+    <value>Inginocchiarsi</value>
+  </data>
+  <data name="SettingsKneelDescription" xml:space="preserve">
+    <value>Ella rimarrà in ginocchio per il tempo stabilito, e la fotocamera ne conserverà la prova.</value>
+  </data>
+  <data name="SettingsKneelDurationLabel" xml:space="preserve">
+    <value>Durata min/max (sec)</value>
+  </data>
+  <data name="SettingsKneelPhotoIntervalLabel" xml:space="preserve">
+    <value>Intervallo foto min/max (sec)</value>
+  </data>
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
   </data>

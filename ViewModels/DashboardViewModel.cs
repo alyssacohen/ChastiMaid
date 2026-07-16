@@ -456,7 +456,7 @@ public partial class DashboardViewModel : ViewModelBase
             IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
             IdlePopupKind.Curtsy => _settings.CurtsyEnabled && WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             IdlePopupKind.MotivationalQuote => _settings.QuoteReadingEnabled,
-            IdlePopupKind.Kneel => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
+            IdlePopupKind.Kneel => _settings.KneelEnabled && WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             IdlePopupKind.PlugAndPlayDon => IsPlugAndPlayDonAvailable(),
             IdlePopupKind.PlugAndPlayRemove => IsPlugAndPlayRemoveAvailable(),
             _ => true
@@ -770,7 +770,7 @@ public partial class DashboardViewModel : ViewModelBase
             while (elapsed < totalSeconds)
             {
                 var wait = Math.Min(
-                    _random.Next(_settings.BusyCaptureMinIntervalSeconds, _settings.BusyCaptureMaxIntervalSeconds + 1),
+                    _random.Next(_settings.KneelPhotoMinIntervalSeconds, _settings.KneelPhotoMaxIntervalSeconds + 1),
                     totalSeconds - elapsed);
                 await Task.Delay(TimeSpan.FromSeconds(wait), ct);
                 elapsed += wait;

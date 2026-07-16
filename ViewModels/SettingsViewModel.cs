@@ -37,6 +37,11 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _hydrationEnabled;
     [Reactive] private bool _curtsyEnabled;
     [Reactive] private bool _quoteReadingEnabled;
+    [Reactive] private bool _kneelEnabled;
+    [Reactive] private int _kneelMinDuration;
+    [Reactive] private int _kneelMaxDuration;
+    [Reactive] private int _kneelPhotoMinInterval;
+    [Reactive] private int _kneelPhotoMaxInterval;
     [Reactive] private string _speechRecognitionStatusDisplay = "";
     [Reactive] private string _webcamStatusDisplay = "";
 
@@ -102,6 +107,11 @@ public partial class SettingsViewModel : ViewModelBase
         _quoteRecognitionSensitivity = s.QuoteRecognitionMinConfidence;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
+        _kneelEnabled = s.KneelEnabled;
+        _kneelMinDuration = s.KneelMinDurationSeconds;
+        _kneelMaxDuration = s.KneelMaxDurationSeconds;
+        _kneelPhotoMinInterval = s.KneelPhotoMinIntervalSeconds;
+        _kneelPhotoMaxInterval = s.KneelPhotoMaxIntervalSeconds;
         _plugAndPlayEnabled = s.PlugAndPlayEnabled;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
 
@@ -196,8 +206,14 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.QuoteRecognitionSensitivity, (_, _, _, _, _, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
+        this.WhenAnyValue(
+                x => x.KneelMinDuration, x => x.KneelMaxDuration,
+                x => x.KneelPhotoMinInterval, x => x.KneelPhotoMaxInterval,
+                (_, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
         this.WhenAnyValue(x => x.HydrationEnabled, x => x.CurtsyEnabled, x => x.QuoteReadingEnabled,
-                (_, _, _) => Unit.Default)
+                x => x.KneelEnabled, (_, _, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
@@ -556,6 +572,11 @@ public partial class SettingsViewModel : ViewModelBase
         s.QuoteRecognitionMinConfidence = QuoteRecognitionSensitivity;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
+        s.KneelEnabled = KneelEnabled;
+        s.KneelMinDurationSeconds = KneelMinDuration;
+        s.KneelMaxDurationSeconds = KneelMaxDuration;
+        s.KneelPhotoMinIntervalSeconds = KneelPhotoMinInterval;
+        s.KneelPhotoMaxIntervalSeconds = KneelPhotoMaxInterval;
         s.SelectedCameraIndex = SelectedCamera.Index;
         s.Language = SelectedLanguage.Code;
         s.PlugAndPlayEnabled = PlugAndPlayEnabled;
