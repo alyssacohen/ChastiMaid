@@ -13,7 +13,7 @@
         <Setter Property="FontSize" Value="48" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="LineHeight" Value="52" />
-        <Setter Property="LetterSpacing" Value="0" />
+        <Setter Property="LetterSpacing" Value="-0.15" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 

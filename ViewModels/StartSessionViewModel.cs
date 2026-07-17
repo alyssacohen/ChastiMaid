@@ -69,7 +69,7 @@ public partial class StartSessionViewModel : ViewModelBase
 
             // Priority 1: active forced-outfit punishment with sessions remaining
             var forcedPunishment = saveRepo.GetActivePunishments()
-                .FirstOrDefault(p => (p.RemainingOutfitForce?.Sessions ?? 0) > 0);
+                .FirstOrDefault(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0);
 
             if (forcedPunishment is not null)
             {
@@ -253,10 +253,11 @@ public partial class StartSessionViewModel : ViewModelBase
     {
         _saveRepo.AcceptItems(_outfit.Items);
 
-        if (_forcedOutfitPunishment?.RemainingOutfitForce is { } remaining)
+        if (_forcedOutfitPunishment is not null)
         {
-            remaining.Sessions = (remaining.Sessions ?? 0) - 1;
-            if ((remaining.Sessions ?? 0) <= 0)
+            _forcedOutfitPunishment.ForcedOutfitRemainingSessions =
+                (_forcedOutfitPunishment.ForcedOutfitRemainingSessions ?? 0) - 1;
+            if (_forcedOutfitPunishment.ForcedOutfitRemainingSessions <= 0)
             {
                 _forcedOutfitPunishment.IsResolved = true;
             }

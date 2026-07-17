@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:v="using:ChastiMaid.Views.Controls"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             x:DataType="vm:CornertimePunishmentViewModel"
+             x:Class="ChastiMaid.Views.CornertimePunishmentView"
+             Background="{DynamicResource BrushWindowBackground}">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MaxWidth="600"
+                Margin="40"
+                Spacing="16">
+
+        <!-- Framing -->
+        <StackPanel IsVisible="{Binding IsFraming}" Spacing="16">
+            <TextBlock Classes="PageTitle"
+                       Text="{conv:Tr CornertimeFramingTitle}"
+                       HorizontalAlignment="Center" />
+            <TextBlock Classes="Body"
+                       Text="{conv:Tr CornertimeFramingInstruction}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" />
+            <v:WebcamPreviewControl Service="{Binding Webcam}"
+                                    Width="480" Height="360"
+                                    HorizontalAlignment="Center" />
+            <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                      ItemsSource="{Binding Webcam.AvailableCameras}"
+                      SelectedItem="{Binding Webcam.SelectedCamera}"
+                      HorizontalAlignment="Center"
+                      MinWidth="240" />
+            <Button Content="{conv:Tr CornertimeConfirmFraming}"
+                    Command="{Binding ConfirmFramingCommand}"
+                    Classes="Primary"
+                    HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <!-- Active -->
+        <StackPanel IsVisible="{Binding IsActive}" Spacing="16">
+            <TextBlock Classes="EmployerVoice"
+                       Text="{conv:Tr CornertimeActiveMessage}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" />
+            <TextBlock Classes="NumberLarge"
+                       Text="{Binding ElapsedDisplay}"
+                       HorizontalAlignment="Center" />
+            <TextBlock Classes="Caption"
+                       Text="{Binding RequiredDisplay, StringFormat='of {0}'}"
+                       HorizontalAlignment="Center" />
+            <Button Content="{conv:Tr CornertimeAbandon}"
+                    Command="{Binding AbandonCommand}"
+                    Classes="Danger compact"
+                    HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <!-- Result -->
+        <StackPanel IsVisible="{Binding IsResult}" Spacing="16">
+            <TextBlock Classes="EmployerVoice"
+                       Text="{Binding ResultMessage}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" />
+            <Button Content="{conv:Tr PunishmentDone}"
+                    Command="{Binding DoneCommand}"
+                    Classes="Primary"
+                    HorizontalAlignment="Center" />
+        </StackPanel>
+
+    </StackPanel>
+
+</UserControl>

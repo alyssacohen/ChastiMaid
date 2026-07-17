@@ -292,7 +292,7 @@
                 <!-- ==================== PUNISHMENTS ==================== -->
                 <Grid
                     IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}"
-                    RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
+                    RowDefinitions="Auto,*" Margin="24,0,32,16">
                     <StackPanel Grid.Row="0">
                         <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabPunishments}" Margin="0,20,0,8" />
                         <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
@@ -483,46 +483,146 @@
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
-                            <ItemsControl ItemsSource="{Binding Punishments}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:PunishmentEditViewModel">
-                                        <Border Classes="card">
-                                            <Grid ColumnDefinitions="*,Auto">
-                                                <StackPanel Grid.Column="0" Spacing="8">
-                                                    <StackPanel Spacing="2">
-                                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
-                                                        <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsPunishmentNamePlaceholder}" />
-                                                    </StackPanel>
-                                                    <Grid ColumnDefinitions="*,*">
-                                                        <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDebtIncrease}}" />
-                                                            <NumericUpDown Classes="underline stacked-spinner"
-                                                                           Value="{Binding DebtIncrease, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
-                                                                           Minimum="0" FormatString="0" />
-                                                        </StackPanel>
-                                                        <StackPanel Grid.Column="1" Spacing="2">
-                                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRequiredChores}}" />
-                                                            <NumericUpDown Classes="underline stacked-spinner"
-                                                                           Value="{Binding RequiredChoreCount, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
-                                                                           Minimum="0" FormatString="0" />
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </StackPanel>
-                                                <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
-                                                        VerticalAlignment="Center" Margin="12,0,0,0" />
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsSectionPunishments}" Margin="0,4,0,8" />
+                                <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+                            </StackPanel>
+
+                            <!-- Fine — always active -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingFine}" />
+                                <Border Classes="card">
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Classes="EmployerVoice" Text="{converters:Tr SettingsFineDescription}"
+                                                   TextWrapping="Wrap" />
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsFineSeverityValue}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding FineSeverityValue, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.5}"
+                                                           Minimum="0.5" Increment="0.5" FormatString="0.00" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Cornertime -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingCornertime}" />
+                                <Border Classes="card">
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Classes="EmployerVoice" Text="{converters:Tr SettingsCornertimeDescription}"
+                                                   TextWrapping="Wrap" />
+                                        <ToggleSwitch IsChecked="{Binding CornertimeEnabled}"
+                                                      OnContent="{converters:Tr SettingsEnabled}"
+                                                      OffContent="{converters:Tr SettingsDisabled}" />
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeSeverityValue}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeSeverityValue, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMaxOverrun}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeMaxOverrunSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=10}"
+                                                           Minimum="10" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeCheckInterval}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeCheckIntervalSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeSensitivity}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeMovementSensitivityPercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" Maximum="100" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMovementPenalty}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeMovementPenaltySeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Writing Lines -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingWritingLines}" />
+                                <Border Classes="card">
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Classes="EmployerVoice" Text="{converters:Tr SettingsWritingLinesDescription}"
+                                                   TextWrapping="Wrap" />
+                                        <ToggleSwitch IsChecked="{Binding WritingLinesEnabled}"
+                                                      OnContent="{converters:Tr SettingsEnabled}"
+                                                      OffContent="{converters:Tr SettingsDisabled}" />
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWritingLinesSeverityValue}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding WritingLinesSeverityValue, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWritingLinesPenalty}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding WritingLinesPenaltyLinesPerMistake, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Forced Outfit -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingForcedOutfit}" />
+                                <Border Classes="card">
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Classes="EmployerVoice" Text="{converters:Tr SettingsForcedOutfitDescription}"
+                                                   TextWrapping="Wrap" />
+                                        <ToggleSwitch IsChecked="{Binding ForcedOutfitEnabled}"
+                                                      OnContent="{converters:Tr SettingsEnabled}"
+                                                      OffContent="{converters:Tr SettingsDisabled}" />
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsForcedOutfitSeverityValue}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding ForcedOutfitSeverityValue, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.1}"
+                                                           Minimum="0.1" Increment="0.1" FormatString="0.00" />
+                                        </Grid>
+                                        <CheckBox IsChecked="{Binding ForcedOutfitForceFullOutfit}"
+                                                  Content="{converters:Tr SettingsForcedOutfitForceFull}" />
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsForcedOutfitItems}}" />
+                                        <ItemsControl ItemsSource="{Binding ForcedOutfitItems}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:ForcedOutfitItemChipViewModel">
+                                                    <ToggleButton Classes="filterChip"
+                                                                  Content="{Binding Name}"
+                                                                  IsChecked="{Binding IsSelected}"
+                                                                  Margin="0,0,4,4" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
-                    <Button Grid.Row="2" Command="{Binding AddPunishmentCommand}" Classes="Add">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                            <TextBlock Text="{converters:Tr SettingsAddPunishment}" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Button>
                 </Grid>
 
                 <!-- ==================== WARDROBE ==================== -->

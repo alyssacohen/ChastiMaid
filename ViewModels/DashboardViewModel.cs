@@ -140,6 +140,9 @@ public partial class DashboardViewModel : ViewModelBase
     // --- Idle popup: Plug and Play ---
     private ClothingItem? _currentPlugAndPlayCandidate;
 
+    // --- Punishment dialogs ---
+    [Reactive] private ConfirmDialogViewModel? _activeDialog;
+
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
         : this(mainVm, saveRepo, null)
@@ -433,7 +436,7 @@ public partial class DashboardViewModel : ViewModelBase
         }
 
         var forced = _saveRepo.GetActivePunishments()
-            .FirstOrDefault(p => (p.RemainingOutfitForce?.Sessions ?? 0) > 0);
+            .FirstOrDefault(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0);
         if (forced is { ForceFullOutfit: true })
         {
             return false;
@@ -1317,7 +1320,10 @@ public partial class DashboardViewModel : ViewModelBase
 
         if (!positive)
         {
-            _saveRepo.AssignRandomPunishment();
+            var severity = _currentPopupKind == IdlePopupKind.ImpossibleQuestion
+                ? InfractionSeverity.ImpossibleQuestionFailed
+                : InfractionSeverity.PopupMissed;
+            _saveRepo.AssignPunishment(severity);
             RefreshPunishments();
         }
     }
@@ -1400,7 +1406,7 @@ public partial class DashboardViewModel : ViewModelBase
 
         if (tooEarly)
         {
-            _saveRepo.AssignRandomPunishment();
+            _saveRepo.AssignPunishment(InfractionSeverity.ChoreTooEarly);
             RefreshPunishments();
             ChoreResultMessage = Resources.Get("DashboardChoreRejectedMessage");
         }
@@ -1436,48 +1442,8 @@ public partial class DashboardViewModel : ViewModelBase
     private void StartSilentCapture()
     {
         _captureCts = new CancellationTokenSource();
-        var ct = _captureCts.Token;
         var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
-
-        _ = Task.Run(async () =>
-        {
-            while (!ct.IsCancellationRequested)
-            {
-                var delaySec = _random.Next(_settings.BusyCaptureMinIntervalSeconds,
-                    _settings.BusyCaptureMaxIntervalSeconds + 1);
-                await Task.Delay(TimeSpan.FromSeconds(delaySec), ct);
-                if (ct.IsCancellationRequested)
-                {
-                    break;
-                }
-
-                try
-                {
-                    var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
-                    if (_random.Next(2) == 0)
-                    {
-                        var path = Path.Combine(dir, $"chore_{timestamp}.png");
-                        await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, _settings.SelectedCameraIndex);
-                    }
-                    else
-                    {
-                        var duration = _random.Next(3, 11);
-                        var path = Path.Combine(dir, $"chore_{timestamp}.avi");
-                        await WebcamPreviewService.RecordVideoStandaloneAsync(path, duration, ct: ct,
-                            cameraIndex: _settings.SelectedCameraIndex);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
-                catch
-                {
-                    /* Webcam unavailable — ignore */
-                }
-            }
-        }, ct);
+        SilentCaptureLoop.Start(_settings, slotName, "chore", _captureCts.Token);
     }
 
     private void StopSilentCapture()
@@ -1515,9 +1481,54 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
-    private void OnStartPunishment(PunishmentItemViewModel punishment)
+    private void OnStartPunishment(PunishmentItemViewModel punishmentVm)
     {
-        // TODO: navigate to punishment execution view (spec TBD)
+        var punishment = _saveRepo.GetActivePunishments().FirstOrDefault(p => p.Id == punishmentVm.PunishmentId);
+        if (punishment is null)
+        {
+            return;
+        }
+
+        if (punishment.Kind == PunishmentKind.ForcedOutfit)
+        {
+            var dialog = new ConfirmDialogViewModel(
+                Resources.Get("ForcedOutfitInfoTitle"),
+                string.Format(Resources.Get("ForcedOutfitInfoMessageFormat"), punishment.ForcedOutfitRemainingSessions ?? 0),
+                Resources.Get("Ok"),
+                null);
+            ActiveDialog = dialog;
+            _ = DismissActiveDialogAsync(dialog);
+            return;
+        }
+
+        _sessionLoop.Pause();
+        _countdownTimer?.Stop();
+
+        switch (punishment.Kind)
+        {
+            case PunishmentKind.Cornertime:
+                if (WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex))
+                {
+                    _mainVm.NavigateTo(new CornertimePunishmentViewModel(_mainVm, _saveRepo, punishment));
+                }
+                else
+                {
+                    _sessionLoop.Resume();
+                    _countdownTimer?.Start();
+                }
+
+                break;
+
+            case PunishmentKind.WritingLines:
+                _mainVm.NavigateTo(new WritingLinesPunishmentViewModel(_mainVm, _saveRepo, punishment));
+                break;
+        }
+    }
+
+    private async Task DismissActiveDialogAsync(ConfirmDialogViewModel dialog)
+    {
+        await dialog.Result;
+        ActiveDialog = null;
     }
 
     private void OnEmergencyBreak()

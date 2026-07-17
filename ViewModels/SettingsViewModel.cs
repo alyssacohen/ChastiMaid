@@ -42,6 +42,21 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _kneelMaxDuration;
     [Reactive] private int _kneelPhotoMinInterval;
     [Reactive] private int _kneelPhotoMaxInterval;
+
+    // --- Punishments ---
+    [Reactive] private decimal _fineSeverityValue;
+    [Reactive] private bool _cornertimeEnabled;
+    [Reactive] private double _cornertimeSeverityValue;
+    [Reactive] private int _cornertimeMaxOverrunSeconds;
+    [Reactive] private int _cornertimeCheckIntervalSeconds;
+    [Reactive] private int _cornertimeMovementSensitivityPercent;
+    [Reactive] private int _cornertimeMovementPenaltySeconds;
+    [Reactive] private bool _writingLinesEnabled;
+    [Reactive] private double _writingLinesSeverityValue;
+    [Reactive] private int _writingLinesPenaltyLinesPerMistake;
+    [Reactive] private bool _forcedOutfitEnabled;
+    [Reactive] private double _forcedOutfitSeverityValue;
+    [Reactive] private bool _forcedOutfitForceFullOutfit;
     [Reactive] private string _speechRecognitionStatusDisplay = "";
     [Reactive] private string _webcamStatusDisplay = "";
 
@@ -113,6 +128,19 @@ public partial class SettingsViewModel : ViewModelBase
         _kneelPhotoMinInterval = s.KneelPhotoMinIntervalSeconds;
         _kneelPhotoMaxInterval = s.KneelPhotoMaxIntervalSeconds;
         _plugAndPlayEnabled = s.PlugAndPlayEnabled;
+        _fineSeverityValue = s.FineSeverityValue;
+        _cornertimeEnabled = s.CornertimeEnabled;
+        _cornertimeSeverityValue = s.CornertimeSeverityValue;
+        _cornertimeMaxOverrunSeconds = s.CornertimeMaxOverrunSeconds;
+        _cornertimeCheckIntervalSeconds = s.CornertimeCheckIntervalSeconds;
+        _cornertimeMovementSensitivityPercent = s.CornertimeMovementSensitivityPercent;
+        _cornertimeMovementPenaltySeconds = s.CornertimeMovementPenaltySeconds;
+        _writingLinesEnabled = s.WritingLinesEnabled;
+        _writingLinesSeverityValue = s.WritingLinesSeverityValue;
+        _writingLinesPenaltyLinesPerMistake = s.WritingLinesPenaltyLinesPerMistake;
+        _forcedOutfitEnabled = s.ForcedOutfitEnabled;
+        _forcedOutfitSeverityValue = s.ForcedOutfitSeverityValue;
+        _forcedOutfitForceFullOutfit = s.ForcedOutfitForceFullOutfit;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
 
         // Show a default immediately so Settings opens instantly; the real camera list and hardware
@@ -127,10 +155,10 @@ public partial class SettingsViewModel : ViewModelBase
                 () => IsChoresDirty = true));
         }
 
-        foreach (var p in _repo.GetPunishmentTemplates())
+        foreach (var w in _repo.GetWardrobe())
         {
-            Punishments.Add(WireChild(
-                new PunishmentEditViewModel(p, id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)),
+            ForcedOutfitItems.Add(WireChild(
+                new ForcedOutfitItemChipViewModel(w, s.ForcedOutfitClothingItemIds.Contains(w.Id)),
                 () => IsPunishmentsDirty = true));
         }
 
@@ -216,8 +244,22 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.KneelEnabled, (_, _, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
+        this.WhenAnyValue(x => x.FineSeverityValue, x => x.CornertimeEnabled, x => x.CornertimeSeverityValue,
+                x => x.CornertimeMaxOverrunSeconds, x => x.CornertimeCheckIntervalSeconds,
+                (_, _, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.CornertimeMovementSensitivityPercent, x => x.CornertimeMovementPenaltySeconds,
+                x => x.WritingLinesEnabled, x => x.WritingLinesSeverityValue,
+                x => x.WritingLinesPenaltyLinesPerMistake, (_, _, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitSeverityValue,
+                x => x.ForcedOutfitForceFullOutfit, (_, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
-        Punishments.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
+        ForcedOutfitItems.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
         WardrobeItems.CollectionChanged += (_, _) =>
         {
             IsWardrobeDirty = true;
@@ -238,11 +280,6 @@ public partial class SettingsViewModel : ViewModelBase
             Chores.Add(WireChild(
                 new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)),
                 () => IsChoresDirty = true)));
-        AddPunishmentCommand = ReactiveCommand.Create(() =>
-            Punishments.Add(WireChild(
-                new PunishmentEditViewModel(new PunishmentTemplate(),
-                    id => RemoveFrom(Punishments, id, _repo.DeletePunishmentTemplate)),
-                () => IsPunishmentsDirty = true)));
         ShowAddItemPanelCommand = ReactiveCommand.Create(() => IsAddingNewItem = true);
         var canAddWardrobe = this.WhenAnyValue(x => x.NewItemName, name => !string.IsNullOrWhiteSpace(name));
         AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
@@ -292,7 +329,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
-    public ObservableCollection<PunishmentEditViewModel> Punishments { get; } = [];
+    public ObservableCollection<ForcedOutfitItemChipViewModel> ForcedOutfitItems { get; } = [];
     public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
@@ -336,7 +373,6 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand BackCommand { get; }
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
-    public ICommand AddPunishmentCommand { get; }
     public ICommand ShowAddItemPanelCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
@@ -580,16 +616,25 @@ public partial class SettingsViewModel : ViewModelBase
         s.SelectedCameraIndex = SelectedCamera.Index;
         s.Language = SelectedLanguage.Code;
         s.PlugAndPlayEnabled = PlugAndPlayEnabled;
+        s.FineSeverityValue = FineSeverityValue;
+        s.CornertimeEnabled = CornertimeEnabled;
+        s.CornertimeSeverityValue = CornertimeSeverityValue;
+        s.CornertimeMaxOverrunSeconds = CornertimeMaxOverrunSeconds;
+        s.CornertimeCheckIntervalSeconds = CornertimeCheckIntervalSeconds;
+        s.CornertimeMovementSensitivityPercent = CornertimeMovementSensitivityPercent;
+        s.CornertimeMovementPenaltySeconds = CornertimeMovementPenaltySeconds;
+        s.WritingLinesEnabled = WritingLinesEnabled;
+        s.WritingLinesSeverityValue = WritingLinesSeverityValue;
+        s.WritingLinesPenaltyLinesPerMistake = WritingLinesPenaltyLinesPerMistake;
+        s.ForcedOutfitEnabled = ForcedOutfitEnabled;
+        s.ForcedOutfitSeverityValue = ForcedOutfitSeverityValue;
+        s.ForcedOutfitForceFullOutfit = ForcedOutfitForceFullOutfit;
+        s.ForcedOutfitClothingItemIds = ForcedOutfitItems.Where(i => i.IsSelected).Select(i => i.ClothingItemId).ToList();
         _repo.SaveGameSettings(s);
 
         foreach (var c in Chores)
         {
             _repo.SaveChore(c.ToModel());
-        }
-
-        foreach (var p in Punishments)
-        {
-            _repo.SavePunishmentTemplate(p.ToModel());
         }
 
         foreach (var w in WardrobeItems)
@@ -703,33 +748,19 @@ public partial class ChoreEditViewModel : ViewModelBase
     }
 }
 
-public partial class PunishmentEditViewModel : ViewModelBase
+public partial class ForcedOutfitItemChipViewModel : ViewModelBase
 {
-    [Reactive] private decimal _debtIncrease;
-    [Reactive] private string _name = "";
-    [Reactive] private int _requiredChoreCount;
+    [Reactive] private bool _isSelected;
 
-    public PunishmentEditViewModel(PunishmentTemplate t, Action<int> onDelete)
+    public ForcedOutfitItemChipViewModel(ClothingItem item, bool isSelected)
     {
-        Id = t.Id;
-        _name = t.Name;
-        _debtIncrease = t.DebtIncrease ?? 0;
-        _requiredChoreCount = t.RequiredChoreCount ?? 0;
-        DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
+        ClothingItemId = item.Id;
+        Name = item.Name;
+        _isSelected = isSelected;
     }
 
-    public int Id { get; }
-    public ICommand DeleteCommand { get; }
-
-    public PunishmentTemplate ToModel()
-    {
-        return new PunishmentTemplate
-        {
-            Id = Id, Name = Name,
-            DebtIncrease = DebtIncrease > 0 ? DebtIncrease : null,
-            RequiredChoreCount = RequiredChoreCount > 0 ? RequiredChoreCount : null,
-        };
-    }
+    public int ClothingItemId { get; }
+    public string Name { get; }
 }
 
 public partial class PlugAndPlayItemEditViewModel : ViewModelBase

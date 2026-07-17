@@ -23,7 +23,6 @@ public partial class SettingsView : UserControl
         }
 
         vm.Chores.CollectionChanged += (_, a) => OnItemAdded(a, ChoresScroll);
-        vm.Punishments.CollectionChanged += (_, a) => OnItemAdded(a, PunishmentsScroll);
         vm.OutfitRules.CollectionChanged += (_, a) => OnItemAdded(a, RulesScroll);
     }
 

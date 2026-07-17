@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 
 namespace ChastiMaid.ViewModels;
@@ -7,19 +8,22 @@ public class PunishmentItemViewModel : ViewModelBase
     public PunishmentItemViewModel(ActivePunishment punishment)
     {
         PunishmentId = punishment.Id;
-        Name = punishment.TemplateName;
+        Kind = punishment.Kind;
+        Name = Resources.Get(Kind switch
+        {
+            PunishmentKind.Cornertime => "PunishmentKindCornertime",
+            PunishmentKind.WritingLines => "PunishmentKindWritingLines",
+            PunishmentKind.ForcedOutfit => "PunishmentKindForcedOutfit",
+            _ => throw new ArgumentOutOfRangeException(nameof(punishment)),
+        });
         AssignedDate = DateOnly.FromDateTime(punishment.AssignedAt);
-        ExpiryDate = null; // ActivePunishment has no explicit expiry date
 
-        var assigned = AssignedDate.ToString("dd MMM");
-        AssignedLabel = ExpiryDate.HasValue
-            ? $"Assigned {assigned} · Expires {ExpiryDate.Value:dd MMM}"
-            : $"Assigned {assigned} · No expiry";
+        AssignedLabel = string.Format(Resources.Get("PunishmentAssignedFormat"), AssignedDate.ToString("dd MMM"));
     }
 
     public int PunishmentId { get; }
+    public PunishmentKind Kind { get; }
     public string Name { get; }
     public DateOnly AssignedDate { get; }
-    public DateOnly? ExpiryDate { get; }
     public string AssignedLabel { get; }
 }

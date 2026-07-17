@@ -10,9 +10,6 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
     private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
 
-    private ILiteCollection<PunishmentTemplate> PunishmentTemplates =>
-        db.GetCollection<PunishmentTemplate>("punishment_templates");
-
     private ILiteCollection<ActivePunishment> ActivePunishments =>
         db.GetCollection<ActivePunishment>("active_punishments");
 
@@ -60,11 +57,6 @@ public class SaveRepository(LiteDatabase db)
     public List<Chore> GetChores()
     {
         return Chores.FindAll().ToList();
-    }
-
-    public List<PunishmentTemplate> GetPunishmentTemplates()
-    {
-        return PunishmentTemplates.FindAll().ToList();
     }
 
     // --- Wardrobe weight adjustments ---
@@ -123,6 +115,18 @@ public class SaveRepository(LiteDatabase db)
         ActivePunishments.Upsert(punishment);
     }
 
+    public void ResolvePunishment(int id)
+    {
+        var punishment = ActivePunishments.FindById(id);
+        if (punishment is null)
+        {
+            return;
+        }
+
+        punishment.IsResolved = true;
+        ActivePunishments.Update(punishment);
+    }
+
     // --- Pose checks ---
     public void SavePoseCheckRecord(PoseCheckRecord record)
     {
@@ -177,43 +181,89 @@ public class SaveRepository(LiteDatabase db)
         ActivePlugAndPlayAccessoryCollection.Delete(1);
     }
 
-    /// <summary>Assigns a random configured punishment template, applying its immediate debt increase.</summary>
-    public void AssignRandomPunishment()
+    /// <summary>Applies the Fine punishment's debt increase immediately. Never creates a pending record.</summary>
+    public void ApplyFine(int severity, GameSettings? settings = null)
     {
-        var templates = GetPunishmentTemplates();
-        if (templates.Count == 0)
+        settings ??= GetGameSettings();
+        var state = GetGameState();
+        if (state is null)
         {
             return;
         }
 
-        var template = templates[Random.Shared.Next(templates.Count)];
+        state.CurrentDebt += Math.Round(severity * settings.FineSeverityValue, 0);
+        SaveGameState(state);
+    }
 
-        if (template.DebtIncrease is { } increase)
+    /// <summary>
+    ///     Rolls a severity within the given infraction range, picks uniformly among Fine (always available) and
+    ///     whichever other punishment kinds are enabled in <see cref="GameSettings" />, then applies it: Fine takes
+    ///     effect immediately, the others become a pending <see cref="ActivePunishment" /> sized by severity.
+    /// </summary>
+    public void AssignPunishment((int Min, int Max) severityRange)
+    {
+        var severity = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
+        var settings = GetGameSettings();
+
+        var candidates = new List<PunishmentKind?> { null }; // null = Fine
+        if (settings.CornertimeEnabled)
         {
-            var state = GetGameState();
-            if (state is not null)
-            {
-                state.CurrentDebt += increase;
-                SaveGameState(state);
-            }
+            candidates.Add(PunishmentKind.Cornertime);
         }
 
-        SaveActivePunishment(new ActivePunishment
+        if (settings.WritingLinesEnabled)
         {
-            TemplateId = template.Id,
-            TemplateName = template.Name,
-            AssignedAt = DateTime.UtcNow,
-            DebtApplied = template.DebtIncrease is not null,
-            RemainingOutfitForce = template.OutfitForceDuration,
-            ForcedClothingItemIds = template.ForcedClothingItemIds,
-            ForceFullOutfit = template.ForceFullOutfit,
-            RemainingMultiplierPenalty = template.MultiplierPenaltyDuration,
-            MultiplierPenaltyFactor = template.MultiplierPenaltyFactor,
-            PendingChoreIds = template.RequiredChoreIds
-                ?? (template.RequiredChoreCount is { } n
-                    ? GetChores().Select(c => c.Id).OrderBy(_ => Random.Shared.Next()).Take(n).ToList()
-                    : null),
-        });
+            candidates.Add(PunishmentKind.WritingLines);
+        }
+
+        if (settings.ForcedOutfitEnabled)
+        {
+            candidates.Add(PunishmentKind.ForcedOutfit);
+        }
+
+        var kind = candidates[Random.Shared.Next(candidates.Count)];
+        switch (kind)
+        {
+            case null:
+                ApplyFine(severity, settings);
+                break;
+
+            case PunishmentKind.Cornertime:
+                var required = (int)Math.Round(severity * settings.CornertimeSeverityValue);
+                SaveActivePunishment(new ActivePunishment
+                {
+                    Kind = PunishmentKind.Cornertime,
+                    Severity = severity,
+                    AssignedAt = DateTime.UtcNow,
+                    CornertimeRequiredSeconds = required,
+                    CornertimeMaxSeconds = required + settings.CornertimeMaxOverrunSeconds,
+                });
+                break;
+
+            case PunishmentKind.WritingLines:
+                SaveActivePunishment(new ActivePunishment
+                {
+                    Kind = PunishmentKind.WritingLines,
+                    Severity = severity,
+                    AssignedAt = DateTime.UtcNow,
+                    WritingLinesSentenceKey = WritingLinesSentenceBank.GetRandom(),
+                    WritingLinesTotalLines = (int)Math.Round(severity * settings.WritingLinesSeverityValue),
+                });
+                break;
+
+            case PunishmentKind.ForcedOutfit:
+                SaveActivePunishment(new ActivePunishment
+                {
+                    Kind = PunishmentKind.ForcedOutfit,
+                    Severity = severity,
+                    AssignedAt = DateTime.UtcNow,
+                    ForcedOutfitRemainingSessions =
+                        Math.Max(1, (int)Math.Round(severity * settings.ForcedOutfitSeverityValue)),
+                    ForcedClothingItemIds = settings.ForcedOutfitClothingItemIds,
+                    ForceFullOutfit = settings.ForcedOutfitForceFullOutfit,
+                });
+                break;
+        }
     }
 
     // --- Sessions ---
@@ -254,10 +304,6 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot chores
         var choresCol = saveDb.GetCollection<Chore>("chores");
         choresCol.InsertBulk(profile.GetChores());
-
-        // Snapshot punishment templates
-        var templatesCol = saveDb.GetCollection<PunishmentTemplate>("punishment_templates");
-        templatesCol.InsertBulk(profile.GetPunishmentTemplates());
 
         // Snapshot plug and play item configs
         var plugAndPlayCol = saveDb.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");

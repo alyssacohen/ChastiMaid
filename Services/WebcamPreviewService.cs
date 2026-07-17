@@ -24,6 +24,9 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
     private VideoCapture? _capture;
     private int _currentCameraIndex = -1;
+    private Mat? _lastMovementFrame;
+
+    private const int MovementNoiseThreshold = 25;
 
     /// <summary>
     ///     When true, a centered 240x80 region of the preview frame is heavily pixelated before display,
@@ -324,6 +327,72 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         _capture = null;
 
         IsRunning = false;
+        ResetMovementBaseline();
+    }
+
+    /// <summary>Clears the movement-detection baseline. Call before starting a new Cornertime session.</summary>
+    public void ResetMovementBaseline()
+    {
+        _lastMovementFrame?.Dispose();
+        _lastMovementFrame = null;
+    }
+
+    /// <summary>
+    ///     Captures a frame using the already-open VideoCapture, saves it to <paramref name="outputPath" /> for
+    ///     evidence, and compares it against the frame captured by the previous call to this method (grayscale
+    ///     absolute difference, thresholded for sensor noise). Returns whether the changed-pixel ratio exceeds
+    ///     <paramref name="sensitivityPercent" />. Call <see cref="ResetMovementBaseline" /> before the first call
+    ///     of a session so it isn't compared against a stale frame from an unrelated one.
+    /// </summary>
+    public async Task<bool> CaptureAndDetectMovementAsync(string outputPath, int sensitivityPercent,
+        CancellationToken ct = default)
+    {
+        if (_capture is null || !_capture.IsOpened())
+        {
+            return false;
+        }
+
+        StopPreviewLoop();
+
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var frame = new Mat();
+                _capture.Read(frame);
+                if (frame.Empty())
+                {
+                    frame.Dispose();
+                    return false;
+                }
+
+                Cv2.ImWrite(outputPath, frame);
+
+                var moved = false;
+                if (_lastMovementFrame is not null)
+                {
+                    using var currentGray = new Mat();
+                    using var previousGray = new Mat();
+                    using var diff = new Mat();
+                    Cv2.CvtColor(frame, currentGray, ColorConversionCodes.BGR2GRAY);
+                    Cv2.CvtColor(_lastMovementFrame, previousGray, ColorConversionCodes.BGR2GRAY);
+                    Cv2.Absdiff(currentGray, previousGray, diff);
+                    Cv2.Threshold(diff, diff, MovementNoiseThreshold, 255, ThresholdTypes.Binary);
+                    var changedRatio = Cv2.CountNonZero(diff) / (double)(diff.Width * diff.Height);
+                    moved = changedRatio * 100 > sensitivityPercent;
+                }
+
+                _lastMovementFrame?.Dispose();
+                _lastMovementFrame = frame;
+                return moved;
+            }, ct);
+        }
+        finally
+        {
+            StartPreviewLoop();
+        }
     }
 
     /// <summary>Checks whether a webcam is available.</summary>

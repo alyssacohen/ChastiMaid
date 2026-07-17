@@ -162,6 +162,63 @@
   <data name="PendingPunishments" xml:space="preserve">
     <value>Punizioni in sospeso</value>
   </data>
+  <data name="PunishmentAssignedFormat" xml:space="preserve">
+    <value>Assegnata il {0}</value>
+  </data>
+  <data name="PunishmentKindCornertime" xml:space="preserve">
+    <value>Angolo</value>
+  </data>
+  <data name="PunishmentKindWritingLines" xml:space="preserve">
+    <value>Righe di penitenza</value>
+  </data>
+  <data name="PunishmentKindForcedOutfit" xml:space="preserve">
+    <value>Divisa obbligata</value>
+  </data>
+  <data name="ForcedOutfitInfoTitle" xml:space="preserve">
+    <value>Una questione già decisa</value>
+  </data>
+  <data name="ForcedOutfitInfoMessageFormat" xml:space="preserve">
+    <value>La divisa prescelta si presenterà da sé per le prossime {0} sessioni. Da parte vostra non è richiesta alcuna azione.</value>
+  </data>
+  <data name="CornertimeFramingTitle" xml:space="preserve">
+    <value>L'angolo vi attende</value>
+  </data>
+  <data name="CornertimeFramingInstruction" xml:space="preserve">
+    <value>Inquadrate l'angolo in cui resterete, poi confermate quando pronta.</value>
+  </data>
+  <data name="CornertimeConfirmFraming" xml:space="preserve">
+    <value>Iniziare</value>
+  </data>
+  <data name="CornertimeActiveMessage" xml:space="preserve">
+    <value>Restate immobile. Saprò se non lo farete.</value>
+  </data>
+  <data name="CornertimeAbandon" xml:space="preserve">
+    <value>Abbandonare</value>
+  </data>
+  <data name="CornertimeSuccessMessage" xml:space="preserve">
+    <value>Immobilità raggiunta. Potete tornare alle vostre mansioni.</value>
+  </data>
+  <data name="CornertimeFailureMessage" xml:space="preserve">
+    <value>Non siete riuscita a restare ferma. È stata aggiunta una multa, e l'angolo resta a vostra disposizione.</value>
+  </data>
+  <data name="PunishmentDone" xml:space="preserve">
+    <value>Fatto</value>
+  </data>
+  <data name="WritingLinesProgressFormat" xml:space="preserve">
+    <value>Riga {0}</value>
+  </data>
+  <data name="WritingLinesTypeHereWatermark" xml:space="preserve">
+    <value>Digitate la riga sopra, con precisione</value>
+  </data>
+  <data name="WritingLinesMistakeCountFormat" xml:space="preserve">
+    <value>{0} errore/i — righe aggiunte</value>
+  </data>
+  <data name="WritingLinesSuccessMessage" xml:space="preserve">
+    <value>Ogni riga, fedelmente ricopiata. La vostra calligrafia è stata notata.</value>
+  </data>
+  <data name="WritingLinesFailureMessage" xml:space="preserve">
+    <value>Avete posato la penna troppo presto. È stata aggiunta una multa, e le righe restano da scrivere.</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Chiudi</value>
   </data>
@@ -426,6 +483,18 @@
   </data>
   <data name="MotivationalQuoteGrace" xml:space="preserve">
     <value>La grazia sotto un modesto peso è il segno più autentico dell'educazione.</value>
+  </data>
+  <data name="WritingLineObedience" xml:space="preserve">
+    <value>Attenderò ai miei doveri senza bisogno che mi vengano ricordati.</value>
+  </data>
+  <data name="WritingLinePunctuality" xml:space="preserve">
+    <value>La puntualità è una cortesia che non concedo a nessuno più che a me stessa.</value>
+  </data>
+  <data name="WritingLineGratitude" xml:space="preserve">
+    <value>Sono fortunata invero ad essere così premurosamente seguita.</value>
+  </data>
+  <data name="WritingLineDiscipline" xml:space="preserve">
+    <value>Una casa ben ordinata comincia da un sé ben ordinato.</value>
   </data>
   <data name="MotivationalQuoteListeningLabel" xml:space="preserve">
     <value>Sto ascoltando.</value>
@@ -707,6 +776,66 @@
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
   </data>
+  <data name="SettingsSectionPunishments" xml:space="preserve">
+    <value>Punizioni</value>
+  </data>
+  <data name="SettingsHeadingFine" xml:space="preserve">
+    <value>Multa</value>
+  </data>
+  <data name="SettingsFineDescription" xml:space="preserve">
+    <value>Una somma, aggiunta subito al debito. Sempre attiva — per questa non v'è alcun interruttore.</value>
+  </data>
+  <data name="SettingsFineSeverityValue" xml:space="preserve">
+    <value>$ per punto di severità</value>
+  </data>
+  <data name="SettingsHeadingCornertime" xml:space="preserve">
+    <value>Angolo</value>
+  </data>
+  <data name="SettingsCornertimeDescription" xml:space="preserve">
+    <value>Un periodo di immobilità, in un angolo di vostra scelta, osservato dalla camera.</value>
+  </data>
+  <data name="SettingsCornertimeSeverityValue" xml:space="preserve">
+    <value>Secondi richiesti per punto</value>
+  </data>
+  <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
+    <value>Margine massimo (secondi)</value>
+  </data>
+  <data name="SettingsCornertimeCheckInterval" xml:space="preserve">
+    <value>Intervallo di controllo (secondi)</value>
+  </data>
+  <data name="SettingsCornertimeSensitivity" xml:space="preserve">
+    <value>Sensibilità al movimento (%)</value>
+  </data>
+  <data name="SettingsCornertimeMovementPenalty" xml:space="preserve">
+    <value>Penalità per movimento (secondi)</value>
+  </data>
+  <data name="SettingsHeadingWritingLines" xml:space="preserve">
+    <value>Righe di penitenza</value>
+  </data>
+  <data name="SettingsWritingLinesDescription" xml:space="preserve">
+    <value>Una riga, ricopiata fedelmente, tante volte quante l'occasione richiede.</value>
+  </data>
+  <data name="SettingsWritingLinesSeverityValue" xml:space="preserve">
+    <value>Righe per punto di severità</value>
+  </data>
+  <data name="SettingsWritingLinesPenalty" xml:space="preserve">
+    <value>Righe di penalità per errore</value>
+  </data>
+  <data name="SettingsHeadingForcedOutfit" xml:space="preserve">
+    <value>Divisa obbligata</value>
+  </data>
+  <data name="SettingsForcedOutfitDescription" xml:space="preserve">
+    <value>I capi prescelti diventano obbligatori, senza richiesta, per un numero di sessioni successive.</value>
+  </data>
+  <data name="SettingsForcedOutfitSeverityValue" xml:space="preserve">
+    <value>Sessioni per punto di severità</value>
+  </data>
+  <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
+    <value>Fissa l'intera divisa, non solo i capi selezionati</value>
+  </data>
+  <data name="SettingsForcedOutfitItems" xml:space="preserve">
+    <value>Capi idonei</value>
+  </data>
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
     <value>Certi accessori, una volta indossati, non si tolgono finché lei non giudica che abbiano assolto al loro scopo.</value>
   </data>
@@ -793,18 +922,6 @@
   </data>
   <data name="SettingsAddChore" xml:space="preserve">
     <value>Aggiungi compito</value>
-  </data>
-  <data name="SettingsPunishmentNamePlaceholder" xml:space="preserve">
-    <value>Nome punizione</value>
-  </data>
-  <data name="SettingsFieldDebtIncrease" xml:space="preserve">
-    <value>Aumento debito</value>
-  </data>
-  <data name="SettingsFieldRequiredChores" xml:space="preserve">
-    <value>Compiti richiesti</value>
-  </data>
-  <data name="SettingsAddPunishment" xml:space="preserve">
-    <value>Aggiungi punizione</value>
   </data>
   <data name="SettingsSelectItemPlaceholder" xml:space="preserve">
     <value>Seleziona capo</value>

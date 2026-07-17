@@ -9,9 +9,6 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
     private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
 
-    private ILiteCollection<PunishmentTemplate> PunishmentTemplates =>
-        db.GetCollection<PunishmentTemplate>("punishment_templates");
-
     private ILiteCollection<PlugAndPlayItemConfig> PlugAndPlayItems =>
         db.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
 
@@ -61,21 +58,6 @@ public class ProfileRepository(LiteDatabase db)
     public void DeleteChore(int id)
     {
         Chores.Delete(id);
-    }
-
-    public List<PunishmentTemplate> GetPunishmentTemplates()
-    {
-        return PunishmentTemplates.FindAll().ToList();
-    }
-
-    public void SavePunishmentTemplate(PunishmentTemplate template)
-    {
-        PunishmentTemplates.Upsert(template);
-    }
-
-    public void DeletePunishmentTemplate(int id)
-    {
-        PunishmentTemplates.Delete(id);
     }
 
     public List<PlugAndPlayItemConfig> GetPlugAndPlayItems()

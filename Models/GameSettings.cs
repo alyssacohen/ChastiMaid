@@ -54,6 +54,28 @@ public class GameSettings
     // Plug and Play — enable/disable toggle (per-item eligibility/duration configured separately)
     public bool PlugAndPlayEnabled { get; set; }
 
+    // Fine punishment — always active, cannot be disabled
+    public decimal FineSeverityValue { get; set; } = 5; // $ per severity point
+
+    // Cornertime punishment
+    public bool CornertimeEnabled { get; set; } = true;
+    public double CornertimeSeverityValue { get; set; } = 30; // seconds of required stillness per severity point
+    public int CornertimeMaxOverrunSeconds { get; set; } = 120; // buffer beyond the requirement before it fails
+    public int CornertimeCheckIntervalSeconds { get; set; } = 5; // how often a frame is compared for movement
+    public int CornertimeMovementSensitivityPercent { get; set; } = 3; // % of changed pixels counted as movement
+    public int CornertimeMovementPenaltySeconds { get; set; } = 15; // added to the deadline per detected movement
+
+    // Writing Lines punishment
+    public bool WritingLinesEnabled { get; set; } = true;
+    public double WritingLinesSeverityValue { get; set; } = 3; // lines per severity point
+    public int WritingLinesPenaltyLinesPerMistake { get; set; } = 1;
+
+    // Forced Outfit punishment
+    public bool ForcedOutfitEnabled { get; set; } = true;
+    public double ForcedOutfitSeverityValue { get; set; } = 0.3; // sessions per severity point
+    public List<int> ForcedOutfitClothingItemIds { get; set; } = [];
+    public bool ForcedOutfitForceFullOutfit { get; set; }
+
     // Camera
     public int SelectedCameraIndex { get; set; }
 

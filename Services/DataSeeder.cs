@@ -165,34 +165,6 @@ public static class DataSeeder
             profile.SaveChore(chore);
         }
 
-        var punishments = new List<PunishmentTemplate>
-        {
-            new()
-            {
-                Id = 1,
-                Name = "Debt Increase",
-                DebtIncrease = 50,
-            },
-            new()
-            {
-                Id = 2,
-                Name = "Forced Outfit (1 session)",
-                OutfitForceDuration = new PunishmentDuration { Sessions = 1 },
-                ForceFullOutfit = true,
-            },
-            new()
-            {
-                Id = 3,
-                Name = "Extra Chore",
-                RequiredChoreCount = 1,
-            },
-        };
-
-        foreach (var punishment in punishments)
-        {
-            profile.SavePunishmentTemplate(punishment);
-        }
-
         profile.SaveGameSettings(new GameSettings());
     }
 }
