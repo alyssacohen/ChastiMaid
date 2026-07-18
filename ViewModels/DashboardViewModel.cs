@@ -228,7 +228,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             /* spec TBD */
         });
-        EmergencyBreakCommand = ReactiveCommand.Create(OnEmergencyBreak);
+        EmergencyBreakCommand = ReactiveCommand.Create(EndSession);
 
         if (startChore is not null)
         {
@@ -1529,12 +1529,6 @@ public partial class DashboardViewModel : ViewModelBase
     {
         await dialog.Result;
         ActiveDialog = null;
-    }
-
-    private void OnEmergencyBreak()
-    {
-        // TODO: brief confirmation dialog, then log event and navigate to end view
-        EndSession();
     }
 
     private void EndSession()
