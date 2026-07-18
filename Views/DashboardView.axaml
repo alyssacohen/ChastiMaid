@@ -1,180 +1,199 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:controls="using:ChastiMaid.Views.Controls"
-             xmlns:v="using:ChastiMaid.Views.Dialogs"
-             xmlns:conv="using:ChastiMaid.Views.Converters"
-             xmlns:ic="using:FluentIcons.Avalonia"
-             x:DataType="vm:DashboardViewModel"
-             x:Class="ChastiMaid.Views.DashboardView"
-             Background="{DynamicResource BrushWindowBackground}">
+<UserControl
+    Background="{DynamicResource BrushWindowBackground}"
+    x:Class="ChastiMaid.Views.DashboardView"
+    x:DataType="vm:DashboardViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="using:ChastiMaid.Views.Controls"
+    xmlns:conv="using:ChastiMaid.Views.Converters"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:v="using:ChastiMaid.Views.Dialogs"
+    xmlns:vm="using:ChastiMaid.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Panel>
 
-        <!-- ══════════════════════════════════════════════════════
-             IDLE MODE — full dashboard layout
-             ══════════════════════════════════════════════════════ -->
+        <!--
+            ══════════════════════════════════════════════════════
+            IDLE MODE — full dashboard layout
+            ══════════════════════════════════════════════════════
+        -->
         <Grid IsVisible="{Binding IsIdle}">
 
-            <!-- ── PORTRAIT layout ── -->
-            <Grid RowDefinitions="Auto,*,Auto"
-                  IsVisible="{Binding !IsLandscape}">
+            <!--  ── PORTRAIT layout ──  -->
+            <Grid IsVisible="{Binding !IsLandscape}" RowDefinitions="Auto,*,Auto">
 
-                <!-- Status bar -->
-                <Border Grid.Row="0"
-                        Background="{DynamicResource BrushSurfaceBase}"
-                        BorderBrush="{DynamicResource BrushBorderSubtle}"
-                        BorderThickness="0,0,0,1"
-                        Height="50"
-                        Padding="16,0">
+                <!--  Status bar  -->
+                <Border
+                    Background="{DynamicResource BrushSurfaceBase}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,0,0,1"
+                    Grid.Row="0"
+                    Height="50"
+                    Padding="16,0">
                     <Grid ColumnDefinitions="Auto,*,Auto">
-                        <StackPanel Grid.Column="0"
-                                    Orientation="Horizontal"
-                                    Spacing="8"
-                                    VerticalAlignment="Center">
-                            <Ellipse Width="10" Height="10"
-                                     Fill="{DynamicResource BrushStatusIdle}" />
-                            <TextBlock Classes="BodySmall"
-                                       Text="{conv:Tr DashboardStatusIdle}"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                        <Button Grid.Column="2"
-                                Content="{conv:Tr DashboardOutfitToggle}"
-                                Command="{Binding ToggleOutfitDrawerCommand}"
-                                Classes="SmallGhost"
+                        <StackPanel
+                            Grid.Column="0"
+                            Orientation="Horizontal"
+                            Spacing="8"
+                            VerticalAlignment="Center">
+                            <Ellipse
+                                Fill="{DynamicResource BrushStatusIdle}"
+                                Height="10"
+                                Width="10" />
+                            <TextBlock
+                                Classes="BodySmall"
+                                Text="{conv:Tr DashboardStatusIdle}"
                                 VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Button
+                            Classes="SmallGhost"
+                            Command="{Binding ToggleOutfitDrawerCommand}"
+                            Content="{conv:Tr DashboardOutfitToggle}"
+                            Grid.Column="2"
+                            VerticalAlignment="Center" />
                     </Grid>
                 </Border>
 
-                <!-- Scrollable content -->
+                <!--  Scrollable content  -->
                 <ScrollViewer Grid.Row="1">
                     <StackPanel Margin="16,16,16,0" Spacing="20">
 
-                        <controls:DebtWidget DebtTotal="{Binding DebtTotal}"
-                                             DebtSettled="{Binding DebtSettled}" />
+                        <controls:DebtWidget DebtSettled="{Binding DebtSettled}" DebtTotal="{Binding DebtTotal}" />
 
-                        <!-- Chore rejected feedback -->
-                        <Border Background="{DynamicResource BrushAmberBackground}"
-                                BorderBrush="{DynamicResource BrushAmber}"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="12,8"
-                                IsVisible="{Binding ChoreResultMessage,
-                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                            <TextBlock Classes="BodySmall"
-                                       Text="{Binding ChoreResultMessage}"
-                                       Foreground="{DynamicResource BrushAmberText}"
-                                       TextWrapping="Wrap" />
+                        <!--  Chore rejected feedback  -->
+                        <Border
+                            Background="{DynamicResource BrushAmberBackground}"
+                            BorderBrush="{DynamicResource BrushAmber}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            IsVisible="{Binding ChoreResultMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            Padding="12,8">
+                            <TextBlock
+                                Classes="BodySmall"
+                                Foreground="{DynamicResource BrushAmberText}"
+                                Text="{Binding ChoreResultMessage}"
+                                TextWrapping="Wrap" />
                         </Border>
 
-                        <!-- Tasks section -->
+                        <!--  Tasks section  -->
                         <StackPanel Spacing="0">
                             <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
-                                <TextBlock Grid.Column="0"
-                                           Classes="Subheading"
-                                           Text="{conv:Tr DashboardTasksHeading}"
-                                           VerticalAlignment="Center" />
-                                <Border Grid.Column="1"
-                                        Background="{DynamicResource BrushSurfaceBase}"
-                                        BorderBrush="{DynamicResource BrushBorderSubtle}"
-                                        BorderThickness="1"
-                                        CornerRadius="10"
-                                        Padding="8,2"
-                                        VerticalAlignment="Center">
-                                    <TextBlock Classes="Caption"
-                                               Text="{Binding Tasks.Count}" />
+                                <TextBlock
+                                    Classes="Subheading"
+                                    Grid.Column="0"
+                                    Text="{conv:Tr DashboardTasksHeading}"
+                                    VerticalAlignment="Center" />
+                                <Border
+                                    Background="{DynamicResource BrushSurfaceBase}"
+                                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                                    BorderThickness="1"
+                                    CornerRadius="10"
+                                    Grid.Column="1"
+                                    Padding="8,2"
+                                    VerticalAlignment="Center">
+                                    <TextBlock Classes="Caption" Text="{Binding Tasks.Count}" />
                                 </Border>
                             </Grid>
 
-                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" />
+                            <Border Background="{DynamicResource BrushBorderSubtle}" Height="1" />
 
                             <ItemsControl ItemsSource="{Binding Tasks}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="vm:TaskItemViewModel">
                                         <StackPanel>
                                             <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
-                                                <Ellipse Grid.Column="0"
-                                                         Width="8" Height="8"
-                                                         Margin="0,0,10,0"
-                                                         VerticalAlignment="Center"
-                                                         Fill="{Binding StatusBrushKey,
-                                                                Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
-                                                <TextBlock Grid.Column="1"
-                                                           Classes="Body"
-                                                           Text="{Binding Name}"
-                                                           VerticalAlignment="Center" />
-                                                <Button Grid.Column="2"
-                                                        Command="{Binding ToggleExpandedCommand}"
-                                                        Classes="SmallGhost"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,4,0">
-                                                    <ic:SymbolIcon Symbol="ChevronDown"
-                                                                   IconVariant="Regular"
-                                                                   FontSize="14" />
+                                                <Ellipse
+                                                    Fill="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
+                                                    Grid.Column="0"
+                                                    Height="8"
+                                                    Margin="0,0,10,0"
+                                                    VerticalAlignment="Center"
+                                                    Width="8" />
+                                                <TextBlock
+                                                    Classes="Body"
+                                                    Grid.Column="1"
+                                                    Text="{Binding Name}"
+                                                    VerticalAlignment="Center" />
+                                                <Button
+                                                    Classes="SmallGhost"
+                                                    Command="{Binding ToggleExpandedCommand}"
+                                                    Grid.Column="2"
+                                                    Margin="0,0,4,0"
+                                                    VerticalAlignment="Center">
+                                                    <ic:SymbolIcon
+                                                        FontSize="14"
+                                                        IconVariant="Regular"
+                                                        Symbol="ChevronDown" />
                                                 </Button>
-                                                <Button Grid.Column="3"
-                                                        Content="{conv:Tr Start}"
-                                                        Command="{Binding StartCommand}"
-                                                        Classes="Primary compact"
-                                                        MinHeight="44"
-                                                        VerticalAlignment="Center" />
+                                                <Button
+                                                    Classes="Primary compact"
+                                                    Command="{Binding StartCommand}"
+                                                    Content="{conv:Tr Start}"
+                                                    Grid.Column="3"
+                                                    MinHeight="44"
+                                                    VerticalAlignment="Center" />
                                             </Grid>
-                                            <StackPanel IsVisible="{Binding IsExpanded}"
-                                                        Margin="18,0,0,10"
-                                                        Spacing="2">
-                                                <TextBlock Classes="Caption"
-                                                           Text="{Binding LastCompletedLabel}"
-                                                           Foreground="{Binding StatusBrushKey,
-                                                                        Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
-                                                <TextBlock Classes="Caption"
-                                                           Text="{Binding FrequencyLabel}" />
+                                            <StackPanel
+                                                IsVisible="{Binding IsExpanded}"
+                                                Margin="18,0,0,10"
+                                                Spacing="2">
+                                                <TextBlock
+                                                    Classes="Caption"
+                                                    Foreground="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
+                                                    Text="{Binding LastCompletedLabel}" />
+                                                <TextBlock Classes="Caption" Text="{Binding FrequencyLabel}" />
                                             </StackPanel>
-                                            <Border Height="0.5"
-                                                    Background="{DynamicResource BrushBorderSubtle}" />
+                                            <Border Background="{DynamicResource BrushBorderSubtle}" Height="0.5" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <TextBlock Classes="Caption"
-                                       Text="{conv:Tr DashboardNoPendingTasks}"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,16">
+                            <TextBlock
+                                Classes="Caption"
+                                HorizontalAlignment="Center"
+                                Margin="0,16"
+                                Text="{conv:Tr DashboardNoPendingTasks}">
                                 <TextBlock.IsVisible>
-                                    <Binding Path="Tasks.Count"
-                                             Converter="{x:Static ObjectConverters.IsNull}"
-                                             FallbackValue="False" />
+                                    <Binding
+                                        Converter="{x:Static ObjectConverters.IsNull}"
+                                        FallbackValue="False"
+                                        Path="Tasks.Count" />
                                 </TextBlock.IsVisible>
                             </TextBlock>
 
                         </StackPanel>
 
-                        <!-- Punishment button -->
-                        <Button Command="{Binding OpenPunishmentsCommand}"
-                                IsEnabled="{Binding HasPendingPunishments}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Padding="16,14"
-                                CornerRadius="6"
-                                Classes="Amber">
+                        <!--  Punishment button  -->
+                        <Button
+                            Classes="Amber"
+                            Command="{Binding OpenPunishmentsCommand}"
+                            CornerRadius="6"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            IsEnabled="{Binding HasPendingPunishments}"
+                            Padding="16,14">
                             <Grid ColumnDefinitions="*,Auto">
-                                <TextBlock Grid.Column="0"
-                                           Classes="Body"
-                                           Text="{conv:Tr PendingPunishments}"
-                                           VerticalAlignment="Center" />
-                                <Border Grid.Column="1"
-                                        Background="{DynamicResource BrushAmberText}"
-                                        CornerRadius="12"
-                                        MinWidth="24"
-                                        Height="24"
-                                        Padding="6,0"
-                                        IsVisible="{Binding HasPendingPunishments}"
-                                        VerticalAlignment="Center">
-                                    <TextBlock Classes="Caption"
-                                               Text="{Binding PendingPunishmentsCount}"
-                                               Foreground="{DynamicResource BrushWindowBackground}"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" />
+                                <TextBlock
+                                    Classes="Body"
+                                    Grid.Column="0"
+                                    Text="{conv:Tr PendingPunishments}"
+                                    VerticalAlignment="Center" />
+                                <Border
+                                    Background="{DynamicResource BrushAmberText}"
+                                    CornerRadius="12"
+                                    Grid.Column="1"
+                                    Height="24"
+                                    IsVisible="{Binding HasPendingPunishments}"
+                                    MinWidth="24"
+                                    Padding="6,0"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        Classes="Caption"
+                                        Foreground="{DynamicResource BrushWindowBackground}"
+                                        HorizontalAlignment="Center"
+                                        Text="{Binding PendingPunishmentsCount}"
+                                        VerticalAlignment="Center" />
                                 </Border>
                             </Grid>
                         </Button>
@@ -184,239 +203,273 @@
                     </StackPanel>
                 </ScrollViewer>
 
-                <!-- Action bar (pinned bottom) -->
-                <Border Grid.Row="2"
-                        Background="{DynamicResource BrushSurfaceBase}"
-                        BorderBrush="{DynamicResource BrushBorderSubtle}"
-                        BorderThickness="0,1,0,0"
-                        Padding="8,8">
+                <!--  Action bar (pinned bottom)  -->
+                <Border
+                    Background="{DynamicResource BrushSurfaceBase}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,1,0,0"
+                    Grid.Row="2"
+                    Padding="8,8">
                     <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
 
-                        <Button Grid.Column="0"
-                                Content="{conv:Tr DashboardRequestPermission}"
-                                Command="{Binding RequestPermissionCommand}"
-                                Classes="Ghost compact"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center" />
+                        <Button
+                            Classes="Ghost compact"
+                            Command="{Binding RequestPermissionCommand}"
+                            Content="{conv:Tr DashboardRequestPermission}"
+                            Grid.Column="0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
 
-                        <Button Grid.Column="1"
-                                Content="{conv:Tr DashboardShop}"
-                                Command="{Binding OpenShopCommand}"
-                                Classes="Ghost compact"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center" />
+                        <Button
+                            Classes="Ghost compact"
+                            Command="{Binding OpenShopCommand}"
+                            Content="{conv:Tr DashboardShop}"
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
 
-                        <Button Grid.Column="2"
-                                Content="{conv:Tr DashboardEndSession}"
-                                Command="{Binding EndSessionCommand}"
-                                Classes="Ghost compact"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center" />
+                        <Button
+                            Classes="Ghost compact"
+                            Command="{Binding EndSessionCommand}"
+                            Content="{conv:Tr DashboardEndSession}"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
 
-                        <Button Grid.Column="3"
-                                Content="{conv:Tr DashboardEmergencyBreak}"
-                                Command="{Binding EmergencyBreakCommand}"
-                                Classes="Emergency compact"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center" />
+                        <Button
+                            Classes="Emergency compact"
+                            Command="{Binding EmergencyBreakCommand}"
+                            Content="{conv:Tr DashboardEmergencyBreak}"
+                            Grid.Column="3"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
 
                     </Grid>
                 </Border>
 
             </Grid>
 
-            <!-- ── LANDSCAPE layout ── -->
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*"
-                  IsVisible="{Binding IsLandscape}">
+            <!--  ── LANDSCAPE layout ──  -->
+            <Grid
+                ColumnDefinitions="Auto,*"
+                IsVisible="{Binding IsLandscape}"
+                RowDefinitions="Auto,*">
 
-                <!-- Status bar (spans both columns) -->
-                <Border Grid.Row="0" Grid.ColumnSpan="2"
-                        Background="{DynamicResource BrushSurfaceBase}"
-                        BorderBrush="{DynamicResource BrushBorderSubtle}"
-                        BorderThickness="0,0,0,1"
-                        Height="50"
-                        Padding="16,0">
-                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                        <Ellipse Width="10" Height="10"
-                                 Fill="{DynamicResource BrushStatusIdle}" />
-                        <TextBlock Classes="BodySmall"
-                                   Text="{conv:Tr DashboardStatusIdle}"
-                                   VerticalAlignment="Center" />
+                <!--  Status bar (spans both columns)  -->
+                <Border
+                    Background="{DynamicResource BrushSurfaceBase}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,0,0,1"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
+                    Height="50"
+                    Padding="16,0">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        VerticalAlignment="Center">
+                        <Ellipse
+                            Fill="{DynamicResource BrushStatusIdle}"
+                            Height="10"
+                            Width="10" />
+                        <TextBlock
+                            Classes="BodySmall"
+                            Text="{conv:Tr DashboardStatusIdle}"
+                            VerticalAlignment="Center" />
                     </StackPanel>
                 </Border>
 
-                <!-- Left rail -->
-                <Border Grid.Row="1" Grid.Column="0"
-                        Background="{DynamicResource BrushSurfaceBase}"
-                        BorderBrush="{DynamicResource BrushBorderSubtle}"
-                        BorderThickness="0,0,1,0"
-                        Padding="12">
+                <!--  Left rail  -->
+                <Border
+                    Background="{DynamicResource BrushSurfaceBase}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,0,1,0"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Padding="12">
                     <DockPanel>
-                        <Button DockPanel.Dock="Bottom"
-                                Content="{conv:Tr DashboardCurrentOutfitToggle}"
-                                Command="{Binding ToggleOutfitDrawerCommand}"
-                                Classes="Ghost"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                Margin="0,8,0,0" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ToggleOutfitDrawerCommand}"
+                            Content="{conv:Tr DashboardCurrentOutfitToggle}"
+                            DockPanel.Dock="Bottom"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Margin="0,8,0,0" />
 
                         <StackPanel Spacing="8">
-                            <controls:DebtWidget DebtTotal="{Binding DebtTotal}"
-                                                 DebtSettled="{Binding DebtSettled}"
-                                                 Margin="0,0,0,12" />
+                            <controls:DebtWidget
+                                DebtSettled="{Binding DebtSettled}"
+                                DebtTotal="{Binding DebtTotal}"
+                                Margin="0,0,0,12" />
 
-                            <Button Content="{conv:Tr DashboardRequestPermission}"
-                                    Command="{Binding RequestPermissionCommand}"
-                                    Classes="Ghost compact"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    MinHeight="44" />
+                            <Button
+                                Classes="Ghost compact"
+                                Command="{Binding RequestPermissionCommand}"
+                                Content="{conv:Tr DashboardRequestPermission}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                MinHeight="44" />
 
-                            <Button Content="{conv:Tr DashboardShop}"
-                                    Command="{Binding OpenShopCommand}"
-                                    Classes="Ghost compact"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    MinHeight="44" />
+                            <Button
+                                Classes="Ghost compact"
+                                Command="{Binding OpenShopCommand}"
+                                Content="{conv:Tr DashboardShop}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                MinHeight="44" />
 
-                            <Button Content="{conv:Tr DashboardEndSession}"
-                                    Command="{Binding EndSessionCommand}"
-                                    Classes="Ghost compact"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    MinHeight="44" />
+                            <Button
+                                Classes="Ghost compact"
+                                Command="{Binding EndSessionCommand}"
+                                Content="{conv:Tr DashboardEndSession}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                MinHeight="44" />
 
-                            <Button Content="{conv:Tr DashboardEmergencyBreak}"
-                                    Command="{Binding EmergencyBreakCommand}"
-                                    Classes="Emergency compact"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    MinHeight="44" />
+                            <Button
+                                Classes="Emergency compact"
+                                Command="{Binding EmergencyBreakCommand}"
+                                Content="{conv:Tr DashboardEmergencyBreak}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                MinHeight="44" />
                         </StackPanel>
                     </DockPanel>
                 </Border>
 
-                <!-- Right: scrollable tasks + punishment -->
-                <ScrollViewer Grid.Row="1" Grid.Column="1">
+                <!--  Right: scrollable tasks + punishment  -->
+                <ScrollViewer Grid.Column="1" Grid.Row="1">
                     <StackPanel Margin="16,16,16,0" Spacing="20">
 
-                        <!-- Chore rejected feedback -->
-                        <Border Background="{DynamicResource BrushAmberBackground}"
-                                BorderBrush="{DynamicResource BrushAmber}"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="12,8"
-                                IsVisible="{Binding ChoreResultMessage,
-                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                            <TextBlock Classes="BodySmall"
-                                       Text="{Binding ChoreResultMessage}"
-                                       Foreground="{DynamicResource BrushAmberText}"
-                                       TextWrapping="Wrap" />
+                        <!--  Chore rejected feedback  -->
+                        <Border
+                            Background="{DynamicResource BrushAmberBackground}"
+                            BorderBrush="{DynamicResource BrushAmber}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            IsVisible="{Binding ChoreResultMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            Padding="12,8">
+                            <TextBlock
+                                Classes="BodySmall"
+                                Foreground="{DynamicResource BrushAmberText}"
+                                Text="{Binding ChoreResultMessage}"
+                                TextWrapping="Wrap" />
                         </Border>
 
                         <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
-                            <TextBlock Grid.Column="0"
-                                       Classes="Subheading"
-                                       Text="{conv:Tr DashboardTasksHeading}"
-                                       VerticalAlignment="Center" />
-                            <Border Grid.Column="1"
-                                    Background="{DynamicResource BrushSurfaceBase}"
-                                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                                    BorderThickness="1"
-                                    CornerRadius="10"
-                                    Padding="8,2"
-                                    VerticalAlignment="Center">
-                                <TextBlock Classes="Caption"
-                                           Text="{Binding Tasks.Count}" />
+                            <TextBlock
+                                Classes="Subheading"
+                                Grid.Column="0"
+                                Text="{conv:Tr DashboardTasksHeading}"
+                                VerticalAlignment="Center" />
+                            <Border
+                                Background="{DynamicResource BrushSurfaceBase}"
+                                BorderBrush="{DynamicResource BrushBorderSubtle}"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Grid.Column="1"
+                                Padding="8,2"
+                                VerticalAlignment="Center">
+                                <TextBlock Classes="Caption" Text="{Binding Tasks.Count}" />
                             </Border>
                         </Grid>
 
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" />
+                        <Border Background="{DynamicResource BrushBorderSubtle}" Height="1" />
 
                         <ItemsControl ItemsSource="{Binding Tasks}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                     <StackPanel>
                                         <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
-                                            <Ellipse Grid.Column="0"
-                                                     Width="8" Height="8"
-                                                     Margin="0,0,10,0"
-                                                     VerticalAlignment="Center"
-                                                     Fill="{Binding StatusBrushKey,
-                                                            Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
-                                            <TextBlock Grid.Column="1"
-                                                       Classes="Body"
-                                                       Text="{Binding Name}"
-                                                       VerticalAlignment="Center" />
-                                            <Button Grid.Column="2"
-                                                    Command="{Binding ToggleExpandedCommand}"
-                                                    Classes="SmallGhost"
-                                                    VerticalAlignment="Center"
-                                                    Margin="0,0,4,0">
-                                                <ic:SymbolIcon Symbol="ChevronDown"
-                                                               IconVariant="Regular"
-                                                               FontSize="14" />
+                                            <Ellipse
+                                                Fill="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
+                                                Grid.Column="0"
+                                                Height="8"
+                                                Margin="0,0,10,0"
+                                                VerticalAlignment="Center"
+                                                Width="8" />
+                                            <TextBlock
+                                                Classes="Body"
+                                                Grid.Column="1"
+                                                Text="{Binding Name}"
+                                                VerticalAlignment="Center" />
+                                            <Button
+                                                Classes="SmallGhost"
+                                                Command="{Binding ToggleExpandedCommand}"
+                                                Grid.Column="2"
+                                                Margin="0,0,4,0"
+                                                VerticalAlignment="Center">
+                                                <ic:SymbolIcon
+                                                    FontSize="14"
+                                                    IconVariant="Regular"
+                                                    Symbol="ChevronDown" />
                                             </Button>
-                                            <Button Grid.Column="3"
-                                                    Content="{conv:Tr Start}"
-                                                    Command="{Binding StartCommand}"
-                                                    Classes="Primary compact"
-                                                    MinHeight="44"
-                                                    VerticalAlignment="Center" />
+                                            <Button
+                                                Classes="Primary compact"
+                                                Command="{Binding StartCommand}"
+                                                Content="{conv:Tr Start}"
+                                                Grid.Column="3"
+                                                MinHeight="44"
+                                                VerticalAlignment="Center" />
                                         </Grid>
-                                        <StackPanel IsVisible="{Binding IsExpanded}"
-                                                    Margin="18,0,0,10"
-                                                    Spacing="2">
-                                            <TextBlock Classes="Caption"
-                                                       Text="{Binding LastCompletedLabel}"
-                                                       Foreground="{Binding StatusBrushKey,
-                                                                    Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}" />
-                                            <TextBlock Classes="Caption"
-                                                       Text="{Binding FrequencyLabel}" />
+                                        <StackPanel
+                                            IsVisible="{Binding IsExpanded}"
+                                            Margin="18,0,0,10"
+                                            Spacing="2">
+                                            <TextBlock
+                                                Classes="Caption"
+                                                Foreground="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
+                                                Text="{Binding LastCompletedLabel}" />
+                                            <TextBlock Classes="Caption" Text="{Binding FrequencyLabel}" />
                                         </StackPanel>
-                                        <Border Height="0.5"
-                                                Background="{DynamicResource BrushBorderSubtle}" />
+                                        <Border Background="{DynamicResource BrushBorderSubtle}" Height="0.5" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!-- Punishment button -->
-                        <Button Command="{Binding OpenPunishmentsCommand}"
-                                IsEnabled="{Binding HasPendingPunishments}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Padding="16,14"
-                                CornerRadius="6"
-                                Classes="Amber">
+                        <!--  Punishment button  -->
+                        <Button
+                            Classes="Amber"
+                            Command="{Binding OpenPunisxhmentsCommand}"
+                            CornerRadius="6"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            IsEnabled="{Binding HasPendingPunishments}"
+                            Padding="16,14">
                             <Grid ColumnDefinitions="*,Auto">
-                                <TextBlock Grid.Column="0"
-                                           Classes="Body"
-                                           Text="{conv:Tr PendingPunishments}"
-                                           VerticalAlignment="Center" />
-                                <Border Grid.Column="1"
-                                        Background="{DynamicResource BrushAmberText}"
-                                        CornerRadius="12"
-                                        MinWidth="24"
-                                        Height="24"
-                                        Padding="6,0"
-                                        IsVisible="{Binding HasPendingPunishments}"
-                                        VerticalAlignment="Center">
-                                    <TextBlock Classes="Caption"
-                                               Text="{Binding PendingPunishmentsCount}"
-                                               Foreground="{DynamicResource BrushWindowBackground}"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" />
+                                <TextBlock
+                                    Classes="Body"
+                                    Grid.Column="0"
+                                    Text="{conv:Tr PendingPunishments}"
+                                    VerticalAlignment="Center" />
+                                <Border
+                                    Background="{DynamicResource BrushAmberText}"
+                                    CornerRadius="12"
+                                    Grid.Column="1"
+                                    Height="24"
+                                    IsVisible="{Binding HasPendingPunishments}"
+                                    MinWidth="24"
+                                    Padding="6,0"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        Classes="Caption"
+                                        Foreground="{DynamicResource BrushWindowBackground}"
+                                        HorizontalAlignment="Center"
+                                        Text="{Binding PendingPunishmentsCount}"
+                                        VerticalAlignment="Center" />
                                 </Border>
                             </Grid>
                         </Button>
 
-                        <Button Content="{conv:Tr DashboardCompleteGame}"
-                                Command="{Binding CompleteGameCommand}"
-                                IsVisible="{Binding CanComplete}"
-                                Classes="Primary"
-                                HorizontalAlignment="Center"
-                                Margin="0,8,0,16" />
+                        <Button
+                            Classes="Primary"
+                            Command="{Binding CompleteGameCommand}"
+                            Content="{conv:Tr DashboardCompleteGame}"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding CanComplete}"
+                            Margin="0,8,0,16" />
 
                     </StackPanel>
                 </ScrollViewer>
@@ -425,233 +478,285 @@
 
         </Grid>
 
-        <!-- ══════════════════════════════════════════════════════
-             BUSY MODE overlay
-             ══════════════════════════════════════════════════════ -->
-        <Grid RowDefinitions="Auto,Auto,*,Auto"
-              IsVisible="{Binding IsBusy}"
-              Background="{DynamicResource BrushWindowBackground}">
+        <!--
+            ══════════════════════════════════════════════════════
+            BUSY MODE overlay
+            ══════════════════════════════════════════════════════
+        -->
+        <Grid
+            Background="{DynamicResource BrushWindowBackground}"
+            IsVisible="{Binding IsBusy}"
+            RowDefinitions="Auto,Auto,*,Auto">
 
-            <TextBlock Grid.Row="0"
-                       Text="{Binding BusyChoreName}"
-                       Classes="PageTitle"
-                       HorizontalAlignment="Center"
-                       Margin="0,24" />
+            <TextBlock
+                Classes="PageTitle"
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                Margin="0,24"
+                Text="{Binding BusyChoreName}" />
 
-            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="4">
-                <TextBlock Classes="Body"
-                           Text="{Binding BusyChoreDescription}"
-                           HorizontalAlignment="Center" />
-                <TextBlock Classes="Caption"
-                           Text="{Binding BusyChoreValueDisplay}"
-                           HorizontalAlignment="Center" />
+            <StackPanel
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                Spacing="4">
+                <TextBlock
+                    Classes="Body"
+                    HorizontalAlignment="Center"
+                    Text="{Binding BusyChoreDescription}" />
+                <TextBlock
+                    Classes="Caption"
+                    HorizontalAlignment="Center"
+                    Text="{Binding BusyChoreValueDisplay}" />
             </StackPanel>
 
-            <TextBlock Grid.Row="2"
-                       Text="{Binding BusyElapsed}"
-                       Classes="NumberLarge"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" />
+            <TextBlock
+                Classes="NumberLarge"
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                Text="{Binding BusyElapsed}"
+                VerticalAlignment="Center" />
 
-            <Button Grid.Row="3"
-                    Content="{conv:Tr DashboardEndChore}"
-                    Command="{Binding EndChoreCommand}"
-                    HorizontalAlignment="Center"
-                    Classes="Primary"
-                    Margin="0,0,0,24" />
+            <Button
+                Classes="Primary"
+                Command="{Binding EndChoreCommand}"
+                Content="{conv:Tr DashboardEndChore}"
+                Grid.Row="3"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,24" />
         </Grid>
 
-        <!-- ##    POPUP OVERLAY    ## -->
-        <Panel IsVisible="{Binding IsPopupVisible}" Classes="dialogOverlay"
-               PointerPressed="OnPopupOverlayPointerPressed">
-            <Border Classes="dialogBox" MaxWidth="500" MaxHeight="{Binding PopupDialogMaxHeight}"
-                    PointerPressed="OnPopupDialogBoxPointerPressed">
-              <Panel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsShowingQuestionPanel}">
-                    <TextBlock Classes="Caption"
-                               Text="{Binding PopupCountdown, StringFormat={conv:Tr DashboardPopupCountdownFormat}}"
-                               Foreground="{DynamicResource BrushEmergencyText}"
-                               HorizontalAlignment="Center" />
-                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PopupPreviewWidth}"
-                                                    Height="{Binding PopupPreviewHeight}"
-                                                    Stretch="UniformToFill"
-                                                    HorizontalAlignment="Center"
-                                                    IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <TextBlock Classes="Body"
-                               Text="{Binding PopupQuestion}"
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Center" />
-                    <ItemsControl ItemsSource="{Binding PopupAnswers}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <Button Content="{Binding}"
+        <!--  ##    POPUP OVERLAY    ##  -->
+        <Panel
+            Classes="dialogOverlay"
+            IsVisible="{Binding IsPopupVisible}"
+            PointerPressed="OnPopupOverlayPointerPressed">
+            <Border
+                Classes="dialogBox"
+                MaxHeight="{Binding PopupDialogMaxHeight}"
+                MaxWidth="500"
+                PointerPressed="OnPopupDialogBoxPointerPressed">
+                <Panel>
+                    <StackPanel IsVisible="{Binding IsShowingQuestionPanel}" Spacing="16">
+                        <TextBlock
+                            Classes="Caption"
+                            Foreground="{DynamicResource BrushEmergencyText}"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupCountdown, StringFormat={conv:Tr DashboardPopupCountdownFormat}}" />
+                        <controls:WebcamPreviewControl
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}"
+                            Service="{Binding Webcam}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <TextBlock
+                            Classes="Body"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupQuestion}"
+                            TextWrapping="Wrap" />
+                        <ItemsControl ItemsSource="{Binding PopupAnswers}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Button
                                         Classes="Ghost"
+                                        Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="{Binding}"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
-                                        Margin="0,4"
-                                        Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
-                                        CommandParameter="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsPoseCountdownActive}">
-                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PopupPreviewWidth}"
-                                                    Height="{Binding PopupPreviewHeight}"
-                                                    Stretch="UniformToFill"
-                                                    HorizontalAlignment="Center" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{conv:Tr PoseForCameraCountdownLabel}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding PoseCountdown}"
-                               Classes="NumberLarge"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsCurtsyCountdownActive}">
-                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PopupPreviewWidth}"
-                                                    Height="{Binding PopupPreviewHeight}"
-                                                    Stretch="UniformToFill"
-                                                    HorizontalAlignment="Center" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{conv:Tr CurtsyCountdownLabel}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding CurtsyCountdown}"
-                               Classes="NumberLarge"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsCurtsyRecordingActive}">
-                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PopupPreviewWidth}"
-                                                    Height="{Binding PopupPreviewHeight}"
-                                                    Stretch="UniformToFill"
-                                                    HorizontalAlignment="Center" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              IsEnabled="False"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{conv:Tr CurtsyRecordingLabel}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding CurtsyRecordingSecondsLeft}"
-                               Classes="NumberLarge"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsQuoteListeningActive}">
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{conv:Tr MotivationalQuoteListeningLabel}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Classes="Body"
-                               Text="{Binding PopupQuestion}"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding QuoteListenCountdown}"
-                               Classes="NumberLarge"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Classes="Caption"
-                               Text="{Binding QuoteAttemptsRemaining, StringFormat={conv:Tr MotivationalQuoteAttemptsRemainingFormat}}"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsQuoteTypingActive}">
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{conv:Tr MotivationalQuoteTypingLabel}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Classes="Body"
-                               Text="{Binding PopupQuestion}"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBox Classes="underline"
-                             Text="{Binding QuoteTypedAnswer}"
-                             PlaceholderText="{conv:Tr MotivationalQuoteTypeWatermark}" />
-                    <TextBlock Text="{Binding QuoteListenCountdown}"
-                               Classes="NumberLarge"
-                               HorizontalAlignment="Center" />
-                    <Button Content="{conv:Tr MotivationalQuoteSubmit}"
-                            Classes="Ghost"
+                                        Margin="0,4" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsPoseCountdownActive}" Spacing="16">
+                        <controls:WebcamPreviewControl
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            Service="{Binding Webcam}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <ComboBox
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Command="{Binding SubmitQuoteTypedAnswerCommand}" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsKneelFramingActive}">
-                    <controls:WebcamPreviewControl Service="{Binding Webcam}"
-                                                    Width="{Binding PopupPreviewWidth}"
-                                                    Height="{Binding PopupPreviewHeight}"
-                                                    Stretch="UniformToFill"
-                                                    HorizontalAlignment="Center" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{conv:Tr KneelFramingLabel}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <Button Content="{conv:Tr KneelFramingConfirm}"
-                            Classes="Ghost"
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{conv:Tr PoseForCameraCountdownLabel}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PoseCountdown}" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsCurtsyCountdownActive}" Spacing="16">
+                        <controls:WebcamPreviewControl
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            Service="{Binding Webcam}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <ComboBox
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Command="{Binding ConfirmKneelFramingCommand}" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsKneelActive}">
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{Binding PopupQuestion}"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding KneelCountdown}"
-                               Classes="NumberLarge"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Spacing="16" IsVisible="{Binding IsShowingPopupOutcome}">
-                    <Image Source="{Binding CapturedPosePhoto}"
-                           Width="{Binding PopupPreviewWidth}"
-                           Height="{Binding PopupPreviewHeight}"
-                           Stretch="UniformToFill"
-                           HorizontalAlignment="Center"
-                           IsVisible="{Binding CapturedPosePhoto, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                    <TextBlock Classes="EmployerVoice"
-                               Text="{Binding PopupOutcomeMessage}"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-              </Panel>
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{conv:Tr CurtsyCountdownLabel}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurtsyCountdown}" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsCurtsyRecordingActive}" Spacing="16">
+                        <controls:WebcamPreviewControl
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            Service="{Binding Webcam}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{conv:Tr CurtsyRecordingLabel}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurtsyRecordingSecondsLeft}" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsQuoteListeningActive}" Spacing="16">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{conv:Tr MotivationalQuoteListeningLabel}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="Body"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupQuestion}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding QuoteListenCountdown}" />
+                        <TextBlock
+                            Classes="Caption"
+                            HorizontalAlignment="Center"
+                            Text="{Binding QuoteAttemptsRemaining, StringFormat={conv:Tr MotivationalQuoteAttemptsRemainingFormat}}" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsQuoteTypingActive}" Spacing="16">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{conv:Tr MotivationalQuoteTypingLabel}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="Body"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupQuestion}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <TextBox
+                            Classes="underline"
+                            PlaceholderText="{conv:Tr MotivationalQuoteTypeWatermark}"
+                            Text="{Binding QuoteTypedAnswer}" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding QuoteListenCountdown}" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding SubmitQuoteTypedAnswerCommand}"
+                            Content="{conv:Tr MotivationalQuoteSubmit}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsKneelFramingActive}" Spacing="16">
+                        <controls:WebcamPreviewControl
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            Service="{Binding Webcam}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{conv:Tr KneelFramingLabel}"
+                            TextAlignment="Center" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ConfirmKneelFramingCommand}"
+                            Content="{conv:Tr KneelFramingConfirm}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsKneelActive}" Spacing="16">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupQuestion}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding KneelCountdown}" />
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsShowingPopupOutcome}" Spacing="16">
+                        <Image
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding CapturedPosePhoto, Converter={x:Static ObjectConverters.IsNotNull}}"
+                            Source="{Binding CapturedPosePhoto}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupOutcomeMessage}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Panel>
             </Border>
         </Panel>
 
-        <!-- ══════════════════════════════════════════════════════
-             OUTFIT DRAWER (topmost overlay)
-             ══════════════════════════════════════════════════════ -->
-        <controls:OutfitDrawer x:Name="OutfitDrawerControl"
-                               IsOpen="{Binding IsOutfitDrawerOpen}"
-                               Outfit="{Binding CurrentOutfitVm}"
-                               MultiplierDisplay="{Binding OutfitMultiplierDisplay}" />
+        <!--
+            ══════════════════════════════════════════════════════
+            OUTFIT DRAWER (topmost overlay)
+            ══════════════════════════════════════════════════════
+        -->
+        <controls:OutfitDrawer
+            IsOpen="{Binding IsOutfitDrawerOpen}"
+            MultiplierDisplay="{Binding OutfitMultiplierDisplay}"
+            Outfit="{Binding CurrentOutfitVm}"
+            x:Name="OutfitDrawerControl" />
 
-        <!-- Confirmation dialog overlay -->
-        <ContentControl Content="{Binding ActiveDialog}"
-                        IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <!--  Confirmation dialog overlay  -->
+        <ContentControl Content="{Binding ActiveDialog}" IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}">
             <ContentControl.ContentTemplate>
                 <DataTemplate DataType="vm:ConfirmDialogViewModel">
                     <v:ConfirmDialog />
