@@ -579,6 +579,20 @@
                                                            Value="{Binding WritingLinesPenaltyLinesPerMistake, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
                                                            Minimum="1" FormatString="0" />
                                         </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWritingLinesMinLines}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding WritingLinesMinLines, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWritingLinesMaxLines}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding WritingLinesMaxLines, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>

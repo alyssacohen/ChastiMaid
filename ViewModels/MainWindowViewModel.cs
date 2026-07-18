@@ -54,7 +54,9 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _activeSaveDb?.Dispose();
         _activeSaveDb = DatabaseService.OpenSave(slotName);
-        return new SaveRepository(_activeSaveDb);
+        var repo = new SaveRepository(_activeSaveDb);
+        repo.ResolveOrphanedWritingLinesAttempts();
+        return repo;
     }
 
     /// <summary>Closes the active save DB (if any).</summary>

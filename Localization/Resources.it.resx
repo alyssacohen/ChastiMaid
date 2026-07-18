@@ -496,6 +496,30 @@
   <data name="WritingLineDiscipline" xml:space="preserve">
     <value>Una casa ben ordinata comincia da un sé ben ordinato.</value>
   </data>
+  <data name="WritingLineTidiness" xml:space="preserve">
+    <value>Il disordine non è che una decisione non ancora disfatta.</value>
+  </data>
+  <data name="WritingLineDeference" xml:space="preserve">
+    <value>Parlerò quando interpellata, e agirò prima ancora.</value>
+  </data>
+  <data name="WritingLinePromptness" xml:space="preserve">
+    <value>Un compito rimandato è un compito raddoppiato, e non lo raddoppierò.</value>
+  </data>
+  <data name="WritingLineHumility" xml:space="preserve">
+    <value>Non ho chiesto due volte, e non intendo farlo.</value>
+  </data>
+  <data name="WritingLineDiligence" xml:space="preserve">
+    <value>Lo sforzo risparmiato oggi è sforzo richiesto domani, con gli interessi.</value>
+  </data>
+  <data name="WritingLinePatience" xml:space="preserve">
+    <value>Attenderò quanto necessario, e non un istante di più in modo visibile.</value>
+  </data>
+  <data name="WritingLineRespect" xml:space="preserve">
+    <value>Il rispetto, una volta guadagnato, è un debito che non mancherò di ripagare.</value>
+  </data>
+  <data name="WritingLineThoroughness" xml:space="preserve">
+    <value>Un compito a metà è un compito non ancora iniziato.</value>
+  </data>
   <data name="MotivationalQuoteListeningLabel" xml:space="preserve">
     <value>Sto ascoltando.</value>
   </data>
@@ -820,6 +844,12 @@
   </data>
   <data name="SettingsWritingLinesPenalty" xml:space="preserve">
     <value>Righe di penalità per errore</value>
+  </data>
+  <data name="SettingsWritingLinesMinLines" xml:space="preserve">
+    <value>Righe minime</value>
+  </data>
+  <data name="SettingsWritingLinesMaxLines" xml:space="preserve">
+    <value>Righe massime</value>
   </data>
   <data name="SettingsHeadingForcedOutfit" xml:space="preserve">
     <value>Divisa obbligata</value>
