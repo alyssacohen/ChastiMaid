@@ -270,7 +270,7 @@ public partial class StartSessionViewModel : ViewModelBase
 
     private async Task ConfirmRegenerate()
     {
-        var penalty = _regenCount == 0 ? 0.5 : 0.5;
+        const double penalty = 0.5;
         var resultBonus = _currentBonus * penalty;
         var dialog = new ConfirmDialogViewModel(
             Resources.Get("StartSessionRegenerateOutfitTitle"),
