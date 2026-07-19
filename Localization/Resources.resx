@@ -496,6 +496,30 @@
   <data name="WritingLineDiscipline" xml:space="preserve">
     <value>A well-ordered house begins with a well-ordered self.</value>
   </data>
+  <data name="WritingLineTidiness" xml:space="preserve">
+    <value>Untidiness is merely a decision one has yet to unmake.</value>
+  </data>
+  <data name="WritingLineDeference" xml:space="preserve">
+    <value>I shall speak when addressed, and act before then.</value>
+  </data>
+  <data name="WritingLinePromptness" xml:space="preserve">
+    <value>A task delayed is a task doubled, and I shall not double it.</value>
+  </data>
+  <data name="WritingLineHumility" xml:space="preserve">
+    <value>I have not asked twice, and I do not intend to.</value>
+  </data>
+  <data name="WritingLineDiligence" xml:space="preserve">
+    <value>Effort spared today is effort demanded tomorrow, with interest.</value>
+  </data>
+  <data name="WritingLinePatience" xml:space="preserve">
+    <value>I shall wait as long as is required, and not a moment more visibly.</value>
+  </data>
+  <data name="WritingLineRespect" xml:space="preserve">
+    <value>Respect, once earned, is a debt I shall not fail to repay.</value>
+  </data>
+  <data name="WritingLineThoroughness" xml:space="preserve">
+    <value>A task half done is a task I have not yet begun.</value>
+  </data>
   <data name="MotivationalQuoteListeningLabel" xml:space="preserve">
     <value>I am listening.</value>
   </data>
@@ -820,6 +844,12 @@
   </data>
   <data name="SettingsWritingLinesPenalty" xml:space="preserve">
     <value>Penalty lines per mistake</value>
+  </data>
+  <data name="SettingsWritingLinesMinLines" xml:space="preserve">
+    <value>Minimum lines</value>
+  </data>
+  <data name="SettingsWritingLinesMaxLines" xml:space="preserve">
+    <value>Maximum lines</value>
   </data>
   <data name="SettingsHeadingForcedOutfit" xml:space="preserve">
     <value>Forced Outfit</value>
