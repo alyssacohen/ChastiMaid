@@ -539,7 +539,7 @@
     <value>Untidiness is merely a decision one has yet to unmake.</value>
   </data>
   <data name="WritingLineDeference" xml:space="preserve">
-    <value>I shall speak when addressed, and act before then.</value>
+      <value>I shall speak when addressed, and act before then</value>
   </data>
   <data name="WritingLinePromptness" xml:space="preserve">
     <value>A task delayed is a task doubled, and I shall not double it.</value>
