@@ -127,6 +127,22 @@ public class SaveRepository(LiteDatabase db)
         ActivePunishments.Update(punishment);
     }
 
+    /// <summary>
+    ///     Applies a fine (mirroring the "Abandon" outcome) to any Writing Lines punishment whose attempt was left
+    ///     active when the app last closed, without resolving it — it stays pending, retryable later. Call once when
+    ///     a save slot is opened.
+    /// </summary>
+    public void ResolveOrphanedWritingLinesAttempts()
+    {
+        foreach (var punishment in GetActivePunishments()
+                     .Where(p => p.Kind == PunishmentKind.WritingLines && p.WritingLinesAttemptActive))
+        {
+            ApplyFine(punishment.Severity);
+            punishment.WritingLinesAttemptActive = false;
+            SaveActivePunishment(punishment);
+        }
+    }
+
     // --- Pose checks ---
     public void SavePoseCheckRecord(PoseCheckRecord record)
     {
@@ -241,13 +257,18 @@ public class SaveRepository(LiteDatabase db)
                 break;
 
             case PunishmentKind.WritingLines:
+                var phraseCount = Random.Shared.Next(1, WritingLinesSentenceBank.AllKeys.Count + 1);
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.WritingLines,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
-                    WritingLinesSentenceKey = WritingLinesSentenceBank.GetRandom(),
-                    WritingLinesTotalLines = (int)Math.Round(severity * settings.WritingLinesSeverityValue),
+                    WritingLinesSentenceKeys = WritingLinesSentenceBank.GetRandomSet(phraseCount),
+                    WritingLinesTotalLines = Math.Clamp(
+                        (int)Math.Round(severity * settings.WritingLinesSeverityValue),
+                        settings.WritingLinesMinLines,
+                        settings.WritingLinesMaxLines),
+                    WritingLinesAttemptActive = false,
                 });
                 break;
 

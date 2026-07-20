@@ -14,6 +14,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
 {
     private readonly GameSettings _settings;
     private readonly int _penaltyLinesPerMistake;
+    private readonly List<string> _lineSequence = [];
     private CancellationTokenSource? _captureCts;
     private DispatcherTimer? _statsTimer;
     private DispatcherTimer? _mistakeLockTimer;
@@ -22,7 +23,6 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
     private int _correctKeystrokes;
     private bool _inputLocked;
 
-    [Reactive] private string _sentenceText = "";
     [Reactive] private int _totalLines;
     [Reactive] private int _completedLines;
     [Reactive] private int _mistakeCount;
@@ -36,7 +36,10 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         _settings = saveRepo.GetGameSettings();
         _penaltyLinesPerMistake = _settings.WritingLinesPenaltyLinesPerMistake;
         _totalLines = punishment.WritingLinesTotalLines ?? 1;
-        SentenceText = Resources.Get(punishment.WritingLinesSentenceKey ?? WritingLinesSentenceBank.GetRandom());
+        EnsureLineSequenceLength(_totalLines);
+
+        Punishment.WritingLinesAttemptActive = true;
+        SaveRepo.SaveActivePunishment(Punishment);
 
         this.WhenAnyValue(x => x.MistakeCount).Subscribe(_ => this.RaisePropertyChanged(nameof(HasMistakes)));
 
@@ -45,6 +48,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         StartSilentCaptureIfAvailable();
     }
 
+    public string SentenceText => _lineSequence[CompletedLines];
     public bool HasMistakes => MistakeCount > 0;
     public ObservableCollection<WritingLineHistoryEntry> History { get; } = [];
 
@@ -63,6 +67,19 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
     }
 
     private double ElapsedSeconds => _startedAt is null ? 0 : (DateTime.UtcNow - _startedAt.Value).TotalSeconds;
+
+    private void EnsureLineSequenceLength(int length)
+    {
+        var keys = Punishment.WritingLinesSentenceKeys is { Count: > 0 }
+            ? Punishment.WritingLinesSentenceKeys
+            : WritingLinesSentenceBank.GetRandomSet(1);
+
+        while (_lineSequence.Count < length)
+        {
+            var shuffled = keys.OrderBy(_ => Random.Shared.Next());
+            _lineSequence.AddRange(shuffled.Select(Resources.Get));
+        }
+    }
 
     public ICommand AbandonCommand { get; }
 
@@ -121,9 +138,13 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
                 var (correctPart, errorChar) = WritingLinesValidator.SplitAtMismatch(SentenceText, candidate);
                 History.Insert(0, new WritingLineHistoryEntry(correctPart, errorChar));
                 MistakeCount++;
-                TotalLines += _penaltyLinesPerMistake;
+                TotalLines = Math.Min(TotalLines + _penaltyLinesPerMistake, _settings.WritingLinesMaxLines);
+                EnsureLineSequenceLength(TotalLines);
                 TypedText = "";
                 RaiseStatsChanged();
+
+                Punishment.WritingLinesTotalLines = TotalLines;
+                SaveRepo.SaveActivePunishment(Punishment);
 
                 _inputLocked = true;
                 RestartMistakeLockTimer();
@@ -163,7 +184,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
             return;
         }
 
-        SentenceText = Resources.Get(WritingLinesSentenceBank.GetRandom());
+        this.RaisePropertyChanged(nameof(SentenceText));
         RaiseStatsChanged();
     }
 
@@ -187,6 +208,9 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
 
         _mistakeLockTimer?.Stop();
         _mistakeLockTimer = null;
+
+        Punishment.WritingLinesAttemptActive = false;
+        SaveRepo.SaveActivePunishment(Punishment);
 
         ResultMessage = Conclude(success, "WritingLinesSuccessMessage", "WritingLinesFailureMessage");
         IsResult = true;

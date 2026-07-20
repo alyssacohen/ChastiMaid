@@ -69,6 +69,8 @@ public class GameSettings
     public bool WritingLinesEnabled { get; set; } = true;
     public double WritingLinesSeverityValue { get; set; } = 3; // lines per severity point
     public int WritingLinesPenaltyLinesPerMistake { get; set; } = 1;
+    public int WritingLinesMinLines { get; set; } = 20;
+    public int WritingLinesMaxLines { get; set; } = 150;
 
     // Forced Outfit punishment
     public bool ForcedOutfitEnabled { get; set; } = true;

@@ -22,8 +22,9 @@ public class ActivePunishment
     public int? CornertimeRequiredSeconds { get; set; }
     public int? CornertimeMaxSeconds { get; set; }
 
-    public string? WritingLinesSentenceKey { get; set; }
+    public List<string>? WritingLinesSentenceKeys { get; set; }
     public int? WritingLinesTotalLines { get; set; }
+    public bool WritingLinesAttemptActive { get; set; }
 
     public int? ForcedOutfitRemainingSessions { get; set; }
     public List<int>? ForcedClothingItemIds { get; set; }

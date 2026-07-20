@@ -90,4 +90,134 @@ public class SaveRepositoryTests : IDisposable
 
         Assert.Empty(_repo.GetActivePunishments());
     }
+
+    [Fact]
+    public void AssignPunishment_WithWritingLinesEnabled_ClampsTotalLinesToMinimum()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            CornertimeEnabled = false,
+            WritingLinesEnabled = true,
+            WritingLinesSeverityValue = 0.1,
+            WritingLinesMinLines = 20,
+            WritingLinesMaxLines = 150,
+            ForcedOutfitEnabled = false,
+        });
+
+        ActivePunishment? writingLines = null;
+        for (var i = 0; i < 50 && writingLines is null; i++)
+        {
+            _repo.AssignPunishment((1, 1));
+            writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
+        }
+
+        Assert.NotNull(writingLines);
+        Assert.Equal(20, writingLines!.WritingLinesTotalLines);
+    }
+
+    [Fact]
+    public void AssignPunishment_WithWritingLinesEnabled_ClampsTotalLinesToMaximum()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            CornertimeEnabled = false,
+            WritingLinesEnabled = true,
+            WritingLinesSeverityValue = 1000,
+            WritingLinesMinLines = 20,
+            WritingLinesMaxLines = 150,
+            ForcedOutfitEnabled = false,
+        });
+
+        ActivePunishment? writingLines = null;
+        for (var i = 0; i < 50 && writingLines is null; i++)
+        {
+            _repo.AssignPunishment((10, 10));
+            writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
+        }
+
+        Assert.NotNull(writingLines);
+        Assert.Equal(150, writingLines!.WritingLinesTotalLines);
+    }
+
+    [Fact]
+    public void AssignPunishment_WithWritingLinesEnabled_AssignsANonEmptySentenceKeySet()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            CornertimeEnabled = false,
+            WritingLinesEnabled = true,
+            ForcedOutfitEnabled = false,
+        });
+
+        ActivePunishment? writingLines = null;
+        for (var i = 0; i < 50 && writingLines is null; i++)
+        {
+            _repo.AssignPunishment((10, 10));
+            writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
+        }
+
+        Assert.NotNull(writingLines);
+        Assert.NotNull(writingLines!.WritingLinesSentenceKeys);
+        Assert.InRange(writingLines.WritingLinesSentenceKeys!.Count, 1, 12);
+        Assert.False(writingLines.WritingLinesAttemptActive);
+    }
+
+    [Fact]
+    public void ResolveOrphanedWritingLinesAttempts_AppliesFineAndClearsFlagWithoutResolving()
+    {
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1,
+            Kind = PunishmentKind.WritingLines,
+            Severity = 10,
+            WritingLinesTotalLines = 30,
+            WritingLinesAttemptActive = true,
+        });
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings { FineSeverityValue = 5 });
+
+        _repo.ResolveOrphanedWritingLinesAttempts();
+
+        Assert.Equal(150, _repo.GetGameState()!.CurrentDebt);
+        var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.False(punishment.WritingLinesAttemptActive);
+        Assert.False(punishment.IsResolved);
+    }
+
+    [Fact]
+    public void ResolveOrphanedWritingLinesAttempts_LeavesInactiveAttemptsUntouched()
+    {
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1,
+            Kind = PunishmentKind.WritingLines,
+            Severity = 10,
+            WritingLinesTotalLines = 30,
+            WritingLinesAttemptActive = false,
+        });
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings { FineSeverityValue = 5 });
+
+        _repo.ResolveOrphanedWritingLinesAttempts();
+
+        Assert.Equal(100, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void SaveActivePunishment_RoundTripsWritingLinesFields()
+    {
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1,
+            Kind = PunishmentKind.WritingLines,
+            Severity = 10,
+            WritingLinesTotalLines = 42,
+            WritingLinesSentenceKeys = ["WritingLineObedience", "WritingLineGratitude"],
+            WritingLinesAttemptActive = true,
+        });
+
+        var reloaded = _repo.GetActivePunishments().Single(p => p.Id == 1);
+
+        Assert.Equal(42, reloaded.WritingLinesTotalLines);
+        Assert.Equal(["WritingLineObedience", "WritingLineGratitude"], reloaded.WritingLinesSentenceKeys);
+        Assert.True(reloaded.WritingLinesAttemptActive);
+    }
 }

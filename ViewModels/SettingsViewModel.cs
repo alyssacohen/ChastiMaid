@@ -54,6 +54,8 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _writingLinesEnabled;
     [Reactive] private double _writingLinesSeverityValue;
     [Reactive] private int _writingLinesPenaltyLinesPerMistake;
+    [Reactive] private int _writingLinesMinLines;
+    [Reactive] private int _writingLinesMaxLines;
     [Reactive] private bool _forcedOutfitEnabled;
     [Reactive] private double _forcedOutfitSeverityValue;
     [Reactive] private bool _forcedOutfitForceFullOutfit;
@@ -138,6 +140,8 @@ public partial class SettingsViewModel : ViewModelBase
         _writingLinesEnabled = s.WritingLinesEnabled;
         _writingLinesSeverityValue = s.WritingLinesSeverityValue;
         _writingLinesPenaltyLinesPerMistake = s.WritingLinesPenaltyLinesPerMistake;
+        _writingLinesMinLines = s.WritingLinesMinLines;
+        _writingLinesMaxLines = s.WritingLinesMaxLines;
         _forcedOutfitEnabled = s.ForcedOutfitEnabled;
         _forcedOutfitSeverityValue = s.ForcedOutfitSeverityValue;
         _forcedOutfitForceFullOutfit = s.ForcedOutfitForceFullOutfit;
@@ -252,6 +256,9 @@ public partial class SettingsViewModel : ViewModelBase
         this.WhenAnyValue(x => x.CornertimeMovementSensitivityPercent, x => x.CornertimeMovementPenaltySeconds,
                 x => x.WritingLinesEnabled, x => x.WritingLinesSeverityValue,
                 x => x.WritingLinesPenaltyLinesPerMistake, (_, _, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.WritingLinesMinLines, x => x.WritingLinesMaxLines, (_, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitSeverityValue,
@@ -625,6 +632,8 @@ public partial class SettingsViewModel : ViewModelBase
         s.CornertimeMovementPenaltySeconds = CornertimeMovementPenaltySeconds;
         s.WritingLinesEnabled = WritingLinesEnabled;
         s.WritingLinesSeverityValue = WritingLinesSeverityValue;
+        s.WritingLinesMinLines = WritingLinesMinLines;
+        s.WritingLinesMaxLines = WritingLinesMaxLines;
         s.WritingLinesPenaltyLinesPerMistake = WritingLinesPenaltyLinesPerMistake;
         s.ForcedOutfitEnabled = ForcedOutfitEnabled;
         s.ForcedOutfitSeverityValue = ForcedOutfitSeverityValue;

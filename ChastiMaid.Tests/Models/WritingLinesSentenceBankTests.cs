@@ -34,4 +34,24 @@ public class WritingLinesSentenceBankTests
 
         Assert.True(keys.Count > 1);
     }
+
+    [Fact]
+    public void AllKeys_HasNoDuplicatesOrEmptyEntries()
+    {
+        Assert.Equal(WritingLinesSentenceBank.AllKeys.Count, WritingLinesSentenceBank.AllKeys.Distinct().Count());
+        Assert.All(WritingLinesSentenceBank.AllKeys, key => Assert.False(string.IsNullOrEmpty(key)));
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(4)]
+    [InlineData(12)]
+    public void GetRandomSet_ReturnsRequestedCountOfDistinctKeys(int count)
+    {
+        var set = WritingLinesSentenceBank.GetRandomSet(count);
+
+        Assert.Equal(count, set.Count);
+        Assert.Equal(count, set.Distinct().Count());
+        Assert.All(set, key => Assert.Contains(key, WritingLinesSentenceBank.AllKeys));
+    }
 }
