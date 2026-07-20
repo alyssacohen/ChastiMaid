@@ -1,41 +1,126 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:models="using:ChastiMaid.Models"
              xmlns:conv="using:ChastiMaid.Views.Converters"
              x:DataType="vm:WritingLinesPunishmentViewModel"
              x:Class="ChastiMaid.Views.WritingLinesPunishmentView"
              Background="{DynamicResource BrushWindowBackground}">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MaxWidth="600"
-                Margin="40"
-                Spacing="16">
+    <Grid>
 
         <!-- Active -->
-        <StackPanel IsVisible="{Binding !IsResult}" Spacing="16">
-            <TextBlock Classes="Caption"
-                       Text="{Binding CompletedLines, StringFormat={conv:Tr WritingLinesProgressFormat}}"
-                       HorizontalAlignment="Center" />
-            <TextBlock Classes="EmployerVoice"
-                       Text="{Binding SentenceText}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap" />
-            <TextBox Text="{Binding TypedText}"
-                     PlaceholderText="{conv:Tr WritingLinesTypeHereWatermark}"
-                     HorizontalAlignment="Stretch" />
-            <TextBlock Classes="Caption"
-                       Text="{Binding MistakeCount, StringFormat={conv:Tr WritingLinesMistakeCountFormat}}"
-                       HorizontalAlignment="Center"
-                       IsVisible="{Binding HasMistakes}" />
-            <Button Content="{conv:Tr CornertimeAbandon}"
-                    Command="{Binding AbandonCommand}"
-                    Classes="Danger compact"
-                    HorizontalAlignment="Center" />
-        </StackPanel>
+        <ScrollViewer IsVisible="{Binding !IsResult}">
+            <StackPanel HorizontalAlignment="Center"
+                        MaxWidth="640"
+                        Margin="40"
+                        Spacing="16">
+
+                <TextBlock Classes="SectionTitle"
+                           Text="{conv:Tr PunishmentKindWritingLines}"
+                           HorizontalAlignment="Center" />
+
+                <!-- Target phrase — static, always shown in full -->
+                <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesPhraseLabel}" />
+                <Border Classes="card">
+                    <TextBlock Classes="Typewriter" Text="{Binding SentenceText}" TextWrapping="Wrap" />
+                </Border>
+
+                <!-- Live typing field: a real TextBox with its own native caret. Text is bound one-way from
+                     TypedText (always a valid correct prefix — see ViewModel), so what's on screen is
+                     always shown in the "correct" color; PlaceholderText shows the muted target phrase
+                     through the same control so its font/size/position can never drift out of alignment
+                     with the typed text. Keystrokes are intercepted in code-behind (Tunnel
+                     TextInput/KeyDown) and routed into the ViewModel exactly as before — the TextBox never
+                     inserts characters itself. -->
+                <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesYourWritingLabel}" />
+                <Border Classes="card" Background="{DynamicResource BrushSurfaceMuted}">
+                    <TextBox x:Name="CaptureBox"
+                             Classes="typewriterInput"
+                             IsUndoEnabled="False"
+                             Text="{Binding TypedText, Mode=OneWay}"
+                             PlaceholderText="{Binding SentenceText}" />
+                </Border>
+                <TextBlock Classes="Caption"
+                           Text="{Binding MistakeCount, StringFormat={conv:Tr WritingLinesMistakeCountFormat}}"
+                           IsVisible="{Binding HasMistakes}" />
+
+                <!-- History — most recent attempt on top; scrolls internally so it never pushes the stats
+                     row and the abandon button off screen as it grows. -->
+                <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesPreviousLinesLabel}" />
+                <Border Classes="card">
+                    <ScrollViewer MaxHeight="180">
+                        <ItemsControl ItemsSource="{Binding History}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="6" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:WritingLineHistoryEntry">
+                                    <TextBlock Classes="TypewriterSmall" TextWrapping="Wrap">
+                                        <Run Text="{Binding CorrectPart}" Foreground="{DynamicResource BrushTypingCorrect}" />
+                                        <Run Text="{Binding ErrorChar}" Foreground="{DynamicResource BrushButtonDanger}" FontWeight="Bold" />
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Live performance stats -->
+                <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="8">
+                    <Border Grid.Column="0" Classes="statCard">
+                        <StackPanel Spacing="4" HorizontalAlignment="Center">
+                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatProgress}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="NumberLarge" Text="{Binding ProgressPercentText}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{Binding ProgressHintText}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Classes="statCard">
+                        <StackPanel Spacing="4" HorizontalAlignment="Center">
+                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatCpm}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="NumberLarge" Text="{Binding CpmText}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintCpm}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="2" Classes="statCard">
+                        <StackPanel Spacing="4" HorizontalAlignment="Center">
+                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatAccuracy}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="NumberLarge" Text="{Binding AccuracyText}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintAccuracy}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="3" Classes="statCard">
+                        <StackPanel Spacing="4" HorizontalAlignment="Center">
+                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatErrors}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="NumberLarge" Text="{Binding MistakeCount}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintErrors}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="4" Classes="statCard">
+                        <StackPanel Spacing="4" HorizontalAlignment="Center">
+                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatTime}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="NumberLarge" Text="{Binding TimeText}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintTime}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Button Content="{conv:Tr WritingLinesAbandon}"
+                        Command="{Binding AbandonCommand}"
+                        Classes="Danger compact"
+                        HorizontalAlignment="Center" />
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- Result -->
-        <StackPanel IsVisible="{Binding IsResult}" Spacing="16">
+        <StackPanel IsVisible="{Binding IsResult}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="600"
+                    Margin="40"
+                    Spacing="16">
             <TextBlock Classes="EmployerVoice"
                        Text="{Binding ResultMessage}"
                        HorizontalAlignment="Center"
@@ -46,6 +131,6 @@
                     HorizontalAlignment="Center" />
         </StackPanel>
 
-    </StackPanel>
+    </Grid>
 
 </UserControl>

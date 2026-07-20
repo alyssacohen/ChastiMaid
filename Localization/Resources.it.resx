@@ -219,6 +219,48 @@
   <data name="WritingLinesFailureMessage" xml:space="preserve">
     <value>Avete posato la penna troppo presto. È stata aggiunta una multa, e le righe restano da scrivere.</value>
   </data>
+  <data name="WritingLinesAbandon" xml:space="preserve">
+    <value>Posare la Penna</value>
+  </data>
+  <data name="WritingLinesPhraseLabel" xml:space="preserve">
+    <value>La riga da ricopiare</value>
+  </data>
+  <data name="WritingLinesYourWritingLabel" xml:space="preserve">
+    <value>La vostra scrittura</value>
+  </data>
+  <data name="WritingLinesPreviousLinesLabel" xml:space="preserve">
+    <value>Righe precedenti</value>
+  </data>
+  <data name="WritingLinesProgressHintFormat" xml:space="preserve">
+    <value>{0}/{1} righe</value>
+  </data>
+  <data name="WritingLinesStatProgress" xml:space="preserve">
+    <value>Progresso</value>
+  </data>
+  <data name="WritingLinesStatCpm" xml:space="preserve">
+    <value>CPM</value>
+  </data>
+  <data name="WritingLinesStatAccuracy" xml:space="preserve">
+    <value>Precisione</value>
+  </data>
+  <data name="WritingLinesStatErrors" xml:space="preserve">
+    <value>Errori</value>
+  </data>
+  <data name="WritingLinesStatTime" xml:space="preserve">
+    <value>Tempo</value>
+  </data>
+  <data name="WritingLinesHintCpm" xml:space="preserve">
+    <value>Car/min</value>
+  </data>
+  <data name="WritingLinesHintAccuracy" xml:space="preserve">
+    <value>Esattezza</value>
+  </data>
+  <data name="WritingLinesHintErrors" xml:space="preserve">
+    <value>Errori di battitura</value>
+  </data>
+  <data name="WritingLinesHintTime" xml:space="preserve">
+    <value>Trascorso</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Chiudi</value>
   </data>
@@ -367,7 +409,7 @@
     <value>Quanto siete accomodante.</value>
   </data>
   <data name="ImpossibleQuestionComplaintsNoNegative" xml:space="preserve">
-    <value>Sospetto. Il silenzio, il più delle volte, cela i lamenti più grandi.</value>
+      <value>Uhm.. strano. Il silenzio, il più delle volte, cela i lamenti più grandi.</value>
   </data>
   <data name="ImpossibleQuestionImprovement" xml:space="preserve">
     <value>Ritenete di necessitare ulteriore istruzione?</value>
@@ -485,7 +527,7 @@
     <value>La grazia sotto un modesto peso è il segno più autentico dell'educazione.</value>
   </data>
   <data name="WritingLineObedience" xml:space="preserve">
-    <value>Attenderò ai miei doveri senza bisogno che mi vengano ricordati.</value>
+      <value>Devo dedicarmi ai miei doveri senza bisogno che mi vengano ricordati.</value>
   </data>
   <data name="WritingLinePunctuality" xml:space="preserve">
     <value>La puntualità è una cortesia che non concedo a nessuno più che a me stessa.</value>

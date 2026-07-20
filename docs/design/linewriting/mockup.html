@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ChastiMaid — Typing Punishment mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Cormorant+Garamond:ital,wght@0,600;1,400&display=swap');
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #FAF7F2;
+    margin: 0;
+    padding: 40px;
+  }
+  .mono { font-family: 'Special Elite', monospace; }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+
+  .screen {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #FAF7F2;
+  }
+
+  .title {
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 600;
+    color: #2C2118;
+    margin: 0 0 20px;
+  }
+
+  .phrase-box {
+    background: #FFFFFF;
+    border: 1px solid #C8B99A;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .phrase-box p {
+    font-size: 24px;
+    letter-spacing: 0.5px;
+    color: #2C2118;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: #9A8A78;
+    margin: 0 0 8px;
+    text-transform: uppercase;
+  }
+
+  .input-box {
+    background: #F2EDE4;
+    border: 1px solid #C8B99A;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .input-box p {
+    font-size: 24px;
+    letter-spacing: 0.5px;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .correct { color: #5B7355; }
+  .error { color: #8B3A2A; text-decoration: underline; text-decoration-color: #8B3A2A; }
+  .pending { color: #9A8A78; opacity: 0.5; }
+
+  .history-box {
+    background: #FFFFFF;
+    border: 1px solid #E4DAC5;
+    border-radius: 6px;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .history-box p {
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .stat-card {
+    background: #F2EDE4;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-card .stat-label {
+    font-size: 11px;
+    color: #9A8A78;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-card .stat-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #6B4F35;
+    margin: 0;
+  }
+  .stat-card .stat-value.error-value { color: #8B3A2A; }
+  .stat-card .stat-value.success-value { color: #5B7355; }
+  .stat-card .stat-hint {
+    font-size: 11px;
+    color: #9A8A78;
+    margin: 4px 0 0;
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+  <p class="title serif">Correction of Manners</p>
+
+  <div class="phrase-box">
+    <p class="mono">I must be a good Maid or be punished.</p>
+  </div>
+
+  <p class="label">Your writing</p>
+  <div class="input-box">
+    <p class="mono">
+      <span class="correct">I must be a good Ma</span><span class="error">e</span><span class="pending">|d or be punished.</span>
+    </p>
+  </div>
+
+  <p class="label">Previous lines</p>
+  <div class="history-box">
+    <p class="mono correct">I must be a good Maid or be punished.</p>
+    <p class="mono"><span class="correct">I must be a good Ma</span><span class="error" style="font-weight:bold; text-decoration:none;">e</span></p>
+    <p class="mono correct">I must be a good Maid or be punished.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <p class="stat-label">Progress</p>
+      <p class="stat-value">33%</p>
+      <p class="stat-hint">2/6 lines</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">CPM</p>
+      <p class="stat-value">142</p>
+      <p class="stat-hint">Char/min</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Accuracy</p>
+      <p class="stat-value success-value">91%</p>
+      <p class="stat-hint">Precision</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Errors</p>
+      <p class="stat-value error-value">1</p>
+      <p class="stat-hint">Mistypes</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Time</p>
+      <p class="stat-value">47s</p>
+      <p class="stat-hint">Elapsed</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

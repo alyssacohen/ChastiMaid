@@ -26,4 +26,18 @@ public static class WritingLinesValidator
             ? WritingLinesValidationResult.Continue
             : WritingLinesValidationResult.Mistake;
     }
+
+    /// <summary>Splits a mistyped attempt into the correct prefix and the first mismatched character,
+    /// for display in the history panel.</summary>
+    public static (string CorrectPart, string ErrorChar) SplitAtMismatch(string sentence, string typed)
+    {
+        var commonLength = 0;
+        while (commonLength < typed.Length && commonLength < sentence.Length && typed[commonLength] == sentence[commonLength])
+        {
+            commonLength++;
+        }
+
+        var errorChar = commonLength < typed.Length ? typed[commonLength].ToString() : "";
+        return (typed[..commonLength], errorChar);
+    }
 }

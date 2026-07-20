@@ -20,7 +20,6 @@ The app asks the user to stand in a corner and not move for a period of min/max 
 
 3. **Writing lines**
 The user must type correctly one ore more sentences for a certain number of repetitions.
-(i.e. one sentence 30 times or a series of 5 sentences 10 times for a total of 50 lines)
 The app will show the line to write at the top and check each charachter typed by te user. In case of a
 mistype, it will force the user to restart typing that line and eventually add one or more penalty lines
 for the mistake.

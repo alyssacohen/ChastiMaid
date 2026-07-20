@@ -123,4 +123,23 @@
         <Setter Property="Foreground" Value="{DynamicResource TextAccent}" />
     </Style>
 
+    <!-- Typewriter — Writing Lines punishment: target phrase and live typing field.
+         No LetterSpacing: Special Elite is already monospace, and Avalonia adds letter-spacing after the
+         last character of each Run too, which creates a visible seam at the boundary between the
+         correct/pending Run split — a seam that moves with every keystroke. -->
+    <Style Selector="TextBlock.Typewriter">
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/SpecialElite#Special Elite" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="LineHeight" Value="34" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+
+    <!-- TypewriterSmall — Writing Lines punishment: history panel entries -->
+    <Style Selector="TextBlock.TypewriterSmall">
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/SpecialElite#Special Elite" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="LineHeight" Value="21" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+
 </Styles>

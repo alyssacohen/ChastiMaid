@@ -432,7 +432,7 @@
                         <!--  Punishment button  -->
                         <Button
                             Classes="Amber"
-                            Command="{Binding OpenPunisxhmentsCommand}"
+                            Command="{Binding OpenPunishmentsCommand}"
                             CornerRadius="6"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"

@@ -30,6 +30,39 @@
         <Setter Property="Margin" Value="0,0,0,8" />
     </Style>
 
+    <!-- statCard — compact metric tile (Writing Lines performance stats row) -->
+    <Style Selector="Border.statCard">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12" />
+    </Style>
+
+    <!-- typewriterInput — real, visible TextBox for the Writing Lines live typing field (Writing Lines
+         punishment). Text is bound one-way from the ViewModel's TypedText, always a valid correct prefix
+         of the target phrase by construction, so it renders uniformly in the "correct" color.
+         PlaceholderText shows the muted target phrase through the very same control — no separate
+         watermark element to go out of alignment with, and a real native caret instead of a simulated one. -->
+    <Style Selector="TextBox.typewriterInput">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushTypingCorrect}" />
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextMuted}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource TextPrimary}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource BrushSurfaceMuted}" />
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/SpecialElite#Special Elite" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="LineHeight" Value="34" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="TextBox.typewriterInput /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+
     <!-- filterChip — ToggleButton chip for layer filters (WardrobeToolbar) -->
     <Style Selector="ToggleButton.filterChip">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}" />
