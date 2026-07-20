@@ -197,7 +197,11 @@ public class SaveRepository(LiteDatabase db)
         ActivePlugAndPlayAccessoryCollection.Delete(1);
     }
 
-    /// <summary>Applies the Fine punishment's debt increase immediately. Never creates a pending record.</summary>
+    /// <summary>
+    ///     Applies the Fine punishment's debt increase immediately. Never creates a pending record. Raises
+    ///     InitialDebt alongside CurrentDebt so the fine grows the amount owed rather than eating into
+    ///     credit already settled (which would otherwise show as negative progress).
+    /// </summary>
     public void ApplyFine(int severity, GameSettings? settings = null)
     {
         settings ??= GetGameSettings();
@@ -207,7 +211,9 @@ public class SaveRepository(LiteDatabase db)
             return;
         }
 
-        state.CurrentDebt += Math.Round(severity * settings.FineSeverityValue, 0);
+        var fineAmount = Math.Round(severity * settings.FineSeverityValue, 0);
+        state.CurrentDebt += fineAmount;
+        state.InitialDebt += fineAmount;
         SaveGameState(state);
     }
 
