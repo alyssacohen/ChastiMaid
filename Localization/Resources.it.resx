@@ -273,9 +273,6 @@
   <data name="DashboardOutfitToggle" xml:space="preserve">
     <value>Outfit ▸</value>
   </data>
-  <data name="DashboardCurrentOutfitToggle" xml:space="preserve">
-    <value>Outfit attuale ▸</value>
-  </data>
   <data name="DashboardTasksHeading" xml:space="preserve">
     <value>Compiti</value>
   </data>

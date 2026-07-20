@@ -1,14 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
-using ChastiMaid.Views.Dialogs;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -85,6 +82,7 @@ public partial class DashboardViewModel : ViewModelBase
 
     // --- Pending punishments ---
     [Reactive] private int _pendingPunishmentsCount;
+    [Reactive] private bool _isPunishmentsPanelVisible;
     [Reactive] private ObservableCollection<string> _popupAnswers = [];
     [Reactive] private int _popupCountdown;
     [Reactive] private string _popupOutcomeMessage = "";
@@ -217,7 +215,8 @@ public partial class DashboardViewModel : ViewModelBase
 
         var canOpenPunishments = this.WhenAnyValue(x => x.PendingPunishmentsCount, c => c > 0);
         ToggleOutfitDrawerCommand = ReactiveCommand.Create(() => IsOutfitDrawerOpen = !IsOutfitDrawerOpen);
-        OpenPunishmentsCommand = ReactiveCommand.CreateFromTask(OpenPunishmentsAsync, canOpenPunishments);
+        OpenPunishmentsCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = true, canOpenPunishments);
+        ClosePunishmentsPanelCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = false);
         StartTaskCommand = ReactiveCommand.Create<TaskItemViewModel>(OnStartTask);
         StartPunishmentCommand = ReactiveCommand.Create<PunishmentItemViewModel>(OnStartPunishment);
         RequestPermissionCommand = ReactiveCommand.Create(() =>
@@ -281,6 +280,7 @@ public partial class DashboardViewModel : ViewModelBase
     // --- New dashboard commands ---
     public ICommand ToggleOutfitDrawerCommand { get; }
     public ICommand OpenPunishmentsCommand { get; }
+    public ICommand ClosePunishmentsPanelCommand { get; }
     public ICommand StartTaskCommand { get; }
     public ICommand StartPunishmentCommand { get; }
     public ICommand RequestPermissionCommand { get; }
@@ -1463,26 +1463,10 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
-    private async Task OpenPunishmentsAsync()
-    {
-        var owner = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
-            ?.MainWindow;
-        if (owner is null)
-        {
-            return;
-        }
-
-        var dialog = new PunishmentListDialog(Punishments);
-        await dialog.ShowDialog(owner);
-
-        if (dialog.DialogResult && dialog.SelectedPunishment is not null)
-        {
-            OnStartPunishment(dialog.SelectedPunishment);
-        }
-    }
-
     private void OnStartPunishment(PunishmentItemViewModel punishmentVm)
     {
+        IsPunishmentsPanelVisible = false;
+
         var punishment = _saveRepo.GetActivePunishments().FirstOrDefault(p => p.Id == punishmentVm.PunishmentId);
         if (punishment is null)
         {

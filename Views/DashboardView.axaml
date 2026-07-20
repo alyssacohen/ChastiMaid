@@ -253,7 +253,7 @@
             <Grid
                 ColumnDefinitions="Auto,*"
                 IsVisible="{Binding IsLandscape}"
-                RowDefinitions="Auto,*">
+                RowDefinitions="Auto,*,Auto">
 
                 <!--  Status bar (spans both columns)  -->
                 <Border
@@ -264,19 +264,28 @@
                     Grid.Row="0"
                     Height="50"
                     Padding="16,0">
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Spacing="8"
-                        VerticalAlignment="Center">
-                        <Ellipse
-                            Fill="{DynamicResource BrushStatusIdle}"
-                            Height="10"
-                            Width="10" />
-                        <TextBlock
-                            Classes="BodySmall"
-                            Text="{conv:Tr DashboardStatusIdle}"
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <StackPanel
+                            Grid.Column="0"
+                            Orientation="Horizontal"
+                            Spacing="8"
+                            VerticalAlignment="Center">
+                            <Ellipse
+                                Fill="{DynamicResource BrushStatusIdle}"
+                                Height="10"
+                                Width="10" />
+                            <TextBlock
+                                Classes="BodySmall"
+                                Text="{conv:Tr DashboardStatusIdle}"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Button
+                            Classes="SmallGhost"
+                            Command="{Binding ToggleOutfitDrawerCommand}"
+                            Content="{conv:Tr DashboardOutfitToggle}"
+                            Grid.Column="2"
                             VerticalAlignment="Center" />
-                    </StackPanel>
+                    </Grid>
                 </Border>
 
                 <!--  Left rail  -->
@@ -288,15 +297,6 @@
                     Grid.Row="1"
                     Padding="12">
                     <DockPanel>
-                        <Button
-                            Classes="Ghost"
-                            Command="{Binding ToggleOutfitDrawerCommand}"
-                            Content="{conv:Tr DashboardCurrentOutfitToggle}"
-                            DockPanel.Dock="Bottom"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Margin="0,8,0,0" />
-
                         <StackPanel Spacing="8">
                             <controls:DebtWidget
                                 DebtSettled="{Binding DebtSettled}"
@@ -429,40 +429,6 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!--  Punishment button  -->
-                        <Button
-                            Classes="Amber"
-                            Command="{Binding OpenPunishmentsCommand}"
-                            CornerRadius="6"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            IsEnabled="{Binding HasPendingPunishments}"
-                            Padding="16,14">
-                            <Grid ColumnDefinitions="*,Auto">
-                                <TextBlock
-                                    Classes="Body"
-                                    Grid.Column="0"
-                                    Text="{conv:Tr PendingPunishments}"
-                                    VerticalAlignment="Center" />
-                                <Border
-                                    Background="{DynamicResource BrushAmberText}"
-                                    CornerRadius="12"
-                                    Grid.Column="1"
-                                    Height="24"
-                                    IsVisible="{Binding HasPendingPunishments}"
-                                    MinWidth="24"
-                                    Padding="6,0"
-                                    VerticalAlignment="Center">
-                                    <TextBlock
-                                        Classes="Caption"
-                                        Foreground="{DynamicResource BrushWindowBackground}"
-                                        HorizontalAlignment="Center"
-                                        Text="{Binding PendingPunishmentsCount}"
-                                        VerticalAlignment="Center" />
-                                </Border>
-                            </Grid>
-                        </Button>
-
                         <Button
                             Classes="Primary"
                             Command="{Binding CompleteGameCommand}"
@@ -473,6 +439,48 @@
 
                     </StackPanel>
                 </ScrollViewer>
+
+                <!--  Punishment bar (pinned bottom, right column only)  -->
+                <Border
+                    Background="{DynamicResource BrushSurfaceBase}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,1,0,0"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Padding="16,12">
+                    <Button
+                        Classes="Amber"
+                        Command="{Binding OpenPunishmentsCommand}"
+                        CornerRadius="6"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        IsEnabled="{Binding HasPendingPunishments}"
+                        Padding="16,14">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock
+                                Classes="Body"
+                                Grid.Column="0"
+                                Text="{conv:Tr PendingPunishments}"
+                                VerticalAlignment="Center" />
+                            <Border
+                                Background="{DynamicResource BrushAmberText}"
+                                CornerRadius="12"
+                                Grid.Column="1"
+                                Height="24"
+                                IsVisible="{Binding HasPendingPunishments}"
+                                MinWidth="24"
+                                Padding="6,0"
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    Classes="Caption"
+                                    Foreground="{DynamicResource BrushWindowBackground}"
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding PendingPunishmentsCount}"
+                                    VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </Button>
+                </Border>
 
             </Grid>
 
@@ -741,6 +749,100 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Panel>
+            </Border>
+        </Panel>
+
+        <!--  ##    PENDING PUNISHMENTS OVERLAY    ##  -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding IsPunishmentsPanelVisible}">
+            <Border
+                Classes="dialogBox"
+                MaxWidth="380"
+                Padding="0">
+                <DockPanel>
+
+                    <!--  Header (amber)  -->
+                    <Border
+                        Background="{DynamicResource BrushAmberBackground}"
+                        CornerRadius="8,8,0,0"
+                        DockPanel.Dock="Top"
+                        Height="52"
+                        Padding="20,0,12,0">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock
+                                Classes="SectionTitle"
+                                Foreground="{DynamicResource BrushAmberText}"
+                                Grid.Column="0"
+                                Text="{conv:Tr PendingPunishments}"
+                                VerticalAlignment="Center" />
+                            <Button
+                                Classes="Ghost compact"
+                                Command="{Binding ClosePunishmentsPanelCommand}"
+                                CornerRadius="16"
+                                Grid.Column="1"
+                                Height="32"
+                                Padding="0"
+                                VerticalAlignment="Center"
+                                Width="32">
+                                <ic:SymbolIcon
+                                    FontSize="14"
+                                    Foreground="{DynamicResource BrushAmberText}"
+                                    HorizontalAlignment="Center"
+                                    IconVariant="Regular"
+                                    Symbol="Dismiss"
+                                    VerticalAlignment="Center" />
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!--  Footer  -->
+                    <Border
+                        BorderBrush="{DynamicResource BrushBorderSubtle}"
+                        BorderThickness="0,1,0,0"
+                        DockPanel.Dock="Bottom"
+                        Padding="20,12">
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ClosePunishmentsPanelCommand}"
+                            Content="{conv:Tr Close}"
+                            HorizontalAlignment="Center"
+                            MinWidth="100" />
+                    </Border>
+
+                    <!--  Punishment rows  -->
+                    <ScrollViewer MaxHeight="400">
+                        <ItemsControl ItemsSource="{Binding Punishments}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:PunishmentItemViewModel">
+                                    <StackPanel>
+                                        <Grid ColumnDefinitions="*,Auto" Margin="20,0" MinHeight="56">
+                                            <StackPanel
+                                                Grid.Column="0"
+                                                Spacing="2"
+                                                VerticalAlignment="Center">
+                                                <TextBlock Classes="Body" Text="{Binding Name}" />
+                                                <TextBlock Classes="Caption" Text="{Binding AssignedLabel}" />
+                                            </StackPanel>
+                                            <Button
+                                                Classes="Primary compact"
+                                                Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).StartPunishmentCommand}"
+                                                CommandParameter="{Binding}"
+                                                Content="{conv:Tr Start}"
+                                                Grid.Column="1"
+                                                Margin="12,0,0,0"
+                                                MinHeight="44"
+                                                VerticalAlignment="Center" />
+                                        </Grid>
+                                        <Border
+                                            Background="{DynamicResource BrushBorderSubtle}"
+                                            Height="0.5"
+                                            Margin="20,0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                </DockPanel>
             </Border>
         </Panel>
 
