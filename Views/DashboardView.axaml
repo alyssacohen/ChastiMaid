@@ -251,7 +251,7 @@
 
             <!--  ── LANDSCAPE layout ──  -->
             <Grid
-                ColumnDefinitions="Auto,*"
+                ColumnDefinitions="320,*"
                 IsVisible="{Binding IsLandscape}"
                 RowDefinitions="Auto,*,Auto">
 
