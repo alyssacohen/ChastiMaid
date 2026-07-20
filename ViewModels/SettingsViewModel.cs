@@ -361,6 +361,12 @@ public partial class SettingsViewModel : ViewModelBase
     public bool IsDirty => IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty;
     public ReadOnlyObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems => _filteredWardrobeItems;
 
+    public decimal DailyInterestRatePercent
+    {
+        get => Math.Round((decimal)DailyInterestRate * 100m, 2);
+        set => DailyInterestRate = (double)(value / 100m);
+    }
+
     public IReadOnlyList<LayerFilterChipVm> LayerFilterChips { get; } = [];
 
     public int SelectedTabIndex

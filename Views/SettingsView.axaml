@@ -135,8 +135,8 @@
                                     <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsDailyInterestRate}"
                                                VerticalAlignment="Center" />
                                     <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
-                                                   Value="{Binding DailyInterestRate, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
-                                                   Minimum="0" Maximum="1" Increment="0.01" FormatString="0.00" />
+                                                   Value="{Binding DailyInterestRatePercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.5}"
+                                                   Minimum="0.5" Maximum="10.0" Increment="0.5" FormatString="0.0'%'" />
                                 </Grid>
                             </StackPanel>
                         </Border>
