@@ -1323,7 +1323,10 @@ public partial class DashboardViewModel : ViewModelBase
             var severity = _currentPopupKind == IdlePopupKind.ImpossibleQuestion
                 ? InfractionSeverity.ImpossibleQuestionFailed
                 : InfractionSeverity.PopupMissed;
-            _saveRepo.AssignPunishment(severity);
+            var reason = _currentPopupKind == IdlePopupKind.ImpossibleQuestion
+                ? "PunishmentReasonImpossibleQuestionFailed"
+                : "PunishmentReasonPopupMissed";
+            _saveRepo.AssignPunishment(severity, reason);
             RefreshPunishments();
         }
     }
@@ -1406,7 +1409,7 @@ public partial class DashboardViewModel : ViewModelBase
 
         if (tooEarly)
         {
-            _saveRepo.AssignPunishment(InfractionSeverity.ChoreTooEarly);
+            _saveRepo.AssignPunishment(InfractionSeverity.ChoreTooEarly, "PunishmentReasonChoreTooEarly");
             RefreshPunishments();
             ChoreResultMessage = Resources.Get("DashboardChoreRejectedMessage");
         }

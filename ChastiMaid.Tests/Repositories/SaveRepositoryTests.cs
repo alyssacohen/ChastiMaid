@@ -50,7 +50,7 @@ public class SaveRepositoryTests : IDisposable
             ForcedOutfitEnabled = false,
         });
 
-        _repo.AssignPunishment((10, 10));
+        _repo.AssignPunishment((10, 10), "TestReason");
 
         Assert.Equal(150, _repo.GetGameState()!.CurrentDebt);
         Assert.Empty(_repo.GetActivePunishments());
@@ -71,7 +71,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? cornertime = null;
         for (var i = 0; i < 50 && cornertime is null; i++)
         {
-            _repo.AssignPunishment((10, 10));
+            _repo.AssignPunishment((10, 10), "TestReason");
             cornertime = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.Cornertime);
         }
 
@@ -107,7 +107,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? writingLines = null;
         for (var i = 0; i < 50 && writingLines is null; i++)
         {
-            _repo.AssignPunishment((1, 1));
+            _repo.AssignPunishment((1, 1), "TestReason");
             writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
         }
 
@@ -131,7 +131,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? writingLines = null;
         for (var i = 0; i < 50 && writingLines is null; i++)
         {
-            _repo.AssignPunishment((10, 10));
+            _repo.AssignPunishment((10, 10), "TestReason");
             writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
         }
 
@@ -152,7 +152,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? writingLines = null;
         for (var i = 0; i < 50 && writingLines is null; i++)
         {
-            _repo.AssignPunishment((10, 10));
+            _repo.AssignPunishment((10, 10), "TestReason");
             writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
         }
 

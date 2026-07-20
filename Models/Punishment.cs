@@ -19,6 +19,9 @@ public class ActivePunishment
     /// <summary>Fixed at assignment time and reused unchanged across retries.</summary>
     public int Severity { get; set; }
 
+    /// <summary>Localization key for why this punishment was assigned. Null for saves predating this field.</summary>
+    public string? Reason { get; set; }
+
     public int? CornertimeRequiredSeconds { get; set; }
     public int? CornertimeMaxSeconds { get; set; }
 

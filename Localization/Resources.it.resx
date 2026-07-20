@@ -174,6 +174,21 @@
   <data name="PunishmentKindForcedOutfit" xml:space="preserve">
     <value>Divisa obbligata</value>
   </data>
+  <data name="PunishmentDetailWritingLinesFormat" xml:space="preserve">
+    <value>{0} righe</value>
+  </data>
+  <data name="PunishmentDetailCornertimeFormat" xml:space="preserve">
+    <value>{0} min</value>
+  </data>
+  <data name="PunishmentReasonPopupMissed" xml:space="preserve">
+    <value>Per non aver risposto quando interpellata.</value>
+  </data>
+  <data name="PunishmentReasonImpossibleQuestionFailed" xml:space="preserve">
+    <value>Per una risposta insoddisfacente alla mia domanda.</value>
+  </data>
+  <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
+    <value>Per un'indecorosa fretta nei suoi doveri.</value>
+  </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>Una questione già decisa</value>
   </data>

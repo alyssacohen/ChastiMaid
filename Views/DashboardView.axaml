@@ -79,7 +79,7 @@
                         <StackPanel Spacing="0">
                             <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
                                 <TextBlock
-                                    Classes="Subheading"
+                                    Classes="SectionTitle"
                                     Grid.Column="0"
                                     Text="{conv:Tr DashboardTasksHeading}"
                                     VerticalAlignment="Center" />
@@ -295,6 +295,7 @@
                     BorderThickness="0,0,1,0"
                     Grid.Column="0"
                     Grid.Row="1"
+                    Grid.RowSpan="2"
                     Padding="12">
                     <DockPanel>
                         <StackPanel Spacing="8">
@@ -359,7 +360,7 @@
 
                         <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
                             <TextBlock
-                                Classes="Subheading"
+                                Classes="SectionTitle"
                                 Grid.Column="0"
                                 Text="{conv:Tr DashboardTasksHeading}"
                                 VerticalAlignment="Center" />
@@ -805,6 +806,7 @@
                             Command="{Binding ClosePunishmentsPanelCommand}"
                             Content="{conv:Tr Close}"
                             HorizontalAlignment="Center"
+                            HorizontalContentAlignment="Center"
                             MinWidth="100" />
                     </Border>
 
@@ -819,8 +821,23 @@
                                                 Grid.Column="0"
                                                 Spacing="2"
                                                 VerticalAlignment="Center">
-                                                <TextBlock Classes="Body" Text="{Binding Name}" />
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <TextBlock Classes="Body" Text="{Binding Name}" />
+                                                    <TextBlock
+                                                        Classes="Caption"
+                                                        Foreground="{DynamicResource TextAccent}"
+                                                        IsVisible="{Binding DetailLabel, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                        Text="{Binding DetailLabel}"
+                                                        VerticalAlignment="Center" />
+                                                </StackPanel>
                                                 <TextBlock Classes="Caption" Text="{Binding AssignedLabel}" />
+                                                <TextBlock
+                                                    Classes="Caption"
+                                                    FontStyle="Italic"
+                                                    Foreground="{DynamicResource TextMuted}"
+                                                    IsVisible="{Binding ReasonLabel, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    Text="{Binding ReasonLabel}"
+                                                    TextWrapping="Wrap" />
                                             </StackPanel>
                                             <Button
                                                 Classes="Primary compact"

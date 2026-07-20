@@ -222,7 +222,7 @@ public class SaveRepository(LiteDatabase db)
     ///     whichever other punishment kinds are enabled in <see cref="GameSettings" />, then applies it: Fine takes
     ///     effect immediately, the others become a pending <see cref="ActivePunishment" /> sized by severity.
     /// </summary>
-    public void AssignPunishment((int Min, int Max) severityRange)
+    public void AssignPunishment((int Min, int Max) severityRange, string reason)
     {
         var severity = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
         var settings = GetGameSettings();
@@ -257,6 +257,7 @@ public class SaveRepository(LiteDatabase db)
                     Kind = PunishmentKind.Cornertime,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
+                    Reason = reason,
                     CornertimeRequiredSeconds = required,
                     CornertimeMaxSeconds = required + settings.CornertimeMaxOverrunSeconds,
                 });
@@ -269,6 +270,7 @@ public class SaveRepository(LiteDatabase db)
                     Kind = PunishmentKind.WritingLines,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
+                    Reason = reason,
                     WritingLinesSentenceKeys = WritingLinesSentenceBank.GetRandomSet(phraseCount),
                     WritingLinesTotalLines = Math.Clamp(
                         (int)Math.Round(severity * settings.WritingLinesSeverityValue),
@@ -284,6 +286,7 @@ public class SaveRepository(LiteDatabase db)
                     Kind = PunishmentKind.ForcedOutfit,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
+                    Reason = reason,
                     ForcedOutfitRemainingSessions =
                         Math.Max(1, (int)Math.Round(severity * settings.ForcedOutfitSeverityValue)),
                     ForcedClothingItemIds = settings.ForcedOutfitClothingItemIds,
