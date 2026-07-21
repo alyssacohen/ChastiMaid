@@ -251,9 +251,12 @@
 
             <!--  ── LANDSCAPE layout ──  -->
             <Grid
-                ColumnDefinitions="320,*"
                 IsVisible="{Binding IsLandscape}"
                 RowDefinitions="Auto,*,Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource NavPanelWidthGridLength}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
                 <!--  Status bar (spans both columns)  -->
                 <Border

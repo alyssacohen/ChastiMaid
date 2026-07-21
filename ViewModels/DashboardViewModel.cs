@@ -662,7 +662,7 @@ public partial class DashboardViewModel : ViewModelBase
     private void ShowMotivationalQuotePopup()
     {
         _currentPopupKind = IdlePopupKind.MotivationalQuote;
-        _currentQuoteText = Resources.Get(MotivationalQuoteBank.GetRandom());
+        _currentQuoteText = Resources.Get(EmployerPhraseBank.GetRandom());
         PopupQuestion = string.Format(Resources.Get("MotivationalQuoteInstruction"), _currentQuoteText);
         PopupAnswers = [Resources.Get("MotivationalQuoteConfirm")];
         PopupCountdown = _settings.PopupTimeoutSeconds;

@@ -23,36 +23,27 @@
 
                         <!-- Selected state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
-                            <Border Background="{DynamicResource BrushChipSelected}"
-                                    CornerRadius="4" Padding="10,0" Height="30">
-                                <TextBlock Classes="BodySmall"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}"
-                                           Foreground="{DynamicResource BrushButtonPrimaryText}"
-                                           VerticalAlignment="Center" />
+                            <Border Classes="chip selected">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
                             </Border>
                             <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendSelected}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Required state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
-                            <Border Background="{DynamicResource BrushChipRequired}"
-                                    CornerRadius="4" Padding="10,0" Height="30">
-                                <TextBlock Classes="BodySmall"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}"
-                                           Foreground="{DynamicResource BrushButtonPrimaryText}"
-                                           VerticalAlignment="Center" />
+                            <Border Classes="chip required">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
                             </Border>
                             <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendRequired}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Unavailable state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center" Opacity="0.28">
-                            <Border Background="{DynamicResource BrushChipDefault}"
-                                    CornerRadius="4" Padding="10,0" Height="30">
-                                <TextBlock Classes="BodySmall"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}"
-                                           Foreground="{DynamicResource TextSecondary}"
-                                           VerticalAlignment="Center" />
+                            <Border Classes="chip">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
                             </Border>
                             <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendUnavailable}" VerticalAlignment="Center" />
                         </StackPanel>

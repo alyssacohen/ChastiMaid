@@ -72,7 +72,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
     {
         var keys = Punishment.WritingLinesSentenceKeys is { Count: > 0 }
             ? Punishment.WritingLinesSentenceKeys
-            : WritingLinesSentenceBank.GetRandomSet(1);
+            : EmployerPhraseBank.GetRandomSet(1);
 
         while (_lineSequence.Count < length)
         {

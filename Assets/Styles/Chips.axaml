@@ -22,7 +22,7 @@
     <!-- chip-label — inner text for all chip states -->
     <Style Selector="TextBlock.chip-label">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
@@ -37,7 +37,7 @@
 
     <!-- × indicator — always visible; whole chip is the click target via Tapped -->
     <Style Selector="Border.chip TextBlock.chip-x">
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="4,0,0,0" />
@@ -64,7 +64,7 @@
         <Setter Property="Background" Value="{DynamicResource BrushChipDefault}" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="10,0" />

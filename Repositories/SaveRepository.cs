@@ -264,14 +264,14 @@ public class SaveRepository(LiteDatabase db)
                 break;
 
             case PunishmentKind.WritingLines:
-                var phraseCount = Random.Shared.Next(1, WritingLinesSentenceBank.AllKeys.Count + 1);
+                var phraseCount = Random.Shared.Next(1, EmployerPhraseBank.AllKeys.Count + 1);
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.WritingLines,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
                     Reason = reason,
-                    WritingLinesSentenceKeys = WritingLinesSentenceBank.GetRandomSet(phraseCount),
+                    WritingLinesSentenceKeys = EmployerPhraseBank.GetRandomSet(phraseCount),
                     WritingLinesTotalLines = Math.Clamp(
                         (int)Math.Round(severity * settings.WritingLinesSeverityValue),
                         settings.WritingLinesMinLines,

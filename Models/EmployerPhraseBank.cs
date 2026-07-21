@@ -1,8 +1,8 @@
 namespace ChastiMaid.Models;
 
-public static class WritingLinesSentenceBank
+public static class EmployerPhraseBank
 {
-    private static readonly List<string> SentenceKeys =
+    private static readonly List<string> PhraseKeys =
     [
         "WritingLineObedience",
         "WritingLinePunctuality",
@@ -15,20 +15,24 @@ public static class WritingLinesSentenceBank
         "WritingLineDiligence",
         "WritingLinePatience",
         "WritingLineRespect",
-        "WritingLineThoroughness"
+        "WritingLineThoroughness",
+        "MotivationalQuoteDuty",
+        "MotivationalQuotePerseverance",
+        "MotivationalQuoteDiscipline",
+        "MotivationalQuoteGrace"
     ];
 
-    public static IReadOnlyList<string> AllKeys => SentenceKeys;
+    public static IReadOnlyList<string> AllKeys => PhraseKeys;
 
     public static string GetRandom(Random? rng = null)
     {
-        return SentenceKeys[(rng ?? Random.Shared).Next(SentenceKeys.Count)];
+        return PhraseKeys[(rng ?? Random.Shared).Next(PhraseKeys.Count)];
     }
 
     /// <summary>Picks <paramref name="count" /> distinct keys in random order.</summary>
     public static List<string> GetRandomSet(int count, Random? rng = null)
     {
         rng ??= Random.Shared;
-        return SentenceKeys.OrderBy(_ => rng.Next()).Take(count).ToList();
+        return PhraseKeys.OrderBy(_ => rng.Next()).Take(count).ToList();
     }
 }

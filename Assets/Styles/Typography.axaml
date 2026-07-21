@@ -1,23 +1,26 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ═══════════════════════════════════════════
-       TYPOGRAPHY SCALE — ChastiMaid
-       Cormorant Garamond : display (3 classes only)
-       Inter              : all UI text
-  ═══════════════════════════════════════════ -->
+    <!--
+        ═══════════════════════════════════════════
+        TYPOGRAPHY SCALE — ChastiMaid
+        Cormorant Garamond : display (3 classes only)
+        Inter              : all UI text
+        ═══════════════════════════════════════════
+    -->
 
-    <!-- PageTitle — main heading of each page (one per page) -->
+    <!--  PageTitle — main heading of each page (one per page)  -->
     <Style Selector="TextBlock.PageTitle">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
         <Setter Property="FontSize" Value="48" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="LineHeight" Value="52" />
+        <Setter Property="LineHeight" Value="60" />
+        <!-- LineHeight 60 (not the 52 a 48px font would suggest) was verified empirically:
+             Cormorant Garamond's descenders (g,p,q,y,j) clip at tighter ratios. -->
         <Setter Property="LetterSpacing" Value="-0.15" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <!-- SectionTitle — widget headers, internal section headings -->
+    <!--  SectionTitle — widget headers, internal section headings  -->
     <Style Selector="TextBlock.SectionTitle">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
         <Setter Property="FontSize" Value="22" />
@@ -27,75 +30,77 @@
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <!-- Heading — panel title, dialog header -->
+    <!--  Heading — panel title, dialog header  -->
     <Style Selector="TextBlock.Heading">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="LineHeight" Value="21" />
+        <Setter Property="LineHeight" Value="28" />
         <Setter Property="LetterSpacing" Value="-0.15" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <!-- Subheading — subtitle, group label -->
+    <!--  Subheading — subtitle, group label  -->
     <Style Selector="TextBlock.Subheading">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="LineHeight" Value="25" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
     </Style>
 
-    <!-- Body — general text, table cell values -->
+    <!--  Body — general text, table cell values  -->
     <Style Selector="TextBlock.Body">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="LineHeight" Value="24" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
     </Style>
 
-    <!-- plugAndPlayName — outfit drawer highlight for a worn Plug & Play accessory. Deliberately
-         not TextBlock.Body.plugAndPlay: sharing .Body's selector would pit this Setter's
-         DynamicResource Foreground against .Body's own, which wins even over a locally-set
-         DynamicResource (unlike a plain literal value, which does override normally). -->
+    <!--
+        plugAndPlayName — outfit drawer highlight for a worn Plug & Play accessory. Deliberately
+        not TextBlock.Body.plugAndPlay: sharing .Body's selector would pit this Setter's
+        DynamicResource Foreground against .Body's own, which wins even over a locally-set
+        DynamicResource (unlike a plain literal value, which does override normally).
+    -->
     <Style Selector="TextBlock.plugAndPlayName">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="LineHeight" Value="24" />
         <Setter Property="Foreground" Value="{DynamicResource BrushEmergencyText}" />
     </Style>
 
-    <!-- BodySmall — metadata, secondary text in rows -->
+    <!--  BodySmall — metadata, secondary text in rows  -->
     <Style Selector="TextBlock.BodySmall">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="LineHeight" Value="20" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
     </Style>
 
-    <!-- Caption — timestamp, footnote, hint below field -->
+    <!--  Caption — timestamp, footnote, hint below field  -->
     <Style Selector="TextBlock.Caption">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="LineHeight" Value="15" />
+        <Setter Property="LineHeight" Value="18" />
         <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
     </Style>
 
-    <!-- LabelUI — column header, form label (UPPERCASE text set at content level) -->
+    <!--  LabelUI — column header, form label (UPPERCASE text set at content level)  -->
     <Style Selector="TextBlock.LabelUI">
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="LineHeight" Value="15" />
+        <Setter Property="LineHeight" Value="18" />
         <Setter Property="LetterSpacing" Value="0.66" />
         <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
     </Style>
 
-    <!-- NumberMedium — multiplier values, mid-size metrics -->
+    <!--  NumberMedium — multiplier values, mid-size metrics  -->
     <Style Selector="TextBlock.NumberMedium">
         <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="FontSize" Value="22" />
@@ -104,16 +109,17 @@
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <!-- NumberLarge — debt widget, prominent counters -->
+    <!--  NumberLarge — debt widget, prominent counters  -->
     <Style Selector="TextBlock.NumberLarge">
-        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
         <Setter Property="FontSize" Value="28" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="LineHeight" Value="31" />
+        <Setter Property="LetterSpacing" Value="-0.15" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <!-- EmployerVoice — character dialogue, in-UI quotes -->
+    <!--  EmployerVoice — character dialogue, in-UI quotes  -->
     <Style Selector="TextBlock.EmployerVoice">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />
         <Setter Property="FontSize" Value="18" />
@@ -123,10 +129,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TextAccent}" />
     </Style>
 
-    <!-- Typewriter — Writing Lines punishment: target phrase and live typing field.
-         No LetterSpacing: Special Elite is already monospace, and Avalonia adds letter-spacing after the
-         last character of each Run too, which creates a visible seam at the boundary between the
-         correct/pending Run split — a seam that moves with every keystroke. -->
+    <!--  Typewriter — Writing Lines punishment: target phrase and live typing field.  -->
     <Style Selector="TextBlock.Typewriter">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/SpecialElite#Special Elite" />
         <Setter Property="FontSize" Value="24" />
@@ -134,7 +137,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <!-- TypewriterSmall — Writing Lines punishment: history panel entries -->
+    <!--  TypewriterSmall — Writing Lines punishment: history panel entries  -->
     <Style Selector="TextBlock.TypewriterSmall">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/SpecialElite#Special Elite" />
         <Setter Property="FontSize" Value="15" />
