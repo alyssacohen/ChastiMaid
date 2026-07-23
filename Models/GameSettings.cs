@@ -61,7 +61,7 @@ public class GameSettings
     public bool CornertimeEnabled { get; set; } = true;
     public double CornertimeSeverityValue { get; set; } = 30; // seconds of required stillness per severity point
     public int CornertimeMaxOverrunSeconds { get; set; } = 120; // buffer beyond the requirement before it fails
-    public int CornertimeCheckIntervalSeconds { get; set; } = 5; // how often a frame is compared for movement
+    public int CornertimeCheckIntervalSeconds { get; set; } = 5; // min seconds between two movement penalties (motion is checked continuously)
     public int CornertimeMovementSensitivityPercent { get; set; } = 3; // % of changed pixels counted as movement
     public int CornertimeMovementPenaltySeconds { get; set; } = 15; // added to the deadline per detected movement
 

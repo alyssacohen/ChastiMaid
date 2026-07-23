@@ -879,7 +879,7 @@
     <value>Max overrun (seconds)</value>
   </data>
   <data name="SettingsCornertimeCheckInterval" xml:space="preserve">
-    <value>Check interval (seconds)</value>
+    <value>Min. seconds between penalties</value>
   </data>
   <data name="SettingsCornertimeSensitivity" xml:space="preserve">
     <value>Movement sensitivity (%)</value>

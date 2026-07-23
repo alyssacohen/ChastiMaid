@@ -879,7 +879,7 @@
     <value>Margine massimo (secondi)</value>
   </data>
   <data name="SettingsCornertimeCheckInterval" xml:space="preserve">
-    <value>Intervallo di controllo (secondi)</value>
+    <value>Secondi minimi tra due penalità</value>
   </data>
   <data name="SettingsCornertimeSensitivity" xml:space="preserve">
     <value>Sensibilità al movimento (%)</value>

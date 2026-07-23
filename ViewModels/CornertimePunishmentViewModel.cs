@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using System.Windows.Input;
 using Avalonia.Threading;
 using ChastiMaid.Models;
@@ -14,7 +15,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
 
     private readonly int _requiredSeconds;
     private int _maxSeconds;
-    private CancellationTokenSource? _monitorCts;
+    private IDisposable? _movementSubscription;
     private DispatcherTimer? _tickTimer;
 
     [Reactive] private bool _isFraming = true;
@@ -39,6 +40,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
     public WebcamPreviewService Webcam => MainVm.Webcam;
     public string RequiredDisplay => FormatSeconds(_requiredSeconds);
     public string ElapsedDisplay => FormatSeconds(ElapsedSeconds);
+    public string MaxDisplay => FormatSeconds(_maxSeconds);
 
     public ICommand ConfirmFramingCommand { get; }
     public ICommand AbandonCommand { get; }
@@ -71,50 +73,30 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         };
         _tickTimer.Start();
 
-        _monitorCts = new CancellationTokenSource();
-        var ct = _monitorCts.Token;
         var slotName = SaveRepo.GetGameState()?.SlotName ?? "unknown";
         var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
 
-        _ = Task.Run(async () =>
-        {
-            while (!ct.IsCancellationRequested)
+        _movementSubscription = Webcam.WhenAnyValue(x => x.MovementPenaltyCount)
+            .Skip(1)
+            .Subscribe(_ =>
             {
-                await Task.Delay(TimeSpan.FromSeconds(_settings.CornertimeCheckIntervalSeconds), ct);
-                if (ct.IsCancellationRequested)
-                {
-                    break;
-                }
+                _maxSeconds += _settings.CornertimeMovementPenaltySeconds;
+                this.RaisePropertyChanged(nameof(MaxDisplay));
+            });
 
-                try
-                {
-                    var path = Path.Combine(dir, $"cornertime_{DateTime.Now:yyyyMMdd_HHmmss_fff}.png");
-                    var moved = await Webcam.CaptureAndDetectMovementAsync(
-                        path, _settings.CornertimeMovementSensitivityPercent, ct);
-                    if (moved)
-                    {
-                        _maxSeconds += _settings.CornertimeMovementPenaltySeconds;
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
-                catch
-                {
-                    /* Webcam unavailable mid-session — ignore */
-                }
-            }
-        }, ct);
+        Webcam.StartMovementMonitoring(
+            _settings.CornertimeMovementSensitivityPercent,
+            TimeSpan.FromSeconds(_settings.CornertimeCheckIntervalSeconds),
+            dir);
     }
 
     private void Finish(bool success)
     {
         _tickTimer?.Stop();
         _tickTimer = null;
-        _monitorCts?.Cancel();
-        _monitorCts?.Dispose();
-        _monitorCts = null;
+        _movementSubscription?.Dispose();
+        _movementSubscription = null;
+        Webcam.StopMovementMonitoring();
         Webcam.Stop();
 
         ResultMessage = Conclude(success, "CornertimeSuccessMessage", "CornertimeFailureMessage");

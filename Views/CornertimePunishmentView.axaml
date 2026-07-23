@@ -48,6 +48,9 @@
             <TextBlock Classes="Caption"
                        Text="{Binding RequiredDisplay, StringFormat='of {0}'}"
                        HorizontalAlignment="Center" />
+            <TextBlock Classes="Caption"
+                       Text="{Binding MaxDisplay, StringFormat='max {0} if you keep moving'}"
+                       HorizontalAlignment="Center" />
             <Button Content="{conv:Tr CornertimeAbandon}"
                     Command="{Binding AbandonCommand}"
                     Classes="Danger compact"

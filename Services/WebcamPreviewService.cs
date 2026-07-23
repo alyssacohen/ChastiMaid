@@ -24,9 +24,22 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
     private VideoCapture? _capture;
     private int _currentCameraIndex = -1;
-    private Mat? _lastMovementFrame;
 
-    private const int MovementNoiseThreshold = 25;
+    private const int BackgroundSubtractorHistory = 300;
+    private const double BackgroundSubtractorVarThreshold = 16;
+    private const int MovementWarmupFrames = 30; // ~1s at 30fps, lets the background model settle before evaluating
+
+    private BackgroundSubtractorMOG2? _bgSubtractor;
+    private int _bgSubtractorWarmupFramesRemaining;
+
+    private bool _monitorMovement;
+    private int _movementSensitivityPercent;
+    private TimeSpan _movementPenaltyCooldown;
+    private string? _movementEvidenceDir;
+    private DateTime? _lastPenaltyAt;
+
+    [Reactive(SetModifier = AccessModifier.Private)]
+    private int _movementPenaltyCount;
 
     /// <summary>
     ///     When true, a centered 240x80 region of the preview frame is heavily pixelated before display,
@@ -135,9 +148,88 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                 continue;
             }
 
+            if (_monitorMovement)
+            {
+                CheckMovement(frame);
+            }
+
             CopyFrameToBitmap(frame);
             Thread.Sleep(33); // ~30 fps
         }
+    }
+
+    /// <summary>
+    ///     Feeds <paramref name="frame" /> into a running MOG2 background model on every tick of
+    ///     <see cref="PreviewLoop" />, so movement is caught continuously instead of only between periodic
+    ///     snapshots. A plain two-frame difference is unusable here: adjacent frames are only ~33ms apart, so
+    ///     genuine movement shifts far too few pixels between them to ever cross a sensitivity threshold tuned
+    ///     for far-apart snapshots. Background subtraction instead compares each frame against a continuously
+    ///     learned background, so the foreground ratio stays meaningful regardless of how often frames arrive.
+    ///     When the foreground-pixel ratio exceeds <see cref="_movementSensitivityPercent" /> and at least
+    ///     <see cref="_movementPenaltyCooldown" /> has passed since the last penalty, saves the frame as evidence
+    ///     and bumps <see cref="MovementPenaltyCount" />.
+    /// </summary>
+    private void CheckMovement(Mat frame)
+    {
+        if (_bgSubtractor is null)
+        {
+            return;
+        }
+
+        using var fgMask = new Mat();
+        _bgSubtractor.Apply(frame, fgMask);
+
+        if (_bgSubtractorWarmupFramesRemaining > 0)
+        {
+            // Let the background model settle on the initial "still" pose first, otherwise the
+            // very first frames are entirely foreground and immediately (falsely) trigger a penalty.
+            _bgSubtractorWarmupFramesRemaining--;
+            return;
+        }
+
+        var changedRatio = Cv2.CountNonZero(fgMask) / (double)(fgMask.Width * fgMask.Height);
+        var moved = changedRatio * 100 > _movementSensitivityPercent;
+
+        if (moved && (_lastPenaltyAt is null || DateTime.Now - _lastPenaltyAt >= _movementPenaltyCooldown))
+        {
+            _lastPenaltyAt = DateTime.Now;
+
+            if (_movementEvidenceDir is not null)
+            {
+                Directory.CreateDirectory(_movementEvidenceDir);
+                var path = Path.Combine(_movementEvidenceDir, $"cornertime_{DateTime.Now:yyyyMMdd_HHmmss_fff}.png");
+                Cv2.ImWrite(path, frame);
+            }
+
+            Dispatcher.UIThread.Post(() => MovementPenaltyCount++);
+        }
+    }
+
+    /// <summary>
+    ///     Starts continuous movement monitoring inside the running preview loop, backed by a fresh MOG2
+    ///     background-subtraction model. Call <see cref="ResetMovementBaseline" /> beforehand so a stale
+    ///     model from an unrelated session isn't reused.
+    /// </summary>
+    public void StartMovementMonitoring(int sensitivityPercent, TimeSpan penaltyCooldown, string evidenceDir)
+    {
+        _movementSensitivityPercent = sensitivityPercent;
+        _movementPenaltyCooldown = penaltyCooldown;
+        _movementEvidenceDir = evidenceDir;
+        _lastPenaltyAt = null;
+
+        _bgSubtractor?.Dispose();
+        _bgSubtractor = BackgroundSubtractorMOG2.Create(
+            BackgroundSubtractorHistory, BackgroundSubtractorVarThreshold, detectShadows: false);
+        _bgSubtractorWarmupFramesRemaining = MovementWarmupFrames;
+
+        _monitorMovement = true;
+    }
+
+    /// <summary>Stops continuous movement monitoring.</summary>
+    public void StopMovementMonitoring()
+    {
+        _monitorMovement = false;
+        _lastPenaltyAt = null;
     }
 
     private void CopyFrameToBitmap(Mat frame)
@@ -322,6 +414,7 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     public void Stop()
     {
         StopPreviewLoop();
+        StopMovementMonitoring();
 
         _capture?.Dispose();
         _capture = null;
@@ -330,69 +423,13 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         ResetMovementBaseline();
     }
 
-    /// <summary>Clears the movement-detection baseline. Call before starting a new Cornertime session.</summary>
+    /// <summary>Discards the movement-detection background model. Call before starting a new Cornertime session.</summary>
     public void ResetMovementBaseline()
     {
-        _lastMovementFrame?.Dispose();
-        _lastMovementFrame = null;
-    }
-
-    /// <summary>
-    ///     Captures a frame using the already-open VideoCapture, saves it to <paramref name="outputPath" /> for
-    ///     evidence, and compares it against the frame captured by the previous call to this method (grayscale
-    ///     absolute difference, thresholded for sensor noise). Returns whether the changed-pixel ratio exceeds
-    ///     <paramref name="sensitivityPercent" />. Call <see cref="ResetMovementBaseline" /> before the first call
-    ///     of a session so it isn't compared against a stale frame from an unrelated one.
-    /// </summary>
-    public async Task<bool> CaptureAndDetectMovementAsync(string outputPath, int sensitivityPercent,
-        CancellationToken ct = default)
-    {
-        if (_capture is null || !_capture.IsOpened())
-        {
-            return false;
-        }
-
-        StopPreviewLoop();
-
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-
-        try
-        {
-            return await Task.Run(() =>
-            {
-                var frame = new Mat();
-                _capture.Read(frame);
-                if (frame.Empty())
-                {
-                    frame.Dispose();
-                    return false;
-                }
-
-                Cv2.ImWrite(outputPath, frame);
-
-                var moved = false;
-                if (_lastMovementFrame is not null)
-                {
-                    using var currentGray = new Mat();
-                    using var previousGray = new Mat();
-                    using var diff = new Mat();
-                    Cv2.CvtColor(frame, currentGray, ColorConversionCodes.BGR2GRAY);
-                    Cv2.CvtColor(_lastMovementFrame, previousGray, ColorConversionCodes.BGR2GRAY);
-                    Cv2.Absdiff(currentGray, previousGray, diff);
-                    Cv2.Threshold(diff, diff, MovementNoiseThreshold, 255, ThresholdTypes.Binary);
-                    var changedRatio = Cv2.CountNonZero(diff) / (double)(diff.Width * diff.Height);
-                    moved = changedRatio * 100 > sensitivityPercent;
-                }
-
-                _lastMovementFrame?.Dispose();
-                _lastMovementFrame = frame;
-                return moved;
-            }, ct);
-        }
-        finally
-        {
-            StartPreviewLoop();
-        }
+        _bgSubtractor?.Dispose();
+        _bgSubtractor = null;
+        _bgSubtractorWarmupFramesRemaining = 0;
+        MovementPenaltyCount = 0;
     }
 
     /// <summary>Checks whether a webcam is available.</summary>
