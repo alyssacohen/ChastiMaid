@@ -34,6 +34,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
     private bool _monitorMovement;
     private int _movementSensitivityPercent;
+    private int _movementCooldownMinSeconds;
+    private int _movementCooldownMaxSeconds;
     private TimeSpan _movementPenaltyCooldown;
     private string? _movementEvidenceDir;
     private DateTime? _lastPenaltyAt;
@@ -193,6 +195,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         if (moved && (_lastPenaltyAt is null || DateTime.Now - _lastPenaltyAt >= _movementPenaltyCooldown))
         {
             _lastPenaltyAt = DateTime.Now;
+            _movementPenaltyCooldown = TimeSpan.FromSeconds(
+                Random.Shared.Next(_movementCooldownMinSeconds, _movementCooldownMaxSeconds + 1));
 
             if (_movementEvidenceDir is not null)
             {
@@ -210,10 +214,13 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     ///     background-subtraction model. Call <see cref="ResetMovementBaseline" /> beforehand so a stale
     ///     model from an unrelated session isn't reused.
     /// </summary>
-    public void StartMovementMonitoring(int sensitivityPercent, TimeSpan penaltyCooldown, string evidenceDir)
+    public void StartMovementMonitoring(int sensitivityPercent, int cooldownMinSeconds, int cooldownMaxSeconds,
+        string evidenceDir)
     {
         _movementSensitivityPercent = sensitivityPercent;
-        _movementPenaltyCooldown = penaltyCooldown;
+        _movementCooldownMinSeconds = cooldownMinSeconds;
+        _movementCooldownMaxSeconds = cooldownMaxSeconds;
+        _movementPenaltyCooldown = TimeSpan.FromSeconds(Random.Shared.Next(cooldownMinSeconds, cooldownMaxSeconds + 1));
         _movementEvidenceDir = evidenceDir;
         _lastPenaltyAt = null;
 

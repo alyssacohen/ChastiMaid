@@ -524,6 +524,13 @@
                                                            Minimum="1" FormatString="0" />
                                         </Grid>
                                         <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMinRequired}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeMinRequiredSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=10}"
+                                                           Minimum="10" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
                                             <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMaxOverrun}"
                                                        VerticalAlignment="Center" />
                                             <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
@@ -531,10 +538,17 @@
                                                            Minimum="10" FormatString="0" />
                                         </Grid>
                                         <Grid ColumnDefinitions="160,*">
-                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeCheckInterval}"
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeCooldownMin}"
                                                        VerticalAlignment="Center" />
                                             <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
-                                                           Value="{Binding CornertimeCheckIntervalSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Value="{Binding CornertimeMovementCooldownMinSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeCooldownMax}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeMovementCooldownMaxSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
                                                            Minimum="1" FormatString="0" />
                                         </Grid>
                                         <Grid ColumnDefinitions="160,*">
@@ -545,10 +559,17 @@
                                                            Minimum="1" Maximum="100" FormatString="0" />
                                         </Grid>
                                         <Grid ColumnDefinitions="160,*">
-                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMovementPenalty}"
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMovementPenaltyMin}"
                                                        VerticalAlignment="Center" />
                                             <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
-                                                           Value="{Binding CornertimeMovementPenaltySeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Value="{Binding CornertimeMovementPenaltyMinSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                                           Minimum="1" FormatString="0" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="160,*">
+                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMovementPenaltyMax}"
+                                                       VerticalAlignment="Center" />
+                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                                           Value="{Binding CornertimeMovementPenaltyMaxSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
                                                            Minimum="1" FormatString="0" />
                                         </Grid>
                                     </StackPanel>

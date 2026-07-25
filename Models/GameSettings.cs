@@ -60,10 +60,13 @@ public class GameSettings
     // Cornertime punishment
     public bool CornertimeEnabled { get; set; } = true;
     public double CornertimeSeverityValue { get; set; } = 30; // seconds of required stillness per severity point
-    public int CornertimeMaxOverrunSeconds { get; set; } = 120; // buffer beyond the requirement before it fails
-    public int CornertimeCheckIntervalSeconds { get; set; } = 5; // min seconds between two movement penalties (motion is checked continuously)
+    public int CornertimeMinRequiredSeconds { get; set; } = 60; // floor for the initial required duration
+    public int CornertimeMaxOverrunSeconds { get; set; } = 120; // fixed buffer beyond the initial requirement before it fails
+    public int CornertimeMovementCooldownMinSeconds { get; set; } = 10; // min seconds between two movement penalties (motion is checked continuously)
+    public int CornertimeMovementCooldownMaxSeconds { get; set; } = 30; // max seconds between two movement penalties
     public int CornertimeMovementSensitivityPercent { get; set; } = 3; // % of changed pixels counted as movement
-    public int CornertimeMovementPenaltySeconds { get; set; } = 15; // added to the deadline per detected movement
+    public int CornertimeMovementPenaltyMinSeconds { get; set; } = 10; // min seconds added to the required duration per detected movement
+    public int CornertimeMovementPenaltyMaxSeconds { get; set; } = 20; // max seconds added to the required duration per detected movement
 
     // Writing Lines punishment
     public bool WritingLinesEnabled { get; set; } = true;

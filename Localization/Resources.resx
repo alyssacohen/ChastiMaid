@@ -189,6 +189,9 @@
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>For unseemly haste in her duties.</value>
   </data>
+  <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
+    <value>For failing to remain still in the corner.</value>
+  </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>A Matter Already Settled</value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="CornertimeFailureMessage" xml:space="preserve">
     <value>You could not hold still. A fine has been added, and the corner remains available to you.</value>
+  </data>
+  <data name="CornertimeFailureWithConsequenceMessage" xml:space="preserve">
+    <value>You could not manage stillness — and now there are consequences. I trust the new task awaiting you will encourage rather more discipline.</value>
   </data>
   <data name="PunishmentDone" xml:space="preserve">
     <value>Done</value>
@@ -875,17 +881,26 @@
   <data name="SettingsCornertimeSeverityValue" xml:space="preserve">
     <value>Seconds required per point</value>
   </data>
+  <data name="SettingsCornertimeMinRequired" xml:space="preserve">
+    <value>Minimum duration (seconds)</value>
+  </data>
   <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
     <value>Max overrun (seconds)</value>
   </data>
-  <data name="SettingsCornertimeCheckInterval" xml:space="preserve">
+  <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
     <value>Min. seconds between penalties</value>
+  </data>
+  <data name="SettingsCornertimeCooldownMax" xml:space="preserve">
+    <value>Max. seconds between penalties</value>
   </data>
   <data name="SettingsCornertimeSensitivity" xml:space="preserve">
     <value>Movement sensitivity (%)</value>
   </data>
-  <data name="SettingsCornertimeMovementPenalty" xml:space="preserve">
-    <value>Movement penalty (seconds)</value>
+  <data name="SettingsCornertimeMovementPenaltyMin" xml:space="preserve">
+    <value>Min. movement penalty (seconds)</value>
+  </data>
+  <data name="SettingsCornertimeMovementPenaltyMax" xml:space="preserve">
+    <value>Max. movement penalty (seconds)</value>
   </data>
   <data name="SettingsHeadingWritingLines" xml:space="preserve">
     <value>Writing Lines</value>

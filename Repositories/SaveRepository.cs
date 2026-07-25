@@ -251,7 +251,9 @@ public class SaveRepository(LiteDatabase db)
                 break;
 
             case PunishmentKind.Cornertime:
-                var required = (int)Math.Round(severity * settings.CornertimeSeverityValue);
+                var required = Math.Max(
+                    (int)Math.Round(severity * settings.CornertimeSeverityValue),
+                    settings.CornertimeMinRequiredSeconds);
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.Cornertime,

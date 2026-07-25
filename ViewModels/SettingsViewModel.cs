@@ -47,10 +47,13 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private decimal _fineSeverityValue;
     [Reactive] private bool _cornertimeEnabled;
     [Reactive] private double _cornertimeSeverityValue;
+    [Reactive] private int _cornertimeMinRequiredSeconds;
     [Reactive] private int _cornertimeMaxOverrunSeconds;
-    [Reactive] private int _cornertimeCheckIntervalSeconds;
+    [Reactive] private int _cornertimeMovementCooldownMinSeconds;
+    [Reactive] private int _cornertimeMovementCooldownMaxSeconds;
     [Reactive] private int _cornertimeMovementSensitivityPercent;
-    [Reactive] private int _cornertimeMovementPenaltySeconds;
+    [Reactive] private int _cornertimeMovementPenaltyMinSeconds;
+    [Reactive] private int _cornertimeMovementPenaltyMaxSeconds;
     [Reactive] private bool _writingLinesEnabled;
     [Reactive] private double _writingLinesSeverityValue;
     [Reactive] private int _writingLinesPenaltyLinesPerMistake;
@@ -133,10 +136,13 @@ public partial class SettingsViewModel : ViewModelBase
         _fineSeverityValue = s.FineSeverityValue;
         _cornertimeEnabled = s.CornertimeEnabled;
         _cornertimeSeverityValue = s.CornertimeSeverityValue;
+        _cornertimeMinRequiredSeconds = s.CornertimeMinRequiredSeconds;
         _cornertimeMaxOverrunSeconds = s.CornertimeMaxOverrunSeconds;
-        _cornertimeCheckIntervalSeconds = s.CornertimeCheckIntervalSeconds;
+        _cornertimeMovementCooldownMinSeconds = s.CornertimeMovementCooldownMinSeconds;
+        _cornertimeMovementCooldownMaxSeconds = s.CornertimeMovementCooldownMaxSeconds;
         _cornertimeMovementSensitivityPercent = s.CornertimeMovementSensitivityPercent;
-        _cornertimeMovementPenaltySeconds = s.CornertimeMovementPenaltySeconds;
+        _cornertimeMovementPenaltyMinSeconds = s.CornertimeMovementPenaltyMinSeconds;
+        _cornertimeMovementPenaltyMaxSeconds = s.CornertimeMovementPenaltyMaxSeconds;
         _writingLinesEnabled = s.WritingLinesEnabled;
         _writingLinesSeverityValue = s.WritingLinesSeverityValue;
         _writingLinesPenaltyLinesPerMistake = s.WritingLinesPenaltyLinesPerMistake;
@@ -249,13 +255,17 @@ public partial class SettingsViewModel : ViewModelBase
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.FineSeverityValue, x => x.CornertimeEnabled, x => x.CornertimeSeverityValue,
-                x => x.CornertimeMaxOverrunSeconds, x => x.CornertimeCheckIntervalSeconds,
+                x => x.CornertimeMinRequiredSeconds, x => x.CornertimeMaxOverrunSeconds,
                 (_, _, _, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
-        this.WhenAnyValue(x => x.CornertimeMovementSensitivityPercent, x => x.CornertimeMovementPenaltySeconds,
-                x => x.WritingLinesEnabled, x => x.WritingLinesSeverityValue,
-                x => x.WritingLinesPenaltyLinesPerMistake, (_, _, _, _, _) => Unit.Default)
+        this.WhenAnyValue(x => x.CornertimeMovementCooldownMinSeconds, x => x.CornertimeMovementCooldownMaxSeconds,
+                x => x.CornertimeMovementSensitivityPercent, x => x.CornertimeMovementPenaltyMinSeconds,
+                x => x.CornertimeMovementPenaltyMaxSeconds, (_, _, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.WritingLinesEnabled, x => x.WritingLinesSeverityValue,
+                x => x.WritingLinesPenaltyLinesPerMistake, (_, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.WritingLinesMinLines, x => x.WritingLinesMaxLines, (_, _) => Unit.Default)
@@ -632,10 +642,13 @@ public partial class SettingsViewModel : ViewModelBase
         s.FineSeverityValue = FineSeverityValue;
         s.CornertimeEnabled = CornertimeEnabled;
         s.CornertimeSeverityValue = CornertimeSeverityValue;
+        s.CornertimeMinRequiredSeconds = CornertimeMinRequiredSeconds;
         s.CornertimeMaxOverrunSeconds = CornertimeMaxOverrunSeconds;
-        s.CornertimeCheckIntervalSeconds = CornertimeCheckIntervalSeconds;
+        s.CornertimeMovementCooldownMinSeconds = CornertimeMovementCooldownMinSeconds;
+        s.CornertimeMovementCooldownMaxSeconds = CornertimeMovementCooldownMaxSeconds;
         s.CornertimeMovementSensitivityPercent = CornertimeMovementSensitivityPercent;
-        s.CornertimeMovementPenaltySeconds = CornertimeMovementPenaltySeconds;
+        s.CornertimeMovementPenaltyMinSeconds = CornertimeMovementPenaltyMinSeconds;
+        s.CornertimeMovementPenaltyMaxSeconds = CornertimeMovementPenaltyMaxSeconds;
         s.WritingLinesEnabled = WritingLinesEnabled;
         s.WritingLinesSeverityValue = WritingLinesSeverityValue;
         s.WritingLinesMinLines = WritingLinesMinLines;

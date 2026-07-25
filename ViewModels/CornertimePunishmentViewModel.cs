@@ -13,8 +13,8 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
 {
     private readonly GameSettings _settings;
 
-    private readonly int _requiredSeconds;
-    private int _maxSeconds;
+    private int _requiredSeconds;
+    private readonly int _maxSeconds;
     private IDisposable? _movementSubscription;
     private DispatcherTimer? _tickTimer;
 
@@ -34,7 +34,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         MainVm.Webcam.Start(_settings.SelectedCameraIndex);
 
         ConfirmFramingCommand = ReactiveCommand.Create(StartActive);
-        AbandonCommand = ReactiveCommand.Create(() => Finish(success: false));
+        AbandonCommand = ReactiveCommand.Create(() => Finish(success: false, abandoned: true));
     }
 
     public WebcamPreviewService Webcam => MainVm.Webcam;
@@ -80,26 +80,40 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
             .Skip(1)
             .Subscribe(_ =>
             {
-                _maxSeconds += _settings.CornertimeMovementPenaltySeconds;
-                this.RaisePropertyChanged(nameof(MaxDisplay));
+                _requiredSeconds += Random.Shared.Next(
+                    _settings.CornertimeMovementPenaltyMinSeconds,
+                    _settings.CornertimeMovementPenaltyMaxSeconds + 1);
+                this.RaisePropertyChanged(nameof(RequiredDisplay));
             });
 
         Webcam.StartMovementMonitoring(
             _settings.CornertimeMovementSensitivityPercent,
-            TimeSpan.FromSeconds(_settings.CornertimeCheckIntervalSeconds),
+            _settings.CornertimeMovementCooldownMinSeconds,
+            _settings.CornertimeMovementCooldownMaxSeconds,
             dir);
     }
 
-    private void Finish(bool success)
+    private void Finish(bool success, bool abandoned = false)
     {
         _tickTimer?.Stop();
         _tickTimer = null;
         _movementSubscription?.Dispose();
         _movementSubscription = null;
+
+        // Read before Stop() — Stop() → ResetMovementBaseline() zeroes the count.
+        var penaltyCount = Webcam.MovementPenaltyCount;
         Webcam.StopMovementMonitoring();
         Webcam.Stop();
 
-        ResultMessage = Conclude(success, "CornertimeSuccessMessage", "CornertimeFailureMessage");
+        var escalationSeverity = success ? 0 : penaltyCount + (abandoned ? 3 : 0);
+        var failureKey = escalationSeverity > 0 ? "CornertimeFailureWithConsequenceMessage" : "CornertimeFailureMessage";
+
+        if (escalationSeverity > 0)
+        {
+            SaveRepo.AssignPunishment((escalationSeverity, escalationSeverity), "PunishmentReasonCornertimeFailed");
+        }
+
+        ResultMessage = Conclude(success, "CornertimeSuccessMessage", failureKey);
         IsActive = false;
         IsResult = true;
     }

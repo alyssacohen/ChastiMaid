@@ -189,6 +189,9 @@
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>Per un'indecorosa fretta nei suoi doveri.</value>
   </data>
+  <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
+    <value>Per non essere rimasta immobile nell'angolo.</value>
+  </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>Una questione già decisa</value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="CornertimeFailureMessage" xml:space="preserve">
     <value>Non siete riuscita a restare ferma. È stata aggiunta una multa, e l'angolo resta a vostra disposizione.</value>
+  </data>
+  <data name="CornertimeFailureWithConsequenceMessage" xml:space="preserve">
+    <value>Non siete riuscita a mantenere la posizione — e ora ve ne sono le conseguenze. Confido che il nuovo compito che vi attende vi insegni un po' più di disciplina.</value>
   </data>
   <data name="PunishmentDone" xml:space="preserve">
     <value>Fatto</value>
@@ -875,17 +881,26 @@
   <data name="SettingsCornertimeSeverityValue" xml:space="preserve">
     <value>Secondi richiesti per punto</value>
   </data>
+  <data name="SettingsCornertimeMinRequired" xml:space="preserve">
+    <value>Durata minima (secondi)</value>
+  </data>
   <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
     <value>Margine massimo (secondi)</value>
   </data>
-  <data name="SettingsCornertimeCheckInterval" xml:space="preserve">
+  <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
     <value>Secondi minimi tra due penalità</value>
+  </data>
+  <data name="SettingsCornertimeCooldownMax" xml:space="preserve">
+    <value>Secondi massimi tra due penalità</value>
   </data>
   <data name="SettingsCornertimeSensitivity" xml:space="preserve">
     <value>Sensibilità al movimento (%)</value>
   </data>
-  <data name="SettingsCornertimeMovementPenalty" xml:space="preserve">
-    <value>Penalità per movimento (secondi)</value>
+  <data name="SettingsCornertimeMovementPenaltyMin" xml:space="preserve">
+    <value>Penalità minima per movimento (secondi)</value>
+  </data>
+  <data name="SettingsCornertimeMovementPenaltyMax" xml:space="preserve">
+    <value>Penalità massima per movimento (secondi)</value>
   </data>
   <data name="SettingsHeadingWritingLines" xml:space="preserve">
     <value>Righe di penitenza</value>

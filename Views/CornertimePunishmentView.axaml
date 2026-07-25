@@ -23,7 +23,8 @@
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" />
             <v:WebcamPreviewControl Service="{Binding Webcam}"
-                                    Width="480" Height="360"
+                                    Width="320" Height="480"
+                                    Stretch="UniformToFill"
                                     HorizontalAlignment="Center" />
             <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
                       ItemsSource="{Binding Webcam.AvailableCameras}"
