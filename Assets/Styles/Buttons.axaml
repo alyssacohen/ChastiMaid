@@ -12,9 +12,9 @@
         <Setter Property="Background" Value="{DynamicResource BrushButtonPrimary}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="SemiLight" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="16,0" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="BorderThickness" Value="0" />
@@ -25,9 +25,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="SemiLight" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="16,0" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="BorderThickness" Value="1.5" />
@@ -39,9 +39,9 @@
         <Setter Property="Background" Value="{DynamicResource BrushButtonDanger}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="16,0" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="BorderThickness" Value="0" />
@@ -52,9 +52,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBodySmall}" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="Height" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
         <Setter Property="Padding" Value="12,0" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="BorderThickness" Value="1.5" />
@@ -66,9 +66,9 @@
         <Setter Property="Background" Value="{DynamicResource BrushAmber}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="SemiLight" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="16,0" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="BorderThickness" Value="0" />
@@ -79,9 +79,9 @@
         <Setter Property="Background" Value="{DynamicResource BrushButtonDanger}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="16,0" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="BorderThickness" Value="0" />
@@ -92,8 +92,8 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonDanger}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="15" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="8,0" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="BorderThickness" Value="0" />
@@ -104,9 +104,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeCaption}" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="Padding" Value="16,0" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="BorderThickness" Value="1" />
@@ -125,9 +125,9 @@
 
     <!-- compact — size modifier; combine with other button classes -->
     <Style Selector="Button.compact">
-        <Setter Property="Height" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
         <Setter Property="Padding" Value="12,0" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBodySmall}" />
         <Setter Property="CornerRadius" Value="4" />
     </Style>
 
