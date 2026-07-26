@@ -632,31 +632,42 @@
                                         <ToggleSwitch IsChecked="{Binding ForcedOutfitEnabled}"
                                                       OnContent="{converters:Tr SettingsEnabled}"
                                                       OffContent="{converters:Tr SettingsDisabled}" />
-                                        <Grid ColumnDefinitions="160,*">
-                                            <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsForcedOutfitSeverityValue}"
-                                                       VerticalAlignment="Center" />
-                                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
-                                                           Value="{Binding ForcedOutfitSeverityValue, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.1}"
-                                                           Minimum="0.1" Increment="0.1" FormatString="0.00" />
-                                        </Grid>
-                                        <CheckBox IsChecked="{Binding ForcedOutfitForceFullOutfit}"
-                                                  Content="{converters:Tr SettingsForcedOutfitForceFull}" />
                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsForcedOutfitItems}}" />
-                                        <ItemsControl ItemsSource="{Binding ForcedOutfitItems}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
+                                        <ItemsControl ItemsSource="{Binding ForcedOutfitPresets}">
                                             <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="vm:ForcedOutfitItemChipViewModel">
-                                                    <ToggleButton Classes="filterChip"
-                                                                  Content="{Binding Name}"
-                                                                  IsChecked="{Binding IsSelected}"
-                                                                  Margin="0,0,4,4" />
+                                                <DataTemplate x:DataType="vm:ForcedOutfitPresetSummaryViewModel">
+                                                    <Border Classes="card">
+                                                        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                                                            <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                                                                <TextBlock Classes="Body" Text="{Binding Name}" />
+                                                                <TextBlock Classes="Caption" Text="{Binding SummaryLabel}" />
+                                                            </StackPanel>
+                                                            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsEnabled}"
+                                                                          VerticalAlignment="Center" Margin="8,0" />
+                                                            <Button Grid.Column="2"
+                                                                    Command="{Binding EditCommand}"
+                                                                    Classes="Edit"
+                                                                    Margin="4,0"
+                                                                    VerticalAlignment="Center">
+                                                                <ic:SymbolIcon Symbol="Edit" IconVariant="Regular" FontSize="18" />
+                                                            </Button>
+                                                            <Button Grid.Column="3"
+                                                                    Command="{Binding DeleteCommand}"
+                                                                    Classes="Delete"
+                                                                    VerticalAlignment="Center">
+                                                                <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
+                                                            </Button>
+                                                        </Grid>
+                                                    </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
+                                        <Button Command="{Binding AddForcedOutfitPresetCommand}" Classes="Add">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                                                <TextBlock Text="{converters:Tr SettingsAddForcedOutfitPreset}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>

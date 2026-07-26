@@ -15,6 +15,9 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
+    private ILiteCollection<ForcedOutfitPreset> ForcedOutfitPresets =>
+        db.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");
+
     public List<ClothingItem> GetWardrobe()
     {
         return Wardrobe.FindAll().ToList();
@@ -93,5 +96,20 @@ public class ProfileRepository(LiteDatabase db)
     public void SaveGameSettings(GameSettings settings)
     {
         Settings.Upsert(settings);
+    }
+
+    public List<ForcedOutfitPreset> GetForcedOutfitPresets()
+    {
+        return ForcedOutfitPresets.FindAll().ToList();
+    }
+
+    public void SaveForcedOutfitPreset(ForcedOutfitPreset preset)
+    {
+        ForcedOutfitPresets.Upsert(preset);
+    }
+
+    public void DeleteForcedOutfitPreset(int id)
+    {
+        ForcedOutfitPresets.Delete(id);
     }
 }

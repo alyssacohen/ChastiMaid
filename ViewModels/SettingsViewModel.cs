@@ -61,8 +61,6 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _writingLinesMinLines;
     [Reactive] private int _writingLinesMaxLines;
     [Reactive] private bool _forcedOutfitEnabled;
-    [Reactive] private double _forcedOutfitSeverityValue;
-    [Reactive] private bool _forcedOutfitForceFullOutfit;
     [Reactive] private string _speechRecognitionStatusDisplay = "";
     [Reactive] private string _webcamStatusDisplay = "";
 
@@ -151,8 +149,6 @@ public partial class SettingsViewModel : ViewModelBase
         _writingLinesMinLines = s.WritingLinesMinLines;
         _writingLinesMaxLines = s.WritingLinesMaxLines;
         _forcedOutfitEnabled = s.ForcedOutfitEnabled;
-        _forcedOutfitSeverityValue = s.ForcedOutfitSeverityValue;
-        _forcedOutfitForceFullOutfit = s.ForcedOutfitForceFullOutfit;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
 
         // Show a default immediately so Settings opens instantly; the real camera list and hardware
@@ -167,11 +163,9 @@ public partial class SettingsViewModel : ViewModelBase
                 () => IsChoresDirty = true));
         }
 
-        foreach (var w in _repo.GetWardrobe())
+        foreach (var p in _repo.GetForcedOutfitPresets())
         {
-            ForcedOutfitItems.Add(WireChild(
-                new ForcedOutfitItemChipViewModel(w, s.ForcedOutfitClothingItemIds.Contains(w.Id)),
-                () => IsPunishmentsDirty = true));
+            ForcedOutfitPresets.Add(BuildForcedOutfitPresetSummary(p));
         }
 
         var plugAndPlayConfigs = _repo.GetPlugAndPlayItems();
@@ -276,12 +270,10 @@ public partial class SettingsViewModel : ViewModelBase
         this.WhenAnyValue(x => x.WritingLinesMinLines, x => x.WritingLinesMaxLines, (_, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
-        this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitSeverityValue,
-                x => x.ForcedOutfitForceFullOutfit, (_, _, _) => Unit.Default)
+        this.WhenAnyValue(x => x.ForcedOutfitEnabled)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
-        ForcedOutfitItems.CollectionChanged += (_, _) => IsPunishmentsDirty = true;
         WardrobeItems.CollectionChanged += (_, _) =>
         {
             IsWardrobeDirty = true;
@@ -309,6 +301,7 @@ public partial class SettingsViewModel : ViewModelBase
             OutfitRules.Add(WireChild(
                 new OutfitRuleEditViewModel(new OutfitRule(), AvailableItems,
                     id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
+        AddForcedOutfitPresetCommand = ReactiveCommand.Create(() => OpenForcedOutfitPresetEditor(new ForcedOutfitPreset()));
         DeleteSelectedWardrobeItemsCommand = ReactiveCommand.Create(
             DeleteSelectedWardrobeItems,
             this.WhenAnyValue(x => x.WardrobeSelectedCount, n => n > 0));
@@ -351,7 +344,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
-    public ObservableCollection<ForcedOutfitItemChipViewModel> ForcedOutfitItems { get; } = [];
+    public ObservableCollection<ForcedOutfitPresetSummaryViewModel> ForcedOutfitPresets { get; } = [];
     public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
@@ -404,6 +397,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand ShowAddItemPanelCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
+    public ICommand AddForcedOutfitPresetCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
     public ICommand CollapseExpandedWardrobeItemCommand { get; }
 
@@ -534,6 +528,37 @@ public partial class SettingsViewModel : ViewModelBase
         }
     }
 
+    // --- Forced Outfit presets ---
+    private ForcedOutfitPresetSummaryViewModel BuildForcedOutfitPresetSummary(ForcedOutfitPreset preset)
+    {
+        return new ForcedOutfitPresetSummaryViewModel(preset, _repo, OpenForcedOutfitPresetEditor,
+            id => RemoveFrom(ForcedOutfitPresets, id, _repo.DeleteForcedOutfitPreset));
+    }
+
+    private void OpenForcedOutfitPresetEditor(ForcedOutfitPresetSummaryViewModel summary)
+    {
+        var preset = _repo.GetForcedOutfitPresets().FirstOrDefault(p => p.Id == summary.Id) ?? new ForcedOutfitPreset();
+        OpenForcedOutfitPresetEditor(preset);
+    }
+
+    private void OpenForcedOutfitPresetEditor(ForcedOutfitPreset preset)
+    {
+        _mainVm.NavigateTo(new ForcedOutfitPresetEditorViewModel(_mainVm, _repo, preset, () =>
+        {
+            RefreshForcedOutfitPresets();
+            return this;
+        }));
+    }
+
+    private void RefreshForcedOutfitPresets()
+    {
+        ForcedOutfitPresets.Clear();
+        foreach (var p in _repo.GetForcedOutfitPresets())
+        {
+            ForcedOutfitPresets.Add(BuildForcedOutfitPresetSummary(p));
+        }
+    }
+
     // --- Tab change interception ---
     private async Task TryChangeTab(int newIndex)
     {
@@ -661,9 +686,6 @@ public partial class SettingsViewModel : ViewModelBase
         s.WritingLinesMaxLines = WritingLinesMaxLines;
         s.WritingLinesPenaltyLinesPerMistake = WritingLinesPenaltyLinesPerMistake;
         s.ForcedOutfitEnabled = ForcedOutfitEnabled;
-        s.ForcedOutfitSeverityValue = ForcedOutfitSeverityValue;
-        s.ForcedOutfitForceFullOutfit = ForcedOutfitForceFullOutfit;
-        s.ForcedOutfitClothingItemIds = ForcedOutfitItems.Where(i => i.IsSelected).Select(i => i.ClothingItemId).ToList();
         _repo.SaveGameSettings(s);
 
         foreach (var c in Chores)
@@ -782,19 +804,42 @@ public partial class ChoreEditViewModel : ViewModelBase
     }
 }
 
-public partial class ForcedOutfitItemChipViewModel : ViewModelBase
+public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
 {
-    [Reactive] private bool _isSelected;
+    private readonly ProfileRepository _repo;
+    [Reactive] private bool _isEnabled;
 
-    public ForcedOutfitItemChipViewModel(ClothingItem item, bool isSelected)
+    public ForcedOutfitPresetSummaryViewModel(ForcedOutfitPreset preset, ProfileRepository repo,
+        Action<ForcedOutfitPresetSummaryViewModel> onEdit, Action<int> onDelete)
     {
-        ClothingItemId = item.Id;
-        Name = item.Name;
-        _isSelected = isSelected;
+        _repo = repo;
+        Id = preset.Id;
+        Name = preset.Name;
+        SessionsPerSeverityPoint = preset.SessionsPerSeverityPoint;
+        IsFullOutfit = preset.IsFullOutfit;
+        _isEnabled = preset.IsEnabled;
+        SummaryLabel = string.Format(Resources.Get("SettingsForcedOutfitPresetSummaryFormat"),
+            preset.SessionsPerSeverityPoint,
+            Resources.Get(preset.IsFullOutfit ? "SettingsForcedOutfitFullBadge" : "SettingsForcedOutfitPartialBadge"));
+
+        this.WhenAnyValue(x => x.IsEnabled).Skip(1).Subscribe(enabled =>
+        {
+            preset.IsEnabled = enabled;
+            _repo.SaveForcedOutfitPreset(preset);
+        });
+
+        EditCommand = ReactiveCommand.Create(() => onEdit(this));
+        DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
     }
 
-    public int ClothingItemId { get; }
+    public int Id { get; }
     public string Name { get; }
+    public double SessionsPerSeverityPoint { get; }
+    public bool IsFullOutfit { get; }
+    public string SummaryLabel { get; }
+
+    public ICommand EditCommand { get; }
+    public ICommand DeleteCommand { get; }
 }
 
 public partial class PlugAndPlayItemEditViewModel : ViewModelBase

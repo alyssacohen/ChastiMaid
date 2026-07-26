@@ -28,6 +28,7 @@ public class PunishmentItemViewModel : ViewModelBase
                 string.Format(Resources.Get("PunishmentDetailWritingLinesFormat"), lines),
             PunishmentKind.Cornertime when punishment.CornertimeRequiredSeconds is { } seconds =>
                 string.Format(Resources.Get("PunishmentDetailCornertimeFormat"), (int)Math.Ceiling(seconds / 60.0)),
+            PunishmentKind.ForcedOutfit when punishment.ForcedOutfitPresetName is { } name => name,
             _ => null,
         };
     }

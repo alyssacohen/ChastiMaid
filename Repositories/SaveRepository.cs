@@ -26,6 +26,9 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<ActivePlugAndPlayAccessory> ActivePlugAndPlayAccessoryCollection =>
         db.GetCollection<ActivePlugAndPlayAccessory>("active_plug_and_play_accessory");
 
+    private ILiteCollection<ForcedOutfitPreset> ForcedOutfitPresets =>
+        db.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");
+
     // --- GameState ---
     public GameState? GetGameState()
     {
@@ -57,6 +60,11 @@ public class SaveRepository(LiteDatabase db)
     public List<Chore> GetChores()
     {
         return Chores.FindAll().ToList();
+    }
+
+    public List<ForcedOutfitPreset> GetForcedOutfitPresets()
+    {
+        return ForcedOutfitPresets.FindAll().ToList();
     }
 
     // --- Wardrobe weight adjustments ---
@@ -238,7 +246,8 @@ public class SaveRepository(LiteDatabase db)
             candidates.Add(PunishmentKind.WritingLines);
         }
 
-        if (settings.ForcedOutfitEnabled)
+        var enabledForcedOutfitPresets = GetForcedOutfitPresets().Where(p => p.IsEnabled).ToList();
+        if (settings.ForcedOutfitEnabled && enabledForcedOutfitPresets.Count > 0)
         {
             candidates.Add(PunishmentKind.ForcedOutfit);
         }
@@ -283,6 +292,7 @@ public class SaveRepository(LiteDatabase db)
                 break;
 
             case PunishmentKind.ForcedOutfit:
+                var preset = enabledForcedOutfitPresets[Random.Shared.Next(enabledForcedOutfitPresets.Count)];
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.ForcedOutfit,
@@ -290,9 +300,10 @@ public class SaveRepository(LiteDatabase db)
                     AssignedAt = DateTime.UtcNow,
                     Reason = reason,
                     ForcedOutfitRemainingSessions =
-                        Math.Max(1, (int)Math.Round(severity * settings.ForcedOutfitSeverityValue)),
-                    ForcedClothingItemIds = settings.ForcedOutfitClothingItemIds,
-                    ForceFullOutfit = settings.ForcedOutfitForceFullOutfit,
+                        Math.Max(1, (int)Math.Round(severity * preset.SessionsPerSeverityPoint)),
+                    ForcedClothingItemIds = preset.ClothingItemIds,
+                    ForceFullOutfit = preset.IsFullOutfit,
+                    ForcedOutfitPresetName = preset.Name,
                 });
                 break;
         }
@@ -340,6 +351,10 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot plug and play item configs
         var plugAndPlayCol = saveDb.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
         plugAndPlayCol.InsertBulk(profile.GetPlugAndPlayItems());
+
+        // Snapshot forced outfit presets
+        var forcedOutfitPresetsCol = saveDb.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");
+        forcedOutfitPresetsCol.InsertBulk(profile.GetForcedOutfitPresets());
 
         // Snapshot game settings
         var settings = profile.GetGameSettings();

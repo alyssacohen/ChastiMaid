@@ -33,5 +33,8 @@ public class ActivePunishment
     public List<int>? ForcedClothingItemIds { get; set; }
     public bool ForceFullOutfit { get; set; }
 
+    /// <summary>Name of the ForcedOutfitPreset chosen at assignment time. Null for saves predating this field.</summary>
+    public string? ForcedOutfitPresetName { get; set; }
+
     public bool IsResolved { get; set; }
 }

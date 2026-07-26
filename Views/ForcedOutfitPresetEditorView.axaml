@@ -1,0 +1,179 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:converters="using:ChastiMaid.Views.Converters"
+             x:DataType="vm:ForcedOutfitPresetEditorViewModel"
+             x:Class="ChastiMaid.Views.ForcedOutfitPresetEditorView"
+             Background="{DynamicResource BrushWindowBackground}">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Scrollable content -->
+        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="48,36,48,24" MaxWidth="660">
+
+                <TextBlock Classes="PageTitle"
+                           Text="{conv:Tr ForcedOutfitEditorTitle}"
+                           HorizontalAlignment="Left" />
+
+                <!-- Preset form -->
+                <Border Classes="card" Margin="0,20,0,28">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="160,*">
+                            <TextBlock Classes="BodySmall" Text="{conv:Tr ForcedOutfitEditorName}"
+                                       VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" Text="{Binding Name}" />
+                        </Grid>
+                        <Grid ColumnDefinitions="160,*">
+                            <TextBlock Classes="BodySmall" Text="{conv:Tr SettingsForcedOutfitSeverityValue}"
+                                       VerticalAlignment="Center" />
+                            <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
+                                           Value="{Binding SessionsPerSeverityPoint, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.1}"
+                                           Minimum="0.1" Increment="0.1" FormatString="0.00" />
+                        </Grid>
+                        <CheckBox IsChecked="{Binding IsFullOutfit}"
+                                  Content="{conv:Tr SettingsForcedOutfitForceFull}" />
+                        <ToggleSwitch IsChecked="{Binding IsEnabled}"
+                                      OnContent="{conv:Tr SettingsEnabled}"
+                                      OffContent="{conv:Tr SettingsDisabled}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Legend -->
+                <Border BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,0,0,28">
+
+                        <!-- Selected state -->
+                        <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+                            <Border Classes="chip selected">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                            </Border>
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendSelected}" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <!-- Required state -->
+                        <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+                            <Border Classes="chip required">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                            </Border>
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendRequired}" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <!-- Unavailable state -->
+                        <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center" Opacity="0.28">
+                            <Border Classes="chip">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                            </Border>
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendUnavailable}" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- Layer groups -->
+                <ItemsControl ItemsSource="{Binding Layers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:LayerGroupViewModel">
+                            <StackPanel Margin="0,0,0,28">
+                                <!-- Layer header -->
+                                <Border BorderBrush="{DynamicResource BrushBorderSubtle}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="0,0,0,8" Margin="0,0,0,12">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Classes="SectionTitle"
+                                                   Text="{Binding DisplayName}" />
+                                        <TextBlock Classes="Caption"
+                                                   Text="{Binding Description}"
+                                                   VerticalAlignment="Bottom"
+                                                   Margin="8,0,0,2" />
+                                    </StackPanel>
+                                </Border>
+                                <!-- Chips -->
+                                <ItemsControl ItemsSource="{Binding Chips}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:ChipViewModel">
+                                            <Button Command="{Binding ToggleCommand}"
+                                                    Margin="0,0,8,8"
+                                                    Classes.chip="True"
+                                                    Classes.selected="{Binding IsSelected}"
+                                                    Classes.required="{Binding IsRequired}"
+                                                    Classes.disabled="{Binding IsDisabled}">
+                                                <TextBlock Text="{Binding Name}" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Sticky footer: status panel + action bar -->
+        <StackPanel Grid.Row="1" Background="{DynamicResource BrushSurfaceBase}">
+
+            <!-- Status panel (conditional) -->
+            <Border IsVisible="{Binding HasWarning}"
+                    Background="{DynamicResource BrushSurfaceBase}"
+                    BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,1,0,0"
+                    Padding="48,12">
+                <Grid ColumnDefinitions="Auto,*">
+                    <ic:SymbolIcon Grid.Column="0" Symbol="Info" IconVariant="Regular"
+                                   FontSize="14" Margin="0,1,10,0"
+                                   VerticalAlignment="Top"
+                                   Foreground="{DynamicResource TextMuted}" />
+                    <TextBlock Grid.Column="1"
+                               Classes="BodySmall"
+                               Text="{Binding StatusMessage}"
+                               IsVisible="{Binding IsViolation}"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource BrushAmberText}" />
+                    <TextBlock Grid.Column="1"
+                               Classes="BodySmall"
+                               Text="{Binding StatusMessage}"
+                               IsVisible="{Binding !IsViolation}"
+                               TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+
+            <!-- Action bar -->
+            <Border BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,1,0,0"
+                    Padding="48,16">
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                        <TextBlock Classes="SectionTitle"
+                                   Text="{Binding SelectedCount}"
+                                   FontStyle="Italic" />
+                        <TextBlock Classes="Caption"
+                                   Text="{conv:Tr ChangeOutfitItemsSelectedLabel}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                HorizontalAlignment="Right" Spacing="8">
+                        <Button Content="{conv:Tr ChangeOutfitClear}" Command="{Binding ClearCommand}"
+                                Classes="Ghost compact" />
+                        <Button Content="{conv:Tr Back}" Command="{Binding BackCommand}"
+                                Classes="Ghost compact" />
+                        <Button Content="{conv:Tr Save}" Command="{Binding SaveCommand}"
+                                Classes="Primary" IsEnabled="{Binding CanFinalize}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

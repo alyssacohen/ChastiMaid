@@ -196,7 +196,10 @@
     <value>A Matter Already Settled</value>
   </data>
   <data name="ForcedOutfitInfoMessageFormat" xml:space="preserve">
-    <value>The chosen uniform shall present itself, unbidden, for the next {0} session(s). No action is required of you.</value>
+    <value>The uniform «{0}» shall present itself, unbidden, for the next {1} session(s). No action is required of you.</value>
+  </data>
+  <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
+    <value>The chosen uniform</value>
   </data>
   <data name="CornertimeFramingTitle" xml:space="preserve">
     <value>The Corner Awaits</value>
@@ -984,7 +987,25 @@
     <value>Fix the entire outfit, not just the selected items</value>
   </data>
   <data name="SettingsForcedOutfitItems" xml:space="preserve">
-    <value>Eligible garments</value>
+    <value>Configured outfits</value>
+  </data>
+  <data name="SettingsAddForcedOutfitPreset" xml:space="preserve">
+    <value>Add Outfit</value>
+  </data>
+  <data name="SettingsForcedOutfitPresetSummaryFormat" xml:space="preserve">
+    <value>{0:0.00} sessions/point · {1}</value>
+  </data>
+  <data name="SettingsForcedOutfitFullBadge" xml:space="preserve">
+    <value>Full outfit</value>
+  </data>
+  <data name="SettingsForcedOutfitPartialBadge" xml:space="preserve">
+    <value>Partial outfit</value>
+  </data>
+  <data name="ForcedOutfitEditorTitle" xml:space="preserve">
+    <value>Compose a forced outfit</value>
+  </data>
+  <data name="ForcedOutfitEditorName" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
     <value>Certain accessories, once donned, do not come off again until she is satisfied they have served their purpose.</value>

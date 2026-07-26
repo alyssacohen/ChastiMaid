@@ -1480,7 +1480,9 @@ public partial class DashboardViewModel : ViewModelBase
         {
             var dialog = new ConfirmDialogViewModel(
                 Resources.Get("ForcedOutfitInfoTitle"),
-                string.Format(Resources.Get("ForcedOutfitInfoMessageFormat"), punishment.ForcedOutfitRemainingSessions ?? 0),
+                string.Format(Resources.Get("ForcedOutfitInfoMessageFormat"),
+                    punishment.ForcedOutfitPresetName ?? Resources.Get("ForcedOutfitPresetNameFallback"),
+                    punishment.ForcedOutfitRemainingSessions ?? 0),
                 Resources.Get("Ok"),
                 null);
             ActiveDialog = dialog;

@@ -76,11 +76,8 @@ public class GameSettings
     public int WritingLinesMinLines { get; set; } = 20;
     public int WritingLinesMaxLines { get; set; } = 150;
 
-    // Forced Outfit punishment
+    // Forced Outfit punishment — the concrete outfit presets live in ForcedOutfitPreset (per-profile collection)
     public bool ForcedOutfitEnabled { get; set; } = true;
-    public double ForcedOutfitSeverityValue { get; set; } = 0.3; // sessions per severity point
-    public List<int> ForcedOutfitClothingItemIds { get; set; } = [];
-    public bool ForcedOutfitForceFullOutfit { get; set; }
 
     // Camera
     public int SelectedCameraIndex { get; set; }

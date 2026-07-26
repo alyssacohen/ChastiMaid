@@ -196,7 +196,10 @@
     <value>Una questione già decisa</value>
   </data>
   <data name="ForcedOutfitInfoMessageFormat" xml:space="preserve">
-    <value>La divisa prescelta si presenterà da sé per le prossime {0} sessioni. Da parte vostra non è richiesta alcuna azione.</value>
+    <value>La divisa «{0}» si presenterà da sé per le prossime {1} sessioni. Da parte vostra non è richiesta alcuna azione.</value>
+  </data>
+  <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
+    <value>La divisa prescelta</value>
   </data>
   <data name="CornertimeFramingTitle" xml:space="preserve">
     <value>L'angolo vi attende</value>
@@ -984,7 +987,25 @@
     <value>Fissa l'intera divisa, non solo i capi selezionati</value>
   </data>
   <data name="SettingsForcedOutfitItems" xml:space="preserve">
-    <value>Capi idonei</value>
+    <value>Divise configurate</value>
+  </data>
+  <data name="SettingsAddForcedOutfitPreset" xml:space="preserve">
+    <value>Aggiungi divisa</value>
+  </data>
+  <data name="SettingsForcedOutfitPresetSummaryFormat" xml:space="preserve">
+    <value>{0:0.00} sessioni/punto · {1}</value>
+  </data>
+  <data name="SettingsForcedOutfitFullBadge" xml:space="preserve">
+    <value>Outfit completo</value>
+  </data>
+  <data name="SettingsForcedOutfitPartialBadge" xml:space="preserve">
+    <value>Outfit parziale</value>
+  </data>
+  <data name="ForcedOutfitEditorTitle" xml:space="preserve">
+    <value>Componi una divisa obbligata</value>
+  </data>
+  <data name="ForcedOutfitEditorName" xml:space="preserve">
+    <value>Nome</value>
   </data>
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
     <value>Certi accessori, una volta indossati, non si tolgono finché lei non giudica che abbiano assolto al loro scopo.</value>

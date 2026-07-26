@@ -29,10 +29,16 @@ from the beginning at another time.
 
 4. **Forced outfit**
 There will be some clothing items that are pretty unconfortable to wear.
-The idea is to create one or more complete outfits (the outfit generator will be skipped)
-and set one of them as mandatory for one or more subsequent sessions. The user will only have the option to accept
-it or close the application so that until the penalty is served it will not be possible to continue with
-the game.
+The user configures one or more named outfit presets in Settings, each composed the same way an outfit is proposed
+at the start of a session (picking garments per layer, respecting requires/incompatible rules). Each preset has its
+own severity value (sessions per severity point) and its own "full outfit" flag: when checked, the outfit generator
+is skipped entirely and only the preset's exact garments are worn; when unchecked, the preset's garments are used as
+seeds and the generator fills in the rest as usual.
+Both a global toggle (whether Forced Outfit can be assigned at all) and a per-preset toggle (whether that specific
+preset currently participates) control eligibility. When the punishment is assigned, one preset is chosen uniformly
+at random among the currently enabled ones, and stays fixed for the whole duration of that punishment. The user
+will only have the option to accept it or close the application so that until the penalty is served it will not be
+possible to continue with the game.
 
 Maybe other types will be added.
 
