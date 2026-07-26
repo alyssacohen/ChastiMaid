@@ -207,8 +207,56 @@
   <data name="CornertimeConfirmFraming" xml:space="preserve">
     <value>Begin</value>
   </data>
-  <data name="CornertimeActiveMessage" xml:space="preserve">
-    <value>Stand quite still. I shall know if you do not.</value>
+  <data name="CornertimePositionHandsBackA" xml:space="preserve">
+    <value>To the corner, if you please — feet together, hands clasped behind your back, and your face to the wall. You have ten seconds.</value>
+  </data>
+  <data name="CornertimePositionHandsBackB" xml:space="preserve">
+    <value>The corner awaits. Feet together, hands behind your back, facing the wall. Do not dawdle.</value>
+  </data>
+  <data name="CornertimePositionHandsLapA" xml:space="preserve">
+    <value>Into the corner. Feet together, hands clasped before you, eyes on the wall.</value>
+  </data>
+  <data name="CornertimePositionHandsLapB" xml:space="preserve">
+    <value>To your corner — feet together, hands folded in front of you, and face the wall like a good girl should.</value>
+  </data>
+  <data name="CornertimePositionHandsNeckA" xml:space="preserve">
+    <value>To the corner — legs apart, hands clasped behind your neck, facing the wall. Ten seconds, starting now.</value>
+  </data>
+  <data name="CornertimePositionHandsNeckB" xml:space="preserve">
+    <value>The corner, please. Legs apart, hands behind your neck, and your face to the wall.</value>
+  </data>
+  <data name="CornertimePositionHandsKneesA" xml:space="preserve">
+    <value>Into the corner, feet together, hands upon your knees, facing the wall.</value>
+  </data>
+  <data name="CornertimePositionHandsKneesB" xml:space="preserve">
+    <value>To the corner. Feet together, hands resting on your knees, and face the wall — you know the drill by now.</value>
+  </data>
+  <data name="CornertimeBegin1" xml:space="preserve">
+    <value>Very well. The time begins now — hold that position.</value>
+  </data>
+  <data name="CornertimeBegin2" xml:space="preserve">
+    <value>That will do. Your corner time has begun.</value>
+  </data>
+  <data name="CornertimeBegin3" xml:space="preserve">
+    <value>Good. The clock is running — do not disappoint me.</value>
+  </data>
+  <data name="CornertimeMovementDetected1" xml:space="preserve">
+    <value>I saw that. {0} seconds more for you.</value>
+  </data>
+  <data name="CornertimeMovementDetected2" xml:space="preserve">
+    <value>Caught you moving. Your corner grows longer by {0} seconds.</value>
+  </data>
+  <data name="CornertimeMovementDetected3" xml:space="preserve">
+    <value>That was not stillness. {0} seconds have been added.</value>
+  </data>
+  <data name="CornertimeStillnessWarning1" xml:space="preserve">
+    <value>Good. Keep it that way.</value>
+  </data>
+  <data name="CornertimeStillnessWarning2" xml:space="preserve">
+    <value>Stillness suits you. Do not test my patience now.</value>
+  </data>
+  <data name="CornertimeStillnessWarning3" xml:space="preserve">
+    <value>So far, so good. I am watching.</value>
   </data>
   <data name="CornertimeAbandon" xml:space="preserve">
     <value>Abandon</value>
@@ -901,6 +949,9 @@
   </data>
   <data name="SettingsCornertimeMovementPenaltyMax" xml:space="preserve">
     <value>Max. movement penalty (seconds)</value>
+  </data>
+  <data name="SettingsCornertimeVoiceEnabled" xml:space="preserve">
+    <value>Voice narration</value>
   </data>
   <data name="SettingsHeadingWritingLines" xml:space="preserve">
     <value>Writing Lines</value>

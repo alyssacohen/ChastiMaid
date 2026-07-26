@@ -40,7 +40,7 @@
         <!-- Active -->
         <StackPanel IsVisible="{Binding IsActive}" Spacing="16">
             <TextBlock Classes="EmployerVoice"
-                       Text="{conv:Tr CornertimeActiveMessage}"
+                       Text="{Binding NarrationText}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" />
             <TextBlock Classes="NumberLarge"

@@ -67,6 +67,7 @@ public class GameSettings
     public int CornertimeMovementSensitivityPercent { get; set; } = 3; // % of changed pixels counted as movement
     public int CornertimeMovementPenaltyMinSeconds { get; set; } = 10; // min seconds added to the required duration per detected movement
     public int CornertimeMovementPenaltyMaxSeconds { get; set; } = 20; // max seconds added to the required duration per detected movement
+    public bool CornertimeVoiceEnabled { get; set; } = true; // spoken narration (the completion chime always plays)
 
     // Writing Lines punishment
     public bool WritingLinesEnabled { get; set; } = true;

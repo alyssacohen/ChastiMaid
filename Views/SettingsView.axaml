@@ -572,6 +572,10 @@
                                                            Value="{Binding CornertimeMovementPenaltyMaxSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
                                                            Minimum="1" FormatString="0" />
                                         </Grid>
+                                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeVoiceEnabled}" />
+                                        <ToggleSwitch IsChecked="{Binding CornertimeVoiceEnabled}"
+                                                      OnContent="{converters:Tr SettingsEnabled}"
+                                                      OffContent="{converters:Tr SettingsDisabled}" />
                                     </StackPanel>
                                 </Border>
                             </StackPanel>

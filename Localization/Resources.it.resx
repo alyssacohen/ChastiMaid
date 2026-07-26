@@ -207,8 +207,56 @@
   <data name="CornertimeConfirmFraming" xml:space="preserve">
     <value>Iniziare</value>
   </data>
-  <data name="CornertimeActiveMessage" xml:space="preserve">
-    <value>Restate immobile. Saprò se non lo farete.</value>
+  <data name="CornertimePositionHandsBackA" xml:space="preserve">
+    <value>In angolo, se non vi dispiace — piedi uniti, mani giunte dietro la schiena, e il viso rivolto al muro. Avete dieci secondi.</value>
+  </data>
+  <data name="CornertimePositionHandsBackB" xml:space="preserve">
+    <value>L'angolo vi attende. Piedi uniti, mani dietro la schiena, rivolta al muro. Non indugiate.</value>
+  </data>
+  <data name="CornertimePositionHandsLapA" xml:space="preserve">
+    <value>In angolo. Piedi uniti, mani giunte sul grembo, sguardo al muro.</value>
+  </data>
+  <data name="CornertimePositionHandsLapB" xml:space="preserve">
+    <value>Al vostro angolo — piedi uniti, mani giunte sul grembo, il viso rivolto al muro come si conviene.</value>
+  </data>
+  <data name="CornertimePositionHandsNeckA" xml:space="preserve">
+    <value>In angolo — gambe divaricate, mani giunte dietro la nuca, rivolta al muro. Dieci secondi, da ora.</value>
+  </data>
+  <data name="CornertimePositionHandsNeckB" xml:space="preserve">
+    <value>L'angolo, prego. Gambe divaricate, mani dietro la nuca, il viso al muro.</value>
+  </data>
+  <data name="CornertimePositionHandsKneesA" xml:space="preserve">
+    <value>In angolo, piedi uniti, mani sulle ginocchia, rivolta al muro.</value>
+  </data>
+  <data name="CornertimePositionHandsKneesB" xml:space="preserve">
+    <value>Al vostro angolo. Piedi uniti, mani sulle ginocchia, il viso rivolto al muro — ormai conoscete la prassi.</value>
+  </data>
+  <data name="CornertimeBegin1" xml:space="preserve">
+    <value>Molto bene. Il tempo inizia ora — mantenete la posizione.</value>
+  </data>
+  <data name="CornertimeBegin2" xml:space="preserve">
+    <value>Così va bene. Il vostro angolo ha inizio.</value>
+  </data>
+  <data name="CornertimeBegin3" xml:space="preserve">
+    <value>Bene. L'orologio corre — non deludetemi.</value>
+  </data>
+  <data name="CornertimeMovementDetected1" xml:space="preserve">
+    <value>Vi ho vista muovervi. {0} secondi in più per voi.</value>
+  </data>
+  <data name="CornertimeMovementDetected2" xml:space="preserve">
+    <value>Vi ho colta in movimento. Il vostro angolo si allunga di {0} secondi.</value>
+  </data>
+  <data name="CornertimeMovementDetected3" xml:space="preserve">
+    <value>Quella non era immobilità. Sono stati aggiunti {0} secondi.</value>
+  </data>
+  <data name="CornertimeStillnessWarning1" xml:space="preserve">
+    <value>Bene. Restate così.</value>
+  </data>
+  <data name="CornertimeStillnessWarning2" xml:space="preserve">
+    <value>L'immobilità vi dona. Non mettete alla prova la mia pazienza ora.</value>
+  </data>
+  <data name="CornertimeStillnessWarning3" xml:space="preserve">
+    <value>Per ora va bene. Vi sto osservando.</value>
   </data>
   <data name="CornertimeAbandon" xml:space="preserve">
     <value>Abbandonare</value>
@@ -901,6 +949,9 @@
   </data>
   <data name="SettingsCornertimeMovementPenaltyMax" xml:space="preserve">
     <value>Penalità massima per movimento (secondi)</value>
+  </data>
+  <data name="SettingsCornertimeVoiceEnabled" xml:space="preserve">
+    <value>Narrazione vocale</value>
   </data>
   <data name="SettingsHeadingWritingLines" xml:space="preserve">
     <value>Righe di penitenza</value>

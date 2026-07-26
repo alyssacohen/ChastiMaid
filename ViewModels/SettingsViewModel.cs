@@ -54,6 +54,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _cornertimeMovementSensitivityPercent;
     [Reactive] private int _cornertimeMovementPenaltyMinSeconds;
     [Reactive] private int _cornertimeMovementPenaltyMaxSeconds;
+    [Reactive] private bool _cornertimeVoiceEnabled;
     [Reactive] private bool _writingLinesEnabled;
     [Reactive] private double _writingLinesSeverityValue;
     [Reactive] private int _writingLinesPenaltyLinesPerMistake;
@@ -143,6 +144,7 @@ public partial class SettingsViewModel : ViewModelBase
         _cornertimeMovementSensitivityPercent = s.CornertimeMovementSensitivityPercent;
         _cornertimeMovementPenaltyMinSeconds = s.CornertimeMovementPenaltyMinSeconds;
         _cornertimeMovementPenaltyMaxSeconds = s.CornertimeMovementPenaltyMaxSeconds;
+        _cornertimeVoiceEnabled = s.CornertimeVoiceEnabled;
         _writingLinesEnabled = s.WritingLinesEnabled;
         _writingLinesSeverityValue = s.WritingLinesSeverityValue;
         _writingLinesPenaltyLinesPerMistake = s.WritingLinesPenaltyLinesPerMistake;
@@ -262,6 +264,9 @@ public partial class SettingsViewModel : ViewModelBase
         this.WhenAnyValue(x => x.CornertimeMovementCooldownMinSeconds, x => x.CornertimeMovementCooldownMaxSeconds,
                 x => x.CornertimeMovementSensitivityPercent, x => x.CornertimeMovementPenaltyMinSeconds,
                 x => x.CornertimeMovementPenaltyMaxSeconds, (_, _, _, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.CornertimeVoiceEnabled)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.WritingLinesEnabled, x => x.WritingLinesSeverityValue,
@@ -649,6 +654,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.CornertimeMovementSensitivityPercent = CornertimeMovementSensitivityPercent;
         s.CornertimeMovementPenaltyMinSeconds = CornertimeMovementPenaltyMinSeconds;
         s.CornertimeMovementPenaltyMaxSeconds = CornertimeMovementPenaltyMaxSeconds;
+        s.CornertimeVoiceEnabled = CornertimeVoiceEnabled;
         s.WritingLinesEnabled = WritingLinesEnabled;
         s.WritingLinesSeverityValue = WritingLinesSeverityValue;
         s.WritingLinesMinLines = WritingLinesMinLines;
