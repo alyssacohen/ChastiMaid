@@ -1,0 +1,143 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:converters="using:ChastiMaid.Views.Converters"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="ChastiMaid.Views.Controls.SettingsGeneralTab">
+
+    <ScrollViewer Padding="24,0,32,0" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Spacing="0" Margin="0,0,0,24">
+            <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabGeneral}" Margin="0,20,0,8" />
+            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,16" />
+
+            <!-- Player -->
+            <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPlayer}" Margin="0,0,0,8" />
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="160,*">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsFieldName}" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="1" Classes="underline" Text="{Binding PlayerName}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsAutoSaveMin}" VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding AutoSaveInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                       Minimum="1" Maximum="60" FormatString="0" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Game Balance -->
+            <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingGameBalance}" Margin="0,8,0,8" />
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsMinDebt}" VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding MinDebt, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                       Minimum="0" Increment="50" FormatString="0" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsMaxDebt}" VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding MaxDebt, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                       Minimum="0" Increment="50" FormatString="0" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsDailyInterestRate}"
+                                   VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding DailyInterestRatePercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.5}"
+                                       Minimum="0.5" Maximum="10.0" Increment="0.5" FormatString="0.0'%'" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Session Timing -->
+            <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingSessionTiming}" Margin="0,8,0,8" />
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsIdleWageAmount}" VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding IdleWageAmount, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
+                                       Minimum="0" Increment="1" FormatString="0" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWageInterval}"
+                                   VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding IdleWageInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                       Minimum="1" Maximum="120" FormatString="0" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Capture -->
+            <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingCapture}" Margin="0,8,0,8" />
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCaptureMin}" VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding CaptureMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                       Minimum="1" FormatString="0" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCaptureMax}" VerticalAlignment="Center" />
+                        <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                       Value="{Binding CaptureMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                       Minimum="1" FormatString="0" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Language -->
+            <TextBlock Classes="Heading" Text="{converters:Tr LanguageHeading}" Margin="0,8,0,8" />
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="160,*">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr LanguageFieldLabel}"
+                                   VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}"
+                                  SelectedItem="{Binding SelectedLanguage}"
+                                  HorizontalAlignment="Stretch" />
+                    </Grid>
+                    <TextBlock Classes="Caption" Text="{converters:Tr LanguageRestartNotice}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!-- Webcam & Speech Recognition -->
+            <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPopupHardware}" Margin="0,8,0,8" />
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="160,*">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsSpeechRecognitionStatus}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Classes="BodySmall" Text="{Binding SpeechRecognitionStatusDisplay}"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                    <Grid ColumnDefinitions="160,*">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsWebcamStatus}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Classes="BodySmall" Text="{Binding WebcamStatusDisplay}"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                    <Grid ColumnDefinitions="160,*">
+                        <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsDetectedCameras}"
+                                   VerticalAlignment="Top" />
+                        <ItemsControl Grid.Column="1" ItemsSource="{Binding AvailableCameras}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Classes="BodySmall" Text="{Binding DisplayName}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

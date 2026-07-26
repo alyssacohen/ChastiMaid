@@ -236,6 +236,20 @@
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────
+       NumericUpDown.compact — fixed narrow width, right-aligned digits.
+       Pairs with .underline.stacked-spinner in label+field rows so the
+       label column can size to its full text (Grid = "*,Auto") instead
+       of clipping at a fixed pixel width.
+  ────────────────────────────────────────────────────────────── -->
+    <Style Selector="NumericUpDown.compact">
+        <Setter Property="Width" Value="{DynamicResource NumericFieldWidth}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style Selector="NumericUpDown.compact TextBox">
+        <Setter Property="TextAlignment" Value="Right" />
+    </Style>
+
+    <!-- ──────────────────────────────────────────────────────────
        Global: light selection highlight on all TextBoxes.
        TextBox.SelectionForegroundBrush (swapping the TEXT to a light
        color) is inert on the pinned Avalonia 12.0.5 — it's a known

@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:converters="using:ChastiMaid.Views.Converters"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="ChastiMaid.Views.Controls.SettingsChoresTab">
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
+        <StackPanel Grid.Row="0">
+            <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabChores}" Margin="0,20,0,8" />
+            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Name="ChoresScroll">
+            <ItemsControl ItemsSource="{Binding Chores}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChoreEditViewModel">
+                        <Border Classes="card">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Column="0" Spacing="8">
+                                    <Grid ColumnDefinitions="*,100,100,100">
+                                        <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
+                                            <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsChoreNamePlaceholder}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldValue}}" />
+                                            <TextBox Classes="underline"
+                                                     Text="{Binding Value, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
+                                                     PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Spacing="2" Margin="0,0,8,0">
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldFreqDays}}" />
+                                            <TextBox Classes="underline"
+                                                     Text="{Binding FrequencyDays, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=1}"
+                                                     PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="3" Spacing="2">
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldMinCompletionMinutes}}" />
+                                            <TextBox Classes="underline"
+                                                     Text="{Binding MinCompletionMinutes, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
+                                                     PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <StackPanel Spacing="2">
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDescription}}" />
+                                        <TextBox Classes="underline" Text="{Binding Description}"
+                                                 PlaceholderText="{converters:Tr SettingsOptionalDescriptionPlaceholder}" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Delete"
+                                        VerticalAlignment="Center" Margin="12,0,0,0" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                <TextBlock Text="{converters:Tr SettingsAddChore}" VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
+    </Grid>
+
+</UserControl>
