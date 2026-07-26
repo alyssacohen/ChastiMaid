@@ -281,7 +281,8 @@ public partial class SettingsViewModel : ViewModelBase
         };
         OutfitRules.CollectionChanged += (_, _) => IsRulesDirty = true;
 
-        SaveCommand = ReactiveCommand.Create(Save);
+        SaveCommand = ReactiveCommand.Create(SaveAndBack);
+        QuickSaveCommand = ReactiveCommand.Create(Save);
         BackCommand = ReactiveCommand.CreateFromTask(ConfirmBack);
         SetTabCommand = ReactiveCommand.Create<string?>(s =>
         {
@@ -391,6 +392,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Commands ---
     public ICommand SaveCommand { get; }
+    public ICommand QuickSaveCommand { get; }
     public ICommand BackCommand { get; }
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
@@ -636,6 +638,12 @@ public partial class SettingsViewModel : ViewModelBase
         SaveAll();
         TakeSnapshot();
         IsGeneralDirty = IsChoresDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty = false;
+    }
+
+    private void SaveAndBack()
+    {
+        Save();
+        _mainVm.NavigateTo(_returnTo());
     }
 
     // --- Persist ---

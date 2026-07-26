@@ -845,6 +845,9 @@
   <data name="Save" xml:space="preserve">
     <value>Salva</value>
   </data>
+  <data name="SettingsSaveAndBack" xml:space="preserve">
+    <value>Salva e torna indietro</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
