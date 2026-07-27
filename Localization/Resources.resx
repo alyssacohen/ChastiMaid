@@ -1294,6 +1294,12 @@ Point the camera at the combination without looking at it.</value>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="SettingsForcedOutfitPresetEdit" xml:space="preserve">
+    <value>Edit preset</value>
+  </data>
+  <data name="SettingsForcedOutfitPresetDelete" xml:space="preserve">
+    <value>Delete preset</value>
+  </data>
   <data name="LoadGameErrorTitle" xml:space="preserve">
     <value>Load Error</value>
   </data>

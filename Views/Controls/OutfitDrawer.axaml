@@ -16,7 +16,7 @@
                 CornerRadius="0">
             <Button.Template>
                 <ControlTemplate>
-                    <Panel Background="#47000000"
+                    <Panel Background="{DynamicResource BrushScrim}"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch" />
                 </ControlTemplate>
@@ -45,12 +45,12 @@
                                    VerticalAlignment="Center" />
                         <Button Grid.Column="1"
                                 Click="OnScrimClick"
-                                Width="32" Height="32"
+                                Width="44" Height="44"
                                 Padding="0"
-                                CornerRadius="16"
                                 Classes="Ghost"
                                 VerticalAlignment="Center"
-                                ToolTip.Tip="{conv:Tr OutfitDrawerCloseTooltip}">
+                                ToolTip.Tip="{conv:Tr OutfitDrawerCloseTooltip}"
+                                AutomationProperties.Name="{conv:Tr OutfitDrawerCloseTooltip}">
                             <ic:SymbolIcon Symbol="Dismiss" IconVariant="Regular" FontSize="14"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center" />

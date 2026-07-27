@@ -84,6 +84,7 @@
     <SolidColorBrush x:Key="BrushStatusIdle" Color="{StaticResource ColorStatusIdle}" />
     <SolidColorBrush x:Key="BrushEmergencyText" Color="{StaticResource ColorButtonDanger}" />
     <SolidColorBrush x:Key="BrushTypingCorrect" Color="{StaticResource ColorTypingCorrect}" />
+    <SolidColorBrush x:Key="BrushScrim" Color="#47000000" />
 
     <!-- ═══════════════════════════════════════════
        ACCENT OVERRIDE — replace Fluent's system blue with warm brown

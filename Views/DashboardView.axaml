@@ -760,7 +760,7 @@
         <Panel Classes="dialogOverlay" IsVisible="{Binding IsPunishmentsPanelVisible}">
             <Border
                 Classes="dialogBox"
-                MaxWidth="380"
+                MaxWidth="460"
                 Padding="0">
                 <DockPanel>
 
@@ -779,14 +779,15 @@
                                 Text="{conv:Tr PendingPunishments}"
                                 VerticalAlignment="Center" />
                             <Button
-                                Classes="Ghost compact"
+                                Classes="Ghost"
                                 Command="{Binding ClosePunishmentsPanelCommand}"
-                                CornerRadius="16"
                                 Grid.Column="1"
-                                Height="32"
+                                Height="44"
                                 Padding="0"
                                 VerticalAlignment="Center"
-                                Width="32">
+                                Width="44"
+                                ToolTip.Tip="{conv:Tr Close}"
+                                AutomationProperties.Name="{conv:Tr Close}">
                                 <ic:SymbolIcon
                                     FontSize="14"
                                     Foreground="{DynamicResource BrushAmberText}"

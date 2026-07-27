@@ -1294,6 +1294,12 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
   <data name="Delete" xml:space="preserve">
     <value>Elimina</value>
   </data>
+  <data name="SettingsForcedOutfitPresetEdit" xml:space="preserve">
+    <value>Modifica preset</value>
+  </data>
+  <data name="SettingsForcedOutfitPresetDelete" xml:space="preserve">
+    <value>Elimina preset</value>
+  </data>
   <data name="LoadGameErrorTitle" xml:space="preserve">
     <value>Errore di caricamento</value>
   </data>

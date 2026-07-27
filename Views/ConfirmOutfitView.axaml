@@ -47,11 +47,9 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:OutfitLayerViewModel">
-                            <Border Background="{StaticResource BrushSurfaceBase}"
-                                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="{StaticResource SpacingMdThickness}">
+                            <Border Classes="card"
+                                    Padding="{StaticResource SpacingMdThickness}"
+                                    Margin="0">
                                 <Grid ColumnDefinitions="160,*">
 
                                     <!-- Left: layer category + layer index -->

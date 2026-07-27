@@ -362,13 +362,17 @@
                                                         Command="{Binding EditCommand}"
                                                         Classes="Edit"
                                                         Margin="4,0"
-                                                        VerticalAlignment="Center">
+                                                        VerticalAlignment="Center"
+                                                        ToolTip.Tip="{converters:Tr SettingsForcedOutfitPresetEdit}"
+                                                        AutomationProperties.Name="{converters:Tr SettingsForcedOutfitPresetEdit}">
                                                     <ic:SymbolIcon Symbol="Edit" IconVariant="Regular" FontSize="18" />
                                                 </Button>
                                                 <Button Grid.Column="3"
                                                         Command="{Binding DeleteCommand}"
                                                         Classes="Delete"
-                                                        VerticalAlignment="Center">
+                                                        VerticalAlignment="Center"
+                                                        ToolTip.Tip="{converters:Tr SettingsForcedOutfitPresetDelete}"
+                                                        AutomationProperties.Name="{converters:Tr SettingsForcedOutfitPresetDelete}">
                                                     <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
                                                 </Button>
                                             </Grid>
