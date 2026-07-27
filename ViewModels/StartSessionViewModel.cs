@@ -3,6 +3,7 @@ using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
+using ChastiMaid.Views.Converters;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -52,7 +53,7 @@ public partial class StartSessionViewModel : ViewModelBase
             }
         }
 
-        DebtDisplay = $"Debt: ${state?.CurrentDebt:F2}";
+        DebtDisplay = $"Debt: {CurrencyConverter.Format(state?.CurrentDebt ?? 0)}";
 
         if (state?.OutfitLockedDate?.Date == DateTime.UtcNow.Date)
         {

@@ -14,14 +14,14 @@
                 <StackPanel Grid.Column="0" Spacing="2">
                     <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr DebtWidgetSettled}}" />
                     <TextBlock Classes="NumberLarge"
-                               Text="{Binding #Root.DebtSettled, StringFormat='${0:F2}'}" />
+                               Text="{Binding #Root.DebtSettled, Converter={x:Static conv:CurrencyConverter.Instance}}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Spacing="2" HorizontalAlignment="Right">
                     <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr DebtWidgetRemaining}}"
                                HorizontalAlignment="Right" />
                     <TextBlock Classes="NumberLarge"
-                               Text="{Binding #Root.DebtRemaining, StringFormat='${0:F2}'}"
+                               Text="{Binding #Root.DebtRemaining, Converter={x:Static conv:CurrencyConverter.Instance}}"
                                HorizontalAlignment="Right" />
                 </StackPanel>
 

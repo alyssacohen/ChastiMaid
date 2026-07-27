@@ -6,6 +6,7 @@ using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
+using ChastiMaid.Views.Converters;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -20,7 +21,7 @@ public class ChoreItemViewModel : ViewModelBase
         Description = chore.Description;
         Value = chore.Value;
         var effective = Math.Round(chore.Value * (decimal)multiplier, 2);
-        ValueDisplay = $"${effective:F2}";
+        ValueDisplay = CurrencyConverter.Format(effective);
         StartChoreCommand = ReactiveCommand.Create(() => onStart(this));
     }
 
@@ -1377,7 +1378,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsBusy = true;
         BusyChoreName = _activeChore.Name;
         BusyChoreDescription = _activeChore.Description;
-        BusyChoreValueDisplay = $"${Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2):F2}";
+        BusyChoreValueDisplay = CurrencyConverter.Format(Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2));
         _choreStartTime = DateTime.UtcNow;
         BusyElapsed = "00:00";
 

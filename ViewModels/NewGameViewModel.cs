@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using ChastiMaid.Repositories;
+using ChastiMaid.Views.Converters;
 using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;
@@ -13,7 +14,7 @@ public class NewGameViewModel : ViewModelBase
         _mainVm = mainVm;
 
         var settings = mainVm.ProfileRepository.GetGameSettings();
-        DebtRange = $"${settings.MinDebt:F2} – ${settings.MaxDebt:F2}";
+        DebtRange = $"{CurrencyConverter.Format(settings.MinDebt)} – {CurrencyConverter.Format(settings.MaxDebt)}";
         InterestRate = $"{settings.DailyInterestRate * 100:F2}% / day";
 
         StartGameCommand = ReactiveCommand.Create(() =>

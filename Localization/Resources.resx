@@ -361,7 +361,7 @@
     <value>Suggested every {0} days</value>
   </data>
   <data name="DashboardChoreRejectedMessage" xml:space="preserve">
-    <value>Too fast — chore rejected, no credit given.</value>
+    <value>Finished already? Either the work was poor, or none was done at all — this waste of my time shall not go unanswered.</value>
   </data>
   <data name="DashboardRequestPermission" xml:space="preserve">
     <value>Request Permission</value>
@@ -864,10 +864,10 @@
     <value>Game Balance</value>
   </data>
   <data name="SettingsMinDebt" xml:space="preserve">
-    <value>Min debt</value>
+    <value>Min debt (£)</value>
   </data>
   <data name="SettingsMaxDebt" xml:space="preserve">
-    <value>Max debt</value>
+    <value>Max debt (£)</value>
   </data>
   <data name="SettingsDailyInterestRate" xml:space="preserve">
     <value>Daily interest rate</value>
@@ -924,7 +924,7 @@
     <value>A sum, added to the debt at once. Always in effect — there is no toggle for consequence.</value>
   </data>
   <data name="SettingsFineSeverityValue" xml:space="preserve">
-    <value>$ per severity point</value>
+      <value>Pounds (£) per severity</value>
   </data>
   <data name="SettingsHeadingCornertime" xml:space="preserve">
     <value>Cornertime</value>
@@ -933,7 +933,7 @@
     <value>A period of stillness, in a corner of your choosing, observed by the camera.</value>
   </data>
   <data name="SettingsCornertimeSeverityValue" xml:space="preserve">
-    <value>Seconds required per point</value>
+      <value>Seconds required per severity</value>
   </data>
   <data name="SettingsCornertimeMinRequired" xml:space="preserve">
     <value>Minimum duration (seconds)</value>
@@ -966,7 +966,7 @@
     <value>A line, copied faithfully, as many times as the occasion warrants.</value>
   </data>
   <data name="SettingsWritingLinesSeverityValue" xml:space="preserve">
-    <value>Lines per severity point</value>
+      <value>Lines per severity</value>
   </data>
   <data name="SettingsWritingLinesPenalty" xml:space="preserve">
     <value>Penalty lines per mistake</value>
@@ -984,7 +984,7 @@
     <value>The chosen garments become mandatory, unbidden, for a number of subsequent sessions.</value>
   </data>
   <data name="SettingsForcedOutfitSeverityValue" xml:space="preserve">
-    <value>Sessions per severity point</value>
+      <value>Sessions per severity</value>
   </data>
   <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
     <value>Fix the entire outfit, not just the selected items</value>
@@ -1026,7 +1026,7 @@
     <value>No cameras detected</value>
   </data>
   <data name="SettingsIdleWageAmount" xml:space="preserve">
-    <value>Idle wage amount</value>
+    <value>Idle wage amount (£)</value>
   </data>
   <data name="SettingsWageInterval" xml:space="preserve">
     <value>Wage interval (min)</value>
@@ -1077,7 +1077,7 @@
     <value>Chore name</value>
   </data>
   <data name="SettingsFieldValue" xml:space="preserve">
-    <value>Value</value>
+    <value>Value (£)</value>
   </data>
   <data name="SettingsPlaceholderZero" xml:space="preserve">
     <value>0</value>
@@ -1192,7 +1192,7 @@ You may export your session media before the save slot is freed.</value>
     <value>Remaining</value>
   </data>
   <data name="DebtWidgetTotalIncurredFormat" xml:space="preserve">
-    <value>Total incurred: ${0:F2}</value>
+    <value>Total incurred: £{0:F2}</value>
   </data>
   <data name="NewGameSettingsIntro" xml:space="preserve">
     <value>Your game will start with these settings:</value>
@@ -1238,16 +1238,16 @@ Point the camera at the combination without looking at it.</value>
     <value>Retry Capture</value>
   </data>
   <data name="DashboardInitialDebtFormat" xml:space="preserve">
-    <value>Initial: ${0:F2}</value>
+    <value>Initial: £{0:F2}</value>
   </data>
   <data name="DashboardNoOutfitSet" xml:space="preserve">
     <value>No outfit set</value>
   </data>
   <data name="DashboardWageFormat" xml:space="preserve">
-    <value>Wage: ${0:F2} / {1} min</value>
+    <value>Wage: £{0:F2} / {1} min</value>
   </data>
   <data name="DashboardDebtFormat" xml:space="preserve">
-    <value>Debt: ${0:F2}</value>
+    <value>Debt: £{0:F2}</value>
   </data>
   <data name="DashboardNextWageFormat" xml:space="preserve">
     <value>Next wage in {0:D2}:{1:D2}</value>
