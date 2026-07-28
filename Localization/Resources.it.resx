@@ -1100,6 +1100,21 @@
   <data name="SettingsSelectItemPlaceholder" xml:space="preserve">
     <value>Seleziona capo</value>
   </data>
+  <data name="SettingsFieldItem" xml:space="preserve">
+    <value>Capo</value>
+  </data>
+  <data name="SettingsFieldRelation" xml:space="preserve">
+    <value>Relazione</value>
+  </data>
+  <data name="SettingsFieldRelatedItem" xml:space="preserve">
+    <value>Capo correlato</value>
+  </data>
+  <data name="SettingsOutfitRelationRequires" xml:space="preserve">
+    <value>Richiede</value>
+  </data>
+  <data name="SettingsOutfitRelationExcludes" xml:space="preserve">
+    <value>Esclude</value>
+  </data>
   <data name="SettingsAddRule" xml:space="preserve">
     <value>Aggiungi regola</value>
   </data>

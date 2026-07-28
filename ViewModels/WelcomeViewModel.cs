@@ -59,7 +59,7 @@ public partial class WelcomeViewModel : ViewModelBase
         });
 
         SettingsCommand = ReactiveCommand.Create(() =>
-            _mainVm.NavigateTo(new SettingsViewModel(_mainVm, () => new WelcomeViewModel(_mainVm))));
+            _mainVm.NavigateTo(_mainVm.OpenSettings(() => new WelcomeViewModel(_mainVm))));
     }
 
     public bool HasActiveGame { get; }

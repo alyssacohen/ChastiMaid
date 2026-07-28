@@ -16,31 +16,38 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:OutfitRuleEditViewModel">
                         <Border Classes="card">
-                            <Grid ColumnDefinitions="*,Auto,*,Auto">
-                                <ComboBox Grid.Column="0"
-                                          ItemsSource="{Binding AvailableItems}"
-                                          SelectedItem="{Binding Item}"
-                                          PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Center" />
-                                <ComboBox Grid.Column="1"
-                                          ItemsSource="{x:Static vm:OutfitRuleEditViewModel.RelationOptions}"
-                                          SelectedItem="{Binding Relation}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Center"
-                                          Margin="8,0" />
-                                <ComboBox Grid.Column="2"
-                                          ItemsSource="{Binding AvailableItems}"
-                                          SelectedItem="{Binding RelatedItem}"
-                                          PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Center" />
-                                <Button Grid.Column="3"
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Grid Grid.Column="0" ColumnDefinitions="*,160,*">
+                                    <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldItem}}" />
+                                        <ComboBox ItemsSource="{Binding AvailableItems}"
+                                                  SelectedItem="{Binding Item}"
+                                                  PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
+                                                  HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelation}}" />
+                                        <ComboBox ItemsSource="{x:Static vm:OutfitRuleEditViewModel.RelationOptions}"
+                                                  SelectedItem="{Binding RelationOption}"
+                                                  HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Spacing="2">
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelatedItem}}" />
+                                        <ComboBox ItemsSource="{Binding AvailableItems}"
+                                                  SelectedItem="{Binding RelatedItem}"
+                                                  PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
+                                                  HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                </Grid>
+                                <Button Grid.Column="1"
                                         Command="{Binding DeleteCommand}"
                                         Classes="Delete"
-                                        Margin="8,0,0,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center" />
+                                        VerticalAlignment="Center"
+                                        Margin="12,0,0,0"
+                                        ToolTip.Tip="{converters:Tr Delete}"
+                                        AutomationProperties.Name="{converters:Tr Delete}">
+                                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
+                                </Button>
                             </Grid>
                         </Border>
                     </DataTemplate>

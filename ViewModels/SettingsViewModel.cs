@@ -23,9 +23,10 @@ namespace ChastiMaid.ViewModels;
 public partial class SettingsViewModel : ViewModelBase
 {
     private readonly ReadOnlyObservableCollection<WardrobeEditViewModel> _filteredWardrobeItems = null!;
+    private readonly ReadOnlyObservableCollection<ClothingItemOption> _availableItems = null!;
     private readonly MainWindowViewModel _mainVm;
     private readonly ProfileRepository _repo;
-    private readonly Func<ViewModelBase> _returnTo;
+    private Func<ViewModelBase> _returnTo;
 
     // --- Dialog ---
     [Reactive] private ViewModelBase? _activeDialog;
@@ -176,8 +177,10 @@ public partial class SettingsViewModel : ViewModelBase
             ForcedOutfitPresets.Add(BuildForcedOutfitPresetSummary(p));
         }
 
+        var allWardrobe = _repo.GetWardrobe().ToList();
+
         var plugAndPlayConfigs = _repo.GetPlugAndPlayItems();
-        foreach (var w in _repo.GetWardrobe().Where(w => w.Layers.Contains(4))) // 4 = Accessories layer
+        foreach (var w in allWardrobe.Where(w => w.Layers.Contains(4))) // 4 = Accessories layer
         {
             var existing = plugAndPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
             PlugAndPlayItems.Add(WireChild(
@@ -185,7 +188,6 @@ public partial class SettingsViewModel : ViewModelBase
                 () => IsPunishmentsDirty = true));
         }
 
-        var allWardrobe = _repo.GetWardrobe().ToList();
         var initTags = allWardrobe.SelectMany(i => i.Tags).Distinct().OrderBy(s => s).ToList();
         var initSlots = allWardrobe.SelectMany(i => i.Slots).Distinct().OrderBy(s => s).ToList();
         foreach (var w in allWardrobe)
@@ -194,8 +196,14 @@ public partial class SettingsViewModel : ViewModelBase
                 ExpandWardrobeItem);
             WireWardrobeItem(vm);
             WardrobeItems.Add(vm);
-            AvailableItems.Add(new ClothingItemOption(w.Id, w.Name));
         }
+
+        // AvailableItems mirrors WardrobeItems reactively so adding/removing a wardrobe item is
+        // immediately reflected in the Outfit Rules dropdowns, without needing to reopen Settings.
+        WardrobeItems.ToObservableChangeSet()
+            .Transform(w => new ClothingItemOption(w.Id, w.Name))
+            .Bind(out _availableItems)
+            .Subscribe();
 
         foreach (var r in _repo.GetOutfitRules())
         {
@@ -360,7 +368,9 @@ public partial class SettingsViewModel : ViewModelBase
 
         // Rebuild the whole tab from the repo (same pattern as "Discard" — see TryChangeTab) so
         // wardrobe/rules/chores collections reflect the just-replaced content.
-        _mainVm.NavigateTo(new SettingsViewModel(_mainVm, _returnTo, message));
+        var fresh = new SettingsViewModel(_mainVm, _returnTo, message);
+        _mainVm.ReplaceSettingsCache(fresh);
+        _mainVm.NavigateTo(fresh);
     }
 
     private static async Task<string?> PickFolder(string title)
@@ -418,13 +428,19 @@ public partial class SettingsViewModel : ViewModelBase
         });
     }
 
+    /// <summary>Repoints the "back"/"discard" navigation target when the cached instance is reopened from a different screen.</summary>
+    internal void SetReturnTarget(Func<ViewModelBase> returnTo)
+    {
+        _returnTo = returnTo;
+    }
+
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
     public ObservableCollection<ForcedOutfitPresetSummaryViewModel> ForcedOutfitPresets { get; } = [];
     public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
-    public ObservableCollection<ClothingItemOption> AvailableItems { get; } = [];
+    public ReadOnlyObservableCollection<ClothingItemOption> AvailableItems => _availableItems;
 
     public IReadOnlyList<LanguageOption> AvailableLanguages { get; } =
     [
@@ -653,7 +669,11 @@ public partial class SettingsViewModel : ViewModelBase
                 Save();
                 SetTab(newIndex);
                 break;
-            case SaveDialogResult.Discard: _mainVm.NavigateTo(new SettingsViewModel(_mainVm, _returnTo)); break;
+            case SaveDialogResult.Discard:
+                var fresh = new SettingsViewModel(_mainVm, _returnTo);
+                _mainVm.ReplaceSettingsCache(fresh);
+                _mainVm.NavigateTo(fresh);
+                break;
             case SaveDialogResult.Cancel: this.RaisePropertyChanged(nameof(SelectedTabIndex)); break;
         }
     }
@@ -775,28 +795,49 @@ public partial class SettingsViewModel : ViewModelBase
 
         foreach (var c in Chores)
         {
-            _repo.SaveChore(c.ToModel());
+            var model = c.ToModel();
+            _repo.SaveChore(model);
+            c.Id = model.Id; // newly-added rows have Id 0 until the first save assigns a real one;
+                              // without this, every subsequent save would upsert as a fresh duplicate
         }
 
         foreach (var w in WardrobeItems)
         {
-            _repo.SaveClothingItem(w.ToModel());
+            var model = w.ToModel();
+            _repo.SaveClothingItem(model);
+            w.Id = model.Id;
+        }
+
+        // AvailableItems (the Outfit Rules dropdown source) is only refreshed when an item is
+        // added/removed, not when an existing entry's Id changes — so a rule pointing at a wardrobe
+        // item that was still unsaved (Id 0) when the rule was created may still hold that stale,
+        // now-incorrect Id 0 reference even though the item itself was just given a real one above.
+        // Re-point those references by name (the only stable identifier an unsaved item has) before
+        // persisting the rules, so we never write an OutfitRule with ItemId/RelatedItemId == 0.
+        foreach (var r in OutfitRules)
+        {
+            r.ResolvePendingItemReferences(WardrobeItems);
         }
 
         foreach (var r in OutfitRules)
         {
-            _repo.SaveOutfitRule(r.ToModel());
+            var model = r.ToModel();
+            _repo.SaveOutfitRule(model);
+            r.Id = model.Id;
         }
 
         foreach (var p in PlugAndPlayItems)
         {
             if (p.IsEligible)
             {
-                _repo.SavePlugAndPlayItem(p.ToModel());
+                var model = p.ToModel();
+                _repo.SavePlugAndPlayItem(model);
+                p.ConfigId = model.Id;
             }
             else if (p.ConfigId is { } configId)
             {
                 _repo.DeletePlugAndPlayItem(configId);
+                p.ConfigId = null;
             }
         }
     }
@@ -811,6 +852,14 @@ public record ClothingItemOption(int Id, string Name)
 }
 
 public record LanguageOption(string Code, string DisplayName)
+{
+    public override string ToString()
+    {
+        return DisplayName;
+    }
+}
+
+public record OutfitRelationOption(OutfitRelation Code, string DisplayName)
 {
     public override string ToString()
     {
@@ -875,7 +924,7 @@ public partial class ChoreEditViewModel : ViewModelBase
         DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
     }
 
-    public int Id { get; }
+    public int Id { get; internal set; }
     public DateTime? LastCompletedAt { get; }
     public ICommand DeleteCommand { get; }
 
@@ -945,7 +994,7 @@ public partial class PlugAndPlayItemEditViewModel : ViewModelBase
 
     public int ClothingItemId { get; }
     public string Name { get; }
-    public int? ConfigId { get; }
+    public int? ConfigId { get; internal set; }
 
     public PlugAndPlayItemConfig ToModel()
     {
@@ -987,6 +1036,8 @@ public partial class WardrobeEditViewModel : ViewModelBase
             .Select(l => new LayerToggleVm(l, item.Layers.Contains(l.Order), OnLayerToggled))
             .ToList();
 
+        Layers.CollectionChanged += (_, _) => this.RaisePropertyChanged(nameof(LayerDisplayNames));
+
         SlotSuggestions = slotSuggestions ?? [];
         TagSuggestions = tagSuggestions ?? [];
 
@@ -1004,7 +1055,7 @@ public partial class WardrobeEditViewModel : ViewModelBase
         });
     }
 
-    public int Id { get; }
+    public int Id { get; internal set; }
 
     public ObservableCollection<int> Layers { get; }
     public ObservableCollection<string> Slots { get; }
@@ -1051,32 +1102,64 @@ public partial class OutfitRuleEditViewModel : ViewModelBase
 {
     [Reactive] private ClothingItemOption? _item;
     [Reactive] private ClothingItemOption? _relatedItem;
-    [Reactive] private OutfitRelation _relation;
+    [Reactive] private OutfitRelationOption _relationOption = null!;
 
-    public OutfitRuleEditViewModel(OutfitRule rule, ObservableCollection<ClothingItemOption> items,
+    public OutfitRuleEditViewModel(OutfitRule rule, ReadOnlyObservableCollection<ClothingItemOption> items,
         Action<int> onDelete)
     {
         Id = rule.Id;
         AvailableItems = items;
         _item = items.FirstOrDefault(i => i.Id == rule.ItemId);
         _relatedItem = items.FirstOrDefault(i => i.Id == rule.RelatedItemId);
-        _relation = rule.Relation;
+        _relationOption = RelationOptions.First(o => o.Code == rule.Relation);
         DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
     }
 
-    public int Id { get; }
+    public int Id { get; internal set; }
 
-    public ObservableCollection<ClothingItemOption> AvailableItems { get; }
+    public ReadOnlyObservableCollection<ClothingItemOption> AvailableItems { get; }
     public ICommand DeleteCommand { get; }
 
-    public static OutfitRelation[] RelationOptions { get; } =
-        [OutfitRelation.Requires, OutfitRelation.Incompatible];
+    /// <summary>
+    ///     Re-points <see cref="Item" />/<see cref="RelatedItem" /> if they still hold a placeholder
+    ///     option with Id 0 — meaning the referenced wardrobe item was still unsaved (new, never
+    ///     persisted) when this rule selected it. Matches by name, the only stable identifier an
+    ///     unsaved item has, against the just-saved wardrobe items passed in.
+    /// </summary>
+    internal void ResolvePendingItemReferences(IEnumerable<WardrobeEditViewModel> savedWardrobeItems)
+    {
+        if (Item is { Id: 0 } staleItem)
+        {
+            var match = savedWardrobeItems.FirstOrDefault(w => w.Id != 0 && w.Name == staleItem.Name);
+            if (match is not null)
+            {
+                Item = new ClothingItemOption(match.Id, match.Name);
+            }
+        }
+
+        if (RelatedItem is { Id: 0 } staleRelated)
+        {
+            var match = savedWardrobeItems.FirstOrDefault(w => w.Id != 0 && w.Name == staleRelated.Name);
+            if (match is not null)
+            {
+                RelatedItem = new ClothingItemOption(match.Id, match.Name);
+            }
+        }
+    }
+
+    // Relation is stored internally as a compact enum code (OutfitRelation); the ComboBox
+    // shows a localized label instead of the raw enum name via this display wrapper.
+    public static IReadOnlyList<OutfitRelationOption> RelationOptions { get; } =
+    [
+        new(OutfitRelation.Requires, Resources.Get("SettingsOutfitRelationRequires")),
+        new(OutfitRelation.Incompatible, Resources.Get("SettingsOutfitRelationExcludes")),
+    ];
 
     public OutfitRule ToModel()
     {
         return new OutfitRule
         {
-            Id = Id, ItemId = Item?.Id ?? 0, RelatedItemId = RelatedItem?.Id ?? 0, Relation = Relation,
+            Id = Id, ItemId = Item?.Id ?? 0, RelatedItemId = RelatedItem?.Id ?? 0, Relation = RelationOption.Code,
         };
     }
 }

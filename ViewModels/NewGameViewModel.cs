@@ -29,7 +29,7 @@ public class NewGameViewModel : ViewModelBase
         BackCommand = ReactiveCommand.Create(() => mainVm.NavigateTo(new WelcomeViewModel(mainVm)));
 
         SettingsCommand = ReactiveCommand.Create(() =>
-            mainVm.NavigateTo(new SettingsViewModel(mainVm, () => new NewGameViewModel(mainVm))));
+            mainVm.NavigateTo(mainVm.OpenSettings(() => new NewGameViewModel(mainVm))));
     }
 
     public string DebtRange { get; }

@@ -12,6 +12,13 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>DB of the currently open save slot. Disposed when switching slots or returning to the menu.</summary>
     private LiteDatabase? _activeSaveDb;
 
+    /// <summary>
+    ///     Cached Settings screen, reused across visits so navigating there doesn't re-run its whole
+    ///     constructor (DB reads + per-item ViewModel/command allocation) every time. Replaced whenever
+    ///     Settings rebuilds itself from the repository (import, discard changes) via <see cref="ReplaceSettingsCache" />.
+    /// </summary>
+    private SettingsViewModel? _cachedSettingsVm;
+
     [Reactive] private ViewModelBase _currentPage = null!;
 
     /// <summary>
@@ -69,5 +76,26 @@ public partial class MainWindowViewModel : ViewModelBase
     public void NavigateTo(ViewModelBase page)
     {
         CurrentPage = page;
+    }
+
+    /// <summary>Returns the cached Settings screen, creating it on first use, and points it back at <paramref name="returnTo" />.</summary>
+    public SettingsViewModel OpenSettings(Func<ViewModelBase> returnTo)
+    {
+        if (_cachedSettingsVm is null)
+        {
+            _cachedSettingsVm = new SettingsViewModel(this, returnTo);
+        }
+        else
+        {
+            _cachedSettingsVm.SetReturnTarget(returnTo);
+        }
+
+        return _cachedSettingsVm;
+    }
+
+    /// <summary>Swaps the cached Settings instance, used when Settings rebuilds itself from the repository.</summary>
+    public void ReplaceSettingsCache(SettingsViewModel vm)
+    {
+        _cachedSettingsVm = vm;
     }
 }
