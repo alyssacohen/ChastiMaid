@@ -3,11 +3,16 @@ using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
+using ChastiMaid.Services.Content;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -33,6 +38,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _idleWageInterval;
     [Reactive] private bool _isAddingNewItem;
     [Reactive] private bool _isChoresDirty;
+    [Reactive] private string? _contentActionStatusMessage;
     [Reactive] private bool _plugAndPlayEnabled;
     [Reactive] private bool _hydrationEnabled;
     [Reactive] private bool _curtsyEnabled;
@@ -100,11 +106,13 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private string _wardrobeNameFilter = string.Empty;
     [Reactive] private int _wardrobeSelectedCount;
 
-    public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo)
+    public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo,
+        string? initialContentActionStatusMessage = null)
     {
         _mainVm = mainVm;
         _repo = mainVm.ProfileRepository;
         _returnTo = returnTo;
+        _contentActionStatusMessage = initialContentActionStatusMessage;
 
         var s = _repo.GetGameSettings();
         _playerName = s.PlayerName;
@@ -313,6 +321,73 @@ public partial class SettingsViewModel : ViewModelBase
                 item.IsExpanded = false;
             }
         });
+        ExportContentCommand = ReactiveCommand.CreateFromTask(ExportContent);
+        ImportContentCommand = ReactiveCommand.CreateFromTask(ImportContent);
+    }
+
+    private async Task ExportContent()
+    {
+        var folder = await PickFolder(Resources.Get("SettingsExportFolderDialogTitle"));
+        if (folder is null)
+        {
+            return;
+        }
+
+        new ContentExportService().ExportAll(_repo, folder);
+        ContentActionStatusMessage = string.Format(Resources.Get("SettingsContentExportedStatus"),
+            _repo.GetWardrobe().Count, _repo.GetOutfitRules().Count, _repo.GetChores().Count);
+    }
+
+    private async Task ImportContent()
+    {
+        var folder = await PickFolder(Resources.Get("SettingsImportFolderDialogTitle"));
+        if (folder is null)
+        {
+            return;
+        }
+
+        var loader = new ContentLoaderService(_repo.GetGameSettings().Language);
+        var result = loader.ImportAll(folder, _repo);
+
+        var message = string.Format(Resources.Get("SettingsContentImportedStatus"),
+            result.WardrobeImported, result.RulesImported, result.TasksImported);
+        if (result.RulesDiscarded > 0)
+        {
+            var missingIds = string.Join(", ", result.DiscardedRules.SelectMany(r => r.MissingItemIds).Distinct());
+            message += string.Format(Resources.Get("SettingsContentImportDiscardedStatus"),
+                result.RulesDiscarded, missingIds);
+        }
+
+        // Rebuild the whole tab from the repo (same pattern as "Discard" — see TryChangeTab) so
+        // wardrobe/rules/chores collections reflect the just-replaced content.
+        _mainVm.NavigateTo(new SettingsViewModel(_mainVm, _returnTo, message));
+    }
+
+    private static async Task<string?> PickFolder(string title)
+    {
+        var topLevel = GetTopLevel();
+        if (topLevel is null)
+        {
+            return null;
+        }
+
+        var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+        {
+            Title = title,
+            AllowMultiple = false,
+        });
+
+        return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;
+    }
+
+    private static TopLevel? GetTopLevel()
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            return desktop.MainWindow;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -402,6 +477,8 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand AddForcedOutfitPresetCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
     public ICommand CollapseExpandedWardrobeItemCommand { get; }
+    public ICommand ExportContentCommand { get; }
+    public ICommand ImportContentCommand { get; }
 
     // --- Wardrobe helpers ---
     private IEnumerable<string> AllUsedTags => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);

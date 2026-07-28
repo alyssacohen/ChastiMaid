@@ -1,0 +1,13 @@
+[
+  { "id": 1, "itemId": 3, "relatedItemId": 8, "relation": "requires" },
+  { "id": 2, "itemId": 3, "relatedItemId": 9, "relation": "requires" },
+  { "id": 3, "itemId": 3, "relatedItemId": 10, "relation": "requires" },
+  { "id": 4, "itemId": 5, "relatedItemId": 8, "relation": "requires" },
+  { "id": 5, "itemId": 5, "relatedItemId": 9, "relation": "requires" },
+  { "id": 6, "itemId": 5, "relatedItemId": 10, "relation": "requires" },
+  { "id": 7, "itemId": 4, "relatedItemId": 8, "relation": "incompatible" },
+  { "id": 8, "itemId": 4, "relatedItemId": 9, "relation": "incompatible" },
+  { "id": 9, "itemId": 4, "relatedItemId": 10, "relation": "incompatible" },
+  { "id": 10, "itemId": 11, "relatedItemId": 16, "relation": "requires" },
+  { "id": 11, "itemId": 12, "relatedItemId": 16, "relation": "requires" }
+]

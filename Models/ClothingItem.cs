@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using LiteDB;
 
 namespace ChastiMaid.Models;
@@ -11,5 +12,6 @@ public class ClothingItem
     public double Multiplier { get; set; } = 1.0;
     public double Weight { get; set; } = 1.0;
     public List<string> Tags { get; set; } = [];
-    public int RejectionCount { get; set; }
+
+    [JsonIgnore] public int RejectionCount { get; set; }
 }

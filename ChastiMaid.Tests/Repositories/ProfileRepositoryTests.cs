@@ -106,4 +106,40 @@ public class ProfileRepositoryTests : IDisposable
 
         Assert.Equal(7, _repo.GetStats().TotalSessions);
     }
+
+    [Fact]
+    public void ReplaceWardrobe_RemovesItemsNotInNewSet()
+    {
+        _repo.SaveClothingItem(new ClothingItem { Id = 1, Name = "old", Layers = [3], Slots = ["torso"] });
+
+        _repo.ReplaceWardrobe([new ClothingItem { Id = 2, Name = "new", Layers = [3], Slots = ["torso"] }]);
+
+        var wardrobe = _repo.GetWardrobe();
+        Assert.Single(wardrobe);
+        Assert.Equal("new", wardrobe[0].Name);
+    }
+
+    [Fact]
+    public void ReplaceOutfitRules_RemovesRulesNotInNewSet()
+    {
+        _repo.SaveOutfitRule(new OutfitRule { Id = 1, ItemId = 1, RelatedItemId = 2, Relation = OutfitRelation.Requires });
+
+        _repo.ReplaceOutfitRules([new OutfitRule { Id = 2, ItemId = 3, RelatedItemId = 4, Relation = OutfitRelation.Incompatible }]);
+
+        var rules = _repo.GetOutfitRules();
+        Assert.Single(rules);
+        Assert.Equal(2, rules[0].Id);
+    }
+
+    [Fact]
+    public void ReplaceChores_RemovesChoresNotInNewSet()
+    {
+        _repo.SaveChore(new Chore { Id = 1, Name = "old", Value = 10 });
+
+        _repo.ReplaceChores([new Chore { Id = 2, Name = "new", Value = 20 }]);
+
+        var chores = _repo.GetChores();
+        Assert.Single(chores);
+        Assert.Equal("new", chores[0].Name);
+    }
 }

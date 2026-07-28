@@ -1,0 +1,23 @@
+[
+  { "id": 1, "name": "panties", "layers": [0], "slots": ["crotch"], "multiplier": 1.0, "weight": 1.0, "tags": ["lingerie"] },
+  { "id": 2, "name": "bra", "layers": [0], "slots": ["torso"], "multiplier": 1.0, "weight": 1.0, "tags": ["lingerie"] },
+  { "id": 3, "name": "girdle", "layers": [0], "slots": ["waist"], "multiplier": 1.2, "weight": 0.5, "tags": ["retro", "tight"] },
+  { "id": 4, "name": "diaper", "layers": [0], "slots": ["crotch"], "multiplier": 1.3, "weight": 0.7, "tags": ["fetish", "bulky"] },
+  { "id": 5, "name": "body with suspenders", "layers": [0], "slots": ["torso", "waist", "crotch"], "multiplier": 1.4, "weight": 0.9, "tags": ["lingerie", "suspenders"] },
+  { "id": 6, "name": "pantyhose", "layers": [2], "slots": ["legs"], "multiplier": 1.1, "weight": 1.2, "tags": ["sheer"] },
+  { "id": 7, "name": "nylon catsuit", "layers": [2], "slots": ["torso", "legs", "arms"], "multiplier": 1.3, "weight": 0.7, "tags": ["tight", "shiny"] },
+  { "id": 8, "name": "black stockings", "layers": [2, 1], "slots": ["legs"], "multiplier": 1.1, "weight": 1.0, "tags": ["suspenders", "black"] },
+  { "id": 9, "name": "nude stockings", "layers": [2, 1], "slots": ["legs"], "multiplier": 1.1, "weight": 1.0, "tags": ["suspenders", "beige"] },
+  { "id": 10, "name": "sheer black stockings", "layers": [2, 1], "slots": ["legs"], "multiplier": 1.2, "weight": 0.8, "tags": ["suspenders", "sheer", "black"] },
+  { "id": 11, "name": "chevron socks", "layers": [2, 1], "slots": ["legs"], "multiplier": 1.0, "weight": 1.0, "tags": ["patterned", "warm"] },
+  { "id": 12, "name": "short socks with bow", "layers": [2, 1], "slots": ["legs"], "multiplier": 0.9, "weight": 1.2, "tags": ["casual", "cute"] },
+  { "id": 13, "name": "short maid uniform", "layers": [3], "slots": ["torso", "legs", "arms"], "multiplier": 1.5, "weight": 1.1, "tags": ["maid", "dress"] },
+  { "id": 14, "name": "long maid uniform", "layers": [3], "slots": ["torso", "legs", "arms"], "multiplier": 1.5, "weight": 1.0, "tags": ["maid", "dress"] },
+  { "id": 15, "name": "latex maid uniform", "layers": [3], "slots": ["torso", "legs", "arms"], "multiplier": 1.8, "weight": 0.7, "tags": ["maid", "latex"] },
+  { "id": 16, "name": "simple apron", "layers": [3], "slots": ["torso"], "multiplier": 0.8, "weight": 0.8, "tags": ["apron", "casual"] },
+  { "id": 17, "name": "maid headband", "layers": [4], "slots": ["head"], "multiplier": 1.0, "weight": 1.2, "tags": ["maid", "headwear"] },
+  { "id": 18, "name": "ribbon choker", "layers": [4], "slots": ["neck"], "multiplier": 1.1, "weight": 0.9, "tags": ["cute", "maid"] },
+  { "id": 19, "name": "pearl necklace", "layers": [4], "slots": ["neck"], "multiplier": 1.3, "weight": 0.7, "tags": ["elegant"] },
+  { "id": 20, "name": "black heels", "layers": [4], "slots": ["feet"], "multiplier": 1.2, "weight": 1.0, "tags": ["maid", "heels"] },
+  { "id": 21, "name": "ballet flats", "layers": [4], "slots": ["feet"], "multiplier": 0.9, "weight": 1.2, "tags": ["casual"] }
+]

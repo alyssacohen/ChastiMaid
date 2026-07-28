@@ -33,6 +33,12 @@ public class ProfileRepository(LiteDatabase db)
         Wardrobe.Delete(id);
     }
 
+    public void ReplaceWardrobe(IEnumerable<ClothingItem> items)
+    {
+        Wardrobe.DeleteAll();
+        Wardrobe.InsertBulk(items);
+    }
+
     public List<OutfitRule> GetOutfitRules()
     {
         return OutfitRules.FindAll().ToList();
@@ -48,6 +54,12 @@ public class ProfileRepository(LiteDatabase db)
         OutfitRules.Delete(id);
     }
 
+    public void ReplaceOutfitRules(IEnumerable<OutfitRule> rules)
+    {
+        OutfitRules.DeleteAll();
+        OutfitRules.InsertBulk(rules);
+    }
+
     public List<Chore> GetChores()
     {
         return Chores.FindAll().ToList();
@@ -61,6 +73,12 @@ public class ProfileRepository(LiteDatabase db)
     public void DeleteChore(int id)
     {
         Chores.Delete(id);
+    }
+
+    public void ReplaceChores(IEnumerable<Chore> chores)
+    {
+        Chores.DeleteAll();
+        Chores.InsertBulk(chores);
     }
 
     public List<PlugAndPlayItemConfig> GetPlugAndPlayItems()

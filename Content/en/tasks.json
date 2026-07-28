@@ -1,0 +1,9 @@
+[
+  { "id": 1, "name": "Dusting", "description": "", "value": 10, "frequencyDays": 1, "minCompletionMinutes": 5 },
+  { "id": 2, "name": "Sweeping the floor", "description": "", "value": 15, "frequencyDays": 1, "minCompletionMinutes": 8 },
+  { "id": 3, "name": "Mopping the floor", "description": "", "value": 20, "frequencyDays": 7, "minCompletionMinutes": 15 },
+  { "id": 4, "name": "Making the bed", "description": "", "value": 5, "frequencyDays": 1, "minCompletionMinutes": 3 },
+  { "id": 5, "name": "Cooking", "description": "", "value": 15, "frequencyDays": 1, "minCompletionMinutes": 20 },
+  { "id": 6, "name": "Cleaning the bathroom", "description": "", "value": 25, "frequencyDays": 7, "minCompletionMinutes": 20 },
+  { "id": 7, "name": "Mending socks", "description": "", "value": 20, "frequencyDays": 7, "minCompletionMinutes": 10 }
+]

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using LiteDB;
 
 namespace ChastiMaid.Models;
@@ -10,5 +11,6 @@ public class Chore
     public decimal Value { get; set; }
     public int FrequencyDays { get; set; } = 1;
     public int MinCompletionMinutes { get; set; }
-    public DateTime? LastCompletedAt { get; set; }
+
+    [JsonIgnore] public DateTime? LastCompletedAt { get; set; }
 }

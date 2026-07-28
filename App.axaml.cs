@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
+using ChastiMaid.Services.Content;
 using ChastiMaid.ViewModels;
 using ChastiMaid.Views;
 
@@ -30,7 +31,8 @@ public class App : Application
             _databaseService = new DatabaseService();
             var profileDb = _databaseService.OpenProfile();
             var profileRepo = new ProfileRepository(profileDb);
-            DataSeeder.SeedIfEmpty(profileRepo);
+            var contentLoader = new ContentLoaderService(profileRepo.GetGameSettings().Language);
+            DataSeeder.SeedIfEmpty(profileRepo, contentLoader);
             ApplyLanguage(profileRepo.GetGameSettings().Language);
             var slotManager = new SaveSlotManager(_databaseService);
             _autoSaveService = new AutoSaveService();

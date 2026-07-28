@@ -1131,6 +1131,33 @@ You may export your session media before the save slot is freed.</value>
   <data name="GameCompleteFinish" xml:space="preserve">
     <value>Finish and Free Slot</value>
   </data>
+  <data name="SettingsHeadingContent" xml:space="preserve">
+    <value>Content Import/Export</value>
+  </data>
+  <data name="SettingsContentDescription" xml:space="preserve">
+    <value>Export your wardrobe, outfit rules, and tasks to a folder as a personal backup or a shareable language pack. Importing replaces the current content outright.</value>
+  </data>
+  <data name="SettingsExportContent" xml:space="preserve">
+    <value>Export Content</value>
+  </data>
+  <data name="SettingsImportContent" xml:space="preserve">
+    <value>Import Content</value>
+  </data>
+  <data name="SettingsExportFolderDialogTitle" xml:space="preserve">
+    <value>Choose export folder</value>
+  </data>
+  <data name="SettingsImportFolderDialogTitle" xml:space="preserve">
+    <value>Choose folder to import from</value>
+  </data>
+  <data name="SettingsContentExportedStatus" xml:space="preserve">
+    <value>Exported {0} wardrobe items, {1} outfit rules, and {2} tasks.</value>
+  </data>
+  <data name="SettingsContentImportedStatus" xml:space="preserve">
+    <value>Imported {0} wardrobe items, {1} outfit rules, and {2} tasks.</value>
+  </data>
+  <data name="SettingsContentImportDiscardedStatus" xml:space="preserve">
+    <value> {0} outfit rules were skipped because they reference items not present in the imported wardrobe: {1}.</value>
+  </data>
   <data name="EndSessionConfirmQuestion" xml:space="preserve">
     <value>Are you sure you want to end this session?</value>
   </data>
