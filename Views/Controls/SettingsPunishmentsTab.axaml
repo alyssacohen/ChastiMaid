@@ -6,13 +6,13 @@
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.SettingsPunishmentsTab">
 
-    <Grid RowDefinitions="Auto,*" Margin="24,0,32,16">
-        <StackPanel Grid.Row="0">
+    <Grid RowDefinitions="Auto,*" Margin="0,0,0,16">
+        <StackPanel Grid.Row="0" Margin="24,0,32,0">
             <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabPunishments}" Margin="0,20,0,8" />
             <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
         </StackPanel>
         <ScrollViewer Grid.Row="1" Name="PunishmentsScroll">
-            <StackPanel Spacing="16">
+            <StackPanel Spacing="16" Margin="24,0,32,0">
                 <!-- Frequency & Timeout -->
                 <StackPanel Spacing="8">
                     <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPopupTiming}" />

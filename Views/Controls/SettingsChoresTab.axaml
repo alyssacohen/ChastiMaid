@@ -6,13 +6,13 @@
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.SettingsChoresTab">
 
-    <Grid RowDefinitions="Auto,*,Auto" Margin="24,0,32,16">
-        <StackPanel Grid.Row="0">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="0,0,0,16">
+        <StackPanel Grid.Row="0" Margin="24,0,32,0">
             <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabChores}" Margin="0,20,0,8" />
             <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
         </StackPanel>
         <ScrollViewer Grid.Row="1" Name="ChoresScroll">
-            <ItemsControl ItemsSource="{Binding Chores}">
+            <ItemsControl ItemsSource="{Binding Chores}" Margin="24,0,32,0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:ChoreEditViewModel">
                         <Border Classes="card">
@@ -60,7 +60,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add">
+        <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add" Margin="24,8,32,0">
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
                 <TextBlock Text="{converters:Tr SettingsAddChore}" VerticalAlignment="Center" />

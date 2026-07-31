@@ -1,158 +1,191 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:views="using:ChastiMaid.Views.Controls"
-             xmlns:converters="using:ChastiMaid.Views.Converters"
-             xmlns:ic="using:FluentIcons.Avalonia"
-             x:DataType="vm:SettingsViewModel"
-             x:Class="ChastiMaid.Views.SettingsView">
+<UserControl
+    x:Class="ChastiMaid.Views.SettingsView"
+    x:DataType="vm:SettingsViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:converters="using:ChastiMaid.Views.Converters"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:views="using:ChastiMaid.Views.Controls"
+    xmlns:vm="using:ChastiMaid.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <UserControl.KeyBindings>
-        <KeyBinding Gesture="Ctrl+S" Command="{Binding QuickSaveCommand}" />
+        <KeyBinding Command="{Binding QuickSaveCommand}" Gesture="Ctrl+S" />
     </UserControl.KeyBindings>
 
     <Panel>
 
-        <!-- ══ Root grid: nav column | content column ══════════════ -->
-        <Grid ColumnDefinitions="240,*">
+        <!--  ══ Root grid: nav column | content column ══════════════  -->
+        <Grid ColumnDefinitions="320,*">
 
-            <!-- ── LEFT NAV PANEL ─────────────────────────────────── -->
-            <Border Grid.Column="0"
-                    Background="{DynamicResource BrushSurfaceMuted}"
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,0,1,0">
+            <!--  ── LEFT NAV PANEL ───────────────────────────────────  -->
+            <Border
+                Background="{DynamicResource BrushSurfaceMuted}"
+                BorderBrush="{DynamicResource BrushBorderSubtle}"
+                BorderThickness="0,0,1,0"
+                Grid.Column="0">
                 <Grid RowDefinitions="Auto,*,Auto">
 
-                    <!-- Nav header -->
+                    <!--  Nav header  -->
                     <StackPanel Grid.Row="0" Margin="0,20,0,0">
-                        <TextBlock Classes="PageTitle"
-                                   Text="{converters:Tr SettingsPageTitle}"
-                                   Margin="16,0,16,12" />
-                        <Border Height="1"
-                                Background="{DynamicResource BrushBorderSubtle}"
-                                Margin="12,0,12,8" />
+                        <TextBlock
+                            Classes="PageTitle"
+                            Margin="16,0,16,12"
+                            Text="{converters:Tr SettingsPageTitle}" />
+                        <Border
+                            Background="{DynamicResource BrushBorderSubtle}"
+                            Height="1"
+                            Margin="12,0,12,8" />
                     </StackPanel>
 
-                    <!-- Nav items -->
+                    <!--  Nav items  -->
                     <StackPanel Grid.Row="1" Spacing="0">
-                        <RadioButton Classes="navItem"
-                                     Command="{Binding SetTabCommand}"
-                                     CommandParameter="0"
-                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabGeneral}" IsDirty="{Binding IsGeneralDirty}" />
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="0"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsGeneralDirty}" Text="{converters:Tr SettingsTabGeneral}" />
                         </RadioButton>
-                        <RadioButton Classes="navItem"
-                                     Command="{Binding SetTabCommand}"
-                                     CommandParameter="1"
-                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabChores}" IsDirty="{Binding IsChoresDirty}" />
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="1"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsChoresDirty}" Text="{converters:Tr SettingsTabChores}" />
                         </RadioButton>
-                        <RadioButton Classes="navItem"
-                                     Command="{Binding SetTabCommand}"
-                                     CommandParameter="2"
-                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabPunishments}" IsDirty="{Binding IsPunishmentsDirty}" />
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="2"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{converters:Tr SettingsTabPunishments}" />
                         </RadioButton>
-                        <RadioButton Classes="navItem"
-                                     Command="{Binding SetTabCommand}"
-                                     CommandParameter="3"
-                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabWardrobe}" IsDirty="{Binding IsWardrobeDirty}" />
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="3"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsWardrobeDirty}" Text="{converters:Tr SettingsTabWardrobe}" />
                         </RadioButton>
-                        <RadioButton Classes="navItem"
-                                     Command="{Binding SetTabCommand}"
-                                     CommandParameter="4"
-                                     IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
-                            <views:DirtyTabHeader Text="{converters:Tr SettingsTabOutfitRules}" IsDirty="{Binding IsRulesDirty}" />
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="4"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{converters:Tr SettingsTabOutfitRules}" />
                         </RadioButton>
                     </StackPanel>
 
-                    <!-- Save / Back at bottom of nav -->
-                    <StackPanel Grid.Row="2" Margin="12,0,12,20" Spacing="8">
-                        <Border Height="1"
-                                Background="{DynamicResource BrushBorderSubtle}"
-                                Margin="0,0,0,4" />
-                        <Button Command="{Binding SaveCommand}"
-                                Classes="Primary"
-                                HorizontalAlignment="Stretch">
-                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                                <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="16" />
+                    <!--  Save / Back at bottom of nav  -->
+                    <StackPanel
+                        Grid.Row="2"
+                        Margin="12,0,12,20"
+                        Spacing="8">
+                        <Border
+                            Background="{DynamicResource BrushBorderSubtle}"
+                            Height="1"
+                            Margin="0,0,0,4" />
+                        <Button
+                            Classes="Primary"
+                            Command="{Binding SaveCommand}"
+                            HorizontalAlignment="Stretch">
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal"
+                                Spacing="8">
+                                <ic:SymbolIcon
+                                    FontSize="16"
+                                    IconVariant="Regular"
+                                    Symbol="Save" />
                                 <TextBlock Text="{converters:Tr SettingsSaveAndBack}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Content="{converters:Tr Back}"
-                                Command="{Binding BackCommand}"
-                                Classes="Ghost"
-                                HorizontalContentAlignment="Center"
-                                HorizontalAlignment="Stretch" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding BackCommand}"
+                            Content="{converters:Tr Back}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
                     </StackPanel>
 
                 </Grid>
             </Border>
 
-            <!-- ── CONTENT AREA ───────────────────────────────────── -->
+            <!--  ── CONTENT AREA ─────────────────────────────────────  -->
             <Panel Grid.Column="1">
 
-                <!-- ==================== GENERAL ==================== -->
-                <views:SettingsGeneralTab
-                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0}" />
+                <!--  ==================== GENERAL ====================  -->
+                <views:SettingsGeneralTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0}" />
 
-                <!-- ==================== CHORES ==================== -->
-                <views:SettingsChoresTab
-                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1}" />
+                <!--  ==================== CHORES ====================  -->
+                <views:SettingsChoresTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1}" />
 
-                <!-- ==================== POPUP & PUNISHMENTS ==================== -->
-                <views:SettingsPunishmentsTab
-                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}" />
+                <!--  ==================== POPUP & PUNISHMENTS ====================  -->
+                <views:SettingsPunishmentsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}" />
 
-                <!-- ==================== WARDROBE ==================== -->
+                <!--  ==================== WARDROBE ====================  -->
                 <Grid
                     IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}"
-                    RowDefinitions="Auto,Auto,*,Auto" Margin="16,0,16,8">
-                    <StackPanel Grid.Row="0">
-                        <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabWardrobe}" Margin="0,20,0,8" />
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+                    Margin="0,0,0,8"
+                    RowDefinitions="Auto,Auto,*,Auto">
+                    <StackPanel Grid.Row="0" Margin="16,0,16,0">
+                        <TextBlock
+                            Classes="SectionTitle"
+                            Margin="0,20,0,8"
+                            Text="{converters:Tr SettingsTabWardrobe}" />
+                        <Border
+                            Background="{DynamicResource BrushBorderSubtle}"
+                            Height="1"
+                            Margin="0,0,0,8" />
                     </StackPanel>
-                    <views:WardrobeToolbar Grid.Row="1" Margin="0,0,0,8" />
+                    <views:WardrobeToolbar Grid.Row="1" Margin="16,0,16,8" />
                     <views:WardrobeTable Grid.Row="2" />
-                    <views:WardrobeBulkBar Grid.Row="3" Margin="0,8,0,0" />
+                    <views:WardrobeBulkBar Grid.Row="3" Margin="16,8,16,0" />
                 </Grid>
 
-                <!-- ==================== OUTFIT RULES ==================== -->
-                <views:SettingsOutfitRulesTab
-                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}" />
+                <!--  ==================== OUTFIT RULES ====================  -->
+                <views:SettingsOutfitRulesTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}" />
 
             </Panel>
 
         </Grid>
 
-        <!-- Dialog overlay (floats above everything) -->
-        <Panel IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}"
-               Classes="dialogOverlay">
+        <!--  Dialog overlay (floats above everything)  -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}}">
             <Border Classes="dialogBox">
-                <StackPanel Spacing="16" DataContext="{Binding ActiveDialog}">
-                    <TextBlock Classes="Heading"
-                               Text="{Binding (vm:SaveDialogViewModel).Title, FallbackValue=''}"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Classes="Body"
-                               Text="{Binding (vm:SaveDialogViewModel).Message, FallbackValue=''}"
-                               TextAlignment="Center"
-                               Opacity="0.85"
-                               TextWrapping="Wrap" />
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                Spacing="8"
-                                Margin="0,8,0,0">
-                        <Button Content="{converters:Tr SettingsDiscard}" Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
-                                Classes="Ghost" />
-                        <Button Command="{Binding (vm:SaveDialogViewModel).SaveCommand}" Classes="Primary">
+                <StackPanel DataContext="{Binding ActiveDialog}" Spacing="16">
+                    <TextBlock
+                        Classes="Heading"
+                        HorizontalAlignment="Center"
+                        Text="{Binding (vm:SaveDialogViewModel).Title, FallbackValue=''}" />
+                    <TextBlock
+                        Classes="Body"
+                        Opacity="0.85"
+                        Text="{Binding (vm:SaveDialogViewModel).Message, FallbackValue=''}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Margin="0,8,0,0"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
+                            Content="{converters:Tr SettingsDiscard}" />
+                        <Button Classes="Primary" Command="{Binding (vm:SaveDialogViewModel).SaveCommand}">
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <ic:SymbolIcon Symbol="Save" IconVariant="Regular" FontSize="18" />
+                                <ic:SymbolIcon
+                                    FontSize="18"
+                                    IconVariant="Regular"
+                                    Symbol="Save" />
                                 <TextBlock Text="{converters:Tr Save}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Content="{converters:Tr Cancel}" Command="{Binding (vm:SaveDialogViewModel).CancelCommand}"
-                                Classes="Ghost" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding (vm:SaveDialogViewModel).CancelCommand}"
+                            Content="{converters:Tr Cancel}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
