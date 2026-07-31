@@ -85,11 +85,11 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private int _pendingPunishmentsCount;
     [Reactive] private bool _isPunishmentsPanelVisible;
     [Reactive] private ObservableCollection<string> _popupAnswers = [];
-    [Reactive] private int _popupCountdown;
     [Reactive] private string _popupOutcomeMessage = "";
     [Reactive] private string _popupQuestion = "";
     private DispatcherTimer? _popupOutcomeTimer;
-    private DispatcherTimer? _popupTimer;
+    private DateTime _popupShownAt;
+    private int _popupSecondsLate;
     private bool _pendingOutcomePositive;
     [Reactive] private string _timeToNextWage = "";
 
@@ -525,7 +525,7 @@ public partial class DashboardViewModel : ViewModelBase
             Resources.Get("ImpossibleQuestionYes"),
             Resources.Get("ImpossibleQuestionNo")
         ];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -533,19 +533,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void ShowHydrationPopup()
@@ -554,7 +541,7 @@ public partial class DashboardViewModel : ViewModelBase
         _lastHydrationPopupAt = DateTime.UtcNow;
         PopupQuestion = Resources.Get(HydrationReminderBank.GetRandom());
         PopupAnswers = [Resources.Get("HydrationConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -562,19 +549,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void ShowPoseForCameraPopup()
@@ -605,7 +579,7 @@ public partial class DashboardViewModel : ViewModelBase
         _currentPoseItem = candidates[_random.Next(candidates.Count)];
         PopupQuestion = string.Format(Resources.Get(PoseForCameraInstructionBank.GetRandom()), _currentPoseItem.Name);
         PopupAnswers = [Resources.Get("PoseForCameraConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -613,20 +587,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                _currentPoseItem = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void ShowCurtsyPopup()
@@ -643,7 +603,7 @@ public partial class DashboardViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         PopupQuestion = Resources.Get(CurtsyInstructionBank.GetRandom());
         PopupAnswers = [Resources.Get("CurtsyConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -651,19 +611,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void ShowMotivationalQuotePopup()
@@ -672,7 +619,7 @@ public partial class DashboardViewModel : ViewModelBase
         _currentQuoteText = Resources.Get(EmployerPhraseBank.GetRandom());
         PopupQuestion = string.Format(Resources.Get("MotivationalQuoteInstruction"), _currentQuoteText);
         PopupAnswers = [Resources.Get("MotivationalQuoteConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -680,20 +627,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                _currentQuoteText = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void ShowKneelPopup()
@@ -702,7 +635,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsKneelPopupActive = true;
         PopupQuestion = Resources.Get("KneelSummon");
         PopupAnswers = [Resources.Get("KneelSummonConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -710,26 +643,10 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void OnKneelConfirm()
     {
-        _popupTimer?.Stop();
-        _popupTimer = null;
-
         if (!_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
         {
             PopupOutcomeMessage = Resources.Get("KneelFailedMessage");
@@ -836,7 +753,7 @@ public partial class DashboardViewModel : ViewModelBase
         _currentPlugAndPlayCandidate = candidates[_random.Next(candidates.Count)];
         PopupQuestion = string.Format(Resources.Get("PlugAndPlayDonPromptFormat"), _currentPlugAndPlayCandidate.Name);
         PopupAnswers = [Resources.Get("PlugAndPlayDonConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -844,20 +761,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                _currentPlugAndPlayCandidate = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void OnPlugAndPlayDonConfirm()
@@ -898,7 +801,7 @@ public partial class DashboardViewModel : ViewModelBase
         _currentPopupKind = IdlePopupKind.PlugAndPlayRemove;
         PopupQuestion = string.Format(Resources.Get("PlugAndPlayRemovePromptFormat"), item.Name);
         PopupAnswers = [Resources.Get("PlugAndPlayRemoveConfirm")];
-        PopupCountdown = _settings.PopupTimeoutSeconds;
+        _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
@@ -906,19 +809,6 @@ public partial class DashboardViewModel : ViewModelBase
         {
             Task.Run(() => Console.Beep(800, 300));
         }
-
-        _popupTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _popupTimer.Tick += (_, _) =>
-        {
-            PopupCountdown--;
-            if (PopupCountdown <= 0)
-            {
-                _popupTimer?.Stop();
-                _popupTimer = null;
-                ClosePopup(false);
-            }
-        };
-        _popupTimer.Start();
     }
 
     private void OnPlugAndPlayRemoveConfirm()
@@ -936,6 +826,8 @@ public partial class DashboardViewModel : ViewModelBase
         {
             return;
         }
+
+        _popupSecondsLate = Math.Max(0, (int)(DateTime.UtcNow - _popupShownAt).TotalSeconds - _settings.PopupTimeoutSeconds);
 
         switch (_currentPopupKind)
         {
@@ -968,9 +860,6 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void OnPoseForCameraConfirm()
     {
-        _popupTimer?.Stop();
-        _popupTimer = null;
-
         IsPoseCountdownActive = true;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         PoseCountdown = 3;
@@ -1049,9 +938,6 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void OnCurtsyConfirm()
     {
-        _popupTimer?.Stop();
-        _popupTimer = null;
-
         IsCurtsyCountdownActive = true;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         CurtsyCountdown = 3;
@@ -1118,8 +1004,6 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void OnMotivationalQuoteConfirm()
     {
-        _popupTimer?.Stop();
-        _popupTimer = null;
         IsQuotePopupActive = true;
 
         if (SpeechRecognitionService.DetectMicrophone())
@@ -1168,8 +1052,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsQuoteListeningActive = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
 
-        PopupOutcomeMessage = Resources.Get(success ? "MotivationalQuoteSuccessMessage" : "MotivationalQuoteFailedMessage");
-        ShowPopupOutcome(success);
+        FinishMotivationalQuote(success);
     }
 
     private void StartQuoteTyping()
@@ -1177,20 +1060,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsQuoteTypingActive = true;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         QuoteTypedAnswer = "";
-        QuoteListenCountdown = _settings.QuoteListenTimeoutSeconds;
-
-        _quoteListenTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _quoteListenTimer.Tick += (_, _) =>
-        {
-            QuoteListenCountdown--;
-            if (QuoteListenCountdown <= 0)
-            {
-                _quoteListenTimer?.Stop();
-                _quoteListenTimer = null;
-                FinishQuoteTyping(false);
-            }
-        };
-        _quoteListenTimer.Start();
+        QuoteAttemptsRemaining = QuoteMaxAttempts;
     }
 
     private void OnSubmitQuoteTypedAnswer()
@@ -1203,17 +1073,44 @@ public partial class DashboardViewModel : ViewModelBase
         var match = string.Equals(QuoteTypedAnswer.Trim(), _currentQuoteText?.Trim(), StringComparison.OrdinalIgnoreCase);
         if (match)
         {
-            _quoteListenTimer?.Stop();
-            _quoteListenTimer = null;
             FinishQuoteTyping(true);
+            return;
         }
+
+        QuoteAttemptsRemaining--;
+        if (QuoteAttemptsRemaining <= 0)
+        {
+            FinishQuoteTyping(false);
+            return;
+        }
+
+        QuoteTypedAnswer = "";
     }
 
     private void FinishQuoteTyping(bool success)
     {
         IsQuoteTypingActive = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
-        PopupOutcomeMessage = Resources.Get(success ? "MotivationalQuoteSuccessMessage" : "MotivationalQuoteFailedMessage");
+        FinishMotivationalQuote(success);
+    }
+
+    private void FinishMotivationalQuote(bool success)
+    {
+        if (success)
+        {
+            PopupOutcomeMessage = Resources.Get(_popupSecondsLate > 0
+                ? "MotivationalQuoteSuccessLateMessage"
+                : "MotivationalQuoteSuccessMessage");
+        }
+        else
+        {
+            var severity = _popupSecondsLate + InfractionSeverity.MotivationalQuoteFailedBonus;
+            _saveRepo.AssignPunishment((severity, severity), "PunishmentReasonMotivationalQuoteFailed");
+            RefreshPunishments();
+            _popupSecondsLate = 0;
+            PopupOutcomeMessage = Resources.Get("MotivationalQuoteFailedMessage");
+        }
+
         ShowPopupOutcome(success);
     }
 
@@ -1224,14 +1121,20 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
-        _popupTimer?.Stop();
-        _popupTimer = null;
-
         var isYes = PopupAnswers.Count > 0 && answer == PopupAnswers[0];
         var positive = ImpossibleQuestionBank.RollOutcome();
         var outcomeKey = isYes
             ? (positive ? _currentQuestion.YesPositiveKey : _currentQuestion.YesNegativeKey)
             : (positive ? _currentQuestion.NoPositiveKey : _currentQuestion.NoNegativeKey);
+
+        if (!positive)
+        {
+            var severity = _popupSecondsLate +
+                _random.Next(InfractionSeverity.ImpossibleQuestionFailed.Min, InfractionSeverity.ImpossibleQuestionFailed.Max + 1);
+            _saveRepo.AssignPunishment((severity, severity), "PunishmentReasonImpossibleQuestionFailed");
+            RefreshPunishments();
+            _popupSecondsLate = 0;
+        }
 
         PopupOutcomeMessage = Resources.Get(outcomeKey);
         ShowPopupOutcome(positive);
@@ -1239,9 +1142,6 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void OnHydrationConfirm()
     {
-        _popupTimer?.Stop();
-        _popupTimer = null;
-
         PopupOutcomeMessage = Resources.Get("HydrationConfirmedMessage");
         ShowPopupOutcome(true);
     }
@@ -1276,8 +1176,6 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void ClosePopup(bool positive)
     {
-        _popupTimer?.Stop();
-        _popupTimer = null;
         _popupOutcomeTimer?.Stop();
         _popupOutcomeTimer = null;
         _poseCountdownTimer?.Stop();
@@ -1325,17 +1223,14 @@ public partial class DashboardViewModel : ViewModelBase
         CapturedPosePhoto = null;
         _sessionLoop.ReportPopupResult(positive);
 
-        if (!positive)
+        if (_popupSecondsLate > 0)
         {
-            var severity = _currentPopupKind == IdlePopupKind.ImpossibleQuestion
-                ? InfractionSeverity.ImpossibleQuestionFailed
-                : InfractionSeverity.PopupMissed;
-            var reason = _currentPopupKind == IdlePopupKind.ImpossibleQuestion
-                ? "PunishmentReasonImpossibleQuestionFailed"
-                : "PunishmentReasonPopupMissed";
-            _saveRepo.AssignPunishment(severity, reason);
+            var severity = (int)Math.Round(_popupSecondsLate * InfractionSeverity.PopupLateSeverityPerSecond);
+            _saveRepo.AssignPunishment((severity, severity), "PunishmentReasonPopupLate");
             RefreshPunishments();
         }
+
+        _popupSecondsLate = 0;
     }
 
     // --- Chore start → naviga a CameraSetupView ---
@@ -1531,7 +1426,6 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _sessionLoop.Stop();
         _countdownTimer?.Stop();
-        _popupTimer?.Stop();
         _popupOutcomeTimer?.Stop();
         _poseCountdownTimer?.Stop();
         _curtsyCountdownTimer?.Stop();

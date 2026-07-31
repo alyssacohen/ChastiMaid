@@ -180,11 +180,14 @@
   <data name="PunishmentDetailCornertimeFormat" xml:space="preserve">
     <value>{0} min</value>
   </data>
-  <data name="PunishmentReasonPopupMissed" xml:space="preserve">
-    <value>Per non aver risposto quando interpellata.</value>
+  <data name="PunishmentReasonPopupLate" xml:space="preserve">
+    <value>Per aver fatto attendere la casa.</value>
   </data>
   <data name="PunishmentReasonImpossibleQuestionFailed" xml:space="preserve">
     <value>Per una risposta insoddisfacente alla mia domanda.</value>
+  </data>
+  <data name="PunishmentReasonMotivationalQuoteFailed" xml:space="preserve">
+    <value>Per aver storpiato le parole, con pure ritardo.</value>
   </data>
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>Per un'indecorosa fretta nei suoi doveri.</value>
@@ -380,9 +383,6 @@
   </data>
   <data name="DashboardEndChore" xml:space="preserve">
     <value>Termina compito</value>
-  </data>
-  <data name="DashboardPopupCountdownFormat" xml:space="preserve">
-    <value>Tempo: {0}s</value>
   </data>
   <data name="ImpossibleQuestionYes" xml:space="preserve">
     <value>Sì</value>
@@ -648,6 +648,9 @@
   </data>
   <data name="MotivationalQuoteSuccessMessage" xml:space="preserve">
     <value>Ben detto.</value>
+  </data>
+  <data name="MotivationalQuoteSuccessLateMessage" xml:space="preserve">
+    <value>Bene, ma non posso transigere sul tuo ritardo.</value>
   </data>
   <data name="MotivationalQuoteFailedMessage" xml:space="preserve">
     <value>Non era ciò che desideravo udire. Fate in modo di prestare maggiore attenzione la prossima volta.</value>

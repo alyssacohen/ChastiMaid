@@ -549,11 +549,6 @@
                 PointerPressed="OnPopupDialogBoxPointerPressed">
                 <Panel>
                     <StackPanel IsVisible="{Binding IsShowingQuestionPanel}" Spacing="16">
-                        <TextBlock
-                            Classes="Caption"
-                            Foreground="{DynamicResource BrushEmergencyText}"
-                            HorizontalAlignment="Center"
-                            Text="{Binding PopupCountdown, StringFormat={conv:Tr DashboardPopupCountdownFormat}}" />
                         <controls:WebcamPreviewControl
                             Height="{Binding PopupPreviewHeight}"
                             HorizontalAlignment="Center"
@@ -691,9 +686,9 @@
                             PlaceholderText="{conv:Tr MotivationalQuoteTypeWatermark}"
                             Text="{Binding QuoteTypedAnswer}" />
                         <TextBlock
-                            Classes="NumberLarge"
+                            Classes="Caption"
                             HorizontalAlignment="Center"
-                            Text="{Binding QuoteListenCountdown}" />
+                            Text="{Binding QuoteAttemptsRemaining, StringFormat={conv:Tr MotivationalQuoteAttemptsRemainingFormat}}" />
                         <Button
                             Classes="Ghost"
                             Command="{Binding SubmitQuoteTypedAnswerCommand}"

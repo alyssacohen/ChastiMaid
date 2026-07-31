@@ -54,3 +54,17 @@ Example:
 - The punishment will be either a Cornertime of 10 × 0.5 = 5 minutes, or a Fine of 10 × 5 = $50
 
 This system allows different punishment types to be balanced against each other, making them interchangeable in gameplay.
+
+### Popup lateness
+
+The check-in popup shows no countdown and never closes itself on timeout — it stays open until the player
+responds. If the player responds later than `PopupTimeoutSeconds`, the resulting severity is
+`secondsLate × PopupLateSeverityPerSecond` (0.5 by default).
+
+For Impossible Question and Motivational Quote — the two popups with their own success/failure outcome —
+lateness is combined with the outcome instead of being punished separately:
+- Impossible Question: on a negative outcome, severity is `secondsLate + random(3, 5)`. On a positive
+  outcome, only the lateness severity applies.
+- Motivational Quote: reading the phrase (spoken or typed) allows 3 attempts, independent of how long each
+  takes. On success, only the lateness severity applies (with a dedicated line acknowledging the delay). If
+  all 3 attempts fail, severity is `secondsLate + 5`.
