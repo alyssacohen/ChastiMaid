@@ -170,7 +170,10 @@ ALLCAPS text.
 
 ### Button classes
 
-`Primary` · `Ghost` · `Danger` · `SmallGhost` · `Amber` · `Emergency` · `Delete` · `Add` · `SlotCard`
+`Primary` · `Ghost` · `Danger` · `SmallGhost` · `Amber` · `Add` · `SlotCard`
+
+`Danger` is the single style for all destructive actions (delete, abandon, emergency break) —
+pink background, red border/text, red background with white text on hover.
 
 Modifier: `compact` (reduces height to 32px; combinable: `Classes="Danger compact"`).
 

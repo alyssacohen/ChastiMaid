@@ -250,9 +250,13 @@
                                     </StackPanel>
 
                                     <Button Classes="Danger compact"
-                                            Content="{conv:Tr WardrobeDeleteItem}"
                                             Command="{Binding DeleteCommand}"
-                                            HorizontalAlignment="Right" />
+                                            HorizontalAlignment="Right">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="16" />
+                                            <TextBlock Text="{conv:Tr WardrobeDeleteItem}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
                                     <TextBlock Classes="Caption"
                                                FontStyle="Italic"
                                                Text="{conv:Tr WardrobeItemHelpText}" />

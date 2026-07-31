@@ -237,7 +237,7 @@
                             HorizontalContentAlignment="Center" />
 
                         <Button
-                            Classes="Emergency compact"
+                            Classes="Danger compact"
                             Command="{Binding EmergencyBreakCommand}"
                             Content="{conv:Tr DashboardEmergencyBreak}"
                             Grid.Column="3"
@@ -332,7 +332,7 @@
                                 MinHeight="44" />
 
                             <Button
-                                Classes="Emergency compact"
+                                Classes="Danger compact"
                                 Command="{Binding EmergencyBreakCommand}"
                                 Content="{conv:Tr DashboardEmergencyBreak}"
                                 HorizontalAlignment="Stretch"

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:ic="using:FluentIcons.Avalonia"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeBulkBar">
 
@@ -18,9 +19,13 @@
 
             <Button Grid.Column="1"
                     Classes="Danger compact"
-                    Content="{conv:Tr WardrobeBulkDeleteSelected}"
                     Command="{Binding DeleteSelectedWardrobeItemsCommand}"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="16" />
+                    <TextBlock Text="{conv:Tr WardrobeBulkDeleteSelected}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
         </Grid>
     </Border>

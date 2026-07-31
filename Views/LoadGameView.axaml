@@ -89,7 +89,7 @@
                             <!-- Delete button -->
                             <Button Grid.Column="1"
                                     Command="{Binding DeleteCommand}"
-                                    Classes="Delete"
+                                    Classes="Danger"
                                     Margin="8,0,0,0"
                                     IsVisible="{Binding !IsEmpty}">
                                 <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
