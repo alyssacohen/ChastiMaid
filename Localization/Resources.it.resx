@@ -581,7 +581,7 @@
     <value>Sono pronta</value>
   </data>
   <data name="MotivationalQuoteInstruction" xml:space="preserve">
-    <value>Leggete quanto segue ad alta voce, affinché io possa udirlo: «{0}»</value>
+    <value>Leggete quanto segue ad alta voce, affinché io possa udirlo:</value>
   </data>
   <data name="MotivationalQuoteDuty" xml:space="preserve">
     <value>Il mio dovere non si affievolisce con la ripetizione — da essa si dimostra</value>

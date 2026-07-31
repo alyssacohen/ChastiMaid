@@ -581,7 +581,7 @@
     <value>I am ready</value>
   </data>
   <data name="MotivationalQuoteInstruction" xml:space="preserve">
-    <value>You will read the following aloud, that I may hear it spoken: "{0}"</value>
+    <value>You will read the following aloud, that I may hear it spoken:</value>
   </data>
   <data name="MotivationalQuoteDuty" xml:space="preserve">
     <value>My duty is not diminished by repetition — it is proven by it</value>

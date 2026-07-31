@@ -660,6 +660,14 @@
                             Text="{Binding PopupQuestion}"
                             TextAlignment="Center"
                             TextWrapping="Wrap" />
+                        <Border Classes="statCard" HorizontalAlignment="Stretch">
+                            <TextBlock
+                                Classes="EmployerVoice"
+                                HorizontalAlignment="Center"
+                                Text="{Binding CurrentQuoteText}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Border>
                         <TextBlock
                             Classes="NumberLarge"
                             HorizontalAlignment="Center"
@@ -681,6 +689,14 @@
                             Text="{Binding PopupQuestion}"
                             TextAlignment="Center"
                             TextWrapping="Wrap" />
+                        <Border Classes="statCard" HorizontalAlignment="Stretch">
+                            <TextBlock
+                                Classes="EmployerVoice"
+                                HorizontalAlignment="Center"
+                                Text="{Binding CurrentQuoteText}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Border>
                         <TextBox
                             Classes="underline"
                             PlaceholderText="{conv:Tr MotivationalQuoteTypeWatermark}"

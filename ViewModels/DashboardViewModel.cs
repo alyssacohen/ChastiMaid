@@ -123,8 +123,8 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private int _quoteListenCountdown;
     [Reactive] private int _quoteAttemptsRemaining;
     [Reactive] private string _quoteTypedAnswer = "";
+    [Reactive] private string _currentQuoteText = "";
     private const int QuoteMaxAttempts = 3;
-    private string? _currentQuoteText;
     private DispatcherTimer? _quoteListenTimer;
     private CancellationTokenSource? _quoteListenCts;
 
@@ -617,7 +617,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _currentPopupKind = IdlePopupKind.MotivationalQuote;
         _currentQuoteText = Resources.Get(EmployerPhraseBank.GetRandom());
-        PopupQuestion = string.Format(Resources.Get("MotivationalQuoteInstruction"), _currentQuoteText);
+        PopupQuestion = Resources.Get("MotivationalQuoteInstruction");
         PopupAnswers = [Resources.Get("MotivationalQuoteConfirm")];
         _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
@@ -1032,7 +1032,7 @@ public partial class DashboardViewModel : ViewModelBase
         try
         {
             success = await SpeechRecognitionService.ListenForPhraseAsync(
-                _currentQuoteText!,
+                _currentQuoteText,
                 QuoteMaxAttempts,
                 TimeSpan.FromSeconds(_settings.QuoteListenTimeoutSeconds),
                 _settings.QuoteRecognitionMinConfidence,
@@ -1070,7 +1070,7 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
-        var match = string.Equals(QuoteTypedAnswer.Trim(), _currentQuoteText?.Trim(), StringComparison.OrdinalIgnoreCase);
+        var match = string.Equals(QuoteTypedAnswer.Trim(), _currentQuoteText.Trim(), StringComparison.OrdinalIgnoreCase);
         if (match)
         {
             FinishQuoteTyping(true);
@@ -1217,7 +1217,7 @@ public partial class DashboardViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentQuestion = null;
         _currentPoseItem = null;
-        _currentQuoteText = null;
+        _currentQuoteText = "";
         QuoteTypedAnswer = "";
         CapturedPosePhoto?.Dispose();
         CapturedPosePhoto = null;
