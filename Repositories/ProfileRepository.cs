@@ -12,6 +12,9 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<PlugAndPlayItemConfig> PlugAndPlayItems =>
         db.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
 
+    private ILiteCollection<DiaperPlayItemConfig> DiaperPlayItems =>
+        db.GetCollection<DiaperPlayItemConfig>("diaper_play_items");
+
     private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
@@ -94,6 +97,21 @@ public class ProfileRepository(LiteDatabase db)
     public void DeletePlugAndPlayItem(int id)
     {
         PlugAndPlayItems.Delete(id);
+    }
+
+    public List<DiaperPlayItemConfig> GetDiaperPlayItems()
+    {
+        return DiaperPlayItems.FindAll().ToList();
+    }
+
+    public void SaveDiaperPlayItem(DiaperPlayItemConfig item)
+    {
+        DiaperPlayItems.Upsert(item);
+    }
+
+    public void DeleteDiaperPlayItem(int id)
+    {
+        DiaperPlayItems.Delete(id);
     }
 
     public PlayerStats GetStats()

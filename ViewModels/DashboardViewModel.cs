@@ -387,8 +387,14 @@ public partial class DashboardViewModel : ViewModelBase
 
     private bool IsHydrationAvailable()
     {
+        var intervalMinutes = _settings.HydrationMinIntervalMinutes;
+        if (_saveRepo.GetGameState()?.DiaperPlayActiveThisSession == true)
+        {
+            intervalMinutes = Math.Max(1, intervalMinutes / 2);
+        }
+
         return _settings.HydrationEnabled &&
-            DateTime.UtcNow - _lastHydrationPopupAt >= TimeSpan.FromMinutes(_settings.HydrationMinIntervalMinutes);
+            DateTime.UtcNow - _lastHydrationPopupAt >= TimeSpan.FromMinutes(intervalMinutes);
     }
 
     private bool IsPoseForCameraAvailable()

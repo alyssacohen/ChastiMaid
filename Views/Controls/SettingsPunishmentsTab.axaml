@@ -145,58 +145,6 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Plug & Play -->
-                <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPlugAndPlay}" />
-                    <Border Classes="card">
-                        <StackPanel Spacing="12">
-                            <TextBlock Classes="EmployerVoice" Text="{converters:Tr SettingsPlugAndPlayDescription}"
-                                       TextWrapping="Wrap" />
-                            <ToggleSwitch IsChecked="{Binding PlugAndPlayEnabled}"
-                                          OnContent="{converters:Tr SettingsEnabled}"
-                                          OffContent="{converters:Tr SettingsDisabled}" />
-
-                            <ItemsControl ItemsSource="{Binding PlugAndPlayItems}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:PlugAndPlayItemEditViewModel">
-                                        <ToggleButton Classes="filterChip"
-                                                      Content="{Binding Name}"
-                                                      IsChecked="{Binding IsEligible}"
-                                                      Margin="0,0,4,4" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <ItemsControl ItemsSource="{Binding PlugAndPlayItems}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:PlugAndPlayItemEditViewModel">
-                                        <Grid ColumnDefinitions="*,100,100" Margin="0,4" IsVisible="{Binding IsEligible}">
-                                            <TextBlock Grid.Column="0" Classes="Body" Text="{Binding Name}"
-                                                       VerticalAlignment="Center" Margin="0,0,8,0" />
-                                            <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                                <TextBlock Classes="Caption" Text="{converters:Tr SettingsPlugAndPlayMinMinutes}" />
-                                                <NumericUpDown Classes="underline stacked-spinner"
-                                                               Value="{Binding MinDurationMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
-                                                               Minimum="1" FormatString="0" />
-                                            </StackPanel>
-                                            <StackPanel Grid.Column="2" Spacing="2">
-                                                <TextBlock Classes="Caption" Text="{converters:Tr SettingsPlugAndPlayMaxMinutes}" />
-                                                <NumericUpDown Classes="underline stacked-spinner"
-                                                               Value="{Binding MaxDurationMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
-                                                               Minimum="1" FormatString="0" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
                 <StackPanel Margin="0,8,0,0">
                     <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsSectionPunishments}" Margin="0,4,0,8" />
                     <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
@@ -369,7 +317,7 @@
                                                 </Button>
                                                 <Button Grid.Column="3"
                                                         Command="{Binding DeleteCommand}"
-                                                        Classes="Delete"
+                                                        Classes="Danger"
                                                         VerticalAlignment="Center"
                                                         ToolTip.Tip="{converters:Tr SettingsForcedOutfitPresetDelete}"
                                                         AutomationProperties.Name="{converters:Tr SettingsForcedOutfitPresetDelete}">

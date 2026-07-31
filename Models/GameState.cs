@@ -27,7 +27,17 @@ public class GameState
     public int? PendingPlugAndPlaySeedItemId { get; set; }
     public double? PendingPlugAndPlayRemainingMinutes { get; set; }
 
+    // Set at outfit confirmation (new game or outfit change) if DiaperPlayEnabled is on and the
+    // confirmed outfit contains an item tagged "diaper". Not re-evaluated until the next outfit
+    // confirmation.
+    public bool DiaperPlayActiveThisSession { get; set; }
+
     /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
     [BsonIgnore]
     public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;
+
+    /// <summary>Reusable flag for a future permission-request system: toilet access is always denied
+    /// while Diaper Play is active for the session.</summary>
+    [BsonIgnore]
+    public bool IsToiletPermissionAllowed => !DiaperPlayActiveThisSession;
 }

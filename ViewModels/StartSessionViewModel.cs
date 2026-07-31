@@ -335,6 +335,8 @@ public partial class StartSessionViewModel : ViewModelBase
             state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = _currentBonus;
             state.OutfitMultiplier = _outfit.TotalMultiplier;
+            state.DiaperPlayActiveThisSession = _saveRepo.GetGameSettings().DiaperPlayEnabled &&
+                DiaperPlayEvaluator.OutfitHasDiaperItem(state.CurrentOutfitItemIds, _saveRepo.GetDiaperPlayItems());
             _saveRepo.SaveGameState(state);
         }
 

@@ -23,6 +23,9 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<PlugAndPlayItemConfig> PlugAndPlayItems =>
         db.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
 
+    private ILiteCollection<DiaperPlayItemConfig> DiaperPlayItems =>
+        db.GetCollection<DiaperPlayItemConfig>("diaper_play_items");
+
     private ILiteCollection<ActivePlugAndPlayAccessory> ActivePlugAndPlayAccessoryCollection =>
         db.GetCollection<ActivePlugAndPlayAccessory>("active_plug_and_play_accessory");
 
@@ -190,6 +193,12 @@ public class SaveRepository(LiteDatabase db)
         return PlugAndPlayItems.FindAll().ToList();
     }
 
+    // --- Diaper Play ---
+    public List<DiaperPlayItemConfig> GetDiaperPlayItems()
+    {
+        return DiaperPlayItems.FindAll().ToList();
+    }
+
     public ActivePlugAndPlayAccessory? GetActivePlugAndPlayAccessory()
     {
         return ActivePlugAndPlayAccessoryCollection.FindById(1);
@@ -351,6 +360,10 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot plug and play item configs
         var plugAndPlayCol = saveDb.GetCollection<PlugAndPlayItemConfig>("plug_and_play_items");
         plugAndPlayCol.InsertBulk(profile.GetPlugAndPlayItems());
+
+        // Snapshot diaper play item configs
+        var diaperPlayCol = saveDb.GetCollection<DiaperPlayItemConfig>("diaper_play_items");
+        diaperPlayCol.InsertBulk(profile.GetDiaperPlayItems());
 
         // Snapshot forced outfit presets
         var forcedOutfitPresetsCol = saveDb.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");

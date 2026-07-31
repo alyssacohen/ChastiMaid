@@ -41,6 +41,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _isChoresDirty;
     [Reactive] private string? _contentActionStatusMessage;
     [Reactive] private bool _plugAndPlayEnabled;
+    [Reactive] private bool _diaperPlayEnabled;
     [Reactive] private bool _hydrationEnabled;
     [Reactive] private bool _curtsyEnabled;
     [Reactive] private bool _quoteReadingEnabled;
@@ -141,6 +142,7 @@ public partial class SettingsViewModel : ViewModelBase
         _kneelPhotoMinInterval = s.KneelPhotoMinIntervalSeconds;
         _kneelPhotoMaxInterval = s.KneelPhotoMaxIntervalSeconds;
         _plugAndPlayEnabled = s.PlugAndPlayEnabled;
+        _diaperPlayEnabled = s.DiaperPlayEnabled;
         _fineSeverityValue = s.FineSeverityValue;
         _cornertimeEnabled = s.CornertimeEnabled;
         _cornertimeSeverityValue = s.CornertimeSeverityValue;
@@ -185,7 +187,16 @@ public partial class SettingsViewModel : ViewModelBase
             var existing = plugAndPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
             PlugAndPlayItems.Add(WireChild(
                 new PlugAndPlayItemEditViewModel(w, existing),
-                () => IsPunishmentsDirty = true));
+                () => IsGeneralDirty = true));
+        }
+
+        var diaperPlayConfigs = _repo.GetDiaperPlayItems();
+        foreach (var w in allWardrobe.Where(w => w.Layers.Contains(0))) // 0 = Underwear layer
+        {
+            var existing = diaperPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
+            DiaperPlayItems.Add(WireChild(
+                new DiaperPlayItemEditViewModel(w, existing),
+                () => IsGeneralDirty = true));
         }
 
         var initTags = allWardrobe.SelectMany(i => i.Tags).Distinct().OrderBy(s => s).ToList();
@@ -248,7 +259,9 @@ public partial class SettingsViewModel : ViewModelBase
                 (_, _, _, _, _) => Unit.Default))
             .Subscribe(_ => UpdateGeneralDirty());
 
-        this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+        this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
+
+        this.WhenAnyValue(x => x.DiaperPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
 
         this.WhenAnyValue(
                 x => x.PopupMinInterval, x => x.PopupMaxInterval, x => x.PopupTimeout,
@@ -438,6 +451,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
     public ObservableCollection<ForcedOutfitPresetSummaryViewModel> ForcedOutfitPresets { get; } = [];
     public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
+    public ObservableCollection<DiaperPlayItemEditViewModel> DiaperPlayItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
     public ReadOnlyObservableCollection<ClothingItemOption> AvailableItems => _availableItems;
@@ -774,6 +788,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.SelectedCameraIndex = SelectedCamera.Index;
         s.Language = SelectedLanguage.Code;
         s.PlugAndPlayEnabled = PlugAndPlayEnabled;
+        s.DiaperPlayEnabled = DiaperPlayEnabled;
         s.FineSeverityValue = FineSeverityValue;
         s.CornertimeEnabled = CornertimeEnabled;
         s.CornertimeSeverityValue = CornertimeSeverityValue;
@@ -838,6 +853,21 @@ public partial class SettingsViewModel : ViewModelBase
             {
                 _repo.DeletePlugAndPlayItem(configId);
                 p.ConfigId = null;
+            }
+        }
+
+        foreach (var d in DiaperPlayItems)
+        {
+            if (d.IsEligible)
+            {
+                var model = d.ToModel();
+                _repo.SaveDiaperPlayItem(model);
+                d.ConfigId = model.Id;
+            }
+            else if (d.ConfigId is { } configId)
+            {
+                _repo.DeleteDiaperPlayItem(configId);
+                d.ConfigId = null;
             }
         }
     }
@@ -1004,6 +1034,32 @@ public partial class PlugAndPlayItemEditViewModel : ViewModelBase
             ClothingItemId = ClothingItemId,
             MinDurationMinutes = MinDurationMinutes,
             MaxDurationMinutes = MaxDurationMinutes,
+        };
+    }
+}
+
+public partial class DiaperPlayItemEditViewModel : ViewModelBase
+{
+    [Reactive] private bool _isEligible;
+
+    public DiaperPlayItemEditViewModel(ClothingItem item, DiaperPlayItemConfig? existing)
+    {
+        ClothingItemId = item.Id;
+        Name = item.Name;
+        ConfigId = existing?.Id;
+        _isEligible = existing is not null;
+    }
+
+    public int ClothingItemId { get; }
+    public string Name { get; }
+    public int? ConfigId { get; internal set; }
+
+    public DiaperPlayItemConfig ToModel()
+    {
+        return new DiaperPlayItemConfig
+        {
+            Id = ConfigId ?? 0,
+            ClothingItemId = ClothingItemId,
         };
     }
 }

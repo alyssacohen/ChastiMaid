@@ -1013,6 +1013,12 @@
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
     <value>Certain accessories, once donned, do not come off again until she is satisfied they have served their purpose.</value>
   </data>
+  <data name="SettingsHeadingDiaperPlay" xml:space="preserve">
+    <value>Diaper Play</value>
+  </data>
+  <data name="SettingsDiaperPlayDescription" xml:space="preserve">
+    <value>Should the day's outfit call for such padding, she will not be excused to the water closet, and she will find herself needing a drink rather more often.</value>
+  </data>
   <data name="SettingsEnabled" xml:space="preserve">
     <value>Enabled</value>
   </data>

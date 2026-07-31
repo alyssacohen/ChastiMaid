@@ -29,6 +29,8 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
             state.CurrentOutfitItemIds = outfit.Items.Select(i => i.Id).ToList();
             state.OutfitLockedDate = DateTime.UtcNow;
             state.OutfitBonusPercent = bonusPercent;
+            state.DiaperPlayActiveThisSession = saveRepo.GetGameSettings().DiaperPlayEnabled &&
+                DiaperPlayEvaluator.OutfitHasDiaperItem(state.CurrentOutfitItemIds, saveRepo.GetDiaperPlayItems());
             saveRepo.SaveGameState(state);
         }
 

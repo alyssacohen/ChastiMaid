@@ -54,6 +54,10 @@ public class GameSettings
     // Plug and Play — enable/disable toggle (per-item eligibility/duration configured separately)
     public bool PlugAndPlayEnabled { get; set; }
 
+    // Diaper Play — halves the Hydration interval and (once a permission system exists) denies
+    // toilet permission for the session, whenever the confirmed outfit includes a "diaper"-tagged item.
+    public bool DiaperPlayEnabled { get; set; }
+
     // Fine punishment — always active, cannot be disabled
     public decimal FineSeverityValue { get; set; } = 5; // $ per severity point
 

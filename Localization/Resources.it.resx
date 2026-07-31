@@ -1013,6 +1013,12 @@
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
     <value>Certi accessori, una volta indossati, non si tolgono finché lei non giudica che abbiano assolto al loro scopo.</value>
   </data>
+  <data name="SettingsHeadingDiaperPlay" xml:space="preserve">
+    <value>Diaper Play</value>
+  </data>
+  <data name="SettingsDiaperPlayDescription" xml:space="preserve">
+    <value>Se la tenuta del giorno prevede tale imbottitura, non le sarà concesso di recarsi alla toilette, e scoprirà di aver bisogno di bere assai più spesso.</value>
+  </data>
   <data name="SettingsEnabled" xml:space="preserve">
     <value>Attivo</value>
   </data>
