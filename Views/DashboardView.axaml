@@ -878,6 +878,158 @@
             </Border>
         </Panel>
 
+        <!--  ##    PERMISSIONS OVERLAY    ##  -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding IsPermissionsPanelVisible}">
+            <Border
+                Classes="dialogBox"
+                MaxWidth="460"
+                Padding="0">
+                <DockPanel>
+
+                    <!--  Header  -->
+                    <Border
+                        Background="{DynamicResource BrushSurfaceSubtle}"
+                        CornerRadius="8,8,0,0"
+                        DockPanel.Dock="Top"
+                        Height="52"
+                        Padding="20,0,12,0">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock
+                                Classes="SectionTitle"
+                                Grid.Column="0"
+                                Text="{conv:Tr PermissionsPanelTitle}"
+                                VerticalAlignment="Center" />
+                            <Button
+                                Classes="Ghost"
+                                Command="{Binding ClosePermissionsPanelCommand}"
+                                Grid.Column="1"
+                                Height="44"
+                                Padding="0"
+                                VerticalAlignment="Center"
+                                Width="44"
+                                ToolTip.Tip="{conv:Tr Close}"
+                                AutomationProperties.Name="{conv:Tr Close}">
+                                <ic:SymbolIcon
+                                    FontSize="14"
+                                    IconVariant="Regular"
+                                    Symbol="Dismiss" />
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!--  Footer  -->
+                    <Border
+                        BorderBrush="{DynamicResource BrushBorderSubtle}"
+                        BorderThickness="0,1,0,0"
+                        DockPanel.Dock="Bottom"
+                        Padding="20,12">
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ClosePermissionsPanelCommand}"
+                            Content="{conv:Tr Close}"
+                            HorizontalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            MinWidth="100" />
+                    </Border>
+
+                    <ScrollViewer MaxHeight="480">
+                        <StackPanel Spacing="0">
+
+                            <!--  Permission type rows  -->
+                            <ItemsControl ItemsSource="{Binding PermissionTypes}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:PermissionTypeItemViewModel">
+                                        <StackPanel>
+                                            <Grid ColumnDefinitions="*,Auto" Margin="20,0" MinHeight="56">
+                                                <TextBlock
+                                                    Classes="Body"
+                                                    Grid.Column="0"
+                                                    Text="{Binding Name}"
+                                                    VerticalAlignment="Center" />
+                                                <Button
+                                                    Classes="Primary compact"
+                                                    Command="{Binding RequestCommand}"
+                                                    Content="{conv:Tr PermissionRequestButton}"
+                                                    Grid.Column="1"
+                                                    Margin="12,0,0,0"
+                                                    MinHeight="44"
+                                                    VerticalAlignment="Center" />
+                                            </Grid>
+                                            <Border
+                                                Background="{DynamicResource BrushBorderSubtle}"
+                                                Height="0.5"
+                                                Margin="20,0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!--  Bonus cards (reserved for the future Shop feature)  -->
+                            <TextBlock
+                                Classes="SectionTitle"
+                                Margin="20,20,20,8"
+                                Text="{conv:Tr PermissionBonusCardsHeading}" />
+                            <TextBlock
+                                Classes="Caption"
+                                Margin="20,0,20,20"
+                                Text="{conv:Tr PermissionNoBonusCards}" />
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </DockPanel>
+            </Border>
+        </Panel>
+
+        <!--  ##    PERMISSION OUTCOME OVERLAY    ##  -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding IsPermissionOutcomeVisible}">
+            <Border
+                Classes="dialogBox"
+                MaxWidth="420">
+                <StackPanel Spacing="20">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PermissionOutcomeMessage}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <Button
+                        Classes="Primary"
+                        Command="{Binding StartGrantedBreakCommand}"
+                        Content="{conv:Tr PermissionOutcomeGrantedButton}"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding IsPermissionOutcomeGranted}" />
+                    <Button
+                        Classes="Ghost"
+                        Command="{Binding DismissPermissionOutcomeCommand}"
+                        Content="{conv:Tr PermissionOutcomeDeniedButton}"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding !IsPermissionOutcomeGranted}" />
+                </StackPanel>
+            </Border>
+        </Panel>
+
+        <!--  ##    PERMISSION BREAK OVERLAY    ##  -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding IsPermissionBreakActive}">
+            <Border
+                Classes="dialogBox"
+                MaxWidth="420">
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PermissionBreakKindName}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <Button
+                        Classes="Primary"
+                        Command="{Binding EndPermissionBreakCommand}"
+                        Content="{conv:Tr PermissionBreakEndButton}"
+                        HorizontalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Panel>
+
         <!--
             ══════════════════════════════════════════════════════
             OUTFIT DRAWER (topmost overlay)

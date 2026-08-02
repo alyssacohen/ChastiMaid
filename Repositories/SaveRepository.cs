@@ -32,6 +32,15 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<ForcedOutfitPreset> ForcedOutfitPresets =>
         db.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");
 
+    private ILiteCollection<PermissionTypeConfig> PermissionTypes =>
+        db.GetCollection<PermissionTypeConfig>("permission_types");
+
+    private ILiteCollection<PermissionCooldown> PermissionCooldowns =>
+        db.GetCollection<PermissionCooldown>("permission_cooldowns");
+
+    private ILiteCollection<ActivePermissionBreak> ActivePermissionBreakCollection =>
+        db.GetCollection<ActivePermissionBreak>("active_permission_break");
+
     // --- GameState ---
     public GameState? GetGameState()
     {
@@ -68,6 +77,11 @@ public class SaveRepository(LiteDatabase db)
     public List<ForcedOutfitPreset> GetForcedOutfitPresets()
     {
         return ForcedOutfitPresets.FindAll().ToList();
+    }
+
+    public List<PermissionTypeConfig> GetPermissionTypes()
+    {
+        return PermissionTypes.FindAll().ToList();
     }
 
     // --- Wardrobe weight adjustments ---
@@ -318,6 +332,92 @@ public class SaveRepository(LiteDatabase db)
         }
     }
 
+    // --- Permissions (break requests) ---
+    public ActivePermissionBreak? GetActivePermissionBreak()
+    {
+        return ActivePermissionBreakCollection.FindById(1);
+    }
+
+    /// <summary>
+    ///     Resolves a permission request: automatically denied (with a mocking message, cooldown still applied) when
+    ///     Diaper Play is active for a toilet-related kind, then denied-for-insistence while a cooldown is running,
+    ///     otherwise a probability roll against the kind's configured grant chance. Granting starts an
+    ///     <see cref="ActivePermissionBreak" />; the caller is responsible for pausing/resuming <c>SessionLoopService</c>
+    ///     around it.
+    /// </summary>
+    public PermissionRequestResult RequestPermission(PermissionKind kind)
+    {
+        var config = GetPermissionTypes().FirstOrDefault(c => c.Kind == kind) ?? new PermissionTypeConfig { Kind = kind };
+
+        var isToiletKind = kind is PermissionKind.Pee or PermissionKind.Poop;
+        if (isToiletKind && GetGameState() is { DiaperPlayActiveThisSession: true })
+        {
+            SetPermissionCooldown(kind, config.CooldownMinutes);
+            return new PermissionRequestResult(PermissionRequestOutcome.DeniedDiaper, PermissionPhraseBank.GetRandomDeniedDiaper());
+        }
+
+        var cooldown = PermissionCooldowns.FindById((int)kind);
+        if (cooldown is not null && cooldown.CooldownUntil > DateTime.UtcNow)
+        {
+            SetPermissionCooldown(kind, config.CooldownMinutes);
+            return new PermissionRequestResult(
+                PermissionRequestOutcome.DeniedInsistence,
+                PermissionPhraseBank.GetRandomDeniedInsistence());
+        }
+
+        if (Random.Shared.Next(100) < config.BaseGrantPercent)
+        {
+            var now = DateTime.UtcNow;
+            ActivePermissionBreakCollection.Upsert(new ActivePermissionBreak
+            {
+                Kind = kind,
+                StartedAt = now,
+                MaxEndAt = now.AddMinutes(config.DurationMinutes),
+            });
+            return new PermissionRequestResult(PermissionRequestOutcome.Granted, PermissionPhraseBank.GetRandomGranted());
+        }
+
+        SetPermissionCooldown(kind, config.CooldownMinutes);
+        return new PermissionRequestResult(PermissionRequestOutcome.Denied, PermissionPhraseBank.GetRandomDenied());
+    }
+
+    /// <summary>
+    ///     Ends the active break. If it ran past its granted duration, assigns a punishment sized like popup
+    ///     lateness (<see cref="InfractionSeverity.PopupLateSeverityPerSecond" /> per second overrun).
+    /// </summary>
+    public void EndPermissionBreak()
+    {
+        var active = GetActivePermissionBreak();
+        if (active is null)
+        {
+            return;
+        }
+
+        var overrunSeconds = (DateTime.UtcNow - active.MaxEndAt).TotalSeconds;
+        if (overrunSeconds > 0)
+        {
+            var severity = (int)Math.Round(overrunSeconds * InfractionSeverity.PopupLateSeverityPerSecond);
+            if (severity > 0)
+            {
+                AssignPunishment((severity, severity), "PunishmentReasonPermissionOverrun");
+            }
+        }
+
+        ActivePermissionBreakCollection.Delete(1);
+    }
+
+    /// <summary>Rolls a cooldown duration within ±25% of the configured base and stores it for the kind.</summary>
+    private void SetPermissionCooldown(PermissionKind kind, int baseCooldownMinutes)
+    {
+        var factor = 0.75 + Random.Shared.NextDouble() * 0.5;
+        PermissionCooldowns.Upsert(new PermissionCooldown
+        {
+            Id = (int)kind,
+            Kind = kind,
+            CooldownUntil = DateTime.UtcNow.AddMinutes(baseCooldownMinutes * factor),
+        });
+    }
+
     // --- Sessions ---
     public void AddSession(Session session)
     {
@@ -368,6 +468,10 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot forced outfit presets
         var forcedOutfitPresetsCol = saveDb.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");
         forcedOutfitPresetsCol.InsertBulk(profile.GetForcedOutfitPresets());
+
+        // Snapshot permission type configs
+        var permissionTypesCol = saveDb.GetCollection<PermissionTypeConfig>("permission_types");
+        permissionTypesCol.InsertBulk(profile.GetPermissionTypes());
 
         // Snapshot game settings
         var settings = profile.GetGameSettings();

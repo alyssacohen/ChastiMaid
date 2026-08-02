@@ -84,6 +84,14 @@ public partial class DashboardViewModel : ViewModelBase
     // --- Pending punishments ---
     [Reactive] private int _pendingPunishmentsCount;
     [Reactive] private bool _isPunishmentsPanelVisible;
+
+    // --- Permissions (break requests) ---
+    [Reactive] private bool _isPermissionsPanelVisible;
+    [Reactive] private bool _isPermissionOutcomeVisible;
+    [Reactive] private string _permissionOutcomeMessage = "";
+    [Reactive] private bool _isPermissionOutcomeGranted;
+    [Reactive] private bool _isPermissionBreakActive;
+    [Reactive] private string _permissionBreakKindName = "";
     [Reactive] private ObservableCollection<string> _popupAnswers = [];
     [Reactive] private string _popupOutcomeMessage = "";
     [Reactive] private string _popupQuestion = "";
@@ -190,6 +198,11 @@ public partial class DashboardViewModel : ViewModelBase
         };
         PendingPunishmentsCount = Punishments.Count;
 
+        foreach (var kind in Enum.GetValues<PermissionKind>())
+        {
+            PermissionTypes.Add(new PermissionTypeItemViewModel(kind, OnRequestPermission));
+        }
+
         // Debt widget
         DebtTotal = state?.InitialDebt ?? 0;
         DebtSettled = (state?.InitialDebt ?? 0) - (state?.CurrentDebt ?? 0);
@@ -220,10 +233,15 @@ public partial class DashboardViewModel : ViewModelBase
         ClosePunishmentsPanelCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = false);
         StartTaskCommand = ReactiveCommand.Create<TaskItemViewModel>(OnStartTask);
         StartPunishmentCommand = ReactiveCommand.Create<PunishmentItemViewModel>(OnStartPunishment);
-        RequestPermissionCommand = ReactiveCommand.Create(() =>
+        RequestPermissionCommand = ReactiveCommand.Create(() => IsPermissionsPanelVisible = true);
+        ClosePermissionsPanelCommand = ReactiveCommand.Create(() => IsPermissionsPanelVisible = false);
+        StartGrantedBreakCommand = ReactiveCommand.Create(() =>
         {
-            /* spec TBD */
+            IsPermissionOutcomeVisible = false;
+            IsPermissionBreakActive = true;
         });
+        DismissPermissionOutcomeCommand = ReactiveCommand.Create(() => IsPermissionOutcomeVisible = false);
+        EndPermissionBreakCommand = ReactiveCommand.Create(OnEndPermissionBreak);
         OpenShopCommand = ReactiveCommand.Create(() =>
         {
             /* spec TBD */
@@ -260,6 +278,7 @@ public partial class DashboardViewModel : ViewModelBase
     public ObservableCollection<ChoreItemViewModel> Chores { get; } = [];
     public ObservableCollection<TaskItemViewModel> Tasks { get; } = [];
     public ObservableCollection<PunishmentItemViewModel> Punishments { get; } = [];
+    public ObservableCollection<PermissionTypeItemViewModel> PermissionTypes { get; } = [];
 
     public string CurrentOutfit { get; }
     public WebcamPreviewService Webcam => _mainVm.Webcam;
@@ -285,6 +304,10 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand StartTaskCommand { get; }
     public ICommand StartPunishmentCommand { get; }
     public ICommand RequestPermissionCommand { get; }
+    public ICommand ClosePermissionsPanelCommand { get; }
+    public ICommand StartGrantedBreakCommand { get; }
+    public ICommand DismissPermissionOutcomeCommand { get; }
+    public ICommand EndPermissionBreakCommand { get; }
     public ICommand OpenShopCommand { get; }
     public ICommand EmergencyBreakCommand { get; }
 
@@ -1366,6 +1389,32 @@ public partial class DashboardViewModel : ViewModelBase
         {
             OnStartChore(choreVm);
         }
+    }
+
+    private void OnRequestPermission(PermissionKind kind)
+    {
+        var result = _saveRepo.RequestPermission(kind);
+        PermissionOutcomeMessage = Resources.Get(result.PhraseKey);
+        IsPermissionOutcomeGranted = result.Outcome == PermissionRequestOutcome.Granted;
+
+        IsPermissionsPanelVisible = false;
+        IsPermissionOutcomeVisible = true;
+
+        if (IsPermissionOutcomeGranted)
+        {
+            _sessionLoop.Pause();
+            _countdownTimer?.Stop();
+            PermissionBreakKindName = PermissionTypeItemViewModel.GetName(kind);
+        }
+    }
+
+    private void OnEndPermissionBreak()
+    {
+        _saveRepo.EndPermissionBreak();
+        RefreshPunishments();
+        IsPermissionBreakActive = false;
+        _sessionLoop.Resume();
+        _countdownTimer?.Start();
     }
 
     private void OnStartPunishment(PunishmentItemViewModel punishmentVm)

@@ -195,6 +195,9 @@
   <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
     <value>Per non essere rimasta immobile nell'angolo.</value>
   </data>
+  <data name="PunishmentReasonPermissionOverrun" xml:space="preserve">
+    <value>Per essersi trattenuta oltre la pausa concessa.</value>
+  </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>Una questione già decisa</value>
   </data>
@@ -371,6 +374,84 @@
   </data>
   <data name="DashboardShop" xml:space="preserve">
     <value>Negozio</value>
+  </data>
+  <data name="PermissionsPanelTitle" xml:space="preserve">
+    <value>Permessi</value>
+  </data>
+  <data name="PermissionKindPee" xml:space="preserve">
+    <value>Usare la toilette (bisogno n.1)</value>
+  </data>
+  <data name="PermissionKindPoop" xml:space="preserve">
+    <value>Usare la toilette (bisogno n.2)</value>
+  </data>
+  <data name="PermissionKindSitDown" xml:space="preserve">
+    <value>Sedersi</value>
+  </data>
+  <data name="PermissionKindSmoke" xml:space="preserve">
+    <value>Pausa sigaretta</value>
+  </data>
+  <data name="PermissionKindTeaCoffee" xml:space="preserve">
+    <value>Pausa tè o caffè</value>
+  </data>
+  <data name="PermissionRequestButton" xml:space="preserve">
+    <value>Chiedi</value>
+  </data>
+  <data name="PermissionBonusCardsHeading" xml:space="preserve">
+    <value>Carte bonus</value>
+  </data>
+  <data name="PermissionNoBonusCards" xml:space="preserve">
+    <value>Nessuna carta bonus posseduta.</value>
+  </data>
+  <data name="PermissionBreakEndButton" xml:space="preserve">
+    <value>Fine pausa</value>
+  </data>
+  <data name="PermissionOutcomeGrantedButton" xml:space="preserve">
+    <value>Andate pure</value>
+  </data>
+  <data name="PermissionOutcomeDeniedButton" xml:space="preserve">
+    <value>Perdonate l'impertinenza</value>
+  </data>
+  <data name="PermissionGrantedGracious" xml:space="preserve">
+    <value>Sia pure. Che non diventi un'abitudine.</value>
+  </data>
+  <data name="PermissionGrantedBrief" xml:space="preserve">
+    <value>Concesso — brevemente.</value>
+  </data>
+  <data name="PermissionGrantedIndulgent" xml:space="preserve">
+    <value>Oggi mi sento generosa. Non metterla alla prova.</value>
+  </data>
+  <data name="PermissionGrantedReluctant" xml:space="preserve">
+    <value>Se proprio devi. L'orologio corre già.</value>
+  </data>
+  <data name="PermissionDeniedBusy" xml:space="preserve">
+    <value>Non ora. La casa non si ferma per te.</value>
+  </data>
+  <data name="PermissionDeniedNotNow" xml:space="preserve">
+    <value>Negato. Riprova più tardi, se ne hai il coraggio.</value>
+  </data>
+  <data name="PermissionDeniedWhim" xml:space="preserve">
+    <value>No. Semplicemente non ne ho voglia.</value>
+  </data>
+  <data name="PermissionDeniedDiscipline" xml:space="preserve">
+    <value>Negato. La disciplina non si negozia.</value>
+  </data>
+  <data name="PermissionDeniedInsistenceAnnoyed" xml:space="preserve">
+    <value>Ho già risposto. Non chiedere di nuovo così presto.</value>
+  </data>
+  <data name="PermissionDeniedInsistenceWarning" xml:space="preserve">
+    <value>L'insistenza non cambierà la mia risposta — solo la mia pazienza.</value>
+  </data>
+  <data name="PermissionDeniedInsistenceMocking" xml:space="preserve">
+    <value>Ancora no. Ti aspettavi una risposta diversa?</value>
+  </data>
+  <data name="PermissionDeniedDiaperReminder" xml:space="preserve">
+    <value>Indossi già tutto ciò che ti serve per quello. Arrangiati.</value>
+  </data>
+  <data name="PermissionDeniedDiaperMocking" xml:space="preserve">
+    <value>Che richiesta curiosa, considerato cosa porti sotto.</value>
+  </data>
+  <data name="PermissionDeniedDiaperObvious" xml:space="preserve">
+    <value>La domanda si risponde da sola, non credi?</value>
   </data>
   <data name="DashboardEndSession" xml:space="preserve">
     <value>Termina sessione</value>
@@ -841,6 +922,18 @@
   </data>
   <data name="SettingsTabWardrobe" xml:space="preserve">
     <value>Guardaroba</value>
+  </data>
+  <data name="SettingsTabPermissions" xml:space="preserve">
+    <value>Permessi</value>
+  </data>
+  <data name="PermissionColumnProbability" xml:space="preserve">
+    <value>Probabilità % di concessione</value>
+  </data>
+  <data name="PermissionColumnDuration" xml:space="preserve">
+    <value>Durata (min)</value>
+  </data>
+  <data name="PermissionColumnCooldown" xml:space="preserve">
+    <value>Cooldown (min)</value>
   </data>
   <data name="SettingsTabOutfitRules" xml:space="preserve">
     <value>Regole outfit</value>

@@ -21,6 +21,9 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<ForcedOutfitPreset> ForcedOutfitPresets =>
         db.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");
 
+    private ILiteCollection<PermissionTypeConfig> PermissionTypes =>
+        db.GetCollection<PermissionTypeConfig>("permission_types");
+
     public List<ClothingItem> GetWardrobe()
     {
         return Wardrobe.FindAll().ToList();
@@ -147,5 +150,15 @@ public class ProfileRepository(LiteDatabase db)
     public void DeleteForcedOutfitPreset(int id)
     {
         ForcedOutfitPresets.Delete(id);
+    }
+
+    public List<PermissionTypeConfig> GetPermissionTypes()
+    {
+        return PermissionTypes.FindAll().ToList();
+    }
+
+    public void SavePermissionType(PermissionTypeConfig config)
+    {
+        PermissionTypes.Upsert(config);
     }
 }

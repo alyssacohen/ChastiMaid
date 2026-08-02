@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
+using ChastiMaid.Services;
 using LiteDB;
 
 namespace ChastiMaid.Tests.Repositories;
@@ -11,6 +13,10 @@ public class SaveRepositoryTests : IDisposable
 
     public SaveRepositoryTests()
     {
+        // Registers DatabaseService's UTC DateTime round-trip fix (see DatabaseServiceDateTimeTests) —
+        // needed here because this test class talks to LiteDB directly without going through DatabaseService.
+        RuntimeHelpers.RunClassConstructor(typeof(DatabaseService).TypeHandle);
+
         _repo = new SaveRepository(_db);
         _repo.SaveGameState(new GameState { CurrentDebt = 100 });
     }
@@ -219,5 +225,96 @@ public class SaveRepositoryTests : IDisposable
         Assert.Equal(42, reloaded.WritingLinesTotalLines);
         Assert.Equal(["WritingLineObedience", "WritingLineGratitude"], reloaded.WritingLinesSentenceKeys);
         Assert.True(reloaded.WritingLinesAttemptActive);
+    }
+
+    private void SeedPermissionType(PermissionKind kind, int baseGrantPercent, int durationMinutes, int cooldownMinutes)
+    {
+        _db.GetCollection<PermissionTypeConfig>("permission_types").Upsert(new PermissionTypeConfig
+        {
+            Kind = kind, BaseGrantPercent = baseGrantPercent,
+            DurationMinutes = durationMinutes, CooldownMinutes = cooldownMinutes,
+        });
+    }
+
+    [Fact]
+    public void RequestPermission_AlwaysGranted_StartsAnActiveBreak()
+    {
+        SeedPermissionType(PermissionKind.TeaCoffee, 100, 10, 30);
+
+        var result = _repo.RequestPermission(PermissionKind.TeaCoffee);
+
+        Assert.Equal(PermissionRequestOutcome.Granted, result.Outcome);
+        var active = _repo.GetActivePermissionBreak();
+        Assert.NotNull(active);
+        Assert.Equal(PermissionKind.TeaCoffee, active!.Kind);
+    }
+
+    [Fact]
+    public void RequestPermission_AlwaysDenied_StartsACooldownWithoutAnActiveBreak()
+    {
+        SeedPermissionType(PermissionKind.Smoke, 0, 5, 30);
+
+        var result = _repo.RequestPermission(PermissionKind.Smoke);
+
+        Assert.Equal(PermissionRequestOutcome.Denied, result.Outcome);
+        Assert.Null(_repo.GetActivePermissionBreak());
+    }
+
+    [Fact]
+    public void RequestPermission_WhileCooldownActive_DeniesForInsistence()
+    {
+        SeedPermissionType(PermissionKind.Smoke, 0, 5, 30);
+        _repo.RequestPermission(PermissionKind.Smoke);
+
+        var result = _repo.RequestPermission(PermissionKind.Smoke);
+
+        Assert.Equal(PermissionRequestOutcome.DeniedInsistence, result.Outcome);
+    }
+
+    [Fact]
+    public void RequestPermission_ForToiletKindWithDiaperPlayActive_AlwaysDeniedRegardlessOfGrantChance()
+    {
+        SeedPermissionType(PermissionKind.Pee, 100, 5, 10);
+        var state = _repo.GetGameState()!;
+        state.DiaperPlayActiveThisSession = true;
+        _repo.SaveGameState(state);
+
+        var result = _repo.RequestPermission(PermissionKind.Pee);
+
+        Assert.Equal(PermissionRequestOutcome.DeniedDiaper, result.Outcome);
+        Assert.Null(_repo.GetActivePermissionBreak());
+    }
+
+    [Fact]
+    public void EndPermissionBreak_WithinGrantedDuration_AssignsNoPunishment()
+    {
+        SeedPermissionType(PermissionKind.SitDown, 100, 10, 20);
+        _repo.RequestPermission(PermissionKind.SitDown);
+
+        _repo.EndPermissionBreak();
+
+        Assert.Null(_repo.GetActivePermissionBreak());
+        Assert.Empty(_repo.GetActivePunishments());
+        Assert.Equal(100, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void EndPermissionBreak_PastMaxEndAt_AssignsAPunishment()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            CornertimeEnabled = false, WritingLinesEnabled = false, ForcedOutfitEnabled = false,
+            FineSeverityValue = 5,
+        });
+        SeedPermissionType(PermissionKind.SitDown, 100, 5, 20);
+        _repo.RequestPermission(PermissionKind.SitDown);
+        var active = _repo.GetActivePermissionBreak()!;
+        active.MaxEndAt = DateTime.UtcNow.AddSeconds(-20); // pretend the break already overran by 20s
+        _db.GetCollection<ActivePermissionBreak>("active_permission_break").Upsert(active);
+
+        _repo.EndPermissionBreak();
+
+        Assert.Null(_repo.GetActivePermissionBreak());
+        Assert.Equal(150, _repo.GetGameState()!.CurrentDebt); // Fine-only: 10 severity × 5/point
     }
 }

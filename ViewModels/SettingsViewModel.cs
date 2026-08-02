@@ -77,6 +77,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _isPunishmentsDirty;
     [Reactive] private bool _isRulesDirty;
     [Reactive] private bool _isWardrobeDirty;
+    [Reactive] private bool _isPermissionsDirty;
     [Reactive] private decimal _maxDebt;
     [Reactive] private decimal _minDebt;
     [Reactive] private decimal _newItemMultiplier = 1.0m;
@@ -177,6 +178,11 @@ public partial class SettingsViewModel : ViewModelBase
         foreach (var p in _repo.GetForcedOutfitPresets())
         {
             ForcedOutfitPresets.Add(BuildForcedOutfitPresetSummary(p));
+        }
+
+        foreach (var p in _repo.GetPermissionTypes())
+        {
+            PermissionTypes.Add(WireChild(new PermissionTypeEditViewModel(p), () => IsPermissionsDirty = true));
         }
 
         var allWardrobe = _repo.GetWardrobe().ToList();
@@ -450,6 +456,7 @@ public partial class SettingsViewModel : ViewModelBase
     // --- Collections ---
     public ObservableCollection<ChoreEditViewModel> Chores { get; } = [];
     public ObservableCollection<ForcedOutfitPresetSummaryViewModel> ForcedOutfitPresets { get; } = [];
+    public ObservableCollection<PermissionTypeEditViewModel> PermissionTypes { get; } = [];
     public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
     public ObservableCollection<DiaperPlayItemEditViewModel> DiaperPlayItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
@@ -472,7 +479,8 @@ public partial class SettingsViewModel : ViewModelBase
     public IEnumerable<string> NewItemSlotSuggestions => AllUsedSlots;
     public IEnumerable<string> NewItemTagSuggestions => AllUsedTags;
 
-    public bool IsDirty => IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty;
+    public bool IsDirty =>
+        IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty || IsPermissionsDirty;
     public ReadOnlyObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems => _filteredWardrobeItems;
 
     public decimal DailyInterestRatePercent
@@ -748,7 +756,8 @@ public partial class SettingsViewModel : ViewModelBase
     {
         SaveAll();
         TakeSnapshot();
-        IsGeneralDirty = IsChoresDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty = false;
+        IsGeneralDirty = IsChoresDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty =
+            IsPermissionsDirty = false;
     }
 
     private void SaveAndBack()
@@ -821,6 +830,13 @@ public partial class SettingsViewModel : ViewModelBase
             var model = w.ToModel();
             _repo.SaveClothingItem(model);
             w.Id = model.Id;
+        }
+
+        foreach (var p in PermissionTypes)
+        {
+            var model = p.ToModel();
+            _repo.SavePermissionType(model);
+            p.Id = model.Id;
         }
 
         // AvailableItems (the Outfit Rules dropdown source) is only refreshed when an item is
@@ -964,6 +980,36 @@ public partial class ChoreEditViewModel : ViewModelBase
         {
             Id = Id, Name = Name, Description = Description, Value = Value, FrequencyDays = FrequencyDays,
             MinCompletionMinutes = MinCompletionMinutes, LastCompletedAt = LastCompletedAt,
+        };
+    }
+}
+
+public partial class PermissionTypeEditViewModel : ViewModelBase
+{
+    [Reactive] private int _baseGrantPercent;
+    [Reactive] private int _durationMinutes;
+    [Reactive] private int _cooldownMinutes;
+
+    public PermissionTypeEditViewModel(PermissionTypeConfig config)
+    {
+        Id = config.Id;
+        Kind = config.Kind;
+        Name = PermissionTypeItemViewModel.GetName(config.Kind);
+        _baseGrantPercent = config.BaseGrantPercent;
+        _durationMinutes = config.DurationMinutes;
+        _cooldownMinutes = config.CooldownMinutes;
+    }
+
+    public int Id { get; internal set; }
+    public PermissionKind Kind { get; }
+    public string Name { get; }
+
+    public PermissionTypeConfig ToModel()
+    {
+        return new PermissionTypeConfig
+        {
+            Id = Id, Kind = Kind, BaseGrantPercent = BaseGrantPercent,
+            DurationMinutes = DurationMinutes, CooldownMinutes = CooldownMinutes,
         };
     }
 }

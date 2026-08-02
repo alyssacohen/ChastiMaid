@@ -74,6 +74,13 @@
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
                             <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{converters:Tr SettingsTabOutfitRules}" />
                         </RadioButton>
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="5"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{converters:Tr SettingsTabPermissions}" />
+                        </RadioButton>
                     </StackPanel>
 
                     <!--  Save / Back at bottom of nav  -->
@@ -145,6 +152,9 @@
 
                 <!--  ==================== OUTFIT RULES ====================  -->
                 <views:SettingsOutfitRulesTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}" />
+
+                <!--  ==================== PERMISSIONS ====================  -->
+                <views:SettingsPermissionsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5}" />
 
             </Panel>
 
