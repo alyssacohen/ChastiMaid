@@ -406,7 +406,7 @@
     <value>Fine pausa</value>
   </data>
   <data name="PermissionOutcomeGrantedButton" xml:space="preserve">
-    <value>Andate pure</value>
+    <value>Con permesso...</value>
   </data>
   <data name="PermissionOutcomeDeniedButton" xml:space="preserve">
     <value>Perdonate l'impertinenza</value>
@@ -559,7 +559,7 @@
     <value>Quanto siete accomodante.</value>
   </data>
   <data name="ImpossibleQuestionComplaintsNoNegative" xml:space="preserve">
-      <value>Uhm.. strano. Il silenzio, il più delle volte, cela i lamenti più grandi.</value>
+    <value>Uhm.. strano. Il silenzio, il più delle volte, cela i lamenti più grandi.</value>
   </data>
   <data name="ImpossibleQuestionImprovement" xml:space="preserve">
     <value>Ritenete di necessitare ulteriore istruzione?</value>
@@ -630,8 +630,6 @@
   <data name="PoseForCameraFailedMessage" xml:space="preserve">
     <value>La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra occasione.</value>
   </data>
-
-  <!-- Curtsy popup -->
   <data name="CurtsyConfirm" xml:space="preserve">
     <value>Sono pronta</value>
   </data>
@@ -656,8 +654,6 @@
   <data name="CurtsyFailedMessage" xml:space="preserve">
     <value>La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra occasione.</value>
   </data>
-
-  <!-- Motivational Quote popup -->
   <data name="MotivationalQuoteConfirm" xml:space="preserve">
     <value>Sono pronta</value>
   </data>
@@ -736,8 +732,6 @@
   <data name="MotivationalQuoteFailedMessage" xml:space="preserve">
     <value>Non era ciò che desideravo udire. Fate in modo di prestare maggiore attenzione la prossima volta.</value>
   </data>
-
-  <!-- Kneel popup -->
   <data name="KneelSummon" xml:space="preserve">
     <value>La vostra presenza è richiesta. Presentatevi subito.</value>
   </data>
@@ -765,8 +759,6 @@
   <data name="KneelFailedMessage" xml:space="preserve">
     <value>La fotocamera non ha visto nulla della vostra penitenza. Un peccato.</value>
   </data>
-
-  <!-- Plug and Play popup -->
   <data name="PlugAndPlayDonPromptFormat" xml:space="preserve">
     <value>Indosserete {0} fino a nuovo ordine.</value>
   </data>
@@ -791,8 +783,6 @@
   <data name="SettingsPlugAndPlayMaxMinutes" xml:space="preserve">
     <value>Minuti max</value>
   </data>
-
-  <!-- Pre-session hardware availability check -->
   <data name="HardwareCheckTitle" xml:space="preserve">
     <value>Una parola prima di cominciare</value>
   </data>
@@ -808,7 +798,6 @@
   <data name="HardwareCheckAcknowledge" xml:space="preserve">
     <value>Molto bene</value>
   </data>
-
   <data name="StartSessionTitle" xml:space="preserve">
     <value>L'abito di oggi</value>
   </data>
@@ -1020,7 +1009,7 @@
     <value>Una somma, aggiunta subito al debito. Sempre attiva — per questa non v'è alcun interruttore.</value>
   </data>
   <data name="SettingsFineSeverityValue" xml:space="preserve">
-      <value>Sterline (£) per gravità</value>
+    <value>Sterline (£) per gravità</value>
   </data>
   <data name="SettingsHeadingCornertime" xml:space="preserve">
     <value>Angolo</value>
@@ -1029,7 +1018,7 @@
     <value>Un periodo di immobilità, in un angolo di vostra scelta, osservato dalla camera.</value>
   </data>
   <data name="SettingsCornertimeSeverityValue" xml:space="preserve">
-      <value>Secondi richiesti per gravità</value>
+    <value>Secondi richiesti per gravità</value>
   </data>
   <data name="SettingsCornertimeMinRequired" xml:space="preserve">
     <value>Durata minima (secondi)</value>
@@ -1062,7 +1051,7 @@
     <value>Una riga, ricopiata fedelmente, tante volte quante l'occasione richiede.</value>
   </data>
   <data name="SettingsWritingLinesSeverityValue" xml:space="preserve">
-      <value>Righe per gravità</value>
+    <value>Righe per gravità</value>
   </data>
   <data name="SettingsWritingLinesPenalty" xml:space="preserve">
     <value>Righe di penalità per errore</value>
@@ -1080,7 +1069,7 @@
     <value>I capi prescelti diventano obbligatori, senza richiesta, per un numero di sessioni successive.</value>
   </data>
   <data name="SettingsForcedOutfitSeverityValue" xml:space="preserve">
-      <value>Sessioni per gravità</value>
+    <value>Sessioni per gravità</value>
   </data>
   <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
     <value>Fissa l'intera divisa, non solo i capi selezionati</value>
