@@ -179,6 +179,7 @@ chastimaid-session.json
 
 ## Claude Code local settings (machine-specific permissions)
 .claude/settings.local.json
+.mcp.json
 
 ## Content export directory (generated at runtime by the import/export system)
 /Content/
