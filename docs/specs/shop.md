@@ -1,0 +1,89 @@
+# Feature Specification: Shop
+
+## Purpose
+
+The **Shop** lets the player spend virtual pounds on cards that modify permission requests or reduce pending punishments.
+
+The core game normally starts with the player in debt. Once the amount owed reaches `0`, further earnings make the amount owed negative. The magnitude of this negative amount is the player's available credit and can be spent in the Shop. This allows a player who has repaid their debt but still has pending punishments to earn credit through chores or idle wage payouts and use it to reduce or remove those punishments.
+
+The Shop also provides a paid draw from the **Fortune Deck**. The deck's contents, odds, and resolution rules are specified separately in [fortune-deck.md](fortune-deck.md).
+
+## Card Catalogue
+
+Unless stated otherwise, every price is expressed in virtual pounds and uses the configured **idle wage** as its price basis.
+
+| Card | Effect | Price |
+| --- | --- | --- |
+| `COOLDOWN_BYPASS` | Clears the cooldown for a permission request. | `10 × idle wage` |
+| `DURATION_BOOST` | Adds a selected number of minutes to the duration of a permission request. Available values: `+1`, `+3`, and `+5` minutes. | `10 × added minutes × idle wage` |
+| `PROBABILITY_BOOST` | Adds a selected percentage-point bonus to the grant probability of a permission request. Available values: `+5%`, `+10%`, and `+20%`. | `percentage points × idle wage` |
+| `GRANT_PERMISSION` | Guarantees approval of a permission request. | `110 × idle wage` |
+| `SOFTEN_PUNISHMENT` | Halves the severity of one eligible pending punishment, rounding up. | `50 × idle wage` |
+| `CANCEL_PUNISHMENT` | Removes one eligible pending punishment. | `120 × idle wage` |
+
+## Permission Cards
+
+`COOLDOWN_BYPASS`, `DURATION_BOOST`, `PROBABILITY_BOOST`, and `GRANT_PERMISSION` are played from the permission-request menu, immediately before the player submits a request.
+
+### `COOLDOWN_BYPASS`
+
+- Clears the cooldown for the upcoming request.
+- The card is consumed even if the selected permission is not currently on cooldown.
+- The card is also consumed if the player plays it and then requests a different permission type from the intended one.
+
+### `DURATION_BOOST`
+
+- Adds its selected number of minutes to the requested permission's duration.
+- The permission can still be denied. If it is denied, the card is consumed with no effect.
+
+### `PROBABILITY_BOOST`
+
+- Adds its selected percentage-point value to the configured grant probability.
+- The resulting probability from probability-boost cards must never exceed `95%`.
+- If **Diaper Play Override** is active, the card has no effect for a bathroom permission and is consumed.
+
+### `GRANT_PERMISSION`
+
+- Behaves as a permission probability modifier, but sets the chance of approval to `100%`.
+- It is the only card that can guarantee approval; probability boosts alone cannot exceed `95%`.
+- If **Diaper Play Override** is active, the card has no effect for a bathroom permission and is consumed.
+
+### Combining Permission Cards
+
+- The player may play multiple cards before submitting one permission request.
+- Cards of the same type stack. For example, a `+10%` and a `+5%` probability boost produce a `+15%` bonus before the `95%` cap is applied.
+- Different card effects may be combined. For example, the player may combine `GRANT_PERMISSION` with `DURATION_BOOST`.
+- When combining cards, the player is responsible for clearing an active cooldown. If the player uses other cards on a request that is still on cooldown, those cards can be consumed without delivering their intended benefit. A `COOLDOWN_BYPASS` may be included to prevent this.
+
+## Punishment Cards
+
+`SOFTEN_PUNISHMENT` and `CANCEL_PUNISHMENT` are played from the punishments menu and target a pending punishment.
+
+Fines are not eligible targets: they are applied immediately and therefore are never pending punishments.
+
+### `SOFTEN_PUNISHMENT`
+
+- Halves the target punishment's severity, rounding up.
+- Apply the reduction to the quantity that represents the punishment's severity. Examples:
+  - `3` forced-outfit sessions become `2` sessions.
+  - `35` writing lines become `18` lines.
+  - `5` minutes of corner time become `3` minutes.
+- Multiple `SOFTEN_PUNISHMENT` cards stack multiplicatively. For example, two cards reduce the severity to one quarter of its original value, with rounding up applied at each halving.
+
+### `CANCEL_PUNISHMENT`
+
+- Removes the targeted pending punishment.
+- For a forced-outfit punishment, it removes the forced-outfit sessions that have not yet been completed, subject to the forced-outfit timing rules below.
+
+## Forced-Outfit Timing Rules
+
+A forced-outfit punishment starts automatically in the session after it is assigned. `SOFTEN_PUNISHMENT` and `CANCEL_PUNISHMENT` may target it either in the session in which it is assigned, before it begins, or during a later forced-outfit session.
+
+- For `SOFTEN_PUNISHMENT`, always calculate the reduction from the punishment's original total number of sessions, not from the number of sessions still remaining.
+- If the recalculated total is less than or equal to the number of sessions already completed, treat the punishment as completed.
+- Neither completing nor cancelling a forced-outfit punishment changes the outfit during the current session. The forced outfit remains in effect until that session ends, including if the player closes and immediately restarts the game.
+- The change takes effect at the next outfit change, which occurs when the next game session begins.
+
+## Fortune Deck Draw
+
+The player may pay `10 × idle wage` to draw from the **Fortune Deck** ("Il Ventaglio della Sorte"). The available rewards and their resolution are defined in [fortune-deck.md](fortune-deck.md).
