@@ -200,6 +200,13 @@
                                                Minimum="10" FormatString="0" />
                             </Grid>
                             <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeMaxRequired}"
+                                           VerticalAlignment="Center" />
+                                <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                               Value="{Binding CornertimeMaxRequiredSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=10}"
+                                               Minimum="10" FormatString="0" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeCooldownMin}"
                                            VerticalAlignment="Center" />
                                 <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
@@ -294,6 +301,13 @@
                             <ToggleSwitch IsChecked="{Binding ForcedOutfitEnabled}"
                                           OnContent="{converters:Tr SettingsEnabled}"
                                           OffContent="{converters:Tr SettingsDisabled}" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsForcedOutfitMaxSessions}"
+                                           VerticalAlignment="Center" />
+                                <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
+                                               Value="{Binding ForcedOutfitMaxSessions, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
+                                               Minimum="1" FormatString="0" />
+                            </Grid>
                             <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsForcedOutfitItems}}" />
                             <ItemsControl ItemsSource="{Binding ForcedOutfitPresets}">
                                 <ItemsControl.ItemTemplate>

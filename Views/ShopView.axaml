@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             x:DataType="vm:ShopViewModel"
+             x:Class="ChastiMaid.Views.ShopView">
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24">
+
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
+            <Button Grid.Column="0"
+                    Content="{conv:Tr ShopBack}"
+                    Command="{Binding BackCommand}"
+                    Classes="Ghost" />
+
+            <TextBlock Grid.Column="1"
+                       Classes="PageTitle"
+                       Text="{conv:Tr ShopTitle}"
+                       HorizontalAlignment="Center" />
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Classes="LabelUI" Text="{conv:Tr ShopCurrentDebt}" VerticalAlignment="Center" />
+                <TextBlock Classes="NumberLarge" Text="{Binding CurrentDebtDisplay}" VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Card catalogue -->
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Cards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ShopCardItemViewModel">
+                        <!--  Same 2:3 playing-card proportions as the Fortune Deck's reveal card
+                              (172×258, i.e. the 80×120 ribbon card at LiftScale) — one card family
+                              across both screens.  -->
+                        <Border Classes="card" Width="172" Height="258" Margin="0,0,12,12">
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="Subheading" Text="{Binding Name}" TextWrapping="Wrap" />
+                                <TextBlock Classes="BodySmall"
+                                           Text="{Binding Description}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextSecondary}" />
+                                <TextBlock Classes="Caption" Text="{Binding OwnedDisplay}" />
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Classes="Body"
+                                               Text="{Binding PriceDisplay}"
+                                               VerticalAlignment="Center" />
+                                    <Button Grid.Column="1"
+                                            Content="{conv:Tr ShopBuy}"
+                                            Command="{Binding BuyCommand}"
+                                            IsEnabled="{Binding CanBuy}"
+                                            Classes="Primary compact" />
+                                </Grid>
+                                <TextBlock Classes="Caption"
+                                           Text="{conv:Tr ShopSoldOut}"
+                                           Foreground="{DynamicResource BrushEmergencyText}"
+                                           IsVisible="{Binding !CanBuy}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Fortune Deck entry -->
+        <Border Grid.Row="2" Classes="card" Margin="0,16,0,0">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Spacing="4">
+                    <TextBlock Classes="SectionTitle" Text="{conv:Tr ShopFortuneDeckTitle}" />
+                    <TextBlock Classes="BodySmall"
+                               Text="{conv:Tr ShopFortuneDeckSubtitle}"
+                               Foreground="{DynamicResource TextSecondary}" />
+                </StackPanel>
+                <Button Grid.Column="1"
+                        Command="{Binding OpenFortuneDeckCommand}"
+                        Classes="Amber"
+                        VerticalAlignment="Center"
+                        Content="{Binding FortuneDrawButtonLabel}" />
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</UserControl>

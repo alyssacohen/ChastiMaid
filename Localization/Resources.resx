@@ -402,6 +402,114 @@
   <data name="PermissionNoBonusCards" xml:space="preserve">
     <value>No bonus cards yet.</value>
   </data>
+  <data name="ShopTitle" xml:space="preserve">
+    <value>The Shop</value>
+  </data>
+  <data name="ShopBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="ShopCurrentDebt" xml:space="preserve">
+    <value>Amount owed</value>
+  </data>
+  <data name="ShopBuy" xml:space="preserve">
+    <value>Buy</value>
+  </data>
+  <data name="ShopSoldOut" xml:space="preserve">
+    <value>None left</value>
+  </data>
+  <data name="ShopOwnedFormat" xml:space="preserve">
+    <value>Held: {0}</value>
+  </data>
+  <data name="ShopFortuneDeckTitle" xml:space="preserve">
+    <value>Il Ventaglio della Sorte</value>
+  </data>
+  <data name="ShopFortuneDeckSubtitle" xml:space="preserve">
+    <value>A single card, fanned and face-down. Fortune rarely announces itself in advance.</value>
+  </data>
+  <data name="ShopFortuneDeckDrawFormat" xml:space="preserve">
+    <value>Draw — {0}</value>
+  </data>
+  <data name="CardCooldownBypassName" xml:space="preserve">
+    <value>Cooldown Bypass</value>
+  </data>
+  <data name="CardCooldownBypassDesc" xml:space="preserve">
+    <value>Clears the cooldown standing between you and your next request.</value>
+  </data>
+  <data name="CardDurationBoostName" xml:space="preserve">
+    <value>+{0} Minutes</value>
+  </data>
+  <data name="CardDurationBoostDesc" xml:space="preserve">
+    <value>Extends the duration of your next granted request.</value>
+  </data>
+  <data name="CardProbabilityBoostName" xml:space="preserve">
+    <value>+{0}%</value>
+  </data>
+  <data name="CardProbabilityBoostDesc" xml:space="preserve">
+    <value>Improves your odds of approval on your next request.</value>
+  </data>
+  <data name="CardGrantPermissionName" xml:space="preserve">
+    <value>Guaranteed Approval</value>
+  </data>
+  <data name="CardGrantPermissionDesc" xml:space="preserve">
+    <value>Your next request is approved without question — this once.</value>
+  </data>
+  <data name="CardSoftenPunishmentName" xml:space="preserve">
+    <value>Soften Punishment</value>
+  </data>
+  <data name="CardSoftenPunishmentDesc" xml:space="preserve">
+    <value>Halves the severity of one pending punishment, rounded up.</value>
+  </data>
+  <data name="CardCancelPunishmentName" xml:space="preserve">
+    <value>Cancel Punishment</value>
+  </data>
+  <data name="CardCancelPunishmentDesc" xml:space="preserve">
+    <value>Removes one pending punishment outright.</value>
+  </data>
+  <data name="PunishmentCardConfirmSoftenFormat" xml:space="preserve">
+    <value>Halve the severity of "{0}"?</value>
+  </data>
+  <data name="PunishmentCardConfirmCancelFormat" xml:space="preserve">
+    <value>Cancel "{0}" outright?</value>
+  </data>
+  <data name="FortuneOutcomeCollectibleDesc" xml:space="preserve">
+    <value>A card worth keeping. Added to your hand.</value>
+  </data>
+  <data name="FortuneOutcomeCashFormat" xml:space="preserve">
+    <value>{0} to the ledger.</value>
+  </data>
+  <data name="FortuneOutcomeCashTitleFormat" xml:space="preserve">
+    <value>{0}×</value>
+  </data>
+  <data name="FortuneOutcomePercentTitleFormat" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="FortuneOutcomeMinutesTitleFormat" xml:space="preserve">
+    <value>{0} Min</value>
+  </data>
+  <data name="FortuneOutcomeGrantTitle" xml:space="preserve">
+    <value>Grace</value>
+  </data>
+  <data name="FortuneOutcomeSoftenTitle" xml:space="preserve">
+    <value>Softened</value>
+  </data>
+  <data name="FortuneOutcomeCancelTitle" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="FortuneOutcomeSuspendedFormat" xml:space="preserve">
+    <value>Waiting to be spent on your next {0} request.</value>
+  </data>
+  <data name="FortuneOutcomePunishmentAppliedDesc" xml:space="preserve">
+    <value>Applied at once to a pending punishment.</value>
+  </data>
+  <data name="FortuneOutcomeAggravateTitle" xml:space="preserve">
+    <value>Noticed</value>
+  </data>
+  <data name="FortuneOutcomeWhiffTitle" xml:space="preserve">
+    <value>Nothing</value>
+  </data>
+  <data name="FortuneOutcomeWhiffDesc" xml:space="preserve">
+    <value>The card was blank. The stake, however, was not returned.</value>
+  </data>
   <data name="PermissionBreakEndButton" xml:space="preserve">
     <value>End Break</value>
   </data>
@@ -1026,6 +1134,9 @@
   <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
     <value>Max overrun (seconds)</value>
   </data>
+  <data name="SettingsCornertimeMaxRequired" xml:space="preserve">
+    <value>Max required duration (seconds)</value>
+  </data>
   <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
     <value>Min. seconds between penalties</value>
   </data>
@@ -1073,6 +1184,9 @@
   </data>
   <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
     <value>Fix the entire outfit, not just the selected items</value>
+  </data>
+  <data name="SettingsForcedOutfitMaxSessions" xml:space="preserve">
+    <value>Max sessions</value>
   </data>
   <data name="SettingsForcedOutfitItems" xml:space="preserve">
     <value>Configured outfits</value>

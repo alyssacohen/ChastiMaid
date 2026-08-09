@@ -58,7 +58,7 @@
     <Style Selector="TextBlock.Subheading">
         <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="LineHeight" Value="25" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
     </Style>

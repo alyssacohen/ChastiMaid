@@ -41,6 +41,11 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<ActivePermissionBreak> ActivePermissionBreakCollection =>
         db.GetCollection<ActivePermissionBreak>("active_permission_break");
 
+    private ILiteCollection<InventoryCard> InventoryCards => db.GetCollection<InventoryCard>("inventory_cards");
+
+    private ILiteCollection<SuspendedModifier> SuspendedModifiers =>
+        db.GetCollection<SuspendedModifier>("suspended_modifiers");
+
     // --- GameState ---
     public GameState? GetGameState()
     {
@@ -236,16 +241,87 @@ public class SaveRepository(LiteDatabase db)
     public void ApplyFine(int severity, GameSettings? settings = null)
     {
         settings ??= GetGameSettings();
+        ChargeExpense(Math.Round(severity * settings.FineSeverityValue, 0));
+    }
+
+    /// <summary>
+    ///     Raises CurrentDebt and InitialDebt by the same amount, so the expense grows the amount owed rather than
+    ///     eating into credit already settled (which would otherwise show as negative progress). Shared by ApplyFine,
+    ///     Shop purchases and Fortune Deck draws.
+    /// </summary>
+    public void ChargeExpense(decimal amount)
+    {
         var state = GetGameState();
         if (state is null)
         {
             return;
         }
 
-        var fineAmount = Math.Round(severity * settings.FineSeverityValue, 0);
-        state.CurrentDebt += fineAmount;
-        state.InitialDebt += fineAmount;
+        state.CurrentDebt += amount;
+        state.InitialDebt += amount;
         SaveGameState(state);
+    }
+
+    /// <summary>
+    ///     Reduces CurrentDebt only (never InitialDebt, never below zero) — the same shape as idle wage and chore
+    ///     payouts. Used for Fortune Deck cash wins, which credit the player rather than growing the amount owed.
+    /// </summary>
+    public void CreditEarnings(decimal amount)
+    {
+        var state = GetGameState();
+        if (state is null)
+        {
+            return;
+        }
+
+        state.CurrentDebt = Math.Max(0, state.CurrentDebt - amount);
+        SaveGameState(state);
+    }
+
+    // --- Cards (Shop + Fortune Deck shared inventory) ---
+    public List<InventoryCard> GetInventory()
+    {
+        return InventoryCards.FindAll().ToList();
+    }
+
+    /// <summary>Copies of this card type currently in the shared pool, i.e. not already in the player's inventory.</summary>
+    public int AvailableCopies(CardId id)
+    {
+        var owned = InventoryCards.FindAll().Count(c => c.CardId == id);
+        return Math.Max(0, CardCatalog.BaseCopies(id) - owned);
+    }
+
+    /// <summary>Buys one copy of the card, charging its price, if the shared pool still has one available.</summary>
+    public bool PurchaseCard(CardId id, GameSettings? settings = null)
+    {
+        if (AvailableCopies(id) <= 0)
+        {
+            return false;
+        }
+
+        settings ??= GetGameSettings();
+        InventoryCards.Insert(new InventoryCard { Type = id.Type, Variant = id.Variant });
+        ChargeExpense(CardCatalog.PriceOf(id, settings));
+        return true;
+    }
+
+    /// <summary>Adds a copy to the inventory without charging anything (used by Fortune Deck collectible wins).</summary>
+    public void GrantCard(CardId id)
+    {
+        InventoryCards.Insert(new InventoryCard { Type = id.Type, Variant = id.Variant });
+    }
+
+    /// <summary>Consumes one owned copy of the card, returning it to the shared pool. False if none was owned.</summary>
+    public bool ConsumeCard(CardId id)
+    {
+        var owned = InventoryCards.FindAll().FirstOrDefault(c => c.CardId == id);
+        if (owned is null)
+        {
+            return false;
+        }
+
+        InventoryCards.Delete(owned.Id);
+        return true;
     }
 
     /// <summary>
@@ -283,9 +359,10 @@ public class SaveRepository(LiteDatabase db)
                 break;
 
             case PunishmentKind.Cornertime:
-                var required = Math.Max(
+                var required = Math.Clamp(
                     (int)Math.Round(severity * settings.CornertimeSeverityValue),
-                    settings.CornertimeMinRequiredSeconds);
+                    settings.CornertimeMinRequiredSeconds,
+                    settings.CornertimeMaxRequiredSeconds);
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.Cornertime,
@@ -316,20 +393,112 @@ public class SaveRepository(LiteDatabase db)
 
             case PunishmentKind.ForcedOutfit:
                 var preset = enabledForcedOutfitPresets[Random.Shared.Next(enabledForcedOutfitPresets.Count)];
+                var sessions = Math.Clamp(
+                    (int)Math.Round(severity * preset.SessionsPerSeverityPoint),
+                    1,
+                    settings.ForcedOutfitMaxSessions);
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.ForcedOutfit,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
                     Reason = reason,
-                    ForcedOutfitRemainingSessions =
-                        Math.Max(1, (int)Math.Round(severity * preset.SessionsPerSeverityPoint)),
+                    ForcedOutfitRemainingSessions = sessions,
+                    ForcedOutfitTotalSessions = sessions,
                     ForcedClothingItemIds = preset.ClothingItemIds,
                     ForceFullOutfit = preset.IsFullOutfit,
                     ForcedOutfitPresetName = preset.Name,
                 });
                 break;
         }
+    }
+
+    /// <summary>Halves the target punishment's severity, rounding up. Multiple calls stack multiplicatively.</summary>
+    public bool SoftenPunishment(int punishmentId)
+    {
+        return ScalePunishment(punishmentId, 0.5);
+    }
+
+    /// <summary>
+    ///     Fortune Deck's negative mirror of <see cref="SoftenPunishment" />: multiplies severity by 1.5×,
+    ///     rounding up, capped by the punishment kind's configured maximum.
+    /// </summary>
+    public bool AggravatePunishment(int punishmentId)
+    {
+        return ScalePunishment(punishmentId, 1.5);
+    }
+
+    public bool CancelPunishment(int punishmentId)
+    {
+        var punishment = ActivePunishments.FindById(punishmentId);
+        if (punishment is null || punishment.IsResolved)
+        {
+            return false;
+        }
+
+        punishment.IsResolved = true;
+        SaveActivePunishment(punishment);
+        return true;
+    }
+
+    /// <summary>
+    ///     Scales the quantity that represents the punishment's severity (writing lines, cornertime seconds, or
+    ///     forced-outfit total sessions — always recomputed from the original total, never from what's left) by
+    ///     <paramref name="factor" />, rounding up and re-clamping to the kind's configured limits. A forced-outfit
+    ///     punishment whose recalculated total falls at or below its completed session count is marked resolved.
+    ///     Never touches the outfit already in effect for the current session (see docs/specs/shop.md
+    ///     "Forced-Outfit Timing Rules") — StartSessionViewModel only reads this state at the next session's start.
+    /// </summary>
+    private bool ScalePunishment(int punishmentId, double factor)
+    {
+        var punishment = ActivePunishments.FindById(punishmentId);
+        if (punishment is null || punishment.IsResolved)
+        {
+            return false;
+        }
+
+        var settings = GetGameSettings();
+        switch (punishment.Kind)
+        {
+            case PunishmentKind.Cornertime when punishment.CornertimeRequiredSeconds is { } seconds:
+                var required = Math.Clamp(
+                    (int)Math.Ceiling(seconds * factor),
+                    settings.CornertimeMinRequiredSeconds,
+                    settings.CornertimeMaxRequiredSeconds);
+                punishment.CornertimeRequiredSeconds = required;
+                punishment.CornertimeMaxSeconds = required + settings.CornertimeMaxOverrunSeconds;
+                break;
+
+            case PunishmentKind.WritingLines when punishment.WritingLinesTotalLines is { } lines:
+                punishment.WritingLinesTotalLines = Math.Clamp(
+                    (int)Math.Ceiling(lines * factor),
+                    settings.WritingLinesMinLines,
+                    settings.WritingLinesMaxLines);
+                break;
+
+            case PunishmentKind.ForcedOutfit:
+                var total = punishment.ForcedOutfitTotalSessions ?? punishment.ForcedOutfitRemainingSessions ?? 0;
+                var completed = total - (punishment.ForcedOutfitRemainingSessions ?? 0);
+                var newTotal = Math.Clamp((int)Math.Ceiling(total * factor), 1, settings.ForcedOutfitMaxSessions);
+                punishment.ForcedOutfitTotalSessions = newTotal;
+                var remaining = newTotal - completed;
+                if (remaining <= 0)
+                {
+                    punishment.IsResolved = true;
+                }
+                else
+                {
+                    punishment.ForcedOutfitRemainingSessions = remaining;
+                }
+
+                break;
+
+            default:
+                return false;
+        }
+
+        SaveActivePunishment(punishment);
+        return true;
     }
 
     // --- Permissions (break requests) ---
@@ -340,13 +509,16 @@ public class SaveRepository(LiteDatabase db)
 
     /// <summary>
     ///     Resolves a permission request: automatically denied (with a mocking message, cooldown still applied) when
-    ///     Diaper Play is active for a toilet-related kind, then denied-for-insistence while a cooldown is running,
-    ///     otherwise a probability roll against the kind's configured grant chance. Granting starts an
-    ///     <see cref="ActivePermissionBreak" />; the caller is responsible for pausing/resuming <c>SessionLoopService</c>
-    ///     around it.
+    ///     Diaper Play is active for a toilet-related kind, then denied-for-insistence while a cooldown is running
+    ///     (unless bypassed), otherwise a probability roll against the kind's configured grant chance, adjusted by
+    ///     <paramref name="mods" /> and any suspended Fortune Deck modifiers targeting this kind (which are consumed
+    ///     here regardless of outcome). Granting starts an <see cref="ActivePermissionBreak" />; the caller is
+    ///     responsible for pausing/resuming <c>SessionLoopService</c> around it.
     /// </summary>
-    public PermissionRequestResult RequestPermission(PermissionKind kind)
+    public PermissionRequestResult RequestPermission(PermissionKind kind, PermissionModifiers mods = default)
     {
+        mods = mods.CombinedWith(ConsumeSuspendedModifiers(kind));
+
         var config = GetPermissionTypes().FirstOrDefault(c => c.Kind == kind) ?? new PermissionTypeConfig { Kind = kind };
 
         var isToiletKind = kind is PermissionKind.Pee or PermissionKind.Poop;
@@ -357,7 +529,7 @@ public class SaveRepository(LiteDatabase db)
         }
 
         var cooldown = PermissionCooldowns.FindById((int)kind);
-        if (cooldown is not null && cooldown.CooldownUntil > DateTime.UtcNow)
+        if (!mods.BypassCooldown && cooldown is not null && cooldown.CooldownUntil > DateTime.UtcNow)
         {
             SetPermissionCooldown(kind, config.CooldownMinutes);
             return new PermissionRequestResult(
@@ -365,20 +537,58 @@ public class SaveRepository(LiteDatabase db)
                 PermissionPhraseBank.GetRandomDeniedInsistence());
         }
 
-        if (Random.Shared.Next(100) < config.BaseGrantPercent)
+        var grantPercent = mods.GuaranteedGrant
+            ? 100
+            : mods.ProbabilityBonusPercent == 0
+                ? config.BaseGrantPercent
+                : Math.Clamp(config.BaseGrantPercent + mods.ProbabilityBonusPercent, 0, 95);
+
+        if (Random.Shared.Next(100) < grantPercent)
         {
             var now = DateTime.UtcNow;
+            var duration = Math.Max(0, config.DurationMinutes + mods.DurationBonusMinutes);
             ActivePermissionBreakCollection.Upsert(new ActivePermissionBreak
             {
                 Kind = kind,
                 StartedAt = now,
-                MaxEndAt = now.AddMinutes(config.DurationMinutes),
+                MaxEndAt = now.AddMinutes(duration),
             });
             return new PermissionRequestResult(PermissionRequestOutcome.Granted, PermissionPhraseBank.GetRandomGranted());
         }
 
         SetPermissionCooldown(kind, config.CooldownMinutes);
         return new PermissionRequestResult(PermissionRequestOutcome.Denied, PermissionPhraseBank.GetRandomDenied());
+    }
+
+    // --- Suspended modifiers (Fortune Deck permission-targeting buffs/debuffs) ---
+    public void AddSuspendedModifier(PermissionKind kind, SuspendedEffect effect, int value)
+    {
+        SuspendedModifiers.Insert(new SuspendedModifier { Kind = kind, Effect = effect, Value = value });
+    }
+
+    /// <summary>Removes and folds together every suspended modifier targeting the given kind.</summary>
+    private PermissionModifiers ConsumeSuspendedModifiers(PermissionKind kind)
+    {
+        var matching = SuspendedModifiers.FindAll().Where(m => m.Kind == kind).ToList();
+        if (matching.Count == 0)
+        {
+            return PermissionModifiers.None;
+        }
+
+        var combined = PermissionModifiers.None;
+        foreach (var modifier in matching)
+        {
+            combined = combined.CombinedWith(modifier.Effect switch
+            {
+                SuspendedEffect.Probability => new PermissionModifiers(false, modifier.Value, 0, false),
+                SuspendedEffect.Duration => new PermissionModifiers(false, 0, modifier.Value, false),
+                SuspendedEffect.Grant => new PermissionModifiers(false, 0, 0, true),
+                _ => PermissionModifiers.None,
+            });
+            SuspendedModifiers.Delete(modifier.Id);
+        }
+
+        return combined;
     }
 
     /// <summary>

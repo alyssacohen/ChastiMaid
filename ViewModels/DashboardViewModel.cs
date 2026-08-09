@@ -33,6 +33,24 @@ public class ChoreItemViewModel : ViewModelBase
     public ICommand StartChoreCommand { get; }
 }
 
+/// <summary>
+///     A single owned permission card offered for staging in the Permissions panel. Tapping toggles
+///     <see cref="IsStaged" />; staged cards are combined and consumed when the request is submitted.
+/// </summary>
+public partial class PermissionCardChipViewModel : ViewModelBase
+{
+    public PermissionCardChipViewModel(CardId id)
+    {
+        Id = id;
+        Name = CardDisplay.NameOf(id);
+    }
+
+    public CardId Id { get; }
+    public string Name { get; }
+
+    [Reactive] private bool _isStaged;
+}
+
 public partial class DashboardViewModel : ViewModelBase
 {
     private readonly AutoSaveService _autoSave;
@@ -185,11 +203,7 @@ public partial class DashboardViewModel : ViewModelBase
         PayRate = string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
 
         LoadChores();
-
-        foreach (var punishment in saveRepo.GetActivePunishments())
-        {
-            Punishments.Add(new PunishmentItemViewModel(punishment));
-        }
+        RefreshPunishments();
 
         Punishments.CollectionChanged += (_, _) =>
         {
@@ -233,7 +247,13 @@ public partial class DashboardViewModel : ViewModelBase
         ClosePunishmentsPanelCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = false);
         StartTaskCommand = ReactiveCommand.Create<TaskItemViewModel>(OnStartTask);
         StartPunishmentCommand = ReactiveCommand.Create<PunishmentItemViewModel>(OnStartPunishment);
-        RequestPermissionCommand = ReactiveCommand.Create(() => IsPermissionsPanelVisible = true);
+        SoftenPunishmentCommand = ReactiveCommand.CreateFromTask<PunishmentItemViewModel>(OnSoftenPunishment);
+        CancelPunishmentCardCommand = ReactiveCommand.CreateFromTask<PunishmentItemViewModel>(OnCancelPunishmentCard);
+        RequestPermissionCommand = ReactiveCommand.Create(() =>
+        {
+            RefreshAvailablePermissionCards();
+            IsPermissionsPanelVisible = true;
+        });
         ClosePermissionsPanelCommand = ReactiveCommand.Create(() => IsPermissionsPanelVisible = false);
         StartGrantedBreakCommand = ReactiveCommand.Create(() =>
         {
@@ -244,7 +264,9 @@ public partial class DashboardViewModel : ViewModelBase
         EndPermissionBreakCommand = ReactiveCommand.Create(OnEndPermissionBreak);
         OpenShopCommand = ReactiveCommand.Create(() =>
         {
-            /* spec TBD */
+            _sessionLoop.Pause();
+            _countdownTimer?.Stop();
+            _mainVm.NavigateTo(new ShopViewModel(_mainVm, _saveRepo));
         });
         EmergencyBreakCommand = ReactiveCommand.Create(EndSession);
 
@@ -279,6 +301,8 @@ public partial class DashboardViewModel : ViewModelBase
     public ObservableCollection<TaskItemViewModel> Tasks { get; } = [];
     public ObservableCollection<PunishmentItemViewModel> Punishments { get; } = [];
     public ObservableCollection<PermissionTypeItemViewModel> PermissionTypes { get; } = [];
+    public ObservableCollection<PermissionCardChipViewModel> AvailablePermissionCards { get; } = [];
+    public bool HasAvailablePermissionCards => AvailablePermissionCards.Count > 0;
 
     public string CurrentOutfit { get; }
     public WebcamPreviewService Webcam => _mainVm.Webcam;
@@ -303,6 +327,8 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand ClosePunishmentsPanelCommand { get; }
     public ICommand StartTaskCommand { get; }
     public ICommand StartPunishmentCommand { get; }
+    public ICommand SoftenPunishmentCommand { get; }
+    public ICommand CancelPunishmentCardCommand { get; }
     public ICommand RequestPermissionCommand { get; }
     public ICommand ClosePermissionsPanelCommand { get; }
     public ICommand StartGrantedBreakCommand { get; }
@@ -336,9 +362,12 @@ public partial class DashboardViewModel : ViewModelBase
     private void RefreshPunishments()
     {
         Punishments.Clear();
+        var owned = _saveRepo.GetInventory().Select(c => c.CardId).ToHashSet();
+        var canSoften = owned.Contains(new CardId(CardType.SoftenPunishment, 0));
+        var canCancel = owned.Contains(new CardId(CardType.CancelPunishment, 0));
         foreach (var punishment in _saveRepo.GetActivePunishments())
         {
-            Punishments.Add(new PunishmentItemViewModel(punishment));
+            Punishments.Add(new PunishmentItemViewModel(punishment, canSoften, canCancel));
         }
     }
 
@@ -1391,9 +1420,47 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
+    /// <summary>Rebuilds the staged-card chip list from the owned permission cards. Discards any prior staging.</summary>
+    private void RefreshAvailablePermissionCards()
+    {
+        AvailablePermissionCards.Clear();
+        var owned = _saveRepo.GetInventory()
+            .Select(c => c.CardId)
+            .Where(id => CardCatalog.IsPermissionCard(id.Type))
+            .Distinct();
+        foreach (var id in owned)
+        {
+            AvailablePermissionCards.Add(new PermissionCardChipViewModel(id));
+        }
+
+        this.RaisePropertyChanged(nameof(HasAvailablePermissionCards));
+    }
+
+    private static PermissionModifiers ToPermissionModifiers(CardId id)
+    {
+        return id.Type switch
+        {
+            CardType.CooldownBypass => new PermissionModifiers(true, 0, 0, false),
+            CardType.DurationBoost => new PermissionModifiers(false, 0, id.Variant, false),
+            CardType.ProbabilityBoost => new PermissionModifiers(false, id.Variant, 0, false),
+            CardType.GrantPermission => new PermissionModifiers(false, 0, 0, true),
+            _ => PermissionModifiers.None,
+        };
+    }
+
     private void OnRequestPermission(PermissionKind kind)
     {
-        var result = _saveRepo.RequestPermission(kind);
+        // Cards staged in the Permissions panel are consumed here, regardless of the request's outcome.
+        var mods = PermissionModifiers.None;
+        foreach (var chip in AvailablePermissionCards.Where(c => c.IsStaged).ToList())
+        {
+            if (_saveRepo.ConsumeCard(chip.Id))
+            {
+                mods = mods.CombinedWith(ToPermissionModifiers(chip.Id));
+            }
+        }
+
+        var result = _saveRepo.RequestPermission(kind, mods);
         PermissionOutcomeMessage = Resources.Get(result.PhraseKey);
         IsPermissionOutcomeGranted = result.Outcome == PermissionRequestOutcome.Granted;
 
@@ -1462,6 +1529,50 @@ public partial class DashboardViewModel : ViewModelBase
             case PunishmentKind.WritingLines:
                 _mainVm.NavigateTo(new WritingLinesPunishmentViewModel(_mainVm, _saveRepo, punishment));
                 break;
+        }
+    }
+
+    private async Task OnSoftenPunishment(PunishmentItemViewModel punishmentVm)
+    {
+        var dialog = new ConfirmDialogViewModel(
+            Resources.Get("CardSoftenPunishmentName"),
+            string.Format(Resources.Get("PunishmentCardConfirmSoftenFormat"), punishmentVm.Name),
+            Resources.Get("Confirm"),
+            Resources.Get("Cancel"));
+        ActiveDialog = dialog;
+        var confirmed = await dialog.Result;
+        ActiveDialog = null;
+        if (!confirmed)
+        {
+            return;
+        }
+
+        if (_saveRepo.ConsumeCard(new CardId(CardType.SoftenPunishment, 0)))
+        {
+            _saveRepo.SoftenPunishment(punishmentVm.PunishmentId);
+            RefreshPunishments();
+        }
+    }
+
+    private async Task OnCancelPunishmentCard(PunishmentItemViewModel punishmentVm)
+    {
+        var dialog = new ConfirmDialogViewModel(
+            Resources.Get("CardCancelPunishmentName"),
+            string.Format(Resources.Get("PunishmentCardConfirmCancelFormat"), punishmentVm.Name),
+            Resources.Get("Confirm"),
+            Resources.Get("Cancel"));
+        ActiveDialog = dialog;
+        var confirmed = await dialog.Result;
+        ActiveDialog = null;
+        if (!confirmed)
+        {
+            return;
+        }
+
+        if (_saveRepo.ConsumeCard(new CardId(CardType.CancelPunishment, 0)))
+        {
+            _saveRepo.CancelPunishment(punishmentVm.PunishmentId);
+            RefreshPunishments();
         }
     }
 

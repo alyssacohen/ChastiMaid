@@ -57,6 +57,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private double _cornertimeSeverityValue;
     [Reactive] private int _cornertimeMinRequiredSeconds;
     [Reactive] private int _cornertimeMaxOverrunSeconds;
+    [Reactive] private int _cornertimeMaxRequiredSeconds;
     [Reactive] private int _cornertimeMovementCooldownMinSeconds;
     [Reactive] private int _cornertimeMovementCooldownMaxSeconds;
     [Reactive] private int _cornertimeMovementSensitivityPercent;
@@ -69,6 +70,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _writingLinesMinLines;
     [Reactive] private int _writingLinesMaxLines;
     [Reactive] private bool _forcedOutfitEnabled;
+    [Reactive] private int _forcedOutfitMaxSessions;
     [Reactive] private string _speechRecognitionStatusDisplay = "";
     [Reactive] private string _webcamStatusDisplay = "";
 
@@ -149,6 +151,7 @@ public partial class SettingsViewModel : ViewModelBase
         _cornertimeSeverityValue = s.CornertimeSeverityValue;
         _cornertimeMinRequiredSeconds = s.CornertimeMinRequiredSeconds;
         _cornertimeMaxOverrunSeconds = s.CornertimeMaxOverrunSeconds;
+        _cornertimeMaxRequiredSeconds = s.CornertimeMaxRequiredSeconds;
         _cornertimeMovementCooldownMinSeconds = s.CornertimeMovementCooldownMinSeconds;
         _cornertimeMovementCooldownMaxSeconds = s.CornertimeMovementCooldownMaxSeconds;
         _cornertimeMovementSensitivityPercent = s.CornertimeMovementSensitivityPercent;
@@ -161,6 +164,7 @@ public partial class SettingsViewModel : ViewModelBase
         _writingLinesMinLines = s.WritingLinesMinLines;
         _writingLinesMaxLines = s.WritingLinesMaxLines;
         _forcedOutfitEnabled = s.ForcedOutfitEnabled;
+        _forcedOutfitMaxSessions = s.ForcedOutfitMaxSessions;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
 
         // Show a default immediately so Settings opens instantly; the real camera list and hardware
@@ -287,7 +291,8 @@ public partial class SettingsViewModel : ViewModelBase
 
         this.WhenAnyValue(x => x.FineSeverityValue, x => x.CornertimeEnabled, x => x.CornertimeSeverityValue,
                 x => x.CornertimeMinRequiredSeconds, x => x.CornertimeMaxOverrunSeconds,
-                (_, _, _, _, _) => Unit.Default)
+                x => x.CornertimeMaxRequiredSeconds,
+                (_, _, _, _, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.CornertimeMovementCooldownMinSeconds, x => x.CornertimeMovementCooldownMaxSeconds,
@@ -305,7 +310,7 @@ public partial class SettingsViewModel : ViewModelBase
         this.WhenAnyValue(x => x.WritingLinesMinLines, x => x.WritingLinesMaxLines, (_, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
-        this.WhenAnyValue(x => x.ForcedOutfitEnabled)
+        this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitMaxSessions, (_, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
@@ -803,6 +808,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.CornertimeSeverityValue = CornertimeSeverityValue;
         s.CornertimeMinRequiredSeconds = CornertimeMinRequiredSeconds;
         s.CornertimeMaxOverrunSeconds = CornertimeMaxOverrunSeconds;
+        s.CornertimeMaxRequiredSeconds = CornertimeMaxRequiredSeconds;
         s.CornertimeMovementCooldownMinSeconds = CornertimeMovementCooldownMinSeconds;
         s.CornertimeMovementCooldownMaxSeconds = CornertimeMovementCooldownMaxSeconds;
         s.CornertimeMovementSensitivityPercent = CornertimeMovementSensitivityPercent;
@@ -815,6 +821,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.WritingLinesMaxLines = WritingLinesMaxLines;
         s.WritingLinesPenaltyLinesPerMistake = WritingLinesPenaltyLinesPerMistake;
         s.ForcedOutfitEnabled = ForcedOutfitEnabled;
+        s.ForcedOutfitMaxSessions = ForcedOutfitMaxSessions;
         _repo.SaveGameSettings(s);
 
         foreach (var c in Chores)

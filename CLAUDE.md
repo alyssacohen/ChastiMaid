@@ -72,6 +72,10 @@ profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` wit
   at new-game time (so editing Settings later doesn't alter an in-progress game). Accessed via `SaveRepository`.
   `MainWindowViewModel.OpenSaveSlot` opens one at a time and disposes the previous.
 - Persisted models use `[BsonId] public int Id`. Singleton documents (GameState, GameSettings) use `Id = 1`.
+- The Shop/Fortune Deck card catalogue (`CardCatalog`) is a fixed static table, not a DB collection — no snapshot
+  needed. Two save-slot-only collections track its dynamic state: `inventory_cards` (owned card copies; shared stock
+  pool is always `BaseCopies − owned`) and `suspended_modifiers` (Fortune Deck permission buffs/debuffs awaiting a
+  matching request). See `docs/specs/shop.md` and `docs/specs/fortune-deck.md`.
 
 **Session runtime services** (created per active session, hold a `SaveRepository`):
 

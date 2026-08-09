@@ -27,6 +27,54 @@ public class SaveRepositoryTests : IDisposable
     }
 
     [Fact]
+    public void PurchaseCard_RaisesBothDebts()
+    {
+        var settings = new GameSettings { IdleWageAmount = 5 };
+        _db.GetCollection<GameSettings>("game_settings").Upsert(settings);
+        _repo.SaveGameState(new GameState { CurrentDebt = 100, InitialDebt = 100 });
+        var cardId = new CardId(CardType.CooldownBypass, 0); // price multiplier 10 -> 50
+
+        var purchased = _repo.PurchaseCard(cardId, settings);
+
+        Assert.True(purchased);
+        var state = _repo.GetGameState()!;
+        Assert.Equal(150, state.CurrentDebt);
+        Assert.Equal(150, state.InitialDebt);
+        Assert.Single(_repo.GetInventory());
+    }
+
+    [Fact]
+    public void PurchaseCard_WhenNoCopiesLeft_ReturnsFalse()
+    {
+        var settings = new GameSettings();
+        _db.GetCollection<GameSettings>("game_settings").Upsert(settings);
+        var cardId = new CardId(CardType.GrantPermission, 0); // 2 base copies
+
+        for (var i = 0; i < 2; i++)
+        {
+            Assert.True(_repo.PurchaseCard(cardId, settings));
+        }
+
+        Assert.False(_repo.PurchaseCard(cardId, settings));
+        Assert.Equal(2, _repo.GetInventory().Count);
+    }
+
+    [Fact]
+    public void ConsumeCard_ReturnsCopyToThePool()
+    {
+        var settings = new GameSettings();
+        _db.GetCollection<GameSettings>("game_settings").Upsert(settings);
+        var cardId = new CardId(CardType.SoftenPunishment, 0);
+        _repo.PurchaseCard(cardId, settings);
+
+        var consumed = _repo.ConsumeCard(cardId);
+
+        Assert.True(consumed);
+        Assert.Empty(_repo.GetInventory());
+        Assert.Equal(3, _repo.AvailableCopies(cardId));
+    }
+
+    [Fact]
     public void ApplyFine_IncreasesDebtBySeverityTimesSeverityValue()
     {
         var settings = new GameSettings { FineSeverityValue = 5 };
@@ -227,6 +275,97 @@ public class SaveRepositoryTests : IDisposable
         Assert.True(reloaded.WritingLinesAttemptActive);
     }
 
+    [Fact]
+    public void SoftenPunishment_HalvesLinesRoundingUp()
+    {
+        _db.GetCollection<GameSettings>("game_settings")
+            .Upsert(new GameSettings { WritingLinesMinLines = 1, WritingLinesMaxLines = 999 });
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.WritingLines, Severity = 10, WritingLinesTotalLines = 35,
+        });
+
+        var softened = _repo.SoftenPunishment(1);
+
+        Assert.True(softened);
+        Assert.Equal(18, _repo.GetActivePunishments().Single(p => p.Id == 1).WritingLinesTotalLines);
+    }
+
+    [Fact]
+    public void SoftenPunishment_TwiceIsQuarter()
+    {
+        _db.GetCollection<GameSettings>("game_settings")
+            .Upsert(new GameSettings { WritingLinesMinLines = 1, WritingLinesMaxLines = 999 });
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.WritingLines, Severity = 10, WritingLinesTotalLines = 100,
+        });
+
+        _repo.SoftenPunishment(1);
+        _repo.SoftenPunishment(1);
+
+        // 100 -> 50 -> 25 (both exact, no rounding needed to demonstrate the quarter)
+        Assert.Equal(25, _repo.GetActivePunishments().Single(p => p.Id == 1).WritingLinesTotalLines);
+    }
+
+    [Fact]
+    public void AggravatePunishment_NeverExceedsConfiguredCap()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            CornertimeMinRequiredSeconds = 10, CornertimeMaxRequiredSeconds = 120, CornertimeMaxOverrunSeconds = 30,
+        });
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.Cornertime, Severity = 10, CornertimeRequiredSeconds = 100,
+        });
+
+        for (var i = 0; i < 5; i++)
+        {
+            _repo.AggravatePunishment(1);
+        }
+
+        var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.Equal(120, punishment.CornertimeRequiredSeconds);
+        Assert.Equal(150, punishment.CornertimeMaxSeconds);
+    }
+
+    [Fact]
+    public void SoftenPunishment_ForcedOutfit_RecomputesFromTotalAndResolvesIfCompleted()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings { ForcedOutfitMaxSessions = 10 });
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.ForcedOutfit, Severity = 10,
+            ForcedOutfitTotalSessions = 4, ForcedOutfitRemainingSessions = 3, // 1 already completed
+        });
+
+        var softened = _repo.SoftenPunishment(1); // ceil(4 * 0.5) = 2 total, 1 completed -> 1 remaining
+
+        Assert.True(softened);
+        var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.Equal(2, punishment.ForcedOutfitTotalSessions);
+        Assert.Equal(1, punishment.ForcedOutfitRemainingSessions);
+        Assert.False(punishment.IsResolved);
+
+        _repo.SoftenPunishment(1); // ceil(2 * 0.5) = 1 total, 1 completed -> resolved
+
+        // GetActivePunishments() filters out resolved rows, so read the raw collection instead.
+        var resolved = _db.GetCollection<ActivePunishment>("active_punishments").FindById(1);
+        Assert.True(resolved.IsResolved);
+    }
+
+    [Fact]
+    public void CancelPunishment_MarksResolved()
+    {
+        _repo.SaveActivePunishment(new ActivePunishment { Id = 1, Kind = PunishmentKind.WritingLines, Severity = 5 });
+
+        var cancelled = _repo.CancelPunishment(1);
+
+        Assert.True(cancelled);
+        Assert.True(_db.GetCollection<ActivePunishment>("active_punishments").FindById(1).IsResolved);
+    }
+
     private void SeedPermissionType(PermissionKind kind, int baseGrantPercent, int durationMinutes, int cooldownMinutes)
     {
         _db.GetCollection<PermissionTypeConfig>("permission_types").Upsert(new PermissionTypeConfig
@@ -283,6 +422,66 @@ public class SaveRepositoryTests : IDisposable
 
         Assert.Equal(PermissionRequestOutcome.DeniedDiaper, result.Outcome);
         Assert.Null(_repo.GetActivePermissionBreak());
+    }
+
+    [Fact]
+    public void RequestPermission_WithGuaranteedGrant_AlwaysGrants()
+    {
+        SeedPermissionType(PermissionKind.Smoke, 0, 5, 30);
+
+        var result = _repo.RequestPermission(PermissionKind.Smoke, new PermissionModifiers(false, 0, 0, true));
+
+        Assert.Equal(PermissionRequestOutcome.Granted, result.Outcome);
+    }
+
+    [Fact]
+    public void RequestPermission_WithBypass_IgnoresRunningCooldown()
+    {
+        SeedPermissionType(PermissionKind.Smoke, 0, 5, 30);
+        _repo.RequestPermission(PermissionKind.Smoke); // starts a cooldown (0% grant chance)
+
+        var result = _repo.RequestPermission(PermissionKind.Smoke, new PermissionModifiers(true, 0, 0, false));
+
+        Assert.NotEqual(PermissionRequestOutcome.DeniedInsistence, result.Outcome);
+    }
+
+    [Fact]
+    public void RequestPermission_ProbabilityBonus_IsCappedAt95()
+    {
+        SeedPermissionType(PermissionKind.Smoke, 90, 5, 30);
+
+        // With a +20 bonus the effective chance would be 110%; the roll must never exceed 95%.
+        // Run enough times that an uncapped roll (>=95, <110) would almost certainly show up as Granted
+        // even on unlucky seeds — instead assert every outcome is decided, i.e. no exception/overflow, and
+        // that denials still occur (proving the roll isn't unconditionally 100%).
+        var deniedSeen = false;
+        for (var i = 0; i < 200 && !deniedSeen; i++)
+        {
+            _db.GetCollection<PermissionCooldown>("permission_cooldowns").DeleteAll();
+            var result = _repo.RequestPermission(PermissionKind.Smoke, new PermissionModifiers(false, 20, 0, false));
+            if (result.Outcome == PermissionRequestOutcome.Denied)
+            {
+                deniedSeen = true;
+            }
+        }
+
+        Assert.True(deniedSeen);
+    }
+
+    [Fact]
+    public void RequestPermission_ConsumesMatchingSuspendedModifiers()
+    {
+        SeedPermissionType(PermissionKind.Smoke, 0, 5, 30);
+        _repo.AddSuspendedModifier(PermissionKind.Smoke, SuspendedEffect.Grant, 0);
+
+        var result = _repo.RequestPermission(PermissionKind.Smoke);
+
+        Assert.Equal(PermissionRequestOutcome.Granted, result.Outcome);
+
+        // The suspended modifier was consumed: a second request goes back to the base 0% grant chance.
+        _db.GetCollection<PermissionCooldown>("permission_cooldowns").DeleteAll();
+        var second = _repo.RequestPermission(PermissionKind.Smoke);
+        Assert.Equal(PermissionRequestOutcome.Denied, second.Outcome);
     }
 
     [Fact]

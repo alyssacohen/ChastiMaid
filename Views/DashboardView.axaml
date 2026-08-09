@@ -854,15 +854,28 @@
                                                     Text="{Binding ReasonLabel}"
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
-                                            <Button
-                                                Classes="Primary compact"
-                                                Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).StartPunishmentCommand}"
-                                                CommandParameter="{Binding}"
-                                                Content="{conv:Tr Start}"
-                                                Grid.Column="1"
-                                                Margin="12,0,0,0"
-                                                MinHeight="44"
-                                                VerticalAlignment="Center" />
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                                <Button
+                                                    Classes="Ghost compact"
+                                                    Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).SoftenPunishmentCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="{conv:Tr CardSoftenPunishmentName}"
+                                                    IsVisible="{Binding CanSoften}"
+                                                    MinHeight="44" />
+                                                <Button
+                                                    Classes="Ghost compact"
+                                                    Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).CancelPunishmentCardCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="{conv:Tr CardCancelPunishmentName}"
+                                                    IsVisible="{Binding CanCancel}"
+                                                    MinHeight="44" />
+                                                <Button
+                                                    Classes="Primary compact"
+                                                    Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).StartPunishmentCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="{conv:Tr Start}"
+                                                    MinHeight="44" />
+                                            </StackPanel>
                                         </Grid>
                                         <Border
                                             Background="{DynamicResource BrushBorderSubtle}"
@@ -964,7 +977,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <!--  Bonus cards (reserved for the future Shop feature)  -->
+                            <!--  Bonus cards — tap to stage on the next request below  -->
                             <TextBlock
                                 Classes="SectionTitle"
                                 Margin="20,20,20,8"
@@ -972,7 +985,28 @@
                             <TextBlock
                                 Classes="Caption"
                                 Margin="20,0,20,20"
-                                Text="{conv:Tr PermissionNoBonusCards}" />
+                                Text="{conv:Tr PermissionNoBonusCards}"
+                                IsVisible="{Binding !HasAvailablePermissionCards}" />
+                            <ItemsControl
+                                Margin="20,0,20,20"
+                                IsVisible="{Binding HasAvailablePermissionCards}"
+                                ItemsSource="{Binding AvailablePermissionCards}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:PermissionCardChipViewModel">
+                                        <ToggleButton
+                                            Classes="filterChip"
+                                            Margin="0,0,8,8"
+                                            MinHeight="44"
+                                            Content="{Binding Name}"
+                                            IsChecked="{Binding IsStaged}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
                         </StackPanel>
                     </ScrollViewer>

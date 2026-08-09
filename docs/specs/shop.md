@@ -4,11 +4,15 @@
 
 The **Shop** lets the player spend virtual pounds on cards that modify permission requests or reduce pending punishments.
 
-The core game normally starts with the player in debt. Once the amount owed reaches `0`, further earnings make the amount owed negative. The magnitude of this negative amount is the player's available credit and can be spent in the Shop. This allows a player who has repaid their debt but still has pending punishments to earn credit through chores or idle wage payouts and use it to reduce or remove those punishments.
+A purchase is always possible, regardless of the player's current balance: its price is added to the amount owed
+exactly like a fine, growing the debt rather than requiring credit to be spent first. This mirrors how a Fortune
+Deck draw's stake is charged (see [fortune-deck.md](fortune-deck.md)), so both spending paths behave the same way.
 
 The Shop also provides a paid draw from the **Fortune Deck**. The deck's contents, odds, and resolution rules are specified separately in [fortune-deck.md](fortune-deck.md).
 
 ## Card Catalogue
+
+Every card type has a **fixed number of physical copies**, shared between direct Shop purchase and Fortune Deck draws — see [fortune-deck.md](fortune-deck.md) "Collectible Cards" for the shared-stock model and the copy counts per type. A card type becomes unavailable for purchase once no copies remain in the pool; the remaining count itself is never shown to the player.
 
 Unless stated otherwise, every price is expressed in virtual pounds and uses the configured **idle wage** as its price basis.
 

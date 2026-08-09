@@ -8,7 +8,7 @@ Visually, the draw is presented as choosing one card from a fanned spread of fac
 
 ## Relationship to the Shop
 
-> **TODO (design dependency):** `shop.md` currently defines the Card Catalogue with no notion of limited stock. This document introduces a **shared, limited stock pool** for the six collectible card types, used by both the Shop and the Fortune Deck. `shop.md` should be revisited to reflect this: a card type becomes unavailable for direct purchase once no copies remain in the pool (see "Collectible Cards" below).
+This document introduces a **shared, limited stock pool** for the six collectible card types, used by both the Shop and the Fortune Deck. `shop.md`'s Card Catalogue reflects this: a card type becomes unavailable for direct purchase once no copies remain in the pool (see "Collectible Cards" below).
 
 ## Deck Model
 
@@ -72,6 +72,8 @@ Some immediate effects are "immediate" variants of a Shop card, but with a **ran
 
 - Targets a randomly-selected eligible pending punishment, following the same eligibility rules as `SOFTEN_PUNISHMENT` (fines are never eligible, as they are applied immediately and are never pending).
 - Missing target: draw is lost (whiff), as described above.
+
+A maximum severity cap exists per punishment kind under **Settings → Popup and Punishments**: `CornertimeMaxRequiredSeconds` and `ForcedOutfitMaxSessions` (Writing Lines already had `WritingLinesMaxLines`). Aggravation — and ordinary assignment via `AssignPunishment` — always clamps to these caps, so repeated aggravation can never push a punishment's severity unboundedly high.
 
 ## Card Pool
 

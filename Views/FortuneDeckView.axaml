@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             x:DataType="vm:FortuneDeckViewModel"
+             x:Class="ChastiMaid.Views.FortuneDeckView">
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24">
+
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
+            <Button Grid.Column="0"
+                    Content="{conv:Tr ShopBack}"
+                    Command="{Binding BackCommand}"
+                    Classes="Ghost" />
+
+            <TextBlock Grid.Column="1"
+                       Classes="PageTitle"
+                       Text="{conv:Tr ShopFortuneDeckTitle}"
+                       HorizontalAlignment="Center" />
+
+            <TextBlock Grid.Column="2"
+                       Classes="LabelUI"
+                       Text="{Binding StakeDisplay}"
+                       VerticalAlignment="Center" />
+        </Grid>
+
+        <!-- Draw area: cosmetic ribbon + reveal panel -->
+        <Grid Grid.Row="1" x:Name="DrawArea">
+            <!--  Fills the whole cell; card poses are anchored to this canvas's own measured center
+                  (FortuneDeckViewModel.AnchorX/AnchorY), not to (0,0) — see SetContainerSize.  -->
+            <ItemsControl ItemsSource="{Binding CosmeticCards}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FortuneDeckCardViewModel">
+                        <!--  Standard 2:3 card proportions (width:height), so the ribbon reads as
+                              playing cards at a glance rather than generic tiles. Width/Height grow for the
+                              reveal (not a RenderTransform scale) so text lays out at its real font size
+                              instead of being visually stretched along with the frame.  -->
+                        <Panel Width="{Binding CardWidth}" Height="{Binding CardHeight}"
+                               ZIndex="{Binding ZIndex}"
+                               RenderTransformOrigin="0,0"
+                               RenderTransform="{Binding Transform}">
+                            <!--  A single bound Transform (rather than a TransformGroup of separately-bound
+                                  sub-transforms) is the Avalonia idiom that reliably animates via
+                                  TransformOperationsTransition — see FortuneDeckCardViewModel.SetPose.  -->
+                            <Panel.Transitions>
+                                <Transitions>
+                                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.32" Easing="CubicEaseOut" />
+                                    <DoubleTransition Property="Width" Duration="0:0:0.32" Easing="CubicEaseOut" />
+                                    <DoubleTransition Property="Height" Duration="0:0:0.32" Easing="CubicEaseOut" />
+                                </Transitions>
+                            </Panel.Transitions>
+                            <Svg Path="avares://ChastiMaid/Assets/Cards/deck-rear.svg" Stretch="Uniform"
+                                 IsVisible="{Binding !IsRevealed}" />
+                            <!--  Front face: real Border.card chrome (deck-front.svg's only useful part is its
+                                  plain background/border, which the design system's own card style already
+                                  matches) plus real bound title/description — not baked into an image, so any
+                                  outcome text can render. Titles are kept short ("+1 Min", "10%") so they never
+                                  wrap past a line or two on a card this size; the middle gap is reserved for a
+                                  per-outcome symbol/illustration, not built yet.  -->
+                            <Border Classes="card" Padding="{StaticResource SpacingSmThickness}"
+                                    IsVisible="{Binding IsRevealed}">
+                                <!--  Same typography as the Shop's own card tiles (ShopView.axaml) — Subheading
+                                      for the name, BodySmall for the description — so the two screens read as
+                                      one family of cards.  -->
+                                <Grid RowDefinitions="Auto,*,Auto">
+                                    <TextBlock Grid.Row="0" Classes="Subheading" Text="{Binding Title}"
+                                               HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+                                    <TextBlock Grid.Row="2" Classes="BodySmall" Text="{Binding Description}"
+                                               HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+                                </Grid>
+                            </Border>
+                        </Panel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <!-- Footer -->
+        <Button Grid.Row="2"
+                Command="{Binding DrawCommand}"
+                Classes="Amber"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                MinWidth="200"
+                Margin="0,16,0,0"
+                Content="{Binding DrawButtonLabel}" />
+
+    </Grid>
+
+</UserControl>

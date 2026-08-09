@@ -30,6 +30,14 @@ public class ActivePunishment
     public bool WritingLinesAttemptActive { get; set; }
 
     public int? ForcedOutfitRemainingSessions { get; set; }
+
+    /// <summary>
+    ///     Original total session count at assignment time, kept so Soften/Aggravate can always recompute from the
+    ///     full severity rather than from whatever is left. Null for saves predating this field — treat as equal to
+    ///     <see cref="ForcedOutfitRemainingSessions" /> in that case.
+    /// </summary>
+    public int? ForcedOutfitTotalSessions { get; set; }
+
     public List<int>? ForcedClothingItemIds { get; set; }
     public bool ForceFullOutfit { get; set; }
 

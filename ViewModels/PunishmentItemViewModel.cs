@@ -5,8 +5,10 @@ namespace ChastiMaid.ViewModels;
 
 public class PunishmentItemViewModel : ViewModelBase
 {
-    public PunishmentItemViewModel(ActivePunishment punishment)
+    public PunishmentItemViewModel(ActivePunishment punishment, bool canSoften = false, bool canCancel = false)
     {
+        CanSoften = canSoften;
+        CanCancel = canCancel;
         PunishmentId = punishment.Id;
         Kind = punishment.Kind;
         Name = Resources.Get(Kind switch
@@ -35,6 +37,13 @@ public class PunishmentItemViewModel : ViewModelBase
 
     public int PunishmentId { get; }
     public PunishmentKind Kind { get; }
+
+    /// <summary>Whether the player owns a SOFTEN_PUNISHMENT card, so the panel offers it for this row.</summary>
+    public bool CanSoften { get; }
+
+    /// <summary>Whether the player owns a CANCEL_PUNISHMENT card, so the panel offers it for this row.</summary>
+    public bool CanCancel { get; }
+
     public string Name { get; }
     public DateOnly AssignedDate { get; }
     public string AssignedLabel { get; }

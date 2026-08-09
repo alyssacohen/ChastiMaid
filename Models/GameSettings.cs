@@ -72,6 +72,7 @@ public class GameSettings
     public int CornertimeMovementPenaltyMinSeconds { get; set; } = 10; // min seconds added to the required duration per detected movement
     public int CornertimeMovementPenaltyMaxSeconds { get; set; } = 20; // max seconds added to the required duration per detected movement
     public bool CornertimeVoiceEnabled { get; set; } = true; // spoken narration (the completion chime always plays)
+    public int CornertimeMaxRequiredSeconds { get; set; } = 600; // ceiling applied when assigning or aggravating a Cornertime punishment
 
     // Writing Lines punishment
     public bool WritingLinesEnabled { get; set; } = true;
@@ -82,6 +83,7 @@ public class GameSettings
 
     // Forced Outfit punishment — the concrete outfit presets live in ForcedOutfitPreset (per-profile collection)
     public bool ForcedOutfitEnabled { get; set; } = true;
+    public int ForcedOutfitMaxSessions { get; set; } = 10; // ceiling applied when assigning or aggravating a Forced Outfit punishment
 
     // Camera
     public int SelectedCameraIndex { get; set; }

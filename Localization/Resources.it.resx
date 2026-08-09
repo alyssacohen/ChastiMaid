@@ -402,6 +402,114 @@
   <data name="PermissionNoBonusCards" xml:space="preserve">
     <value>Nessuna carta bonus posseduta.</value>
   </data>
+  <data name="ShopTitle" xml:space="preserve">
+    <value>Il Negozio</value>
+  </data>
+  <data name="ShopBack" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="ShopCurrentDebt" xml:space="preserve">
+    <value>Importo dovuto</value>
+  </data>
+  <data name="ShopBuy" xml:space="preserve">
+    <value>Compra</value>
+  </data>
+  <data name="ShopSoldOut" xml:space="preserve">
+    <value>Esaurite</value>
+  </data>
+  <data name="ShopOwnedFormat" xml:space="preserve">
+    <value>Possedute: {0}</value>
+  </data>
+  <data name="ShopFortuneDeckTitle" xml:space="preserve">
+    <value>Il Ventaglio della Sorte</value>
+  </data>
+  <data name="ShopFortuneDeckSubtitle" xml:space="preserve">
+    <value>Una sola carta, ventagliata e coperta. La fortuna, di rado, si annuncia in anticipo.</value>
+  </data>
+  <data name="ShopFortuneDeckDrawFormat" xml:space="preserve">
+    <value>Pesca — {0}</value>
+  </data>
+  <data name="CardCooldownBypassName" xml:space="preserve">
+    <value>Salto d'Attesa</value>
+  </data>
+  <data name="CardCooldownBypassDesc" xml:space="preserve">
+    <value>Azzera l'attesa che separa dalla prossima richiesta.</value>
+  </data>
+  <data name="CardDurationBoostName" xml:space="preserve">
+    <value>+{0} Minuti</value>
+  </data>
+  <data name="CardDurationBoostDesc" xml:space="preserve">
+    <value>Allunga la durata della prossima richiesta concessa.</value>
+  </data>
+  <data name="CardProbabilityBoostName" xml:space="preserve">
+    <value>+{0}%</value>
+  </data>
+  <data name="CardProbabilityBoostDesc" xml:space="preserve">
+    <value>Migliora le probabilità di approvazione della prossima richiesta.</value>
+  </data>
+  <data name="CardGrantPermissionName" xml:space="preserve">
+    <value>Approvazione Garantita</value>
+  </data>
+  <data name="CardGrantPermissionDesc" xml:space="preserve">
+    <value>La prossima richiesta è approvata senza obiezioni — solo questa volta.</value>
+  </data>
+  <data name="CardSoftenPunishmentName" xml:space="preserve">
+    <value>Addolcisci Punizione</value>
+  </data>
+  <data name="CardSoftenPunishmentDesc" xml:space="preserve">
+    <value>Dimezza la severità di una punizione pendente, arrotondata per eccesso.</value>
+  </data>
+  <data name="CardCancelPunishmentName" xml:space="preserve">
+    <value>Annulla Punizione</value>
+  </data>
+  <data name="CardCancelPunishmentDesc" xml:space="preserve">
+    <value>Rimuove del tutto una punizione pendente.</value>
+  </data>
+  <data name="PunishmentCardConfirmSoftenFormat" xml:space="preserve">
+    <value>Dimezzare la severità di "{0}"?</value>
+  </data>
+  <data name="PunishmentCardConfirmCancelFormat" xml:space="preserve">
+    <value>Annullare del tutto "{0}"?</value>
+  </data>
+  <data name="FortuneOutcomeCollectibleDesc" xml:space="preserve">
+    <value>Una carta degna di essere tenuta. Aggiunta alla vostra mano.</value>
+  </data>
+  <data name="FortuneOutcomeCashFormat" xml:space="preserve">
+    <value>{0} al libro mastro.</value>
+  </data>
+  <data name="FortuneOutcomeCashTitleFormat" xml:space="preserve">
+    <value>{0}×</value>
+  </data>
+  <data name="FortuneOutcomePercentTitleFormat" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="FortuneOutcomeMinutesTitleFormat" xml:space="preserve">
+    <value>{0} Min</value>
+  </data>
+  <data name="FortuneOutcomeGrantTitle" xml:space="preserve">
+    <value>Grazia</value>
+  </data>
+  <data name="FortuneOutcomeSoftenTitle" xml:space="preserve">
+    <value>Addolcita</value>
+  </data>
+  <data name="FortuneOutcomeCancelTitle" xml:space="preserve">
+    <value>Annullata</value>
+  </data>
+  <data name="FortuneOutcomeSuspendedFormat" xml:space="preserve">
+    <value>In attesa di essere speso sulla prossima richiesta di {0}.</value>
+  </data>
+  <data name="FortuneOutcomePunishmentAppliedDesc" xml:space="preserve">
+    <value>Applicata immediatamente a una punizione pendente.</value>
+  </data>
+  <data name="FortuneOutcomeAggravateTitle" xml:space="preserve">
+    <value>Notata</value>
+  </data>
+  <data name="FortuneOutcomeWhiffTitle" xml:space="preserve">
+    <value>Nulla</value>
+  </data>
+  <data name="FortuneOutcomeWhiffDesc" xml:space="preserve">
+    <value>La carta era in bianco. La posta, tuttavia, non è stata restituita.</value>
+  </data>
   <data name="PermissionBreakEndButton" xml:space="preserve">
     <value>Fine pausa</value>
   </data>
@@ -1026,6 +1134,9 @@
   <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
     <value>Margine massimo (secondi)</value>
   </data>
+  <data name="SettingsCornertimeMaxRequired" xml:space="preserve">
+    <value>Durata massima richiesta (secondi)</value>
+  </data>
   <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
     <value>Secondi minimi tra due penalità</value>
   </data>
@@ -1073,6 +1184,9 @@
   </data>
   <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
     <value>Fissa l'intera divisa, non solo i capi selezionati</value>
+  </data>
+  <data name="SettingsForcedOutfitMaxSessions" xml:space="preserve">
+    <value>Sessioni massime</value>
   </data>
   <data name="SettingsForcedOutfitItems" xml:space="preserve">
     <value>Divise configurate</value>
