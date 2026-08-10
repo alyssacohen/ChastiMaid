@@ -6,7 +6,9 @@ namespace ChastiMaid.Repositories;
 public class ProfileRepository(LiteDatabase db)
 {
     private ILiteCollection<ClothingItem> Wardrobe => db.GetCollection<ClothingItem>("wardrobe");
-    private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
+    // "outfit_rules_v2": renamed from "outfit_rules" when rules moved from item-to-item pairs to tag-to-tag pairs.
+    // The old collection is left behind (dead, unread) rather than migrated — see docs/specs/wardrobe.md.
+    private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules_v2");
     private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
 
     private ILiteCollection<PlugAndPlayItemConfig> PlugAndPlayItems =>

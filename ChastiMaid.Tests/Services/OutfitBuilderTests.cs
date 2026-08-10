@@ -5,19 +5,22 @@ namespace ChastiMaid.Tests.Services;
 
 public class OutfitBuilderTests
 {
-    private static ClothingItem MakeItem(int id, string name, int[] layers, string[] slots, double weight = 1.0)
+    private static ClothingItem MakeItem(int id, string name, int[] layers, string[] slots, double weight = 1.0,
+        string[]? tags = null)
     {
-        return new ClothingItem { Id = id, Name = name, Layers = [..layers], Slots = [..slots], Weight = weight };
+        return new ClothingItem
+        { Id = id, Name = name, Layers = [..layers], Slots = [..slots], Weight = weight, Tags = [..tags ?? []] };
     }
 
-    private static OutfitRule Requires(int itemId, int requiredId)
+    private static OutfitRule Requires(string sourceTag, string requiredTag)
     {
-        return new OutfitRule { ItemId = itemId, RelatedItemId = requiredId, Relation = OutfitRelation.Requires };
+        return new OutfitRule { SourceTag = sourceTag, RelatedTag = requiredTag, Relation = OutfitRelation.Requires };
     }
 
-    private static OutfitRule Incompatible(int itemId, int otherId)
+    private static OutfitRule Incompatible(string sourceTag, string otherTag)
     {
-        return new OutfitRule { ItemId = itemId, RelatedItemId = otherId, Relation = OutfitRelation.Incompatible };
+        return new OutfitRule
+        { SourceTag = sourceTag, RelatedTag = otherTag, Relation = OutfitRelation.Incompatible };
     }
 
     [Fact]
@@ -50,9 +53,9 @@ public class OutfitBuilderTests
     [Fact]
     public void Build_IncompatibleRule_NeverBothItemsInOutfit()
     {
-        var shirt = MakeItem(1, "shirt", [3], ["torso"]);
-        var jacket = MakeItem(2, "jacket", [3], ["torso"]);
-        var rules = new List<OutfitRule> { Incompatible(1, 2) };
+        var shirt = MakeItem(1, "shirt", [3], ["torso"], tags: ["shirt"]);
+        var jacket = MakeItem(2, "jacket", [3], ["torso"], tags: ["jacket"]);
+        var rules = new List<OutfitRule> { Incompatible("shirt", "jacket") };
 
         // Run 20 times with different seeds to ensure the rule is always respected
         for (var seed = 0; seed < 20; seed++)
@@ -68,9 +71,9 @@ public class OutfitBuilderTests
     [Fact]
     public void Build_RequiresRule_RequiredItemPresent_WhenSeedAdded()
     {
-        var girdle = MakeItem(1, "girdle", [0], ["waist"]);
-        var stockings = MakeItem(2, "stockings", [2], ["legs"]);
-        var rules = new List<OutfitRule> { Requires(1, 2) };
+        var girdle = MakeItem(1, "girdle", [0], ["waist"], tags: ["girdle"]);
+        var stockings = MakeItem(2, "stockings", [2], ["legs"], tags: ["stockings"]);
+        var rules = new List<OutfitRule> { Requires("girdle", "stockings") };
 
         var builder = new OutfitBuilder([girdle, stockings], rules, 0);
         builder.AddSeedItems([girdle]);
@@ -86,9 +89,9 @@ public class OutfitBuilderTests
     {
         // No seeds at all: girdle can only end up in the outfit via the random-fill step,
         // which used to bypass ResolveRequiredRules entirely.
-        var girdle = MakeItem(1, "girdle", [0], ["waist"]);
-        var stockings = MakeItem(2, "stockings", [2], ["legs"]);
-        var rules = new List<OutfitRule> { Requires(1, 2) };
+        var girdle = MakeItem(1, "girdle", [0], ["waist"], tags: ["girdle"]);
+        var stockings = MakeItem(2, "stockings", [2], ["legs"], tags: ["stockings"]);
+        var rules = new List<OutfitRule> { Requires("girdle", "stockings") };
 
         for (var seed = 0; seed < 30; seed++)
         {
@@ -109,10 +112,10 @@ public class OutfitBuilderTests
         // pants is a seed that permanently occupies the only slot stockings could use,
         // so girdle's requirement can never be satisfied: girdle itself must be dropped
         // if it's ever picked up as a random filler.
-        var girdle = MakeItem(1, "girdle", [0], ["waist"]);
-        var stockings = MakeItem(2, "stockings", [2], ["legs"]);
+        var girdle = MakeItem(1, "girdle", [0], ["waist"], tags: ["girdle"]);
+        var stockings = MakeItem(2, "stockings", [2], ["legs"], tags: ["stockings"]);
         var pants = MakeItem(3, "pants", [2], ["legs"]);
-        var rules = new List<OutfitRule> { Requires(1, 2) };
+        var rules = new List<OutfitRule> { Requires("girdle", "stockings") };
 
         for (var seed = 0; seed < 30; seed++)
         {

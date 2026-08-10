@@ -19,11 +19,12 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <Grid Grid.Column="0" ColumnDefinitions="*,160,*">
                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldItem}}" />
-                                        <ComboBox ItemsSource="{Binding AvailableItems}"
-                                                  SelectedItem="{Binding Item}"
-                                                  PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
-                                                  HorizontalAlignment="Stretch" />
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldTag}}" />
+                                        <AutoCompleteBox ItemsSource="{Binding TagSuggestions}"
+                                                          Text="{Binding SourceTag}"
+                                                          FilterMode="Contains"
+                                                          PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
+                                                          HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelation}}" />
@@ -32,11 +33,12 @@
                                                   HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelatedItem}}" />
-                                        <ComboBox ItemsSource="{Binding AvailableItems}"
-                                                  SelectedItem="{Binding RelatedItem}"
-                                                  PlaceholderText="{converters:Tr SettingsSelectItemPlaceholder}"
-                                                  HorizontalAlignment="Stretch" />
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelatedTag}}" />
+                                        <AutoCompleteBox ItemsSource="{Binding TagSuggestions}"
+                                                          Text="{Binding RelatedTag}"
+                                                          FilterMode="Contains"
+                                                          PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
+                                                          HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                 </Grid>
                                 <Button Grid.Column="1"

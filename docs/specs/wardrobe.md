@@ -20,12 +20,21 @@ Each item in the wardrobe has:
 
 ### OutfitRule
 
-Rules define relationships between items:
+Rules define relationships between item **tags** (`ClothingItem.Tags`), not specific items — a single rule covers
+every item carrying either tag, so e.g. one rule on tags `garter-belt`/`stockings-attachable` covers every garter
+belt and every attachable-stocking item without a row per pair. `SourceTag`/`RelatedTag` matching is case-insensitive
+and trimmed:
 
-- **Requires**: if item A is in the outfit, at least one of its required items must also be present (e.g. girdle
-  requires stockings)
-- **Incompatible**: if item A is in the outfit, incompatible items cannot be present (e.g. diaper is incompatible with
-  stockings)
+- **Requires**: if any item carrying `SourceTag` is in the outfit, at least one item carrying `RelatedTag` must also
+  be present (e.g. tag `garter-belt` requires tag `stockings-attachable`)
+- **Incompatible**: if any item carrying `SourceTag` is in the outfit, no item carrying `RelatedTag` can be present,
+  and vice versa (bidirectional)
+
+To target a single specific item, give it a unique tag and reference that tag in the rule.
+
+Rules are stored in the LiteDB collection `outfit_rules_v2` (`ProfileRepository`/`SaveRepository`), renamed from the
+old item-to-item `outfit_rules` collection when rules moved to tags. The old `outfit_rules` collection is left behind
+unread in any pre-existing `data/profile.db`/save-slot database — harmless dead data, not cleaned up automatically.
 
 ### Outfit
 

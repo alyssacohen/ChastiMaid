@@ -10,10 +10,10 @@ namespace ChastiMaid.Services;
 public class OutfitBuilder
 {
     private readonly List<ClothingItem> _allItems;
+    private readonly OutfitRuleEngine _engine;
     private readonly IReadOnlyDictionary<int, double> _layerProbability;
     private readonly List<ClothingItem> _pickingList = [];
     private readonly Random _random;
-    private readonly Dictionary<int, (HashSet<int> Requires, HashSet<int> Incompatible)> _rules;
 
     private readonly List<ClothingItem> _seedItems = [];
 
@@ -27,31 +27,7 @@ public class OutfitBuilder
         _allItems = items;
         _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
         _layerProbability = WardrobeBalance.LayerProbability;
-
-        _rules = [];
-        foreach (var rule in rules)
-        {
-            Ensure(rule.ItemId);
-            if (rule.Relation == OutfitRelation.Requires)
-            {
-                _rules[rule.ItemId].Requires.Add(rule.RelatedItemId);
-            }
-            else if (rule.Relation == OutfitRelation.Incompatible)
-            {
-                // Store both directions so candidate filtering works regardless of rule direction
-                _rules[rule.ItemId].Incompatible.Add(rule.RelatedItemId);
-                Ensure(rule.RelatedItemId);
-                _rules[rule.RelatedItemId].Incompatible.Add(rule.ItemId);
-            }
-        }
-
-        void Ensure(int id)
-        {
-            if (!_rules.ContainsKey(id))
-            {
-                _rules[id] = (new HashSet<int>(), new HashSet<int>());
-            }
-        }
+        _engine = new OutfitRuleEngine(rules);
     }
 
     public void AddSeedItems(IEnumerable<ClothingItem> items)
@@ -106,10 +82,9 @@ public class OutfitBuilder
             // Fill layer with random candidates (exclude items incompatible with already-placed items)
             for (var attempt = 0; attempt < WardrobeBalance.MaxFillAttemptsPerLayer; attempt++)
             {
-                var placedIds = outfit.Items.Select(i => i.Id).ToHashSet();
                 var candidates = remaining.Values
                     .Where(i => i.Layers.Contains(layer) && outfit.CanAddOnLayer(i, layer))
-                    .Where(i => !_rules.TryGetValue(i.Id, out var r) || !r.Incompatible.Any(placedIds.Contains))
+                    .Where(i => !_engine.ConflictsWithAny(i, outfit.Items))
                     .ToList();
                 if (candidates.Count == 0)
                 {
@@ -168,7 +143,7 @@ public class OutfitBuilder
             changed = false;
             foreach (var item in outfit.Items.ToList())
             {
-                if (_seedItems.Contains(item) || RequiresSatisfied(outfit, item))
+                if (_seedItems.Contains(item) || _engine.RequiresSatisfied(item, outfit.Items))
                 {
                     continue;
                 }
@@ -191,7 +166,7 @@ public class OutfitBuilder
             return false;
         }
 
-        if (RequiresSatisfied(outfit, item))
+        if (_engine.RequiresSatisfied(item, outfit.Items))
         {
             return true;
         }
@@ -205,26 +180,11 @@ public class OutfitBuilder
         return false;
     }
 
-    private bool RequiresSatisfied(Outfit outfit, ClothingItem item)
-    {
-        if (!_rules.TryGetValue(item.Id, out var rule) || rule.Requires.Count == 0)
-        {
-            return true;
-        }
-
-        var placedIds = outfit.Items.Select(i => i.Id).ToHashSet();
-        return rule.Requires.Any(placedIds.Contains);
-    }
-
     // Tries each of item's required options, in weighted-random order, on every free slot they
     // fit. Never evicts an already-placed item — only uses genuinely free space.
     private bool TryPlaceOneRequired(Outfit outfit, Dictionary<int, ClothingItem> remaining, ClothingItem item)
     {
-        var candidates = _rules[item.Id].Requires
-            .Select(id => remaining.GetValueOrDefault(id))
-            .Where(i => i is not null)
-            .Cast<ClothingItem>()
-            .ToList();
+        var candidates = _engine.ItemsWithAnyTag(remaining.Values, _engine.RequiredTagsFor(item)).ToList();
 
         foreach (var candidate in WeightedOrder(candidates))
         {
@@ -271,17 +231,18 @@ public class OutfitBuilder
             changed = false;
             foreach (var item in _pickingList.ToList())
             {
-                if (!_rules.TryGetValue(item.Id, out var rule) || rule.Requires.Count == 0)
+                var requiredTags = _engine.RequiredTagsFor(item);
+                if (requiredTags.Count == 0)
                 {
                     continue;
                 }
 
-                if (_pickingList.Any(i => rule.Requires.Contains(i.Id)))
+                if (_engine.RequiresSatisfied(item, _pickingList))
                 {
                     continue;
                 }
 
-                var required = _allItems.Where(i => rule.Requires.Contains(i.Id)).ToList();
+                var required = _engine.ItemsWithAnyTag(_allItems, requiredTags).ToList();
                 if (required.Count == 0)
                 {
                     continue;

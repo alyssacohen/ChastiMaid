@@ -253,7 +253,7 @@ public class TagInput : TemplatedControl
     private void OnInputTextInput(object? sender, TextInputEventArgs e)
     {
         var sep = Separator;
-        if (e.Text == " " || (!string.IsNullOrEmpty(sep) && e.Text == sep))
+        if (!string.IsNullOrEmpty(sep) && e.Text == sep)
         {
             CommitInput();
             e.Handled = true;

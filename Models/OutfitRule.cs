@@ -11,7 +11,7 @@ public enum OutfitRelation
 public class OutfitRule
 {
     [BsonId] public int Id { get; set; }
-    public int ItemId { get; set; }
-    public int RelatedItemId { get; set; }
+    public string SourceTag { get; set; } = "";
+    public string RelatedTag { get; set; } = "";
     public OutfitRelation Relation { get; set; }
 }

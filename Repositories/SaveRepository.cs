@@ -7,7 +7,7 @@ namespace ChastiMaid.Repositories;
 public class SaveRepository(LiteDatabase db)
 {
     private ILiteCollection<ClothingItem> Wardrobe => db.GetCollection<ClothingItem>("wardrobe");
-    private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules");
+    private ILiteCollection<OutfitRule> OutfitRules => db.GetCollection<OutfitRule>("outfit_rules_v2");
     private ILiteCollection<Chore> Chores => db.GetCollection<Chore>("chores");
 
     private ILiteCollection<ActivePunishment> ActivePunishments =>
@@ -660,7 +660,7 @@ public class SaveRepository(LiteDatabase db)
         wardrobeCol.InsertBulk(profile.GetWardrobe());
 
         // Snapshot outfit rules
-        var rulesCol = saveDb.GetCollection<OutfitRule>("outfit_rules");
+        var rulesCol = saveDb.GetCollection<OutfitRule>("outfit_rules_v2");
         rulesCol.InsertBulk(profile.GetOutfitRules());
 
         // Snapshot chores

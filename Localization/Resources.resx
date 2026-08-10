@@ -1320,17 +1320,17 @@
   <data name="SettingsAddChore" xml:space="preserve">
     <value>Add Chore</value>
   </data>
-  <data name="SettingsSelectItemPlaceholder" xml:space="preserve">
-    <value>Select item</value>
+  <data name="SettingsSelectTagPlaceholder" xml:space="preserve">
+    <value>Select tag</value>
   </data>
-  <data name="SettingsFieldItem" xml:space="preserve">
-    <value>Item</value>
+  <data name="SettingsFieldTag" xml:space="preserve">
+    <value>Tag</value>
   </data>
   <data name="SettingsFieldRelation" xml:space="preserve">
     <value>Relation</value>
   </data>
-  <data name="SettingsFieldRelatedItem" xml:space="preserve">
-    <value>Related item</value>
+  <data name="SettingsFieldRelatedTag" xml:space="preserve">
+    <value>Related tag</value>
   </data>
   <data name="SettingsOutfitRelationRequires" xml:space="preserve">
     <value>Requires</value>

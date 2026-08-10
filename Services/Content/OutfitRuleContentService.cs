@@ -17,23 +17,23 @@ public class OutfitRuleContentService
     }
 
     /// <summary>
-    ///     Discards any rule referencing a wardrobe item id that doesn't exist. <see cref="OutfitRelation.Requires" />
-    ///     is valid if at least one of ItemId/RelatedItemId exists (mirrors the OR semantics <c>OutfitBuilder</c>
-    ///     applies across multiple Requires rows sharing an ItemId); <see cref="OutfitRelation.Incompatible" />
-    ///     requires both ids to exist, since <c>OutfitBuilder</c> treats it as a symmetric pair at runtime.
+    ///     Discards any rule referencing a wardrobe tag that doesn't exist. <see cref="OutfitRelation.Requires" />
+    ///     is valid if at least one of SourceTag/RelatedTag exists (mirrors the OR semantics <c>OutfitBuilder</c>
+    ///     applies across multiple Requires rows sharing a SourceTag); <see cref="OutfitRelation.Incompatible" />
+    ///     requires both tags to exist, since <c>OutfitBuilder</c> treats it as a symmetric pair at runtime.
     /// </summary>
     public (List<OutfitRule> Valid, List<DiscardedOutfitRuleInfo> Discarded) Validate(
-        List<OutfitRule> rules, IReadOnlyCollection<int> validItemIds)
+        List<OutfitRule> rules, IReadOnlyCollection<string> validTags)
     {
-        var validIds = validItemIds.ToHashSet();
+        var validTagSet = validTags.ToHashSet(StringComparer.OrdinalIgnoreCase);
         var valid = new List<OutfitRule>();
         var discarded = new List<DiscardedOutfitRuleInfo>();
 
         foreach (var rule in rules)
         {
-            var itemOk = validIds.Contains(rule.ItemId);
-            var relatedOk = validIds.Contains(rule.RelatedItemId);
-            var ok = rule.Relation == OutfitRelation.Requires ? itemOk || relatedOk : itemOk && relatedOk;
+            var sourceOk = validTagSet.Contains(rule.SourceTag);
+            var relatedOk = validTagSet.Contains(rule.RelatedTag);
+            var ok = rule.Relation == OutfitRelation.Requires ? sourceOk || relatedOk : sourceOk && relatedOk;
 
             if (ok)
             {
@@ -41,18 +41,18 @@ public class OutfitRuleContentService
                 continue;
             }
 
-            var missing = new List<int>();
-            if (!itemOk)
+            var missing = new List<string>();
+            if (!sourceOk)
             {
-                missing.Add(rule.ItemId);
+                missing.Add(rule.SourceTag);
             }
 
             if (!relatedOk)
             {
-                missing.Add(rule.RelatedItemId);
+                missing.Add(rule.RelatedTag);
             }
 
-            discarded.Add(new DiscardedOutfitRuleInfo(rule.Id, rule.ItemId, rule.RelatedItemId, rule.Relation, missing));
+            discarded.Add(new DiscardedOutfitRuleInfo(rule.Id, rule.SourceTag, rule.RelatedTag, rule.Relation, missing));
         }
 
         return (valid, discarded);

@@ -122,9 +122,9 @@ public class ProfileRepositoryTests : IDisposable
     [Fact]
     public void ReplaceOutfitRules_RemovesRulesNotInNewSet()
     {
-        _repo.SaveOutfitRule(new OutfitRule { Id = 1, ItemId = 1, RelatedItemId = 2, Relation = OutfitRelation.Requires });
+        _repo.SaveOutfitRule(new OutfitRule { Id = 1, SourceTag = "a", RelatedTag = "b", Relation = OutfitRelation.Requires });
 
-        _repo.ReplaceOutfitRules([new OutfitRule { Id = 2, ItemId = 3, RelatedItemId = 4, Relation = OutfitRelation.Incompatible }]);
+        _repo.ReplaceOutfitRules([new OutfitRule { Id = 2, SourceTag = "c", RelatedTag = "d", Relation = OutfitRelation.Incompatible }]);
 
         var rules = _repo.GetOutfitRules();
         Assert.Single(rules);

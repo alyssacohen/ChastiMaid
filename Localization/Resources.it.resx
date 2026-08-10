@@ -1320,17 +1320,17 @@
   <data name="SettingsAddChore" xml:space="preserve">
     <value>Aggiungi compito</value>
   </data>
-  <data name="SettingsSelectItemPlaceholder" xml:space="preserve">
-    <value>Seleziona capo</value>
+  <data name="SettingsSelectTagPlaceholder" xml:space="preserve">
+    <value>Seleziona tag</value>
   </data>
-  <data name="SettingsFieldItem" xml:space="preserve">
-    <value>Capo</value>
+  <data name="SettingsFieldTag" xml:space="preserve">
+    <value>Tag</value>
   </data>
   <data name="SettingsFieldRelation" xml:space="preserve">
     <value>Relazione</value>
   </data>
-  <data name="SettingsFieldRelatedItem" xml:space="preserve">
-    <value>Capo correlato</value>
+  <data name="SettingsFieldRelatedTag" xml:space="preserve">
+    <value>Tag correlato</value>
   </data>
   <data name="SettingsOutfitRelationRequires" xml:space="preserve">
     <value>Richiede</value>

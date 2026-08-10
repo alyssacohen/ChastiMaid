@@ -54,9 +54,10 @@ public class ContentLoaderServiceTests : IDisposable
     [Fact]
     public void ImportAll_ProducesResultWithDiscardedRules()
     {
-        File.WriteAllText(Path.Combine(_dir, "wardrobe.json"), """[{"id":1,"name":"dress"},{"id":2,"name":"shoes"}]""");
+        File.WriteAllText(Path.Combine(_dir, "wardrobe.json"),
+            """[{"id":1,"name":"dress","tags":["dress"]},{"id":2,"name":"shoes","tags":["shoes"]}]""");
         File.WriteAllText(Path.Combine(_dir, "outfit-rules.json"),
-            """[{"id":1,"itemId":1,"relatedItemId":2,"relation":"requires"},{"id":2,"itemId":1,"relatedItemId":999,"relation":"incompatible"}]""");
+            """[{"id":1,"sourceTag":"dress","relatedTag":"shoes","relation":"requires"},{"id":2,"sourceTag":"dress","relatedTag":"missing","relation":"incompatible"}]""");
         File.WriteAllText(Path.Combine(_dir, "tasks.json"), """[{"id":1,"name":"Dusting"}]""");
 
         using var db = new LiteDatabase(":memory:");
@@ -67,7 +68,7 @@ public class ContentLoaderServiceTests : IDisposable
         Assert.Equal(2, result.WardrobeImported);
         Assert.Equal(1, result.RulesImported);
         Assert.Equal(1, result.RulesDiscarded);
-        Assert.Equal([999], result.DiscardedRules[0].MissingItemIds);
+        Assert.Equal(["missing"], result.DiscardedRules[0].MissingTags);
         Assert.Equal(1, result.TasksImported);
     }
 }

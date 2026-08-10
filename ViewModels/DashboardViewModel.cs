@@ -482,10 +482,8 @@ public partial class DashboardViewModel : ViewModelBase
             return true;
         }
 
-        var rules = _saveRepo.GetOutfitRules();
-        return rules.Any(r => r.Relation == OutfitRelation.Incompatible &&
-            ((r.ItemId == candidate.Id && wornIds.Contains(r.RelatedItemId)) ||
-             (r.RelatedItemId == candidate.Id && wornIds.Contains(r.ItemId))));
+        var engine = new OutfitRuleEngine(_saveRepo.GetOutfitRules());
+        return engine.ConflictsWithAny(candidate, worn);
     }
 
     private IEnumerable<ClothingItem> GetEligiblePlugAndPlayCandidates()

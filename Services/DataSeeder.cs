@@ -26,7 +26,8 @@ public static class DataSeeder
 
         if (profile.GetOutfitRules().Count == 0)
         {
-            var (rules, _) = loader.LoadAndValidateOutfitRules(profile.GetWardrobe().Select(i => i.Id).ToList());
+            var validTags = profile.GetWardrobe().SelectMany(i => i.Tags).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            var (rules, _) = loader.LoadAndValidateOutfitRules(validTags);
             foreach (var rule in rules)
             {
                 profile.SaveOutfitRule(rule);

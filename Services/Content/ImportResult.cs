@@ -4,10 +4,10 @@ namespace ChastiMaid.Services.Content;
 
 public record DiscardedOutfitRuleInfo(
     int RuleId,
-    int ItemId,
-    int RelatedItemId,
+    string SourceTag,
+    string RelatedTag,
     OutfitRelation Relation,
-    List<int> MissingItemIds);
+    List<string> MissingTags);
 
 public record ImportResult(
     int WardrobeImported,

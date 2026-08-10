@@ -50,13 +50,13 @@ public class ContentLoaderService(string language)
     }
 
     public (List<OutfitRule> Rules, List<DiscardedOutfitRuleInfo> Discarded) LoadAndValidateOutfitRules(
-        IReadOnlyCollection<int> validItemIds)
+        IReadOnlyCollection<string> validTags)
     {
-        return LoadAndValidateOutfitRules(Path.Combine(ContentDir, "outfit-rules.json"), validItemIds);
+        return LoadAndValidateOutfitRules(Path.Combine(ContentDir, "outfit-rules.json"), validTags);
     }
 
     public (List<OutfitRule> Rules, List<DiscardedOutfitRuleInfo> Discarded) LoadAndValidateOutfitRules(
-        string filePath, IReadOnlyCollection<int> validItemIds)
+        string filePath, IReadOnlyCollection<string> validTags)
     {
         List<OutfitRule> rules;
         try
@@ -68,7 +68,7 @@ public class ContentLoaderService(string language)
             rules = MinimalContentSeeder.OutfitRules;
         }
 
-        return _ruleService.Validate(rules, validItemIds);
+        return _ruleService.Validate(rules, validTags);
     }
 
     public List<Chore> LoadTasks()
@@ -98,7 +98,8 @@ public class ContentLoaderService(string language)
         profile.ReplaceWardrobe(wardrobe);
 
         var rawRules = _ruleService.Load(Path.Combine(folderPath, "outfit-rules.json"));
-        var (validRules, discarded) = _ruleService.Validate(rawRules, wardrobe.Select(i => i.Id).ToList());
+        var validTags = wardrobe.SelectMany(i => i.Tags).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        var (validRules, discarded) = _ruleService.Validate(rawRules, validTags);
         profile.ReplaceOutfitRules(validRules);
 
         var tasks = _taskService.Load(Path.Combine(folderPath, "tasks.json"));

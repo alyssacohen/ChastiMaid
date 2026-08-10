@@ -18,71 +18,71 @@ public class OutfitRuleContentServiceTests : IDisposable
     {
         var rules = new List<OutfitRule>
         {
-            new() { Id = 1, ItemId = 3, RelatedItemId = 8, Relation = OutfitRelation.Requires },
+            new() { Id = 1, SourceTag = "girdle", RelatedTag = "stockings", Relation = OutfitRelation.Requires },
         };
 
         _service.Export(rules, _tempFile);
         var loaded = _service.Load(_tempFile);
 
         var rule = Assert.Single(loaded);
-        Assert.Equal(3, rule.ItemId);
-        Assert.Equal(8, rule.RelatedItemId);
+        Assert.Equal("girdle", rule.SourceTag);
+        Assert.Equal("stockings", rule.RelatedTag);
         Assert.Equal(OutfitRelation.Requires, rule.Relation);
     }
 
     [Fact]
     public void Export_SerializesRelationAsCamelCaseString()
     {
-        _service.Export([new OutfitRule { Id = 1, ItemId = 1, RelatedItemId = 2, Relation = OutfitRelation.Incompatible }], _tempFile);
+        _service.Export([new OutfitRule { Id = 1, SourceTag = "a", RelatedTag = "b", Relation = OutfitRelation.Incompatible }], _tempFile);
 
         Assert.Contains("\"incompatible\"", File.ReadAllText(_tempFile));
     }
 
     [Fact]
-    public void Validate_RequiresRule_SurvivesIfEitherIdIsValid()
+    public void Validate_RequiresRule_SurvivesIfEitherTagIsValid()
     {
         var rules = new List<OutfitRule>
         {
-            new() { Id = 1, ItemId = 1, RelatedItemId = 999, Relation = OutfitRelation.Requires },
-            new() { Id = 2, ItemId = 999, RelatedItemId = 1, Relation = OutfitRelation.Requires },
+            new() { Id = 1, SourceTag = "a", RelatedTag = "missing", Relation = OutfitRelation.Requires },
+            new() { Id = 2, SourceTag = "missing", RelatedTag = "a", Relation = OutfitRelation.Requires },
         };
 
-        var (valid, discarded) = _service.Validate(rules, [1]);
+        var (valid, discarded) = _service.Validate(rules, ["a"]);
 
         Assert.Equal(2, valid.Count);
         Assert.Empty(discarded);
     }
 
     [Fact]
-    public void Validate_RequiresRule_DiscardedIfBothIdsMissing()
+    public void Validate_RequiresRule_DiscardedIfBothTagsMissing()
     {
-        var rules = new List<OutfitRule> { new() { Id = 1, ItemId = 998, RelatedItemId = 999, Relation = OutfitRelation.Requires } };
+        var rules = new List<OutfitRule> { new() { Id = 1, SourceTag = "x", RelatedTag = "y", Relation = OutfitRelation.Requires } };
 
-        var (valid, discarded) = _service.Validate(rules, [1]);
+        var (valid, discarded) = _service.Validate(rules, ["a"]);
 
         Assert.Empty(valid);
         var d = Assert.Single(discarded);
-        Assert.Equal([998, 999], d.MissingItemIds);
+        Assert.Equal(["x", "y"], d.MissingTags);
     }
 
     [Fact]
-    public void Validate_IncompatibleRule_DiscardedIfEitherIdMissing()
+    public void Validate_IncompatibleRule_DiscardedIfEitherTagMissing()
     {
-        var rules = new List<OutfitRule> { new() { Id = 1, ItemId = 1, RelatedItemId = 999, Relation = OutfitRelation.Incompatible } };
+        var rules = new List<OutfitRule> { new() { Id = 1, SourceTag = "a", RelatedTag = "missing", Relation = OutfitRelation.Incompatible } };
 
-        var (valid, discarded) = _service.Validate(rules, [1]);
+        var (valid, discarded) = _service.Validate(rules, ["a"]);
 
         Assert.Empty(valid);
         var d = Assert.Single(discarded);
-        Assert.Equal([999], d.MissingItemIds);
+        Assert.Equal(["missing"], d.MissingTags);
     }
 
     [Fact]
-    public void Validate_IncompatibleRule_SurvivesIfBothIdsValid()
+    public void Validate_IncompatibleRule_SurvivesIfBothTagsValid()
     {
-        var rules = new List<OutfitRule> { new() { Id = 1, ItemId = 1, RelatedItemId = 2, Relation = OutfitRelation.Incompatible } };
+        var rules = new List<OutfitRule> { new() { Id = 1, SourceTag = "a", RelatedTag = "b", Relation = OutfitRelation.Incompatible } };
 
-        var (valid, discarded) = _service.Validate(rules, [1, 2]);
+        var (valid, discarded) = _service.Validate(rules, ["a", "b"]);
 
         Assert.Single(valid);
         Assert.Empty(discarded);
