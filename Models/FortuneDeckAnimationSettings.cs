@@ -53,4 +53,13 @@ public static class FortuneDeckAnimationSettings
 
     // --- Phase 4: Flip and reveal ---
     public const int FlipHalfMs = 140;
+
+    /// <summary>Must match the Width/Height <c>DoubleTransition</c> duration on the card panel in
+    /// FortuneDeckView.axaml (<c>0:0:0.32</c>) — how long RunFlipAsync waits for the post-flip regrow to
+    /// visually finish before the title/description are allowed to fade in.</summary>
+    public const int CardResizeMs = 320;
+
+    /// <summary>Must match the Opacity <c>DoubleTransition</c> duration on the title/description panel in
+    /// FortuneDeckView.axaml (<c>0:0:0.22</c>).</summary>
+    public const int TextFadeInMs = 220;
 }

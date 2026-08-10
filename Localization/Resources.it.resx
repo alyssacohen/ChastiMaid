@@ -424,7 +424,7 @@
     <value>Il Ventaglio della Sorte</value>
   </data>
   <data name="ShopFortuneDeckSubtitle" xml:space="preserve">
-    <value>Una sola carta, ventagliata e coperta. La fortuna, di rado, si annuncia in anticipo.</value>
+      <value>Voi scommettete, io incasso. Accomodatevi — sarà questione di un attimo.</value>
   </data>
   <data name="ShopFortuneDeckDrawFormat" xml:space="preserve">
     <value>Pesca — {0}</value>
@@ -471,11 +471,11 @@
   <data name="PunishmentCardConfirmCancelFormat" xml:space="preserve">
     <value>Annullare del tutto "{0}"?</value>
   </data>
-  <data name="FortuneOutcomeCashFormat" xml:space="preserve">
-    <value>{0} al libro mastro.</value>
+  <data name="FortuneOutcomeCashWinDesc" xml:space="preserve">
+    <value>Un momento di insolita generosità. Non abituatevi.</value>
   </data>
-  <data name="FortuneOutcomeCashTitleFormat" xml:space="preserve">
-    <value>{0}×</value>
+  <data name="FortuneOutcomeCashLossDesc" xml:space="preserve">
+    <value>Questa carta vi è costata cara.</value>
   </data>
   <data name="FortuneOutcomePercentTitleFormat" xml:space="preserve">
     <value>{0}%</value>
@@ -523,7 +523,7 @@
     <value>Nulla</value>
   </data>
   <data name="FortuneOutcomeWhiffDesc" xml:space="preserve">
-    <value>La carta era in bianco. La posta, tuttavia, non è stata restituita.</value>
+      <value>Vuota. Nulla passa di mano — tranne, ovviamente, il vostro denaro.</value>
   </data>
   <data name="PermissionBreakEndButton" xml:space="preserve">
     <value>Fine pausa</value>

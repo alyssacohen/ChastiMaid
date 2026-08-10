@@ -424,7 +424,7 @@
     <value>Il Ventaglio della Sorte</value>
   </data>
   <data name="ShopFortuneDeckSubtitle" xml:space="preserve">
-    <value>A single card, fanned and face-down. Fortune rarely announces itself in advance.</value>
+      <value>You wager, I collect. Do sit down — it will take but a moment.</value>
   </data>
   <data name="ShopFortuneDeckDrawFormat" xml:space="preserve">
     <value>Draw — {0}</value>
@@ -471,11 +471,11 @@
   <data name="PunishmentCardConfirmCancelFormat" xml:space="preserve">
     <value>Cancel "{0}" outright?</value>
   </data>
-  <data name="FortuneOutcomeCashFormat" xml:space="preserve">
-    <value>{0} to the ledger.</value>
+  <data name="FortuneOutcomeCashWinDesc" xml:space="preserve">
+    <value>A moment of uncharacteristic generosity. Do not grow accustomed to it.</value>
   </data>
-  <data name="FortuneOutcomeCashTitleFormat" xml:space="preserve">
-    <value>{0}×</value>
+  <data name="FortuneOutcomeCashLossDesc" xml:space="preserve">
+    <value>This one has cost you rather dearly.</value>
   </data>
   <data name="FortuneOutcomePercentTitleFormat" xml:space="preserve">
     <value>{0}%</value>
@@ -523,7 +523,7 @@
     <value>Nothing</value>
   </data>
   <data name="FortuneOutcomeWhiffDesc" xml:space="preserve">
-    <value>The card was blank. The stake, however, was not returned.</value>
+      <value>Blank. Nothing changes hands — except, of course, your money.</value>
   </data>
   <data name="PermissionBreakEndButton" xml:space="preserve">
     <value>End Break</value>

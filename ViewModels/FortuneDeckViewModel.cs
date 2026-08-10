@@ -43,6 +43,11 @@ public partial class FortuneDeckCardViewModel : ViewModelBase
     [Reactive] private string? _title;
     [Reactive] private string? _description;
 
+    // Separate from IsRevealed so the title/description can stay invisible while the front face's chrome is
+    // already growing to full size — faded in only once CardWidth/CardHeight have settled, avoiding visible
+    // text reflow mid-resize.
+    [Reactive] private double _textOpacity;
+
     // Actual layout size — grown via Width/Height (with its own Transitions in XAML), not a RenderTransform
     // scale. A render-scale would blow up the CONTENT too (title/description text, at 2× the reveal size,
     // rendering wildly oversized) since RenderTransform scales the whole visual subtree, not just the frame.
@@ -311,13 +316,19 @@ public partial class FortuneDeckViewModel : ViewModelBase
 
     private async Task RunFlipAsync(FortuneDeckCardViewModel selected, FortuneDrawResult result)
     {
-        selected.SetPose(scaleX: 0);
+        // Pivots on a horizontal axis (top-to-bottom hinge): height collapses to zero while width holds.
+        selected.SetPose(scaleY: 0);
         await Task.Delay(FortuneDeckAnimationSettings.FlipHalfMs);
 
         selected.IsRevealed = true;
         (selected.Title, selected.Description) = DescribeOutcome(result);
-        selected.SetPose(scaleX: FortuneDeckAnimationSettings.LiftScale);
-        await Task.Delay(FortuneDeckAnimationSettings.FlipHalfMs);
+        selected.SetPose(scaleY: FortuneDeckAnimationSettings.LiftScale);
+
+        // Text stays invisible (TextOpacity still 0) until the regrow has visually settled, then fades in —
+        // otherwise the title/description would reflow visibly while CardWidth/CardHeight are still animating.
+        await Task.Delay(FortuneDeckAnimationSettings.CardResizeMs);
+        selected.TextOpacity = 1;
+        await Task.Delay(FortuneDeckAnimationSettings.TextFadeInMs);
     }
 
     /// <summary>Formats a value with an explicit leading sign (e.g. "+5", "-10") — the compact card titles
@@ -325,6 +336,13 @@ public partial class FortuneDeckViewModel : ViewModelBase
     private static string Signed(int value)
     {
         return (value >= 0 ? "+" : "") + value;
+    }
+
+    /// <summary>Signed currency amount for cash-outcome titles (e.g. "+£4.00", "-£2.00") — explicit about the
+    /// actual sum at a glance, rather than the previous ambiguous "2×" stake-multiplier notation.</summary>
+    private static string SignedCurrencyTitle(decimal amount)
+    {
+        return (amount >= 0 ? "+" : "-") + Views.Converters.CurrencyConverter.Format(Math.Abs(amount));
     }
 
     private (string Title, string Description) DescribeOutcome(FortuneDrawResult result)
@@ -336,11 +354,11 @@ public partial class FortuneDeckViewModel : ViewModelBase
                 CardDisplay.NameOf(result.Card!.Value),
                 CardDisplay.DescriptionOf(result.Card!.Value)),
             FortuneOutcomeKind.CashWin => (
-                string.Format(Resources.Get("FortuneOutcomeCashTitleFormat"), Signed(result.Value)),
-                string.Format(Resources.Get("FortuneOutcomeCashFormat"), Views.Converters.CurrencyConverter.Format(stake * result.Value))),
+                SignedCurrencyTitle(stake * result.Value),
+                Resources.Get("FortuneOutcomeCashWinDesc")),
             FortuneOutcomeKind.CashLoss => (
-                string.Format(Resources.Get("FortuneOutcomeCashTitleFormat"), Signed(result.Value)),
-                string.Format(Resources.Get("FortuneOutcomeCashFormat"), Views.Converters.CurrencyConverter.Format(stake * -result.Value))),
+                SignedCurrencyTitle(stake * result.Value),
+                Resources.Get("FortuneOutcomeCashLossDesc")),
             FortuneOutcomeKind.SuspendedProbability => (
                 string.Format(Resources.Get("FortuneOutcomePercentTitleFormat"), Signed(result.Value)),
                 Resources.Get(result.Value >= 0 ? "FortuneOutcomeProbabilityBuffDesc" : "FortuneOutcomeProbabilityDebuffDesc")),

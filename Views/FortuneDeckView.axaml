@@ -68,7 +68,15 @@
                                   don't apply to a drawn card.  -->
                             <Border Classes="card" Padding="{StaticResource SpacingSmThickness}"
                                     IsVisible="{Binding IsRevealed}">
-                                <StackPanel Spacing="8">
+                                <!--  Faded in separately from the card frame (TextOpacity, set only once the
+                                      Width/Height regrow has settled — see RunFlipAsync) so the text never
+                                      visibly reflows while the card is still resizing.  -->
+                                <StackPanel Spacing="8" Opacity="{Binding TextOpacity}">
+                                    <StackPanel.Transitions>
+                                        <Transitions>
+                                            <DoubleTransition Property="Opacity" Duration="0:0:0.22" Easing="CubicEaseOut" />
+                                        </Transitions>
+                                    </StackPanel.Transitions>
                                     <TextBlock Classes="Subheading" Text="{Binding Title}" TextWrapping="Wrap" />
                                     <TextBlock Classes="BodySmall"
                                                Text="{Binding Description}"
