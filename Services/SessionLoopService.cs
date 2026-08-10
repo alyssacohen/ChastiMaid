@@ -13,7 +13,8 @@ public class SessionLoopService : IDisposable
     private readonly SaveRepository _saveRepo;
     private readonly GameSettings _settings;
 
-    private CancellationTokenSource? _cts;
+    private CancellationTokenSource? _wageCts;
+    private CancellationTokenSource? _popupCts;
 
     private bool _missedSinceLastWage;
     private Task? _popupTask;
@@ -43,33 +44,61 @@ public class SessionLoopService : IDisposable
         Stop();
         _missedSinceLastWage = false;
         LastWageTime = DateTime.UtcNow;
-        _cts = new CancellationTokenSource();
-        _wageTask = RunWageLoop(_cts.Token);
-        _popupTask = RunPopupLoop(_cts.Token);
+        _wageCts = new CancellationTokenSource();
+        _popupCts = new CancellationTokenSource();
+        _wageTask = RunWageLoop(_wageCts.Token);
+        _popupTask = RunPopupLoop(_popupCts.Token);
     }
 
     public void Stop()
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
-        _cts = null;
+        _wageCts?.Cancel();
+        _wageCts?.Dispose();
+        _wageCts = null;
         _wageTask = null;
+
+        _popupCts?.Cancel();
+        _popupCts?.Dispose();
+        _popupCts = null;
         _popupTask = null;
     }
 
-    /// <summary>Pauses the timers (for busy mode).</summary>
-    public void Pause()
+    /// <summary>
+    ///     Pauses the wage timer (for busy mode). By default also pauses the popup timer;
+    ///     pass <paramref name="pausePopups" /> = false to keep check-in popups (e.g. Hydration,
+    ///     Plug and Play) running while a task is in progress.
+    /// </summary>
+    public void Pause(bool pausePopups = true)
     {
-        Stop();
+        _wageCts?.Cancel();
+        _wageCts?.Dispose();
+        _wageCts = null;
+        _wageTask = null;
+
+        if (pausePopups)
+        {
+            _popupCts?.Cancel();
+            _popupCts?.Dispose();
+            _popupCts = null;
+            _popupTask = null;
+        }
     }
 
-    /// <summary>Resumes the timers (returning to idle mode). Resets the wage clock.</summary>
+    /// <summary>Resumes any paused timers (returning to idle mode). Resets the wage clock if it was paused.</summary>
     public void Resume()
     {
-        LastWageTime = DateTime.UtcNow;
-        _cts = new CancellationTokenSource();
-        _wageTask = RunWageLoop(_cts.Token);
-        _popupTask = RunPopupLoop(_cts.Token);
+        if (_wageCts is null)
+        {
+            LastWageTime = DateTime.UtcNow;
+            _wageCts = new CancellationTokenSource();
+            _wageTask = RunWageLoop(_wageCts.Token);
+        }
+
+        if (_popupCts is null)
+        {
+            _popupCts = new CancellationTokenSource();
+            _popupTask = RunPopupLoop(_popupCts.Token);
+        }
     }
 
     public void ReportPopupResult(bool answered)

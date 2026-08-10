@@ -276,6 +276,7 @@ public partial class DashboardViewModel : ViewModelBase
             _activeChore = Chores.FirstOrDefault(c => c.ChoreId == startChore.Id);
             if (_activeChore is not null)
             {
+                _sessionLoop.Start();
                 EnterBusyMode();
             }
             else
@@ -434,6 +435,14 @@ public partial class DashboardViewModel : ViewModelBase
         IdlePopupKind.PlugAndPlayRemove
     ];
 
+    // Popups allowed to interrupt a task in progress (IsBusy) — everything else requires full attention.
+    private static readonly IdlePopupKind[] InterruptibleDuringTaskKinds =
+    [
+        IdlePopupKind.Hydration,
+        IdlePopupKind.PlugAndPlayDon,
+        IdlePopupKind.PlugAndPlayRemove
+    ];
+
     private IdlePopupKind _currentPopupKind;
     private DateTime _lastHydrationPopupAt = DateTime.MinValue;
 
@@ -527,12 +536,13 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void ShowIdlePopup()
     {
-        if (IsPopupVisible || IsBusy)
+        if (IsPopupVisible)
         {
             return;
         }
 
-        var candidates = EnabledIdlePopupKinds.Where(IsKindAvailable).ToArray();
+        var kinds = IsBusy ? InterruptibleDuringTaskKinds : EnabledIdlePopupKinds;
+        var candidates = kinds.Where(IsKindAvailable).ToArray();
         if (candidates.Length == 0)
         {
             return;
@@ -668,7 +678,7 @@ public partial class DashboardViewModel : ViewModelBase
     private void ShowMotivationalQuotePopup()
     {
         _currentPopupKind = IdlePopupKind.MotivationalQuote;
-        _currentQuoteText = Resources.Get(EmployerPhraseBank.GetRandom());
+        CurrentQuoteText = Resources.Get(EmployerPhraseBank.GetRandom());
         PopupQuestion = Resources.Get("MotivationalQuoteInstruction");
         PopupAnswers = [Resources.Get("MotivationalQuoteConfirm")];
         _popupShownAt = DateTime.UtcNow;
@@ -1269,7 +1279,7 @@ public partial class DashboardViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentQuestion = null;
         _currentPoseItem = null;
-        _currentQuoteText = "";
+        CurrentQuoteText = "";
         QuoteTypedAnswer = "";
         CapturedPosePhoto?.Dispose();
         CapturedPosePhoto = null;
@@ -1295,8 +1305,8 @@ public partial class DashboardViewModel : ViewModelBase
 
         ChoreResultMessage = "";
 
-        // Stop timers before navigating away
-        _sessionLoop.Pause();
+        // Stop the wage timer before navigating away; keep check-in popups (Hydration, Plug and Play) running.
+        _sessionLoop.Pause(pausePopups: false);
         _countdownTimer?.Stop();
 
         var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == choreVm.ChoreId);
@@ -1325,7 +1335,7 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
-        _sessionLoop.Pause();
+        _sessionLoop.Pause(pausePopups: false);
         _countdownTimer?.Stop();
         IsIdle = false;
         IsBusy = true;
