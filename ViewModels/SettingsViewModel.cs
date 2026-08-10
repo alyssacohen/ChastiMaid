@@ -222,9 +222,16 @@ public partial class SettingsViewModel : ViewModelBase
         // AvailableItems mirrors WardrobeItems reactively so adding/removing a wardrobe item is
         // immediately reflected in the Outfit Rules dropdowns, without needing to reopen Settings.
         WardrobeItems.ToObservableChangeSet()
-            .Transform(w => new ClothingItemOption(w.Id, w.Name))
+            .AutoRefresh(w => w.Name)
+            .Transform(w => new ClothingItemOption(w.Id, w.Name), transformOnRefresh: true)
             .Bind(out _availableItems)
-            .Subscribe();
+            .Subscribe(_ =>
+            {
+                foreach (var rule in OutfitRules)
+                {
+                    rule.RefreshItemReferences();
+                }
+            });
 
         foreach (var r in _repo.GetOutfitRules())
         {
@@ -336,6 +343,7 @@ public partial class SettingsViewModel : ViewModelBase
                 new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)),
                 () => IsChoresDirty = true)));
         ShowAddItemPanelCommand = ReactiveCommand.Create(() => IsAddingNewItem = true);
+        CancelAddItemCommand = ReactiveCommand.Create(ResetNewItemPanel);
         var canAddWardrobe = this.WhenAnyValue(x => x.NewItemName, name => !string.IsNullOrWhiteSpace(name));
         AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
         AddOutfitRuleCommand = ReactiveCommand.Create(() =>
@@ -351,6 +359,11 @@ public partial class SettingsViewModel : ViewModelBase
             foreach (var item in WardrobeItems)
             {
                 item.IsExpanded = false;
+            }
+
+            if (IsAddingNewItem)
+            {
+                ResetNewItemPanel();
             }
         });
         ExportContentCommand = ReactiveCommand.CreateFromTask(ExportContent);
@@ -515,6 +528,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
     public ICommand ShowAddItemPanelCommand { get; }
+    public ICommand CancelAddItemCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
     public ICommand AddForcedOutfitPresetCommand { get; }
@@ -595,6 +609,13 @@ public partial class SettingsViewModel : ViewModelBase
         WireWardrobeItem(vm);
         WardrobeItems.Add(vm);
 
+        ResetNewItemPanel();
+
+        IsWardrobeDirty = true;
+    }
+
+    private void ResetNewItemPanel()
+    {
         NewItemName = string.Empty;
         NewItemMultiplier = 1.0m;
         NewItemWeight = 1.0m;
@@ -602,8 +623,6 @@ public partial class SettingsViewModel : ViewModelBase
         NewItemSlots.Clear();
         NewItemTags.Clear();
         IsAddingNewItem = false;
-
-        IsWardrobeDirty = true;
     }
 
     private void DeleteSelectedWardrobeItems()
@@ -1253,6 +1272,26 @@ public partial class OutfitRuleEditViewModel : ViewModelBase
             {
                 RelatedItem = new ClothingItemOption(match.Id, match.Name);
             }
+        }
+    }
+
+    /// <summary>
+    ///     Re-points <see cref="Item" />/<see cref="RelatedItem" /> to the current instance in
+    ///     <see cref="AvailableItems" /> with the same Id. Needed because ClothingItemOption is a
+    ///     record (value equality): when a wardrobe item is renamed, AvailableItems gets a new record
+    ///     with the updated name, but the ComboBox SelectedItem held here still points at the old one —
+    ///     without re-resolving by Id, the selection would appear cleared.
+    /// </summary>
+    internal void RefreshItemReferences()
+    {
+        if (Item is { } item)
+        {
+            Item = AvailableItems.FirstOrDefault(i => i.Id == item.Id) ?? Item;
+        }
+
+        if (RelatedItem is { } related)
+        {
+            RelatedItem = AvailableItems.FirstOrDefault(i => i.Id == related.Id) ?? RelatedItem;
         }
     }
 

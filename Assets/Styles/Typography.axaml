@@ -133,6 +133,16 @@
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
+    <!--  NumberDisplay — Big timers  -->
+    <Style Selector="TextBlock.NumberDisplay">
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="60" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="LineHeight" Value="72" />
+        <Setter Property="LetterSpacing" Value="-0.15" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+
     <!--  EmployerVoice — character dialogue, in-UI quotes  -->
     <Style Selector="TextBlock.EmployerVoice">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond" />

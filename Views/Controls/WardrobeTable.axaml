@@ -352,10 +352,14 @@
                                                Placeholder="{conv:Tr WardrobePlaceholderAddTag}" />
                         </StackPanel>
 
-                        <Button Classes="Primary compact"
-                                Content="{conv:Tr WardrobeAddItemConfirm}"
-                                Command="{Binding AddWardrobeItemCommand}"
-                                HorizontalAlignment="Right" />
+                        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                            <Button Classes="Ghost compact"
+                                    Content="{conv:Tr WardrobeAddItemCancel}"
+                                    Command="{Binding CancelAddItemCommand}" />
+                            <Button Classes="Primary compact"
+                                    Content="{conv:Tr WardrobeAddItemConfirm}"
+                                    Command="{Binding AddWardrobeItemCommand}" />
+                        </StackPanel>
                         <TextBlock Classes="Caption"
                                    FontStyle="Italic"
                                    Text="{conv:Tr WardrobeNewItemHelpText}" />

@@ -202,7 +202,7 @@
     <value>A Matter Already Settled</value>
   </data>
   <data name="ForcedOutfitInfoMessageFormat" xml:space="preserve">
-    <value>The uniform «{0}» shall present itself, unbidden, for the next {1} session(s). No action is required of you.</value>
+      <value>The uniform «{0}» shall present itself, unbidden, for the next {1} session(s).</value>
   </data>
   <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
     <value>The chosen uniform</value>
@@ -229,7 +229,7 @@
     <value>To your corner — feet together, hands folded in front of you, and face the wall like a good girl should.</value>
   </data>
   <data name="CornertimePositionHandsNeckA" xml:space="preserve">
-    <value>To the corner — legs apart, hands clasped behind your neck, facing the wall. Ten seconds, starting now.</value>
+      <value>To the corner — legs apart, hands behind your head, facing the wall. Ten seconds, starting now.</value>
   </data>
   <data name="CornertimePositionHandsNeckB" xml:space="preserve">
     <value>The corner, please. Legs apart, hands behind your neck, and your face to the wall.</value>
@@ -430,7 +430,7 @@
     <value>Draw — {0}</value>
   </data>
   <data name="CardCooldownBypassName" xml:space="preserve">
-    <value>Cooldown Bypass</value>
+      <value>Eager</value>
   </data>
   <data name="CardCooldownBypassDesc" xml:space="preserve">
     <value>Clears the cooldown standing between you and your next request.</value>
@@ -457,7 +457,7 @@
     <value>Soften Punishment</value>
   </data>
   <data name="CardSoftenPunishmentDesc" xml:space="preserve">
-    <value>Halves the severity of one pending punishment, rounded up.</value>
+      <value>Halves the severity of one pending punishment.</value>
   </data>
   <data name="CardCancelPunishmentName" xml:space="preserve">
     <value>Cancel Punishment</value>
@@ -484,7 +484,7 @@
     <value>{0} Min</value>
   </data>
   <data name="FortuneOutcomeGrantTitle" xml:space="preserve">
-    <value>Grace</value>
+      <value>Grant permission</value>
   </data>
   <data name="FortuneOutcomeGrantDesc" xml:space="preserve">
     <value>A whim of mine, waiting to be indulged. You shall know it when it comes.</value>
@@ -499,7 +499,7 @@
     <value>Cancelled</value>
   </data>
   <data name="FortuneOutcomeCancelDesc" xml:space="preserve">
-    <value>My good heart has struck a punishment from the ledger entirely. See if you can tell which.</value>
+      <value>My good heart has struck a punishment from the ledger entirely.</value>
   </data>
   <data name="FortuneOutcomeProbabilityBuffDesc" xml:space="preserve">
     <value>A permission, somewhere, will be easier to earn than it deserves.</value>
@@ -508,10 +508,10 @@
     <value>A permission, somewhere, will be harder to earn than you'd like.</value>
   </data>
   <data name="FortuneOutcomeDurationBuffDesc" xml:space="preserve">
-    <value>Some future indulgence will last longer than granted. Enjoy it while it lasts.</value>
+      <value>Some future permission will last longer than granted. Enjoy it while it lasts.</value>
   </data>
   <data name="FortuneOutcomeDurationDebuffDesc" xml:space="preserve">
-    <value>Some future indulgence will be cut shorter than expected.</value>
+      <value>Some future permission will be cut shorter than expected.</value>
   </data>
   <data name="FortuneOutcomeAggravateTitle" xml:space="preserve">
     <value>Noticed</value>
@@ -754,7 +754,7 @@
     <value>The camera was not cooperative. We shall try again another time.</value>
   </data>
   <data name="CurtsyConfirm" xml:space="preserve">
-    <value>I am ready</value>
+      <value>I am ready, Madame</value>
   </data>
   <data name="CurtsyInstructionFormal" xml:space="preserve">
     <value>You will perform a curtsy before the camera, that I may witness your deportment.</value>
@@ -763,7 +763,7 @@
     <value>Rise, and offer me a proper curtsy. See that it is done with grace.</value>
   </data>
   <data name="CurtsyInstructionRespect" xml:space="preserve">
-    <value>A show of respect is due. Curtsy before the camera, and let it be recorded.</value>
+      <value>A show of respect is due. Curtsy before me, and let it be recorded.</value>
   </data>
   <data name="CurtsyCountdownLabel" xml:space="preserve">
     <value>Prepare yourself.</value>
@@ -978,6 +978,9 @@
   <data name="WardrobeAddItemConfirm" xml:space="preserve">
     <value>Add Item</value>
   </data>
+  <data name="WardrobeAddItemCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="WardrobeNewItemHelpText" xml:space="preserve">
     <value>Multiplier affects outfit scoring, Weight is the probability a clothing item is chosen.</value>
   </data>
@@ -1006,7 +1009,7 @@
     <value>Back</value>
   </data>
   <data name="ChangeOutfitIntegrate" xml:space="preserve">
-    <value>Integrate</value>
+      <value>Integrate Outfit</value>
   </data>
   <data name="ChangeOutfitSaveOutfit" xml:space="preserve">
     <value>Save outfit</value>
