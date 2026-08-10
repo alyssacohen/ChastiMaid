@@ -471,9 +471,6 @@
   <data name="PunishmentCardConfirmCancelFormat" xml:space="preserve">
     <value>Annullare del tutto "{0}"?</value>
   </data>
-  <data name="FortuneOutcomeCollectibleDesc" xml:space="preserve">
-    <value>Una carta degna di essere tenuta. Aggiunta alla vostra mano.</value>
-  </data>
   <data name="FortuneOutcomeCashFormat" xml:space="preserve">
     <value>{0} al libro mastro.</value>
   </data>
@@ -489,20 +486,38 @@
   <data name="FortuneOutcomeGrantTitle" xml:space="preserve">
     <value>Grazia</value>
   </data>
+  <data name="FortuneOutcomeGrantDesc" xml:space="preserve">
+    <value>Un mio capriccio, in attesa di essere concesso. Saprai riconoscerlo quando arriverà.</value>
+  </data>
   <data name="FortuneOutcomeSoftenTitle" xml:space="preserve">
     <value>Addolcita</value>
+  </data>
+  <data name="FortuneOutcomeSoftenDesc" xml:space="preserve">
+    <value>Il mio buon cuore ha smussato una delle tue punizioni. Quale, sta a te scoprirlo.</value>
   </data>
   <data name="FortuneOutcomeCancelTitle" xml:space="preserve">
     <value>Annullata</value>
   </data>
-  <data name="FortuneOutcomeSuspendedFormat" xml:space="preserve">
-    <value>In attesa di essere speso sulla prossima richiesta di {0}.</value>
+  <data name="FortuneOutcomeCancelDesc" xml:space="preserve">
+    <value>Il mio buon cuore ha cancellato del tutto una punizione dal registro. Prova a indovinare quale.</value>
   </data>
-  <data name="FortuneOutcomePunishmentAppliedDesc" xml:space="preserve">
-    <value>Applicata immediatamente a una punizione pendente.</value>
+  <data name="FortuneOutcomeProbabilityBuffDesc" xml:space="preserve">
+    <value>Un permesso, da qualche parte, sarà più facile da ottenere di quanto meriti.</value>
+  </data>
+  <data name="FortuneOutcomeProbabilityDebuffDesc" xml:space="preserve">
+    <value>Un permesso, da qualche parte, sarà più difficile da ottenere di quanto vorresti.</value>
+  </data>
+  <data name="FortuneOutcomeDurationBuffDesc" xml:space="preserve">
+    <value>Una futura concessione durerà più a lungo del previsto. Approfittane finché dura.</value>
+  </data>
+  <data name="FortuneOutcomeDurationDebuffDesc" xml:space="preserve">
+    <value>Una futura concessione sarà più breve del previsto.</value>
   </data>
   <data name="FortuneOutcomeAggravateTitle" xml:space="preserve">
     <value>Notata</value>
+  </data>
+  <data name="FortuneOutcomeAggravateDesc" xml:space="preserve">
+    <value>Ho dato un'occhiata più attenta a una delle tue punizioni, e non mi è piaciuto ciò che ho visto. Si vedrà.</value>
   </data>
   <data name="FortuneOutcomeWhiffTitle" xml:space="preserve">
     <value>Nulla</value>

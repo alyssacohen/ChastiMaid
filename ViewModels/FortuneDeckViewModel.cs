@@ -334,7 +334,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
         {
             FortuneOutcomeKind.Collectible => (
                 CardDisplay.NameOf(result.Card!.Value),
-                Resources.Get("FortuneOutcomeCollectibleDesc")),
+                CardDisplay.DescriptionOf(result.Card!.Value)),
             FortuneOutcomeKind.CashWin => (
                 string.Format(Resources.Get("FortuneOutcomeCashTitleFormat"), Signed(result.Value)),
                 string.Format(Resources.Get("FortuneOutcomeCashFormat"), Views.Converters.CurrencyConverter.Format(stake * result.Value))),
@@ -343,19 +343,19 @@ public partial class FortuneDeckViewModel : ViewModelBase
                 string.Format(Resources.Get("FortuneOutcomeCashFormat"), Views.Converters.CurrencyConverter.Format(stake * -result.Value))),
             FortuneOutcomeKind.SuspendedProbability => (
                 string.Format(Resources.Get("FortuneOutcomePercentTitleFormat"), Signed(result.Value)),
-                string.Format(Resources.Get("FortuneOutcomeSuspendedFormat"), PermissionTypeItemViewModel.GetName(result.Target!.Value))),
+                Resources.Get(result.Value >= 0 ? "FortuneOutcomeProbabilityBuffDesc" : "FortuneOutcomeProbabilityDebuffDesc")),
             FortuneOutcomeKind.SuspendedDuration => (
                 string.Format(Resources.Get("FortuneOutcomeMinutesTitleFormat"), Signed(result.Value)),
-                string.Format(Resources.Get("FortuneOutcomeSuspendedFormat"), PermissionTypeItemViewModel.GetName(result.Target!.Value))),
+                Resources.Get(result.Value >= 0 ? "FortuneOutcomeDurationBuffDesc" : "FortuneOutcomeDurationDebuffDesc")),
             FortuneOutcomeKind.SuspendedGrant => (
                 Resources.Get("FortuneOutcomeGrantTitle"),
-                string.Format(Resources.Get("FortuneOutcomeSuspendedFormat"), PermissionTypeItemViewModel.GetName(result.Target!.Value))),
+                Resources.Get("FortuneOutcomeGrantDesc")),
             FortuneOutcomeKind.SoftenRandom => (
-                Resources.Get("FortuneOutcomeSoftenTitle"), Resources.Get("FortuneOutcomePunishmentAppliedDesc")),
+                Resources.Get("FortuneOutcomeSoftenTitle"), Resources.Get("FortuneOutcomeSoftenDesc")),
             FortuneOutcomeKind.CancelRandom => (
-                Resources.Get("FortuneOutcomeCancelTitle"), Resources.Get("FortuneOutcomePunishmentAppliedDesc")),
+                Resources.Get("FortuneOutcomeCancelTitle"), Resources.Get("FortuneOutcomeCancelDesc")),
             FortuneOutcomeKind.AggravateRandom => (
-                Resources.Get("FortuneOutcomeAggravateTitle"), Resources.Get("FortuneOutcomePunishmentAppliedDesc")),
+                Resources.Get("FortuneOutcomeAggravateTitle"), Resources.Get("FortuneOutcomeAggravateDesc")),
             FortuneOutcomeKind.Whiff => (Resources.Get("FortuneOutcomeWhiffTitle"), Resources.Get("FortuneOutcomeWhiffDesc")),
             _ => (Resources.Get("FortuneOutcomeWhiffTitle"), Resources.Get("FortuneOutcomeWhiffDesc")),
         };

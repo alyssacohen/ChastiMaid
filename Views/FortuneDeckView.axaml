@@ -56,25 +56,25 @@
                                     <DoubleTransition Property="Height" Duration="0:0:0.32" Easing="CubicEaseOut" />
                                 </Transitions>
                             </Panel.Transitions>
-                            <Svg Path="avares://ChastiMaid/Assets/Cards/deck-rear.svg" Stretch="Uniform"
-                                 IsVisible="{Binding !IsRevealed}" />
-                            <!--  Front face: real Border.card chrome (deck-front.svg's only useful part is its
-                                  plain background/border, which the design system's own card style already
-                                  matches) plus real bound title/description — not baked into an image, so any
-                                  outcome text can render. Titles are kept short ("+1 Min", "10%") so they never
-                                  wrap past a line or two on a card this size; the middle gap is reserved for a
-                                  per-outcome symbol/illustration, not built yet.  -->
+                            <!--  Rasterized instead of live SVG — Svg.Controls.Skia.Avalonia doesn't render
+                                  <pattern> fills (the diamond motif came through fully transparent), so this
+                                  is exported once via Inkscape from Assets/Cards/deck-rear.svg at 3× the
+                                  largest on-screen size (172×258 at LiftScale) for crisp upscaling.  -->
+                            <Image Source="avares://ChastiMaid/Assets/Cards/deck-rear.png" Stretch="Uniform"
+                                   IsVisible="{Binding !IsRevealed}" />
+                            <!--  Front face: same card family as the Shop's own tiles (ShopView.axaml) — same
+                                  Border.card chrome, same Subheading/BodySmall typography, same title +
+                                  description content — just without the owned count and buy button, which
+                                  don't apply to a drawn card.  -->
                             <Border Classes="card" Padding="{StaticResource SpacingSmThickness}"
                                     IsVisible="{Binding IsRevealed}">
-                                <!--  Same typography as the Shop's own card tiles (ShopView.axaml) — Subheading
-                                      for the name, BodySmall for the description — so the two screens read as
-                                      one family of cards.  -->
-                                <Grid RowDefinitions="Auto,*,Auto">
-                                    <TextBlock Grid.Row="0" Classes="Subheading" Text="{Binding Title}"
-                                               HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
-                                    <TextBlock Grid.Row="2" Classes="BodySmall" Text="{Binding Description}"
-                                               HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
-                                </Grid>
+                                <StackPanel Spacing="8">
+                                    <TextBlock Classes="Subheading" Text="{Binding Title}" TextWrapping="Wrap" />
+                                    <TextBlock Classes="BodySmall"
+                                               Text="{Binding Description}"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource TextSecondary}" />
+                                </StackPanel>
                             </Border>
                         </Panel>
                     </DataTemplate>

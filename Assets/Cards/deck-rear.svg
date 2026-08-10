@@ -70,9 +70,6 @@
     <g
        id="g42"
        transform="translate(450,240)">
-      <!-- ponytail: solid fill instead of the diamond-pattern url(#victorianGeo) — this Svg.Skia version isn't
-           rendering pattern fills (they came through fully transparent, only the stroke showed), so a solid
-           tile-base color is the safe fallback. Restore the pattern fill if a later package version supports it. -->
       <rect
          x="0"
          y="0"
@@ -80,7 +77,7 @@
          height="450"
          rx="22"
          ry="22"
-         fill="#f8f4e8"
+         fill="url(#victorianGeo)"
          stroke="#3a2a20"
          stroke-width="3"
          id="rect36"
