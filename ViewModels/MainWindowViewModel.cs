@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ChastiMaid.Repositories;
@@ -36,7 +37,8 @@ public partial class MainWindowViewModel : ViewModelBase
         SaveSlotManager = saveSlotManager;
         AutoSaveService = autoSaveService;
         Webcam = webcam;
-        CurrentPage = new WelcomeViewModel(this);
+        CurrentPage = new LoadingViewModel();
+        _ = InitializeAsync();
 
         if (Application.Current?.ApplicationLifetime
                 is IClassicDesktopStyleApplicationLifetime lifetime
@@ -76,6 +78,22 @@ public partial class MainWindowViewModel : ViewModelBase
     public void NavigateTo(ViewModelBase page)
     {
         CurrentPage = page;
+    }
+
+    /// <summary>
+    ///     Warms the Settings cache and builds the Welcome screen off the UI thread — both do encrypted
+    ///     LiteDB reads (profile data, save slot listing) that would otherwise stall the first tab open
+    ///     or the Welcome screen itself. Shown behind <see cref="LoadingViewModel" /> instead.
+    /// </summary>
+    private async Task InitializeAsync()
+    {
+        var welcomeVm = await Task.Run(() =>
+        {
+            OpenSettings(() => new WelcomeViewModel(this));
+            return new WelcomeViewModel(this);
+        });
+
+        CurrentPage = welcomeVm;
     }
 
     /// <summary>Returns the cached Settings screen, creating it on first use, and points it back at <paramref name="returnTo" />.</summary>

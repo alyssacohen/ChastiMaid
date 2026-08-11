@@ -81,7 +81,7 @@ public class App : Application
         if (Program.ForcePortrait)
         {
             window.Width = 800;
-            window.Height = 1100;
+            window.Height = 1200;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             window.WindowState = WindowState.Normal;
         }

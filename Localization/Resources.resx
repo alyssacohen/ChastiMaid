@@ -981,6 +981,9 @@
   <data name="WardrobeAddItemCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="AppLoading" xml:space="preserve">
+    <value>One moment — preparations are underway...</value>
+  </data>
   <data name="WardrobeNewItemHelpText" xml:space="preserve">
     <value>Multiplier affects outfit scoring, Weight is the probability a clothing item is chosen.</value>
   </data>

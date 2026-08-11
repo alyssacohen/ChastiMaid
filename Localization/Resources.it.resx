@@ -981,6 +981,9 @@
   <data name="WardrobeAddItemCancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
+  <data name="AppLoading" xml:space="preserve">
+    <value>Un momento, si sta preparando tutto...</value>
+  </data>
   <data name="WardrobeNewItemHelpText" xml:space="preserve">
     <value>Il moltiplicatore influenza il punteggio dell'outfit, il peso è la probabilità che un capo venga scelto.</value>
   </data>
