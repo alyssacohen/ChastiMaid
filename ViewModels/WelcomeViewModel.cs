@@ -3,16 +3,12 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ChastiMaid.Localization;
 using ReactiveUI;
-using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
 public partial class WelcomeViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
-
-    [Reactive(SetModifier = AccessModifier.Private)]
-    private ConfirmDialogViewModel? _activeDialog;
 
     public WelcomeViewModel(MainWindowViewModel mainVm)
     {
@@ -41,9 +37,7 @@ public partial class WelcomeViewModel : ViewModelBase
                     Resources.Get("WelcomeNoFreeSlotsMessage"),
                     Resources.Get("Ok"),
                     null);
-                ActiveDialog = dialog;
-                await dialog.Result;
-                ActiveDialog = null;
+                await ShowConfirmAsync(dialog);
                 return;
             }
 

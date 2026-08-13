@@ -13,8 +13,6 @@ using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.Services.Content;
-using DynamicData;
-using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -22,7 +20,6 @@ namespace ChastiMaid.ViewModels;
 
 public partial class SettingsViewModel : ViewModelBase
 {
-    private readonly ReadOnlyObservableCollection<WardrobeEditViewModel> _filteredWardrobeItems = null!;
     private readonly MainWindowViewModel _mainVm;
     private readonly ProfileRepository _repo;
     private Func<ViewModelBase> _returnTo;
@@ -237,15 +234,10 @@ public partial class SettingsViewModel : ViewModelBase
                     id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true));
         }
 
-        // Filtered wardrobe view — reactive to filter controls
-        WardrobeItems.ToObservableChangeSet()
-            .Filter(this.WhenAnyValue(
-                x => x.WardrobeNameFilter,
-                x => x.WardrobeLayerFilter,
-                (name, layer) =>
-                    (Func<WardrobeEditViewModel, bool>)(item => MatchesWardrobeFilter(item, name, layer))))
-            .Bind(out _filteredWardrobeItems)
-            .Subscribe();
+        // Filtered wardrobe view — reactive to filter controls and to add/remove on WardrobeItems
+        this.WhenAnyValue(x => x.WardrobeNameFilter, x => x.WardrobeLayerFilter)
+            .Subscribe(_ => RefreshFilteredWardrobe());
+        WardrobeItems.CollectionChanged += (_, _) => RefreshFilteredWardrobe();
 
         TakeSnapshot();
 
@@ -496,7 +488,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     public bool IsDirty =>
         IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty || IsPermissionsDirty;
-    public ReadOnlyObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems => _filteredWardrobeItems;
+    public ObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems { get; } = [];
 
     public decimal DailyInterestRatePercent
     {
@@ -715,6 +707,15 @@ public partial class SettingsViewModel : ViewModelBase
                 || item.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)
                 || item.Tags.Any(t => t.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)))
                && (layerFilter is null || item.Layers.Any(l => l == layerFilter.Value));
+    }
+
+    private void RefreshFilteredWardrobe()
+    {
+        FilteredWardrobeItems.Clear();
+        foreach (var item in WardrobeItems.Where(i => MatchesWardrobeFilter(i, WardrobeNameFilter, WardrobeLayerFilter)))
+        {
+            FilteredWardrobeItems.Add(item);
+        }
     }
 
     // --- Generic helpers ---

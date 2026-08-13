@@ -14,7 +14,6 @@ public partial class StartSessionViewModel : ViewModelBase
     private readonly ActivePunishment? _forcedOutfitPunishment;
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
-    [Reactive] private ConfirmDialogViewModel? _activeDialog;
     private double _currentBonus = 1.0;
     private double _outfitMultiplier = 1.0;
 
@@ -232,14 +231,7 @@ public partial class StartSessionViewModel : ViewModelBase
             string.Join("\n\n", lines),
             Resources.Get("HardwareCheckAcknowledge"),
             null);
-        ActiveDialog = dialog;
-        _ = DismissHardwareWarningAsync(dialog);
-    }
-
-    private async Task DismissHardwareWarningAsync(ConfirmDialogViewModel dialog)
-    {
-        await dialog.Result;
-        ActiveDialog = null;
+        _ = ShowConfirmAsync(dialog);
     }
 
     public string DebtDisplay { get; }
@@ -337,9 +329,7 @@ public partial class StartSessionViewModel : ViewModelBase
             string.Format(Resources.Get("StartSessionRegenerateMessageFormat"), resultBonus * 100),
             Resources.Get("StartSessionRegenerate"),
             Resources.Get("Cancel"));
-        ActiveDialog = dialog;
-        var confirmed = await dialog.Result;
-        ActiveDialog = null;
+        var confirmed = await ShowConfirmAsync(dialog);
 
         if (!confirmed)
         {
@@ -376,9 +366,7 @@ public partial class StartSessionViewModel : ViewModelBase
             string.Format(Resources.Get("StartSessionModifyMessageFormat"), resultBonus * 100),
             Resources.Get("StartSessionModify"),
             Resources.Get("Cancel"));
-        ActiveDialog = dialog;
-        var confirmed = await dialog.Result;
-        ActiveDialog = null;
+        var confirmed = await ShowConfirmAsync(dialog);
 
         if (!confirmed)
         {

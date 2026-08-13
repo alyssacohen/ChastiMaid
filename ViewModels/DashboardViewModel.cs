@@ -173,9 +173,6 @@ public partial class DashboardViewModel : ViewModelBase
     // --- Idle popup: Plug and Play ---
     private ClothingItem? _currentPlugAndPlayCandidate;
 
-    // --- Punishment dialogs ---
-    [Reactive] private ConfirmDialogViewModel? _activeDialog;
-
     /// <summary>Standard constructor — enters idle mode.</summary>
     public DashboardViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
         : this(mainVm, saveRepo, null)
@@ -1570,8 +1567,7 @@ public partial class DashboardViewModel : ViewModelBase
                     punishment.ForcedOutfitRemainingSessions ?? 0),
                 Resources.Get("Ok"),
                 null);
-            ActiveDialog = dialog;
-            _ = DismissActiveDialogAsync(dialog);
+            _ = ShowConfirmAsync(dialog);
             return;
         }
 
@@ -1606,9 +1602,7 @@ public partial class DashboardViewModel : ViewModelBase
             string.Format(Resources.Get("PunishmentCardConfirmSoftenFormat"), punishmentVm.Name),
             Resources.Get("Confirm"),
             Resources.Get("Cancel"));
-        ActiveDialog = dialog;
-        var confirmed = await dialog.Result;
-        ActiveDialog = null;
+        var confirmed = await ShowConfirmAsync(dialog);
         if (!confirmed)
         {
             return;
@@ -1628,9 +1622,7 @@ public partial class DashboardViewModel : ViewModelBase
             string.Format(Resources.Get("PunishmentCardConfirmCancelFormat"), punishmentVm.Name),
             Resources.Get("Confirm"),
             Resources.Get("Cancel"));
-        ActiveDialog = dialog;
-        var confirmed = await dialog.Result;
-        ActiveDialog = null;
+        var confirmed = await ShowConfirmAsync(dialog);
         if (!confirmed)
         {
             return;
@@ -1641,12 +1633,6 @@ public partial class DashboardViewModel : ViewModelBase
             _saveRepo.CancelPunishment(punishmentVm.PunishmentId);
             RefreshPunishments();
         }
-    }
-
-    private async Task DismissActiveDialogAsync(ConfirmDialogViewModel dialog)
-    {
-        await dialog.Result;
-        ActiveDialog = null;
     }
 
     private void EndSession()

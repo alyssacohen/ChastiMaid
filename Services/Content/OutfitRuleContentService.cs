@@ -52,7 +52,7 @@ public class OutfitRuleContentService
                 missing.Add(rule.RelatedTag);
             }
 
-            discarded.Add(new DiscardedOutfitRuleInfo(rule.Id, rule.SourceTag, rule.RelatedTag, rule.Relation, missing));
+            discarded.Add(new DiscardedOutfitRuleInfo(missing));
         }
 
         return (valid, discarded);

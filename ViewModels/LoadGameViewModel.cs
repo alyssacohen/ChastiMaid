@@ -6,7 +6,6 @@ using ChastiMaid.Services;
 using ChastiMaid.Views.Converters;
 using FluentIcons.Common;
 using ReactiveUI;
-using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
@@ -61,9 +60,6 @@ public partial class LoadGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
 
-    [Reactive(SetModifier = AccessModifier.Private)]
-    private ConfirmDialogViewModel? _activeDialog;
-
     public LoadGameViewModel(MainWindowViewModel mainVm)
     {
         _mainVm = mainVm;
@@ -108,9 +104,7 @@ public partial class LoadGameViewModel : ViewModelBase
                 Resources.Get("Ok"),
                 null);
 
-            ActiveDialog = dialog;
-            await dialog.Result;
-            ActiveDialog = null;
+            await ShowConfirmAsync(dialog);
         }
     }
 
@@ -126,9 +120,7 @@ public partial class LoadGameViewModel : ViewModelBase
             Resources.Get("Delete"),
             Resources.Get("Cancel"));
 
-        ActiveDialog = dialog;
-        var confirmed = await dialog.Result;
-        ActiveDialog = null;
+        var confirmed = await ShowConfirmAsync(dialog);
 
         if (!confirmed)
         {
