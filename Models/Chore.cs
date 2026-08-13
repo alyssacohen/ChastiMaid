@@ -13,4 +13,7 @@ public class Chore
     public int MinCompletionMinutes { get; set; }
 
     [JsonIgnore] public DateTime? LastCompletedAt { get; set; }
+
+    /// <summary>In-session ad-hoc task, added via the dashboard rather than the profile chore list.</summary>
+    [JsonIgnore] public bool IsOccasional { get; set; }
 }

@@ -26,6 +26,9 @@ public class SaveRepository(LiteDatabase db)
     private ILiteCollection<DiaperPlayItemConfig> DiaperPlayItems =>
         db.GetCollection<DiaperPlayItemConfig>("diaper_play_items");
 
+    private ILiteCollection<ChastityDeviceItemConfig> ChastityDeviceItems =>
+        db.GetCollection<ChastityDeviceItemConfig>("chastity_device_items");
+
     private ILiteCollection<ActivePlugAndPlayAccessory> ActivePlugAndPlayAccessoryCollection =>
         db.GetCollection<ActivePlugAndPlayAccessory>("active_plug_and_play_accessory");
 
@@ -134,6 +137,11 @@ public class SaveRepository(LiteDatabase db)
         Chores.Update(chore);
     }
 
+    public void DeleteChore(int choreId)
+    {
+        Chores.Delete(choreId);
+    }
+
     // --- Active punishments ---
     public List<ActivePunishment> GetActivePunishments()
     {
@@ -216,6 +224,12 @@ public class SaveRepository(LiteDatabase db)
     public List<DiaperPlayItemConfig> GetDiaperPlayItems()
     {
         return DiaperPlayItems.FindAll().ToList();
+    }
+
+    // --- Chastity Device ---
+    public List<ChastityDeviceItemConfig> GetChastityDeviceItems()
+    {
+        return ChastityDeviceItems.FindAll().ToList();
     }
 
     public ActivePlugAndPlayAccessory? GetActivePlugAndPlayAccessory()
@@ -674,6 +688,10 @@ public class SaveRepository(LiteDatabase db)
         // Snapshot diaper play item configs
         var diaperPlayCol = saveDb.GetCollection<DiaperPlayItemConfig>("diaper_play_items");
         diaperPlayCol.InsertBulk(profile.GetDiaperPlayItems());
+
+        // Snapshot chastity device item configs
+        var chastityDeviceCol = saveDb.GetCollection<ChastityDeviceItemConfig>("chastity_device_items");
+        chastityDeviceCol.InsertBulk(profile.GetChastityDeviceItems());
 
         // Snapshot forced outfit presets
         var forcedOutfitPresetsCol = saveDb.GetCollection<ForcedOutfitPreset>("forced_outfit_presets");

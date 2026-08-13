@@ -16,6 +16,7 @@ public partial class TaskItemViewModel : ViewModelBase
         Name = chore.Name;
         FrequencyDays = chore.FrequencyDays;
         LastCompletedAt = chore.LastCompletedAt;
+        IsOccasional = chore.IsOccasional;
         StartCommand = ReactiveCommand.Create(() => onStart(this));
         ToggleExpandedCommand = ReactiveCommand.Create(() => IsExpanded = !IsExpanded);
     }
@@ -24,6 +25,7 @@ public partial class TaskItemViewModel : ViewModelBase
     public string Name { get; }
     public int FrequencyDays { get; }
     public DateTime? LastCompletedAt { get; }
+    public bool IsOccasional { get; }
     public ICommand StartCommand { get; }
     public ICommand ToggleExpandedCommand { get; }
 
@@ -31,13 +33,21 @@ public partial class TaskItemViewModel : ViewModelBase
         ? string.Format(Resources.Get("TaskLastCompletedDaysAgo"), (DateTime.UtcNow - d).Days)
         : Resources.Get("TaskNeverCompleted");
 
-    public string FrequencyLabel => string.Format(Resources.Get("TaskSuggestedFrequencyDays"), FrequencyDays);
+    public string FrequencyLabel => IsOccasional
+        ? Resources.Get("TaskOccasionalLabel")
+        : string.Format(Resources.Get("TaskSuggestedFrequencyDays"), FrequencyDays);
 
     // Green: not yet due. Amber: overdue by up to 1x the suggested frequency. Red: badly overdue or never done.
+    // Occasional tasks have no cadence to be overdue against, so they always show the neutral/idle brush.
     public string StatusBrushKey
     {
         get
         {
+            if (IsOccasional)
+            {
+                return "BrushStatusIdle";
+            }
+
             if (LastCompletedAt is not { } d)
             {
                 return "BrushButtonDanger";

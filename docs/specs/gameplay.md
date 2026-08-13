@@ -86,6 +86,8 @@ The app will show a dashboard with the following elements:
     - Last completion time (color‑coded: green/yellow/red)
     - Suggested frequency
     - Time since last completion
+  An "Add task" button opens a modal form to create an occasional task (see below); it is added to
+  the top of the list alongside the regular chores.
 * Right Column – Outfit Display
   A simplified placeholder showing:
     - Layers of the uniform
@@ -135,6 +137,25 @@ In this mode, the user is "busy", the app checks if she is working by silently t
 seconds) at random intervals between a min and a max configured in the settings.
 When the chore is finished, the user can click the button and the value will be subtracted from the debt.
 
+
+### Occasional tasks
+
+Besides the recurring chores defined in Settings, the user can add one-off tasks directly from the
+dashboard for irregular work that has no fixed cadence.
+
+- The "Add task" button on the dashboard opens a modal form asking for a name (required), a
+  description (optional), and an estimated completion time in minutes.
+- The task is added to the current session's task list only — it is never written to the profile's
+  chore list and does not appear in other saves or new games.
+- It runs through the same busy mode as a regular chore, so only the Hydration and Plug and play
+  popups may interrupt it, exactly as for chores.
+- Pay differs from regular chores: instead of a fixed value, it is computed from the actual time
+  spent — double the idle wage rate (idle wage amount / idle wage interval) per minute, times the
+  outfit multiplier.
+- The estimated time doubles as the minimum completion time: if the user ends the task before it has
+  elapsed, no pay is given, the task is declared void, and a punishment is assigned — same mechanism
+  as finishing a regular chore too early. In that case, the task remains in the list to be retried.
+- Once paid successfully, the task is removed from the list.
 
 ### Busy mode (cornertime)
 This mode is active when the user chooses to perform a cornertime punsihment.

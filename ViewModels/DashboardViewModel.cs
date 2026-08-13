@@ -20,6 +20,7 @@ public class ChoreItemViewModel : ViewModelBase
         Name = chore.Name;
         Description = chore.Description;
         Value = chore.Value;
+        IsOccasional = chore.IsOccasional;
         var effective = Math.Round(chore.Value * (decimal)multiplier, 2);
         ValueDisplay = CurrencyConverter.Format(effective);
         StartChoreCommand = ReactiveCommand.Create(() => onStart(this));
@@ -29,6 +30,7 @@ public class ChoreItemViewModel : ViewModelBase
     public string Name { get; }
     public string Description { get; }
     public decimal Value { get; }
+    public bool IsOccasional { get; }
     public string ValueDisplay { get; }
     public ICommand StartChoreCommand { get; }
 }
@@ -102,6 +104,12 @@ public partial class DashboardViewModel : ViewModelBase
     // --- Pending punishments ---
     [Reactive] private int _pendingPunishmentsCount;
     [Reactive] private bool _isPunishmentsPanelVisible;
+
+    // --- Add occasional task ---
+    [Reactive] private bool _isAddTaskFormVisible;
+    [Reactive] private string _newTaskName = "";
+    [Reactive] private string _newTaskDescription = "";
+    [Reactive] private int _newTaskEstimatedMinutes;
 
     // --- Permissions (break requests) ---
     [Reactive] private bool _isPermissionsPanelVisible;
@@ -246,6 +254,17 @@ public partial class DashboardViewModel : ViewModelBase
         OpenPunishmentsCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = true, canOpenPunishments);
         ClosePunishmentsPanelCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = false);
         StartTaskCommand = ReactiveCommand.Create<TaskItemViewModel>(OnStartTask);
+        OpenAddTaskFormCommand = ReactiveCommand.Create(() =>
+        {
+            NewTaskName = "";
+            NewTaskDescription = "";
+            NewTaskEstimatedMinutes = 0;
+            IsAddTaskFormVisible = true;
+        });
+        CloseAddTaskFormCommand = ReactiveCommand.Create(() => IsAddTaskFormVisible = false);
+        var canSubmitAddTask = this.WhenAnyValue(x => x.NewTaskName, x => x.NewTaskEstimatedMinutes,
+            (name, minutes) => !string.IsNullOrWhiteSpace(name) && minutes > 0);
+        SubmitAddTaskCommand = ReactiveCommand.Create(OnSubmitAddTask, canSubmitAddTask);
         StartPunishmentCommand = ReactiveCommand.Create<PunishmentItemViewModel>(OnStartPunishment);
         SoftenPunishmentCommand = ReactiveCommand.CreateFromTask<PunishmentItemViewModel>(OnSoftenPunishment);
         CancelPunishmentCardCommand = ReactiveCommand.CreateFromTask<PunishmentItemViewModel>(OnCancelPunishmentCard);
@@ -327,6 +346,9 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand OpenPunishmentsCommand { get; }
     public ICommand ClosePunishmentsPanelCommand { get; }
     public ICommand StartTaskCommand { get; }
+    public ICommand OpenAddTaskFormCommand { get; }
+    public ICommand CloseAddTaskFormCommand { get; }
+    public ICommand SubmitAddTaskCommand { get; }
     public ICommand StartPunishmentCommand { get; }
     public ICommand SoftenPunishmentCommand { get; }
     public ICommand CancelPunishmentCardCommand { get; }
@@ -1371,23 +1393,38 @@ public partial class DashboardViewModel : ViewModelBase
 
         if (tooEarly)
         {
-            _saveRepo.AssignPunishment(InfractionSeverity.ChoreTooEarly, "PunishmentReasonChoreTooEarly");
+            var reason = _activeChore.IsOccasional
+                ? "PunishmentReasonOccasionalTaskTooEarly"
+                : "PunishmentReasonChoreTooEarly";
+            _saveRepo.AssignPunishment(InfractionSeverity.ChoreTooEarly, reason);
             RefreshPunishments();
-            ChoreResultMessage = Resources.Get("DashboardChoreRejectedMessage");
+            ChoreResultMessage = _activeChore.IsOccasional
+                ? Resources.Get("DashboardOccasionalTaskRejectedMessage")
+                : Resources.Get("DashboardChoreRejectedMessage");
         }
         else
         {
             var state = _saveRepo.GetGameState();
             if (state is not null)
             {
-                var credit = Math.Round(_activeChore.Value * (decimal)_outfitBonus, 0);
+                var credit = _activeChore.IsOccasional
+                    ? Math.Round(2m * (_settings.IdleWageAmount / _settings.IdleWageIntervalMinutes) *
+                        (decimal)elapsed.TotalMinutes * (decimal)_outfitBonus, 0)
+                    : Math.Round(_activeChore.Value * (decimal)_outfitBonus, 0);
                 state.CurrentDebt = Math.Max(0, state.CurrentDebt - credit);
                 _saveRepo.SaveGameState(state);
             }
 
             if (chore is not null)
             {
-                _saveRepo.UpdateChoreCompletion(chore.Id, DateTime.UtcNow);
+                if (_activeChore.IsOccasional)
+                {
+                    _saveRepo.DeleteChore(chore.Id);
+                }
+                else
+                {
+                    _saveRepo.UpdateChoreCompletion(chore.Id, DateTime.UtcNow);
+                }
             }
 
             ChoreResultMessage = "";
@@ -1426,6 +1463,28 @@ public partial class DashboardViewModel : ViewModelBase
         {
             OnStartChore(choreVm);
         }
+    }
+
+    private void OnSubmitAddTask()
+    {
+        if (string.IsNullOrWhiteSpace(NewTaskName) || NewTaskEstimatedMinutes <= 0)
+        {
+            return;
+        }
+
+        var ratePerMinute = _settings.IdleWageAmount / _settings.IdleWageIntervalMinutes;
+        var chore = new Chore
+        {
+            Name = NewTaskName.Trim(),
+            Description = NewTaskDescription.Trim(),
+            Value = Math.Round(2m * ratePerMinute * NewTaskEstimatedMinutes, 2),
+            MinCompletionMinutes = NewTaskEstimatedMinutes,
+            IsOccasional = true
+        };
+
+        _saveRepo.AddChore(chore);
+        IsAddTaskFormVisible = false;
+        LoadChores();
     }
 
     /// <summary>Rebuilds the staged-card chip list from the owned permission cards. Discards any prior staging.</summary>

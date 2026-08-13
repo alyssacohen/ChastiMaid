@@ -192,6 +192,9 @@
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>For unseemly haste in her duties.</value>
   </data>
+  <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
+    <value>For declaring a task done when it plainly was not.</value>
+  </data>
   <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
     <value>For failing to remain still in the corner.</value>
   </data>
@@ -368,6 +371,33 @@
   </data>
   <data name="DashboardChoreRejectedMessage" xml:space="preserve">
     <value>Finished already? Either the work was poor, or none was done at all — this waste of my time shall not go unanswered.</value>
+  </data>
+  <data name="DashboardOccasionalTaskRejectedMessage" xml:space="preserve">
+    <value>A task declared complete in mere moments is no task completed at all — it shall be marked void, and answered for.</value>
+  </data>
+  <data name="DashboardAddOccasionalTask" xml:space="preserve">
+    <value>Add task</value>
+  </data>
+  <data name="AddOccasionalTaskTitle" xml:space="preserve">
+    <value>Add Occasional Task</value>
+  </data>
+  <data name="OccasionalTaskNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="OccasionalTaskDescriptionLabel" xml:space="preserve">
+    <value>Description (optional)</value>
+  </data>
+  <data name="OccasionalTaskEstimatedMinutesLabel" xml:space="preserve">
+    <value>Estimated time (minutes)</value>
+  </data>
+  <data name="TaskOccasionalLabel" xml:space="preserve">
+    <value>Occasional task</value>
+  </data>
+  <data name="AddOccasionalTaskSubmit" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="OccasionalTaskNameRequiredPlaceholder" xml:space="preserve">
+    <value>Task name</value>
   </data>
   <data name="DashboardRequestPermission" xml:space="preserve">
     <value>Request Permission</value>

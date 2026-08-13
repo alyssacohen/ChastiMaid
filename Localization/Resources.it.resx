@@ -192,6 +192,9 @@
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>Per un'indecorosa fretta nei suoi doveri.</value>
   </data>
+  <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
+    <value>Per aver dichiarato concluso un compito che tale palesemente non era.</value>
+  </data>
   <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
     <value>Per non essere rimasta immobile nell'angolo.</value>
   </data>
@@ -368,6 +371,33 @@
   </data>
   <data name="DashboardChoreRejectedMessage" xml:space="preserve">
     <value>Già finito? O avete lavorato male, o non avete lavorato affatto — questa perdita di tempo non resterà impunita.</value>
+  </data>
+  <data name="DashboardOccasionalTaskRejectedMessage" xml:space="preserve">
+    <value>Un compito dichiarato concluso in pochi istanti non è un compito concluso affatto — sarà considerato nullo, e ne risponderete.</value>
+  </data>
+  <data name="DashboardAddOccasionalTask" xml:space="preserve">
+    <value>Aggiungi compito</value>
+  </data>
+  <data name="AddOccasionalTaskTitle" xml:space="preserve">
+    <value>Aggiungi compito occasionale</value>
+  </data>
+  <data name="OccasionalTaskNameLabel" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="OccasionalTaskDescriptionLabel" xml:space="preserve">
+    <value>Descrizione (facoltativa)</value>
+  </data>
+  <data name="OccasionalTaskEstimatedMinutesLabel" xml:space="preserve">
+    <value>Tempo stimato (minuti)</value>
+  </data>
+  <data name="TaskOccasionalLabel" xml:space="preserve">
+    <value>Compito occasionale</value>
+  </data>
+  <data name="AddOccasionalTaskSubmit" xml:space="preserve">
+    <value>Aggiungi</value>
+  </data>
+  <data name="OccasionalTaskNameRequiredPlaceholder" xml:space="preserve">
+    <value>Nome del compito</value>
   </data>
   <data name="DashboardRequestPermission" xml:space="preserve">
     <value>Richiedi permesso</value>
