@@ -20,11 +20,12 @@
                                 <Grid Grid.Column="0" ColumnDefinitions="*,160,*">
                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldTag}}" />
-                                        <AutoCompleteBox ItemsSource="{Binding TagSuggestions}"
-                                                          Text="{Binding SourceTag}"
-                                                          FilterMode="Contains"
-                                                          PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
-                                                          HorizontalAlignment="Stretch" />
+                                        <ComboBox ItemsSource="{Binding TagSuggestions}"
+                                                  IsEditable="True"
+                                                  Text="{Binding SourceTag, Mode=TwoWay}"
+                                                  SelectionChanged="OnSourceTagSelectionChanged"
+                                                  PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
+                                                  HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelation}}" />
@@ -34,11 +35,12 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Spacing="2">
                                         <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelatedTag}}" />
-                                        <AutoCompleteBox ItemsSource="{Binding TagSuggestions}"
-                                                          Text="{Binding RelatedTag}"
-                                                          FilterMode="Contains"
-                                                          PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
-                                                          HorizontalAlignment="Stretch" />
+                                        <ComboBox ItemsSource="{Binding TagSuggestions}"
+                                                  IsEditable="True"
+                                                  Text="{Binding RelatedTag, Mode=TwoWay}"
+                                                  SelectionChanged="OnRelatedTagSelectionChanged"
+                                                  PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
+                                                  HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                 </Grid>
                                 <Button Grid.Column="1"

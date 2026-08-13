@@ -24,6 +24,7 @@ public partial class StartSessionViewModel : ViewModelBase
     [Reactive] private bool _isLocked;
     private Outfit _outfit;
 
+    private ClothingItem? _chastityDeviceItem;
     [Reactive] private string _proposedOutfit = "";
     [Reactive] private OutfitViewModel _outfitVm = new([]);
     [Reactive] private string _multiplierDisplay = "×1.00";
@@ -67,6 +68,8 @@ public partial class StartSessionViewModel : ViewModelBase
         {
             var wardrobe = saveRepo.GetWardrobe();
             var rules = saveRepo.GetOutfitRules();
+            var chastityDeviceItem = ResolveChastityDevice(state, wardrobe, saveRepo);
+            _chastityDeviceItem = chastityDeviceItem;
 
             // Priority 1: active forced-outfit punishment with sessions remaining
             var forcedPunishment = saveRepo.GetActivePunishments()
@@ -93,6 +96,11 @@ public partial class StartSessionViewModel : ViewModelBase
                         .ToList();
                     var builder = new OutfitBuilder(wardrobe, rules);
                     builder.AddSeedItems(seeds);
+                    if (chastityDeviceItem is not null)
+                    {
+                        builder.AddSeedItems([chastityDeviceItem]);
+                    }
+
                     _outfit = outfit ?? builder.Build();
                 }
 
@@ -108,6 +116,11 @@ public partial class StartSessionViewModel : ViewModelBase
                     _isForced = true;
                     var builder = new OutfitBuilder(wardrobe, rules);
                     builder.AddSeedItems(overThreshold);
+                    if (chastityDeviceItem is not null)
+                    {
+                        builder.AddSeedItems([chastityDeviceItem]);
+                    }
+
                     _outfit = outfit ?? builder.Build();
                     _proposedOutfit = _outfit.ToString();
                 }
@@ -115,6 +128,11 @@ public partial class StartSessionViewModel : ViewModelBase
                 {
                     // Normal generation
                     var builder = new OutfitBuilder(wardrobe, rules);
+
+                    if (chastityDeviceItem is not null)
+                    {
+                        builder.AddSeedItems([chastityDeviceItem]);
+                    }
 
                     ClothingItem? plugAndPlaySeed = null;
                     if (state?.PendingPlugAndPlaySeedItemId is { } seedId)
@@ -232,6 +250,35 @@ public partial class StartSessionViewModel : ViewModelBase
         ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
     }
 
+    /// <summary>
+    ///     Picks the chastity device worn this session. It stays the same as the previous session
+    ///     unless the safe was opened at the previous session's close (IsSafeLocked == false), in
+    ///     which case a new one is drawn at random from the eligible items. Returns null if no
+    ///     items are configured as eligible.
+    /// </summary>
+    private static ClothingItem? ResolveChastityDevice(GameState? state, List<ClothingItem> wardrobe, SaveRepository saveRepo)
+    {
+        var eligibleIds = saveRepo.GetChastityDeviceItems().Select(c => c.ClothingItemId).ToHashSet();
+        var eligible = wardrobe.Where(i => eligibleIds.Contains(i.Id)).ToList();
+        if (eligible.Count == 0)
+        {
+            return null;
+        }
+
+        var keepCurrent = state?.CurrentChastityDeviceItemId is not null && state.IsSafeLocked;
+        var chosen = keepCurrent
+            ? wardrobe.FirstOrDefault(i => i.Id == state!.CurrentChastityDeviceItemId) ?? eligible[Random.Shared.Next(eligible.Count)]
+            : eligible[Random.Shared.Next(eligible.Count)];
+
+        if (state is not null && state.CurrentChastityDeviceItemId != chosen.Id)
+        {
+            state.CurrentChastityDeviceItemId = chosen.Id;
+            saveRepo.SaveGameState(state);
+        }
+
+        return chosen;
+    }
+
     /// <summary>Builds an Outfit from a fixed list of items without the builder.</summary>
     private static Outfit BuildOutfitFromFixedItems(List<ClothingItem> items)
     {
@@ -292,6 +339,11 @@ public partial class StartSessionViewModel : ViewModelBase
         _regenCount++;
 
         var builder = new OutfitBuilder(_saveRepo.GetWardrobe(), _saveRepo.GetOutfitRules());
+        if (_chastityDeviceItem is not null)
+        {
+            builder.AddSeedItems([_chastityDeviceItem]);
+        }
+
         _outfit = builder.Build();
         _outfitMultiplier = _outfit.TotalMultiplier;
         ProposedOutfit = _outfit.ToString();

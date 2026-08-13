@@ -14,6 +14,27 @@ public partial class SettingsOutfitRulesTab : UserControl
         InitializeComponent();
     }
 
+    // The tag ComboBoxes are editable (free-typed new tags must still work), so Text alone is
+    // bound for typing. SelectionChanged additionally captures the full tag string when a
+    // suggestion is actually clicked — ignoring the null "deselected" events an editable
+    // ComboBox fires while the typed text no longer matches any item, which would otherwise
+    // clobber what was just typed.
+    private static void OnSourceTagSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox { DataContext: OutfitRuleEditViewModel vm } && e.AddedItems is [string tag])
+        {
+            vm.SourceTag = tag;
+        }
+    }
+
+    private static void OnRelatedTagSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox { DataContext: OutfitRuleEditViewModel vm } && e.AddedItems is [string tag])
+        {
+            vm.RelatedTag = tag;
+        }
+    }
+
     protected override void OnDataContextChanged(EventArgs e)
     {
         base.OnDataContextChanged(e);

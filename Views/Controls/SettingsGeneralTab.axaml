@@ -195,6 +195,37 @@
                 </StackPanel>
             </Border>
 
+            <!--  Chastity Device  -->
+            <TextBlock
+                Classes="Heading"
+                Margin="0,8,0,8"
+                Text="{converters:Tr SettingsHeadingChastityDevice}" />
+            <Border Classes="card">
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        Text="{converters:Tr SettingsChastityDeviceDescription}"
+                        TextWrapping="Wrap" />
+
+                    <ItemsControl ItemsSource="{Binding ChastityDeviceItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChastityDeviceItemEditViewModel">
+                                <ToggleButton
+                                    Classes="filterChip"
+                                    Content="{Binding Name}"
+                                    IsChecked="{Binding IsEligible}"
+                                    Margin="0,0,4,4" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
             <!--  Plug & Play  -->
             <TextBlock
                 Classes="Heading"

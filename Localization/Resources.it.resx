@@ -1269,6 +1269,12 @@
   <data name="SettingsDiaperPlayDescription" xml:space="preserve">
     <value>Se la tenuta del giorno prevede tale imbottitura, non le sarà concesso di recarsi alla toilette, e scoprirà di aver bisogno di bere assai più spesso.</value>
   </data>
+  <data name="SettingsHeadingChastityDevice" xml:space="preserve">
+    <value>Dispositivo di castità</value>
+  </data>
+  <data name="SettingsChastityDeviceDescription" xml:space="preserve">
+    <value>Uno dei capi contrassegnati verrà scelto a caso e chiuso su di lei ad ogni sessione; la chiave attende in cassaforte, e solo una cassaforte aperta consente di cambiare compagnia.</value>
+  </data>
   <data name="SettingsEnabled" xml:space="preserve">
     <value>Attivo</value>
   </data>

@@ -32,6 +32,11 @@ public class GameState
     // confirmation.
     public bool DiaperPlayActiveThisSession { get; set; }
 
+    // The chastity device currently locked on. Persists across sessions regardless of the daily
+    // outfit lock; only re-rolled when the safe was opened at the previous session's close
+    // (IsSafeLocked == false).
+    public int? CurrentChastityDeviceItemId { get; set; }
+
     /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
     [BsonIgnore]
     public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;

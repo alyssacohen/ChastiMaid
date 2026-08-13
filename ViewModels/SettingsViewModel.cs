@@ -190,24 +190,6 @@ public partial class SettingsViewModel : ViewModelBase
 
         var allWardrobe = _repo.GetWardrobe().ToList();
 
-        var plugAndPlayConfigs = _repo.GetPlugAndPlayItems();
-        foreach (var w in allWardrobe.Where(w => w.Layers.Contains(4))) // 4 = Accessories layer
-        {
-            var existing = plugAndPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
-            PlugAndPlayItems.Add(WireChild(
-                new PlugAndPlayItemEditViewModel(w, existing),
-                () => IsGeneralDirty = true));
-        }
-
-        var diaperPlayConfigs = _repo.GetDiaperPlayItems();
-        foreach (var w in allWardrobe.Where(w => w.Layers.Contains(0))) // 0 = Underwear layer
-        {
-            var existing = diaperPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
-            DiaperPlayItems.Add(WireChild(
-                new DiaperPlayItemEditViewModel(w, existing),
-                () => IsGeneralDirty = true));
-        }
-
         var initTags = allWardrobe.SelectMany(i => i.Tags).Distinct().OrderBy(s => s).ToList();
         var initSlots = allWardrobe.SelectMany(i => i.Slots).Distinct().OrderBy(s => s).ToList();
         foreach (var w in allWardrobe)
@@ -216,6 +198,36 @@ public partial class SettingsViewModel : ViewModelBase
                 ExpandWardrobeItem);
             WireWardrobeItem(vm);
             WardrobeItems.Add(vm);
+        }
+
+        // Eligibility chip lists are derived from WardrobeItems (not the raw ClothingItem snapshot)
+        // so each chip holds a live reference to its WardrobeEditViewModel — see WireWardrobeItem /
+        // SyncEligibilityChips for how they stay in sync as items are added/edited/removed later.
+        var plugAndPlayConfigs = _repo.GetPlugAndPlayItems();
+        var diaperPlayConfigs = _repo.GetDiaperPlayItems();
+        var chastityDeviceConfigs = _repo.GetChastityDeviceItems();
+        foreach (var w in WardrobeItems)
+        {
+            if (w.Layers.Contains(4)) // 4 = Accessories layer
+            {
+                var existing = plugAndPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
+                PlugAndPlayItems.Add(WireChild(
+                    new PlugAndPlayItemEditViewModel(w, existing),
+                    () => IsGeneralDirty = true));
+            }
+
+            if (w.Layers.Contains(0)) // 0 = Underwear layer
+            {
+                var existingDiaper = diaperPlayConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
+                DiaperPlayItems.Add(WireChild(
+                    new DiaperPlayItemEditViewModel(w, existingDiaper),
+                    () => IsGeneralDirty = true));
+
+                var existingDevice = chastityDeviceConfigs.FirstOrDefault(c => c.ClothingItemId == w.Id);
+                ChastityDeviceItems.Add(WireChild(
+                    new ChastityDeviceItemEditViewModel(w, existingDevice),
+                    () => IsGeneralDirty = true));
+            }
         }
 
         foreach (var r in _repo.GetOutfitRules())
@@ -462,6 +474,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<PermissionTypeEditViewModel> PermissionTypes { get; } = [];
     public ObservableCollection<PlugAndPlayItemEditViewModel> PlugAndPlayItems { get; } = [];
     public ObservableCollection<DiaperPlayItemEditViewModel> DiaperPlayItems { get; } = [];
+    public ObservableCollection<ChastityDeviceItemEditViewModel> ChastityDeviceItems { get; } = [];
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
 
@@ -541,9 +554,80 @@ public partial class SettingsViewModel : ViewModelBase
                     break;
             }
         };
-        vm.Layers.CollectionChanged += (_, _) => IsWardrobeDirty = true;
+        vm.Layers.CollectionChanged += (_, _) =>
+        {
+            IsWardrobeDirty = true;
+            SyncEligibilityChips(vm);
+        };
         vm.Slots.CollectionChanged += (_, _) => IsWardrobeDirty = true;
         vm.Tags.CollectionChanged += (_, _) => IsWardrobeDirty = true;
+    }
+
+    /// <summary>
+    ///     Adds/removes this item's chip from each eligibility list (Plug &amp; Play, Diaper Play,
+    ///     Chastity Device) so the lists reflect the item's current Layers immediately — needed both
+    ///     for a freshly-added row (whose initial Layers never fire Layers.CollectionChanged, since
+    ///     they're set directly in the WardrobeEditViewModel constructor) and for later layer toggles
+    ///     on any existing item.
+    /// </summary>
+    private void SyncEligibilityChips(WardrobeEditViewModel item)
+    {
+        SyncEligibilityChip(PlugAndPlayItems, item, 4, w => new PlugAndPlayItemEditViewModel(w, null),
+            _repo.DeletePlugAndPlayItem);
+        SyncEligibilityChip(DiaperPlayItems, item, 0, w => new DiaperPlayItemEditViewModel(w, null),
+            _repo.DeleteDiaperPlayItem);
+        SyncEligibilityChip(ChastityDeviceItems, item, 0, w => new ChastityDeviceItemEditViewModel(w, null),
+            _repo.DeleteChastityDeviceItem);
+    }
+
+    private void SyncEligibilityChip<TChip>(
+        ObservableCollection<TChip> chips,
+        WardrobeEditViewModel item,
+        int requiredLayer,
+        Func<WardrobeEditViewModel, TChip> factory,
+        Action<int> deleteConfig)
+        where TChip : class, IWardrobeEligibilityChip
+    {
+        var existingChip = chips.FirstOrDefault(c => ReferenceEquals(c.Source, item));
+        var shouldExist = item.Layers.Contains(requiredLayer);
+
+        if (shouldExist && existingChip is null)
+        {
+            chips.Add(WireChild(factory(item), () => IsGeneralDirty = true));
+        }
+        else if (!shouldExist && existingChip is not null)
+        {
+            chips.Remove(existingChip);
+            if (existingChip.ConfigId is { } configId)
+            {
+                deleteConfig(configId);
+            }
+        }
+    }
+
+    /// <summary>Removes this item's chip (and any persisted config) from every eligibility list.</summary>
+    private void RemoveEligibilityChips(WardrobeEditViewModel item)
+    {
+        RemoveEligibilityChip(PlugAndPlayItems, item, _repo.DeletePlugAndPlayItem);
+        RemoveEligibilityChip(DiaperPlayItems, item, _repo.DeleteDiaperPlayItem);
+        RemoveEligibilityChip(ChastityDeviceItems, item, _repo.DeleteChastityDeviceItem);
+    }
+
+    private static void RemoveEligibilityChip<TChip>(
+        ObservableCollection<TChip> chips, WardrobeEditViewModel item, Action<int> deleteConfig)
+        where TChip : class, IWardrobeEligibilityChip
+    {
+        var chip = chips.FirstOrDefault(c => ReferenceEquals(c.Source, item));
+        if (chip is null)
+        {
+            return;
+        }
+
+        chips.Remove(chip);
+        if (chip.ConfigId is { } configId)
+        {
+            deleteConfig(configId);
+        }
     }
 
     private void RemoveWardrobeItem(int id)
@@ -555,6 +639,7 @@ public partial class SettingsViewModel : ViewModelBase
         }
 
         WardrobeItems.Remove(item);
+        RemoveEligibilityChips(item);
         if (id > 0)
         {
             _repo.DeleteClothingItem(id);
@@ -592,6 +677,7 @@ public partial class SettingsViewModel : ViewModelBase
             ExpandWardrobeItem);
         WireWardrobeItem(vm);
         WardrobeItems.Add(vm);
+        SyncEligibilityChips(vm);
 
         ResetNewItemPanel();
 
@@ -615,6 +701,7 @@ public partial class SettingsViewModel : ViewModelBase
         foreach (var item in toDelete)
         {
             WardrobeItems.Remove(item);
+            RemoveEligibilityChips(item);
             if (item.Id > 0)
             {
                 _repo.DeleteClothingItem(item.Id);
@@ -885,6 +972,21 @@ public partial class SettingsViewModel : ViewModelBase
                 d.ConfigId = null;
             }
         }
+
+        foreach (var c in ChastityDeviceItems)
+        {
+            if (c.IsEligible)
+            {
+                var model = c.ToModel();
+                _repo.SaveChastityDeviceItem(model);
+                c.ConfigId = model.Id;
+            }
+            else if (c.ConfigId is { } configId)
+            {
+                _repo.DeleteChastityDeviceItem(configId);
+                c.ConfigId = null;
+            }
+        }
     }
 }
 
@@ -1043,24 +1145,36 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
     public ICommand DeleteCommand { get; }
 }
 
-public partial class PlugAndPlayItemEditViewModel : ViewModelBase
+/// <summary>
+///     Implemented by the per-mechanism wardrobe eligibility chip VMs (Plug &amp; Play, Diaper Play,
+///     Chastity Device). Holding a live reference to the source <see cref="WardrobeEditViewModel" />
+///     instead of a copied id keeps the chip correct across renames and across the Id reassignment
+///     that happens when a brand-new (unsaved, Id == 0) wardrobe item is first persisted.
+/// </summary>
+public interface IWardrobeEligibilityChip : INotifyPropertyChanged
+{
+    WardrobeEditViewModel Source { get; }
+    int? ConfigId { get; }
+}
+
+public partial class PlugAndPlayItemEditViewModel : ViewModelBase, IWardrobeEligibilityChip
 {
     [Reactive] private bool _isEligible;
     [Reactive] private int _minDurationMinutes;
     [Reactive] private int _maxDurationMinutes;
 
-    public PlugAndPlayItemEditViewModel(ClothingItem item, PlugAndPlayItemConfig? existing)
+    public PlugAndPlayItemEditViewModel(WardrobeEditViewModel source, PlugAndPlayItemConfig? existing)
     {
-        ClothingItemId = item.Id;
-        Name = item.Name;
+        Source = source;
         ConfigId = existing?.Id;
         _isEligible = existing is not null;
         _minDurationMinutes = existing?.MinDurationMinutes ?? 30;
         _maxDurationMinutes = existing?.MaxDurationMinutes ?? 120;
     }
 
-    public int ClothingItemId { get; }
-    public string Name { get; }
+    public WardrobeEditViewModel Source { get; }
+    public int ClothingItemId => Source.Id;
+    public string Name => Source.Name;
     public int? ConfigId { get; internal set; }
 
     public PlugAndPlayItemConfig ToModel()
@@ -1075,25 +1189,51 @@ public partial class PlugAndPlayItemEditViewModel : ViewModelBase
     }
 }
 
-public partial class DiaperPlayItemEditViewModel : ViewModelBase
+public partial class DiaperPlayItemEditViewModel : ViewModelBase, IWardrobeEligibilityChip
 {
     [Reactive] private bool _isEligible;
 
-    public DiaperPlayItemEditViewModel(ClothingItem item, DiaperPlayItemConfig? existing)
+    public DiaperPlayItemEditViewModel(WardrobeEditViewModel source, DiaperPlayItemConfig? existing)
     {
-        ClothingItemId = item.Id;
-        Name = item.Name;
+        Source = source;
         ConfigId = existing?.Id;
         _isEligible = existing is not null;
     }
 
-    public int ClothingItemId { get; }
-    public string Name { get; }
+    public WardrobeEditViewModel Source { get; }
+    public int ClothingItemId => Source.Id;
+    public string Name => Source.Name;
     public int? ConfigId { get; internal set; }
 
     public DiaperPlayItemConfig ToModel()
     {
         return new DiaperPlayItemConfig
+        {
+            Id = ConfigId ?? 0,
+            ClothingItemId = ClothingItemId,
+        };
+    }
+}
+
+public partial class ChastityDeviceItemEditViewModel : ViewModelBase, IWardrobeEligibilityChip
+{
+    [Reactive] private bool _isEligible;
+
+    public ChastityDeviceItemEditViewModel(WardrobeEditViewModel source, ChastityDeviceItemConfig? existing)
+    {
+        Source = source;
+        ConfigId = existing?.Id;
+        _isEligible = existing is not null;
+    }
+
+    public WardrobeEditViewModel Source { get; }
+    public int ClothingItemId => Source.Id;
+    public string Name => Source.Name;
+    public int? ConfigId { get; internal set; }
+
+    public ChastityDeviceItemConfig ToModel()
+    {
+        return new ChastityDeviceItemConfig
         {
             Id = ConfigId ?? 0,
             ClothingItemId = ClothingItemId,

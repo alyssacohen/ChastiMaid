@@ -1269,6 +1269,12 @@
   <data name="SettingsDiaperPlayDescription" xml:space="preserve">
     <value>Should the day's outfit call for such padding, she will not be excused to the water closet, and she will find herself needing a drink rather more often.</value>
   </data>
+  <data name="SettingsHeadingChastityDevice" xml:space="preserve">
+    <value>Chastity Device</value>
+  </data>
+  <data name="SettingsChastityDeviceDescription" xml:space="preserve">
+    <value>One of the marked pieces will be selected at random and locked upon her each session; the key waits in the safe, and only an open safe permits a change of company.</value>
+  </data>
   <data name="SettingsEnabled" xml:space="preserve">
     <value>Enabled</value>
   </data>

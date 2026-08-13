@@ -17,6 +17,9 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<DiaperPlayItemConfig> DiaperPlayItems =>
         db.GetCollection<DiaperPlayItemConfig>("diaper_play_items");
 
+    private ILiteCollection<ChastityDeviceItemConfig> ChastityDeviceItems =>
+        db.GetCollection<ChastityDeviceItemConfig>("chastity_device_items");
+
     private ILiteCollection<PlayerStats> Stats => db.GetCollection<PlayerStats>("player_stats");
     private ILiteCollection<GameSettings> Settings => db.GetCollection<GameSettings>("game_settings");
 
@@ -117,6 +120,21 @@ public class ProfileRepository(LiteDatabase db)
     public void DeleteDiaperPlayItem(int id)
     {
         DiaperPlayItems.Delete(id);
+    }
+
+    public List<ChastityDeviceItemConfig> GetChastityDeviceItems()
+    {
+        return ChastityDeviceItems.FindAll().ToList();
+    }
+
+    public void SaveChastityDeviceItem(ChastityDeviceItemConfig item)
+    {
+        ChastityDeviceItems.Upsert(item);
+    }
+
+    public void DeleteChastityDeviceItem(int id)
+    {
+        ChastityDeviceItems.Delete(id);
     }
 
     public PlayerStats GetStats()
