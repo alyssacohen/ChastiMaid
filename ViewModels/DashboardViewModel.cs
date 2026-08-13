@@ -74,6 +74,7 @@ public partial class DashboardViewModel : ViewModelBase
     private CancellationTokenSource? _captureCts;
     [Reactive] private string _choreResultMessage = "";
     private DateTime _choreStartTime;
+    private double _choreTargetMinutes;
     private DispatcherTimer? _choreTimer;
 
     private ImpossibleQuestion? _currentQuestion;
@@ -1360,6 +1361,8 @@ public partial class DashboardViewModel : ViewModelBase
         BusyChoreDescription = _activeChore.Description;
         BusyChoreValueDisplay = CurrencyConverter.Format(Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2));
         _choreStartTime = DateTime.UtcNow;
+        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChore.ChoreId);
+        _choreTargetMinutes = chore is null ? 0 : chore.MinCompletionMinutes * (0.85 + _random.NextDouble() * 0.30);
         BusyElapsed = "00:00";
 
         _choreTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -1386,18 +1389,32 @@ public partial class DashboardViewModel : ViewModelBase
 
         var elapsed = DateTime.UtcNow - _choreStartTime;
         var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChore.ChoreId);
-        var tooEarly = chore is not null && elapsed.TotalMinutes < chore.MinCompletionMinutes;
+        var tooEarly = chore is not null && elapsed.TotalMinutes < _choreTargetMinutes;
+        var tooSlow = chore is not null && !tooEarly && elapsed.TotalMinutes > _choreTargetMinutes * 1.35;
 
-        if (tooEarly)
+        if (tooEarly || tooSlow)
         {
-            var reason = _activeChore.IsOccasional
-                ? "PunishmentReasonOccasionalTaskTooEarly"
-                : "PunishmentReasonChoreTooEarly";
-            _saveRepo.AssignPunishment(InfractionSeverity.ChoreTooEarly, reason);
+            var minutesOff = tooEarly
+                ? _choreTargetMinutes - elapsed.TotalMinutes
+                : elapsed.TotalMinutes - _choreTargetMinutes * 1.35;
+            var severity = 5 + (int)Math.Ceiling(minutesOff);
+
+            var reason = (_activeChore.IsOccasional, tooEarly) switch
+            {
+                (true, true) => "PunishmentReasonOccasionalTaskTooEarly",
+                (true, false) => "PunishmentReasonOccasionalTaskTooSlow",
+                (false, true) => "PunishmentReasonChoreTooEarly",
+                (false, false) => "PunishmentReasonChoreTooSlow",
+            };
+            _saveRepo.AssignPunishment((severity, severity), reason);
             RefreshPunishments();
-            ChoreResultMessage = _activeChore.IsOccasional
-                ? Resources.Get("DashboardOccasionalTaskRejectedMessage")
-                : Resources.Get("DashboardChoreRejectedMessage");
+            ChoreResultMessage = (_activeChore.IsOccasional, tooEarly) switch
+            {
+                (true, true) => Resources.Get("DashboardOccasionalTaskRejectedMessage"),
+                (true, false) => Resources.Get("DashboardOccasionalTaskTooSlowRejectedMessage"),
+                (false, true) => Resources.Get("DashboardChoreRejectedMessage"),
+                (false, false) => Resources.Get("DashboardChoreTooSlowRejectedMessage"),
+            };
         }
         else
         {

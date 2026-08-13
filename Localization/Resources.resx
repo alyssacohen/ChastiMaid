@@ -195,6 +195,12 @@
   <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
     <value>For declaring a task done when it plainly was not.</value>
   </data>
+  <data name="PunishmentReasonChoreTooSlow" xml:space="preserve">
+    <value>For dawdling well past what the task required.</value>
+  </data>
+  <data name="PunishmentReasonOccasionalTaskTooSlow" xml:space="preserve">
+    <value>For treating a simple task as an excuse for idleness.</value>
+  </data>
   <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
     <value>For failing to remain still in the corner.</value>
   </data>
@@ -374,6 +380,12 @@
   </data>
   <data name="DashboardOccasionalTaskRejectedMessage" xml:space="preserve">
     <value>A task declared complete in mere moments is no task completed at all — it shall be marked void, and answered for.</value>
+  </data>
+  <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
+    <value>Such leisurely pace suggests idle hands, not honest labour — this too shall not go unanswered.</value>
+  </data>
+  <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
+    <value>A task drawn out this long was not diligence — it was dawdling, and it shall be marked void.</value>
   </data>
   <data name="DashboardAddOccasionalTask" xml:space="preserve">
     <value>Add task</value>

@@ -137,6 +137,18 @@ In this mode, the user is "busy", the app checks if she is working by silently t
 seconds) at random intervals between a min and a max configured in the settings.
 When the chore is finished, the user can click the button and the value will be subtracted from the debt.
 
+Each time a chore is started, a target completion time is rolled: a random value between -15% and +15% of the
+chore's configured minimum completion time. This target — not the configured value directly — is the threshold
+used to judge the chore when it ends, so the user cannot learn the exact cutoff over repeated attempts. The chore
+is valid only if ended within `[target, target × 1.35]`:
+
+- Ended before `target`: too fast, no pay, void, punishment assigned ("too early").
+- Ended after `target × 1.35`: too slow, no pay, void, punishment assigned ("too slow").
+- Ended in between: paid normally.
+
+In both failure cases, the punishment severity is `5 + minutes off the valid window` (rounded up) — the further
+outside the window, the harsher the punishment.
+
 
 ### Occasional tasks
 
@@ -152,9 +164,10 @@ dashboard for irregular work that has no fixed cadence.
 - Pay differs from regular chores: instead of a fixed value, it is computed from the actual time
   spent — double the idle wage rate (idle wage amount / idle wage interval) per minute, times the
   outfit multiplier.
-- The estimated time doubles as the minimum completion time: if the user ends the task before it has
-  elapsed, no pay is given, the task is declared void, and a punishment is assigned — same mechanism
-  as finishing a regular chore too early. In that case, the task remains in the list to be retried.
+- The estimated time doubles as the chore's configured minimum completion time, so it is subject to the same
+  randomized target and too-fast/too-slow window described above. If the user ends the task outside that
+  window, no pay is given, the task is declared void, and a punishment is assigned — same mechanism as
+  finishing a regular chore too early or too slow. In that case, the task remains in the list to be retried.
 - Once paid successfully, the task is removed from the list.
 
 ### Busy mode (cornertime)

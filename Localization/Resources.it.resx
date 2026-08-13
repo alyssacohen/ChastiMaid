@@ -195,6 +195,12 @@
   <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
     <value>Per aver dichiarato concluso un compito che tale palesemente non era.</value>
   </data>
+  <data name="PunishmentReasonChoreTooSlow" xml:space="preserve">
+    <value>Per aver bighellonato ben oltre quanto il compito richiedesse.</value>
+  </data>
+  <data name="PunishmentReasonOccasionalTaskTooSlow" xml:space="preserve">
+    <value>Per aver trattato un compito semplice come scusa per l'ozio.</value>
+  </data>
   <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
     <value>Per non essere rimasta immobile nell'angolo.</value>
   </data>
@@ -374,6 +380,12 @@
   </data>
   <data name="DashboardOccasionalTaskRejectedMessage" xml:space="preserve">
     <value>Un compito dichiarato concluso in pochi istanti non è un compito concluso affatto — sarà considerato nullo, e ne risponderete.</value>
+  </data>
+  <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
+    <value>Un passo così ozioso suggerisce mani inoperose, non un lavoro onesto — anche questo non resterà impunito.</value>
+  </data>
+  <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
+    <value>Un compito trascinato così a lungo non era diligenza — era ozio, e sarà considerato nullo.</value>
   </data>
   <data name="DashboardAddOccasionalTask" xml:space="preserve">
     <value>Aggiungi compito</value>
