@@ -1032,6 +1032,9 @@
   <data name="ChangeOutfitLegendUnavailable" xml:space="preserve">
     <value>unavailable</value>
   </data>
+  <data name="ChangeOutfitLegendLocked" xml:space="preserve">
+    <value>locked (chastity device)</value>
+  </data>
   <data name="ChangeOutfitItemsSelectedLabel" xml:space="preserve">
     <value>items selected</value>
   </data>

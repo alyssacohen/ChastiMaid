@@ -42,7 +42,7 @@ public class OutfitChipComposer
 
     private void OnChipToggled(ChipViewModel chip)
     {
-        if (chip.State is ChipState.Disabled)
+        if (chip.State is ChipState.Disabled || chip.IsLocked)
         {
             return;
         }
@@ -51,9 +51,20 @@ public class OutfitChipComposer
         _onChipToggled();
     }
 
+    /// <summary>Marks the chip for the given item/layer as permanently selected and non-toggleable (used for the currently-worn chastity device).</summary>
+    public void LockItem(int itemId, int layer)
+    {
+        var chip = AllChips().FirstOrDefault(c => c.ItemId == itemId && c.Layer == layer);
+        if (chip is not null)
+        {
+            chip.State = ChipState.Selected;
+            chip.IsLocked = true;
+        }
+    }
+
     public void ClearSelection()
     {
-        foreach (var chip in AllChips())
+        foreach (var chip in AllChips().Where(c => !c.IsLocked))
         {
             chip.State = ChipState.Normal;
         }

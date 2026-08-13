@@ -49,6 +49,11 @@ public partial class ForcedOutfitPresetEditorViewModel : ViewModelBase
         _allItems = repo.GetWardrobe();
         _allRules = repo.GetOutfitRules();
 
+        // Chastity devices are never hand-picked here — they're always resolved at generation
+        // time (random draw or carried over from the previous session), even for full outfits.
+        var deviceEligibleIds = repo.GetChastityDeviceItems().Select(c => c.ClothingItemId).ToHashSet();
+        _allItems = _allItems.Where(i => !deviceEligibleIds.Contains(i.Id)).ToList();
+
         _composer = new OutfitChipComposer(_allItems, ValidateRules);
         _ruleValidator = new OutfitRuleValidator(_allRules);
 

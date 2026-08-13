@@ -71,6 +71,11 @@ public partial class StartSessionViewModel : ViewModelBase
             var chastityDeviceItem = ResolveChastityDevice(state, wardrobe, saveRepo);
             _chastityDeviceItem = chastityDeviceItem;
 
+            // A forced-outfit preset should never carry a device id of its own (the editor excludes
+            // them), but strip any stale/legacy one out of already-saved data before seeding, so it
+            // can never collide with the device resolved above.
+            var deviceEligibleIds = saveRepo.GetChastityDeviceItems().Select(c => c.ClothingItemId).ToHashSet();
+
             // Priority 1: active forced-outfit punishment with sessions remaining
             var forcedPunishment = saveRepo.GetActivePunishments()
                 .FirstOrDefault(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0);
@@ -82,17 +87,24 @@ public partial class StartSessionViewModel : ViewModelBase
 
                 if (forcedPunishment.ForceFullOutfit && forcedPunishment.ForcedClothingItemIds?.Count > 0)
                 {
-                    // Entire outfit is fixed: place only the specified items
+                    // Entire outfit is fixed: place the specified items, plus the resolved device
                     var forcedItems = wardrobe
-                        .Where(i => forcedPunishment.ForcedClothingItemIds.Contains(i.Id))
+                        .Where(i => forcedPunishment.ForcedClothingItemIds.Contains(i.Id) &&
+                            !deviceEligibleIds.Contains(i.Id))
                         .ToList();
+                    if (chastityDeviceItem is not null)
+                    {
+                        forcedItems.Add(chastityDeviceItem);
+                    }
+
                     _outfit = BuildOutfitFromFixedItems(forcedItems);
                 }
                 else
                 {
                     // Partial forced: specified items as seeds, builder fills the rest
                     var seeds = wardrobe
-                        .Where(i => forcedPunishment.ForcedClothingItemIds?.Contains(i.Id) == true)
+                        .Where(i => forcedPunishment.ForcedClothingItemIds?.Contains(i.Id) == true &&
+                            !deviceEligibleIds.Contains(i.Id))
                         .ToList();
                     var builder = new OutfitBuilder(wardrobe, rules);
                     builder.AddSeedItems(seeds);

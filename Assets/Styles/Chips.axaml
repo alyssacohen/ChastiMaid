@@ -19,6 +19,11 @@
         <Setter Property="Background" Value="{DynamicResource BrushChipRequired}" />
     </Style>
 
+    <!-- chip.locked — chastity device already worn, non-toggleable -->
+    <Style Selector="Border.chip.locked">
+        <Setter Property="Background" Value="{DynamicResource BrushAmberBackground}" />
+    </Style>
+
     <!-- chip-label — inner text for all chip states -->
     <Style Selector="TextBlock.chip-label">
         <Setter Property="FontFamily" Value="Inter" />
@@ -33,6 +38,11 @@
         Selector="Border.chip.selected TextBlock.chip-label,
                    Border.chip.required TextBlock.chip-label">
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
+    </Style>
+
+    <!-- chip-label on locked chip — amber text, overrides the selected/required rule above -->
+    <Style Selector="Border.chip.locked TextBlock.chip-label">
+        <Setter Property="Foreground" Value="{DynamicResource BrushAmberText}" />
     </Style>
 
     <!-- × indicator — always visible; whole chip is the click target via Tapped -->
@@ -84,6 +94,12 @@
 
     <Style Selector="Button.chip.disabled">
         <Setter Property="Opacity" Value="0.28" />
+    </Style>
+
+    <!-- Locked (chastity device) — comes after .selected so its background wins on the locked+selected chip -->
+    <Style Selector="Button.chip.locked">
+        <Setter Property="Background" Value="{DynamicResource BrushAmberBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushAmberText}" />
     </Style>
 
 </Styles>

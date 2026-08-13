@@ -19,6 +19,7 @@ public enum ChipState
 public partial class ChipViewModel : ViewModelBase
 {
     [Reactive] private ChipState _state;
+    [Reactive] private bool _isLocked;
 
     public ChipViewModel(ClothingItem item, int layer, Action<ChipViewModel> onToggle)
     {
@@ -92,6 +93,12 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         _allItems = saveRepo.GetWardrobe();
         _allRules = saveRepo.GetOutfitRules();
 
+        // The chastity device already worn today (if any) stays locked in place; every other
+        // device-eligible item is excluded — device swapping isn't a user action.
+        var deviceEligibleIds = saveRepo.GetChastityDeviceItems().Select(c => c.ClothingItemId).ToHashSet();
+        var currentDeviceItem = _currentOutfit.Items.FirstOrDefault(i => deviceEligibleIds.Contains(i.Id));
+        _allItems = _allItems.Where(i => !deviceEligibleIds.Contains(i.Id) || i == currentDeviceItem).ToList();
+
         _composer = new OutfitChipComposer(_allItems, ValidateRules);
         _ruleValidator = new OutfitRuleValidator(_allRules);
 
@@ -99,6 +106,16 @@ public partial class ChangeOutfitViewModel : ViewModelBase
             .Select(i => (Id: i.Id, Layer: _currentOutfit.LayerOf(i)))
             .Where(p => p.Layer.HasValue)
             .Select(p => (p.Id, p.Layer!.Value)));
+
+        if (currentDeviceItem is not null)
+        {
+            var deviceLayer = _currentOutfit.LayerOf(currentDeviceItem);
+            if (deviceLayer.HasValue)
+            {
+                _composer.LockItem(currentDeviceItem.Id, deviceLayer.Value);
+            }
+        }
+
         ValidateRules();
 
         IntegrateCommand = ReactiveCommand.Create(Integrate);

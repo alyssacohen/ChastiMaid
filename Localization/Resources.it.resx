@@ -1032,6 +1032,9 @@
   <data name="ChangeOutfitLegendUnavailable" xml:space="preserve">
     <value>non disponibile</value>
   </data>
+  <data name="ChangeOutfitLegendLocked" xml:space="preserve">
+    <value>bloccato (dispositivo di castità)</value>
+  </data>
   <data name="ChangeOutfitItemsSelectedLabel" xml:space="preserve">
     <value>capi selezionati</value>
   </data>

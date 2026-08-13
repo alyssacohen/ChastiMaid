@@ -48,6 +48,15 @@
                             <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendUnavailable}" VerticalAlignment="Center" />
                         </StackPanel>
 
+                        <!-- Locked state (chastity device) -->
+                        <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+                            <Border Classes="chip locked">
+                                <TextBlock Classes="chip-label"
+                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                            </Border>
+                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendLocked}" VerticalAlignment="Center" />
+                        </StackPanel>
+
                     </StackPanel>
                 </Border>
 
@@ -83,7 +92,8 @@
                                                     Classes.chip="True"
                                                     Classes.selected="{Binding IsSelected}"
                                                     Classes.required="{Binding IsRequired}"
-                                                    Classes.disabled="{Binding IsDisabled}">
+                                                    Classes.disabled="{Binding IsDisabled}"
+                                                    Classes.locked="{Binding IsLocked}">
                                                 <TextBlock Text="{Binding Name}" />
                                             </Button>
                                         </DataTemplate>
