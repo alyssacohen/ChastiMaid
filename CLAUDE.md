@@ -88,8 +88,11 @@ profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` wit
 
 **OutfitBuilder** builds a randomized outfit from snapshot wardrobe items, honoring requires/incompatible rules, layer
 probabilities, per-layer slot exclusivity, and weighted selection. Accepting an outfit lowers item `Weight`; rejecting
-raises it and increments `RejectionCount` (see `SaveRepository.AcceptItems`/`RejectItems`). The effective earning
-multiplier is `OutfitMultiplier × OutfitBonusPercent`.
+raises it and increments `RejectionCount` (see `SaveRepository.AcceptItems`/`RejectItems`). Every
+`WardrobeBalance.RescaleEveryNRejections` rejected outfits, `RejectItems` rescales every item's `Weight` back to the
+wardrobe's total at new-game time (`GameState.InitialWardrobeWeightTotal`/`WardrobeRejectionsSinceRescale`), keeping
+relative proportions without a hard floor/ceiling. The effective earning multiplier is
+`OutfitMultiplier × OutfitBonusPercent`.
 
 ## Conventions
 

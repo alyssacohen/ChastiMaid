@@ -31,12 +31,30 @@ public record ForcedSimulationResult(
     List<ItemStat> ItemStats);
 
 /// <summary>
-///     Repeatedly builds outfits with <see cref="OutfitBuilder" /> and applies the same accept/reject
-///     weight mutation as <c>SaveRepository.AcceptItems</c>/<c>RejectItems</c>, in memory, to observe how
-///     Weight drifts and how that drift shapes future selection odds across consecutive sessions.
+///     Repeatedly builds outfits with <see cref="OutfitBuilder" /> and applies the same accept/reject weight
+///     mutation as <c>SaveRepository.AcceptItems</c>/<c>RejectItems</c> — including the periodic rescale that
+///     restores the wardrobe's total Weight every <see cref="WardrobeBalance.RescaleEveryNRejections" /> rejected
+///     outfits — in memory, to observe how Weight drifts and how that drift shapes future selection odds across
+///     consecutive sessions.
 /// </summary>
 public static class OutfitStatsSimulator
 {
+    /// <summary>Mirrors <c>SaveRepository.RescaleWardrobeWeights</c>: rescales every item's Weight so the wardrobe total returns to <paramref name="initialTotal" />.</summary>
+    private static void RescaleWeights(List<ClothingItem> items, double initialTotal)
+    {
+        var currentTotal = items.Sum(i => i.Weight);
+        if (currentTotal <= 0)
+        {
+            return;
+        }
+
+        var factor = initialTotal / currentTotal;
+        foreach (var item in items)
+        {
+            item.Weight *= factor;
+        }
+    }
+
     public static SimulationResult Run(
         List<ClothingItem> items,
         List<OutfitRule> rules,
@@ -46,12 +64,14 @@ public static class OutfitStatsSimulator
         string scenarioName = "scenario")
     {
         var initialWeights = items.ToDictionary(i => i.Id, i => i.Weight);
+        var initialTotal = items.Sum(i => i.Weight);
         var selectionCounts = items.ToDictionary(i => i.Id, _ => 0);
         var masterRandom = new Random(masterSeed);
 
         var totalItemsPlaced = 0;
         var totalMultiplier = 0.0;
         var acceptedCount = 0;
+        var rejectionsSinceRescale = 0;
 
         for (var session = 0; session < iterations; session++)
         {
@@ -86,6 +106,13 @@ public static class OutfitStatsSimulator
                 {
                     item.Weight += WardrobeBalance.RejectWeightIncrement;
                     item.RejectionCount++;
+                }
+
+                rejectionsSinceRescale++;
+                if (rejectionsSinceRescale >= WardrobeBalance.RescaleEveryNRejections)
+                {
+                    RescaleWeights(items, initialTotal);
+                    rejectionsSinceRescale = 0;
                 }
             }
         }
@@ -140,6 +167,7 @@ public static class OutfitStatsSimulator
         string scenarioName = "scenario")
     {
         var initialWeights = items.ToDictionary(i => i.Id, i => i.Weight);
+        var initialTotal = items.Sum(i => i.Weight);
         var selectionCounts = items.ToDictionary(i => i.Id, _ => 0);
         var forcedCounts = items.ToDictionary(i => i.Id, _ => 0);
         var masterRandom = new Random(masterSeed);
@@ -148,6 +176,7 @@ public static class OutfitStatsSimulator
         var totalMultiplier = 0.0;
         var acceptedCount = 0;
         var forcedSessionCount = 0;
+        var rejectionsSinceRescale = 0;
 
         for (var session = 0; session < iterations; session++)
         {
@@ -207,6 +236,13 @@ public static class OutfitStatsSimulator
                 {
                     item.Weight += WardrobeBalance.RejectWeightIncrement;
                     item.RejectionCount++;
+                }
+
+                rejectionsSinceRescale++;
+                if (rejectionsSinceRescale >= WardrobeBalance.RescaleEveryNRejections)
+                {
+                    RescaleWeights(items, initialTotal);
+                    rejectionsSinceRescale = 0;
                 }
             }
         }

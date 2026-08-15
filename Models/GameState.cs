@@ -37,6 +37,12 @@ public class GameState
     // (IsSafeLocked == false).
     public int? CurrentChastityDeviceItemId { get; set; }
 
+    /// <summary>Sum of all wardrobe item Weight values at new-game snapshot time — the target the periodic rescale restores.</summary>
+    public double InitialWardrobeWeightTotal { get; set; }
+
+    /// <summary>Aggregate RejectItems calls since the last rescale; triggers WardrobeBalance.RescaleEveryNRejections.</summary>
+    public int WardrobeRejectionsSinceRescale { get; set; }
+
     /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
     [BsonIgnore]
     public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;

@@ -88,6 +88,11 @@ Slots represent body areas. Two items cannot occupy the same slot on the same la
 Items are chosen randomly with probability proportional to their `Weight` value.
 `Weight` vary when items are accepted or rejected.
 
+To keep the accept/reject drift from collapsing the whole wardrobe to the floor or growing it
+unbounded over a long game, every `RescaleEveryNRejections` (10) rejected outfits, all item `Weight`
+values are rescaled so their total returns to what it was at new-game time — preserving each item's
+relative proportion (the spread the player set up in Settings) without a hard per-item cap.
+
 ### Unwanted clothings (already implemented)
 The app keep track of how many times each item has been rejected. The count can decrease by 1 if the
 item is included in a subsequent outfit and accepted, but it can never be negative. If the count reaches 5,

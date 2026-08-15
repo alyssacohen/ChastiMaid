@@ -19,6 +19,9 @@ public static class WardrobeBalance
     /// <summary>RejectionCount at or above which an item is force-seeded into a non-editable outfit.</summary>
     public const int RejectionForceThreshold = 5;
 
+    /// <summary>Aggregate rejections (one per RejectItems call) after which all wardrobe weights are rescaled back to their initial total.</summary>
+    public const int RescaleEveryNRejections = 10;
+
     /// <summary>Max weighted-draw attempts OutfitBuilder makes to fill a single layer.</summary>
     public const int MaxFillAttemptsPerLayer = 10;
 

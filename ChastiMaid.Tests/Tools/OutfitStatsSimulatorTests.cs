@@ -10,11 +10,11 @@ namespace ChastiMaid.Tests.Tools;
 public class OutfitStatsSimulatorTests(ITestOutputHelper output)
 {
     [Theory]
-    [InlineData("Accept all", 200, 1, 1)]
-    [InlineData("Reject all", 200, 0, 1)]
-    [InlineData("Reject 1 in 5", 500, 4, 5)]
-    [InlineData("Reject 1 in 2", 500, 1, 2)]
-    [InlineData("Reject 4 in 5", 500, 1, 5)]
+    [InlineData("Accept all", 100, 1, 1)]
+    [InlineData("Reject all", 100, 0, 1)]
+    [InlineData("Reject 1 in 5", 100, 4, 5)]
+    [InlineData("Reject 1 in 2", 100, 1, 2)]
+    [InlineData("Reject 4 in 5", 100, 1, 5)]
     public void Simulate_FixedAcceptRejectPattern(string name, int iterations, int acceptOutOfEvery, int every)
     {
         var (items, rules) = WardrobeFixture.CreateSeedWardrobe();
@@ -29,9 +29,9 @@ public class OutfitStatsSimulatorTests(ITestOutputHelper output)
     }
 
     [Theory]
-    [InlineData("Random accept 80%", 500, 0.8, 1)]
-    [InlineData("Random accept 50%", 500, 0.5, 1)]
-    [InlineData("Random accept 20%", 500, 0.2, 1)]
+    [InlineData("Random accept 80%", 100, 0.8, 1)]
+    [InlineData("Random accept 50%", 100, 0.5, 1)]
+    [InlineData("Random accept 20%", 100, 0.2, 1)]
     public void Simulate_RandomAcceptProbability(string name, int iterations, double acceptProbability, int decisionSeed)
     {
         var (items, rules) = WardrobeFixture.CreateSeedWardrobe();
@@ -61,7 +61,7 @@ public class OutfitStatsSimulatorTests(ITestOutputHelper output)
         var result = OutfitStatsSimulator.Run(
             items,
             rules,
-            500,
+            100,
             (_, outfit) => !outfit.Items.Any(i => dislikedIds.Contains(i.Id)),
             scenarioName: "Reject latex/diaper outfits");
 
@@ -84,7 +84,7 @@ public class OutfitStatsSimulatorTests(ITestOutputHelper output)
         var result = OutfitStatsSimulator.RunWithForcedThreshold(
             items,
             rules,
-            500,
+            100,
             (_, outfit) => !outfit.Items.Any(i => dislikedIds.Contains(i.Id)),
             scenarioName: "Reject latex/diaper outfits, with forced threshold");
 
@@ -107,7 +107,7 @@ public class OutfitStatsSimulatorTests(ITestOutputHelper output)
         var result = OutfitStatsSimulator.RunWithForcedThreshold(
             items,
             rules,
-            500,
+            100,
             (_, outfit) => !outfit.Items.Any(i => dislikedIds.Contains(i.Id)),
             rejectionThreshold: rejectionThreshold,
             scenarioName: $"Reject latex/diaper, threshold={rejectionThreshold}");

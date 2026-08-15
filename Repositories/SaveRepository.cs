@@ -117,6 +117,44 @@ public class SaveRepository(LiteDatabase db)
             item.RejectionCount++;
             Wardrobe.Update(item);
         }
+
+        var state = GetGameState();
+        if (state is null)
+        {
+            return;
+        }
+
+        state.WardrobeRejectionsSinceRescale++;
+        if (state.WardrobeRejectionsSinceRescale >= WardrobeBalance.RescaleEveryNRejections)
+        {
+            RescaleWardrobeWeights(state);
+            state.WardrobeRejectionsSinceRescale = 0;
+        }
+
+        SaveGameState(state);
+    }
+
+    /// <summary>
+    ///     Restores the wardrobe's total Weight to what it was at new-game snapshot time, preserving each item's
+    ///     relative proportion — prevents the accept/reject economy from collapsing everything to
+    ///     <see cref="WardrobeBalance.AcceptWeightFloor" /> or growing unbounded over a long game, without needing a
+    ///     hard per-item cap that would erase the spread the user set up in Settings.
+    /// </summary>
+    private void RescaleWardrobeWeights(GameState state)
+    {
+        var wardrobe = Wardrobe.FindAll().ToList();
+        var currentTotal = wardrobe.Sum(i => i.Weight);
+        if (currentTotal <= 0)
+        {
+            return;
+        }
+
+        var factor = state.InitialWardrobeWeightTotal / currentTotal;
+        foreach (var item in wardrobe)
+        {
+            item.Weight *= factor;
+            Wardrobe.Update(item);
+        }
     }
 
     // --- In-game chores (can add during session, don't affect profile) ---
@@ -670,8 +708,9 @@ public class SaveRepository(LiteDatabase db)
         var save = new SaveRepository(saveDb);
 
         // Snapshot wardrobe
+        var wardrobeSnapshot = profile.GetWardrobe();
         var wardrobeCol = saveDb.GetCollection<ClothingItem>("wardrobe");
-        wardrobeCol.InsertBulk(profile.GetWardrobe());
+        wardrobeCol.InsertBulk(wardrobeSnapshot);
 
         // Snapshot outfit rules
         var rulesCol = saveDb.GetCollection<OutfitRule>("outfit_rules_v2");
@@ -715,6 +754,7 @@ public class SaveRepository(LiteDatabase db)
             DailyInterestRate = settings.DailyInterestRate,
             StartedAt = DateTime.UtcNow,
             LastSessionAt = DateTime.UtcNow,
+            InitialWardrobeWeightTotal = wardrobeSnapshot.Sum(i => i.Weight),
         });
 
         return save;
