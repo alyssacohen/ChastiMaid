@@ -161,9 +161,10 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 
 **Font families** — referenced as embedded Avalonia assets, not installed system fonts:
 
-- `Cormorant Garamond` — display serif, used in `PageTitle`, `SectionTitle`, `EmployerVoice` only. Files live in
-  `Assets/Fonts/CormorantGaramond/`; registered in `Typography.axaml` via URI
-  `avares://ChastiMaid/Assets/Fonts/CormorantGaramond#Cormorant Garamond`.
+- `Cormorant Infant` — display serif, used in `PageTitle`, `SectionTitle`, `NumberLarge`, `EmployerVoice` only.
+  Chosen over Cormorant Garamond for its lining (regular-height) figures, more legible on screen. Files live in
+  `Assets/Fonts/CormorantInfant/`; registered in `Typography.axaml` via URI
+  `avares://ChastiMaid/Assets/Fonts/CormorantInfant#Cormorant Infant`.
 - `Inter` — all other UI text, provided by the `Avalonia.Fonts.Inter` NuGet package (auto-registered).
 
 ### Typography classes (`TextBlock`)
