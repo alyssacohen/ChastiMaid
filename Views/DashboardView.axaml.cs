@@ -67,6 +67,7 @@ public partial class DashboardView : UserControl
         if (e.Key == Key.Escape && DataContext is DashboardViewModel vm)
         {
             vm.DismissPopupOutcomeCommand.Execute(null);
+            vm.DismissChoreResultCommand.Execute(null);
         }
     }
 
@@ -81,6 +82,21 @@ public partial class DashboardView : UserControl
 
     // Prevent clicks inside the dialog box from bubbling up to the backdrop handler
     private void OnPopupDialogBoxPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        e.Handled = true;
+    }
+
+    // Clicking the chore-result backdrop dismisses it early (VM guards against no-op when already hidden)
+    private void OnChoreResultOverlayPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is DashboardViewModel vm)
+        {
+            vm.DismissChoreResultCommand.Execute(null);
+        }
+    }
+
+    // Prevent clicks inside the dialog box from bubbling up to the backdrop handler
+    private void OnChoreResultDialogBoxPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         e.Handled = true;
     }

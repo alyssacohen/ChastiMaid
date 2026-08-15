@@ -100,6 +100,10 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private bool _isPopupVisible;
     [Reactive] private bool _isShowingPopupOutcome;
 
+    // --- Chore result overlay (rejection/too-slow punishment feedback) ---
+    [Reactive] private bool _isChoreResultVisible;
+    private DispatcherTimer? _choreResultTimer;
+
     [Reactive] private string _payRate = "";
 
     // --- Pending punishments ---
@@ -243,6 +247,7 @@ public partial class DashboardViewModel : ViewModelBase
             ReactiveCommand.Create(() => _mainVm.NavigateTo(new GameCompleteViewModel(_mainVm, _saveRepo)));
         AnswerCommand = ReactiveCommand.Create<string>(OnAnswer);
         DismissPopupOutcomeCommand = ReactiveCommand.Create(DismissPopupOutcome);
+        DismissChoreResultCommand = ReactiveCommand.Create(DismissChoreResult);
         SubmitQuoteTypedAnswerCommand = ReactiveCommand.Create(OnSubmitQuoteTypedAnswer);
         ConfirmKneelFramingCommand = ReactiveCommand.Create(OnKneelFramingConfirm);
         EndChoreCommand = ReactiveCommand.Create(OnEndChore);
@@ -335,6 +340,7 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand CompleteGameCommand { get; }
     public ICommand AnswerCommand { get; }
     public ICommand DismissPopupOutcomeCommand { get; }
+    public ICommand DismissChoreResultCommand { get; }
     public ICommand SubmitQuoteTypedAnswerCommand { get; }
     public ICommand ConfirmKneelFramingCommand { get; }
     public ICommand EndChoreCommand { get; }
@@ -1254,6 +1260,28 @@ public partial class DashboardViewModel : ViewModelBase
         ClosePopup(_pendingOutcomePositive);
     }
 
+    private void ShowChoreResultMessage(string message)
+    {
+        ChoreResultMessage = message;
+        IsChoreResultVisible = true;
+
+        _choreResultTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+        _choreResultTimer.Tick += (_, _) => DismissChoreResult();
+        _choreResultTimer.Start();
+    }
+
+    private void DismissChoreResult()
+    {
+        if (!IsChoreResultVisible)
+        {
+            return;
+        }
+
+        _choreResultTimer?.Stop();
+        _choreResultTimer = null;
+        IsChoreResultVisible = false;
+    }
+
     private void ClosePopup(bool positive)
     {
         _popupOutcomeTimer?.Stop();
@@ -1408,13 +1436,13 @@ public partial class DashboardViewModel : ViewModelBase
             };
             _saveRepo.AssignPunishment((severity, severity), reason);
             RefreshPunishments();
-            ChoreResultMessage = (_activeChore.IsOccasional, tooEarly) switch
+            ShowChoreResultMessage((_activeChore.IsOccasional, tooEarly) switch
             {
                 (true, true) => Resources.Get("DashboardOccasionalTaskRejectedMessage"),
                 (true, false) => Resources.Get("DashboardOccasionalTaskTooSlowRejectedMessage"),
                 (false, true) => Resources.Get("DashboardChoreRejectedMessage"),
                 (false, false) => Resources.Get("DashboardChoreTooSlowRejectedMessage"),
-            };
+            });
         }
         else
         {
@@ -1657,6 +1685,7 @@ public partial class DashboardViewModel : ViewModelBase
         _sessionLoop.Stop();
         _countdownTimer?.Stop();
         _popupOutcomeTimer?.Stop();
+        _choreResultTimer?.Stop();
         _poseCountdownTimer?.Stop();
         _curtsyCountdownTimer?.Stop();
         _curtsyRecordingCts?.Cancel();

@@ -60,21 +60,6 @@
 
                         <controls:DebtWidget DebtSettled="{Binding DebtSettled}" DebtTotal="{Binding DebtTotal}" />
 
-                        <!--  Chore rejected feedback  -->
-                        <Border
-                            Background="{DynamicResource BrushAmberBackground}"
-                            BorderBrush="{DynamicResource BrushAmber}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            IsVisible="{Binding ChoreResultMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                            Padding="12,8">
-                            <TextBlock
-                                Classes="BodySmall"
-                                Foreground="{DynamicResource BrushAmberText}"
-                                Text="{Binding ChoreResultMessage}"
-                                TextWrapping="Wrap" />
-                        </Border>
-
                         <!--  Tasks section  -->
                         <StackPanel Spacing="0">
                             <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8">
@@ -350,21 +335,6 @@
                 <!--  Right: scrollable tasks + punishment  -->
                 <ScrollViewer Grid.Column="1" Grid.Row="1">
                     <StackPanel Margin="16,16,16,0" Spacing="20">
-
-                        <!--  Chore rejected feedback  -->
-                        <Border
-                            Background="{DynamicResource BrushAmberBackground}"
-                            BorderBrush="{DynamicResource BrushAmber}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            IsVisible="{Binding ChoreResultMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                            Padding="12,8">
-                            <TextBlock
-                                Classes="BodySmall"
-                                Foreground="{DynamicResource BrushAmberText}"
-                                Text="{Binding ChoreResultMessage}"
-                                TextWrapping="Wrap" />
-                        </Border>
 
                         <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8">
                             <TextBlock
@@ -776,6 +746,24 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Panel>
+            </Border>
+        </Panel>
+
+        <!--  ##    CHORE RESULT OVERLAY    ##  -->
+        <Panel
+            Classes="dialogOverlay"
+            IsVisible="{Binding IsChoreResultVisible}"
+            PointerPressed="OnChoreResultOverlayPointerPressed">
+            <Border
+                Classes="dialogBox"
+                MaxWidth="420"
+                PointerPressed="OnChoreResultDialogBoxPointerPressed">
+                <TextBlock
+                    Classes="Body"
+                    Foreground="{DynamicResource BrushAmberText}"
+                    Text="{Binding ChoreResultMessage}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
             </Border>
         </Panel>
 
