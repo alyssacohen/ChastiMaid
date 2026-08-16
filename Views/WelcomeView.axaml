@@ -8,82 +8,71 @@
 
     <Panel>
 
-        <Grid Margin="40"
-              ColumnDefinitions="60*,40*">
+        <StackPanel Margin="40"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="360"
+                    Spacing="0">
 
-            <!-- ── LEFT COLUMN ── -->
-            <Grid Grid.Column="0"
-                  RowDefinitions="*">
+            <TextBlock Classes="PageTitle"
+                       HorizontalAlignment="Center"
+                       Text="ChastiMaid" />
 
-                <StackPanel VerticalAlignment="Top"
-                            Spacing="0">
+            <Border Height="1"
+                    Background="{DynamicResource BrushBorderSubtle}"
+                    Margin="0,12,0,16" />
 
-                    <TextBlock Classes="PageTitle"
-                               Text="ChastiMaid" />
+            <TextBlock Classes="EmployerVoice"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,32"
+                       Text="{conv:Tr WelcomeQuote}" />
 
-                    <Border Height="1"
-                            Background="{DynamicResource BrushBorderSubtle}"
-                            Margin="0,12,80,16" />
+            <Button Classes="Primary"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Content="{conv:Tr WelcomeContinue}"
+                    Command="{Binding ContinueCommand}" />
 
-                    <TextBlock Classes="EmployerVoice"
-                               TextWrapping="Wrap"
-                               Text="{conv:Tr WelcomeQuote}" />
+            <Button Classes="Primary"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="0,12,0,0"
+                    Content="{conv:Tr WelcomeNewGame}"
+                    Command="{Binding NewGameCommand}" />
 
-                </StackPanel>
+            <Border Height="1"
+                    Background="{DynamicResource BrushBorderSubtle}"
+                    Margin="0,20,0,20" />
 
-            </Grid>
+            <Button Classes="Ghost"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Content="{conv:Tr WelcomeLoadGame}"
+                    Command="{Binding LoadGameCommand}" />
 
-            <!-- ── RIGHT COLUMN ── -->
-            <StackPanel Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Spacing="0">
+            <Button Classes="Ghost"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="0,12,0,0"
+                    Content="{conv:Tr WelcomeSettings}"
+                    Command="{Binding SettingsCommand}" />
 
-                <Button Classes="Primary"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Content="{conv:Tr WelcomeContinue}"
-                        Command="{Binding ContinueCommand}" />
+            <TextBlock Name="ExitLabel"
+                       Classes="BodySmall"
+                       Text="{conv:Tr WelcomeExit}"
+                       HorizontalAlignment="Center"
+                       Margin="0,20,0,0"
+                       Cursor="Hand">
+                <TextBlock.Styles>
+                    <Style Selector="TextBlock:pointerover">
+                        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+                    </Style>
+                </TextBlock.Styles>
+            </TextBlock>
 
-                <Button Classes="Primary"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Margin="0,12,0,0"
-                        Content="{conv:Tr WelcomeNewGame}"
-                        Command="{Binding NewGameCommand}" />
-
-                <Border Height="1"
-                        Background="{DynamicResource BrushBorderSubtle}"
-                        Margin="0,20,0,20" />
-
-                <Button Classes="Ghost"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Content="{conv:Tr WelcomeLoadGame}"
-                        Command="{Binding LoadGameCommand}" />
-
-                <Button Classes="Ghost"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Margin="0,12,0,0"
-                        Content="{conv:Tr WelcomeSettings}"
-                        Command="{Binding SettingsCommand}" />
-
-                <TextBlock Name="ExitLabel"
-                           Classes="Caption"
-                           Text="{conv:Tr WelcomeExit}"
-                           HorizontalAlignment="Center"
-                           Margin="0,20,0,0"
-                           Cursor="Hand">
-                    <TextBlock.Styles>
-                        <Style Selector="TextBlock:pointerover">
-                            <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
-                        </Style>
-                    </TextBlock.Styles>
-                </TextBlock>
-
-            </StackPanel>
-
-        </Grid>
+        </StackPanel>
 
         <views:ConfirmDialog
             DataContext="{Binding ActiveDialog}"
