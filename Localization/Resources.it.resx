@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -154,7 +154,7 @@
     <value>Esci</value>
   </data>
   <data name="WebcamRecordingLabel" xml:space="preserve">
-    <value>Registrazione in corso... Posa!</value>
+    <value>Registrazione in corso... Mettiti in posa.</value>
   </data>
   <data name="WebcamNotDetected" xml:space="preserve">
     <value>Nessuna webcam rilevata.</value>
@@ -172,7 +172,7 @@
     <value>Righe di penitenza</value>
   </data>
   <data name="PunishmentKindForcedOutfit" xml:space="preserve">
-    <value>Divisa obbligata</value>
+    <value>Outfit obbligatorio</value>
   </data>
   <data name="PunishmentDetailWritingLinesFormat" xml:space="preserve">
     <value>{0} righe</value>
@@ -187,22 +187,22 @@
     <value>Per una risposta insoddisfacente alla mia domanda.</value>
   </data>
   <data name="PunishmentReasonMotivationalQuoteFailed" xml:space="preserve">
-      <value>Per aver storpiato le parole, pure con ritardo.</value>
+    <value>Per aver balbettato la frase richiesta, in ritardo come se non bastasse.</value>
   </data>
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>Per un'indecorosa fretta nei suoi doveri.</value>
   </data>
   <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
-    <value>Per aver dichiarato concluso un compito che tale palesemente non era.</value>
+    <value>Per aver dichiarato concluso un compito che, palesemente, non lo era..</value>
   </data>
   <data name="PunishmentReasonChoreTooSlow" xml:space="preserve">
-    <value>Per aver bighellonato ben oltre quanto il compito richiedesse.</value>
+    <value>Per aver bighellonato ben oltre il necessario..</value>
   </data>
   <data name="PunishmentReasonOccasionalTaskTooSlow" xml:space="preserve">
-    <value>Per aver trattato un compito semplice come scusa per l'ozio.</value>
+    <value>Per aver trattato un compito semplice come scusa per oziare.</value>
   </data>
   <data name="PunishmentReasonCornertimeFailed" xml:space="preserve">
-    <value>Per non essere rimasta immobile nell'angolo.</value>
+    <value>Per non essere riuscita a star ferma nell'angolo.</value>
   </data>
   <data name="PunishmentReasonPermissionOverrun" xml:space="preserve">
     <value>Per essersi trattenuta oltre la pausa concessa.</value>
@@ -214,25 +214,25 @@
       <value>L'outfit «{0}» sarà obbligatorio per le prossime {1} sessioni.</value>
   </data>
   <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
-      <value>L'outfit prescelto</value>
+    <value>L'outfit prescelto</value>
   </data>
   <data name="CornertimeFramingTitle" xml:space="preserve">
     <value>L'angolo vi attende</value>
   </data>
   <data name="CornertimeFramingInstruction" xml:space="preserve">
-      <value>Inquadrate l'angolo in cui resterete, poi confermate quando siete pronta.</value>
+    <value>Inquadrate l'angolo in cui resterete, poi confermate quando siete pronta.</value>
   </data>
   <data name="CornertimeConfirmFraming" xml:space="preserve">
-      <value>Inizia</value>
+    <value>Inizia</value>
   </data>
   <data name="CornertimePositionHandsBackA" xml:space="preserve">
-      <value>Andate nell'angolo, se non vi dispiace — piedi uniti, mani dietro la schiena, e il viso rivolto al muro. Avete dieci secondi.</value>
+    <value>Andate nell'angolo, se non vi dispiace — piedi uniti, mani dietro la schiena, e il viso rivolto al muro. Avete dieci secondi.</value>
   </data>
   <data name="CornertimePositionHandsBackB" xml:space="preserve">
-    <value>L'angolo vi attende. Piedi uniti, mani dietro la schiena, rivolta al muro. Non indugiate.</value>
+    <value>L'angolo vi attende. Piedi uniti, mani dietro la schiena e rivolta al muro. Non indugiate.</value>
   </data>
   <data name="CornertimePositionHandsLapA" xml:space="preserve">
-    <value>In angolo. Piedi uniti, mani giunte sul grembo, sguardo al muro.</value>
+    <value>All'angolo. Piedi uniti, mani giunte sul grembo, faccia al muro.</value>
   </data>
   <data name="CornertimePositionHandsLapB" xml:space="preserve">
     <value>Al vostro angolo — piedi uniti, mani giunte sul grembo, il viso rivolto al muro come si conviene.</value>
@@ -241,19 +241,19 @@
       <value>All'angolo — gambe divaricate, mani dietro la nuca, rivolta al muro. Dieci secondi, da ora.</value>
   </data>
   <data name="CornertimePositionHandsNeckB" xml:space="preserve">
-      <value>All'angolo, prego. Gambe divaricate, mani dietro la nuca e faccia al muro.</value>
+    <value>All'angolo, prego. Gambe divaricate, mani dietro la nuca e faccia al muro.</value>
   </data>
   <data name="CornertimePositionHandsKneesA" xml:space="preserve">
-      <value>Andate all'angolo, piedi uniti, mani sulle ginocchia, rivolta al muro.</value>
+    <value>Andate all'angolo, piedi uniti, mani sulle ginocchia, rivolta al muro.</value>
   </data>
   <data name="CornertimePositionHandsKneesB" xml:space="preserve">
     <value>Al vostro angolo. Piedi uniti, mani sulle ginocchia, il viso rivolto al muro — ormai conoscete la prassi.</value>
   </data>
   <data name="CornertimeBegin1" xml:space="preserve">
-      <value>Molto bene. Rimanete ferma, il castigo inizia adesso</value>
+    <value>Molto bene. Rimanete ferma, il castigo inizia adesso.</value>
   </data>
   <data name="CornertimeBegin2" xml:space="preserve">
-      <value>Così va bene. Il vostro castigo nell'angolo ha inizio.</value>
+    <value>Così va bene. Il vostro castigo nell'angolo ha inizio.</value>
   </data>
   <data name="CornertimeBegin3" xml:space="preserve">
     <value>Bene. L'orologio corre — non deludetemi.</value>
@@ -262,7 +262,7 @@
     <value>Vi ho vista muovervi. {0} secondi in più per voi.</value>
   </data>
   <data name="CornertimeMovementDetected2" xml:space="preserve">
-      <value>Vi ho colta in movimento. Il vostro castigo si allunga di {0} secondi.</value>
+    <value>Vi ho colta in movimento. Il vostro castigo si allunga di {0} secondi.</value>
   </data>
   <data name="CornertimeMovementDetected3" xml:space="preserve">
     <value>Quella non era immobilità. Sono stati aggiunti {0} secondi.</value>
@@ -277,16 +277,16 @@
     <value>Per ora va bene. Vi sto osservando.</value>
   </data>
   <data name="CornertimeAbandon" xml:space="preserve">
-      <value>Abbandona</value>
+    <value>Abbandona</value>
   </data>
   <data name="CornertimeSuccessMessage" xml:space="preserve">
-      <value>Penitenza scontata. Potete tornare alle vostre mansioni.</value>
+    <value>Penitenza scontata. Potete tornare alle vostre mansioni.</value>
   </data>
   <data name="CornertimeFailureMessage" xml:space="preserve">
-      <value>Non siete stata nemmeno in grado di restare ferma. Pagherete una multa e l'angolo è ancora lì che vi aspetta.</value>
+    <value>Non siete stata nemmeno in grado di restare ferma. Pagherete una multa e l'angolo è ancora lì che vi aspetta.</value>
   </data>
   <data name="CornertimeFailureWithConsequenceMessage" xml:space="preserve">
-      <value>Non siete riuscita a star ferma — e ora ve ne sono le conseguenze. Confido che il nuovo compito che vi attende vi insegni un po' più di disciplina.</value>
+    <value>Non siete riuscita a star ferma — e ora ve ne sono le conseguenze. Confido che il nuovo compito che vi attende vi insegni un po' più di disciplina.</value>
   </data>
   <data name="PunishmentDone" xml:space="preserve">
     <value>Fatto</value>
@@ -496,7 +496,7 @@
     <value>La prossima richiesta è approvata senza obiezioni — solo questa volta.</value>
   </data>
   <data name="CardSoftenPunishmentName" xml:space="preserve">
-      <value>Mitiga Punizione</value>
+    <value>Mitiga Punizione</value>
   </data>
   <data name="CardSoftenPunishmentDesc" xml:space="preserve">
       <value>Dimezza la severità di una punizione pendente.</value>
@@ -532,10 +532,10 @@
     <value>Un mio capriccio, in attesa di essere concesso. Saprai riconoscerlo quando arriverà.</value>
   </data>
   <data name="FortuneOutcomeSoftenTitle" xml:space="preserve">
-      <value>Alleggerita</value>
+    <value>Alleggerita</value>
   </data>
   <data name="FortuneOutcomeSoftenDesc" xml:space="preserve">
-      <value>Il mio buon cuore ha alleggerito una delle tue punizioni. Quale, sta a te scoprirlo.</value>
+    <value>Il mio buon cuore ha alleggerito una delle tue punizioni. Quale, sta a te scoprirlo.</value>
   </data>
   <data name="FortuneOutcomeCancelTitle" xml:space="preserve">
     <value>Annullata</value>
@@ -784,7 +784,7 @@
     <value>Desidero una fotografia in cui {0} possa essere chiaramente ispezionato. Provvedete.</value>
   </data>
   <data name="PoseForCameraInstructionProof" xml:space="preserve">
-      <value>Poserete per una foto. {0} deve comparire nell'inquadratura.</value>
+    <value>Poserete per una foto. {0} deve comparire nell'inquadratura.</value>
   </data>
   <data name="PoseForCameraCountdownLabel" xml:space="preserve">
     <value>Mantenete la posa.</value>
@@ -802,7 +802,7 @@
     <value>Eseguirete una riverenza dinanzi alla macchina fotografica, affinché io possa constatarne il portamento.</value>
   </data>
   <data name="CurtsyInstructionGrace" xml:space="preserve">
-      <value>Offritemi una riverenza appropriata. Fate in modo che sia eseguita con grazia.</value>
+    <value>Offritemi una riverenza appropriata. Fate in modo che sia eseguita con grazia.</value>
   </data>
   <data name="CurtsyInstructionRespect" xml:space="preserve">
       <value>Un segno di rispetto è dovuto. Fate una riverenza dinanzi a me, e che sia registrata.</value>
@@ -811,7 +811,7 @@
     <value>Preparatevi.</value>
   </data>
   <data name="CurtsyRecordingLabel" xml:space="preserve">
-      <value>Sto registrando.</value>
+    <value>Sto registrando.</value>
   </data>
   <data name="CurtsyCapturedMessage" xml:space="preserve">
     <value>Molto bene. La riverenza è stata registrata.</value>
@@ -940,7 +940,7 @@
     <value>Rimosso</value>
   </data>
   <data name="PlugAndPlayRemoveCompletedMessage" xml:space="preserve">
-      <value>Ne prendo atto.</value>
+    <value>Ne prendo atto.</value>
   </data>
   <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
     <value>Minuti min</value>
@@ -1270,7 +1270,7 @@
     <value>Outfit parziale</value>
   </data>
   <data name="ForcedOutfitEditorTitle" xml:space="preserve">
-      <value>Componi un outfit obbligatorio</value>
+    <value>Componi un outfit obbligatorio</value>
   </data>
   <data name="ForcedOutfitEditorName" xml:space="preserve">
     <value>Nome</value>
@@ -1328,6 +1328,27 @@
   </data>
   <data name="SettingsQuoteRecognitionSensitivity" xml:space="preserve">
     <value>Sensibilità riconoscimento citazione</value>
+  </data>
+  <data name="SettingsTestQuoteStartButton" xml:space="preserve">
+    <value>Avvia</value>
+  </data>
+  <data name="SettingsTestQuoteStopButton" xml:space="preserve">
+    <value>Ferma</value>
+  </data>
+  <data name="SettingsTestQuoteInstructions" xml:space="preserve">
+    <value>Prova le impostazioni, leggi la frase seguente:</value>
+  </data>
+  <data name="SettingsTestQuoteFixedPhrase" xml:space="preserve">
+    <value>Bene, non è forse magnifico? Il 100% di successo — ovviamente.</value>
+  </data>
+  <data name="SettingsTestQuoteListeningLabel" xml:space="preserve">
+    <value>In ascolto…</value>
+  </data>
+  <data name="SettingsTestQuoteRecognitionResultPass" xml:space="preserve">
+    <value>La macchina è soddisfatta — {0:P0} compreso, ben oltre quanto richiedo.</value>
+  </data>
+  <data name="SettingsTestQuoteRecognitionResultFail" xml:space="preserve">
+    <value>La macchina resta perplessa — solo {0:P0} compreso. Riprova, e scandisci meglio.</value>
   </data>
   <data name="SettingsWebcamStatus" xml:space="preserve">
     <value>Webcam</value>
@@ -1451,13 +1472,13 @@ Puoi esportare i contenuti della sessione prima che lo slot venga liberato.</val
     <value> {0} regole di abbinamento sono state scartate perché fanno riferimento a capi non presenti nel guardaroba importato: {1}.</value>
   </data>
   <data name="EndSessionConfirmQuestion" xml:space="preserve">
-      <value>Siete sicura di voler terminare questa sessione?</value>
+    <value>Siete sicura di voler terminare questa sessione?</value>
   </data>
   <data name="EndSessionShowComboAndClose" xml:space="preserve">
     <value>Mostra combinazione cassaforte e chiudi</value>
   </data>
   <data name="EndSessionInterestNotice" xml:space="preserve">
-      <value>Verrà applicato un interesse giornaliero finché non riprendete la sessione.</value>
+    <value>Verrà applicato un interesse giornaliero finché non riprendete la sessione.</value>
   </data>
   <data name="EndSessionCloseWithoutCombo" xml:space="preserve">
     <value>Chiudi senza combinazione</value>

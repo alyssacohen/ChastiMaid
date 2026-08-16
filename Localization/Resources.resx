@@ -1329,6 +1329,27 @@
   <data name="SettingsQuoteRecognitionSensitivity" xml:space="preserve">
     <value>Quote recognition sensitivity</value>
   </data>
+  <data name="SettingsTestQuoteStartButton" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="SettingsTestQuoteStopButton" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="SettingsTestQuoteInstructions" xml:space="preserve">
+    <value>Try the settings — read the following phrase:</value>
+  </data>
+  <data name="SettingsTestQuoteFixedPhrase" xml:space="preserve">
+    <value>Well, isn't that lovely? A 100% success rate — obviously.</value>
+  </data>
+  <data name="SettingsTestQuoteListeningLabel" xml:space="preserve">
+    <value>Listening…</value>
+  </data>
+  <data name="SettingsTestQuoteRecognitionResultPass" xml:space="preserve">
+    <value>The machine is satisfied — {0:P0} understood, well above what I require.</value>
+  </data>
+  <data name="SettingsTestQuoteRecognitionResultFail" xml:space="preserve">
+    <value>The machine remains unconvinced — only {0:P0} understood. Speak again, and enunciate.</value>
+  </data>
   <data name="SettingsWebcamStatus" xml:space="preserve">
     <value>Webcam</value>
   </data>

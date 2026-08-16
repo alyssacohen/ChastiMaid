@@ -30,13 +30,16 @@ public partial class MainWindowViewModel : ViewModelBase
     [Reactive] private bool _isPortrait;
 
     public MainWindowViewModel(DatabaseService databaseService, ProfileRepository profileRepository,
-        SaveSlotManager saveSlotManager, AutoSaveService autoSaveService, WebcamPreviewService webcam)
+        SaveSlotManager saveSlotManager, AutoSaveService autoSaveService, WebcamPreviewService webcam,
+        ITtsService tts, ISpeechRecognitionService stt)
     {
         DatabaseService = databaseService;
         ProfileRepository = profileRepository;
         SaveSlotManager = saveSlotManager;
         AutoSaveService = autoSaveService;
         Webcam = webcam;
+        Tts = tts;
+        Stt = stt;
         CurrentPage = new LoadingViewModel();
         _ = InitializeAsync();
 
@@ -54,6 +57,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public SaveSlotManager SaveSlotManager { get; }
     public AutoSaveService AutoSaveService { get; }
     public WebcamPreviewService Webcam { get; }
+    public ITtsService Tts { get; }
+    public ISpeechRecognitionService Stt { get; }
 
     /// <summary>
     ///     Opens a save slot and tracks its DB for automatic disposal.

@@ -7,8 +7,8 @@ namespace ChastiMaid.Services;
 /// <summary>
 ///     Plays a short two-tone chime to mark the end of a punishment — audible even to a user facing
 ///     away from the screen. The tone is generated in memory as raw PCM/WAV (no bundled audio asset,
-///     no licensing question) and played with the same <see cref="MediaPlayer" /> already used by
-///     <see cref="SpeechSynthesisService" />.
+///     no licensing question) and played with the same <see cref="MediaPlayer" /> class Windows exposes
+///     for audio playback.
 /// </summary>
 public static class NotificationSoundService
 {

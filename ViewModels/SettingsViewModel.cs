@@ -92,7 +92,17 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _popupMinInterval;
     [Reactive] private int _popupTimeout;
     [Reactive] private int _quoteListenTimeout;
-    [Reactive] private double _quoteRecognitionSensitivity;
+    [Reactive] private int _quoteMatchMinSimilarityPercent;
+    [Reactive] private bool _isTestQuoteListening;
+    [Reactive] private double? _testQuoteScore;
+
+    /// <summary>
+    ///     Optimistically true until <see cref="LoadHardwareAvailability" /> reports otherwise — avoids a
+    ///     false "unavailable" flash while the background hardware scan is still running.
+    /// </summary>
+    [Reactive] private bool _isMicrophoneAvailableForTest = true;
+
+    [Reactive] private string? _testQuoteUnavailableTooltip;
     [Reactive] private CameraOption _selectedCamera = null!;
     [Reactive] private LanguageOption _selectedLanguage = null!;
 
@@ -132,7 +142,7 @@ public partial class SettingsViewModel : ViewModelBase
         _curtsyVideoDuration = s.CurtsyVideoDurationSeconds;
         _quoteReadingEnabled = s.QuoteReadingEnabled;
         _quoteListenTimeout = s.QuoteListenTimeoutSeconds;
-        _quoteRecognitionSensitivity = s.QuoteRecognitionMinConfidence;
+        _quoteMatchMinSimilarityPercent = s.QuoteMatchMinSimilarityPercent;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
         _kneelEnabled = s.KneelEnabled;
@@ -272,7 +282,7 @@ public partial class SettingsViewModel : ViewModelBase
         this.WhenAnyValue(
                 x => x.PopupMinInterval, x => x.PopupMaxInterval, x => x.PopupTimeout,
                 x => x.HydrationMinInterval, x => x.CurtsyVideoDuration, x => x.QuoteListenTimeout,
-                x => x.QuoteRecognitionSensitivity, (_, _, _, _, _, _, _) => Unit.Default)
+                x => x.QuoteMatchMinSimilarityPercent, (_, _, _, _, _, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(
@@ -319,6 +329,18 @@ public partial class SettingsViewModel : ViewModelBase
 
         SaveCommand = ReactiveCommand.Create(SaveAndBack);
         QuickSaveCommand = ReactiveCommand.Create(Save);
+        StartTestQuoteListeningCommand = ReactiveCommand.Create(StartTestQuoteListening,
+            this.WhenAnyValue(x => x.IsTestQuoteListening, x => x.IsMicrophoneAvailableForTest,
+                (listening, micAvailable) => !listening && micAvailable));
+        StopTestQuoteListeningCommand = ReactiveCommand.CreateFromTask(StopTestQuoteListeningAsync,
+            this.WhenAnyValue(x => x.IsTestQuoteListening));
+        this.WhenAnyValue(x => x.TestQuoteScore, x => x.QuoteMatchMinSimilarityPercent, x => x.IsTestQuoteListening,
+                (_, _, _) => Unit.Default)
+            .Subscribe(_ =>
+            {
+                this.RaisePropertyChanged(nameof(ShowTestQuotePassResult));
+                this.RaisePropertyChanged(nameof(ShowTestQuoteFailResult));
+            });
         BackCommand = ReactiveCommand.CreateFromTask(ConfirmBack);
         SetTabCommand = ReactiveCommand.Create<string?>(s =>
         {
@@ -396,7 +418,7 @@ public partial class SettingsViewModel : ViewModelBase
         // wardrobe/rules/chores collections reflect the just-replaced content.
         var fresh = new SettingsViewModel(_mainVm, _returnTo, message);
         _mainVm.ReplaceSettingsCache(fresh);
-        _mainVm.NavigateTo(fresh);
+        NavigateAway(fresh);
     }
 
     private static async Task<string?> PickFolder(string title)
@@ -440,17 +462,18 @@ public partial class SettingsViewModel : ViewModelBase
 
         var names = await WebcamPreviewService.GetFriendlyNamesAsync(indices);
         var options = indices.Zip(names, (idx, name) => new CameraOption(idx, name)).ToList();
-        var availability = HardwareAvailabilityChecker.Check(indices, persistedCameraIndex);
+        var availability = HardwareAvailabilityChecker.Check(indices, persistedCameraIndex, _mainVm.Stt);
 
         Dispatcher.UIThread.Post(() =>
         {
             AvailableCameras = options;
             SelectedCamera = options.FirstOrDefault(c => c.Index == persistedCameraIndex) ?? options[0];
             WebcamStatusDisplay = Resources.Get(availability.HasWebcam ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
+            var speechAvailable = availability.HasSpeechRecognizer && availability.HasMicrophone;
             SpeechRecognitionStatusDisplay = Resources.Get(
-                availability.HasSpeechRecognizer && availability.HasMicrophone
-                    ? "HardwareStatusAvailable"
-                    : "HardwareStatusUnavailable");
+                speechAvailable ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
+            IsMicrophoneAvailableForTest = speechAvailable;
+            TestQuoteUnavailableTooltip = speechAvailable ? null : Resources.Get("HardwareCheckSpeechRecognizerMissing");
         });
     }
 
@@ -513,6 +536,20 @@ public partial class SettingsViewModel : ViewModelBase
     // --- Commands ---
     public ICommand SaveCommand { get; }
     public ICommand QuickSaveCommand { get; }
+    public ICommand StartTestQuoteListeningCommand { get; }
+    public ICommand StopTestQuoteListeningCommand { get; }
+
+    /// <summary>A fixed phrase (not one from the in-game quote bank) chosen to exercise normalization: mixed
+    /// case, an apostrophe, a question mark, a percentage, an em dash.</summary>
+    public string TestQuotePhrase => Resources.Get("SettingsTestQuoteFixedPhrase");
+
+    private bool HasTestQuoteResult => TestQuoteScore is not null && !IsTestQuoteListening;
+
+    /// <summary>Whether the last test recording's similarity meets the live (possibly unsaved) threshold.</summary>
+    private bool TestQuotePassed => TestQuoteScore is { } score && score * 100 >= QuoteMatchMinSimilarityPercent;
+
+    public bool ShowTestQuotePassResult => HasTestQuoteResult && TestQuotePassed;
+    public bool ShowTestQuoteFailResult => HasTestQuoteResult && !TestQuotePassed;
     public ICommand BackCommand { get; }
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
@@ -756,7 +793,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void OpenForcedOutfitPresetEditor(ForcedOutfitPreset preset)
     {
-        _mainVm.NavigateTo(new ForcedOutfitPresetEditorViewModel(_mainVm, _repo, preset, () =>
+        NavigateAway(new ForcedOutfitPresetEditorViewModel(_mainVm, _repo, preset, () =>
         {
             RefreshForcedOutfitPresets();
             return this;
@@ -790,7 +827,7 @@ public partial class SettingsViewModel : ViewModelBase
             case SaveDialogResult.Discard:
                 var fresh = new SettingsViewModel(_mainVm, _returnTo);
                 _mainVm.ReplaceSettingsCache(fresh);
-                _mainVm.NavigateTo(fresh);
+                NavigateAway(fresh);
                 break;
             case SaveDialogResult.Cancel: this.RaisePropertyChanged(nameof(SelectedTabIndex)); break;
         }
@@ -802,11 +839,27 @@ public partial class SettingsViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(SelectedTabIndex));
     }
 
+    /// <summary>
+    ///     Every navigation away from this screen goes through here instead of <c>_mainVm.NavigateTo</c>
+    ///     directly, so an in-progress "try your sensitivity" test recording is always stopped — otherwise the
+    ///     microphone would stay open until the 90s safety cap even though nothing on screen shows it anymore.
+    /// </summary>
+    private void NavigateAway(ViewModelBase target)
+    {
+        if (IsTestQuoteListening)
+        {
+            _mainVm.Stt.CancelTestListening();
+            IsTestQuoteListening = false;
+        }
+
+        _mainVm.NavigateTo(target);
+    }
+
     private async Task ConfirmBack()
     {
         if (!IsDirty)
         {
-            _mainVm.NavigateTo(_returnTo());
+            NavigateAway(_returnTo());
             return;
         }
 
@@ -814,9 +867,9 @@ public partial class SettingsViewModel : ViewModelBase
         {
             case SaveDialogResult.Save:
                 Save();
-                _mainVm.NavigateTo(_returnTo());
+                NavigateAway(_returnTo());
                 break;
-            case SaveDialogResult.Discard: _mainVm.NavigateTo(_returnTo()); break;
+            case SaveDialogResult.Discard: NavigateAway(_returnTo()); break;
             case SaveDialogResult.Cancel: break;
         }
     }
@@ -859,7 +912,40 @@ public partial class SettingsViewModel : ViewModelBase
     private void SaveAndBack()
     {
         Save();
-        _mainVm.NavigateTo(_returnTo());
+        NavigateAway(_returnTo());
+    }
+
+    /// <summary>
+    ///     Starts an open-ended test recording of <see cref="TestQuotePhrase" /> — no fixed duration, the user
+    ///     decides when they're done by pressing Stop (<see cref="StopTestQuoteListeningAsync" />).
+    /// </summary>
+    private void StartTestQuoteListening()
+    {
+        TestQuoteScore = null;
+        IsTestQuoteListening = true;
+        _mainVm.Stt.StartTestListening();
+    }
+
+    /// <summary>
+    ///     Stops the recording started by <see cref="StartTestQuoteListening" /> and reports the raw similarity
+    ///     against <see cref="TestQuotePhrase" />, so the user can tune
+    ///     <see cref="QuoteMatchMinSimilarityPercent" /> before saving — compared against the live (possibly
+    ///     unsaved) UI value, not what's persisted yet.
+    /// </summary>
+    private async Task StopTestQuoteListeningAsync()
+    {
+        try
+        {
+            TestQuoteScore = await _mainVm.Stt.StopTestListeningAsync(TestQuotePhrase);
+        }
+        catch
+        {
+            TestQuoteScore = 0;
+        }
+        finally
+        {
+            IsTestQuoteListening = false;
+        }
     }
 
     // --- Persist ---
@@ -882,7 +968,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.CurtsyVideoDurationSeconds = CurtsyVideoDuration;
         s.QuoteReadingEnabled = QuoteReadingEnabled;
         s.QuoteListenTimeoutSeconds = QuoteListenTimeout;
-        s.QuoteRecognitionMinConfidence = QuoteRecognitionSensitivity;
+        s.QuoteMatchMinSimilarityPercent = QuoteMatchMinSimilarityPercent;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
         s.KneelEnabled = KneelEnabled;

@@ -160,7 +160,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
     {
         if (_settings.CornertimeVoiceEnabled && _lifecycleCts is { } cts)
         {
-            _ = SpeechSynthesisService.SpeakAsync(text, cts.Token);
+            _ = MainVm.Tts.SpeakAsync(text, cts.Token);
         }
     }
 

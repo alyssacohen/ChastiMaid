@@ -1092,7 +1092,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         IsQuotePopupActive = true;
 
-        if (SpeechRecognitionService.DetectMicrophone())
+        if (_mainVm.Stt.DetectMicrophone())
         {
             StartQuoteListening();
         }
@@ -1117,11 +1117,11 @@ public partial class DashboardViewModel : ViewModelBase
         var success = false;
         try
         {
-            success = await SpeechRecognitionService.ListenForPhraseAsync(
+            success = await _mainVm.Stt.ListenForPhraseAsync(
                 _currentQuoteText,
                 QuoteMaxAttempts,
                 TimeSpan.FromSeconds(_settings.QuoteListenTimeoutSeconds),
-                _settings.QuoteRecognitionMinConfidence,
+                _settings.QuoteMatchMinSimilarityPercent / 100.0,
                 new Progress<int>(remaining => QuoteAttemptsRemaining = remaining),
                 _quoteListenCts.Token);
         }

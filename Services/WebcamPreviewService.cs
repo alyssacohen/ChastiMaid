@@ -449,9 +449,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     private static IReadOnlyList<string>? _cachedFriendlyNames;
 
     /// <summary>
-    ///     Fetches the OS's video capture devices via the WinRT enumeration API (same one used by
-    ///     <see cref="SpeechRecognitionService" /> for microphones) and caches their friendly names for
-    ///     the process lifetime. This is fast and doesn't touch OpenCV, so it never triggers the
+    ///     Fetches the OS's video capture devices via the WinRT enumeration API (the same
+    ///     <see cref="Windows.Devices.Enumeration.DeviceInformation" /> API used for microphone
+    ///     detection) and caches their friendly names for the process lifetime. This is fast and
+    ///     doesn't touch OpenCV, so it never triggers the
     ///     dshow/obsensor backend-enumeration warnings that probing with <see cref="VideoCapture" /> does.
     /// </summary>
     private static async Task<IReadOnlyList<string>> GetFriendlyNamesAsync()

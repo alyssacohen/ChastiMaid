@@ -16,6 +16,8 @@ public class App : Application
     private AutoSaveService? _autoSaveService;
     private DatabaseService? _databaseService;
     private WebcamPreviewService? _webcamService;
+    private SherpaOnnxTtsService? _ttsService;
+    private SherpaOnnxSttService? _sttService;
 
     public override void Initialize()
     {
@@ -37,15 +39,24 @@ public class App : Application
             var slotManager = new SaveSlotManager(_databaseService);
             _autoSaveService = new AutoSaveService();
             _webcamService = new WebcamPreviewService();
+            _ttsService = new SherpaOnnxTtsService();
+            _sttService = new SherpaOnnxSttService();
+
+            // Loading the Whisper model parses ~200 MB of ONNX weights and can take several seconds; warming
+            // it up now means later synchronous IsModelReady checks (hardware warnings, mic detection) rarely
+            // have to pay that cost on the UI thread.
+            _ = Task.Run(() => _sttService.IsModelReady);
 
             mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager,
-                _autoSaveService, _webcamService);
+                _autoSaveService, _webcamService, _ttsService, _sttService);
             desktop.MainWindow = mainWindow;
             ApplyWindowGeometry(mainWindow);
 
             desktop.Exit += (_, _) =>
             {
                 _webcamService.Dispose();
+                _ttsService.Dispose();
+                _sttService.Dispose();
                 _autoSaveService.Dispose();
                 (mainWindow.DataContext as MainWindowViewModel)?.CloseActiveSave();
                 _databaseService.Dispose();
