@@ -37,7 +37,7 @@ public class GameSettings
 
     // Motivational Quote popup — listening/typing window and speech recognition sensitivity
     public bool QuoteReadingEnabled { get; set; } = true;
-    public int QuoteListenTimeoutSeconds { get; set; } = 20;
+    public int QuoteListenTimeoutSeconds { get; set; } = 45;
     public int QuoteMatchMinSimilarityPercent { get; set; } = 82;
 
     // Busy mode capture

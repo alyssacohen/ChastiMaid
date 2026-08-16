@@ -158,6 +158,7 @@ public partial class DashboardViewModel : ViewModelBase
     // --- Idle popup: Motivational Quote ---
     [Reactive] private bool _isQuotePopupActive;
     [Reactive] private bool _isQuoteListeningActive;
+    [Reactive] private bool _isQuoteProcessing;
     [Reactive] private bool _isQuoteTypingActive;
     [Reactive] private int _quoteListenCountdown;
     [Reactive] private int _quoteAttemptsRemaining;
@@ -1105,13 +1106,33 @@ public partial class DashboardViewModel : ViewModelBase
     private async void StartQuoteListening()
     {
         IsQuoteListeningActive = true;
+        IsQuoteProcessing = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
         QuoteAttemptsRemaining = QuoteMaxAttempts;
-        QuoteListenCountdown = _settings.QuoteListenTimeoutSeconds;
+        var attemptSeconds = (int)_mainVm.Stt.AttemptRecordDuration.TotalSeconds;
+        QuoteListenCountdown = attemptSeconds;
 
+        // The countdown only tracks the recording window of the current attempt — Whisper's transcription
+        // step afterward has no predictable duration, so it gets its own "processing" indicator (see the
+        // phase callback below) instead of pretending a number is still counting down.
         _quoteListenTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _quoteListenTimer.Tick += (_, _) => QuoteListenCountdown--;
+        _quoteListenTimer.Tick += (_, _) =>
+        {
+            if (QuoteListenCountdown > 0)
+            {
+                QuoteListenCountdown--;
+            }
+        };
         _quoteListenTimer.Start();
+
+        var phaseProgress = new Progress<SpeechListenPhase>(p =>
+        {
+            IsQuoteProcessing = p == SpeechListenPhase.Processing;
+            if (p == SpeechListenPhase.Listening)
+            {
+                QuoteListenCountdown = attemptSeconds;
+            }
+        });
 
         _quoteListenCts = new CancellationTokenSource();
         var success = false;
@@ -1123,6 +1144,7 @@ public partial class DashboardViewModel : ViewModelBase
                 TimeSpan.FromSeconds(_settings.QuoteListenTimeoutSeconds),
                 _settings.QuoteMatchMinSimilarityPercent / 100.0,
                 new Progress<int>(remaining => QuoteAttemptsRemaining = remaining),
+                phaseProgress,
                 _quoteListenCts.Token);
         }
         catch
@@ -1136,6 +1158,7 @@ public partial class DashboardViewModel : ViewModelBase
         _quoteListenCts?.Dispose();
         _quoteListenCts = null;
         IsQuoteListeningActive = false;
+        IsQuoteProcessing = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
 
         FinishMotivationalQuote(success);

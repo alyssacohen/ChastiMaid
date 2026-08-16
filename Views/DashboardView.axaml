@@ -653,7 +653,18 @@
                         <TextBlock
                             Classes="NumberLarge"
                             HorizontalAlignment="Center"
+                            IsVisible="{Binding !IsQuoteProcessing}"
                             Text="{Binding QuoteListenCountdown}" />
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="8"
+                            IsVisible="{Binding IsQuoteProcessing}">
+                            <Ellipse Fill="{DynamicResource BrushStatusIdle}" Height="10" Width="10" />
+                            <TextBlock
+                                Classes="BodySmall"
+                                Text="{conv:Tr MotivationalQuoteProcessingLabel}" />
+                        </StackPanel>
                         <TextBlock
                             Classes="Caption"
                             HorizontalAlignment="Center"

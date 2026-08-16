@@ -31,7 +31,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
 
     // ponytail: no voice-activity detection — each in-game attempt just records a fixed window. Add silence
     // detection (stop early once the user goes quiet) if attempts start feeling sluggish in practice.
-    private static readonly TimeSpan AttemptRecordDuration = TimeSpan.FromSeconds(4);
+    private static readonly TimeSpan AttemptRecordDurationValue = TimeSpan.FromSeconds(6);
 
     // ponytail: safety cap on the Settings "try it" recording, not a real product limit — just stops a
     // microphone from staying open forever if Stop/navigate-away somehow never calls CancelTestListening.
@@ -60,6 +60,8 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         }
     }
 
+    public TimeSpan AttemptRecordDuration => AttemptRecordDurationValue;
+
     public bool DetectMicrophone()
     {
         if (!IsModelReady)
@@ -85,6 +87,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         TimeSpan timeout,
         double minSimilarity,
         IProgress<int>? attemptsRemaining = null,
+        IProgress<SpeechListenPhase>? phase = null,
         CancellationToken ct = default)
     {
         await Task.Run(EnsureLoaded, ct);
@@ -93,15 +96,18 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
             return false;
         }
 
-        using var timeoutCts = new CancellationTokenSource(timeout);
-        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
+        // `timeout` only decides whether a *new* attempt is allowed to start — it must never cancel one
+        // already in progress. An attempt's recording is already bounded by AttemptRecordDuration; cutting
+        // it short mid-flight on an unrelated deadline just yields a near-empty capture that fails the
+        // similarity check almost instantly, which reads as a broken attempt rather than "ran out of time".
+        var deadline = Environment.TickCount64 + (long)timeout.TotalMilliseconds;
 
         var attemptsLeft = maxAttempts;
         attemptsRemaining?.Report(attemptsLeft);
 
-        while (attemptsLeft > 0 && !linkedCts.IsCancellationRequested)
+        while (attemptsLeft > 0 && Environment.TickCount64 < deadline && !ct.IsCancellationRequested)
         {
-            var similarity = await RecordAndMeasureAsync(targetPhrase, linkedCts.Token);
+            var similarity = await RecordAndMeasureAsync(targetPhrase, phase, ct);
             if (similarity >= minSimilarity)
             {
                 return true;
@@ -203,8 +209,11 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         return await DecodeAsync(samples, targetPhrase, ct);
     }
 
-    private async Task<double> RecordAndMeasureAsync(string targetPhrase, CancellationToken ct)
+    private async Task<double> RecordAndMeasureAsync(
+        string targetPhrase, IProgress<SpeechListenPhase>? phase, CancellationToken ct)
     {
+        phase?.Report(SpeechListenPhase.Listening);
+
         float[] samples;
         try
         {
@@ -220,6 +229,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
             return 0;
         }
 
+        phase?.Report(SpeechListenPhase.Processing);
         return await DecodeAsync(samples, targetPhrase, ct);
     }
 
@@ -251,16 +261,23 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         var samples = new List<float>();
         var waveIn = new WaveIn { WaveFormat = new WaveFormat(SampleRate, 16, 1) };
 
+        // These must outlive this (synchronous) method — it returns as soon as recording starts, long
+        // before the timeout can fire. Disposing them in a `using` here would unregister the "stop after
+        // N seconds" callback immediately, leaving the microphone recording forever. They're disposed
+        // once instead, when RecordingStopped actually fires.
+        var durationCts = new CancellationTokenSource(AttemptRecordDurationValue);
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, durationCts.Token);
+        var registration = linkedCts.Token.Register(() => waveIn.StopRecording());
+
         waveIn.DataAvailable += (_, e) => AppendSamples(samples, e);
         waveIn.RecordingStopped += (_, _) =>
         {
+            registration.Dispose();
+            linkedCts.Dispose();
+            durationCts.Dispose();
             waveIn.Dispose();
             tcs.TrySetResult(samples.ToArray());
         };
-
-        using var durationCts = new CancellationTokenSource(AttemptRecordDuration);
-        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, durationCts.Token);
-        using var registration = linkedCts.Token.Register(() => waveIn.StopRecording());
 
         try
         {
@@ -268,6 +285,9 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         }
         catch
         {
+            registration.Dispose();
+            linkedCts.Dispose();
+            durationCts.Dispose();
             waveIn.Dispose();
             return Task.FromResult(Array.Empty<float>());
         }

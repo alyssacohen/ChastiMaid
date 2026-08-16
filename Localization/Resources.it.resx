@@ -876,6 +876,9 @@
   <data name="MotivationalQuoteListeningLabel" xml:space="preserve">
     <value>Sto ascoltando.</value>
   </data>
+  <data name="MotivationalQuoteProcessingLabel" xml:space="preserve">
+    <value>Un momento — sto valutando quanto detto.</value>
+  </data>
   <data name="MotivationalQuoteAttemptsRemainingFormat" xml:space="preserve">
     <value>{0} tentativi rimasti</value>
   </data>
