@@ -24,13 +24,9 @@
     <Style Selector="TextBlock.PageTitle">
         <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/CormorantInfant#Cormorant Infant" />
         <Setter Property="FontSize" Value="48" />
+        <Setter Property="FontStyle" Value="Italic" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="LineHeight" Value="60" />
-        <!--
-            LineHeight 60 (not the 52 a 48px font would suggest) was verified empirically for
-            Cormorant Garamond's descenders (g,p,q,y,j) clipping at tighter ratios; re-verify on
-            screen now that PageTitle uses Cormorant Infant, whose descenders may differ.
-        -->
         <Setter Property="LetterSpacing" Value="-0.15" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
