@@ -40,6 +40,12 @@ at random among the currently enabled ones, and stays fixed for the whole durati
 will only have the option to accept it or close the application so that until the penalty is served it will not be
 possible to continue with the game.
 
+If a new Forced Outfit punishment is assigned while another one is still pending, it does not replace or merge with
+the existing one: both are tracked independently, but only one is ever in effect at a time. The oldest pending one
+(by assignment time) is the one currently in effect; any later ones queue behind it and only start counting down
+once the ones ahead of them are resolved. In the pending punishments list, a queued Forced Outfit is shown as
+awaiting its turn rather than with a session countdown, since its countdown has not started yet.
+
 Maybe other types will be added.
 
 ## Punishment Severity

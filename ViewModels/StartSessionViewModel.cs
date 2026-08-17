@@ -75,9 +75,9 @@ public partial class StartSessionViewModel : ViewModelBase
             // can never collide with the device resolved above.
             var deviceEligibleIds = saveRepo.GetChastityDeviceItems().Select(c => c.ClothingItemId).ToHashSet();
 
-            // Priority 1: active forced-outfit punishment with sessions remaining
-            var forcedPunishment = saveRepo.GetActivePunishments()
-                .FirstOrDefault(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0);
+            // Priority 1: active forced-outfit punishment with sessions remaining (the oldest one pending —
+            // later ones queue behind it, see SaveRepository.GetActiveForcedOutfitPunishment)
+            var forcedPunishment = saveRepo.GetActiveForcedOutfitPunishment();
 
             if (forcedPunishment is not null)
             {

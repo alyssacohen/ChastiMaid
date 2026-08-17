@@ -393,9 +393,12 @@ public partial class DashboardViewModel : ViewModelBase
         var owned = _saveRepo.GetInventory().Select(c => c.CardId).ToHashSet();
         var canSoften = owned.Contains(new CardId(CardType.SoftenPunishment, 0));
         var canCancel = owned.Contains(new CardId(CardType.CancelPunishment, 0));
+        var activeForcedOutfitId = _saveRepo.GetActiveForcedOutfitPunishment()?.Id;
         foreach (var punishment in _saveRepo.GetActivePunishments())
         {
-            Punishments.Add(new PunishmentItemViewModel(punishment, canSoften, canCancel));
+            var isActiveForcedOutfit = punishment.Kind == PunishmentKind.ForcedOutfit &&
+                punishment.Id == activeForcedOutfitId;
+            Punishments.Add(new PunishmentItemViewModel(punishment, canSoften, canCancel, isActiveForcedOutfit));
         }
     }
 
@@ -528,8 +531,7 @@ public partial class DashboardViewModel : ViewModelBase
             return false;
         }
 
-        var forced = _saveRepo.GetActivePunishments()
-            .FirstOrDefault(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0);
+        var forced = _saveRepo.GetActiveForcedOutfitPunishment();
         if (forced is { ForceFullOutfit: true })
         {
             return false;

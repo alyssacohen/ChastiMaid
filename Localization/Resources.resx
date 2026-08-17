@@ -219,6 +219,9 @@
   <data name="PunishmentActionForcedOutfitFormat" xml:space="preserve">
     <value>{0} more session(s)</value>
   </data>
+  <data name="PunishmentActionForcedOutfitQueued" xml:space="preserve">
+    <value>Awaiting its turn</value>
+  </data>
   <data name="CornertimeFramingTitle" xml:space="preserve">
     <value>The Corner Awaits</value>
   </data>

@@ -5,7 +5,8 @@ namespace ChastiMaid.ViewModels;
 
 public class PunishmentItemViewModel : ViewModelBase
 {
-    public PunishmentItemViewModel(ActivePunishment punishment, bool canSoften = false, bool canCancel = false)
+    public PunishmentItemViewModel(ActivePunishment punishment, bool canSoften = false, bool canCancel = false,
+        bool isActiveForcedOutfit = false)
     {
         CanSoften = canSoften;
         CanCancel = canCancel;
@@ -36,8 +37,9 @@ public class PunishmentItemViewModel : ViewModelBase
 
         ActionLabel = Kind switch
         {
-            PunishmentKind.ForcedOutfit =>
+            PunishmentKind.ForcedOutfit when isActiveForcedOutfit =>
                 string.Format(Resources.Get("PunishmentActionForcedOutfitFormat"), punishment.ForcedOutfitRemainingSessions ?? 0),
+            PunishmentKind.ForcedOutfit => Resources.Get("PunishmentActionForcedOutfitQueued"),
             _ => Resources.Get("Start"),
         };
     }

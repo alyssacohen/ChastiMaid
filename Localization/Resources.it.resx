@@ -216,6 +216,12 @@
   <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
     <value>L'outfit prescelto</value>
   </data>
+  <data name="PunishmentActionForcedOutfitFormat" xml:space="preserve">
+    <value>Ancora {0} sessioni</value>
+  </data>
+  <data name="PunishmentActionForcedOutfitQueued" xml:space="preserve">
+    <value>In attesa del suo turno</value>
+  </data>
   <data name="CornertimeFramingTitle" xml:space="preserve">
     <value>L'angolo vi attende</value>
   </data>

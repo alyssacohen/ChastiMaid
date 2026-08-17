@@ -186,6 +186,16 @@ public class SaveRepository(LiteDatabase db)
         return ActivePunishments.Find(p => !p.IsResolved).ToList();
     }
 
+    /// <summary>The forced-outfit punishment currently in effect, i.e. the oldest one still pending — later
+    /// ones queue behind it and only take effect once this one resolves.</summary>
+    public ActivePunishment? GetActiveForcedOutfitPunishment()
+    {
+        return GetActivePunishments()
+            .Where(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0)
+            .OrderBy(p => p.AssignedAt)
+            .FirstOrDefault();
+    }
+
     public void SaveActivePunishment(ActivePunishment punishment)
     {
         ActivePunishments.Upsert(punishment);
