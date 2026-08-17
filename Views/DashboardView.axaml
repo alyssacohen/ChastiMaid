@@ -891,7 +891,7 @@
                                                     Classes="Primary compact"
                                                     Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).StartPunishmentCommand}"
                                                     CommandParameter="{Binding}"
-                                                    Content="{conv:Tr Start}"
+                                                    Content="{Binding ActionLabel}"
                                                     MinHeight="44" />
                                             </StackPanel>
                                         </Grid>

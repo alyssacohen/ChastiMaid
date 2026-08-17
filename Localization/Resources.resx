@@ -216,6 +216,9 @@
   <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
     <value>The chosen uniform</value>
   </data>
+  <data name="PunishmentActionForcedOutfitFormat" xml:space="preserve">
+    <value>{0} more session(s)</value>
+  </data>
   <data name="CornertimeFramingTitle" xml:space="preserve">
     <value>The Corner Awaits</value>
   </data>

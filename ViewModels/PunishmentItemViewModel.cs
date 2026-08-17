@@ -33,6 +33,13 @@ public class PunishmentItemViewModel : ViewModelBase
             PunishmentKind.ForcedOutfit when punishment.ForcedOutfitPresetName is { } name => name,
             _ => null,
         };
+
+        ActionLabel = Kind switch
+        {
+            PunishmentKind.ForcedOutfit =>
+                string.Format(Resources.Get("PunishmentActionForcedOutfitFormat"), punishment.ForcedOutfitRemainingSessions ?? 0),
+            _ => Resources.Get("Start"),
+        };
     }
 
     public int PunishmentId { get; }
@@ -53,4 +60,7 @@ public class PunishmentItemViewModel : ViewModelBase
 
     /// <summary>Kind-specific quantity (lines to write, minutes of cornertime). Null when not applicable.</summary>
     public string? DetailLabel { get; }
+
+    /// <summary>Label for the row's action button. ForcedOutfit has no manual action, so it shows the countdown instead.</summary>
+    public string ActionLabel { get; }
 }
