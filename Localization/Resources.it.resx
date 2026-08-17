@@ -187,7 +187,7 @@
     <value>Per una risposta insoddisfacente alla mia domanda.</value>
   </data>
   <data name="PunishmentReasonMotivationalQuoteFailed" xml:space="preserve">
-    <value>Per aver balbettato la frase richiesta, in ritardo come se non bastasse.</value>
+    <value>Per aver mal pronunciato la frase richiesta.</value>
   </data>
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
     <value>Per un'indecorosa fretta nei suoi doveri.</value>
@@ -529,13 +529,13 @@
       <value>Permesso garantito</value>
   </data>
   <data name="FortuneOutcomeGrantDesc" xml:space="preserve">
-    <value>Un mio capriccio, in attesa di essere concesso. Saprai riconoscerlo quando arriverà.</value>
+      <value>Un mio capriccio, in attesa di essere concesso. Saprete riconoscerlo quando arriverà.</value>
   </data>
   <data name="FortuneOutcomeSoftenTitle" xml:space="preserve">
     <value>Alleggerita</value>
   </data>
   <data name="FortuneOutcomeSoftenDesc" xml:space="preserve">
-    <value>Il mio buon cuore ha alleggerito una delle tue punizioni. Quale, sta a te scoprirlo.</value>
+      <value>Il mio buon cuore ha alleggerito una delle vostre punizioni.</value>
   </data>
   <data name="FortuneOutcomeCancelTitle" xml:space="preserve">
     <value>Annullata</value>
@@ -544,13 +544,13 @@
       <value>Il mio buon cuore ha cancellato una punizione dal registro.</value>
   </data>
   <data name="FortuneOutcomeProbabilityBuffDesc" xml:space="preserve">
-    <value>Un permesso, da qualche parte, sarà più facile da ottenere di quanto meriti.</value>
+      <value>Un permesso, da qualche parte, sarà più facile da ottenere di quanto meritereste.</value>
   </data>
   <data name="FortuneOutcomeProbabilityDebuffDesc" xml:space="preserve">
-    <value>Un permesso, da qualche parte, sarà più difficile da ottenere di quanto vorresti.</value>
+      <value>Un permesso, da qualche parte, sarà più difficile da ottenere di quanto vorreste.</value>
   </data>
   <data name="FortuneOutcomeDurationBuffDesc" xml:space="preserve">
-      <value>Uno dei prossimi permessi durerà più a lungo del previsto. Approfittane finché dura.</value>
+      <value>Uno dei prossimi permessi durerà più a lungo del previsto. Approfittatene finché dura.</value>
   </data>
   <data name="FortuneOutcomeDurationDebuffDesc" xml:space="preserve">
       <value>Uno dei prossimi permessi e sarà più breve del previsto.</value>
@@ -559,7 +559,7 @@
     <value>Notata</value>
   </data>
   <data name="FortuneOutcomeAggravateDesc" xml:space="preserve">
-    <value>Ho dato un'occhiata più attenta a una delle tue punizioni, e non mi è piaciuto ciò che ho visto. Si vedrà.</value>
+      <value>Ho dato un'occhiata più attenta a una delle vostre punizioni, e non mi è piaciuto ciò che ho visto. Si vedrà.</value>
   </data>
   <data name="FortuneOutcomeWhiffTitle" xml:space="preserve">
     <value>Nulla</value>
@@ -583,16 +583,16 @@
     <value>Concesso — brevemente.</value>
   </data>
   <data name="PermissionGrantedIndulgent" xml:space="preserve">
-    <value>Oggi mi sento generosa. Non metterla alla prova.</value>
+      <value>Oggi mi sento generosa. Ma non mettetemi alla prova.</value>
   </data>
   <data name="PermissionGrantedReluctant" xml:space="preserve">
-    <value>Se proprio devi. L'orologio corre già.</value>
+      <value>Se proprio dovete. Il tempo sta già scorrendo.</value>
   </data>
   <data name="PermissionDeniedBusy" xml:space="preserve">
-    <value>Non ora. La casa non si ferma per te.</value>
+      <value>Non ora. La casa non si ferma per voi.</value>
   </data>
   <data name="PermissionDeniedNotNow" xml:space="preserve">
-    <value>Negato. Riprova più tardi, se ne hai il coraggio.</value>
+      <value>Negato. Riprovate più tardi, se ne avete il coraggio.</value>
   </data>
   <data name="PermissionDeniedWhim" xml:space="preserve">
     <value>No. Semplicemente non ne ho voglia.</value>
@@ -601,22 +601,22 @@
     <value>Negato. La disciplina non si negozia.</value>
   </data>
   <data name="PermissionDeniedInsistenceAnnoyed" xml:space="preserve">
-    <value>Ho già risposto. Non chiedere di nuovo così presto.</value>
+      <value>Ho già risposto. Evitate di chiedere di nuovo così presto.</value>
   </data>
   <data name="PermissionDeniedInsistenceWarning" xml:space="preserve">
     <value>L'insistenza non cambierà la mia risposta — solo la mia pazienza.</value>
   </data>
   <data name="PermissionDeniedInsistenceMocking" xml:space="preserve">
-    <value>Ancora no. Ti aspettavi una risposta diversa?</value>
+      <value>Ancora no. Vi aspettavate forse una risposta diversa?</value>
   </data>
   <data name="PermissionDeniedDiaperReminder" xml:space="preserve">
-    <value>Indossi già tutto ciò che ti serve per quello. Arrangiati.</value>
+      <value>Indossate già tutto ciò che vi serve per quello. Arrangiatevi.</value>
   </data>
   <data name="PermissionDeniedDiaperMocking" xml:space="preserve">
-    <value>Che richiesta curiosa, considerato cosa porti sotto.</value>
+      <value>Che richiesta curiosa, considerato cosa state indossando.</value>
   </data>
   <data name="PermissionDeniedDiaperObvious" xml:space="preserve">
-    <value>La domanda si risponde da sola, non credi?</value>
+      <value>La domanda si risponde da sola, non credete?</value>
   </data>
   <data name="DashboardEndSession" xml:space="preserve">
     <value>Termina sessione</value>
@@ -637,7 +637,7 @@
     <value>No</value>
   </data>
   <data name="ImpossibleQuestionDiligence" xml:space="preserve">
-    <value>Siete state diligenti nei vostri doveri, oggi?</value>
+      <value>Siete stata diligente nei vostri doveri, oggi?</value>
   </data>
   <data name="ImpossibleQuestionDiligenceYesPositive" xml:space="preserve">
     <value>L'operosità vi si addice.</value>
@@ -649,7 +649,7 @@
     <value>La vostra franchezza vi fa onore. Ora rimediate.</value>
   </data>
   <data name="ImpossibleQuestionDiligenceNoNegative" xml:space="preserve">
-    <value>Avete confessato l'ozio con fin troppa chiarezza.</value>
+      <value>Avete ammesso di essere pigra con fin troppa chiarezza.</value>
   </data>
   <data name="ImpossibleQuestionPerfection" xml:space="preserve">
     <value>Ritenete che il vostro lavoro odierno sia stato privo di difetti?</value>
@@ -673,7 +673,7 @@
     <value>Una domestica contenta è il fondamento di una casa ben governata.</value>
   </data>
   <data name="ImpossibleQuestionContentmentYesNegative" xml:space="preserve">
-    <value>La contentezza genera pigrizia. Bisogna sempre aspirare a di più.</value>
+      <value>Troppa soddifazione genera pigrizia. Bisogna sempre aspirare a qualcosa in più.</value>
   </data>
   <data name="ImpossibleQuestionContentmentNoPositive" xml:space="preserve">
     <value>Bene. L'insoddisfazione è la vera madre del miglioramento.</value>
@@ -727,13 +727,13 @@
     <value>Uhm.. strano. Il silenzio, il più delle volte, cela i lamenti più grandi.</value>
   </data>
   <data name="ImpossibleQuestionImprovement" xml:space="preserve">
-    <value>Ritenete di necessitare ulteriore istruzione?</value>
+      <value>Ritenete di aver bisogno di ulteriori istruzioni?</value>
   </data>
   <data name="ImpossibleQuestionImprovementYesPositive" xml:space="preserve">
     <value>Un'allieva volenterosa è una gioia da istruire.</value>
   </data>
   <data name="ImpossibleQuestionImprovementYesNegative" xml:space="preserve">
-    <value>Dopo tutto questo tempo? Quanto profondamente deludente.</value>
+      <value>Dopo tutto questo tempo? Mi avete profondamente delusa.</value>
   </data>
   <data name="ImpossibleQuestionImprovementNoPositive" xml:space="preserve">
     <value>L'autosufficienza è una virtù assai ammirevole.</value>
@@ -766,10 +766,10 @@
     <value>Una breve pausa per bere non è ozio. Ora bevete cinque sorsi.</value>
   </data>
   <data name="HydrationReminderDuty" xml:space="preserve">
-    <value>Anche la diligenza ha bisogno di nutrimento. Bevi un bicchiere.</value>
+      <value>Anche la diligenza ha bisogno di nutrimento. Bevete un bicchiere.</value>
   </data>
   <data name="HydrationReminderPause" xml:space="preserve">
-    <value>Puoi fare una pausa e bere. Non avrò meno stima di voi per questo. Bevi mezzo bicchiere.</value>
+      <value>Puoi fare una pausa e bere. Non avrò meno stima di voi per questo. Bevete mezzo bicchiere.</value>
   </data>
   <data name="HydrationConfirmedMessage" xml:space="preserve">
     <value>Molto bene.</value>
@@ -901,13 +901,13 @@
     <value>Non era ciò che desideravo udire. Fate in modo di prestare maggiore attenzione la prossima volta.</value>
   </data>
   <data name="KneelSummon" xml:space="preserve">
-    <value>La vostra presenza è richiesta. Presentatevi subito.</value>
+      <value>È richiesta la vostra presenza. Presentatevi subito.</value>
   </data>
   <data name="KneelSummonConfirm" xml:space="preserve">
     <value>Sono qui</value>
   </data>
   <data name="KneelFramingLabel" xml:space="preserve">
-    <value>Posizionate la fotocamera per inquadrare il luogo del vostro inginocchiamento.</value>
+      <value>Posizionate la fotocamera per inquadrare il luogo dove vi inginocchierete.</value>
   </data>
   <data name="KneelFramingConfirm" xml:space="preserve">
     <value>Posizione confermata</value>
@@ -916,7 +916,7 @@
     <value>Ora inginocchiatevi, guardate a terra e riflettete sui vostri errori.</value>
   </data>
   <data name="KneelInstructionHumility" xml:space="preserve">
-    <value>Inginocchiatevi dove siete, e trattenetevi un poco con la vostra umiltà.</value>
+      <value>Inginocchiatevi dove siete, dimostratemi un po' di umiltà.</value>
   </data>
   <data name="KneelInstructionStillness" xml:space="preserve">
     <value>A terra, sulle ginocchia. L'immobilità vi si addice.</value>
@@ -1435,8 +1435,7 @@
     <value>Servizio completato!</value>
   </data>
   <data name="GameCompleteEmployerQuote" xml:space="preserve">
-    <value>Congratulazioni! Hai saldato il tuo debito.
-Puoi esportare i contenuti della sessione prima che lo slot venga liberato.</value>
+      <value>Congratulazioni! Avete saldato il vostro debito. Potete esportare i contenuti della sessione prima che lo slot venga liberato.</value>
   </data>
   <data name="GameCompleteExportVideo" xml:space="preserve">
     <value>Esporta video outfit</value>
