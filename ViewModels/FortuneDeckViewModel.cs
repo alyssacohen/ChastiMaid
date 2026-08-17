@@ -103,7 +103,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
     private double _containerHeight = 400;
 
     [Reactive] private FortuneDeckDrawState _state = FortuneDeckDrawState.Idle;
-    [Reactive] private string _stakeDisplay;
+    [Reactive] private string _currentDebtDisplay = "";
 
     public FortuneDeckViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
     {
@@ -112,8 +112,8 @@ public partial class FortuneDeckViewModel : ViewModelBase
         var settings = saveRepo.GetGameSettings();
         _deck = new FortuneDeck(saveRepo, settings);
         var stake = Views.Converters.CurrencyConverter.Format(CardCatalog.FortuneDrawPrice(settings));
-        _stakeDisplay = stake;
         DrawButtonLabel = string.Format(Resources.Get("ShopFortuneDeckDrawFormat"), stake);
+        RefreshDebtDisplay();
 
         var canDraw = this.WhenAnyValue(x => x.State,
             s => s is FortuneDeckDrawState.Idle or FortuneDeckDrawState.Revealed);
@@ -128,6 +128,12 @@ public partial class FortuneDeckViewModel : ViewModelBase
 
     public ICommand DrawCommand { get; }
     public ICommand BackCommand { get; }
+
+    private void RefreshDebtDisplay()
+    {
+        var state = _saveRepo.GetGameState();
+        CurrentDebtDisplay = Views.Converters.CurrencyConverter.Format(state?.CurrentDebt ?? 0);
+    }
 
     /// <summary>
     ///     Called by the view's code-behind whenever the draw area's measured size changes, so the arc scales
@@ -191,6 +197,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
     {
         // Resolve the outcome up front — the animation never blocks on or waits for game logic mid-sequence.
         var result = _deck.Draw();
+        RefreshDebtDisplay();
 
         ResetCosmeticDeck();
 

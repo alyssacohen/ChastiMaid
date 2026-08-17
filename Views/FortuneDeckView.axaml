@@ -17,12 +17,13 @@
             <TextBlock Grid.Column="1"
                        Classes="PageTitle"
                        Text="{conv:Tr ShopFortuneDeckTitle}"
-                       HorizontalAlignment="Center" />
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom" />
 
-            <TextBlock Grid.Column="2"
-                       Classes="LabelUI"
-                       Text="{Binding StakeDisplay}"
-                       VerticalAlignment="Center" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr ShopCurrentDebt}}" VerticalAlignment="Center" />
+                <TextBlock Classes="NumberLarge" Text="{Binding CurrentDebtDisplay}" VerticalAlignment="Center" />
+            </StackPanel>
         </Grid>
 
         <!-- Draw area: cosmetic ribbon + reveal panel -->
