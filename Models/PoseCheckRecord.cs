@@ -11,7 +11,13 @@ public class PoseCheckRecord
     public string PhotoPath { get; set; } = "";
     public DateTime CapturedAt { get; set; }
 
-    // Consumed by a future review popup, not yet implemented
+    // Snapshot of the worn outfit (+ active Plug-and-Play item, if any) at capture time, used by the
+    // Self-check popup to tell whether a queried item belonged to that session's outfit. Records saved
+    // before this field existed default to an empty list, so HasOutfitSnapshot marks them ineligible for
+    // self-check instead of being misread as "nothing was worn".
+    public List<int> OutfitItemIdsAtCapture { get; set; } = [];
+    public bool HasOutfitSnapshot { get; set; }
+
     public bool Reviewed { get; set; }
     public bool? IsCompliant { get; set; }
 }

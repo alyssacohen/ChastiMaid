@@ -146,6 +146,12 @@ public partial class DashboardViewModel : ViewModelBase
     private DispatcherTimer? _poseCountdownTimer;
     private ClothingItem? _currentPoseItem;
 
+    // --- Idle popup: Self-check (quizzes a past Pose for Camera photo) ---
+    [Reactive] private bool _isSelfCheckPopupActive;
+    [Reactive] private Bitmap? _selfCheckPhoto;
+    private PoseCheckRecord? _currentSelfCheckRecord;
+    private ClothingItem? _currentSelfCheckQueriedItem;
+
     // --- Idle popup: Curtsy (video di riverenza) ---
     [Reactive] private bool _isCurtsyCountdownActive;
     [Reactive] private bool _isCurtsyRecordingActive;
@@ -446,6 +452,7 @@ public partial class DashboardViewModel : ViewModelBase
         ImpossibleQuestion,
         Hydration,
         PoseForCamera,
+        SelfCheck,
         Curtsy,
         MotivationalQuote,
         Kneel,
@@ -458,6 +465,7 @@ public partial class DashboardViewModel : ViewModelBase
         IdlePopupKind.ImpossibleQuestion,
         IdlePopupKind.Hydration,
         IdlePopupKind.PoseForCamera,
+        IdlePopupKind.SelfCheck,
         IdlePopupKind.Curtsy,
         IdlePopupKind.MotivationalQuote,
         IdlePopupKind.Kneel,
@@ -499,6 +507,11 @@ public partial class DashboardViewModel : ViewModelBase
         }
 
         return WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex);
+    }
+
+    private bool IsSelfCheckAvailable()
+    {
+        return _saveRepo.GetPendingSelfCheckablePoseChecks().Count > 0;
     }
 
     private bool ConflictsWithCurrentOutfit(ClothingItem candidate)
@@ -552,6 +565,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             IdlePopupKind.Hydration => IsHydrationAvailable(),
             IdlePopupKind.PoseForCamera => IsPoseForCameraAvailable(),
+            IdlePopupKind.SelfCheck => IsSelfCheckAvailable(),
             IdlePopupKind.Curtsy => _settings.CurtsyEnabled && WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
             IdlePopupKind.MotivationalQuote => _settings.QuoteReadingEnabled,
             IdlePopupKind.Kneel => _settings.KneelEnabled && WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex),
@@ -585,6 +599,9 @@ public partial class DashboardViewModel : ViewModelBase
                 break;
             case IdlePopupKind.PoseForCamera:
                 ShowPoseForCameraPopup();
+                break;
+            case IdlePopupKind.SelfCheck:
+                ShowSelfCheckPopup();
                 break;
             case IdlePopupKind.Curtsy:
                 ShowCurtsyPopup();
@@ -668,6 +685,59 @@ public partial class DashboardViewModel : ViewModelBase
         _currentPoseItem = candidates[_random.Next(candidates.Count)];
         PopupQuestion = string.Format(Resources.Get(PoseForCameraInstructionBank.GetRandom()), _currentPoseItem.Name);
         PopupAnswers = [Resources.Get("PoseForCameraConfirm")];
+        _popupShownAt = DateTime.UtcNow;
+        IsShowingPopupOutcome = false;
+        IsPopupVisible = true;
+
+        if (OperatingSystem.IsWindows())
+        {
+            Task.Run(() => Console.Beep(800, 300));
+        }
+    }
+
+    /// <summary>
+    ///     Picks a pending Pose-for-Camera photo and quizzes whether a queried item is visible in it. The
+    ///     queried item is weighted 40% toward the item actually requested at capture time (the only choice
+    ///     that can trigger a punishment for answering "no") and 60% uniformly random from the wardrobe —
+    ///     a uniform-only pick would rarely land on that item, making "always answer no" a nearly risk-free
+    ///     way to game the check.
+    /// </summary>
+    private void ShowSelfCheckPopup()
+    {
+        var records = _saveRepo.GetPendingSelfCheckablePoseChecks();
+        if (records.Count == 0)
+        {
+            return;
+        }
+
+        var record = records[_random.Next(records.Count)];
+        var wardrobe = _saveRepo.GetWardrobe();
+
+        var requestedItem = wardrobe.FirstOrDefault(i => i.Id == record.ItemId);
+        var queriedItem = requestedItem is not null && _random.Next(100) < 40
+            ? requestedItem
+            : wardrobe.Count > 0 ? wardrobe[_random.Next(wardrobe.Count)] : requestedItem;
+
+        if (queriedItem is null)
+        {
+            return;
+        }
+
+        try
+        {
+            SelfCheckPhoto = new Bitmap(record.PhotoPath);
+        }
+        catch
+        {
+            return;
+        }
+
+        _currentPopupKind = IdlePopupKind.SelfCheck;
+        _currentSelfCheckRecord = record;
+        _currentSelfCheckQueriedItem = queriedItem;
+        IsSelfCheckPopupActive = true;
+        PopupQuestion = string.Format(Resources.Get(SelfCheckInstructionBank.GetRandom()), queriedItem.Name);
+        PopupAnswers = [Resources.Get("SelfCheckYes"), Resources.Get("SelfCheckNo")];
         _popupShownAt = DateTime.UtcNow;
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
@@ -929,6 +999,9 @@ public partial class DashboardViewModel : ViewModelBase
             case IdlePopupKind.PoseForCamera:
                 OnPoseForCameraConfirm();
                 break;
+            case IdlePopupKind.SelfCheck:
+                OnSelfCheckAnswer(answer);
+                break;
             case IdlePopupKind.Curtsy:
                 OnCurtsyConfirm();
                 break;
@@ -1001,12 +1074,21 @@ public partial class DashboardViewModel : ViewModelBase
 
         if (success)
         {
+            var outfitItemIds = (_saveRepo.GetGameState()?.CurrentOutfitItemIds ?? []).ToList();
+            var activePlugAndPlay = _saveRepo.GetActivePlugAndPlayAccessory();
+            if (activePlugAndPlay is not null)
+            {
+                outfitItemIds.Add(activePlugAndPlay.ClothingItemId);
+            }
+
             _saveRepo.SavePoseCheckRecord(new PoseCheckRecord
             {
                 ItemId = item.Id,
                 ItemName = item.Name,
                 PhotoPath = path,
                 CapturedAt = DateTime.UtcNow,
+                OutfitItemIdsAtCapture = outfitItemIds,
+                HasOutfitSnapshot = true,
                 Reviewed = false,
                 IsCompliant = null
             });
@@ -1023,6 +1105,60 @@ public partial class DashboardViewModel : ViewModelBase
 
         PopupOutcomeMessage = Resources.Get(success ? "PoseForCameraCapturedMessage" : "PoseForCameraFailedMessage");
         ShowPopupOutcome(true);
+    }
+
+    /// <summary>
+    ///     Judges the answer against the two facts already known about the queried item (was it worn that
+    ///     session, was it the one actually requested at capture time) — no image analysis of the photo
+    ///     itself is involved. See docs/specs/selfcheck.md for the case table this implements.
+    /// </summary>
+    private void OnSelfCheckAnswer(string answer)
+    {
+        var record = _currentSelfCheckRecord;
+        var item = _currentSelfCheckQueriedItem;
+        _currentSelfCheckRecord = null;
+        _currentSelfCheckQueriedItem = null;
+
+        if (record is null || item is null)
+        {
+            ShowPopupOutcome(true);
+            return;
+        }
+
+        var userSaysVisible = PopupAnswers.Count > 0 && answer == PopupAnswers[0];
+        var wasWornThatSession = record.OutfitItemIdsAtCapture.Contains(item.Id);
+        var wasTheRequestedItem = item.Id == record.ItemId;
+
+        string? reason = null;
+        if (wasTheRequestedItem && !userSaysVisible)
+        {
+            reason = "PunishmentReasonSelfCheckWronglyHidden";
+        }
+        else if (!wasWornThatSession && userSaysVisible)
+        {
+            reason = "PunishmentReasonSelfCheckWronglyVisible";
+        }
+
+        var positive = reason is null;
+        if (reason is not null)
+        {
+            // Combined with lateness, same as Impossible Question — not punished separately via the
+            // generic per-second path in ClosePopup, hence the _popupSecondsLate reset below.
+            var baseSeverity = reason == "PunishmentReasonSelfCheckWronglyHidden"
+                ? InfractionSeverity.SelfCheckWronglyHidden
+                : InfractionSeverity.SelfCheckWronglyVisible;
+            var severity = baseSeverity + _popupSecondsLate;
+            _saveRepo.AssignPunishment((severity, severity), reason);
+            RefreshPunishments();
+            _popupSecondsLate = 0;
+        }
+
+        record.Reviewed = true;
+        record.IsCompliant = positive;
+        _saveRepo.SavePoseCheckRecord(record);
+
+        PopupOutcomeMessage = Resources.Get(positive ? "SelfCheckPassedMessage" : "SelfCheckFailedMessage");
+        ShowPopupOutcome(positive);
     }
 
     private void OnCurtsyConfirm()
@@ -1337,6 +1473,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsShowingPopupOutcome = false;
         IsPoseCountdownActive = false;
         IsPoseForCameraPopupActive = false;
+        IsSelfCheckPopupActive = false;
         IsCurtsyCountdownActive = false;
         IsCurtsyRecordingActive = false;
         IsCurtsyPopupActive = false;
@@ -1350,10 +1487,14 @@ public partial class DashboardViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentQuestion = null;
         _currentPoseItem = null;
+        _currentSelfCheckRecord = null;
+        _currentSelfCheckQueriedItem = null;
         CurrentQuoteText = "";
         QuoteTypedAnswer = "";
         CapturedPosePhoto?.Dispose();
         CapturedPosePhoto = null;
+        SelfCheckPhoto?.Dispose();
+        SelfCheckPhoto = null;
         _sessionLoop.ReportPopupResult(positive);
 
         if (_popupSecondsLate > 0)

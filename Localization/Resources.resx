@@ -207,6 +207,12 @@
   <data name="PunishmentReasonPermissionOverrun" xml:space="preserve">
     <value>For overstaying a granted respite.</value>
   </data>
+  <data name="PunishmentReasonSelfCheckWronglyHidden" xml:space="preserve">
+    <value>For denying what the camera plainly required of her.</value>
+  </data>
+  <data name="PunishmentReasonSelfCheckWronglyVisible" xml:space="preserve">
+    <value>For claiming to wear what she never had on.</value>
+  </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>A Matter Already Settled</value>
   </data>
@@ -800,6 +806,27 @@
   </data>
   <data name="PoseForCameraFailedMessage" xml:space="preserve">
     <value>The camera was not cooperative. We shall try again another time.</value>
+  </data>
+  <data name="SelfCheckYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="SelfCheckNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="SelfCheckInstructionRecall" xml:space="preserve">
+    <value>Cast your mind back. Does {0} appear in this photograph?</value>
+  </data>
+  <data name="SelfCheckInstructionInspect" xml:space="preserve">
+    <value>I shall test your memory. Is {0} visible here?</value>
+  </data>
+  <data name="SelfCheckInstructionAudit" xml:space="preserve">
+    <value>A small audit, nothing more. Tell me truthfully — is {0} to be seen in this image?</value>
+  </data>
+  <data name="SelfCheckPassedMessage" xml:space="preserve">
+    <value>Your account tallies. Very well.</value>
+  </data>
+  <data name="SelfCheckFailedMessage" xml:space="preserve">
+    <value>Your account does not tally with my records. This will not do.</value>
   </data>
   <data name="CurtsyConfirm" xml:space="preserve">
       <value>I am ready, Madame</value>

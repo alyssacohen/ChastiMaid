@@ -207,6 +207,12 @@
   <data name="PunishmentReasonPermissionOverrun" xml:space="preserve">
     <value>Per essersi trattenuta oltre la pausa concessa.</value>
   </data>
+  <data name="PunishmentReasonSelfCheckWronglyHidden" xml:space="preserve">
+    <value>Per aver negato ciò che la macchina fotografica richiedeva chiaramente.</value>
+  </data>
+  <data name="PunishmentReasonSelfCheckWronglyVisible" xml:space="preserve">
+    <value>Per aver preteso di indossare ciò che non aveva affatto.</value>
+  </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>Una questione già decisa</value>
   </data>
@@ -800,6 +806,27 @@
   </data>
   <data name="PoseForCameraFailedMessage" xml:space="preserve">
     <value>La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra occasione.</value>
+  </data>
+  <data name="SelfCheckYes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="SelfCheckNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="SelfCheckInstructionRecall" xml:space="preserve">
+    <value>Richiamate alla mente quel momento. {0} compare in questa fotografia?</value>
+  </data>
+  <data name="SelfCheckInstructionInspect" xml:space="preserve">
+    <value>Metterò alla prova la vostra memoria. {0} è visibile qui?</value>
+  </data>
+  <data name="SelfCheckInstructionAudit" xml:space="preserve">
+    <value>Un piccolo controllo, nulla più. Ditemi il vero: si vede {0} in questa immagine?</value>
+  </data>
+  <data name="SelfCheckPassedMessage" xml:space="preserve">
+    <value>Il vostro resoconto coincide. Molto bene.</value>
+  </data>
+  <data name="SelfCheckFailedMessage" xml:space="preserve">
+    <value>Il vostro resoconto non coincide con i miei registri. Questo non va bene.</value>
   </data>
   <data name="CurtsyConfirm" xml:space="preserve">
       <value>Sono pronta, Madame</value>

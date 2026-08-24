@@ -240,6 +240,11 @@ public class SaveRepository(LiteDatabase db)
         return PoseChecks.Find(r => !r.Reviewed).ToList();
     }
 
+    public List<PoseCheckRecord> GetPendingSelfCheckablePoseChecks()
+    {
+        return PoseChecks.Find(r => !r.Reviewed && r.HasOutfitSnapshot).ToList();
+    }
+
     // --- Curtsy checks ---
     public void SaveCurtsyCheckRecord(CurtsyCheckRecord record)
     {

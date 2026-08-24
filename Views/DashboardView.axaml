@@ -543,6 +543,13 @@
                             IsVisible="{Binding Webcam.HasMultipleCameras}"
                             ItemsSource="{Binding Webcam.AvailableCameras}"
                             SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <Image
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding IsSelfCheckPopupActive}"
+                            Source="{Binding SelfCheckPhoto}"
+                            Stretch="Uniform"
+                            Width="{Binding PopupPreviewWidth}" />
                         <TextBlock
                             Classes="Body"
                             HorizontalAlignment="Center"
