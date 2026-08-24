@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using NAudio.Wave;
 using SherpaOnnx;
 
@@ -67,6 +68,12 @@ public sealed class SherpaOnnxTtsService : ITtsService, IDisposable
         }
     }
 
+    public Task WarmUpAsync(CancellationToken ct = default)
+    {
+        var language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        return Task.Run(() => GetOrLoadTts(language), ct);
+    }
+
     private OfflineTts? GetOrLoadTts(string language)
     {
         var lang = language.Equals("it", StringComparison.OrdinalIgnoreCase) ? "it" : "en";
@@ -89,13 +96,15 @@ public sealed class SherpaOnnxTtsService : ITtsService, IDisposable
 
                 if (File.Exists(modelPath) && File.Exists(tokensPath) && Directory.Exists(dataDir))
                 {
+                    var (noiseScale, noiseScaleW, lengthScale) = ReadInferenceSettings(modelPath + ".json");
+
                     var config = new OfflineTtsConfig();
                     config.Model.Vits.Model = modelPath;
                     config.Model.Vits.Tokens = tokensPath;
                     config.Model.Vits.DataDir = dataDir;
-                    config.Model.Vits.NoiseScale = 0.667f;
-                    config.Model.Vits.NoiseScaleW = 0.8f;
-                    config.Model.Vits.LengthScale = 1.0f;
+                    config.Model.Vits.NoiseScale = noiseScale;
+                    config.Model.Vits.NoiseScaleW = noiseScaleW;
+                    config.Model.Vits.LengthScale = lengthScale;
                     config.Model.NumThreads = 1;
                     config.Model.Provider = "cpu";
                     config.MaxNumSentences = 1;
@@ -110,6 +119,30 @@ public sealed class SherpaOnnxTtsService : ITtsService, IDisposable
 
             _ttsByLanguage[lang] = tts;
             return tts;
+        }
+    }
+
+    /// <summary>
+    ///     Each Piper voice ships its own recommended VITS stochastic-duration-predictor settings in its
+    ///     sidecar <c>.onnx.json</c> ("inference": noise_scale/noise_w/length_scale) — they vary per voice
+    ///     (e.g. Serena wants a much lower noise_w than Amy), and using the wrong ones makes the duration
+    ///     predictor occasionally clip phonemes at the start/end of a sentence. Falls back to Piper's global
+    ///     defaults (0.667/0.8/1.0) if the sidecar file is missing or malformed.
+    /// </summary>
+    private static (float NoiseScale, float NoiseScaleW, float LengthScale) ReadInferenceSettings(string jsonPath)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(File.ReadAllText(jsonPath));
+            var inference = doc.RootElement.GetProperty("inference");
+            return (
+                inference.GetProperty("noise_scale").GetSingle(),
+                inference.GetProperty("noise_w").GetSingle(),
+                inference.GetProperty("length_scale").GetSingle());
+        }
+        catch
+        {
+            return (0.667f, 0.8f, 1.0f);
         }
     }
 

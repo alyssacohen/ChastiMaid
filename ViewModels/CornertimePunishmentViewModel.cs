@@ -39,7 +39,14 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
 
         MainVm.Webcam.Start(_settings.SelectedCameraIndex);
 
-        ConfirmFramingCommand = ReactiveCommand.Create(BeginPositioning);
+        // Loading the voice model alone takes several seconds; kick it off now so it's ready by
+        // the time the user confirms framing, instead of stalling the first narration line.
+        if (_settings.CornertimeVoiceEnabled)
+        {
+            _ = MainVm.Tts.WarmUpAsync();
+        }
+
+        ConfirmFramingCommand = ReactiveCommand.CreateFromTask(BeginPositioning);
         AbandonCommand = ReactiveCommand.Create(() => Finish(success: false, abandoned: true));
     }
 
@@ -56,16 +63,25 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         return $"{seconds / 60:D2}:{seconds % 60:D2}";
     }
 
-    private void BeginPositioning()
+    private async Task BeginPositioning()
     {
         IsFraming = false;
         IsActive = true;
         Webcam.ResetMovementBaseline();
 
         _lifecycleCts = new CancellationTokenSource();
+        var cts = _lifecycleCts;
 
+        // The 10s positioning window only starts once the instructions have finished playing —
+        // otherwise a user standing away from the screen (that's the point of cornertime) would
+        // lose part of it to the narration itself.
         NarrationText = Resources.Get(CornertimeInstructionBank.GetRandomPosition());
-        Speak(NarrationText);
+        await Speak(NarrationText);
+
+        if (cts.IsCancellationRequested)
+        {
+            return;
+        }
 
         _positioningTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
         _positioningTimer.Tick += (_, _) =>
@@ -156,12 +172,14 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         _narrationTimer.Start();
     }
 
-    private void Speak(string text)
+    private Task Speak(string text)
     {
         if (_settings.CornertimeVoiceEnabled && _lifecycleCts is { } cts)
         {
-            _ = MainVm.Tts.SpeakAsync(text, cts.Token);
+            return MainVm.Tts.SpeakAsync(text, cts.Token);
         }
+
+        return Task.CompletedTask;
     }
 
     private void Finish(bool success, bool abandoned = false)
