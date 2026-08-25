@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:DashboardViewModel"
+             x:Class="ChastiMaid.Views.Controls.DashboardChoreResultOverlay">
+
+    <Panel
+        Classes="dialogOverlay"
+        IsVisible="{Binding IsChoreResultVisible}"
+        PointerPressed="OnOverlayPointerPressed">
+        <Border
+            Classes="dialogBox"
+            MaxWidth="420"
+            PointerPressed="OnDialogBoxPointerPressed">
+            <TextBlock
+                Classes="Body"
+                Foreground="{DynamicResource BrushAmberText}"
+                Text="{Binding ChoreResultMessage}"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+        </Border>
+    </Panel>
+</UserControl>

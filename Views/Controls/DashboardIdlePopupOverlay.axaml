@@ -1,0 +1,255 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:ChastiMaid.Views.Controls"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:DashboardViewModel"
+             x:Class="ChastiMaid.Views.Controls.DashboardIdlePopupOverlay">
+
+    <Panel
+        Classes="dialogOverlay"
+        IsVisible="{Binding IsPopupVisible}"
+        PointerPressed="OnOverlayPointerPressed">
+        <Border
+            Classes="dialogBox"
+            MaxHeight="{Binding PopupDialogMaxHeight}"
+            MaxWidth="500"
+            PointerPressed="OnDialogBoxPointerPressed">
+            <Panel>
+                <StackPanel IsVisible="{Binding IsShowingQuestionPanel}" Spacing="16">
+                    <controls:WebcamPreviewControl
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}"
+                        Service="{Binding Webcam}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding Webcam.HasMultipleCameras}"
+                        ItemsSource="{Binding Webcam.AvailableCameras}"
+                        SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    <Image
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding IsSelfCheckPopupActive}"
+                        Source="{Binding SelfCheckPhoto}"
+                        Stretch="Uniform"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <TextBlock
+                        Classes="Body"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PopupQuestion}"
+                        TextWrapping="Wrap" />
+                    <ItemsControl ItemsSource="{Binding PopupAnswers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Classes="Ghost"
+                                    Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="{Binding}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0,4" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsPoseCountdownActive}" Spacing="16">
+                    <controls:WebcamPreviewControl
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        Service="{Binding Webcam}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding Webcam.HasMultipleCameras}"
+                        ItemsSource="{Binding Webcam.AvailableCameras}"
+                        SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr PoseForCameraCountdownLabel}"
+                        TextAlignment="Center" />
+                    <TextBlock
+                        Classes="NumberLarge"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PoseCountdown}" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsCurtsyCountdownActive}" Spacing="16">
+                    <controls:WebcamPreviewControl
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        Service="{Binding Webcam}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding Webcam.HasMultipleCameras}"
+                        ItemsSource="{Binding Webcam.AvailableCameras}"
+                        SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr CurtsyCountdownLabel}"
+                        TextAlignment="Center" />
+                    <TextBlock
+                        Classes="NumberLarge"
+                        HorizontalAlignment="Center"
+                        Text="{Binding CurtsyCountdown}" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsCurtsyRecordingActive}" Spacing="16">
+                    <controls:WebcamPreviewControl
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        Service="{Binding Webcam}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="False"
+                        IsVisible="{Binding Webcam.HasMultipleCameras}"
+                        ItemsSource="{Binding Webcam.AvailableCameras}"
+                        SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr CurtsyRecordingLabel}"
+                        TextAlignment="Center" />
+                    <TextBlock
+                        Classes="NumberLarge"
+                        HorizontalAlignment="Center"
+                        Text="{Binding CurtsyRecordingSecondsLeft}" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsQuoteListeningActive}" Spacing="16">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr MotivationalQuoteListeningLabel}"
+                        TextAlignment="Center" />
+                    <TextBlock
+                        Classes="Body"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PopupQuestion}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <Border Classes="statCard" HorizontalAlignment="Stretch">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurrentQuoteText}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Border>
+                    <TextBlock
+                        Classes="NumberLarge"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding !IsQuoteProcessing}"
+                        Text="{Binding QuoteListenCountdown}" />
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="8"
+                        IsVisible="{Binding IsQuoteProcessing}">
+                        <Ellipse Fill="{DynamicResource BrushStatusIdle}" Height="10" Width="10" />
+                        <TextBlock
+                            Classes="BodySmall"
+                            Text="{conv:Tr MotivationalQuoteProcessingLabel}" />
+                    </StackPanel>
+                    <TextBlock
+                        Classes="Caption"
+                        HorizontalAlignment="Center"
+                        Text="{Binding QuoteAttemptsRemaining, StringFormat={conv:Tr MotivationalQuoteAttemptsRemainingFormat}}" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsQuoteTypingActive}" Spacing="16">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr MotivationalQuoteTypingLabel}"
+                        TextAlignment="Center" />
+                    <TextBlock
+                        Classes="Body"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PopupQuestion}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <Border Classes="statCard" HorizontalAlignment="Stretch">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurrentQuoteText}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Border>
+                    <TextBox
+                        Classes="underline"
+                        PlaceholderText="{conv:Tr MotivationalQuoteTypeWatermark}"
+                        Text="{Binding QuoteTypedAnswer}" />
+                    <TextBlock
+                        Classes="Caption"
+                        HorizontalAlignment="Center"
+                        Text="{Binding QuoteAttemptsRemaining, StringFormat={conv:Tr MotivationalQuoteAttemptsRemainingFormat}}" />
+                    <Button
+                        Classes="Ghost"
+                        Command="{Binding SubmitQuoteTypedAnswerCommand}"
+                        Content="{conv:Tr MotivationalQuoteSubmit}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsKneelFramingActive}" Spacing="16">
+                    <controls:WebcamPreviewControl
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        Service="{Binding Webcam}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding Webcam.HasMultipleCameras}"
+                        ItemsSource="{Binding Webcam.AvailableCameras}"
+                        SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr KneelFramingLabel}"
+                        TextAlignment="Center" />
+                    <Button
+                        Classes="Ghost"
+                        Command="{Binding ConfirmKneelFramingCommand}"
+                        Content="{conv:Tr KneelFramingConfirm}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsKneelActive}" Spacing="16">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PopupQuestion}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Classes="NumberLarge"
+                        HorizontalAlignment="Center"
+                        Text="{Binding KneelCountdown}" />
+                </StackPanel>
+                <StackPanel IsVisible="{Binding IsShowingPopupOutcome}" Spacing="16">
+                    <Image
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding CapturedPosePhoto, Converter={x:Static ObjectConverters.IsNotNull}}"
+                        Source="{Binding CapturedPosePhoto}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PopupOutcomeMessage}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Panel>
+        </Border>
+    </Panel>
+</UserControl>

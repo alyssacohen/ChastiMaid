@@ -1,0 +1,138 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:DashboardViewModel"
+             x:Class="ChastiMaid.Views.Controls.DashboardPunishmentsPanel">
+
+    <Panel Classes="dialogOverlay" IsVisible="{Binding IsPunishmentsPanelVisible}">
+        <Border
+            Classes="dialogBox"
+            MaxWidth="460"
+            Padding="0">
+            <DockPanel>
+
+                <!--  Header (amber)  -->
+                <Border
+                    Background="{DynamicResource BrushAmberBackground}"
+                    CornerRadius="8,8,0,0"
+                    DockPanel.Dock="Top"
+                    Height="52"
+                    Padding="20,0,12,0">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock
+                            Classes="SectionTitle"
+                            Foreground="{DynamicResource BrushAmberText}"
+                            Grid.Column="0"
+                            Text="{conv:Tr PendingPunishments}"
+                            VerticalAlignment="Center" />
+                        <Button
+                            AutomationProperties.Name="{conv:Tr Close}"
+                            Classes="Ghost"
+                            Command="{Binding ClosePunishmentsPanelCommand}"
+                            Grid.Column="1"
+                            Height="44"
+                            Padding="0"
+                            ToolTip.Tip="{conv:Tr Close}"
+                            VerticalAlignment="Center"
+                            Width="44">
+                            <ic:SymbolIcon
+                                FontSize="14"
+                                Foreground="{DynamicResource BrushAmberText}"
+                                HorizontalAlignment="Center"
+                                IconVariant="Regular"
+                                Symbol="Dismiss"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!--  Footer  -->
+                <Border
+                    BorderBrush="{DynamicResource BrushBorderSubtle}"
+                    BorderThickness="0,1,0,0"
+                    DockPanel.Dock="Bottom"
+                    Padding="20,12">
+                    <Button
+                        Classes="Ghost"
+                        Command="{Binding ClosePunishmentsPanelCommand}"
+                        Content="{conv:Tr Close}"
+                        HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        MinWidth="100" />
+                </Border>
+
+                <!--  Punishment rows  -->
+                <ScrollViewer MaxHeight="400">
+                    <ItemsControl ItemsSource="{Binding Punishments}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:PunishmentItemViewModel">
+                                <StackPanel>
+                                    <Grid
+                                        ColumnDefinitions="*,Auto"
+                                        Margin="20,0"
+                                        MinHeight="56">
+                                        <StackPanel
+                                            Grid.Column="0"
+                                            Spacing="2"
+                                            VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                <TextBlock Classes="Body" Text="{Binding Name}" />
+                                                <TextBlock
+                                                    Classes="Caption"
+                                                    Foreground="{DynamicResource TextAccent}"
+                                                    IsVisible="{Binding DetailLabel, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    Text="{Binding DetailLabel}"
+                                                    VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <TextBlock Classes="Caption" Text="{Binding AssignedLabel}" />
+                                            <TextBlock
+                                                Classes="Caption"
+                                                FontStyle="Italic"
+                                                Foreground="{DynamicResource TextMuted}"
+                                                IsVisible="{Binding ReasonLabel, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                Text="{Binding ReasonLabel}"
+                                                TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                            <Button
+                                                Classes="Ghost compact"
+                                                Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).SoftenPunishmentCommand}"
+                                                CommandParameter="{Binding}"
+                                                Content="{conv:Tr CardSoftenPunishmentName}"
+                                                IsVisible="{Binding CanSoften}"
+                                                MinHeight="44" />
+                                            <Button
+                                                Classes="Ghost compact"
+                                                Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).CancelPunishmentCardCommand}"
+                                                CommandParameter="{Binding}"
+                                                Content="{conv:Tr CardCancelPunishmentName}"
+                                                IsVisible="{Binding CanCancel}"
+                                                MinHeight="44" />
+                                            <Button
+                                                Classes="Primary compact"
+                                                Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).StartPunishmentCommand}"
+                                                CommandParameter="{Binding}"
+                                                Content="{Binding ActionLabel}"
+                                                MinHeight="44" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border
+                                        Background="{DynamicResource BrushBorderSubtle}"
+                                        Height="0.5"
+                                        Margin="20,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </DockPanel>
+        </Border>
+    </Panel>
+</UserControl>

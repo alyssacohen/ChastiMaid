@@ -70,34 +70,4 @@ public partial class DashboardView : UserControl
             vm.DismissChoreResultCommand.Execute(null);
         }
     }
-
-    // Clicking the popup backdrop dismisses the outcome screen early (question/reminder screen ignores it, see VM guard)
-    private void OnPopupOverlayPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (DataContext is DashboardViewModel vm)
-        {
-            vm.DismissPopupOutcomeCommand.Execute(null);
-        }
-    }
-
-    // Prevent clicks inside the dialog box from bubbling up to the backdrop handler
-    private void OnPopupDialogBoxPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        e.Handled = true;
-    }
-
-    // Clicking the chore-result backdrop dismisses it early (VM guards against no-op when already hidden)
-    private void OnChoreResultOverlayPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (DataContext is DashboardViewModel vm)
-        {
-            vm.DismissChoreResultCommand.Execute(null);
-        }
-    }
-
-    // Prevent clicks inside the dialog box from bubbling up to the backdrop handler
-    private void OnChoreResultDialogBoxPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        e.Handled = true;
-    }
 }

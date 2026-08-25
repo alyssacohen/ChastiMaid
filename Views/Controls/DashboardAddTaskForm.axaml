@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:DashboardViewModel"
+             x:Class="ChastiMaid.Views.Controls.DashboardAddTaskForm">
+
+    <Panel Classes="dialogOverlay" IsVisible="{Binding IsAddTaskFormVisible}">
+        <Border Classes="dialogBox" MaxWidth="420">
+            <StackPanel Spacing="16">
+                <TextBlock
+                    Classes="SectionTitle"
+                    HorizontalAlignment="Center"
+                    Text="{conv:Tr AddOccasionalTaskTitle}" />
+
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr OccasionalTaskNameLabel}}" />
+                    <TextBox
+                        Classes="underline"
+                        PlaceholderText="{conv:Tr OccasionalTaskNameRequiredPlaceholder}"
+                        Text="{Binding NewTaskName}" />
+                </StackPanel>
+
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr OccasionalTaskDescriptionLabel}}" />
+                    <TextBox
+                        AcceptsReturn="True"
+                        Classes="underline"
+                        Text="{Binding NewTaskDescription}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr OccasionalTaskEstimatedMinutesLabel}}" />
+                    <TextBox
+                        Classes="underline"
+                        Text="{Binding NewTaskEstimatedMinutes, Converter={x:Static conv:NumericTextConverter.Instance}, ConverterParameter=0}" />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Margin="0,8,0,0">
+                    <Button
+                        Classes="Ghost"
+                        Command="{Binding CloseAddTaskFormCommand}"
+                        Content="{conv:Tr Cancel}"
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+                    <Button
+                        Classes="Primary"
+                        Command="{Binding SubmitAddTaskCommand}"
+                        Content="{conv:Tr AddOccasionalTaskSubmit}"
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Panel>
+</UserControl>
