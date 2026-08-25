@@ -240,6 +240,8 @@ public partial class FortuneDeckViewModel : ViewModelBase
 
         for (var round = 0; round < FortuneDeckAnimationSettings.ShuffleRounds; round++)
         {
+            SoundEffectService.PlayShufflingCards();
+
             for (var offset = 0; offset < FortuneDeckAnimationSettings.ShufflePacketSize; offset++)
             {
                 var i = packetStart + offset;
@@ -273,6 +275,8 @@ public partial class FortuneDeckViewModel : ViewModelBase
 
     private async Task RunRibbonSpreadAsync()
     {
+        SoundEffectService.PlayFanOut();
+
         var count = CosmeticCards.Count;
         var halfAngle = FortuneDeckAnimationSettings.ArcSweepDegrees / 2.0;
 

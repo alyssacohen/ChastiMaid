@@ -135,6 +135,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
                 break;
 
             case WritingLinesValidationResult.Mistake:
+                SoundEffectService.PlayBuzz();
                 var (correctPart, errorChar) = WritingLinesValidator.SplitAtMismatch(SentenceText, candidate);
                 History.Insert(0, new WritingLineHistoryEntry(correctPart, errorChar));
                 MistakeCount++;

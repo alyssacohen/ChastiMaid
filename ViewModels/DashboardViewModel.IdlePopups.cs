@@ -286,10 +286,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void ShowHydrationPopup()
@@ -302,10 +299,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void ShowPoseForCameraPopup()
@@ -340,10 +334,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     /// <summary>
@@ -393,10 +384,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void ShowCurtsyPopup()
@@ -417,10 +405,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void ShowMotivationalQuotePopup()
@@ -433,10 +418,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void ShowKneelPopup()
@@ -449,10 +431,11 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
+
+        // Loading the voice model alone takes several seconds; kick it off now so it's ready by
+        // the time the user confirms framing, instead of stalling the first narration line.
+        _ = _mainVm.Tts.WarmUpAsync();
     }
 
     private void OnKneelConfirm()
@@ -486,6 +469,9 @@ public partial class DashboardViewModel
         KneelCountdown = totalSeconds;
         PopupQuestion = Resources.Get(KneelInstructionBank.GetRandom());
 
+        _kneelCts = new CancellationTokenSource();
+        _ = _mainVm.Tts.SpeakAsync(PopupQuestion, _kneelCts.Token);
+
         _kneelCountdownTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _kneelCountdownTimer.Tick += (_, _) => KneelCountdown--;
         _kneelCountdownTimer.Start();
@@ -495,8 +481,7 @@ public partial class DashboardViewModel
 
     private async void RunKneelCaptureSessionAsync(int totalSeconds)
     {
-        _kneelCts = new CancellationTokenSource();
-        var ct = _kneelCts.Token;
+        var ct = _kneelCts!.Token;
         var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
         var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
         var photos = new List<string>();
@@ -538,6 +523,8 @@ public partial class DashboardViewModel
         IsKneelActive = false;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
 
+        SoundEffectService.PlayHandBell();
+
         if (photos.Count > 0)
         {
             _saveRepo.SaveKneelCheckRecord(new KneelCheckRecord
@@ -567,10 +554,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void OnPlugAndPlayDonConfirm()
@@ -615,10 +599,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        if (OperatingSystem.IsWindows())
-        {
-            Task.Run(() => Console.Beep(800, 300));
-        }
+        SoundEffectService.PlayDeskBell();
     }
 
     private void OnPlugAndPlayRemoveConfirm()

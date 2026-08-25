@@ -946,7 +946,7 @@
     <value>Posizione confermata</value>
   </data>
   <data name="KneelInstructionReflect" xml:space="preserve">
-    <value>Ora inginocchiatevi, guardate a terra e riflettete sui vostri errori.</value>
+      <value>Ora inginocchiatevi, guardate a terra e riflettete sui vostri fallimenti.</value>
   </data>
   <data name="KneelInstructionHumility" xml:space="preserve">
       <value>Inginocchiatevi dove siete, dimostratemi un po' di umiltà.</value>
@@ -955,10 +955,10 @@
     <value>A terra, sulle ginocchia. L'immobilità vi si addice.</value>
   </data>
   <data name="KneelCompletedMessage" xml:space="preserve">
-    <value>Contrizione adeguata, per una volta.</value>
+      <value>Pentimento adeguato, per una volta.</value>
   </data>
   <data name="KneelFailedMessage" xml:space="preserve">
-    <value>La fotocamera non ha visto nulla della vostra penitenza. Un peccato.</value>
+      <value>La fotocamera non ha visto nulla della vostra penitenza. Peccato.</value>
   </data>
   <data name="PlugAndPlayDonPromptFormat" xml:space="preserve">
     <value>Indosserete {0} fino a nuovo ordine.</value>
@@ -1198,7 +1198,7 @@
     <value>Inginocchiarsi</value>
   </data>
   <data name="SettingsKneelDescription" xml:space="preserve">
-    <value>Ella rimarrà in ginocchio per il tempo stabilito, e la fotocamera ne conserverà la prova.</value>
+      <value>Starete in ginocchio per il tempo stabilito, e la fotocamera ne conserverà la prova.</value>
   </data>
   <data name="SettingsKneelDurationLabel" xml:space="preserve">
     <value>Durata min/max (sec)</value>

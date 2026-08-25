@@ -946,7 +946,7 @@
     <value>Position confirmed</value>
   </data>
   <data name="KneelInstructionReflect" xml:space="preserve">
-    <value>Now kneel, look to the floor, and reflect upon your failings.</value>
+      <value>Now kneel, look down, and reflect upon your failings.</value>
   </data>
   <data name="KneelInstructionHumility" xml:space="preserve">
     <value>Kneel where you stand, and remain a while with your humility.</value>

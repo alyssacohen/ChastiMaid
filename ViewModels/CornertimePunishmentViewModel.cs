@@ -212,6 +212,6 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         ResultMessage = Conclude(success, "CornertimeSuccessMessage", failureKey);
         IsActive = false;
         IsResult = true;
-        NotificationSoundService.PlayChime();
+        SoundEffectService.PlayHandBell();
     }
 }
