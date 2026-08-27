@@ -202,7 +202,7 @@
                     BorderThickness="0,1,0,0"
                     Grid.Row="2"
                     Padding="8,8">
-                    <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
 
                         <Button
                             Classes="Ghost compact"
@@ -221,18 +221,10 @@
                             HorizontalContentAlignment="Center" />
 
                         <Button
-                            Classes="Ghost compact"
+                            Classes="Danger compact"
                             Command="{Binding EndSessionCommand}"
                             Content="{conv:Tr DashboardEndSession}"
                             Grid.Column="2"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center" />
-
-                        <Button
-                            Classes="Danger compact"
-                            Command="{Binding EmergencyBreakCommand}"
-                            Content="{conv:Tr DashboardEmergencyBreak}"
-                            Grid.Column="3"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center" />
 
@@ -314,17 +306,9 @@
                                 MinHeight="44" />
 
                             <Button
-                                Classes="Ghost compact"
+                                Classes="Danger compact"
                                 Command="{Binding EndSessionCommand}"
                                 Content="{conv:Tr DashboardEndSession}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                MinHeight="44" />
-
-                            <Button
-                                Classes="Danger compact"
-                                Command="{Binding EmergencyBreakCommand}"
-                                Content="{conv:Tr DashboardEmergencyBreak}"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center"
                                 MinHeight="44" />

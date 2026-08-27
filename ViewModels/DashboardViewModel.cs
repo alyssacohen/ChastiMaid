@@ -231,8 +231,6 @@ public partial class DashboardViewModel : ViewModelBase
             _countdownTimer?.Stop();
             _mainVm.NavigateTo(new ShopViewModel(_mainVm, _saveRepo));
         });
-        EmergencyBreakCommand = ReactiveCommand.Create(EndSession);
-
         if (startChore is not null)
         {
             // Find the matching ChoreItemViewModel
@@ -292,7 +290,6 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand DismissPermissionOutcomeCommand { get; }
     public ICommand EndPermissionBreakCommand { get; }
     public ICommand OpenShopCommand { get; }
-    public ICommand EmergencyBreakCommand { get; }
 
     private void StartIdleMode()
     {

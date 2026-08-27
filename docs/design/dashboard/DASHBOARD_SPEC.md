@@ -46,9 +46,6 @@
 | `ColorAmber`               | `#C8882A` | Punishment badge and border — warnings only |
 | `ColorAmberBackground`     | `#F5E6C8` | Punishment button fill, dialog header       |
 | `ColorAmberText`           | `#8A5A10` | Text on amber background                    |
-| `ColorEmergency`           | `#C84820` | Emergency Break border                      |
-| `ColorEmergencyBackground` | `#F5D8D0` | Emergency Break fill                        |
-| `ColorEmergencyText`       | `#8A2010` | Emergency Break label                       |
 | `ColorStatusIdle`          | `#7CB87C` | Green dot in status bar                     |
 
 Add a corresponding `SolidColorBrush` resource for each colour (e.g. `PageBackgroundBrush`,
@@ -97,12 +94,11 @@ Top-to-bottom, single column:
       Active only when `HasPendingPunishments = true`; disabled and unstyled otherwise.
 
 3. **Action bar** — pinned at bottom, `ColorSurface` background, thin warm top border.
-   Four buttons in a row (left to right):
+   Three buttons in a row (left to right):
     - Request Permission
     - Shop
-    - End Session
-    - **Emergency Break** — visually distinct: `ColorEmergencyBackground` fill,
-      `ColorEmergency` border (1.25px), `ColorEmergencyText` label, SemiBold weight.
+    - **End Session** — `Danger` styling (destructive: leads to the safe-combination
+      reveal / abandon-game flow).
 
 4. **OutfitDrawer** — renders as the topmost child of the root `Panel`, overlaying
    everything. Hidden when closed. See §6.
@@ -113,7 +109,7 @@ Two-column layout triggered when `Bounds.Width` exceeds a threshold (~900 device
 
 - **Left rail** (~260px wide, `ColorSurface` background, right border):
   Top: DebtWidget card.
-  Middle: Request Permission, Shop, End Session, Emergency Break buttons (stacked).
+  Middle: Request Permission, Shop, End Session buttons (stacked).
   Bottom: "Current Outfit ▸" button (replaces the portrait status bar shortcut).
 
 - **Right area** (remaining width, scrollable):
@@ -251,7 +247,6 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 | `RequestPermissionCommand`  | —                         | Always                  | Open permission request dialog (spec TBD)                  |
 | `OpenShopCommand`           | —                         | Always                  | Open shop dialog (spec TBD)                                |
 | `EndSessionCommand`         | —                         | Always                  | Confirm then navigate to session-end view                  |
-| `EmergencyBreakCommand`     | —                         | Always                  | Brief confirm → log event → navigate to emergency/end view |
 
 ### Child ViewModels
 
@@ -289,7 +284,6 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 | Tap **Request Permission**              | Open permission request dialog (spec TBD)                         |
 | Tap **Shop**                            | Open shop dialog (spec TBD)                                       |
 | Tap **End Session**                     | Show confirmation dialog; on confirm navigate to session-end view |
-| Tap **Emergency Break**                 | Brief confirmation; on confirm log event and navigate immediately |
 
 ---
 

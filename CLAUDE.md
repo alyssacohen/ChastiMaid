@@ -180,7 +180,7 @@ ALLCAPS text.
 
 `Primary` · `Ghost` · `Danger` · `SmallGhost` · `Amber` · `Add` · `SlotCard`
 
-`Danger` is the single style for all destructive actions (delete, abandon, emergency break) —
+`Danger` is the single style for all destructive actions (delete, abandon, end session) —
 pink background, red border/text, red background with white text on hover.
 
 Modifier: `compact` (reduces height to 32px; combinable: `Classes="Danger compact"`).

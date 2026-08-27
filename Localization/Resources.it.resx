@@ -651,9 +651,6 @@
   <data name="DashboardEndSession" xml:space="preserve">
     <value>Termina sessione</value>
   </data>
-  <data name="DashboardEmergencyBreak" xml:space="preserve">
-    <value>Stop di emergenza</value>
-  </data>
   <data name="DashboardCompleteGame" xml:space="preserve">
     <value>Completa partita</value>
   </data>
