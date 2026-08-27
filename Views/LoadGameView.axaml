@@ -21,16 +21,15 @@
             <ItemsControl ItemsSource="{Binding Slots}" Width="600">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:SlotCardViewModel">
-                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,8">
 
                             <!-- Card (clickable to load) -->
-                            <Button Grid.Column="0"
-                                    Command="{Binding LoadCommand}"
+                            <Button Command="{Binding LoadCommand}"
                                     Classes="SlotCard"
                                     IsEnabled="{Binding !IsEmpty}"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Stretch"
-                                    Padding="20,16">
+                                    Padding="20,16,68,16">
 
                                 <Grid ColumnDefinitions="Auto,*">
                                     <!-- Slot number -->
@@ -42,55 +41,58 @@
                                                MinWidth="40"
                                                TextAlignment="Center" />
 
-                                    <!-- Save data -->
-                                    <StackPanel Grid.Column="1"
-                                                Spacing="0"
-                                                VerticalAlignment="Center"
-                                                IsVisible="{Binding !IsEmpty}">
-                                        <TextBlock Classes="Body"
-                                                   Text="{Binding SlotName}" />
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="16"
-                                                    Margin="0,6,0,0">
-                                            <TextBlock Classes="Caption"
-                                                       Text="{Binding SavedAt}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="16"
-                                                    Margin="0,4,0,0">
-                                            <TextBlock Classes="BodySmall"
-                                                       Text="{Binding DebtDisplay}"
-                                                       Opacity="0.85" />
-                                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                                <ic:SymbolIcon Symbol="{Binding SafeIcon}" IconVariant="Regular" FontSize="14" />
+                                    <!-- Save data / empty label; MinHeight keeps every slot the same size -->
+                                    <Panel Grid.Column="1"
+                                           MinHeight="72"
+                                           VerticalAlignment="Center">
+                                        <StackPanel Spacing="0"
+                                                    VerticalAlignment="Center"
+                                                    IsVisible="{Binding !IsEmpty}">
+                                            <TextBlock Classes="Body"
+                                                       Text="{Binding SlotName}" />
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="16"
+                                                        Margin="0,6,0,0">
+                                                <TextBlock Classes="Caption"
+                                                           Text="{Binding SavedAt}" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="16"
+                                                        Margin="0,4,0,0">
                                                 <TextBlock Classes="BodySmall"
-                                                           Text="{Binding SafeStatus}"
+                                                           Text="{Binding DebtDisplay}"
                                                            Opacity="0.85" />
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <ic:SymbolIcon Symbol="{Binding SafeIcon}" IconVariant="Regular" FontSize="14" />
+                                                    <TextBlock Classes="BodySmall"
+                                                               Text="{Binding SafeStatus}"
+                                                               Opacity="0.85" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="4"
+                                                        IsVisible="{Binding IsCompleted}"
+                                                        Margin="0,6,0,0">
+                                                <ic:SymbolIcon Symbol="Checkmark" IconVariant="Regular" FontSize="14" />
+                                                <TextBlock Classes="Caption" Text="{Binding CompletedLabel}" />
                                             </StackPanel>
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="4"
-                                                    IsVisible="{Binding IsCompleted}"
-                                                    Margin="0,6,0,0">
-                                            <ic:SymbolIcon Symbol="Checkmark" IconVariant="Regular" FontSize="14" />
-                                            <TextBlock Classes="Caption" Text="{Binding CompletedLabel}" />
-                                        </StackPanel>
-                                    </StackPanel>
 
-                                    <!-- Empty slot label -->
-                                    <TextBlock Grid.Column="1"
-                                               Classes="Caption"
-                                               Text="{conv:Tr LoadGameEmptySlot}"
-                                               VerticalAlignment="Center"
-                                               IsVisible="{Binding IsEmpty}" />
+                                        <TextBlock Classes="Caption"
+                                                   Text="{conv:Tr LoadGameEmptySlot}"
+                                                   VerticalAlignment="Center"
+                                                   IsVisible="{Binding IsEmpty}" />
+                                    </Panel>
                                 </Grid>
                             </Button>
 
-                            <!-- Delete button -->
-                            <Button Grid.Column="1"
-                                    Command="{Binding DeleteCommand}"
+                            <!-- Delete button, overlaid on top of the card -->
+                            <Button Command="{Binding DeleteCommand}"
                                     Classes="Danger"
-                                    Margin="8,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,20,0"
+                                    ZIndex="1"
                                     IsVisible="{Binding !IsEmpty}">
                                 <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
                             </Button>
