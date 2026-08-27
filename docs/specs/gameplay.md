@@ -179,6 +179,18 @@ the end and take pictures or short videos like during chores.
 This mode is active when the user is performing a writing lines punishment.
 The app will show the UI to perform this punishment and will take some pictures while the user performs it.
 
+Each writing lines punishment can, independently and at random, be made harder with either or both of the
+following mechanics — a coin flip decided when the punishment is assigned, so difficulty varies from one
+punishment to the next. Both are toggleable (and their timings configurable) in Settings.
+
+- **No-Idle**: while the user is writing, a timer restarts on every accepted keystroke. If she stops typing
+  for longer than the configured idle timeout, extra lines are added to the total — and the timer restarts,
+  so lines keep being added for as long as she remains idle.
+- **Interruptions**: at random intervals (min/max configurable), a brief overlay appears with a taunting
+  remark from the employer and a clock chime, then closes itself after a couple of seconds. Any keystrokes
+  typed while it is showing are discarded, so writing resumes exactly from the last correctly typed
+  character once it closes.
+
 ## Diaper play (optional)
 Can be enabled/disabled in General Settings.
 
