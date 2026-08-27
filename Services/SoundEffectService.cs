@@ -40,6 +40,11 @@ public static class SoundEffectService
         _ = PlayAsync("buzz.wav");
     }
 
+    public static void PlayClock()
+    {
+        _ = PlayAsync("clock.wav");
+    }
+
     private static async Task PlayAsync(string fileName)
     {
         try

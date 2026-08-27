@@ -321,6 +321,24 @@
   <data name="WritingLinesAbandon" xml:space="preserve">
     <value>Set Down the Pen</value>
   </data>
+  <data name="WritingLinesInterruption1" xml:space="preserve">
+    <value>Do keep those fingers moving.</value>
+  </data>
+  <data name="WritingLinesInterruption2" xml:space="preserve">
+    <value>Errors are so unbecoming.</value>
+  </data>
+  <data name="WritingLinesInterruption3" xml:space="preserve">
+    <value>The ink dries whether you write or not.</value>
+  </data>
+  <data name="WritingLinesInterruption4" xml:space="preserve">
+    <value>I have all evening. Do you?</value>
+  </data>
+  <data name="WritingLinesInterruption5" xml:space="preserve">
+    <value>A steady hand betrays a steady mind.</value>
+  </data>
+  <data name="WritingLinesInterruption6" xml:space="preserve">
+    <value>Dawdling adds nothing but time.</value>
+  </data>
   <data name="WritingLinesPhraseLabel" xml:space="preserve">
     <value>The line to copy</value>
   </data>
@@ -1274,6 +1292,30 @@
   </data>
   <data name="SettingsWritingLinesMaxLines" xml:space="preserve">
     <value>Maximum lines</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleHeading" xml:space="preserve">
+    <value>No Idle</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleDescription" xml:space="preserve">
+    <value>Idle hands earn extra lines.</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleTimeout" xml:space="preserve">
+    <value>Idle timeout (seconds)</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleLinesToAdd" xml:space="preserve">
+    <value>Lines added per timeout</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionsHeading" xml:space="preserve">
+    <value>Interruptions</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionsDescription" xml:space="preserve">
+    <value>Occasional reminders, delivered without warning.</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionMinInterval" xml:space="preserve">
+    <value>Minimum interval (seconds)</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionMaxInterval" xml:space="preserve">
+    <value>Maximum interval (seconds)</value>
   </data>
   <data name="SettingsHeadingForcedOutfit" xml:space="preserve">
     <value>Forced Outfit</value>

@@ -80,6 +80,12 @@ public class GameSettings
     public int WritingLinesPenaltyLinesPerMistake { get; set; } = 1;
     public int WritingLinesMinLines { get; set; } = 20;
     public int WritingLinesMaxLines { get; set; } = 150;
+    public bool WritingLinesNoIdleEnabled { get; set; } = true;
+    public int WritingLinesNoIdleTimeoutSeconds { get; set; } = 20;
+    public int WritingLinesNoIdleLinesToAdd { get; set; } = 2;
+    public bool WritingLinesInterruptionsEnabled { get; set; } = true;
+    public int WritingLinesInterruptionMinIntervalSeconds { get; set; } = 30;
+    public int WritingLinesInterruptionMaxIntervalSeconds { get; set; } = 90;
 
     // Forced Outfit punishment — the concrete outfit presets live in ForcedOutfitPreset (per-profile collection)
     public bool ForcedOutfitEnabled { get; set; } = true;

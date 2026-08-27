@@ -65,6 +65,12 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _writingLinesPenaltyLinesPerMistake;
     [Reactive] private int _writingLinesMinLines;
     [Reactive] private int _writingLinesMaxLines;
+    [Reactive] private bool _writingLinesNoIdleEnabled;
+    [Reactive] private int _writingLinesNoIdleTimeoutSeconds;
+    [Reactive] private int _writingLinesNoIdleLinesToAdd;
+    [Reactive] private bool _writingLinesInterruptionsEnabled;
+    [Reactive] private int _writingLinesInterruptionMinIntervalSeconds;
+    [Reactive] private int _writingLinesInterruptionMaxIntervalSeconds;
     [Reactive] private bool _forcedOutfitEnabled;
     [Reactive] private int _forcedOutfitMaxSessions;
     [Reactive] private string _speechRecognitionStatusDisplay = "";
@@ -169,6 +175,12 @@ public partial class SettingsViewModel : ViewModelBase
         _writingLinesPenaltyLinesPerMistake = s.WritingLinesPenaltyLinesPerMistake;
         _writingLinesMinLines = s.WritingLinesMinLines;
         _writingLinesMaxLines = s.WritingLinesMaxLines;
+        _writingLinesNoIdleEnabled = s.WritingLinesNoIdleEnabled;
+        _writingLinesNoIdleTimeoutSeconds = s.WritingLinesNoIdleTimeoutSeconds;
+        _writingLinesNoIdleLinesToAdd = s.WritingLinesNoIdleLinesToAdd;
+        _writingLinesInterruptionsEnabled = s.WritingLinesInterruptionsEnabled;
+        _writingLinesInterruptionMinIntervalSeconds = s.WritingLinesInterruptionMinIntervalSeconds;
+        _writingLinesInterruptionMaxIntervalSeconds = s.WritingLinesInterruptionMaxIntervalSeconds;
         _forcedOutfitEnabled = s.ForcedOutfitEnabled;
         _forcedOutfitMaxSessions = s.ForcedOutfitMaxSessions;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
@@ -314,6 +326,14 @@ public partial class SettingsViewModel : ViewModelBase
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.WritingLinesMinLines, x => x.WritingLinesMaxLines, (_, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.WritingLinesNoIdleEnabled, x => x.WritingLinesNoIdleTimeoutSeconds,
+                x => x.WritingLinesNoIdleLinesToAdd, (_, _, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+
+        this.WhenAnyValue(x => x.WritingLinesInterruptionsEnabled, x => x.WritingLinesInterruptionMinIntervalSeconds,
+                x => x.WritingLinesInterruptionMaxIntervalSeconds, (_, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitMaxSessions, (_, _) => Unit.Default)
@@ -997,6 +1017,12 @@ public partial class SettingsViewModel : ViewModelBase
         s.WritingLinesMinLines = WritingLinesMinLines;
         s.WritingLinesMaxLines = WritingLinesMaxLines;
         s.WritingLinesPenaltyLinesPerMistake = WritingLinesPenaltyLinesPerMistake;
+        s.WritingLinesNoIdleEnabled = WritingLinesNoIdleEnabled;
+        s.WritingLinesNoIdleTimeoutSeconds = WritingLinesNoIdleTimeoutSeconds;
+        s.WritingLinesNoIdleLinesToAdd = WritingLinesNoIdleLinesToAdd;
+        s.WritingLinesInterruptionsEnabled = WritingLinesInterruptionsEnabled;
+        s.WritingLinesInterruptionMinIntervalSeconds = WritingLinesInterruptionMinIntervalSeconds;
+        s.WritingLinesInterruptionMaxIntervalSeconds = WritingLinesInterruptionMaxIntervalSeconds;
         s.ForcedOutfitEnabled = ForcedOutfitEnabled;
         s.ForcedOutfitMaxSessions = ForcedOutfitMaxSessions;
         _repo.SaveGameSettings(s);

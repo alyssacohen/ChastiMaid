@@ -12,12 +12,17 @@ namespace ChastiMaid.ViewModels;
 
 public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewModelBase
 {
+    private const int InterruptionDisplayMilliseconds = 2000;
+
     private readonly GameSettings _settings;
     private readonly int _penaltyLinesPerMistake;
     private readonly List<string> _lineSequence = [];
     private CancellationTokenSource? _captureCts;
+    private CancellationTokenSource? _interruptionCts;
     private DispatcherTimer? _statsTimer;
     private DispatcherTimer? _mistakeLockTimer;
+    private DispatcherTimer? _noIdleTimer;
+    private DispatcherTimer? _interruptionHideTimer;
     private DateTime? _startedAt;
     private int _totalKeystrokes;
     private int _correctKeystrokes;
@@ -29,6 +34,8 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
     [Reactive] private string _typedText = "";
     [Reactive] private bool _isResult;
     [Reactive] private string _resultMessage = "";
+    [Reactive] private bool _isInterruptionVisible;
+    [Reactive] private string _interruptionMessage = "";
 
     public WritingLinesPunishmentViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, ActivePunishment punishment)
         : base(mainVm, saveRepo, punishment)
@@ -46,6 +53,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         AbandonCommand = ReactiveCommand.Create(() => Finish(success: false));
 
         StartSilentCaptureIfAvailable();
+        StartInterruptionLoopIfActive();
     }
 
     public string SentenceText => _lineSequence[CompletedLines];
@@ -99,7 +107,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
     /// backspace/undo (a real typewriter has none) — a wrong character clears the line immediately instead.</summary>
     public void HandleCharacter(string text)
     {
-        if (IsResult || string.IsNullOrEmpty(text) || TypedText == SentenceText)
+        if (IsInterruptionVisible || IsResult || string.IsNullOrEmpty(text) || TypedText == SentenceText)
         {
             return;
         }
@@ -120,6 +128,11 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
             _statsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _statsTimer.Tick += (_, _) => RaiseStatsChanged();
             _statsTimer.Start();
+        }
+
+        if (Punishment.WritingLinesNoIdleActive)
+        {
+            RestartNoIdleTimer();
         }
 
         _totalKeystrokes++;
@@ -166,13 +179,95 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         _mistakeLockTimer.Start();
     }
 
+    /// <summary>Restarted on every accepted keystroke. Fires repeatedly for as long as the player stays
+    /// idle, adding penalty lines each time it does — independent of the post-mistake input lock.</summary>
+    private void RestartNoIdleTimer()
+    {
+        _noIdleTimer?.Stop();
+        _noIdleTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(_settings.WritingLinesNoIdleTimeoutSeconds) };
+        _noIdleTimer.Tick += (_, _) =>
+        {
+            TotalLines = Math.Min(TotalLines + _settings.WritingLinesNoIdleLinesToAdd, _settings.WritingLinesMaxLines);
+            EnsureLineSequenceLength(TotalLines);
+            RaiseStatsChanged();
+
+            Punishment.WritingLinesTotalLines = TotalLines;
+            SaveRepo.SaveActivePunishment(Punishment);
+        };
+        _noIdleTimer.Start();
+    }
+
+    private void StartInterruptionLoopIfActive()
+    {
+        if (!Punishment.WritingLinesInterruptionsActive)
+        {
+            return;
+        }
+
+        _interruptionCts = new CancellationTokenSource();
+        _ = RunInterruptionLoop(_interruptionCts.Token);
+    }
+
+    private async Task RunInterruptionLoop(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            var delaySeconds = Random.Shared.Next(
+                _settings.WritingLinesInterruptionMinIntervalSeconds,
+                _settings.WritingLinesInterruptionMaxIntervalSeconds + 1);
+
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(delaySeconds), ct);
+            }
+            catch (TaskCanceledException)
+            {
+                break;
+            }
+
+            if (ct.IsCancellationRequested)
+            {
+                break;
+            }
+
+            await Dispatcher.UIThread.InvokeAsync(ShowInterruption);
+        }
+    }
+
+    private void ShowInterruption()
+    {
+        if (IsResult)
+        {
+            return;
+        }
+
+        InterruptionMessage = Resources.Get($"WritingLinesInterruption{Random.Shared.Next(1, 7)}");
+        IsInterruptionVisible = true;
+        SoundEffectService.PlayClock();
+
+        _interruptionHideTimer?.Stop();
+        _interruptionHideTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(InterruptionDisplayMilliseconds) };
+        _interruptionHideTimer.Tick += (_, _) =>
+        {
+            IsInterruptionVisible = false;
+            _interruptionHideTimer?.Stop();
+            _interruptionHideTimer = null;
+        };
+        _interruptionHideTimer.Start();
+    }
+
     /// <summary>Called from the View's KeyDown handler on Enter. Confirms the current line — a no-op unless
     /// it has been typed out in full, since a wrong keystroke already clears the buffer on the spot.</summary>
     public void HandleEnter()
     {
-        if (IsResult || TypedText != SentenceText)
+        if (IsInterruptionVisible || IsResult || TypedText != SentenceText)
         {
             return;
+        }
+
+        if (Punishment.WritingLinesNoIdleActive)
+        {
+            RestartNoIdleTimer();
         }
 
         History.Insert(0, new WritingLineHistoryEntry(SentenceText, ""));
@@ -204,11 +299,21 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         _captureCts?.Dispose();
         _captureCts = null;
 
+        _interruptionCts?.Cancel();
+        _interruptionCts?.Dispose();
+        _interruptionCts = null;
+
         _statsTimer?.Stop();
         _statsTimer = null;
 
         _mistakeLockTimer?.Stop();
         _mistakeLockTimer = null;
+
+        _noIdleTimer?.Stop();
+        _noIdleTimer = null;
+
+        _interruptionHideTimer?.Stop();
+        _interruptionHideTimer = null;
 
         Punishment.WritingLinesAttemptActive = false;
         SaveRepo.SaveActivePunishment(Punishment);

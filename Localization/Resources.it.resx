@@ -321,6 +321,24 @@
   <data name="WritingLinesAbandon" xml:space="preserve">
     <value>Posare la Penna</value>
   </data>
+  <data name="WritingLinesInterruption1" xml:space="preserve">
+    <value>Continui a muovere quelle dita.</value>
+  </data>
+  <data name="WritingLinesInterruption2" xml:space="preserve">
+    <value>Gli errori si addicono così poco.</value>
+  </data>
+  <data name="WritingLinesInterruption3" xml:space="preserve">
+    <value>L'inchiostro si secca, che scriva o meno.</value>
+  </data>
+  <data name="WritingLinesInterruption4" xml:space="preserve">
+    <value>Ho tutta la sera. E lei?</value>
+  </data>
+  <data name="WritingLinesInterruption5" xml:space="preserve">
+    <value>Una mano ferma tradisce una mente ferma.</value>
+  </data>
+  <data name="WritingLinesInterruption6" xml:space="preserve">
+    <value>Il tergiversare non aggiunge nulla, se non il tempo.</value>
+  </data>
   <data name="WritingLinesPhraseLabel" xml:space="preserve">
     <value>La riga da ricopiare</value>
   </data>
@@ -1274,6 +1292,30 @@
   </data>
   <data name="SettingsWritingLinesMaxLines" xml:space="preserve">
     <value>Righe massime</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleHeading" xml:space="preserve">
+    <value>No-Idle</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleDescription" xml:space="preserve">
+    <value>Le mani inoperose fruttano ulteriori righe.</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleTimeout" xml:space="preserve">
+    <value>Tempo di inattività (secondi)</value>
+  </data>
+  <data name="SettingsWritingLinesNoIdleLinesToAdd" xml:space="preserve">
+    <value>Righe aggiunte per inattività</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionsHeading" xml:space="preserve">
+    <value>Interruzioni</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionsDescription" xml:space="preserve">
+    <value>Richiami occasionali, recapitati senza preavviso.</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionMinInterval" xml:space="preserve">
+    <value>Intervallo minimo (secondi)</value>
+  </data>
+  <data name="SettingsWritingLinesInterruptionMaxInterval" xml:space="preserve">
+    <value>Intervallo massimo (secondi)</value>
   </data>
   <data name="SettingsHeadingForcedOutfit" xml:space="preserve">
     <value>Divisa obbligata</value>

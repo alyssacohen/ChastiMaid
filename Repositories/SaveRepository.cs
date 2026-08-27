@@ -455,6 +455,8 @@ public class SaveRepository(LiteDatabase db)
                         settings.WritingLinesMinLines,
                         settings.WritingLinesMaxLines),
                     WritingLinesAttemptActive = false,
+                    WritingLinesNoIdleActive = settings.WritingLinesNoIdleEnabled && Random.Shared.NextDouble() < 0.5,
+                    WritingLinesInterruptionsActive = settings.WritingLinesInterruptionsEnabled && Random.Shared.NextDouble() < 0.5,
                 });
                 break;
 

@@ -131,6 +131,16 @@
                     HorizontalAlignment="Center" />
         </StackPanel>
 
+        <!-- Interruption overlay — non-interactive, self-closes after a couple of seconds -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding IsInterruptionVisible}">
+            <Border Classes="dialogBox">
+                <TextBlock Classes="EmployerVoice"
+                           Text="{Binding InterruptionMessage}"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center" />
+            </Border>
+        </Panel>
+
     </Grid>
 
 </UserControl>

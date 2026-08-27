@@ -28,6 +28,8 @@ public class ActivePunishment
     public List<string>? WritingLinesSentenceKeys { get; set; }
     public int? WritingLinesTotalLines { get; set; }
     public bool WritingLinesAttemptActive { get; set; }
+    public bool WritingLinesNoIdleActive { get; set; }
+    public bool WritingLinesInterruptionsActive { get; set; }
 
     public int? ForcedOutfitRemainingSessions { get; set; }
 
