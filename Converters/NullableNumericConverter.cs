@@ -1,7 +1,7 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace ChastiMaid.Views.Converters;
+namespace ChastiMaid.Converters;
 
 /// <summary>
 ///     Bridges NumericUpDown's decimal? Value with non-nullable numeric ViewModel properties

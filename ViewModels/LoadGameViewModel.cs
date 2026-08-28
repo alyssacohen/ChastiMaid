@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
-using ChastiMaid.Views.Converters;
+using ChastiMaid.Converters;
 using FluentIcons.Common;
 using ReactiveUI;
 

@@ -2,7 +2,7 @@
     x:Class="ChastiMaid.Views.Controls.SettingsPunishmentsTab"
     x:DataType="vm:SettingsViewModel"
     xmlns="https://github.com/avaloniaui"
-    xmlns:converters="using:ChastiMaid.Views.Converters"
+    xmlns:converters="using:ChastiMaid.Converters"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:vm="using:ChastiMaid.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">

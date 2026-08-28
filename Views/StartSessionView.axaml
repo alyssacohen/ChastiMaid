@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Dialogs"
-             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:StartSessionViewModel"
              x:Class="ChastiMaid.Views.StartSessionView"
              Background="{DynamicResource BrushWindowBackground}">

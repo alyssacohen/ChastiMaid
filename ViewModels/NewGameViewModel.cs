@@ -1,6 +1,6 @@
 using System.Windows.Input;
 using ChastiMaid.Repositories;
-using ChastiMaid.Views.Converters;
+using ChastiMaid.Converters;
 using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;

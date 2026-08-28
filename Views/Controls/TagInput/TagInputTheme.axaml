@@ -1,9 +1,9 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:system="using:System"
-        xmlns:local="using:ChastiMaid.Controls"
-        xmlns:tagInput="clr-namespace:ChastiMaid.Controls.TagInput"
-        xmlns:conv="using:ChastiMaid.Views.Converters">
+        xmlns:local="using:ChastiMaid.Views.Controls"
+        xmlns:tagInput="clr-namespace:ChastiMaid.Views.Controls.TagInput"
+        xmlns:conv="using:ChastiMaid.Converters">
 
     <Style Selector="tagInput|TagInput">
         <Setter Property="Template">

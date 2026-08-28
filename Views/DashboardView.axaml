@@ -4,7 +4,7 @@
     x:DataType="vm:DashboardViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="using:ChastiMaid.Views.Controls"
-    xmlns:conv="using:ChastiMaid.Views.Converters"
+    xmlns:conv="using:ChastiMaid.Converters"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:v="using:ChastiMaid.Views.Dialogs"
     xmlns:vm="using:ChastiMaid.ViewModels"

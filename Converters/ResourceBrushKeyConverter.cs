@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 
-namespace ChastiMaid.Views.Converters;
+namespace ChastiMaid.Converters;
 
 /// <summary>Resolves a DynamicResource brush key string (e.g. "BrushStatusIdle") to its IBrush.</summary>
 public class ResourceBrushKeyConverter : IValueConverter

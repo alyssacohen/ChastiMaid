@@ -3,7 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:WebcamCaptureDialogViewModel"
              x:Class="ChastiMaid.Views.Dialogs.WebcamCaptureDialog">
 

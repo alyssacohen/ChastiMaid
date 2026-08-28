@@ -1,7 +1,7 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace ChastiMaid.Views.Converters;
+namespace ChastiMaid.Converters;
 
 public class IntEqualityConverter : IValueConverter
 {

@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:converters="using:ChastiMaid.Views.Converters"
+             xmlns:converters="using:ChastiMaid.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.SettingsChoresTab">

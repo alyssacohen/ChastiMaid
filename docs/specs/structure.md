@@ -4,13 +4,16 @@
 
 ```
 ChastiMaid/
-├── Assets/          # Static assets (icons, images)
-├── Models/          # Data models (currently empty, folder reserved)
+├── Assets/          # Static assets (icons, images, styles, fonts)
+├── Converters/      # IValueConverter / markup extension classes for bindings
+├── Models/          # Data models
+│   └── Banks/       # Flavor-text instruction/phrase banks (e.g. CurtsyInstructionBank)
 ├── Repositories/    # Data-access repositories (ProfileRepository, SaveRepository)
 ├── Services/        # Business logic services
 ├── ViewModels/      # ReactiveUI ViewModels
 ├── Views/           # Avalonia AXAML views + code-behind
-│   ├── Controls/    # Reusable UI controls
+│   ├── Controls/    # UI controls: view-specific composite UserControls, plus
+│   │                # template-based reusable controls (e.g. TagInput/)
 │   └── Dialogs/     # Modal dialogs
 ├── docs/            # Design specs and wireframes
 │   ├── specs/       # Domain specs (product, gameplay, wardrobe, punishments, tech)

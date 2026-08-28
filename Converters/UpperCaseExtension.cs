@@ -1,6 +1,6 @@
 using Avalonia.Markup.Xaml;
 
-namespace ChastiMaid.Views.Converters;
+namespace ChastiMaid.Converters;
 
 public class UpperCaseExtension(object value) : MarkupExtension
 {

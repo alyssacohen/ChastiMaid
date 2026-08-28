@@ -3,7 +3,7 @@ using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
-using ChastiMaid.Views.Converters;
+using ChastiMaid.Converters;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 

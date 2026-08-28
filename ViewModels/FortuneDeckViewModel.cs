@@ -111,7 +111,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
         _saveRepo = saveRepo;
         var settings = saveRepo.GetGameSettings();
         _deck = new FortuneDeck(saveRepo, settings);
-        var stake = Views.Converters.CurrencyConverter.Format(CardCatalog.FortuneDrawPrice(settings));
+        var stake = Converters.CurrencyConverter.Format(CardCatalog.FortuneDrawPrice(settings));
         DrawButtonLabel = string.Format(Resources.Get("ShopFortuneDeckDrawFormat"), stake);
         RefreshDebtDisplay();
 
@@ -132,7 +132,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
     private void RefreshDebtDisplay()
     {
         var state = _saveRepo.GetGameState();
-        CurrentDebtDisplay = Views.Converters.CurrencyConverter.Format(state?.CurrentDebt ?? 0);
+        CurrentDebtDisplay = Converters.CurrencyConverter.Format(state?.CurrentDebt ?? 0);
     }
 
     /// <summary>
@@ -353,7 +353,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
     /// actual sum at a glance, rather than the previous ambiguous "2×" stake-multiplier notation.</summary>
     private static string SignedCurrencyTitle(decimal amount)
     {
-        return (amount >= 0 ? "+" : "-") + Views.Converters.CurrencyConverter.Format(Math.Abs(amount));
+        return (amount >= 0 ? "+" : "-") + Converters.CurrencyConverter.Format(Math.Abs(amount));
     }
 
     private (string Title, string Description) DescribeOutcome(FortuneDrawResult result)

@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 
-namespace ChastiMaid.Controls;
+namespace ChastiMaid.Views.Controls;
 
 /// <summary>
 ///     A WrapPanel that treats one designated child (TrailingItem) as always-last:

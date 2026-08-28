@@ -8,7 +8,7 @@ using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
-namespace ChastiMaid.Controls.TagInput;
+namespace ChastiMaid.Views.Controls.TagInput;
 
 public class TagInput : TemplatedControl
 {

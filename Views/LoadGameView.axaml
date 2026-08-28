@@ -3,7 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:LoadGameViewModel"
              x:Class="ChastiMaid.Views.LoadGameView">
 

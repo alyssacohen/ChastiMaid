@@ -1,7 +1,7 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace ChastiMaid.Views.Converters;
+namespace ChastiMaid.Converters;
 
 /// <summary>
 ///     Bridges a TextBox's string Text with a non-nullable numeric ViewModel property

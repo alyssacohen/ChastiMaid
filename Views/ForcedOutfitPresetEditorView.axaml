@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Views.Converters"
-             xmlns:converters="using:ChastiMaid.Views.Converters"
+             xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:converters="using:ChastiMaid.Converters"
              x:DataType="vm:ForcedOutfitPresetEditorViewModel"
              x:Class="ChastiMaid.Views.ForcedOutfitPresetEditorView"
              Background="{DynamicResource BrushWindowBackground}">

@@ -3,7 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
              xmlns:d="using:ChastiMaid.Views.Dialogs"
-             xmlns:conv="using:ChastiMaid.Views.Converters"
+             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:ConfirmOutfitViewModel"
              x:Class="ChastiMaid.Views.ConfirmOutfitView"
              Background="{DynamicResource BrushWindowBackground}">

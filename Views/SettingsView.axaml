@@ -2,7 +2,7 @@
     x:Class="ChastiMaid.Views.SettingsView"
     x:DataType="vm:SettingsViewModel"
     xmlns="https://github.com/avaloniaui"
-    xmlns:converters="using:ChastiMaid.Views.Converters"
+    xmlns:converters="using:ChastiMaid.Converters"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:views="using:ChastiMaid.Views.Controls"
     xmlns:vm="using:ChastiMaid.ViewModels"

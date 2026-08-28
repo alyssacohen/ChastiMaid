@@ -173,7 +173,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 `EmployerVoice`
 
 `LabelUI` text is written in natural case; uppercasing is applied at render time via `{conv:UpperCase ...}`
-(`Views/Converters/UpperCaseExtension.cs`) for literals or `UpperCaseConverter` for bindings — never hardcode
+(`Converters/UpperCaseExtension.cs`) for literals or `UpperCaseConverter` for bindings — never hardcode
 ALLCAPS text.
 
 ### Button classes
