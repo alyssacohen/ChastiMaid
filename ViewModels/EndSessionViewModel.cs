@@ -30,7 +30,7 @@ public partial class EndSessionViewModel : ViewModelBase
 
         var state = saveRepo.GetGameState();
         _slotName = state?.SlotName ?? "unknown";
-        _encPath = Path.Combine(AppContext.BaseDirectory, "data", "saves", _slotName, "safe_combo.enc");
+        _encPath = Path.Combine(AppPaths.Root, "data", "saves", _slotName, "safe_combo.enc");
         HasSafeCombo = state?.IsSafeLocked == true && File.Exists(_encPath);
 
         ShowComboAndCloseCommand = ReactiveCommand.Create(() => RevealCombo(state));
@@ -49,7 +49,7 @@ public partial class EndSessionViewModel : ViewModelBase
     private void RevealCombo(GameState? state)
     {
         var decrypted = CryptoService.DecryptFile(_encPath);
-        var clearPath = Path.Combine(AppContext.BaseDirectory, "data", "saves", _slotName, "safe_combo.png");
+        var clearPath = Path.Combine(AppPaths.Root, "data", "saves", _slotName, "safe_combo.png");
         File.WriteAllBytes(clearPath, decrypted);
 
         using var ms = new MemoryStream(decrypted);

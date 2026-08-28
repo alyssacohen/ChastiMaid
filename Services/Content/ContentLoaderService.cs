@@ -30,7 +30,7 @@ public class ContentLoaderService(string language)
             l => CultureInfo.InstalledUICulture.TwoLetterISOLanguageName == l) ?? "en";
     }
 
-    private string ContentDir => Path.Combine(AppContext.BaseDirectory, "Content", ResolveLanguage(language));
+    private string ContentDir => Path.Combine(AppPaths.Root, "Content", ResolveLanguage(language));
 
     public List<ClothingItem> LoadWardrobe()
     {

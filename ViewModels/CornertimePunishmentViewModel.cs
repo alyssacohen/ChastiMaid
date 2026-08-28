@@ -116,7 +116,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         _tickTimer.Start();
 
         var slotName = SaveRepo.GetGameState()?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
 
         _movementSubscription = Webcam.WhenAnyValue(x => x.MovementPenaltyCount)
             .Skip(1)

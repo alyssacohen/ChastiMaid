@@ -19,7 +19,7 @@ namespace ChastiMaid.Services;
 public sealed class SherpaOnnxTtsService : ITtsService, IDisposable
 {
     private static readonly string ContentRoot =
-        Path.Combine(AppContext.BaseDirectory, "Content", "Speech", "TTS");
+        Path.Combine(AppPaths.Root, "Content", "Speech", "TTS");
 
     private readonly SemaphoreSlim _speakLock = new(1, 1);
     private readonly Lock _loadLock = new();

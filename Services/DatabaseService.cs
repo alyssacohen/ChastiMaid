@@ -27,7 +27,7 @@ public class DatabaseService : IDisposable
     }
 
     private static readonly string DataDir =
-        Path.Combine(AppContext.BaseDirectory, "data");
+        Path.Combine(AppPaths.Root, "data");
 
     private static readonly string SavesDir =
         Path.Combine(DataDir, "saves");

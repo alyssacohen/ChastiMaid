@@ -38,7 +38,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
     private static readonly TimeSpan TestRecordSafetyCap = TimeSpan.FromSeconds(90);
 
     private static readonly string ModelDir =
-        Path.Combine(AppContext.BaseDirectory, "Content", "Speech", "STT");
+        Path.Combine(AppPaths.Root, "Content", "Speech", "STT");
 
     private readonly Lock _loadLock = new();
     private readonly Lock _decodeLock = new();

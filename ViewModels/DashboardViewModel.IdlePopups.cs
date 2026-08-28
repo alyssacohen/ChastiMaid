@@ -483,7 +483,7 @@ public partial class DashboardViewModel
     {
         var ct = _kneelCts!.Token;
         var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
         var photos = new List<string>();
         var elapsed = 0;
 
@@ -688,7 +688,7 @@ public partial class DashboardViewModel
         }
 
         var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
         var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
         var path = Path.Combine(dir, $"pose_{timestamp}.png");
 
@@ -821,7 +821,7 @@ public partial class DashboardViewModel
         CurtsyRecordingSecondsLeft = _settings.CurtsyVideoDurationSeconds;
 
         var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
         var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
         var path = Path.Combine(dir, $"curtsy_{timestamp}.avi");
 

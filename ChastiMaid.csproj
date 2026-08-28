@@ -15,6 +15,7 @@
     <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Include="Controls\**\*.axaml" />
     <Compile Remove="ChastiMaid.Tests\**\*.cs" />
+    <Compile Remove="ChastiMaid.Launcher\**\*.cs" />
     <None Include="Content\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

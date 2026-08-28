@@ -72,7 +72,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
     {
         var state = _saveRepo.GetGameState();
         var slotName = state?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
         var videoPath = Path.Combine(dir, "outfit.avi");
 
         var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Video, videoPath,

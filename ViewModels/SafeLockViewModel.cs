@@ -40,7 +40,7 @@ public partial class SafeLockViewModel : ViewModelBase
     {
         var state = _saveRepo.GetGameState();
         var slotName = state?.SlotName ?? "unknown";
-        var dir = Path.Combine(AppContext.BaseDirectory, "data", "saves", slotName);
+        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
         var tempPath = Path.Combine(dir, "safe_combo_temp.png");
         var encPath = Path.Combine(dir, "safe_combo.enc");
 
