@@ -183,3 +183,6 @@ chastimaid-session.json
 
 ## Content export directory (generated at runtime by the import/export system)
 /Content/
+
+## publish.ps1 output
+/dist/

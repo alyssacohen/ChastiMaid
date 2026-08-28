@@ -9,7 +9,8 @@ $launcherPublish = Join-Path $PSScriptRoot "dist\_launcher-publish"
 Remove-Item $distRoot, $appPublish, $launcherPublish -Recurse -Force -ErrorAction SilentlyContinue
 
 dotnet publish (Join-Path $PSScriptRoot "ChastiMaid.csproj") -c Release -o $appPublish
-dotnet publish (Join-Path $PSScriptRoot "ChastiMaid.Launcher\ChastiMaid.Launcher.csproj") -c Release -o $launcherPublish
+dotnet publish (Join-Path $PSScriptRoot "ChastiMaid.Launcher\ChastiMaid.Launcher.csproj") -c Release -o $launcherPublish `
+    -r win-x64 --self-contained true -p:PublishSingleFile=true
 
 New-Item -ItemType Directory -Force -Path (Join-Path $distRoot "Bin") | Out-Null
 
