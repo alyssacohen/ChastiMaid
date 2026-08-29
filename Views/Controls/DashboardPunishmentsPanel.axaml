@@ -8,9 +8,8 @@
 
     <Panel Classes="dialogOverlay" IsVisible="{Binding IsPunishmentsPanelVisible}">
         <Border
-            Classes="dialogBox"
-            MaxWidth="460"
-            Padding="0">
+            Classes="punishmentDrawer"
+            Classes.landscape="{Binding IsLandscape}">
             <DockPanel>
 
                 <!--  Header (amber)  -->
@@ -49,18 +48,15 @@
                 </Border>
 
                 <!--  Footer  -->
-                <Border
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,1,0,0"
-                    DockPanel.Dock="Bottom"
-                    Padding="20,12">
+                <Border DockPanel.Dock="Bottom" Padding="16,12">
                     <Button
-                        Classes="Ghost"
+                        Classes="Amber"
                         Command="{Binding ClosePunishmentsPanelCommand}"
                         Content="{conv:Tr Close}"
-                        HorizontalAlignment="Center"
+                        CornerRadius="6"
+                        HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        MinWidth="100" />
+                        Padding="16,14" />
                 </Border>
 
                 <!--  Punishment rows  -->

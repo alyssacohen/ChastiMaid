@@ -28,6 +28,7 @@
   ═══════════════════════════════════════════ -->
     <x:Double x:Key="NavPanelWidth">320</x:Double>
     <GridLength x:Key="NavPanelWidthGridLength">320</GridLength>
+    <Thickness x:Key="NavPanelWidthThickness">320,0,0,0</Thickness>
     <x:Double x:Key="TouchTargetMin">44</x:Double>
     <x:Double x:Key="TableRowHeight">48</x:Double>
     <x:Double x:Key="ChipHeight">30</x:Double>

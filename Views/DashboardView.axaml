@@ -429,6 +429,7 @@
                         <Grid ColumnDefinitions="*,Auto">
                             <TextBlock
                                 Classes="Body"
+                                Foreground="{DynamicResource BrushWindowBackground}"
                                 Grid.Column="0"
                                 Text="{conv:Tr PendingPunishments}"
                                 VerticalAlignment="Center" />
