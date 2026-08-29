@@ -411,6 +411,12 @@ public partial class DashboardViewModel : ViewModelBase
         // Webcam available — navigate to camera setup
         if (WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex))
         {
+            // CameraSetupViewModel replaces this instance with a brand-new DashboardViewModel on
+            // both Confirm and Cancel (see its constructor) — NavigateTo never disposes the page it
+            // replaces, so without a full stop here this instance's popup loop would keep running
+            // unattended in the background (no view left to show what it triggers) for the rest of
+            // the session.
+            _sessionLoop.Pause();
             _mainVm.NavigateTo(new CameraSetupViewModel(_mainVm, _saveRepo, chore));
         }
         else
@@ -457,6 +463,12 @@ public partial class DashboardViewModel : ViewModelBase
         {
             return;
         }
+
+        // Cancel the still-running interrupt-popup loop first: it kept ticking during busy mode
+        // (EnterBusyMode pauses only the wage timer), so without this a Hydration/Plug&Play popup
+        // can land in the same instant the user ends the chore, ringing the desk bell right when
+        // they're closing something of their own accord.
+        _sessionLoop.Pause();
 
         _choreTimer?.Stop();
         _choreTimer = null;
