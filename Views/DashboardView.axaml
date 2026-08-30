@@ -11,12 +11,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Panel>
-
-        <!--
-            ══════════════════════════════════════════════════════
-            IDLE MODE — full dashboard layout
-            ══════════════════════════════════════════════════════
-        -->
         <Grid IsVisible="{Binding IsIdle}">
 
             <!--  ── PORTRAIT layout ──  -->

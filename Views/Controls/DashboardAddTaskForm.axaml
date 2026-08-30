@@ -6,7 +6,7 @@
              x:Class="ChastiMaid.Views.Controls.DashboardAddTaskForm">
 
     <Panel Classes="dialogOverlay" IsVisible="{Binding IsAddTaskFormVisible}">
-        <Border Classes="dialogBox" MaxWidth="420">
+        <Border Classes="dialogBox" MinWidth="640">
             <StackPanel Spacing="16">
                 <TextBlock
                     Classes="SectionTitle"

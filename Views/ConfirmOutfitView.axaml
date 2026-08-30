@@ -82,7 +82,7 @@
                                                         <TextBlock Classes="chip-label"
                                                                    Foreground="{StaticResource TextPrimary}"
                                                                    Text="{Binding Name}" />
-                                                        <TextBlock Classes="BodySmall"
+                                                        <TextBlock Classes="chip-label"
                                                                    Foreground="{StaticResource TextMuted}"
                                                                    Text="{Binding ZonesDisplay}"
                                                                    IsVisible="{Binding ZonesDisplay,
@@ -126,7 +126,7 @@
 
             </StackPanel>
         </ScrollViewer>
-        
+
         <StackPanel Grid.Row="2" Spacing="{StaticResource SpacingMd}"
                     Margin="{StaticResource SpacingButtonStripThickness}">
             <Button Classes="Primary"
