@@ -201,6 +201,8 @@
             </Border>
         </Panel>
 
+        <views:SettingsTestOutfitOverlay />
+
     </Panel>
 
 </UserControl>

@@ -1494,6 +1494,15 @@
   <data name="SettingsDiscard" xml:space="preserve">
     <value>Scarta</value>
   </data>
+  <data name="SettingsTestRules" xml:space="preserve">
+    <value>Testa regole</value>
+  </data>
+  <data name="SettingsTestOutfitTitle" xml:space="preserve">
+    <value>Anteprima outfit</value>
+  </data>
+  <data name="SettingsTestOutfitRegenerate" xml:space="preserve">
+    <value>Rigenera</value>
+  </data>
   <data name="CameraSetupTitle" xml:space="preserve">
     <value>Posiziona la fotocamera</value>
   </data>

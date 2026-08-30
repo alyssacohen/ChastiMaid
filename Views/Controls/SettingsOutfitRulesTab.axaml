@@ -58,12 +58,20 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <Button Grid.Row="2" Command="{Binding AddOutfitRuleCommand}" Classes="Add" Margin="24,8,32,0">
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                <TextBlock Text="{converters:Tr SettingsAddRule}" VerticalAlignment="Center" />
-            </StackPanel>
-        </Button>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="24,8,32,0">
+            <Button Command="{Binding AddOutfitRuleCommand}" Classes="Add">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                    <TextBlock Text="{converters:Tr SettingsAddRule}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding TestRulesCommand}" Classes="Ghost">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon Symbol="Play" IconVariant="Regular" FontSize="18" />
+                    <TextBlock Text="{converters:Tr SettingsTestRules}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 
 </UserControl>

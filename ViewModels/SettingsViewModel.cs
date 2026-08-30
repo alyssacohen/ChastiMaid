@@ -26,6 +26,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Dialog ---
     [Reactive] private ViewModelBase? _activeDialog;
+    [Reactive] private TestOutfitDialogViewModel? _testOutfitDialog;
     [Reactive] private IReadOnlyList<CameraOption> _availableCameras = [];
     [Reactive] private int _autoSaveInterval;
     [Reactive] private int _captureMaxInterval;
@@ -382,6 +383,11 @@ public partial class SettingsViewModel : ViewModelBase
                 new OutfitRuleEditViewModel(new OutfitRule(), AllUsedTags,
                     id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
         AddForcedOutfitPresetCommand = ReactiveCommand.Create(() => OpenForcedOutfitPresetEditor(new ForcedOutfitPreset()));
+        TestRulesCommand = ReactiveCommand.Create(() =>
+            TestOutfitDialog = new TestOutfitDialogViewModel(
+                WardrobeItems.Select(w => w.ToModel()).ToList(),
+                OutfitRules.Select(r => r.ToModel()).ToList()));
+        CloseTestOutfitDialogCommand = ReactiveCommand.Create(() => TestOutfitDialog = null);
         DeleteSelectedWardrobeItemsCommand = ReactiveCommand.Create(
             DeleteSelectedWardrobeItems,
             this.WhenAnyValue(x => x.WardrobeSelectedCount, n => n > 0));
@@ -577,6 +583,8 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand CancelAddItemCommand { get; }
     public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
+    public ICommand TestRulesCommand { get; }
+    public ICommand CloseTestOutfitDialogCommand { get; }
     public ICommand AddForcedOutfitPresetCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
     public ICommand CollapseExpandedWardrobeItemCommand { get; }
