@@ -211,7 +211,7 @@
     <value>Per aver negato ciò che la macchina fotografica richiedeva chiaramente.</value>
   </data>
   <data name="PunishmentReasonSelfCheckWronglyVisible" xml:space="preserve">
-    <value>Per aver preteso di indossare ciò che non aveva affatto.</value>
+      <value>Per aver mentito spudoratamente.</value>
   </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>Una questione già decisa</value>
@@ -265,7 +265,7 @@
     <value>Molto bene. Rimanete ferma, il castigo inizia adesso.</value>
   </data>
   <data name="CornertimeBegin2" xml:space="preserve">
-    <value>Così va bene. Il vostro castigo nell'angolo ha inizio.</value>
+      <value>Così va bene. Il vostro castigo inizia ora.</value>
   </data>
   <data name="CornertimeBegin3" xml:space="preserve">
     <value>Bene. L'orologio corre — non deludetemi.</value>
@@ -298,7 +298,7 @@
     <value>Non siete stata nemmeno in grado di restare ferma. Pagherete una multa e l'angolo è ancora lì che vi aspetta.</value>
   </data>
   <data name="CornertimeFailureWithConsequenceMessage" xml:space="preserve">
-    <value>Non siete riuscita a star ferma — e ora ve ne sono le conseguenze. Confido che il nuovo compito che vi attende vi insegni un po' più di disciplina.</value>
+      <value>Non siete riuscita a star ferma — e ora ne pagherete le conseguenze. Confido che il nuovo compito che vi attende vi insegni un po' più di disciplina.</value>
   </data>
   <data name="PunishmentDone" xml:space="preserve">
     <value>Fatto</value>
@@ -412,7 +412,7 @@
     <value>Un compito dichiarato concluso in pochi istanti non è un compito concluso affatto — sarà considerato nullo, e ne risponderete.</value>
   </data>
   <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
-    <value>Un passo così ozioso suggerisce mani inoperose, non un lavoro onesto — anche questo non resterà impunito.</value>
+      <value>Tanta lentezza suggerisce mani inoperose, non un lavoro onesto — anche questo non resterà impunito.</value>
   </data>
   <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
     <value>Un compito trascinato così a lungo non era diligenza — era ozio, e sarà considerato nullo.</value>
@@ -874,7 +874,7 @@
     <value>Leggete quanto segue ad alta voce, affinché io possa udirlo:</value>
   </data>
   <data name="MotivationalQuoteDuty" xml:space="preserve">
-    <value>Il mio dovere non si affievolisce con la ripetizione — da essa si dimostra</value>
+      <value>Il mio dovere non si affievolisce con la ripetizione. Da essa si dimostra</value>
   </data>
   <data name="MotivationalQuotePerseverance" xml:space="preserve">
     <value>Un compito che intraprendo con serietà lo considero già a metà</value>
@@ -1081,7 +1081,7 @@
     <value>Il moltiplicatore influenza il punteggio dell'outfit, il peso è la probabilità che un capo venga scelto.</value>
   </data>
   <data name="ChangeOutfitTitle" xml:space="preserve">
-    <value>Componi un outfit</value>
+      <value>Crea un outfit</value>
   </data>
   <data name="ChangeOutfitLegendItem" xml:space="preserve">
     <value>capo</value>
@@ -1189,7 +1189,7 @@
     <value>Webcam e riconoscimento vocale</value>
   </data>
   <data name="SettingsHeadingPopupTiming" xml:space="preserve">
-    <value>Frequenza e timeout</value>
+      <value>Frequenza e scadenza popup</value>
   </data>
   <data name="SettingsHeadingHydration" xml:space="preserve">
     <value>Promemoria idratazione</value>

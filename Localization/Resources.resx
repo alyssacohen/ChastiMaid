@@ -211,7 +211,7 @@
     <value>For denying what the camera plainly required of her.</value>
   </data>
   <data name="PunishmentReasonSelfCheckWronglyVisible" xml:space="preserve">
-    <value>For claiming to wear what she never had on.</value>
+      <value>For lying through her teeth.</value>
   </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>A Matter Already Settled</value>
@@ -874,7 +874,7 @@
     <value>You will read the following aloud, that I may hear it spoken:</value>
   </data>
   <data name="MotivationalQuoteDuty" xml:space="preserve">
-    <value>My duty is not diminished by repetition — it is proven by it</value>
+      <value>My duty is not diminished by repetition. It is proven by it</value>
   </data>
   <data name="MotivationalQuotePerseverance" xml:space="preserve">
     <value>A task I begin in earnest is a task I count already half completed</value>
@@ -1189,7 +1189,7 @@
     <value>Webcam &amp; Speech Recognition</value>
   </data>
   <data name="SettingsHeadingPopupTiming" xml:space="preserve">
-    <value>Frequency &amp; Timeout</value>
+      <value>Popup Frequency &amp; Timeout</value>
   </data>
   <data name="SettingsHeadingHydration" xml:space="preserve">
     <value>Hydration Reminders</value>
