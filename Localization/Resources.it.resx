@@ -1132,7 +1132,10 @@
     <value>Compiti</value>
   </data>
   <data name="SettingsTabPunishments" xml:space="preserve">
-    <value>Popup e Punizioni</value>
+    <value>Punizioni</value>
+  </data>
+  <data name="SettingsTabPopups" xml:space="preserve">
+    <value>Popup</value>
   </data>
   <data name="SettingsTabWardrobe" xml:space="preserve">
     <value>Guardaroba</value>
@@ -1224,9 +1227,6 @@
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
   </data>
-  <data name="SettingsSectionPunishments" xml:space="preserve">
-    <value>Punizioni</value>
-  </data>
   <data name="SettingsHeadingFine" xml:space="preserve">
     <value>Multa</value>
   </data>
@@ -1246,13 +1246,13 @@
     <value>Secondi richiesti per gravità</value>
   </data>
   <data name="SettingsCornertimeMinRequired" xml:space="preserve">
-    <value>Durata minima (secondi)</value>
+    <value>Durata richiesta — minimo (secondi)</value>
   </data>
   <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
-    <value>Margine massimo (secondi)</value>
+    <value>Tolleranza prima del fallimento (secondi)</value>
   </data>
   <data name="SettingsCornertimeMaxRequired" xml:space="preserve">
-    <value>Durata massima richiesta (secondi)</value>
+    <value>Durata richiesta — massimo (secondi)</value>
   </data>
   <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
     <value>Secondi minimi tra due penalità</value>
@@ -1440,11 +1440,14 @@
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Cattura</value>
   </data>
+  <data name="SettingsCaptureDescription" xml:space="preserve">
+    <value>Durante lo svolgimento di un compito, l'obiettivo darà un'occhiata di tanto in tanto — senza alcun preavviso.</value>
+  </data>
   <data name="SettingsCaptureMin" xml:space="preserve">
-    <value>Cattura minima (secondi)</value>
+    <value>Attesa minima tra uno scatto e l'altro (secondi)</value>
   </data>
   <data name="SettingsCaptureMax" xml:space="preserve">
-    <value>Cattura massima (secondi)</value>
+    <value>Attesa massima tra uno scatto e l'altro (secondi)</value>
   </data>
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Nome compito</value>

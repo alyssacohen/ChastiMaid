@@ -126,40 +126,6 @@
                 </StackPanel>
             </Border>
 
-            <!--  Capture  -->
-            <TextBlock
-                Classes="Heading"
-                Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingCapture}" />
-            <Border Classes="card">
-                <StackPanel Spacing="8">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock
-                            Classes="BodySmall"
-                            Text="{converters:Tr SettingsCaptureMin}"
-                            VerticalAlignment="Center" />
-                        <NumericUpDown
-                            Classes="underline stacked-spinner compact"
-                            FormatString="0"
-                            Grid.Column="1"
-                            Minimum="1"
-                            Value="{Binding CaptureMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
-                    </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock
-                            Classes="BodySmall"
-                            Text="{converters:Tr SettingsCaptureMax}"
-                            VerticalAlignment="Center" />
-                        <NumericUpDown
-                            Classes="underline stacked-spinner compact"
-                            FormatString="0"
-                            Grid.Column="1"
-                            Minimum="1"
-                            Value="{Binding CaptureMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
-                    </Grid>
-                </StackPanel>
-            </Border>
-
             <!--  Diaper Play  -->
             <TextBlock
                 Classes="Heading"

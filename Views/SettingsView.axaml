@@ -58,27 +58,34 @@
                             Command="{Binding SetTabCommand}"
                             CommandParameter="2"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{converters:Tr SettingsTabPunishments}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsPopupsDirty}" Text="{converters:Tr SettingsTabPopups}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="3"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsWardrobeDirty}" Text="{converters:Tr SettingsTabWardrobe}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{converters:Tr SettingsTabPunishments}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="4"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{converters:Tr SettingsTabOutfitRules}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsWardrobeDirty}" Text="{converters:Tr SettingsTabWardrobe}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="5"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5, Mode=OneWay}">
+                            <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{converters:Tr SettingsTabOutfitRules}" />
+                        </RadioButton>
+                        <RadioButton
+                            Classes="navItem"
+                            Command="{Binding SetTabCommand}"
+                            CommandParameter="6"
+                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=6, Mode=OneWay}">
                             <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{converters:Tr SettingsTabPermissions}" />
                         </RadioButton>
                     </StackPanel>
@@ -127,12 +134,15 @@
                 <!--  ==================== CHORES ====================  -->
                 <views:SettingsChoresTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1}" />
 
-                <!--  ==================== POPUP & PUNISHMENTS ====================  -->
-                <views:SettingsPunishmentsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}" />
+                <!--  ==================== POPUPS ====================  -->
+                <views:SettingsPopupsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2}" />
+
+                <!--  ==================== PUNISHMENTS ====================  -->
+                <views:SettingsPunishmentsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}" />
 
                 <!--  ==================== WARDROBE ====================  -->
                 <Grid
-                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}"
+                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}"
                     Margin="0,0,0,8"
                     RowDefinitions="Auto,Auto,*,Auto">
                     <StackPanel Grid.Row="0" Margin="16,0,16,0">
@@ -151,10 +161,10 @@
                 </Grid>
 
                 <!--  ==================== OUTFIT RULES ====================  -->
-                <views:SettingsOutfitRulesTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}" />
+                <views:SettingsOutfitRulesTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5}" />
 
                 <!--  ==================== PERMISSIONS ====================  -->
-                <views:SettingsPermissionsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5}" />
+                <views:SettingsPermissionsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=6}" />
 
             </Panel>
 

@@ -9,7 +9,42 @@
     <Grid RowDefinitions="Auto,*,Auto" Margin="0,0,0,16">
         <StackPanel Grid.Row="0" Margin="24,0,32,0">
             <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabChores}" Margin="0,20,0,8" />
-            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
+            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,16" />
+
+            <!--  Capture  -->
+            <TextBlock Classes="Heading" Margin="0,0,0,8" Text="{converters:Tr SettingsHeadingCapture}" />
+            <Border Classes="card" Margin="0,0,0,8">
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        Text="{converters:Tr SettingsCaptureDescription}"
+                        TextWrapping="Wrap" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock
+                            Classes="BodySmall"
+                            Text="{converters:Tr SettingsCaptureMin}"
+                            VerticalAlignment="Center" />
+                        <NumericUpDown
+                            Classes="underline stacked-spinner compact"
+                            FormatString="0"
+                            Grid.Column="1"
+                            Minimum="1"
+                            Value="{Binding CaptureMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock
+                            Classes="BodySmall"
+                            Text="{converters:Tr SettingsCaptureMax}"
+                            VerticalAlignment="Center" />
+                        <NumericUpDown
+                            Classes="underline stacked-spinner compact"
+                            FormatString="0"
+                            Grid.Column="1"
+                            Minimum="1"
+                            Value="{Binding CaptureMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
         </StackPanel>
         <ScrollViewer Grid.Row="1" Name="ChoresScroll">
             <ItemsControl ItemsSource="{Binding Chores}" Margin="24,0,32,0">

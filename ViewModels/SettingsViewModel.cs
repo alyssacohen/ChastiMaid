@@ -79,6 +79,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Per-tab dirty flags ---
     [Reactive] private bool _isGeneralDirty;
+    [Reactive] private bool _isPopupsDirty;
     [Reactive] private bool _isPunishmentsDirty;
     [Reactive] private bool _isRulesDirty;
     [Reactive] private bool _isWardrobeDirty;
@@ -117,7 +118,7 @@ public partial class SettingsViewModel : ViewModelBase
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, int, decimal, decimal, double, decimal, int, int, int, CameraOption, LanguageOption) _snapshot;
+    private (string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -283,30 +284,32 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.PlayerName, x => x.AutoSaveInterval, x => x.MinDebt,
                 x => x.MaxDebt, x => x.DailyInterestRate, x => x.IdleWageAmount,
                 (_, _, _, _, _, _) => Unit.Default).Merge(this.WhenAnyValue(
-                x => x.IdleWageInterval, x => x.CaptureMinInterval, x => x.CaptureMaxInterval,
-                x => x.SelectedCamera, x => x.SelectedLanguage,
-                (_, _, _, _, _) => Unit.Default))
+                x => x.IdleWageInterval, x => x.SelectedCamera, x => x.SelectedLanguage,
+                (_, _, _) => Unit.Default))
             .Subscribe(_ => UpdateGeneralDirty());
 
         this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
 
         this.WhenAnyValue(x => x.DiaperPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
 
+        this.WhenAnyValue(x => x.CaptureMinInterval, x => x.CaptureMaxInterval, (_, _) => Unit.Default)
+            .Skip(1).Subscribe(_ => IsChoresDirty = true);
+
         this.WhenAnyValue(
                 x => x.PopupMinInterval, x => x.PopupMaxInterval, x => x.PopupTimeout,
                 x => x.HydrationMinInterval, x => x.CurtsyVideoDuration, x => x.QuoteListenTimeout,
                 x => x.QuoteMatchMinSimilarityPercent, (_, _, _, _, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+            .Skip(1).Subscribe(_ => IsPopupsDirty = true);
 
         this.WhenAnyValue(
                 x => x.KneelMinDuration, x => x.KneelMaxDuration,
                 x => x.KneelPhotoMinInterval, x => x.KneelPhotoMaxInterval,
                 (_, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+            .Skip(1).Subscribe(_ => IsPopupsDirty = true);
 
         this.WhenAnyValue(x => x.HydrationEnabled, x => x.CurtsyEnabled, x => x.QuoteReadingEnabled,
                 x => x.KneelEnabled, (_, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+            .Skip(1).Subscribe(_ => IsPopupsDirty = true);
 
         this.WhenAnyValue(x => x.FineSeverityValue, x => x.CornertimeEnabled, x => x.CornertimeSeverityValue,
                 x => x.CornertimeMinRequiredSeconds, x => x.CornertimeMaxOverrunSeconds,
@@ -536,7 +539,8 @@ public partial class SettingsViewModel : ViewModelBase
     public IEnumerable<string> NewItemTagSuggestions => AllUsedTags;
 
     public bool IsDirty =>
-        IsGeneralDirty || IsChoresDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty || IsPermissionsDirty;
+        IsGeneralDirty || IsChoresDirty || IsPopupsDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty ||
+        IsPermissionsDirty;
     public ObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems { get; } = [];
 
     public decimal DailyInterestRatePercent
@@ -917,11 +921,11 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, int, decimal, decimal, double, decimal, int, int, int, CameraOption, LanguageOption)
+    private (string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption)
         CurrentValues()
     {
         return (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
-            _idleWageInterval, _captureMinInterval, _captureMaxInterval, _selectedCamera, _selectedLanguage);
+            _idleWageInterval, _selectedCamera, _selectedLanguage);
     }
 
     private void UpdateGeneralDirty()
@@ -933,7 +937,7 @@ public partial class SettingsViewModel : ViewModelBase
     {
         SaveAll();
         TakeSnapshot();
-        IsGeneralDirty = IsChoresDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty =
+        IsGeneralDirty = IsChoresDirty = IsPopupsDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty =
             IsPermissionsDirty = false;
     }
 

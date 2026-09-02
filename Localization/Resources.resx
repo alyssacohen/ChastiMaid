@@ -1132,7 +1132,10 @@
     <value>Chores</value>
   </data>
   <data name="SettingsTabPunishments" xml:space="preserve">
-    <value>Popup and Punishments</value>
+    <value>Punishments</value>
+  </data>
+  <data name="SettingsTabPopups" xml:space="preserve">
+    <value>Popups</value>
   </data>
   <data name="SettingsTabWardrobe" xml:space="preserve">
     <value>Wardrobe</value>
@@ -1224,9 +1227,6 @@
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
   </data>
-  <data name="SettingsSectionPunishments" xml:space="preserve">
-    <value>Punishments</value>
-  </data>
   <data name="SettingsHeadingFine" xml:space="preserve">
     <value>Fine</value>
   </data>
@@ -1246,13 +1246,13 @@
     <value>Seconds required per severity</value>
   </data>
   <data name="SettingsCornertimeMinRequired" xml:space="preserve">
-    <value>Minimum duration (seconds)</value>
+    <value>Required duration — minimum (seconds)</value>
   </data>
   <data name="SettingsCornertimeMaxOverrun" xml:space="preserve">
-    <value>Max overrun (seconds)</value>
+    <value>Grace time before failure (seconds)</value>
   </data>
   <data name="SettingsCornertimeMaxRequired" xml:space="preserve">
-    <value>Max required duration (seconds)</value>
+    <value>Required duration — maximum (seconds)</value>
   </data>
   <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
     <value>Minimum seconds between penalties</value>
@@ -1440,11 +1440,14 @@
   <data name="SettingsHeadingCapture" xml:space="preserve">
     <value>Capture</value>
   </data>
+  <data name="SettingsCaptureDescription" xml:space="preserve">
+    <value>While a chore is under way, the camera shall look in from time to time — quite without warning.</value>
+  </data>
   <data name="SettingsCaptureMin" xml:space="preserve">
-    <value>Capture minimum (seconds)</value>
+    <value>Shortest wait between photos (seconds)</value>
   </data>
   <data name="SettingsCaptureMax" xml:space="preserve">
-    <value>Capture maximum (seconds)</value>
+    <value>Longest wait between photos (seconds)</value>
   </data>
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Chore name</value>
