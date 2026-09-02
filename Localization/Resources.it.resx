@@ -994,10 +994,10 @@
     <value>Ne prendo atto.</value>
   </data>
   <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
-    <value>Minuti min</value>
+    <value>Minuti minimi</value>
   </data>
   <data name="SettingsPlugAndPlayMaxMinutes" xml:space="preserve">
-    <value>Minuti max</value>
+    <value>Minuti massimi</value>
   </data>
   <data name="HardwareCheckTitle" xml:space="preserve">
     <value>Una parola prima di cominciare</value>
@@ -1144,10 +1144,10 @@
     <value>Probabilità % di concessione</value>
   </data>
   <data name="PermissionColumnDuration" xml:space="preserve">
-    <value>Durata (min)</value>
+    <value>Durata (minuti)</value>
   </data>
   <data name="PermissionColumnCooldown" xml:space="preserve">
-    <value>Cooldown (min)</value>
+    <value>Cooldown (minuti)</value>
   </data>
   <data name="SettingsTabOutfitRules" xml:space="preserve">
     <value>Regole outfit</value>
@@ -1168,7 +1168,7 @@
     <value>Nome</value>
   </data>
   <data name="SettingsAutoSaveMin" xml:space="preserve">
-    <value>Salvataggio automatico (min)</value>
+    <value>Salvataggio automatico (minuti)</value>
   </data>
   <data name="SettingsHeadingGameBalance" xml:space="preserve">
     <value>Bilanciamento di gioco</value>
@@ -1216,10 +1216,10 @@
       <value>Starete in ginocchio per il tempo stabilito, e la fotocamera ne conserverà la prova.</value>
   </data>
   <data name="SettingsKneelDurationLabel" xml:space="preserve">
-    <value>Durata min/max (sec)</value>
+    <value>Durata minima/massima (secondi)</value>
   </data>
   <data name="SettingsKneelPhotoIntervalLabel" xml:space="preserve">
-    <value>Intervallo foto min/max (sec)</value>
+    <value>Intervallo foto minimo/massimo (secondi)</value>
   </data>
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
@@ -1381,25 +1381,25 @@
     <value>Importo paga a riposo (£)</value>
   </data>
   <data name="SettingsWageInterval" xml:space="preserve">
-    <value>Intervallo paga (min)</value>
+    <value>Intervallo paga (minuti)</value>
   </data>
   <data name="SettingsPopupMin" xml:space="preserve">
-    <value>Popup min (sec)</value>
+    <value>Popup minimo (secondi)</value>
   </data>
   <data name="SettingsPopupMax" xml:space="preserve">
-    <value>Popup max (sec)</value>
+    <value>Popup massimo (secondi)</value>
   </data>
   <data name="SettingsPopupTimeout" xml:space="preserve">
-    <value>Timeout popup (sec)</value>
+    <value>Timeout popup (secondi)</value>
   </data>
   <data name="SettingsHydrationMinInterval" xml:space="preserve">
-    <value>Intervallo min. idratazione (min)</value>
+    <value>Intervallo minimo idratazione (minuti)</value>
   </data>
   <data name="SettingsCurtsyVideoDuration" xml:space="preserve">
-    <value>Durata video riverenza (sec)</value>
+    <value>Durata video riverenza (secondi)</value>
   </data>
   <data name="SettingsQuoteListenTimeout" xml:space="preserve">
-    <value>Finestra di ascolto citazione (sec)</value>
+    <value>Finestra di ascolto citazione (secondi)</value>
   </data>
   <data name="SettingsQuoteRecognitionSensitivity" xml:space="preserve">
     <value>Sensibilità riconoscimento citazione</value>
@@ -1441,10 +1441,10 @@
     <value>Cattura</value>
   </data>
   <data name="SettingsCaptureMin" xml:space="preserve">
-    <value>Cattura min (sec)</value>
+    <value>Cattura minima (secondi)</value>
   </data>
   <data name="SettingsCaptureMax" xml:space="preserve">
-    <value>Cattura max (sec)</value>
+    <value>Cattura massima (secondi)</value>
   </data>
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Nome compito</value>
@@ -1459,7 +1459,7 @@
     <value>Freq. (giorni)</value>
   </data>
   <data name="SettingsFieldMinCompletionMinutes" xml:space="preserve">
-    <value>Tempo min. (min)</value>
+    <value>Tempo minimo (minuti)</value>
   </data>
   <data name="SettingsFieldDescription" xml:space="preserve">
     <value>Descrizione</value>

@@ -994,10 +994,10 @@
     <value>Duly noted.</value>
   </data>
   <data name="SettingsPlugAndPlayMinMinutes" xml:space="preserve">
-    <value>Min minutes</value>
+    <value>Minimum minutes</value>
   </data>
   <data name="SettingsPlugAndPlayMaxMinutes" xml:space="preserve">
-    <value>Max minutes</value>
+    <value>Maximum minutes</value>
   </data>
   <data name="HardwareCheckTitle" xml:space="preserve">
     <value>A Word Before We Begin</value>
@@ -1144,10 +1144,10 @@
     <value>Grant chance %</value>
   </data>
   <data name="PermissionColumnDuration" xml:space="preserve">
-    <value>Duration (min)</value>
+    <value>Duration (minutes)</value>
   </data>
   <data name="PermissionColumnCooldown" xml:space="preserve">
-    <value>Cooldown (min)</value>
+    <value>Cooldown (minutes)</value>
   </data>
   <data name="SettingsTabOutfitRules" xml:space="preserve">
     <value>Outfit Rules</value>
@@ -1168,7 +1168,7 @@
     <value>Name</value>
   </data>
   <data name="SettingsAutoSaveMin" xml:space="preserve">
-    <value>Auto-save (min)</value>
+    <value>Auto-save (minutes)</value>
   </data>
   <data name="SettingsHeadingGameBalance" xml:space="preserve">
     <value>Game Balance</value>
@@ -1216,10 +1216,10 @@
     <value>She shall kneel for exactly as long as decided, and the camera shall keep proof of it.</value>
   </data>
   <data name="SettingsKneelDurationLabel" xml:space="preserve">
-    <value>Duration min/max (sec)</value>
+    <value>Duration minimum/maximum (seconds)</value>
   </data>
   <data name="SettingsKneelPhotoIntervalLabel" xml:space="preserve">
-    <value>Photo interval min/max (sec)</value>
+    <value>Photo interval minimum/maximum (seconds)</value>
   </data>
   <data name="SettingsHeadingPlugAndPlay" xml:space="preserve">
     <value>Plug &amp; Play</value>
@@ -1255,19 +1255,19 @@
     <value>Max required duration (seconds)</value>
   </data>
   <data name="SettingsCornertimeCooldownMin" xml:space="preserve">
-    <value>Min. seconds between penalties</value>
+    <value>Minimum seconds between penalties</value>
   </data>
   <data name="SettingsCornertimeCooldownMax" xml:space="preserve">
-    <value>Max. seconds between penalties</value>
+    <value>Maximum seconds between penalties</value>
   </data>
   <data name="SettingsCornertimeSensitivity" xml:space="preserve">
     <value>Movement sensitivity (%)</value>
   </data>
   <data name="SettingsCornertimeMovementPenaltyMin" xml:space="preserve">
-    <value>Min. movement penalty (seconds)</value>
+    <value>Minimum movement penalty (seconds)</value>
   </data>
   <data name="SettingsCornertimeMovementPenaltyMax" xml:space="preserve">
-    <value>Max. movement penalty (seconds)</value>
+    <value>Maximum movement penalty (seconds)</value>
   </data>
   <data name="SettingsCornertimeVoiceEnabled" xml:space="preserve">
     <value>Voice narration</value>
@@ -1381,25 +1381,25 @@
     <value>Idle wage amount (£)</value>
   </data>
   <data name="SettingsWageInterval" xml:space="preserve">
-    <value>Wage interval (min)</value>
+    <value>Wage interval (minutes)</value>
   </data>
   <data name="SettingsPopupMin" xml:space="preserve">
-    <value>Popup min (sec)</value>
+    <value>Popup minimum (seconds)</value>
   </data>
   <data name="SettingsPopupMax" xml:space="preserve">
-    <value>Popup max (sec)</value>
+    <value>Popup maximum (seconds)</value>
   </data>
   <data name="SettingsPopupTimeout" xml:space="preserve">
-    <value>Popup timeout (sec)</value>
+    <value>Popup timeout (seconds)</value>
   </data>
   <data name="SettingsHydrationMinInterval" xml:space="preserve">
-    <value>Hydration min. interval (min)</value>
+    <value>Minimum hydration interval (minutes)</value>
   </data>
   <data name="SettingsCurtsyVideoDuration" xml:space="preserve">
-    <value>Curtsy video duration (sec)</value>
+    <value>Curtsy video duration (seconds)</value>
   </data>
   <data name="SettingsQuoteListenTimeout" xml:space="preserve">
-    <value>Quote listening window (sec)</value>
+    <value>Quote listening window (seconds)</value>
   </data>
   <data name="SettingsQuoteRecognitionSensitivity" xml:space="preserve">
     <value>Quote recognition sensitivity</value>
@@ -1441,10 +1441,10 @@
     <value>Capture</value>
   </data>
   <data name="SettingsCaptureMin" xml:space="preserve">
-    <value>Capture min (sec)</value>
+    <value>Capture minimum (seconds)</value>
   </data>
   <data name="SettingsCaptureMax" xml:space="preserve">
-    <value>Capture max (sec)</value>
+    <value>Capture maximum (seconds)</value>
   </data>
   <data name="SettingsChoreNamePlaceholder" xml:space="preserve">
     <value>Chore name</value>
@@ -1459,7 +1459,7 @@
     <value>Freq. (Days)</value>
   </data>
   <data name="SettingsFieldMinCompletionMinutes" xml:space="preserve">
-    <value>Min. Time (min)</value>
+    <value>Minimum time (minutes)</value>
   </data>
   <data name="SettingsFieldDescription" xml:space="preserve">
     <value>Description</value>
