@@ -177,8 +177,8 @@ chastimaid-session.json
 ## Nimbalyst files
 /nimbalyst-local/
 
-## Claude Code local settings (machine-specific permissions)
-.claude/settings.local.json
+## Claude Code local files
+.claude/
 .mcp.json
 
 ## Content export directory (generated at runtime by the import/export system)
