@@ -15,35 +15,12 @@ public static class SoundEffectService
 {
     private static readonly HashSet<MediaPlayer> ActivePlayers = [];
 
-    public static void PlayDeskBell()
-    {
-        _ = PlayAsync("desk-bell.wav");
-    }
-
-    public static void PlayHandBell()
-    {
-        _ = PlayAsync("hand-bell.wav");
-    }
-
-    public static void PlayShufflingCards()
-    {
-        _ = PlayAsync("shuffling-playing-cards.wav");
-    }
-
-    public static void PlayFanOut()
-    {
-        _ = PlayAsync("fan-out.wav");
-    }
-
-    public static void PlayBuzz()
-    {
-        _ = PlayAsync("buzz.wav");
-    }
-
-    public static void PlayClock()
-    {
-        _ = PlayAsync("clock.wav");
-    }
+    public static void PlayDeskBell() => _ = PlayAsync("desk-bell.wav");
+    public static void PlayHandBell() => _ = PlayAsync("hand-bell.wav");
+    public static void PlayShufflingCards() => _ = PlayAsync("shuffling-playing-cards.wav");
+    public static void PlayFanOut() => _ = PlayAsync("fan-out.wav");
+    public static void PlayBuzz() => _ = PlayAsync("buzz.wav");
+    public static void PlayClock() => _ = PlayAsync("clock.wav");
 
     private static async Task PlayAsync(string fileName)
     {

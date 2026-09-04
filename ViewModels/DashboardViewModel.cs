@@ -12,29 +12,6 @@ using ReactiveUI.SourceGenerators;
 
 namespace ChastiMaid.ViewModels;
 
-public class ChoreItemViewModel : ViewModelBase
-{
-    public ChoreItemViewModel(Chore chore, double multiplier, Action<ChoreItemViewModel> onStart)
-    {
-        ChoreId = chore.Id;
-        Name = chore.Name;
-        Description = chore.Description;
-        Value = chore.Value;
-        IsOccasional = chore.IsOccasional;
-        var effective = Math.Round(chore.Value * (decimal)multiplier, 2);
-        ValueDisplay = CurrencyConverter.Format(effective);
-        StartChoreCommand = ReactiveCommand.Create(() => onStart(this));
-    }
-
-    public int ChoreId { get; }
-    public string Name { get; }
-    public string Description { get; }
-    public decimal Value { get; }
-    public bool IsOccasional { get; }
-    public string ValueDisplay { get; }
-    public ICommand StartChoreCommand { get; }
-}
-
 /// <summary>
 ///     A single owned permission card offered for staging in the Permissions panel. Tapping toggles
 ///     <see cref="IsStaged" />; staged cards are combined and consumed when the request is submitted.
@@ -64,7 +41,7 @@ public partial class DashboardViewModel : ViewModelBase
     private readonly SessionLoopService _sessionLoop;
     private readonly GameSettings _settings;
 
-    private ChoreItemViewModel? _activeChore;
+    private int? _activeChoreId;
     [Reactive] private string _busyChoreDescription = "";
 
     // --- Busy mode ---
@@ -197,7 +174,6 @@ public partial class DashboardViewModel : ViewModelBase
         ToggleOutfitDrawerCommand = ReactiveCommand.Create(() => IsOutfitDrawerOpen = !IsOutfitDrawerOpen);
         OpenPunishmentsCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = true, canOpenPunishments);
         ClosePunishmentsPanelCommand = ReactiveCommand.Create(() => IsPunishmentsPanelVisible = false);
-        StartTaskCommand = ReactiveCommand.Create<TaskItemViewModel>(OnStartTask);
         OpenAddTaskFormCommand = ReactiveCommand.Create(() =>
         {
             NewTaskName = "";
@@ -231,19 +207,11 @@ public partial class DashboardViewModel : ViewModelBase
             _countdownTimer?.Stop();
             _mainVm.NavigateTo(new ShopViewModel(_mainVm, _saveRepo));
         });
-        if (startChore is not null)
+        if (startChore is not null && _saveRepo.GetChores().Any(c => c.Id == startChore.Id))
         {
-            // Find the matching ChoreItemViewModel
-            _activeChore = Chores.FirstOrDefault(c => c.ChoreId == startChore.Id);
-            if (_activeChore is not null)
-            {
-                _sessionLoop.Start();
-                EnterBusyMode();
-            }
-            else
-            {
-                StartIdleMode();
-            }
+            _activeChoreId = startChore.Id;
+            _sessionLoop.Start();
+            EnterBusyMode();
         }
         else
         {
@@ -259,7 +227,6 @@ public partial class DashboardViewModel : ViewModelBase
     public double DebtProgress => DebtTotal > 0 ? Math.Clamp((double)(DebtSettled / DebtTotal), 0.0, 1.0) : 0.0;
     public bool HasPendingPunishments => PendingPunishmentsCount > 0;
 
-    public ObservableCollection<ChoreItemViewModel> Chores { get; } = [];
     public ObservableCollection<TaskItemViewModel> Tasks { get; } = [];
     public ObservableCollection<PunishmentItemViewModel> Punishments { get; } = [];
     public ObservableCollection<PermissionTypeItemViewModel> PermissionTypes { get; } = [];
@@ -277,7 +244,6 @@ public partial class DashboardViewModel : ViewModelBase
     public ICommand ToggleOutfitDrawerCommand { get; }
     public ICommand OpenPunishmentsCommand { get; }
     public ICommand ClosePunishmentsPanelCommand { get; }
-    public ICommand StartTaskCommand { get; }
     public ICommand OpenAddTaskFormCommand { get; }
     public ICommand CloseAddTaskFormCommand { get; }
     public ICommand SubmitAddTaskCommand { get; }
@@ -304,11 +270,9 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void LoadChores()
     {
-        Chores.Clear();
         Tasks.Clear();
         foreach (var chore in _saveRepo.GetChores())
         {
-            Chores.Add(new ChoreItemViewModel(chore, _outfitBonus, OnStartChore));
             Tasks.Add(new TaskItemViewModel(chore, OnStartTask));
         }
     }
@@ -389,7 +353,7 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     // --- Chore start → naviga a CameraSetupView ---
-    private void OnStartChore(ChoreItemViewModel choreVm)
+    private void OnStartChore(int choreId)
     {
         if (IsBusy)
         {
@@ -402,7 +366,7 @@ public partial class DashboardViewModel : ViewModelBase
         _sessionLoop.Pause(pausePopups: false);
         _countdownTimer?.Stop();
 
-        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == choreVm.ChoreId);
+        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == choreId);
         if (chore is null)
         {
             return;
@@ -422,14 +386,17 @@ public partial class DashboardViewModel : ViewModelBase
         else
         {
             // No webcam — enter busy mode directly
-            _activeChore = choreVm;
+            _activeChoreId = chore.Id;
             EnterBusyMode();
         }
     }
 
     private void EnterBusyMode()
     {
-        if (_activeChore is null)
+        var chore = _activeChoreId is null
+            ? null
+            : _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChoreId);
+        if (chore is null)
         {
             return;
         }
@@ -438,12 +405,11 @@ public partial class DashboardViewModel : ViewModelBase
         _countdownTimer?.Stop();
         IsIdle = false;
         IsBusy = true;
-        BusyChoreName = _activeChore.Name;
-        BusyChoreDescription = _activeChore.Description;
-        BusyChoreValueDisplay = CurrencyConverter.Format(Math.Round(_activeChore.Value * (decimal)_outfitBonus, 2));
+        BusyChoreName = chore.Name;
+        BusyChoreDescription = chore.Description;
+        BusyChoreValueDisplay = CurrencyConverter.Format(Math.Round(chore.Value * (decimal)_outfitBonus, 2));
         _choreStartTime = DateTime.UtcNow;
-        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChore.ChoreId);
-        _choreTargetMinutes = chore is null ? 0 : chore.MinCompletionMinutes * (0.85 + _random.NextDouble() * 0.30);
+        _choreTargetMinutes = chore.MinCompletionMinutes * (0.85 + _random.NextDouble() * 0.30);
         BusyElapsed = "00:00";
 
         _choreTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -459,7 +425,7 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void OnEndChore()
     {
-        if (!IsBusy || _activeChore is null)
+        if (!IsBusy || _activeChoreId is null)
         {
             return;
         }
@@ -475,7 +441,7 @@ public partial class DashboardViewModel : ViewModelBase
         StopSilentCapture();
 
         var elapsed = DateTime.UtcNow - _choreStartTime;
-        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChore.ChoreId);
+        var chore = _saveRepo.GetChores().FirstOrDefault(c => c.Id == _activeChoreId);
         var tooEarly = chore is not null && elapsed.TotalMinutes < _choreTargetMinutes;
         var tooSlow = chore is not null && !tooEarly && elapsed.TotalMinutes > _choreTargetMinutes * 1.35;
 
@@ -486,7 +452,7 @@ public partial class DashboardViewModel : ViewModelBase
                 : elapsed.TotalMinutes - _choreTargetMinutes * 1.35;
             var severity = 5 + (int)Math.Ceiling(minutesOff);
 
-            var reason = (_activeChore.IsOccasional, tooEarly) switch
+            var reason = (chore!.IsOccasional, tooEarly) switch
             {
                 (true, true) => "PunishmentReasonOccasionalTaskTooEarly",
                 (true, false) => "PunishmentReasonOccasionalTaskTooSlow",
@@ -495,7 +461,7 @@ public partial class DashboardViewModel : ViewModelBase
             };
             _saveRepo.AssignPunishment((severity, severity), reason);
             RefreshPunishments();
-            ShowChoreResultMessage((_activeChore.IsOccasional, tooEarly) switch
+            ShowChoreResultMessage((chore.IsOccasional, tooEarly) switch
             {
                 (true, true) => Resources.Get("DashboardOccasionalTaskRejectedMessage"),
                 (true, false) => Resources.Get("DashboardOccasionalTaskTooSlowRejectedMessage"),
@@ -506,19 +472,19 @@ public partial class DashboardViewModel : ViewModelBase
         else
         {
             var state = _saveRepo.GetGameState();
-            if (state is not null)
+            if (state is not null && chore is not null)
             {
-                var credit = _activeChore.IsOccasional
+                var credit = chore.IsOccasional
                     ? Math.Round(2m * (_settings.IdleWageAmount / _settings.IdleWageIntervalMinutes) *
                         (decimal)elapsed.TotalMinutes * (decimal)_outfitBonus, 0)
-                    : Math.Round(_activeChore.Value * (decimal)_outfitBonus, 0);
+                    : Math.Round(chore.Value * (decimal)_outfitBonus, 0);
                 state.CurrentDebt = Math.Max(0, state.CurrentDebt - credit);
                 _saveRepo.SaveGameState(state);
             }
 
             if (chore is not null)
             {
-                if (_activeChore.IsOccasional)
+                if (chore.IsOccasional)
                 {
                     _saveRepo.DeleteChore(chore.Id);
                 }
@@ -531,7 +497,7 @@ public partial class DashboardViewModel : ViewModelBase
             ChoreResultMessage = "";
         }
 
-        _activeChore = null;
+        _activeChoreId = null;
         IsBusy = false;
         IsIdle = true;
         RefreshDebt();
@@ -559,11 +525,7 @@ public partial class DashboardViewModel : ViewModelBase
     // --- New dashboard command handlers ---
     private void OnStartTask(TaskItemViewModel task)
     {
-        var choreVm = Chores.FirstOrDefault(c => c.ChoreId == task.ChoreId);
-        if (choreVm is not null)
-        {
-            OnStartChore(choreVm);
-        }
+        OnStartChore(task.ChoreId);
     }
 
     private void OnSubmitAddTask()
