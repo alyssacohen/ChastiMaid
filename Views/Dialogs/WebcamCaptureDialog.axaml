@@ -19,7 +19,7 @@
                                Text="{Binding PreviewMessage}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center" />
-                    <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
+                    <v:WebcamPreviewControl Service="{Binding Webcam}" Width="320" Height="480" Stretch="UniformToFill" />
                     <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
                               ItemsSource="{Binding Webcam.AvailableCameras}"
                               SelectedItem="{Binding Webcam.SelectedCamera}"
@@ -46,7 +46,7 @@
                     <TextBlock Classes="Body"
                                Text="{conv:Tr WebcamRecordingLabel}"
                                HorizontalAlignment="Center" />
-                    <v:WebcamPreviewControl Service="{Binding Webcam}" Width="480" Height="360" />
+                    <v:WebcamPreviewControl Service="{Binding Webcam}" Width="320" Height="480" Stretch="UniformToFill" />
                     <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
                               IsEnabled="False"
                               ItemsSource="{Binding Webcam.AvailableCameras}"
