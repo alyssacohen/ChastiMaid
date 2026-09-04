@@ -38,10 +38,20 @@ public class PunishmentItemViewModel : ViewModelBase
         ActionLabel = Kind switch
         {
             PunishmentKind.ForcedOutfit when isActiveForcedOutfit =>
-                string.Format(Resources.Get("PunishmentActionForcedOutfitFormat"), punishment.ForcedOutfitRemainingSessions ?? 0),
+                string.Format(Resources.Get("PunishmentActionForcedOutfitFormat"), FormatRemainingTime(punishment)),
             PunishmentKind.ForcedOutfit => Resources.Get("PunishmentActionForcedOutfitQueued"),
             _ => Resources.Get("Start"),
         };
+    }
+
+    /// <summary>Formats the remaining Forced Outfit time as whole hours, or minutes when under an hour.</summary>
+    public static string FormatRemainingTime(ActivePunishment punishment)
+    {
+        var remainingSeconds = Math.Max(0,
+            (punishment.ForcedOutfitRequiredSeconds ?? 0) - punishment.ForcedOutfitElapsedSeconds);
+        return remainingSeconds < 3600
+            ? string.Format(Resources.Get("PunishmentDurationMinutesFormat"), Math.Max(1, (int)Math.Ceiling(remainingSeconds / 60.0)))
+            : string.Format(Resources.Get("PunishmentDurationHoursFormat"), Math.Ceiling(remainingSeconds / 3600.0));
     }
 
     public int PunishmentId { get; }

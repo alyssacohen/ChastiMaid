@@ -7,7 +7,7 @@ public class ForcedOutfitPreset
     [BsonId] public int Id { get; set; }
     public string Name { get; set; } = "";
     public bool IsEnabled { get; set; } = true;
-    public double SessionsPerSeverityPoint { get; set; } = 0.3;
+    public double HoursPerSeverityPoint { get; set; } = 1.0;
     public List<int> ClothingItemIds { get; set; } = [];
     public bool IsFullOutfit { get; set; }
 }

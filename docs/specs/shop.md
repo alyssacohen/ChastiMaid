@@ -69,7 +69,7 @@ Fines are not eligible targets: they are applied immediately and therefore are n
 
 - Halves the target punishment's severity, rounding up.
 - Apply the reduction to the quantity that represents the punishment's severity. Examples:
-  - `3` forced-outfit sessions become `2` sessions.
+  - `3` hours of remaining forced-outfit time become `2` hours.
   - `35` writing lines become `18` lines.
   - `5` minutes of corner time become `3` minutes.
 - Multiple `SOFTEN_PUNISHMENT` cards stack multiplicatively. For example, two cards reduce the severity to one quarter of its original value, with rounding up applied at each halving.
@@ -77,14 +77,14 @@ Fines are not eligible targets: they are applied immediately and therefore are n
 ### `CANCEL_PUNISHMENT`
 
 - Removes the targeted pending punishment.
-- For a forced-outfit punishment, it removes the forced-outfit sessions that have not yet been completed, subject to the forced-outfit timing rules below.
+- For a forced-outfit punishment, it removes the forced-outfit time that has not yet been credited, subject to the forced-outfit timing rules below.
 
 ## Forced-Outfit Timing Rules
 
 A forced-outfit punishment starts automatically in the session after it is assigned. `SOFTEN_PUNISHMENT` and `CANCEL_PUNISHMENT` may target it either in the session in which it is assigned, before it begins, or during a later forced-outfit session.
 
-- For `SOFTEN_PUNISHMENT`, always calculate the reduction from the punishment's original total number of sessions, not from the number of sessions still remaining.
-- If the recalculated total is less than or equal to the number of sessions already completed, treat the punishment as completed.
+- For `SOFTEN_PUNISHMENT`, always calculate the reduction from the punishment's current required duration (multiplying it directly), not by discarding already-credited time.
+- If the recalculated required duration is less than or equal to the time already credited, treat the punishment as completed.
 - Neither completing nor cancelling a forced-outfit punishment changes the outfit during the current session. The forced outfit remains in effect until that session ends, including if the player closes and immediately restarts the game.
 - The change takes effect at the next outfit change, which occurs when the next game session begins.
 

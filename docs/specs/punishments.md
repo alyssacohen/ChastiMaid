@@ -31,7 +31,7 @@ from the beginning at another time.
 There will be some clothing items that are pretty unconfortable to wear.
 The user configures one or more named outfit presets in Settings, each composed the same way an outfit is proposed
 at the start of a session (picking garments per layer, respecting requires/incompatible rules). Each preset has its
-own severity value (sessions per severity point) and its own "full outfit" flag: when checked, the outfit generator
+own severity value (hours of real, app-open playtime per severity point) and its own "full outfit" flag: when checked, the outfit generator
 is skipped entirely and only the preset's exact garments are worn; when unchecked, the preset's garments are used as
 seeds and the generator fills in the rest as usual.
 Both a global toggle (whether Forced Outfit can be assigned at all) and a per-preset toggle (whether that specific
@@ -44,7 +44,12 @@ If a new Forced Outfit punishment is assigned while another one is still pending
 the existing one: both are tracked independently, but only one is ever in effect at a time. The oldest pending one
 (by assignment time) is the one currently in effect; any later ones queue behind it and only start counting down
 once the ones ahead of them are resolved. In the pending punishments list, a queued Forced Outfit is shown as
-awaiting its turn rather than with a session countdown, since its countdown has not started yet.
+awaiting its turn rather than with a time countdown, since its countdown has not started yet.
+
+The punishment is served in real time, not by session count: any time the application is open — idle or busy, it
+doesn't matter — counts toward the requirement, and closing and reopening the app does not shortcut it. To stop
+brief, repeated app opens from adding up toward the requirement, each continuous stretch of play has a 30-minute
+grace period before its time starts being credited.
 
 Maybe other types will be added.
 

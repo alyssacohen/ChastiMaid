@@ -331,26 +331,81 @@ public class SaveRepositoryTests : IDisposable
     }
 
     [Fact]
-    public void SoftenPunishment_ForcedOutfit_RecomputesFromTotalAndResolvesIfCompleted()
+    public void SoftenPunishment_ForcedOutfit_RescalesRequiredSecondsAndResolvesIfAlreadyElapsed()
     {
-        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings { ForcedOutfitMaxSessions = 10 });
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings { ForcedOutfitMaxHours = 30 });
         _repo.SaveActivePunishment(new ActivePunishment
         {
             Id = 1, Kind = PunishmentKind.ForcedOutfit, Severity = 10,
-            ForcedOutfitTotalSessions = 4, ForcedOutfitRemainingSessions = 3, // 1 already completed
+            ForcedOutfitRequiredSeconds = 4 * 3600, ForcedOutfitElapsedSeconds = 1 * 3600, // 1h already credited
         });
 
-        var softened = _repo.SoftenPunishment(1); // ceil(4 * 0.5) = 2 total, 1 completed -> 1 remaining
+        var softened = _repo.SoftenPunishment(1); // ceil(4h * 0.5) = 2h required, 1h already elapsed -> not resolved
 
         Assert.True(softened);
         var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
-        Assert.Equal(2, punishment.ForcedOutfitTotalSessions);
-        Assert.Equal(1, punishment.ForcedOutfitRemainingSessions);
+        Assert.Equal(2 * 3600, punishment.ForcedOutfitRequiredSeconds);
+        Assert.Equal(1 * 3600, punishment.ForcedOutfitElapsedSeconds);
         Assert.False(punishment.IsResolved);
 
-        _repo.SoftenPunishment(1); // ceil(2 * 0.5) = 1 total, 1 completed -> resolved
+        _repo.SoftenPunishment(1); // 2h * 0.5 = 1h required, 1h already elapsed -> resolved
 
         // GetActivePunishments() filters out resolved rows, so read the raw collection instead.
+        var resolved = _db.GetCollection<ActivePunishment>("active_punishments").FindById(1);
+        Assert.True(resolved.IsResolved);
+    }
+
+    [Fact]
+    public void TickForcedOutfitProgress_FirstTickOnlyEstablishesBaseline()
+    {
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.ForcedOutfit, Severity = 10, ForcedOutfitRequiredSeconds = 3600,
+        });
+
+        _repo.TickForcedOutfitProgress();
+
+        var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.Equal(0, punishment.ForcedOutfitElapsedSeconds);
+        Assert.NotNull(punishment.ForcedOutfitLastTickUtc);
+    }
+
+    [Fact]
+    public void TickForcedOutfitProgress_CreditsOnlyTimeBeyondTheGracePeriod()
+    {
+        // Large AutoSaveIntervalMinutes so the tick's own sleep/hibernate clamp doesn't interfere with this test.
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings { AutoSaveIntervalMinutes = 120 });
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.ForcedOutfit, Severity = 10, ForcedOutfitRequiredSeconds = 3600,
+            ForcedOutfitLastTickUtc = DateTime.UtcNow.AddMinutes(-25), ForcedOutfitRunElapsedSeconds = 0,
+        });
+
+        _repo.TickForcedOutfitProgress(); // stretch reaches 25 min, still under the 30 min grace
+
+        var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.Equal(0, punishment.ForcedOutfitElapsedSeconds);
+
+        punishment.ForcedOutfitLastTickUtc = DateTime.UtcNow.AddMinutes(-10);
+        _repo.SaveActivePunishment(punishment);
+        _repo.TickForcedOutfitProgress(); // stretch reaches 35 min: only the 5 min past the grace are credited
+
+        var afterCrossing = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.InRange(afterCrossing.ForcedOutfitElapsedSeconds, 290, 310);
+    }
+
+    [Fact]
+    public void TickForcedOutfitProgress_ResolvesOnceElapsedReachesRequired()
+    {
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.ForcedOutfit, Severity = 10, ForcedOutfitRequiredSeconds = 1800,
+            ForcedOutfitLastTickUtc = DateTime.UtcNow.AddHours(-1), ForcedOutfitRunElapsedSeconds = 1800,
+            ForcedOutfitElapsedSeconds = 1800,
+        });
+
+        _repo.TickForcedOutfitProgress();
+
         var resolved = _db.GetCollection<ActivePunishment>("active_punishments").FindById(1);
         Assert.True(resolved.IsResolved);
     }

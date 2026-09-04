@@ -308,13 +308,10 @@ public partial class StartSessionViewModel : ViewModelBase
 
         if (_forcedOutfitPunishment is not null)
         {
-            _forcedOutfitPunishment.ForcedOutfitRemainingSessions =
-                (_forcedOutfitPunishment.ForcedOutfitRemainingSessions ?? 0) - 1;
-            if (_forcedOutfitPunishment.ForcedOutfitRemainingSessions <= 0)
-            {
-                _forcedOutfitPunishment.IsResolved = true;
-            }
-
+            // New continuous play stretch: reset the real-time progress baseline (see
+            // SaveRepository.TickForcedOutfitProgress) so time spent with the app closed isn't credited.
+            _forcedOutfitPunishment.ForcedOutfitLastTickUtc = DateTime.UtcNow;
+            _forcedOutfitPunishment.ForcedOutfitRunElapsedSeconds = 0;
             _saveRepo.SaveActivePunishment(_forcedOutfitPunishment);
         }
 

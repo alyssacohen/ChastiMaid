@@ -31,7 +31,7 @@ public partial class ForcedOutfitPresetEditorViewModel : ViewModelBase
     [Reactive] private bool _isViolation;
     [Reactive] private string _name;
     [Reactive] private int _selectedCount;
-    [Reactive] private double _sessionsPerSeverityPoint;
+    [Reactive] private double _hoursPerSeverityPoint;
     [Reactive] private string _statusMessage = "";
 
     public ForcedOutfitPresetEditorViewModel(MainWindowViewModel mainVm, ProfileRepository repo,
@@ -44,7 +44,7 @@ public partial class ForcedOutfitPresetEditorViewModel : ViewModelBase
         _name = preset.Name;
         _isEnabled = preset.IsEnabled;
         _isFullOutfit = preset.IsFullOutfit;
-        _sessionsPerSeverityPoint = preset.SessionsPerSeverityPoint;
+        _hoursPerSeverityPoint = preset.HoursPerSeverityPoint;
 
         _allItems = repo.GetWardrobe();
         _allRules = repo.GetOutfitRules();
@@ -94,7 +94,7 @@ public partial class ForcedOutfitPresetEditorViewModel : ViewModelBase
             Id = _presetId,
             Name = Name,
             IsEnabled = IsEnabled,
-            SessionsPerSeverityPoint = SessionsPerSeverityPoint,
+            HoursPerSeverityPoint = HoursPerSeverityPoint,
             IsFullOutfit = IsFullOutfit,
             ClothingItemIds = GetSelectedItems().Select(i => i.Id).Distinct().ToList(),
         };

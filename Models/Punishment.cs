@@ -31,14 +31,20 @@ public class ActivePunishment
     public bool WritingLinesNoIdleActive { get; set; }
     public bool WritingLinesInterruptionsActive { get; set; }
 
-    public int? ForcedOutfitRemainingSessions { get; set; }
+    /// <summary>Current target duration, in seconds of real accredited time. Mutated in place by Soften/Aggravate.</summary>
+    public double? ForcedOutfitRequiredSeconds { get; set; }
+
+    /// <summary>Accredited progress, in seconds. Never decreases (Soften/Aggravate only rescale the target).</summary>
+    public double ForcedOutfitElapsedSeconds { get; set; }
 
     /// <summary>
-    ///     Original total session count at assignment time, kept so Soften/Aggravate can always recompute from the
-    ///     full severity rather than from whatever is left. Null for saves predating this field — treat as equal to
-    ///     <see cref="ForcedOutfitRemainingSessions" /> in that case.
+    ///     Seconds elapsed in the current continuous play stretch, reset to 0 every time the save is reopened. The
+    ///     first <c>ForcedOutfitGraceSeconds</c> of each stretch are not credited to <see cref="ForcedOutfitElapsedSeconds" />.
     /// </summary>
-    public int? ForcedOutfitTotalSessions { get; set; }
+    public double ForcedOutfitRunElapsedSeconds { get; set; }
+
+    /// <summary>Baseline timestamp for the next progress tick. Null means the current stretch has no baseline yet.</summary>
+    public DateTime? ForcedOutfitLastTickUtc { get; set; }
 
     public List<int>? ForcedClothingItemIds { get; set; }
     public bool ForceFullOutfit { get; set; }

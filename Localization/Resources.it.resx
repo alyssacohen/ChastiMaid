@@ -217,13 +217,19 @@
     <value>Una questione già decisa</value>
   </data>
   <data name="ForcedOutfitInfoMessageFormat" xml:space="preserve">
-      <value>L'outfit «{0}» sarà obbligatorio per le prossime {1} sessioni.</value>
+      <value>L'outfit «{0}» sarà obbligatorio per le prossime {1}.</value>
   </data>
   <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
     <value>L'outfit prescelto</value>
   </data>
   <data name="PunishmentActionForcedOutfitFormat" xml:space="preserve">
-    <value>Ancora {0} sessioni</value>
+    <value>Ancora {0}</value>
+  </data>
+  <data name="PunishmentDurationHoursFormat" xml:space="preserve">
+    <value>{0:0} ore</value>
+  </data>
+  <data name="PunishmentDurationMinutesFormat" xml:space="preserve">
+    <value>{0} minuti</value>
   </data>
   <data name="PunishmentActionForcedOutfitQueued" xml:space="preserve">
     <value>In attesa del suo turno</value>
@@ -1321,13 +1327,13 @@
     <value>I capi prescelti diventano obbligatori, senza richiesta, per un numero di sessioni successive.</value>
   </data>
   <data name="SettingsForcedOutfitSeverityValue" xml:space="preserve">
-    <value>Sessioni per gravità</value>
+    <value>Ore per gravità</value>
   </data>
   <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
     <value>Fissa l'intera divisa, non solo i capi selezionati</value>
   </data>
-  <data name="SettingsForcedOutfitMaxSessions" xml:space="preserve">
-    <value>Sessioni massime</value>
+  <data name="SettingsForcedOutfitMaxHours" xml:space="preserve">
+    <value>Ore massime</value>
   </data>
   <data name="SettingsForcedOutfitItems" xml:space="preserve">
     <value>Divise configurate</value>
@@ -1336,7 +1342,7 @@
     <value>Aggiungi divisa</value>
   </data>
   <data name="SettingsForcedOutfitPresetSummaryFormat" xml:space="preserve">
-    <value>{0:0.00} sessioni/punto · {1}</value>
+    <value>{0:0.00}h/punto · {1}</value>
   </data>
   <data name="SettingsForcedOutfitFullBadge" xml:space="preserve">
     <value>Outfit completo</value>

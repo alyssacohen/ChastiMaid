@@ -73,7 +73,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _writingLinesInterruptionMinIntervalSeconds;
     [Reactive] private int _writingLinesInterruptionMaxIntervalSeconds;
     [Reactive] private bool _forcedOutfitEnabled;
-    [Reactive] private int _forcedOutfitMaxSessions;
+    [Reactive] private double _forcedOutfitMaxHours;
     [Reactive] private string _speechRecognitionStatusDisplay = "";
     [Reactive] private string _webcamStatusDisplay = "";
 
@@ -184,7 +184,7 @@ public partial class SettingsViewModel : ViewModelBase
         _writingLinesInterruptionMinIntervalSeconds = s.WritingLinesInterruptionMinIntervalSeconds;
         _writingLinesInterruptionMaxIntervalSeconds = s.WritingLinesInterruptionMaxIntervalSeconds;
         _forcedOutfitEnabled = s.ForcedOutfitEnabled;
-        _forcedOutfitMaxSessions = s.ForcedOutfitMaxSessions;
+        _forcedOutfitMaxHours = s.ForcedOutfitMaxHours;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
 
         // Show a default immediately so Settings opens instantly; the real camera list and hardware
@@ -340,7 +340,7 @@ public partial class SettingsViewModel : ViewModelBase
                 x => x.WritingLinesInterruptionMaxIntervalSeconds, (_, _, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
-        this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitMaxSessions, (_, _) => Unit.Default)
+        this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitMaxHours, (_, _) => Unit.Default)
             .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
@@ -1036,7 +1036,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.WritingLinesInterruptionMinIntervalSeconds = WritingLinesInterruptionMinIntervalSeconds;
         s.WritingLinesInterruptionMaxIntervalSeconds = WritingLinesInterruptionMaxIntervalSeconds;
         s.ForcedOutfitEnabled = ForcedOutfitEnabled;
-        s.ForcedOutfitMaxSessions = ForcedOutfitMaxSessions;
+        s.ForcedOutfitMaxHours = ForcedOutfitMaxHours;
         _repo.SaveGameSettings(s);
 
         foreach (var c in Chores)
@@ -1243,11 +1243,11 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
         _repo = repo;
         Id = preset.Id;
         Name = preset.Name;
-        SessionsPerSeverityPoint = preset.SessionsPerSeverityPoint;
+        HoursPerSeverityPoint = preset.HoursPerSeverityPoint;
         IsFullOutfit = preset.IsFullOutfit;
         _isEnabled = preset.IsEnabled;
         SummaryLabel = string.Format(Resources.Get("SettingsForcedOutfitPresetSummaryFormat"),
-            preset.SessionsPerSeverityPoint,
+            preset.HoursPerSeverityPoint,
             Resources.Get(preset.IsFullOutfit ? "SettingsForcedOutfitFullBadge" : "SettingsForcedOutfitPartialBadge"));
 
         this.WhenAnyValue(x => x.IsEnabled).Skip(1).Subscribe(enabled =>
@@ -1262,7 +1262,7 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
 
     public int Id { get; }
     public string Name { get; }
-    public double SessionsPerSeverityPoint { get; }
+    public double HoursPerSeverityPoint { get; }
     public bool IsFullOutfit { get; }
     public string SummaryLabel { get; }
 

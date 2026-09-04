@@ -50,6 +50,7 @@ public class AutoSaveService : IDisposable
 
             state.LastSessionAt = DateTime.UtcNow;
             _saveRepo.SaveGameState(state);
+            _saveRepo.TickForcedOutfitProgress();
         }
         catch (ObjectDisposedException)
         {

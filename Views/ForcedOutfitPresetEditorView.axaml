@@ -30,7 +30,7 @@
                             <TextBlock Classes="BodySmall" Text="{conv:Tr SettingsForcedOutfitSeverityValue}"
                                        VerticalAlignment="Center" />
                             <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
-                                           Value="{Binding SessionsPerSeverityPoint, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.1}"
+                                           Value="{Binding HoursPerSeverityPoint, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.1}"
                                            Minimum="0.1" Increment="0.1" FormatString="0.00" />
                         </Grid>
                         <CheckBox IsChecked="{Binding IsFullOutfit}"

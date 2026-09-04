@@ -217,13 +217,19 @@
     <value>A Matter Already Settled</value>
   </data>
   <data name="ForcedOutfitInfoMessageFormat" xml:space="preserve">
-      <value>The uniform «{0}» shall present itself, unbidden, for the next {1} session(s).</value>
+      <value>The uniform «{0}» shall present itself, unbidden, for the next {1}.</value>
   </data>
   <data name="ForcedOutfitPresetNameFallback" xml:space="preserve">
     <value>The chosen uniform</value>
   </data>
   <data name="PunishmentActionForcedOutfitFormat" xml:space="preserve">
-    <value>{0} more session(s)</value>
+    <value>{0} remaining</value>
+  </data>
+  <data name="PunishmentDurationHoursFormat" xml:space="preserve">
+    <value>{0:0} hour(s)</value>
+  </data>
+  <data name="PunishmentDurationMinutesFormat" xml:space="preserve">
+    <value>{0} minute(s)</value>
   </data>
   <data name="PunishmentActionForcedOutfitQueued" xml:space="preserve">
     <value>Awaiting its turn</value>
@@ -1321,13 +1327,13 @@
     <value>The chosen garments become mandatory, unbidden, for a number of subsequent sessions.</value>
   </data>
   <data name="SettingsForcedOutfitSeverityValue" xml:space="preserve">
-    <value>Sessions per severity</value>
+    <value>Hours per severity</value>
   </data>
   <data name="SettingsForcedOutfitForceFull" xml:space="preserve">
     <value>Fix the entire outfit, not just the selected items</value>
   </data>
-  <data name="SettingsForcedOutfitMaxSessions" xml:space="preserve">
-    <value>Max sessions</value>
+  <data name="SettingsForcedOutfitMaxHours" xml:space="preserve">
+    <value>Max hours</value>
   </data>
   <data name="SettingsForcedOutfitItems" xml:space="preserve">
     <value>Configured outfits</value>
@@ -1336,7 +1342,7 @@
     <value>Add Outfit</value>
   </data>
   <data name="SettingsForcedOutfitPresetSummaryFormat" xml:space="preserve">
-    <value>{0:0.00} sessions/point · {1}</value>
+    <value>{0:0.00}h/point · {1}</value>
   </data>
   <data name="SettingsForcedOutfitFullBadge" xml:space="preserve">
     <value>Full outfit</value>

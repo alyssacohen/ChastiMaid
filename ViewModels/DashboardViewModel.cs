@@ -668,7 +668,7 @@ public partial class DashboardViewModel : ViewModelBase
                 Resources.Get("ForcedOutfitInfoTitle"),
                 string.Format(Resources.Get("ForcedOutfitInfoMessageFormat"),
                     punishment.ForcedOutfitPresetName ?? Resources.Get("ForcedOutfitPresetNameFallback"),
-                    punishment.ForcedOutfitRemainingSessions ?? 0),
+                    PunishmentItemViewModel.FormatRemainingTime(punishment)),
                 Resources.Get("Ok"),
                 null);
             _ = ShowConfirmAsync(dialog);

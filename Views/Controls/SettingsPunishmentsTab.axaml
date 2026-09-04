@@ -329,14 +329,15 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsForcedOutfitMaxSessions}"
+                                    Text="{converters:Tr SettingsForcedOutfitMaxHours}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
-                                    FormatString="0"
+                                    FormatString="0.0"
                                     Grid.Column="1"
-                                    Minimum="1"
-                                    Value="{Binding ForcedOutfitMaxSessions, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                                    Minimum="0.5"
+                                    Increment="0.5"
+                                    Value="{Binding ForcedOutfitMaxHours, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.5}" />
                             </Grid>
                             <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsForcedOutfitItems}}" />
                             <ItemsControl ItemsSource="{Binding ForcedOutfitPresets}">

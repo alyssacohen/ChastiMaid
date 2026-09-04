@@ -191,9 +191,52 @@ public class SaveRepository(LiteDatabase db)
     public ActivePunishment? GetActiveForcedOutfitPunishment()
     {
         return GetActivePunishments()
-            .Where(p => (p.ForcedOutfitRemainingSessions ?? 0) > 0)
+            .Where(p => p.Kind == PunishmentKind.ForcedOutfit)
             .OrderBy(p => p.AssignedAt)
             .FirstOrDefault();
+    }
+
+    private const double ForcedOutfitGraceSeconds = 1800; // first 30 minutes of each continuous stretch are free
+    private const double ForcedOutfitMinRequiredHours = 0.5;
+
+    /// <summary>
+    ///     Advances the in-effect Forced Outfit punishment's real-time progress by the time elapsed since the last
+    ///     tick. Call periodically (and at session lifecycle points) while the app is open — see AutoSaveService.
+    /// </summary>
+    public void TickForcedOutfitProgress()
+    {
+        var punishment = GetActiveForcedOutfitPunishment();
+        if (punishment is null)
+        {
+            return;
+        }
+
+        var now = DateTime.UtcNow;
+        if (punishment.ForcedOutfitLastTickUtc is not { } lastTick)
+        {
+            punishment.ForcedOutfitLastTickUtc = now;
+            SaveActivePunishment(punishment);
+            return;
+        }
+
+        // ponytail: clamp against sleep/hibernate gaps being counted as played time; revisit if this causes false negatives
+        var maxDelta = TimeSpan.FromMinutes(2 * GetGameSettings().AutoSaveIntervalMinutes).TotalSeconds;
+        var delta = Math.Clamp((now - lastTick).TotalSeconds, 0, maxDelta);
+
+        var runStart = punishment.ForcedOutfitRunElapsedSeconds;
+        var runEnd = runStart + delta;
+        var creditable = Math.Max(0, runEnd - Math.Max(runStart, ForcedOutfitGraceSeconds));
+
+        punishment.ForcedOutfitElapsedSeconds += creditable;
+        punishment.ForcedOutfitRunElapsedSeconds = runEnd;
+        punishment.ForcedOutfitLastTickUtc = now;
+
+        if (punishment.ForcedOutfitElapsedSeconds >= (punishment.ForcedOutfitRequiredSeconds ?? 0))
+        {
+            punishment.IsResolved = true;
+        }
+
+        SaveActivePunishment(punishment);
     }
 
     public void SaveActivePunishment(ActivePunishment punishment)
@@ -462,18 +505,17 @@ public class SaveRepository(LiteDatabase db)
 
             case PunishmentKind.ForcedOutfit:
                 var preset = enabledForcedOutfitPresets[Random.Shared.Next(enabledForcedOutfitPresets.Count)];
-                var sessions = Math.Clamp(
-                    (int)Math.Round(severity * preset.SessionsPerSeverityPoint),
-                    1,
-                    settings.ForcedOutfitMaxSessions);
+                var requiredHours = Math.Clamp(
+                    severity * preset.HoursPerSeverityPoint,
+                    ForcedOutfitMinRequiredHours,
+                    settings.ForcedOutfitMaxHours);
                 SaveActivePunishment(new ActivePunishment
                 {
                     Kind = PunishmentKind.ForcedOutfit,
                     Severity = severity,
                     AssignedAt = DateTime.UtcNow,
                     Reason = reason,
-                    ForcedOutfitRemainingSessions = sessions,
-                    ForcedOutfitTotalSessions = sessions,
+                    ForcedOutfitRequiredSeconds = requiredHours * 3600,
                     ForcedClothingItemIds = preset.ClothingItemIds,
                     ForceFullOutfit = preset.IsFullOutfit,
                     ForcedOutfitPresetName = preset.Name,
@@ -545,19 +587,15 @@ public class SaveRepository(LiteDatabase db)
                     settings.WritingLinesMaxLines);
                 break;
 
-            case PunishmentKind.ForcedOutfit:
-                var total = punishment.ForcedOutfitTotalSessions ?? punishment.ForcedOutfitRemainingSessions ?? 0;
-                var completed = total - (punishment.ForcedOutfitRemainingSessions ?? 0);
-                var newTotal = Math.Clamp((int)Math.Ceiling(total * factor), 1, settings.ForcedOutfitMaxSessions);
-                punishment.ForcedOutfitTotalSessions = newTotal;
-                var remaining = newTotal - completed;
-                if (remaining <= 0)
+            case PunishmentKind.ForcedOutfit when punishment.ForcedOutfitRequiredSeconds is { } requiredSeconds:
+                var newRequiredSeconds = Math.Clamp(
+                    requiredSeconds * factor,
+                    ForcedOutfitMinRequiredHours * 3600,
+                    settings.ForcedOutfitMaxHours * 3600);
+                punishment.ForcedOutfitRequiredSeconds = newRequiredSeconds;
+                if (punishment.ForcedOutfitElapsedSeconds >= newRequiredSeconds)
                 {
                     punishment.IsResolved = true;
-                }
-                else
-                {
-                    punishment.ForcedOutfitRemainingSessions = remaining;
                 }
 
                 break;

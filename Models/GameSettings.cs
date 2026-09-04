@@ -89,7 +89,7 @@ public class GameSettings
 
     // Forced Outfit punishment — the concrete outfit presets live in ForcedOutfitPreset (per-profile collection)
     public bool ForcedOutfitEnabled { get; set; } = true;
-    public int ForcedOutfitMaxSessions { get; set; } = 10; // ceiling applied when assigning or aggravating a Forced Outfit punishment
+    public double ForcedOutfitMaxHours { get; set; } = 30; // ceiling applied when assigning or aggravating a Forced Outfit punishment
 
     // Camera
     public int SelectedCameraIndex { get; set; }
