@@ -37,6 +37,7 @@ public partial class DashboardViewModel
 
     // --- Idle popup: Pose for Camera ---
     [Reactive] private bool _isPoseCountdownActive;
+    [Reactive] private bool _isPoseCapturing;
     [Reactive] private bool _isPoseForCameraPopupActive;
     [Reactive] private int _poseCountdown;
     [Reactive] private Bitmap? _capturedPosePhoto;
@@ -91,8 +92,9 @@ public partial class DashboardViewModel
     public WebcamPreviewService Webcam => _mainVm.Webcam;
 
     public bool IsShowingQuestionPanel =>
-        !IsShowingPopupOutcome && !IsPoseCountdownActive && !IsCurtsyCountdownActive && !IsCurtsyRecordingActive &&
-        !IsQuoteListeningActive && !IsQuoteTypingActive && !IsKneelFramingActive && !IsKneelActive;
+        !IsShowingPopupOutcome && !IsPoseCountdownActive && !IsPoseCapturing && !IsCurtsyCountdownActive &&
+        !IsCurtsyRecordingActive && !IsQuoteListeningActive && !IsQuoteTypingActive && !IsKneelFramingActive &&
+        !IsKneelActive;
 
     public bool IsWebcamPreviewNeededInQuestionPanel => IsPoseForCameraPopupActive || IsCurtsyPopupActive;
 
@@ -677,11 +679,13 @@ public partial class DashboardViewModel
         var item = _currentPoseItem;
         _currentPoseItem = null;
         IsPoseCountdownActive = false;
+        IsPoseCapturing = true;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
 
         if (item is null)
         {
             _mainVm.Webcam.Stop();
+            IsPoseCapturing = false;
             PopupOutcomeMessage = Resources.Get("PoseForCameraFailedMessage");
             ShowPopupOutcome(true);
             return;
@@ -735,6 +739,7 @@ public partial class DashboardViewModel
             }
         }
 
+        IsPoseCapturing = false;
         PopupOutcomeMessage = Resources.Get(success ? "PoseForCameraCapturedMessage" : "PoseForCameraFailedMessage");
         ShowPopupOutcome(true);
     }

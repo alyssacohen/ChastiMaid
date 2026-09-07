@@ -822,6 +822,9 @@
   <data name="PoseForCameraCountdownLabel" xml:space="preserve">
     <value>Hold your pose.</value>
   </data>
+  <data name="PoseForCameraCapturingLabel" xml:space="preserve">
+    <value>Hold still.</value>
+  </data>
   <data name="PoseForCameraCapturedMessage" xml:space="preserve">
     <value>Very well. The photograph has been taken.</value>
   </data>

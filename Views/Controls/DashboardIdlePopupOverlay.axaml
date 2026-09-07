@@ -78,6 +78,19 @@
                         HorizontalAlignment="Center"
                         Text="{Binding PoseCountdown}" />
                 </StackPanel>
+                <StackPanel IsVisible="{Binding IsPoseCapturing}" Spacing="16">
+                    <controls:WebcamPreviewControl
+                        Height="{Binding PopupPreviewHeight}"
+                        HorizontalAlignment="Center"
+                        Service="{Binding Webcam}"
+                        Stretch="UniformToFill"
+                        Width="{Binding PopupPreviewWidth}" />
+                    <TextBlock
+                        Classes="EmployerVoice"
+                        HorizontalAlignment="Center"
+                        Text="{conv:Tr PoseForCameraCapturingLabel}"
+                        TextAlignment="Center" />
+                </StackPanel>
                 <StackPanel IsVisible="{Binding IsCurtsyCountdownActive}" Spacing="16">
                     <controls:WebcamPreviewControl
                         Height="{Binding PopupPreviewHeight}"
