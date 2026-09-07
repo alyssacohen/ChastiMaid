@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using ChastiMaid.Services;
 using ChastiMaid.ViewModels;
 
 namespace ChastiMaid.Views;
@@ -38,14 +39,13 @@ public partial class DashboardView : UserControl
 
             const double verticalMargin = 64; // breathing room from the window's top/bottom edges
             const double chromeReserve = 300; // countdown/instructions/button/camera-selector, padding, spacing
-            const double previewAspect = 320.0 / 480.0; // width/height, matches the requested crop ratio
 
             var dialogMaxHeight = Math.Max(360, bounds.Height - verticalMargin);
             var previewHeight = Math.Clamp(dialogMaxHeight - chromeReserve, 240, 640);
 
             vm.PopupDialogMaxHeight = dialogMaxHeight;
             vm.PopupPreviewHeight = previewHeight;
-            vm.PopupPreviewWidth = previewHeight * previewAspect;
+            vm.PopupPreviewWidth = previewHeight * WebcamPreviewService.CaptureAspectRatio;
         });
 
         // Escape must dismiss the popup outcome regardless of what currently has keyboard focus,

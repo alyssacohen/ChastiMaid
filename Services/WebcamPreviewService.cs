@@ -22,6 +22,13 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     private const int PixelateRegionHeight = 80;
     private const int PixelateBlockSize = 20;
 
+    /// <summary>
+    /// Target width/height ratio (2:3 portrait) that captured photos/videos are center-cropped to,
+    /// matching the UniformToFill + ClipToBounds visual crop every WebcamPreviewControl consumer uses
+    /// (see WebcamCaptureDialog.axaml, CornertimePunishmentView.axaml, DashboardIdlePopupOverlay.axaml).
+    /// </summary>
+    public const double CaptureAspectRatio = 320.0 / 480.0;
+
     private VideoCapture? _capture;
     private int _currentCameraIndex = -1;
 
@@ -297,6 +304,23 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         Cv2.Rectangle(frame, new OpenCvSharp.Rect(x, y, w, h), Scalar.White, thickness: 1);
     }
 
+    private static Size ComputeCroppedSize(Size source, double targetAspect)
+    {
+        var currentAspect = (double)source.Width / source.Height;
+        return currentAspect > targetAspect
+            ? new Size(Math.Max(1, (int)Math.Round(source.Height * targetAspect)), source.Height)
+            : new Size(source.Width, Math.Max(1, (int)Math.Round(source.Width / targetAspect)));
+    }
+
+    /// <summary>Center-crops a frame to the given width/height ratio (returns an owned clone).</summary>
+    private static Mat CropToAspectRatio(Mat frame, double targetAspect)
+    {
+        var size = ComputeCroppedSize(new Size(frame.Width, frame.Height), targetAspect);
+        var x = (frame.Width - size.Width) / 2;
+        var y = (frame.Height - size.Height) / 2;
+        return new Mat(frame, new OpenCvSharp.Rect(x, y, size.Width, size.Height)).Clone();
+    }
+
     /// <summary>Stops the preview loop and waits for it to finish. The VideoCapture stays open.</summary>
     private void StopPreviewLoop()
     {
@@ -347,10 +371,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             await Task.Run(() =>
             {
                 var fps = _capture.Fps > 0 ? _capture.Fps : 30.0;
-                var width = _capture.FrameWidth;
-                var height = _capture.FrameHeight;
+                var croppedSize = ComputeCroppedSize(new Size(_capture.FrameWidth, _capture.FrameHeight),
+                    CaptureAspectRatio);
 
-                using var writer = new VideoWriter(outputPath, FourCC.MJPG, fps, new Size(width, height));
+                using var writer = new VideoWriter(outputPath, FourCC.MJPG, fps, croppedSize);
                 using var frame = new Mat();
 
                 var totalFrames = (int)(fps * durationSeconds);
@@ -365,9 +389,12 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                         continue;
                     }
 
-                    writer.Write(frame);
+                    using (var cropped = CropToAspectRatio(frame, CaptureAspectRatio))
+                    {
+                        writer.Write(cropped);
+                    }
 
-                    // Keep the preview updated during recording
+                    // Keep the preview updated during recording (uncropped — the visual crop is XAML Stretch/Clip)
                     CopyFrameToBitmap(frame);
 
                     var elapsed = (int)(i / fps);
@@ -407,7 +434,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                     return false;
                 }
 
-                Cv2.ImWrite(outputPath, frame);
+                using var cropped = CropToAspectRatio(frame, CaptureAspectRatio);
+                Cv2.ImWrite(outputPath, cropped);
                 return true;
             }, ct);
         }
@@ -564,11 +592,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             }
 
             var fps = cap.Fps > 0 ? cap.Fps : 30.0;
-            var width = cap.FrameWidth;
-            var height = cap.FrameHeight;
+            var croppedSize = ComputeCroppedSize(new Size(cap.FrameWidth, cap.FrameHeight), CaptureAspectRatio);
             var fourcc = FourCC.MJPG;
 
-            using var writer = new VideoWriter(outputPath, fourcc, fps, new Size(width, height));
+            using var writer = new VideoWriter(outputPath, fourcc, fps, croppedSize);
             using var frame = new Mat();
 
             var totalFrames = (int)(fps * durationSeconds);
@@ -583,7 +610,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                     continue;
                 }
 
-                writer.Write(frame);
+                using (var cropped = CropToAspectRatio(frame, CaptureAspectRatio))
+                {
+                    writer.Write(cropped);
+                }
 
                 var elapsed = (int)(i / fps);
                 progress?.Report(durationSeconds - elapsed);
@@ -617,7 +647,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
                 return false;
             }
 
-            Cv2.ImWrite(outputPath, frame);
+            using var cropped = CropToAspectRatio(frame, CaptureAspectRatio);
+            Cv2.ImWrite(outputPath, cropped);
             return true;
         }, ct);
     }
