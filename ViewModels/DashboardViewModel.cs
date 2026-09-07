@@ -609,6 +609,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _saveRepo.EndPermissionBreak();
         RefreshPunishments();
+        RefreshDebt();
         IsPermissionBreakActive = false;
         _sessionLoop.Resume();
         _countdownTimer?.Start();

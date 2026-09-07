@@ -787,6 +787,7 @@ public partial class DashboardViewModel
             var severity = baseSeverity + _popupSecondsLate;
             _saveRepo.AssignPunishment((severity, severity), reason);
             RefreshPunishments();
+            RefreshDebt();
             _popupSecondsLate = 0;
         }
 
@@ -991,6 +992,7 @@ public partial class DashboardViewModel
             var severity = _popupSecondsLate + InfractionSeverity.MotivationalQuoteFailedBonus;
             _saveRepo.AssignPunishment((severity, severity), "PunishmentReasonMotivationalQuoteFailed");
             RefreshPunishments();
+            RefreshDebt();
             _popupSecondsLate = 0;
             PopupOutcomeMessage = Resources.Get("MotivationalQuoteFailedMessage");
         }
@@ -1017,6 +1019,7 @@ public partial class DashboardViewModel
                 _random.Next(InfractionSeverity.ImpossibleQuestionFailed.Min, InfractionSeverity.ImpossibleQuestionFailed.Max + 1);
             _saveRepo.AssignPunishment((severity, severity), "PunishmentReasonImpossibleQuestionFailed");
             RefreshPunishments();
+            RefreshDebt();
             _popupSecondsLate = 0;
         }
 
@@ -1117,6 +1120,7 @@ public partial class DashboardViewModel
             var severity = (int)Math.Round(_popupSecondsLate * InfractionSeverity.PopupLateSeverityPerSecond);
             _saveRepo.AssignPunishment((severity, severity), "PunishmentReasonPopupLate");
             RefreshPunishments();
+            RefreshDebt();
         }
 
         _popupSecondsLate = 0;
