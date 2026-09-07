@@ -212,7 +212,7 @@ public class SaveRepositoryTests : IDisposable
 
         Assert.NotNull(writingLines);
         Assert.NotNull(writingLines!.WritingLinesSentenceKeys);
-        Assert.InRange(writingLines.WritingLinesSentenceKeys!.Count, 1, 12);
+        Assert.InRange(writingLines.WritingLinesSentenceKeys!.Count, 1, EmployerPhraseBank.AllKeys.Count);
         Assert.False(writingLines.WritingLinesAttemptActive);
     }
 
