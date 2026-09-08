@@ -35,23 +35,11 @@ public partial class StartSessionViewModel : ViewModelBase
         _mainVm = mainVm;
         _saveRepo = saveRepo;
 
+        // Daily interest: accrues only while the safe is open — grows debt, erodes credit toward zero.
+        // Locked safe freezes the balance either way.
+        saveRepo.ApplyDailyInterest(DateTime.UtcNow);
+
         var state = saveRepo.GetGameState();
-
-        // Daily interest: accrues only if safe is open (combination known)
-        if (state is not null && !state.IsSafeLocked && state.CurrentDebt > 0)
-        {
-            var days = (int)(DateTime.UtcNow - state.LastSessionAt).TotalDays;
-            if (days > 0)
-            {
-                var rate = (decimal)state.DailyInterestRate;
-                for (var i = 0; i < days; i++)
-                {
-                    state.CurrentDebt += Math.Round(state.CurrentDebt * rate, 0);
-                }
-
-                saveRepo.SaveGameState(state);
-            }
-        }
 
         DebtDisplay = $"Debt: {CurrencyConverter.Format(state?.CurrentDebt ?? 0)}";
 

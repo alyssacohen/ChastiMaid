@@ -126,7 +126,7 @@ public class SessionLoopService : IDisposable
                 if (state is not null)
                 {
                     var wage = Math.Round(_settings.IdleWageAmount * (decimal)OutfitBonus, 0);
-                    state.CurrentDebt = Math.Max(0, state.CurrentDebt - wage);
+                    state.CurrentDebt -= wage;
                     _saveRepo.SaveGameState(state);
                 }
 

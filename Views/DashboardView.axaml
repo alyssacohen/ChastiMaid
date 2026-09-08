@@ -476,10 +476,6 @@
                     Classes="Body"
                     HorizontalAlignment="Center"
                     Text="{Binding BusyChoreDescription}" />
-                <TextBlock
-                    Classes="Caption"
-                    HorizontalAlignment="Center"
-                    Text="{Binding BusyChoreValueDisplay}" />
             </StackPanel>
 
             <TextBlock

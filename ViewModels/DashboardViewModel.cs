@@ -478,7 +478,7 @@ public partial class DashboardViewModel : ViewModelBase
                     ? Math.Round(2m * (_settings.IdleWageAmount / _settings.IdleWageIntervalMinutes) *
                         (decimal)elapsed.TotalMinutes * (decimal)_outfitBonus, 0)
                     : Math.Round(chore.Value * (decimal)_outfitBonus, 0);
-                state.CurrentDebt = Math.Max(0, state.CurrentDebt - credit);
+                state.CurrentDebt -= credit;
                 _saveRepo.SaveGameState(state);
             }
 

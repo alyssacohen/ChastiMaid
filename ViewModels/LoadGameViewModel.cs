@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
-using ChastiMaid.Converters;
 using FluentIcons.Common;
 using ReactiveUI;
 
@@ -18,7 +17,7 @@ public class SlotCardViewModel : ViewModelBase
         IsEmpty = true;
         SlotName = "";
         SavedAt = "";
-        DebtDisplay = "";
+        CurrentDebt = 0;
         SafeStatus = "";
         LoadCommand = ReactiveCommand.Create(() => { });
         DeleteCommand = ReactiveCommand.Create(() => { });
@@ -31,7 +30,7 @@ public class SlotCardViewModel : ViewModelBase
         IsEmpty = false;
         SlotName = slot.SlotName;
         SavedAt = slot.LastSessionAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm");
-        DebtDisplay = CurrencyConverter.Format(slot.CurrentDebt);
+        CurrentDebt = slot.CurrentDebt;
         IsSafeLocked = slot.IsSafeLocked;
         SafeStatus = slot.IsSafeLocked ? Resources.Get("LoadGameSafeLocked") : Resources.Get("LoadGameSafeOpen");
         IsCompleted = slot.IsCompleted;
@@ -45,7 +44,7 @@ public class SlotCardViewModel : ViewModelBase
     public bool IsEmpty { get; }
     public string SlotName { get; }
     public string SavedAt { get; }
-    public string DebtDisplay { get; }
+    public decimal CurrentDebt { get; }
     public string SafeStatus { get; }
     public bool IsSafeLocked { get; }
     public Symbol SafeIcon => IsSafeLocked ? Symbol.LockClosed : Symbol.LockOpen;

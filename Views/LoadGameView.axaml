@@ -60,7 +60,8 @@
                                                         Spacing="16"
                                                         Margin="0,4,0,0">
                                                 <TextBlock Classes="BodySmall"
-                                                           Text="{Binding DebtDisplay}"
+                                                           Text="{Binding CurrentDebt, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=LoadGameDebtFormat|LoadGameCreditFormat}"
+                                                           Foreground="{Binding CurrentDebt, Converter={x:Static conv:BalanceBrushConverter.Instance}}"
                                                            Opacity="0.85" />
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                                     <ic:SymbolIcon Symbol="{Binding SafeIcon}" IconVariant="Regular" FontSize="14" />

@@ -489,6 +489,9 @@
   <data name="ShopCurrentDebt" xml:space="preserve">
     <value>Importo dovuto</value>
   </data>
+  <data name="ShopCurrentCredit" xml:space="preserve">
+    <value>Credito disponibile</value>
+  </data>
   <data name="ShopBuy" xml:space="preserve">
     <value>Compra</value>
   </data>
@@ -1590,6 +1593,12 @@
   <data name="LoadGameEmptySlot" xml:space="preserve">
     <value>Vuoto</value>
   </data>
+  <data name="LoadGameDebtFormat" xml:space="preserve">
+    <value>Debito: £{0:F2}</value>
+  </data>
+  <data name="LoadGameCreditFormat" xml:space="preserve">
+    <value>Credito: £{0:F2}</value>
+  </data>
   <data name="LoadGameSafeLocked" xml:space="preserve">
     <value>Bloccata</value>
   </data>
@@ -1625,6 +1634,12 @@
   </data>
   <data name="DebtWidgetRemaining" xml:space="preserve">
     <value>Rimanente</value>
+  </data>
+  <data name="DebtWidgetCredit" xml:space="preserve">
+    <value>Credito</value>
+  </data>
+  <data name="DebtWidgetAmountFormat" xml:space="preserve">
+    <value>£{0:F2}</value>
   </data>
   <data name="DebtWidgetTotalIncurredFormat" xml:space="preserve">
     <value>Totale contratto: £{0:F2}</value>
@@ -1683,6 +1698,9 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
   </data>
   <data name="DashboardDebtFormat" xml:space="preserve">
     <value>Debito: £{0:F2}</value>
+  </data>
+  <data name="DashboardCreditFormat" xml:space="preserve">
+    <value>Credito: £{0:F2}</value>
   </data>
   <data name="DashboardNextWageFormat" xml:space="preserve">
     <value>Prossima paga tra {0:D2}:{1:D2}</value>

@@ -18,10 +18,12 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Spacing="2" HorizontalAlignment="Right">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr DebtWidgetRemaining}}"
+                    <TextBlock Classes="LabelUI"
+                               Text="{Binding #Root.DebtRemaining, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=DebtWidgetRemaining|DebtWidgetCredit|upper}"
                                HorizontalAlignment="Right" />
                     <TextBlock Classes="NumberLarge"
-                               Text="{Binding #Root.DebtRemaining, Converter={x:Static conv:CurrencyConverter.Instance}}"
+                               Text="{Binding #Root.DebtRemaining, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=DebtWidgetAmountFormat|DebtWidgetAmountFormat}"
+                               Foreground="{Binding #Root.DebtRemaining, Converter={x:Static conv:BalanceBrushConverter.Instance}}"
                                HorizontalAlignment="Right" />
                 </StackPanel>
 

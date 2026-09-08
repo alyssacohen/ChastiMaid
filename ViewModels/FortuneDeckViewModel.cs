@@ -103,6 +103,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
     private double _containerHeight = 400;
 
     [Reactive] private FortuneDeckDrawState _state = FortuneDeckDrawState.Idle;
+    [Reactive] private decimal _currentDebt;
     [Reactive] private string _currentDebtDisplay = "";
 
     public FortuneDeckViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
@@ -132,7 +133,8 @@ public partial class FortuneDeckViewModel : ViewModelBase
     private void RefreshDebtDisplay()
     {
         var state = _saveRepo.GetGameState();
-        CurrentDebtDisplay = Converters.CurrencyConverter.Format(state?.CurrentDebt ?? 0);
+        CurrentDebt = state?.CurrentDebt ?? 0;
+        CurrentDebtDisplay = Converters.CurrencyConverter.Format(Math.Abs(CurrentDebt));
     }
 
     /// <summary>

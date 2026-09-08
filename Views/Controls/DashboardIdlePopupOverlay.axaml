@@ -1,10 +1,11 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="using:ChastiMaid.Views.Controls"
-             xmlns:conv="using:ChastiMaid.Converters"
-             xmlns:vm="using:ChastiMaid.ViewModels"
-             x:DataType="vm:DashboardViewModel"
-             x:Class="ChastiMaid.Views.Controls.DashboardIdlePopupOverlay">
+<UserControl
+    x:Class="ChastiMaid.Views.Controls.DashboardIdlePopupOverlay"
+    x:DataType="vm:DashboardViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="using:ChastiMaid.Views.Controls"
+    xmlns:conv="using:ChastiMaid.Converters"
+    xmlns:vm="using:ChastiMaid.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Panel
         Classes="dialogOverlay"
@@ -162,14 +163,15 @@
                         IsVisible="{Binding !IsQuoteProcessing}"
                         Text="{Binding QuoteListenCountdown}" />
                     <StackPanel
-                        Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Spacing="8"
-                        IsVisible="{Binding IsQuoteProcessing}">
-                        <Ellipse Fill="{DynamicResource BrushStatusIdle}" Height="10" Width="10" />
-                        <TextBlock
-                            Classes="BodySmall"
-                            Text="{conv:Tr MotivationalQuoteProcessingLabel}" />
+                        IsVisible="{Binding IsQuoteProcessing}"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Ellipse
+                            Fill="{DynamicResource BrushStatusIdle}"
+                            Height="10"
+                            Width="10" />
+                        <TextBlock Classes="BodySmall" Text="{conv:Tr MotivationalQuoteProcessingLabel}" />
                     </StackPanel>
                     <TextBlock
                         Classes="Caption"
@@ -243,7 +245,7 @@
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
                     <TextBlock
-                        Classes="NumberLarge"
+                        Classes="NumberDisplay"
                         HorizontalAlignment="Center"
                         Text="{Binding KneelCountdown}" />
                 </StackPanel>

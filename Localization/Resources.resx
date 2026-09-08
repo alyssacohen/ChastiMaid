@@ -489,6 +489,9 @@
   <data name="ShopCurrentDebt" xml:space="preserve">
     <value>Amount owed</value>
   </data>
+  <data name="ShopCurrentCredit" xml:space="preserve">
+    <value>Credit available</value>
+  </data>
   <data name="ShopBuy" xml:space="preserve">
     <value>Buy</value>
   </data>
@@ -1591,6 +1594,12 @@ You may export your session media before the save slot is freed.</value>
   <data name="LoadGameEmptySlot" xml:space="preserve">
     <value>Empty</value>
   </data>
+  <data name="LoadGameDebtFormat" xml:space="preserve">
+    <value>Debt: £{0:F2}</value>
+  </data>
+  <data name="LoadGameCreditFormat" xml:space="preserve">
+    <value>Credit: £{0:F2}</value>
+  </data>
   <data name="LoadGameSafeLocked" xml:space="preserve">
     <value>Locked</value>
   </data>
@@ -1626,6 +1635,12 @@ You may export your session media before the save slot is freed.</value>
   </data>
   <data name="DebtWidgetRemaining" xml:space="preserve">
     <value>Remaining</value>
+  </data>
+  <data name="DebtWidgetCredit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="DebtWidgetAmountFormat" xml:space="preserve">
+    <value>£{0:F2}</value>
   </data>
   <data name="DebtWidgetTotalIncurredFormat" xml:space="preserve">
     <value>Total incurred: £{0:F2}</value>
@@ -1684,6 +1699,9 @@ Point the camera at the combination without looking at it.</value>
   </data>
   <data name="DashboardDebtFormat" xml:space="preserve">
     <value>Debt: £{0:F2}</value>
+  </data>
+  <data name="DashboardCreditFormat" xml:space="preserve">
+    <value>Credit: £{0:F2}</value>
   </data>
   <data name="DashboardNextWageFormat" xml:space="preserve">
     <value>Next wage in {0:D2}:{1:D2}</value>

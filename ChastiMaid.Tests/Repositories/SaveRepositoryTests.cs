@@ -571,4 +571,71 @@ public class SaveRepositoryTests : IDisposable
         Assert.Null(_repo.GetActivePermissionBreak());
         Assert.Equal(150, _repo.GetGameState()!.CurrentDebt); // Fine-only: 10 severity × 5/point
     }
+
+    [Fact]
+    public void CreditEarnings_CanGoNegative_RepresentingCredit()
+    {
+        _repo.CreditEarnings(150); // CurrentDebt starts at 100
+
+        Assert.Equal(-50, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_UnlockedSafeWithDebt_CompoundsItUpward()
+    {
+        _repo.SaveGameState(new GameState
+        {
+            CurrentDebt = 100, IsSafeLocked = false, DailyInterestRate = 0.1,
+            LastSessionAt = DateTime.UtcNow.AddDays(-2),
+        });
+
+        _repo.ApplyDailyInterest(DateTime.UtcNow);
+
+        // Day 1: 100 + 10 = 110. Day 2: 110 + 11 = 121.
+        Assert.Equal(121, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_UnlockedSafeWithCredit_ErodesItTowardZero()
+    {
+        _repo.SaveGameState(new GameState
+        {
+            CurrentDebt = -50, IsSafeLocked = false, DailyInterestRate = 0.1,
+            LastSessionAt = DateTime.UtcNow.AddDays(-1),
+        });
+
+        _repo.ApplyDailyInterest(DateTime.UtcNow);
+
+        Assert.Equal(-45, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_UnlockedSafeWithSmallCredit_NeverFlipsPastZeroIntoDebt()
+    {
+        _repo.SaveGameState(new GameState
+        {
+            CurrentDebt = -1, IsSafeLocked = false, DailyInterestRate = 0.9,
+            LastSessionAt = DateTime.UtcNow.AddDays(-1),
+        });
+
+        _repo.ApplyDailyInterest(DateTime.UtcNow);
+
+        Assert.Equal(0, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Theory]
+    [InlineData(100)]
+    [InlineData(-50)]
+    public void ApplyDailyInterest_LockedSafe_LeavesBalanceUnchanged(decimal currentDebt)
+    {
+        _repo.SaveGameState(new GameState
+        {
+            CurrentDebt = currentDebt, IsSafeLocked = true, DailyInterestRate = 0.1,
+            LastSessionAt = DateTime.UtcNow.AddDays(-2),
+        });
+
+        _repo.ApplyDailyInterest(DateTime.UtcNow);
+
+        Assert.Equal(currentDebt, _repo.GetGameState()!.CurrentDebt);
+    }
 }

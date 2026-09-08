@@ -21,8 +21,13 @@
                        VerticalAlignment="Bottom" />
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
-                <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr ShopCurrentDebt}}" VerticalAlignment="Center" />
-                <TextBlock Classes="NumberLarge" Text="{Binding CurrentDebtDisplay}" VerticalAlignment="Center" />
+                <TextBlock Classes="LabelUI"
+                           Text="{Binding CurrentDebt, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=ShopCurrentDebt|ShopCurrentCredit|upper}"
+                           VerticalAlignment="Center" />
+                <TextBlock Classes="NumberLarge"
+                           Text="{Binding CurrentDebtDisplay}"
+                           Foreground="{Binding CurrentDebt, Converter={x:Static conv:BalanceBrushConverter.Instance}}"
+                           VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
 

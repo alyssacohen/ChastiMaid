@@ -39,6 +39,7 @@ public partial class ShopViewModel : ViewModelBase
     private readonly MainWindowViewModel _mainVm;
     private readonly SaveRepository _saveRepo;
 
+    [Reactive] private decimal _currentDebt;
     [Reactive] private string _currentDebtDisplay = "";
 
     public ShopViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
@@ -78,7 +79,8 @@ public partial class ShopViewModel : ViewModelBase
     private void Refresh()
     {
         var state = _saveRepo.GetGameState();
-        CurrentDebtDisplay = CurrencyConverter.Format(state?.CurrentDebt ?? 0);
+        CurrentDebt = state?.CurrentDebt ?? 0;
+        CurrentDebtDisplay = CurrencyConverter.Format(Math.Abs(CurrentDebt));
 
         var owned = _saveRepo.GetInventory();
         foreach (var card in Cards)

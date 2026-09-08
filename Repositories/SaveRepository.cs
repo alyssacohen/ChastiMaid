@@ -373,8 +373,9 @@ public class SaveRepository(LiteDatabase db)
     }
 
     /// <summary>
-    ///     Reduces CurrentDebt only (never InitialDebt, never below zero) — the same shape as idle wage and chore
-    ///     payouts. Used for Fortune Deck cash wins, which credit the player rather than growing the amount owed.
+    ///     Reduces CurrentDebt only (never InitialDebt). May go negative, representing credit the player can spend
+    ///     against future Shop/Fortune Deck purchases. Same shape as idle wage and chore payouts. Used for Fortune
+    ///     Deck cash wins, which credit the player rather than growing the amount owed.
     /// </summary>
     public void CreditEarnings(decimal amount)
     {
@@ -384,7 +385,40 @@ public class SaveRepository(LiteDatabase db)
             return;
         }
 
-        state.CurrentDebt = Math.Max(0, state.CurrentDebt - amount);
+        state.CurrentDebt -= amount;
+        SaveGameState(state);
+    }
+
+    /// <summary>
+    ///     Applies daily compound interest for every full day since LastSessionAt, only while the safe is unlocked:
+    ///     grows a positive debt, erodes a negative credit toward (never past) zero. No-op if the safe is locked or
+    ///     CurrentDebt is already zero — leaving the safe locked always freezes the balance either way.
+    /// </summary>
+    public void ApplyDailyInterest(DateTime now)
+    {
+        var state = GetGameState();
+        if (state is null || state.IsSafeLocked || state.CurrentDebt == 0)
+        {
+            return;
+        }
+
+        var days = (int)(now - state.LastSessionAt).TotalDays;
+        if (days <= 0)
+        {
+            return;
+        }
+
+        var rate = (decimal)state.DailyInterestRate;
+        for (var i = 0; i < days; i++)
+        {
+            state.CurrentDebt = state.CurrentDebt switch
+            {
+                > 0 => state.CurrentDebt + Math.Round(state.CurrentDebt * rate, 0),
+                < 0 => Math.Min(0, state.CurrentDebt + Math.Round(-state.CurrentDebt * rate, 0)),
+                _ => state.CurrentDebt,
+            };
+        }
+
         SaveGameState(state);
     }
 
