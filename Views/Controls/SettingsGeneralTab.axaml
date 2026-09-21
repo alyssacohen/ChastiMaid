@@ -377,10 +377,9 @@
                     </StackPanel>
                     <TextBlock
                         Classes="Caption"
-                        Margin="0,8,0,0"
                         Text="{converters:Tr SettingsContractDescription}"
                         TextWrapping="Wrap" />
-                    <StackPanel Orientation="Horizontal" Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
                         <Button
                             Classes="Ghost"
                             Command="{Binding ExportContractCommand}"

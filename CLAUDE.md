@@ -77,6 +77,13 @@ profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` wit
   pool is always `BaseCopies − owned`) and `suspended_modifiers` (Fortune Deck permission buffs/debuffs awaiting a
   matching request). See `docs/specs/shop.md` and `docs/specs/fortune-deck.md`.
 
+**New Game contract.** The New Game screen (`NewGameViewModel`) renders the profile as a contract. `GameContractService`
+(`Services/Contracts/`) is the single place that builds, serializes, validates and applies a `GameContract` (settings +
+every collection a save snapshots; machine-specific `GameSettings` fields are `[JsonIgnore]`). Loading overwrites the
+profile after a confirmation, through the shared `ContractImportFlow`. Keep `GameSettings` device-level fields marked
+`[JsonIgnore]` and give every new numeric setting a range in `GameContractService.Ranges` (a test enforces it). See
+`docs/design/new-game-contract.md`.
+
 **Session runtime services** (created per active session, hold a `SaveRepository`):
 
 - `SessionLoopService` — the game loop: pays periodic idle wage and fires random-interval check-in popups. `Pause()`/
@@ -178,7 +185,9 @@ ALLCAPS text.
 
 ### Button classes
 
-`Primary` · `Ghost` · `Danger` · `SmallGhost` · `Amber` · `Add` · `SlotCard`
+`Primary` · `Ghost` · `Quiet` · `Danger` · `SmallGhost` · `Amber` · `Add` · `SlotCard`
+
+`Quiet` is borderless muted navigation (contract screen "Back"); still 44px tall.
 
 `Danger` is the single style for all destructive actions (delete, abandon, end session) —
 pink background, red border/text, red background with white text on hover.
