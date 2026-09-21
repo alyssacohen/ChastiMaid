@@ -1,53 +1,109 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:views="using:ChastiMaid.Views.Dialogs"
+             xmlns:contracts="using:ChastiMaid.Services.Contracts"
              xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:NewGameViewModel"
              x:Class="ChastiMaid.Views.NewGameView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MaxWidth="420"
-                Margin="40"
-                Spacing="16">
+    <Panel>
 
-        <TextBlock Classes="PageTitle"
-                   Text="{conv:Tr WelcomeNewGame}"
-                   HorizontalAlignment="Center" />
+        <Grid RowDefinitions="*,Auto">
 
-        <TextBlock Classes="Subheading"
-                   Text="{conv:Tr NewGameSettingsIntro}"
-                   HorizontalAlignment="Center" />
+            <!-- The contract itself scrolls; the action bar below stays pinned -->
+            <ScrollViewer Grid.Row="0">
+                <Border Classes="contractPaper">
+                    <StackPanel Spacing="{StaticResource SpacingXl}">
 
-        <StackPanel Spacing="4">
-            <TextBlock Classes="Body" HorizontalAlignment="Center">
-                <Run Text="{conv:Tr NewGameInitialDebtLabel}" Foreground="{DynamicResource TextMuted}" />
-                <Run Text="{Binding DebtRange}" />
-            </TextBlock>
-            <TextBlock Classes="Body" HorizontalAlignment="Center">
-                <Run Text="{conv:Tr NewGameDailyInterestLabel}" Foreground="{DynamicResource TextMuted}" />
-                <Run Text="{Binding InterestRate}" />
-            </TextBlock>
-        </StackPanel>
+                        <TextBlock Classes="PageTitle"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   Text="{conv:Tr ContractTitle}" />
 
-        <Button Content="{conv:Tr NewGameStartGame}"
-                Command="{Binding StartGameCommand}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Classes="Primary" />
+                        <TextBlock Classes="EmployerVoice"
+                                   TextWrapping="Wrap"
+                                   Text="{conv:Tr ContractPreamble}" />
 
-        <Button Content="{conv:Tr WelcomeSettings}"
-                Command="{Binding SettingsCommand}"
-                Classes="Ghost"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center" />
+                        <ItemsControl ItemsSource="{Binding Clauses}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="{StaticResource SpacingXl}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="contracts:ContractClause">
+                                    <StackPanel Spacing="{StaticResource SpacingSm}">
+                                        <TextBlock Classes="SectionTitle"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding Heading}" />
+                                        <ItemsControl ItemsSource="{Binding Paragraphs}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Spacing="{StaticResource SpacingSm}" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <TextBlock Classes="Body"
+                                                               TextWrapping="Wrap"
+                                                               Text="{Binding}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-        <Button Content="{conv:Tr Back}"
-                Command="{Binding BackCommand}"
-                Classes="Ghost"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center" />
+                        <TextBlock Classes="EmployerVoice"
+                                   TextWrapping="Wrap"
+                                   Text="{conv:Tr ContractClosing}" />
 
-    </StackPanel>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+
+            <Border Grid.Row="1" Classes="contractActionBar">
+                <StackPanel Spacing="{StaticResource SpacingSm}">
+
+                    <TextBlock Classes="BodySmall"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                               Text="{Binding StatusMessage}" />
+
+                    <!-- Back sits apart and quiet; the three actions wrap under it in portrait -->
+                    <WrapPanel HorizontalAlignment="Center"
+                               ItemSpacing="{StaticResource SpacingSm}"
+                               LineSpacing="{StaticResource SpacingSm}">
+                        <Button Classes="Quiet"
+                                Content="{conv:Tr Back}"
+                                Command="{Binding BackCommand}" />
+                        <Button Classes="Ghost"
+                                Content="{conv:Tr ContractLoad}"
+                                Command="{Binding LoadContractCommand}" />
+                        <Button Classes="Ghost"
+                                Content="{conv:Tr ContractEdit}"
+                                Command="{Binding EditCommand}" />
+                        <Button Classes="Primary"
+                                Content="{conv:Tr ContractAccept}"
+                                Command="{Binding AcceptCommand}" />
+                    </WrapPanel>
+
+                </StackPanel>
+            </Border>
+
+        </Grid>
+
+        <views:ConfirmDialog
+            DataContext="{Binding ActiveDialog}"
+            IsVisible="{Binding $parent[UserControl].((vm:NewGameViewModel)DataContext).ActiveDialog,
+                    Converter={x:Static ObjectConverters.IsNotNull},
+                    FallbackValue=False}" />
+
+    </Panel>
 
 </UserControl>

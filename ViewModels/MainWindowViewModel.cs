@@ -116,6 +116,12 @@ public partial class MainWindowViewModel : ViewModelBase
         return _cachedSettingsVm;
     }
 
+    /// <summary>Drops the cached Settings screen so the next <see cref="OpenSettings" /> rebuilds it from the repository.</summary>
+    public void InvalidateSettingsCache()
+    {
+        _cachedSettingsVm = null;
+    }
+
     /// <summary>Swaps the cached Settings instance, used when Settings rebuilds itself from the repository.</summary>
     public void ReplaceSettingsCache(SettingsViewModel vm)
     {

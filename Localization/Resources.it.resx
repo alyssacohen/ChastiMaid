@@ -1689,6 +1689,254 @@
     <value> (+{0} altri)</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
+  <data name="ContractTitle" xml:space="preserve">
+    <value>Contratto di servizio</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPreamble" xml:space="preserve">
+    <value>Si conviene tra la Casa e il suo più recente membro — d'ora innanzi, con qualche ottimismo, «la Cameriera» — che i termini seguenti regolino il periodo di servizio. Vogliate leggerli con attenzione. Non saranno letti ad alta voce.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractClosing" xml:space="preserve">
+    <value>Se qualcosa di ciò Vi dispiacesse, la porta è dove è sempre stata. Tende a incepparsi, va detto.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractAccept" xml:space="preserve">
+    <value>Accetto le condizioni</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractEdit" xml:space="preserve">
+    <value>Modifica condizioni</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractLoad" xml:space="preserve">
+    <value>Carica un altro contratto</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractDebtTitle" xml:space="preserve">
+    <value>Debito e interessi</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWageTitle" xml:space="preserve">
+    <value>Salario</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWardrobeTitle" xml:space="preserve">
+    <value>Il guardaroba</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractTasksTitle" xml:space="preserve">
+    <value>Incombenze fisse</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCheckinsTitle" xml:space="preserve">
+    <value>Convocazioni e verifiche</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPunishmentsTitle" xml:space="preserve">
+    <value>Provvedimenti correttivi</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPermissionsTitle" xml:space="preserve">
+    <value>Richieste di congedo</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractOtherTitle" xml:space="preserve">
+    <value>Disposizioni varie</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractSeverityTitle" xml:space="preserve">
+    <value>Severità variabile</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractDebtRange" xml:space="preserve">
+    <value>All'atto della Vostra accettazione, la Casa stabilirà a propria discrezione il Vostro debito, in una somma compresa tra {0} e {1}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractInterest" xml:space="preserve">
+    <value>Gli interessi maturano ogni giorno al {0}%. La Casa si rammarica che l'aritmetica non ammetta trattative.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWage" xml:space="preserve">
+    <value>Finché Vi trovate senza incarichi, la Casa Vi corrisponderà {0} ogni {1}. «Senza incarichi» è, in questa casa, un'espressione assai generosa.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWardrobeCount" xml:space="preserve">
+    <value>Il guardaroba comprende {0} capi: {1}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractRulesNone" xml:space="preserve">
+    <value>Nessuna regola limita l'abbinamento dei capi. La Casa ripone fiducia nel Vostro gusto — per il momento.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractRules" xml:space="preserve">
+    <value>{0} regole stabiliscono quali capi possano essere indossati insieme: {1} vincolanti, {2} escludenti.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPlugAndPlayOn" xml:space="preserve">
+    <value>Il Plug and Play è in vigore per {0} capi, da indossare per un periodo compreso tra {1} e {2}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPlugAndPlayOff" xml:space="preserve">
+    <value>Il Plug and Play non è in vigore.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractDiaperPlayOn" xml:space="preserve">
+    <value>Il Diaper Play è in vigore per {0} capi. Finché uno di essi è indossato, l'intervallo tra i richiami all'idratazione è dimezzato.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractDiaperPlayOff" xml:space="preserve">
+    <value>Il Diaper Play non è in vigore.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractChastity" xml:space="preserve">
+    <value>{0} capi sono designati come dispositivi di castità.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractTasks" xml:space="preserve">
+    <value>La casa mantiene {0} incombenze fisse, ciascuna retribuita al termine. Se le portaste a compimento tutte, ammonterebbero a {1}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractTasksNone" xml:space="preserve">
+    <value>Non è stata fissata alcuna incombenza. La Casa lo ritiene improbabile e sospetta una svista.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractSummons" xml:space="preserve">
+    <value>La Casa potrà convocarVi a intervalli compresi tra {0} e {1}; Voi risponderete entro {2}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractHydrationOn" xml:space="preserve">
+    <value>I richiami all'idratazione non giungeranno più spesso di una volta ogni {0}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractHydrationOff" xml:space="preserve">
+    <value>I richiami all'idratazione Vi sono risparmiati.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCurtsyOn" xml:space="preserve">
+    <value>Potrà esservi richiesta una riverenza, ripresa in video per {0}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCurtsyOff" xml:space="preserve">
+    <value>Non Vi sarà richiesta alcuna riverenza.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractQuoteOn" xml:space="preserve">
+    <value>Potrà esservi affidata una massima motivazionale da leggere ad alta voce, con {0} di tempo per farlo. Una fedeltà al testo di almeno il {1}% soddisferà la Casa.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractQuoteOff" xml:space="preserve">
+    <value>Non Vi sarà chiesto di recitare.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractKneelOn" xml:space="preserve">
+    <value>Potrà esservi chiesto di restare in ginocchio per un tempo compreso tra {0} e {1}, con una fotografia scattata a intervalli compresi tra {2} e {3}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractKneelOff" xml:space="preserve">
+    <value>Non Vi sarà chiesto di inginocchiarVi.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractBusyCapture" xml:space="preserve">
+    <value>Durante le Vostre occupazioni, verranno scattate fotografie a intervalli compresi tra {0} e {1}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractFine" xml:space="preserve">
+    <value>Ogni mancanza comporta una multa di {0} per ogni punto di severità.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCornertimeOn" xml:space="preserve">
+    <value>Cornertime: resterete perfettamente immobile per {0} per ogni punto di severità — non meno di {1}, non più di {2} — con {3} di tolleranza oltre tale limite.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCornertimeMovement" xml:space="preserve">
+    <value>Il movimento viene rilevato con una sensibilità del {0}% e aggiunge alla pena tra {1} e {2}, con una pausa compresa tra {3} e {4} prima che un altro possa essere conteggiato.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCornertimeOff" xml:space="preserve">
+    <value>Il Cornertime non è in vigore.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWritingLinesOn" xml:space="preserve">
+    <value>Righe da scrivere: {0} righe per ogni punto di severità — almeno {1}, al più {2} — e {3} in più per ogni errore.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWritingNoIdle" xml:space="preserve">
+    <value>Se lascerete la penna inattiva per {0}, verranno aggiunte {1} righe.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWritingInterruptions" xml:space="preserve">
+    <value>La Casa potrà interrompere la Vostra scrittura a intervalli compresi tra {0} e {1}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractWritingLinesOff" xml:space="preserve">
+    <value>Le righe da scrivere non sono in vigore.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractForcedOutfitOn" xml:space="preserve">
+    <value>Gli abiti imposti potranno durare fino a {0}, scelti tra {1} predisposti allo scopo.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractForcedOutfitOff" xml:space="preserve">
+    <value>Gli abiti imposti non sono in vigore.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPermissionsIntro" xml:space="preserve">
+    <value>Il congedo per certe necessità è concesso a discrezione della Casa:</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPermissionLine" xml:space="preserve">
+    <value>{0}: concesso nel {1}% dei casi, per {2}, e non di nuovo prima di {3}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractPermissionsNone" xml:space="preserve">
+    <value>Non è previsto alcun congedo di sorta. Regolatevi di conseguenza.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCornertimeVoiceOn" xml:space="preserve">
+    <value>La Casa narrerà ad alta voce il Vostro Cornertime.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractCornertimeVoiceOff" xml:space="preserve">
+    <value>Il Vostro Cornertime sarà osservato in silenzio.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractAppellatives" xml:space="preserve">
+    <value>La Casa tiene in serbo {0} appellativi per convocarVi.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractAppellativesNone" xml:space="preserve">
+    <value>La Casa Vi convocherà con il solo nome.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractSeverity" xml:space="preserve">
+    <value>La severità delle punizioni non è fissa. Varierà in base alla Vostra condotta: con quanta fedeltà siano osservate le abitudini della casa, quante faccende restino in sospeso e quanto spesso sia stata rifiutata la scelta d'abito della Casa. La Casa non rivela i propri metodi. Osserva, semplicemente.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractSecondOne" xml:space="preserve">
+    <value>{0} secondo</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractSecondMany" xml:space="preserve">
+    <value>{0} secondi</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractMinuteOne" xml:space="preserve">
+    <value>{0} minuto</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractMinuteMany" xml:space="preserve">
+    <value>{0} minuti</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractHourOne" xml:space="preserve">
+    <value>{0} ora</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractHourMany" xml:space="preserve">
+    <value>{0} ore</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
   <data name="EndSessionConfirmQuestion" xml:space="preserve">
     <value>Siete sicura di voler terminare questa sessione?</value>
   </data>
@@ -1763,18 +2011,6 @@
   </data>
   <data name="DebtWidgetTotalIncurredFormat" xml:space="preserve">
     <value>Totale contratto: £{0:F2}</value>
-  </data>
-  <data name="NewGameSettingsIntro" xml:space="preserve">
-    <value>La partita inizierà con queste impostazioni:</value>
-  </data>
-  <data name="NewGameInitialDebtLabel" xml:space="preserve">
-    <value>Debito iniziale: </value>
-  </data>
-  <data name="NewGameDailyInterestLabel" xml:space="preserve">
-    <value>Interesse giornaliero: </value>
-  </data>
-  <data name="NewGameStartGame" xml:space="preserve">
-    <value>Inizia partita</value>
   </data>
   <data name="WardrobeBulkSelectedFormat" xml:space="preserve">
     <value>{0} capi selezionati</value>

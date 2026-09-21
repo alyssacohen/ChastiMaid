@@ -42,6 +42,26 @@
         <Setter Property="Margin" Value="0,0,0,8" />
     </Style>
 
+    <!-- contractPaper — the sheet the New Game contract is written on (centred column, scrolls inside a ScrollViewer) -->
+    <Style Selector="Border.contractPaper">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="{DynamicResource SpacingXlThickness}" />
+        <Setter Property="Margin" Value="{DynamicResource SpacingLgThickness}" />
+        <Setter Property="MaxWidth" Value="{DynamicResource ContractPaperMaxWidth}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <!-- contractActionBar — pinned strip under the contract holding its actions -->
+    <Style Selector="Border.contractActionBar">
+        <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
+        <Setter Property="BorderThickness" Value="0,1,0,0" />
+        <Setter Property="Padding" Value="{DynamicResource SpacingLgThickness}" />
+    </Style>
+
     <!-- statCard — compact metric tile (Writing Lines performance stats row) -->
     <Style Selector="Border.statCard">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}" />
