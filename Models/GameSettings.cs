@@ -10,6 +10,10 @@ public class GameSettings
     public string PlayerName { get; set; } = "";
     public int AutoSaveIntervalMinutes { get; set; } = 10;
 
+    // Summon voice — comma-separated list of address terms the employer may use when calling the
+    // player to a popup (in addition to PlayerName), e.g. "pet, maid, girl"
+    public string Appellatives { get; set; } = "";
+
     // Localization: "system", "en", or "it". Requires a restart to take effect.
     public string Language { get; set; } = "system";
 
@@ -98,5 +102,21 @@ public class GameSettings
     {
         rng ??= Random.Shared;
         return Math.Round(MinDebt + (decimal)rng.NextDouble() * (MaxDebt - MinDebt), 0);
+    }
+
+    public const int AppellativeMaxLength = 30;
+    public const int AppellativeMaxCount = 10;
+
+    // Entries over AppellativeMaxLength or beyond AppellativeMaxCount are silently dropped — the
+    // same rule both the Settings warning (SettingsViewModel.AppellativesWarning) and the runtime
+    // summon phrase (DashboardViewModel.PlaySummonBell) use, so what the player is warned about
+    // is exactly what gets excluded.
+    public IReadOnlyList<string> ParseAppellatives()
+    {
+        return Appellatives
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(a => a.Length <= AppellativeMaxLength)
+            .Take(AppellativeMaxCount)
+            .ToList();
     }
 }

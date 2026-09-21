@@ -963,6 +963,18 @@
   <data name="KneelSummon" xml:space="preserve">
       <value>È richiesta la vostra presenza. Presentatevi subito.</value>
   </data>
+  <data name="SummonAtOnceFormat" xml:space="preserve">
+    <value>{0}! Vieni qui immediatamente.</value>
+  </data>
+  <data name="SummonKeepWaitingFormat" xml:space="preserve">
+    <value>Vieni qui, {0}! Sai bene che non dovresti farmi aspettare.</value>
+  </data>
+  <data name="SummonDawdlingFormat" xml:space="preserve">
+    <value>{0}! Smettila di gingillarti e vieni qui!</value>
+  </data>
+  <data name="SummonHereNowFormat" xml:space="preserve">
+    <value>{0}! Qui. Subito.</value>
+  </data>
   <data name="KneelSummonConfirm" xml:space="preserve">
     <value>Sono qui</value>
   </data>
@@ -1184,6 +1196,18 @@
   </data>
   <data name="SettingsAutoSaveMin" xml:space="preserve">
     <value>Salvataggio automatico (minuti)</value>
+  </data>
+  <data name="SettingsFieldAppellatives" xml:space="preserve">
+    <value>Appellativi</value>
+  </data>
+  <data name="SettingsFieldAppellativesCaption" xml:space="preserve">
+    <value>Separati da virgola. Usati a caso (insieme al Nome) quando venite richiamate a un popup.</value>
+  </data>
+  <data name="AppellativesWarningTooManyFormat" xml:space="preserve">
+    <value>Solo i primi {0} vengono usati.</value>
+  </data>
+  <data name="AppellativesWarningTooLongFormat" xml:space="preserve">
+    <value>"{0}" supera i {1} caratteri e verrà ignorato.</value>
   </data>
   <data name="SettingsHeadingGameBalance" xml:space="preserve">
     <value>Bilanciamento di gioco</value>

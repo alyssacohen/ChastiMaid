@@ -963,6 +963,18 @@
   <data name="KneelSummon" xml:space="preserve">
     <value>Your presence is required. Attend at once.</value>
   </data>
+  <data name="SummonAtOnceFormat" xml:space="preserve">
+    <value>{0}! Come here at once.</value>
+  </data>
+  <data name="SummonKeepWaitingFormat" xml:space="preserve">
+    <value>Get over here, {0}! You know better than keep me waiting.</value>
+  </data>
+  <data name="SummonDawdlingFormat" xml:space="preserve">
+    <value>{0}! Do stop dawdling and come here.</value>
+  </data>
+  <data name="SummonHereNowFormat" xml:space="preserve">
+    <value>{0}! Here. Now.</value>
+  </data>
   <data name="KneelSummonConfirm" xml:space="preserve">
     <value>I am here</value>
   </data>
@@ -1184,6 +1196,18 @@
   </data>
   <data name="SettingsAutoSaveMin" xml:space="preserve">
     <value>Auto-save (minutes)</value>
+  </data>
+  <data name="SettingsFieldAppellatives" xml:space="preserve">
+    <value>Appellatives</value>
+  </data>
+  <data name="SettingsFieldAppellativesCaption" xml:space="preserve">
+    <value>Comma-separated. Used at random (along with Name) when you're summoned to a popup.</value>
+  </data>
+  <data name="AppellativesWarningTooManyFormat" xml:space="preserve">
+    <value>Only the first {0} are used.</value>
+  </data>
+  <data name="AppellativesWarningTooLongFormat" xml:space="preserve">
+    <value>"{0}" is over {1} characters and will be ignored.</value>
   </data>
   <data name="SettingsHeadingGameBalance" xml:space="preserve">
     <value>Game Balance</value>

@@ -34,6 +34,26 @@
                             Grid.Column="1"
                             Text="{Binding PlayerName}" />
                     </Grid>
+                    <Grid ColumnDefinitions="160,*">
+                        <TextBlock
+                            Classes="BodySmall"
+                            Text="{converters:Tr SettingsFieldAppellatives}"
+                            VerticalAlignment="Center" />
+                        <TextBox
+                            Classes="underline"
+                            Grid.Column="1"
+                            Text="{Binding Appellatives}" />
+                    </Grid>
+                    <TextBlock
+                        Classes="Caption"
+                        Text="{converters:Tr SettingsFieldAppellativesCaption}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Classes="Caption"
+                        Foreground="{DynamicResource BrushEmergencyText}"
+                        IsVisible="{Binding AppellativesWarning, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Text="{Binding AppellativesWarning}"
+                        TextWrapping="Wrap" />
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"

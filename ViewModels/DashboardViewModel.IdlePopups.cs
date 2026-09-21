@@ -137,6 +137,32 @@ public partial class DashboardViewModel
         IdlePopupKind.PlugAndPlayRemove
     ];
 
+    /// <summary>
+    ///     Rings the desk bell and, in the same beat, has the employer speak a random summon phrase
+    ///     (TTS only — no on-screen text) naming the player by PlayerName or one of the configured
+    ///     Appellatives, picked at random to multiply the perceived variety.
+    /// </summary>
+    private void PlaySummonBell()
+    {
+        SoundEffectService.PlayDeskBell();
+
+        var candidates = new List<string>();
+        if (!string.IsNullOrWhiteSpace(_settings.PlayerName))
+        {
+            candidates.Add(_settings.PlayerName.Trim());
+        }
+
+        candidates.AddRange(_settings.ParseAppellatives());
+        if (candidates.Count == 0)
+        {
+            return;
+        }
+
+        var appellative = candidates[_random.Next(candidates.Count)];
+        var phrase = string.Format(Resources.Get(SummonPhraseBank.GetRandom(_random)), appellative);
+        _ = _mainVm.Tts.SpeakAsync(phrase);
+    }
+
     private bool IsHydrationAvailable()
     {
         var intervalMinutes = _settings.HydrationMinIntervalMinutes;
@@ -288,7 +314,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void ShowHydrationPopup()
@@ -301,7 +327,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void ShowPoseForCameraPopup()
@@ -336,7 +362,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     /// <summary>
@@ -386,7 +412,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void ShowCurtsyPopup()
@@ -407,7 +433,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void ShowMotivationalQuotePopup()
@@ -420,7 +446,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void ShowKneelPopup()
@@ -433,7 +459,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
 
         // Loading the voice model alone takes several seconds; kick it off now so it's ready by
         // the time the user confirms framing, instead of stalling the first narration line.
@@ -556,7 +582,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void OnPlugAndPlayDonConfirm()
@@ -601,7 +627,7 @@ public partial class DashboardViewModel
         IsShowingPopupOutcome = false;
         IsPopupVisible = true;
 
-        SoundEffectService.PlayDeskBell();
+        PlaySummonBell();
     }
 
     private void OnPlugAndPlayRemoveConfirm()

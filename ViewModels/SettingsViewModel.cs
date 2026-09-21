@@ -96,6 +96,7 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _curtsyVideoDuration;
     [Reactive] private int _hydrationMinInterval;
     [Reactive] private string _playerName = "";
+    [Reactive] private string _appellatives = "";
     [Reactive] private int _popupMaxInterval;
     [Reactive] private int _popupMinInterval;
     [Reactive] private int _popupTimeout;
@@ -118,7 +119,7 @@ public partial class SettingsViewModel : ViewModelBase
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption) _snapshot;
+    private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -135,6 +136,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         var s = _repo.GetGameSettings();
         _playerName = s.PlayerName;
+        _appellatives = s.Appellatives;
         _autoSaveInterval = s.AutoSaveIntervalMinutes;
         _minDebt = s.MinDebt;
         _maxDebt = s.MaxDebt;
@@ -281,12 +283,15 @@ public partial class SettingsViewModel : ViewModelBase
             });
 
         this.WhenAnyValue(
-                x => x.PlayerName, x => x.AutoSaveInterval, x => x.MinDebt,
+                x => x.PlayerName, x => x.Appellatives, x => x.AutoSaveInterval, x => x.MinDebt,
                 x => x.MaxDebt, x => x.DailyInterestRate, x => x.IdleWageAmount,
-                (_, _, _, _, _, _) => Unit.Default).Merge(this.WhenAnyValue(
+                (_, _, _, _, _, _, _) => Unit.Default).Merge(this.WhenAnyValue(
                 x => x.IdleWageInterval, x => x.SelectedCamera, x => x.SelectedLanguage,
                 (_, _, _) => Unit.Default))
             .Subscribe(_ => UpdateGeneralDirty());
+
+        this.WhenAnyValue(x => x.Appellatives)
+            .Subscribe(_ => this.RaisePropertyChanged(nameof(AppellativesWarning)));
 
         this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
 
@@ -580,6 +585,23 @@ public partial class SettingsViewModel : ViewModelBase
 
     public bool ShowTestQuotePassResult => HasTestQuoteResult && TestQuotePassed;
     public bool ShowTestQuoteFailResult => HasTestQuoteResult && !TestQuotePassed;
+
+    public string? AppellativesWarning
+    {
+        get
+        {
+            var raw = Appellatives.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (raw.Length > GameSettings.AppellativeMaxCount)
+            {
+                return string.Format(Resources.Get("AppellativesWarningTooManyFormat"), GameSettings.AppellativeMaxCount);
+            }
+
+            var tooLong = raw.FirstOrDefault(a => a.Length > GameSettings.AppellativeMaxLength);
+            return tooLong is null
+                ? null
+                : string.Format(Resources.Get("AppellativesWarningTooLongFormat"), tooLong, GameSettings.AppellativeMaxLength);
+        }
+    }
     public ICommand BackCommand { get; }
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
@@ -921,11 +943,11 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption)
+    private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption)
         CurrentValues()
     {
-        return (_playerName, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate, _idleWageAmount,
-            _idleWageInterval, _selectedCamera, _selectedLanguage);
+        return (_playerName, _appellatives, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate,
+            _idleWageAmount, _idleWageInterval, _selectedCamera, _selectedLanguage);
     }
 
     private void UpdateGeneralDirty()
@@ -985,6 +1007,7 @@ public partial class SettingsViewModel : ViewModelBase
     {
         var s = _repo.GetGameSettings();
         s.PlayerName = PlayerName;
+        s.Appellatives = Appellatives;
         s.AutoSaveIntervalMinutes = AutoSaveInterval;
         s.MinDebt = MinDebt;
         s.MaxDebt = MaxDebt;
