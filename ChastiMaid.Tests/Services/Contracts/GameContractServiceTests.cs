@@ -28,6 +28,13 @@ public class GameContractServiceTests : IDisposable
             new OutfitRule { Id = 1, SourceTag = "dress", RelatedTag = "stockings", Relation = OutfitRelation.Requires },
         ]);
         _profile.ReplaceChores([new Chore { Id = 1, Name = "dusting", Value = 5, FrequencyDays = 2, MinCompletionMinutes = 10 }]);
+        _profile.ReplaceForcedOutfitPresets(
+            [new ForcedOutfitPreset { Id = 1, Name = "uniform", ClothingItemIds = [1, 2], HoursPerSeverityPoint = 2 }]);
+        _profile.ReplacePlugAndPlayItems([new PlugAndPlayItemConfig { ClothingItemId = 2, MinDurationMinutes = 10, MaxDurationMinutes = 20 }]);
+        _profile.ReplaceDiaperPlayItems([new DiaperPlayItemConfig { ClothingItemId = 1 }]);
+        _profile.ReplaceChastityDeviceItems([new ChastityDeviceItemConfig { ClothingItemId = 2 }]);
+        _profile.ReplacePermissionTypes(
+            [new PermissionTypeConfig { Kind = PermissionKind.Pee, BaseGrantPercent = 50, DurationMinutes = 5, CooldownMinutes = 60 }]);
     }
 
     public void Dispose()
@@ -47,6 +54,11 @@ public class GameContractServiceTests : IDisposable
         Assert.Equal(2, contract.Wardrobe!.Count);
         Assert.Single(contract.OutfitRules!);
         Assert.Single(contract.Tasks!);
+        Assert.Single(contract.ForcedOutfitPresets!);
+        Assert.Single(contract.PlugAndPlayItems!);
+        Assert.Single(contract.DiaperPlayItems!);
+        Assert.Single(contract.ChastityDeviceItems!);
+        Assert.Single(contract.PermissionTypes!);
     }
 
     [Fact]
@@ -63,14 +75,15 @@ public class GameContractServiceTests : IDisposable
         var settings = doc.RootElement.GetProperty("settings");
         foreach (var name in new[]
                  {
-                     "id", "playerName", "autoSaveIntervalMinutes", "appellatives", "language",
-                     "cornertimeVoiceEnabled", "selectedCameraIndex",
+                     "id", "playerName", "autoSaveIntervalMinutes", "language", "selectedCameraIndex",
                  })
         {
             Assert.False(settings.TryGetProperty(name, out _), name);
         }
 
         Assert.True(settings.TryGetProperty("idleWageAmount", out _));
+        Assert.True(settings.TryGetProperty("appellatives", out _));
+        Assert.True(settings.TryGetProperty("cornertimeVoiceEnabled", out _));
     }
 
     [Fact]
@@ -84,8 +97,7 @@ public class GameContractServiceTests : IDisposable
         Assert.Equal(
             new[]
             {
-                nameof(GameSettings.Appellatives), nameof(GameSettings.AutoSaveIntervalMinutes),
-                nameof(GameSettings.CornertimeVoiceEnabled), nameof(GameSettings.Id),
+                nameof(GameSettings.AutoSaveIntervalMinutes), nameof(GameSettings.Id),
                 nameof(GameSettings.Language), nameof(GameSettings.PlayerName),
                 nameof(GameSettings.SelectedCameraIndex),
             }.Order(),
@@ -121,6 +133,11 @@ public class GameContractServiceTests : IDisposable
         Assert.Equal(_profile.GetOutfitRules().Count, otherProfile.GetOutfitRules().Count);
         Assert.Equal(_profile.GetChores().Select(c => c.Name), otherProfile.GetChores().Select(c => c.Name));
         Assert.Equal(_profile.GetGameSettings().IdleWageAmount, otherProfile.GetGameSettings().IdleWageAmount);
+        Assert.Equal([1, 2], Assert.Single(otherProfile.GetForcedOutfitPresets()).ClothingItemIds);
+        Assert.Equal(2, Assert.Single(otherProfile.GetPlugAndPlayItems()).ClothingItemId);
+        Assert.Equal(1, Assert.Single(otherProfile.GetDiaperPlayItems()).ClothingItemId);
+        Assert.Equal(2, Assert.Single(otherProfile.GetChastityDeviceItems()).ClothingItemId);
+        Assert.Equal(PermissionKind.Pee, Assert.Single(otherProfile.GetPermissionTypes()).Kind);
     }
 
     [Fact]
@@ -170,7 +187,7 @@ public class GameContractServiceTests : IDisposable
         var result = _service.Validate("""{"schemaVersion":1}""");
 
         Assert.False(result.IsValid);
-        Assert.Equal(4, result.Issues.Count(i => i.Kind == ContractIssueKind.MissingSection));
+        Assert.Equal(9, result.Issues.Count(i => i.Kind == ContractIssueKind.MissingSection));
     }
 
     [Fact]
@@ -257,6 +274,65 @@ public class GameContractServiceTests : IDisposable
     }
 
     [Fact]
+    public void Validate_ConfigsReferencingMissingItems_AreDiscardedAndReported()
+    {
+        var contract = ValidContract();
+        contract.PlugAndPlayItems!.Add(new PlugAndPlayItemConfig { ClothingItemId = 99 });
+        contract.DiaperPlayItems!.Add(new DiaperPlayItemConfig { ClothingItemId = 1 }); // duplicate item
+        contract.ChastityDeviceItems!.Add(new ChastityDeviceItemConfig { ClothingItemId = 42 });
+
+        var result = _service.Validate(contract);
+
+        Assert.Single(result.Contract!.PlugAndPlayItems!);
+        Assert.Single(result.Contract.DiaperPlayItems!);
+        Assert.Single(result.Contract.ChastityDeviceItems!);
+        Assert.Equal(3, result.Issues.Count(i => i.Kind == ContractIssueKind.ConfigEntryDiscarded));
+    }
+
+    [Fact]
+    public void Validate_PresetsWithMissingItems_AreTrimmedOrDiscarded()
+    {
+        var contract = ValidContract();
+        contract.ForcedOutfitPresets![0].ClothingItemIds = [1, 77];
+        contract.ForcedOutfitPresets.Add(new ForcedOutfitPreset { Id = 2, Name = "ghosts", ClothingItemIds = [88] });
+
+        var result = _service.Validate(contract);
+
+        var preset = Assert.Single(result.Contract!.ForcedOutfitPresets!);
+        Assert.Equal([1], preset.ClothingItemIds);
+        Assert.Equal(3, result.Issues.Count(i => i.Kind == ContractIssueKind.ConfigEntryDiscarded));
+    }
+
+    [Fact]
+    public void Validate_PlugAndPlayDurations_AreClampedAndSwapped()
+    {
+        var contract = ValidContract();
+        contract.PlugAndPlayItems![0].MinDurationMinutes = 90;
+        contract.PlugAndPlayItems[0].MaxDurationMinutes = 30;
+
+        var result = _service.Validate(contract);
+
+        var item = Assert.Single(result.Contract!.PlugAndPlayItems!);
+        Assert.Equal((30, 90), (item.MinDurationMinutes, item.MaxDurationMinutes));
+        Assert.Contains(result.Issues, i => i.Kind == ContractIssueKind.RangeSwapped);
+    }
+
+    [Fact]
+    public void Validate_PermissionTypes_ClampAndDropDuplicateKinds()
+    {
+        var contract = ValidContract();
+        contract.PermissionTypes![0].BaseGrantPercent = 250;
+        contract.PermissionTypes.Add(new PermissionTypeConfig { Kind = PermissionKind.Pee, BaseGrantPercent = 10 });
+        contract.PermissionTypes.Add(new PermissionTypeConfig { Kind = (PermissionKind)99 });
+
+        var result = _service.Validate(contract);
+
+        var config = Assert.Single(result.Contract!.PermissionTypes!);
+        Assert.Equal(100, config.BaseGrantPercent);
+        Assert.Equal(2, result.Issues.Count(i => i.Kind == ContractIssueKind.ConfigEntryDiscarded));
+    }
+
+    [Fact]
     public void Apply_FailedValidation_Throws_AndChangesNothing()
     {
         var before = _profile.GetGameSettings().IdleWageAmount;
@@ -276,12 +352,19 @@ public class GameContractServiceTests : IDisposable
         current.Language = "it";
         current.SelectedCameraIndex = 2;
         current.AutoSaveIntervalMinutes = 7;
+        current.Appellatives = "old";
         current.IdleWageAmount = 5;
         _profile.SaveGameSettings(current);
 
         var contract = ValidContract();
         contract.Settings!.IdleWageAmount = 42;
         contract.Settings.PlayerName = "ignored";
+        contract.Settings.Appellatives = "pet, maid";
+        contract.ForcedOutfitPresets = [];
+        contract.PlugAndPlayItems = [];
+        contract.DiaperPlayItems = [];
+        contract.ChastityDeviceItems = [];
+        contract.PermissionTypes = [];
         contract.Wardrobe = [new ClothingItem { Id = 10, Name = "apron", Layers = [4], Tags = ["apron"] }];
         contract.OutfitRules = [];
         contract.Tasks = [];
@@ -294,6 +377,12 @@ public class GameContractServiceTests : IDisposable
         Assert.Equal("it", settings.Language);
         Assert.Equal(2, settings.SelectedCameraIndex);
         Assert.Equal(7, settings.AutoSaveIntervalMinutes);
+        Assert.Equal("pet, maid", settings.Appellatives);
+        Assert.Empty(_profile.GetForcedOutfitPresets());
+        Assert.Empty(_profile.GetPlugAndPlayItems());
+        Assert.Empty(_profile.GetDiaperPlayItems());
+        Assert.Empty(_profile.GetChastityDeviceItems());
+        Assert.Empty(_profile.GetPermissionTypes());
         Assert.Equal(["apron"], _profile.GetWardrobe().Select(i => i.Name));
         Assert.Empty(_profile.GetOutfitRules());
         Assert.Empty(_profile.GetChores());

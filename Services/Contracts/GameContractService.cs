@@ -10,7 +10,7 @@ namespace ChastiMaid.Services.Contracts;
 
 /// <summary>
 ///     The single place that builds, serializes, validates and applies a <see cref="GameContract" />.
-///     Applying replaces the profile's game-rule settings, wardrobe, outfit rules and tasks; device-level
+///     Applying replaces the profile's settings and every collection a save snapshots; machine-specific
 ///     settings are never touched.
 /// </summary>
 public class GameContractService(ProfileRepository profile)
@@ -89,13 +89,18 @@ public class GameContractService(ProfileRepository profile)
     private static PropertyInfo Prop(string name) =>
         typeof(GameSettings).GetProperty(name) ?? throw new InvalidOperationException($"Unknown setting {name}");
 
-    /// <summary>Builds a contract from the current profile (settings, wardrobe, outfit rules, tasks).</summary>
+    /// <summary>Builds a contract from the current profile: settings plus every collection a save snapshots.</summary>
     public GameContract Build() => new()
     {
         Settings = profile.GetGameSettings(),
         Wardrobe = profile.GetWardrobe(),
         OutfitRules = profile.GetOutfitRules(),
         Tasks = profile.GetChores(),
+        ForcedOutfitPresets = profile.GetForcedOutfitPresets(),
+        PlugAndPlayItems = profile.GetPlugAndPlayItems(),
+        DiaperPlayItems = profile.GetDiaperPlayItems(),
+        ChastityDeviceItems = profile.GetChastityDeviceItems(),
+        PermissionTypes = profile.GetPermissionTypes(),
     };
 
     /// <summary>Serializes a contract to human-readable JSON.</summary>
@@ -145,25 +150,20 @@ public class GameContractService(ProfileRepository profile)
                 contract.SchemaVersion.ToString(CultureInfo.InvariantCulture));
         }
 
-        if (contract.Settings is null)
-        {
-            issues.Add(new ContractIssue(ContractIssueKind.MissingSection, nameof(GameContract.Settings)));
-        }
-
-        if (contract.Wardrobe is null)
-        {
-            issues.Add(new ContractIssue(ContractIssueKind.MissingSection, nameof(GameContract.Wardrobe)));
-        }
-
-        if (contract.OutfitRules is null)
-        {
-            issues.Add(new ContractIssue(ContractIssueKind.MissingSection, nameof(GameContract.OutfitRules)));
-        }
-
-        if (contract.Tasks is null)
-        {
-            issues.Add(new ContractIssue(ContractIssueKind.MissingSection, nameof(GameContract.Tasks)));
-        }
+        (string Name, object? Value)[] sections =
+        [
+            (nameof(GameContract.Settings), contract.Settings),
+            (nameof(GameContract.Wardrobe), contract.Wardrobe),
+            (nameof(GameContract.OutfitRules), contract.OutfitRules),
+            (nameof(GameContract.Tasks), contract.Tasks),
+            (nameof(GameContract.ForcedOutfitPresets), contract.ForcedOutfitPresets),
+            (nameof(GameContract.PlugAndPlayItems), contract.PlugAndPlayItems),
+            (nameof(GameContract.DiaperPlayItems), contract.DiaperPlayItems),
+            (nameof(GameContract.ChastityDeviceItems), contract.ChastityDeviceItems),
+            (nameof(GameContract.PermissionTypes), contract.PermissionTypes),
+        ];
+        issues.AddRange(sections.Where(s => s.Value is null)
+            .Select(s => new ContractIssue(ContractIssueKind.MissingSection, s.Name)));
 
         if (issues.Count > 0)
         {
@@ -174,6 +174,14 @@ public class GameContractService(ProfileRepository profile)
         var wardrobe = NormalizeWardrobe(contract.Wardrobe!, issues);
         var rules = NormalizeRules(contract.OutfitRules!, wardrobe, issues);
         var tasks = NormalizeTasks(contract.Tasks!, issues);
+        var wardrobeIds = wardrobe.Select(i => i.Id).ToHashSet();
+        var presets = NormalizePresets(contract.ForcedOutfitPresets!, wardrobeIds, issues);
+        var plugAndPlay = NormalizePlugAndPlay(contract.PlugAndPlayItems!, wardrobeIds, issues);
+        var diaperPlay = KeepLinkedItems(contract.DiaperPlayItems!, c => c.ClothingItemId, c => c.Id = 0,
+            nameof(GameContract.DiaperPlayItems), wardrobeIds, issues);
+        var chastity = KeepLinkedItems(contract.ChastityDeviceItems!, c => c.ClothingItemId, c => c.Id = 0,
+            nameof(GameContract.ChastityDeviceItems), wardrobeIds, issues);
+        var permissions = NormalizePermissions(contract.PermissionTypes!, issues);
 
         if (wardrobe.Count == 0)
         {
@@ -184,6 +192,11 @@ public class GameContractService(ProfileRepository profile)
         contract.Wardrobe = wardrobe;
         contract.OutfitRules = rules;
         contract.Tasks = tasks;
+        contract.ForcedOutfitPresets = presets;
+        contract.PlugAndPlayItems = plugAndPlay;
+        contract.DiaperPlayItems = diaperPlay;
+        contract.ChastityDeviceItems = chastity;
+        contract.PermissionTypes = permissions;
         return new ContractValidationResult(contract, issues);
     }
 
@@ -201,10 +214,8 @@ public class GameContractService(ProfileRepository profile)
         // Device-level properties are not in the file; carry the current ones over so they survive the upsert.
         var current = profile.GetGameSettings();
         settings.PlayerName = current.PlayerName;
-        settings.Appellatives = current.Appellatives;
         settings.Language = current.Language;
         settings.AutoSaveIntervalMinutes = current.AutoSaveIntervalMinutes;
-        settings.CornertimeVoiceEnabled = current.CornertimeVoiceEnabled;
         settings.SelectedCameraIndex = current.SelectedCameraIndex;
 
         // ponytail: no cross-collection transaction; validation ran first, so a failure here is a DB fault.
@@ -212,6 +223,11 @@ public class GameContractService(ProfileRepository profile)
         profile.ReplaceWardrobe(contract.Wardrobe!);
         profile.ReplaceOutfitRules(contract.OutfitRules!);
         profile.ReplaceChores(contract.Tasks!);
+        profile.ReplaceForcedOutfitPresets(contract.ForcedOutfitPresets!);
+        profile.ReplacePlugAndPlayItems(contract.PlugAndPlayItems!);
+        profile.ReplaceDiaperPlayItems(contract.DiaperPlayItems!);
+        profile.ReplaceChastityDeviceItems(contract.ChastityDeviceItems!);
+        profile.ReplacePermissionTypes(contract.PermissionTypes!);
     }
 
     private static ContractValidationResult Fatal(ContractIssueKind kind, string subject) =>
@@ -321,6 +337,105 @@ public class GameContractService(ProfileRepository profile)
             task.FrequencyDays = ClampReport(task.FrequencyDays, 1, 365, task.Name, issues);
             task.MinCompletionMinutes = ClampReport(task.MinCompletionMinutes, 0, 1_440, task.Name, issues);
             kept.Add(task);
+        }
+
+        return kept;
+    }
+
+    private static ContractIssue Discarded(string section, string detail) =>
+        new(ContractIssueKind.ConfigEntryDiscarded, $"{section}: {detail}");
+
+    /// <summary>
+    ///     Keeps entries whose wardrobe item exists, one per item. Config entry ids mean nothing to anyone
+    ///     (only the item id is referenced), so they are reset and reassigned by the database.
+    /// </summary>
+    private static List<T> KeepLinkedItems<T>(List<T> entries, Func<T, int> itemId, Action<T> resetId,
+        string section, HashSet<int> wardrobeIds, List<ContractIssue> issues)
+    {
+        var seen = new HashSet<int>();
+        var kept = new List<T>();
+        foreach (var entry in entries)
+        {
+            var id = itemId(entry);
+            if (!wardrobeIds.Contains(id) || !seen.Add(id))
+            {
+                issues.Add(Discarded(section, $"item {id}"));
+                continue;
+            }
+
+            resetId(entry);
+            kept.Add(entry);
+        }
+
+        return kept;
+    }
+
+    private static List<PlugAndPlayItemConfig> NormalizePlugAndPlay(List<PlugAndPlayItemConfig> entries,
+        HashSet<int> wardrobeIds, List<ContractIssue> issues)
+    {
+        var kept = KeepLinkedItems(entries, c => c.ClothingItemId, c => c.Id = 0,
+            nameof(GameContract.PlugAndPlayItems), wardrobeIds, issues);
+        foreach (var c in kept)
+        {
+            var subject = $"PlugAndPlayItems: item {c.ClothingItemId}";
+            c.MinDurationMinutes = ClampReport(c.MinDurationMinutes, 1, 1_440, subject, issues);
+            c.MaxDurationMinutes = ClampReport(c.MaxDurationMinutes, 1, 1_440, subject, issues);
+            if (c.MinDurationMinutes > c.MaxDurationMinutes)
+            {
+                (c.MinDurationMinutes, c.MaxDurationMinutes) = (c.MaxDurationMinutes, c.MinDurationMinutes);
+                issues.Add(new ContractIssue(ContractIssueKind.RangeSwapped, subject));
+            }
+        }
+
+        return kept;
+    }
+
+    private static List<ForcedOutfitPreset> NormalizePresets(List<ForcedOutfitPreset> presets,
+        HashSet<int> wardrobeIds, List<ContractIssue> issues)
+    {
+        var kept = new List<ForcedOutfitPreset>();
+        var ids = new HashSet<int>();
+        foreach (var preset in presets)
+        {
+            var itemIds = (preset.ClothingItemIds ?? []).Distinct().ToList();
+            preset.ClothingItemIds = [..itemIds.Where(wardrobeIds.Contains)];
+            issues.AddRange(itemIds.Where(id => !wardrobeIds.Contains(id))
+                .Select(id => Discarded(nameof(GameContract.ForcedOutfitPresets), $"{preset.Name}: item {id}")));
+
+            if (string.IsNullOrWhiteSpace(preset.Name) || preset.ClothingItemIds.Count == 0
+                || (preset.Id > 0 && !ids.Add(preset.Id)))
+            {
+                issues.Add(Discarded(nameof(GameContract.ForcedOutfitPresets), preset.Name ?? ""));
+                continue;
+            }
+
+            preset.HoursPerSeverityPoint = ClampFinite(preset.HoursPerSeverityPoint, 0.1, 1_000,
+                $"ForcedOutfitPresets: {preset.Name}", issues);
+            kept.Add(preset);
+        }
+
+        return kept;
+    }
+
+    private static List<PermissionTypeConfig> NormalizePermissions(List<PermissionTypeConfig> configs,
+        List<ContractIssue> issues)
+    {
+        var kept = new List<PermissionTypeConfig>();
+        var kinds = new HashSet<PermissionKind>();
+        foreach (var config in configs)
+        {
+            if (!Enum.IsDefined(config.Kind) || !kinds.Add(config.Kind))
+            {
+                issues.Add(Discarded(nameof(GameContract.PermissionTypes), config.Kind.ToString()));
+                continue;
+            }
+
+            var subject = $"PermissionTypes: {config.Kind}";
+            config.Id = 0;
+            config.BaseGrantPercent = ClampReport(config.BaseGrantPercent, 0, 100, subject, issues);
+            config.DurationMinutes = ClampReport(config.DurationMinutes, 1, 1_440, subject, issues);
+            config.CooldownMinutes = ClampReport(config.CooldownMinutes, 1, 10_080, subject, issues);
+            kept.Add(config);
         }
 
         return kept;

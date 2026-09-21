@@ -1,9 +1,10 @@
 namespace ChastiMaid.Models;
 
 /// <summary>
-///     The game rules a new game is played under: game-rule settings plus the wardrobe, outfit rules and
-///     tasks that define it. Serialized as a <c>.contract.json</c> file. Device-level and personal settings
-///     are excluded (see <see cref="GameSettings" />) and the file carries no acceptance information.
+///     Everything a new game is created from: settings plus every profile collection that a save snapshots
+///     (wardrobe, outfit rules, tasks, punishment and permission configuration). Serialized as a
+///     <c>.contract.json</c> file. Machine-specific and personal settings are excluded (see
+///     <see cref="GameSettings" />) and the file carries no acceptance information or progress.
 ///     Sections are nullable so a file that omits one can be told apart from one that has it empty.
 /// </summary>
 public class GameContract
@@ -25,4 +26,19 @@ public class GameContract
 
     /// <summary>Recurring tasks (chores).</summary>
     public List<Chore>? Tasks { get; set; }
+
+    /// <summary>Forced Outfit punishment presets; their item ids refer to <see cref="Wardrobe" />.</summary>
+    public List<ForcedOutfitPreset>? ForcedOutfitPresets { get; set; }
+
+    /// <summary>Wardrobe items eligible for Plug and Play, with their duration range.</summary>
+    public List<PlugAndPlayItemConfig>? PlugAndPlayItems { get; set; }
+
+    /// <summary>Wardrobe items that count as diapers for Diaper Play.</summary>
+    public List<DiaperPlayItemConfig>? DiaperPlayItems { get; set; }
+
+    /// <summary>Wardrobe items that count as chastity devices.</summary>
+    public List<ChastityDeviceItemConfig>? ChastityDeviceItems { get; set; }
+
+    /// <summary>Per-kind permission tuning (grant chance, duration, cooldown).</summary>
+    public List<PermissionTypeConfig>? PermissionTypes { get; set; }
 }

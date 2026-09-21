@@ -157,6 +157,36 @@ public class ProfileRepository(LiteDatabase db)
         Settings.Upsert(settings);
     }
 
+    public void ReplacePlugAndPlayItems(IEnumerable<PlugAndPlayItemConfig> items)
+    {
+        PlugAndPlayItems.DeleteAll();
+        PlugAndPlayItems.InsertBulk(items);
+    }
+
+    public void ReplaceDiaperPlayItems(IEnumerable<DiaperPlayItemConfig> items)
+    {
+        DiaperPlayItems.DeleteAll();
+        DiaperPlayItems.InsertBulk(items);
+    }
+
+    public void ReplaceChastityDeviceItems(IEnumerable<ChastityDeviceItemConfig> items)
+    {
+        ChastityDeviceItems.DeleteAll();
+        ChastityDeviceItems.InsertBulk(items);
+    }
+
+    public void ReplaceForcedOutfitPresets(IEnumerable<ForcedOutfitPreset> presets)
+    {
+        ForcedOutfitPresets.DeleteAll();
+        ForcedOutfitPresets.InsertBulk(presets);
+    }
+
+    public void ReplacePermissionTypes(IEnumerable<PermissionTypeConfig> configs)
+    {
+        PermissionTypes.DeleteAll();
+        PermissionTypes.InsertBulk(configs);
+    }
+
     public List<ForcedOutfitPreset> GetForcedOutfitPresets()
     {
         return ForcedOutfitPresets.FindAll().ToList();

@@ -17,6 +17,7 @@ public enum ContractIssueKind
     WardrobeItemDiscarded,
     OutfitRuleDiscarded,
     TaskDiscarded,
+    ConfigEntryDiscarded,
 }
 
 /// <summary>One validation problem. <paramref name="Subject" /> is the setting, item, tag pair or section concerned.</summary>

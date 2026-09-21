@@ -4,9 +4,10 @@ using LiteDB;
 namespace ChastiMaid.Models;
 
 /// <summary>
-///     Game settings singleton. Properties marked <c>[JsonIgnore]</c> are device-level or personal and are
-///     therefore excluded from the exported game contract (see <c>GameContractService</c>); LiteDB persistence
-///     is unaffected. Every other property is a game rule and travels with the contract.
+///     Game settings singleton. Properties marked <c>[JsonIgnore]</c> are specific to the machine or the person
+///     running the app (identity, language, autosave, camera) and are therefore excluded from the exported game
+///     contract (see <c>GameContractService</c>); LiteDB persistence is unaffected. Every other property is part
+///     of the game and travels with the contract.
 /// </summary>
 public class GameSettings
 {
@@ -18,7 +19,7 @@ public class GameSettings
 
     // Summon voice — comma-separated list of address terms the employer may use when calling the
     // player to a popup (in addition to PlayerName), e.g. "pet, maid, girl"
-    [JsonIgnore] public string Appellatives { get; set; } = "";
+    public string Appellatives { get; set; } = "";
 
     // Localization: "system", "en", or "it". Requires a restart to take effect.
     [JsonIgnore] public string Language { get; set; } = "system";
@@ -81,7 +82,7 @@ public class GameSettings
     public int CornertimeMovementSensitivityPercent { get; set; } = 3; // % of changed pixels counted as movement
     public int CornertimeMovementPenaltyMinSeconds { get; set; } = 10; // min seconds added to the required duration per detected movement
     public int CornertimeMovementPenaltyMaxSeconds { get; set; } = 20; // max seconds added to the required duration per detected movement
-    [JsonIgnore] public bool CornertimeVoiceEnabled { get; set; } = true; // spoken narration (the completion chime always plays)
+    public bool CornertimeVoiceEnabled { get; set; } = true; // spoken narration (the completion chime always plays)
     public int CornertimeMaxRequiredSeconds { get; set; } = 600; // ceiling applied when assigning or aggravating a Cornertime punishment
 
     // Writing Lines punishment
