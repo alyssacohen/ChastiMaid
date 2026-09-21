@@ -13,6 +13,7 @@ using ChastiMaid.Models;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.Services.Content;
+using ChastiMaid.Services.Contracts;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -26,6 +27,10 @@ public partial class SettingsViewModel : ViewModelBase
 
     // --- Dialog ---
     [Reactive] private ViewModelBase? _activeDialog;
+
+    // Replace-confirmation for importing a contract; separate from ActiveDialog, whose overlay is the
+    // Save/Discard/Cancel dialog.
+    [Reactive] private ConfirmDialogViewModel? _contractDialog;
     [Reactive] private TestOutfitDialogViewModel? _testOutfitDialog;
     [Reactive] private IReadOnlyList<CameraOption> _availableCameras = [];
     [Reactive] private int _autoSaveInterval;
@@ -413,6 +418,59 @@ public partial class SettingsViewModel : ViewModelBase
         });
         ExportContentCommand = ReactiveCommand.CreateFromTask(ExportContent);
         ImportContentCommand = ReactiveCommand.CreateFromTask(ImportContent);
+        ExportContractCommand = ReactiveCommand.CreateFromTask(ExportContract);
+        ImportContractCommand = ReactiveCommand.CreateFromTask(ImportContract);
+    }
+
+    private async Task ExportContract()
+    {
+        var path = await ContractFileDialogs.PickSaveAsync(Resources.Get("ContractExportDialogTitle"));
+        if (path is null)
+        {
+            return;
+        }
+
+        try
+        {
+            var contracts = new GameContractService(_repo);
+            await File.WriteAllTextAsync(path, contracts.Serialize(contracts.Build()));
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            ContentActionStatusMessage = string.Format(Resources.Get("ContractExportFailedStatus"), e.Message);
+            return;
+        }
+
+        // The contract is built from the saved profile, so pending edits in this screen are not in it.
+        ContentActionStatusMessage = Resources.Get("ContractExportedStatus") +
+                                     (IsDirty ? Resources.Get("ContractExportUnsavedNote") : "");
+    }
+
+    private async Task ImportContract()
+    {
+        var outcome = await new ContractImportFlow(new GameContractService(_repo))
+            .RunAsync(ShowContractDialog, IsDirty);
+
+        switch (outcome.Kind)
+        {
+            case ContractImportOutcomeKind.Failed:
+                ContentActionStatusMessage = outcome.Message;
+                break;
+            case ContractImportOutcomeKind.Applied:
+                // Same rebuild as ImportContent: the whole screen must reflect the replaced profile.
+                var fresh = new SettingsViewModel(_mainVm, _returnTo, outcome.Message);
+                _mainVm.ReplaceSettingsCache(fresh);
+                NavigateAway(fresh);
+                break;
+        }
+    }
+
+    private async Task<bool> ShowContractDialog(ConfirmDialogViewModel dialog)
+    {
+        ContractDialog = dialog;
+        var confirmed = await dialog.Result;
+        ContractDialog = null;
+        return confirmed;
     }
 
     private async Task ExportContent()
@@ -616,6 +674,8 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand CollapseExpandedWardrobeItemCommand { get; }
     public ICommand ExportContentCommand { get; }
     public ICommand ImportContentCommand { get; }
+    public ICommand ExportContractCommand { get; }
+    public ICommand ImportContractCommand { get; }
 
     // --- Wardrobe helpers ---
     private IEnumerable<string> AllUsedTags => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);

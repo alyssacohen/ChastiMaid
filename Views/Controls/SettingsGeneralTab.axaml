@@ -376,6 +376,21 @@
                             Content="{converters:Tr SettingsImportContent}" />
                     </StackPanel>
                     <TextBlock
+                        Classes="Caption"
+                        Margin="0,8,0,0"
+                        Text="{converters:Tr SettingsContractDescription}"
+                        TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ExportContractCommand}"
+                            Content="{converters:Tr SettingsExportContract}" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ImportContractCommand}"
+                            Content="{converters:Tr SettingsImportContract}" />
+                    </StackPanel>
+                    <TextBlock
                         Classes="BodySmall"
                         IsVisible="{Binding ContentActionStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                         Text="{Binding ContentActionStatusMessage}"

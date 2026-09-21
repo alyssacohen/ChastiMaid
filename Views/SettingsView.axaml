@@ -3,6 +3,7 @@
     x:DataType="vm:SettingsViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:converters="using:ChastiMaid.Converters"
+    xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:views="using:ChastiMaid.Views.Controls"
     xmlns:vm="using:ChastiMaid.ViewModels"
@@ -210,6 +211,11 @@
                 </StackPanel>
             </Border>
         </Panel>
+
+        <!--  Contract import replace-confirmation  -->
+        <dialogs:ConfirmDialog
+            DataContext="{Binding ContractDialog}"
+            IsVisible="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).ContractDialog, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}" />
 
         <views:SettingsTestOutfitOverlay />
 

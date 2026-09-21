@@ -1593,6 +1593,102 @@
   <data name="SettingsContentImportDiscardedStatus" xml:space="preserve">
     <value> {0} regole di abbinamento sono state scartate perché fanno riferimento a capi non presenti nel guardaroba importato: {1}.</value>
   </data>
+  <data name="SettingsContractDescription" xml:space="preserve">
+    <value>Esporta tutte le impostazioni di gioco in un unico file contratto — compresi guardaroba, regole degli abbinamenti, task, punizioni e permessi — oppure caricane uno per sostituire integralmente le condizioni attuali. Nome, lingua, fotocamera e salvataggio automatico non sono mai inclusi.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="SettingsExportContract" xml:space="preserve">
+    <value>Esporta contratto</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="SettingsImportContract" xml:space="preserve">
+    <value>Importa contratto</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractExportDialogTitle" xml:space="preserve">
+    <value>Esporta contratto</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractImportDialogTitle" xml:space="preserve">
+    <value>Importa contratto</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractExportedStatus" xml:space="preserve">
+    <value>Contratto esportato.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractExportUnsavedNote" xml:space="preserve">
+    <value> Le modifiche non salvate nelle Impostazioni non sono incluse.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractExportFailedStatus" xml:space="preserve">
+    <value>Non è stato possibile scrivere il contratto: {0}</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReadFailedStatus" xml:space="preserve">
+    <value>Non è stato possibile leggere il file: {0}</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractRejectedStatus" xml:space="preserve">
+    <value>Nulla è stato modificato.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractFatalInvalidFile" xml:space="preserve">
+    <value>Il file non è un contratto valido.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractFatalUnsupportedVersion" xml:space="preserve">
+    <value>Questo contratto usa una versione non supportata ({0}).</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractFatalMissingSection" xml:space="preserve">
+    <value>Nel contratto manca una sezione: {0}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractFatalEmptyWardrobe" xml:space="preserve">
+    <value>Il contratto non contiene capi utilizzabili.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReplaceTitle" xml:space="preserve">
+    <value>Sostituire le condizioni attuali?</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReplaceMessage" xml:space="preserve">
+    <value>Caricando questo contratto Voi sostituirete impostazioni, guardaroba, regole degli abbinamenti, task, punizioni e permessi attuali. Nome, lingua, fotocamera e salvataggio automatico restano invariati.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReplaceReportHeader" xml:space="preserve">
+    <value>Leggendo il file è stato necessario correggere alcune voci:</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReplaceUnsavedNote" xml:space="preserve">
+    <value>Le modifiche non salvate nelle Impostazioni andranno perse.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReplaceConfirm" xml:space="preserve">
+    <value>Sostituisci</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractLoadedStatus" xml:space="preserve">
+    <value>Contratto caricato: {0} capi, {1} regole di abbinamento e {2} task.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReportClamped" xml:space="preserve">
+    <value>Riportati entro i limiti consentiti: {0}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReportSwapped" xml:space="preserve">
+    <value>Minimo e massimo invertiti: {0}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReportDiscarded" xml:space="preserve">
+    <value>Scartati: {0}.</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractReportMore" xml:space="preserve">
+    <value> (+{0} altri)</value>
+    <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
   <data name="EndSessionConfirmQuestion" xml:space="preserve">
     <value>Siete sicura di voler terminare questa sessione?</value>
   </data>
