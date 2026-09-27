@@ -1,0 +1,64 @@
+using ChastiMaid.Repositories;
+using ChastiMaid.Services;
+using ChastiMaid.Services.Content;
+using ChastiMaid.Services.Contracts;
+using LiteDB;
+
+namespace ChastiMaid.Tests.Services.Contracts;
+
+/// <summary>
+///     Reproduces "New Game" on a profile that was only ever seeded by <see cref="DataSeeder.SeedIfEmpty"/>
+///     and never touched through Settings — the reported failure scenario (blank contract screen, crash on
+///     Accept) on a genuinely fresh install.
+/// </summary>
+public class NewGameFreshProfileTests : IDisposable
+{
+    private readonly string _root = Path.Combine(Path.GetTempPath(), "ChastiMaidTests_" + Guid.NewGuid());
+    private readonly LiteDatabase _profileDb = new(":memory:");
+
+    public NewGameFreshProfileTests()
+    {
+        Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", _root);
+    }
+
+    public void Dispose()
+    {
+        _profileDb.Dispose();
+        Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", null);
+        try
+        {
+            // ponytail: the save's LiteDatabase (opened inside SaveRepository.CreateFromProfile) isn't
+            // reachable here to dispose explicitly; best-effort cleanup, the OS temp dir gets swept anyway.
+            if (Directory.Exists(_root))
+            {
+                Directory.Delete(_root, recursive: true);
+            }
+        }
+        catch (IOException)
+        {
+        }
+    }
+
+    [Fact]
+    public void FreshlySeededProfile_NewGameFlow_DoesNotThrow()
+    {
+        var profile = new ProfileRepository(_profileDb);
+        var loader = new ContentLoaderService("en");
+        DataSeeder.SeedIfEmpty(profile, loader);
+
+        var reread = profile.GetGameSettings();
+        Assert.NotNull(reread.ParseAppellatives()); // null Appellatives after the LiteDB round-trip must not throw
+
+        var contract = new GameContractService(profile).Build();
+        var clauses = ContractClauseBuilder.Build(contract);
+        Assert.NotEmpty(clauses);
+
+        var settings = profile.GetGameSettings();
+        var debt = settings.RollDebt();
+
+        using var dbService = new DatabaseService();
+        var save = SaveRepository.CreateFromProfile(profile, dbService, "test_slot", debt);
+
+        Assert.NotNull(save.GetGameState());
+    }
+}

@@ -120,7 +120,9 @@ public class GameSettings
     // is exactly what gets excluded.
     public IReadOnlyList<string> ParseAppellatives()
     {
-        return Appellatives
+        // ponytail: LiteDB round-trips an empty string field as null, so a freshly seeded profile
+        // (never saved through Settings) reads back Appellatives == null, not "".
+        return (Appellatives ?? "")
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Where(a => a.Length <= AppellativeMaxLength)
             .Take(AppellativeMaxCount)
