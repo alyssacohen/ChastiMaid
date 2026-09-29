@@ -38,7 +38,10 @@ public class App : Application
             ApplyLanguage(profileRepo.GetGameSettings().Language);
             var slotManager = new SaveSlotManager(_databaseService);
             _autoSaveService = new AutoSaveService();
-            _webcamService = new WebcamPreviewService();
+            _webcamService = new WebcamPreviewService
+            {
+                PreferredCameraIndex = profileRepo.GetGameSettings().SelectedCameraIndex
+            };
             _ttsService = new SherpaOnnxTtsService();
             _sttService = new SherpaOnnxSttService();
 

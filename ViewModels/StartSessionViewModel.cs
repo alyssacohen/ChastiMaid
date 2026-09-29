@@ -192,9 +192,8 @@ public partial class StartSessionViewModel : ViewModelBase
     /// </summary>
     private void ShowHardwareWarningIfNeeded(SaveRepository saveRepo)
     {
-        var settings = saveRepo.GetGameSettings();
         var availability = HardwareAvailability.Check(
-            WebcamPreviewService.EnumerateCameras(), settings.SelectedCameraIndex, _mainVm.Stt);
+            WebcamPreviewService.EnumerateCameras(), _mainVm.Webcam.PreferredCameraIndex, _mainVm.Stt);
         if (!availability.HasAnyIssue)
         {
             return;

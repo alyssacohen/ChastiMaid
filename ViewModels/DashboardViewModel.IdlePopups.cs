@@ -170,7 +170,7 @@ public partial class DashboardViewModel
             return false;
         }
 
-        return WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex);
+        return WebcamPreviewService.DetectWebcam(_mainVm.Webcam.PreferredCameraIndex);
     }
 
     private bool IsSelfCheckAvailable()
@@ -246,7 +246,7 @@ public partial class DashboardViewModel
         _ => throw new ArgumentOutOfRangeException(nameof(kind))
     };
 
-    private bool IsWebcamAvailable() => WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex);
+    private bool IsWebcamAvailable() => WebcamPreviewService.DetectWebcam(_mainVm.Webcam.PreferredCameraIndex);
 
     private void ShowIdlePopup()
     {
@@ -352,12 +352,12 @@ public partial class DashboardViewModel
             }
         }
 
-        if (candidates.Count == 0 || !_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
+        if (candidates.Count == 0 || !_mainVm.Webcam.Start(_mainVm.Webcam.PreferredCameraIndex))
         {
             return;
         }
 
-        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_settings.SelectedCameraIndex);
+        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_mainVm.Webcam.PreferredCameraIndex);
 
         IsPoseForCameraPopupActive = true;
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
@@ -414,12 +414,12 @@ public partial class DashboardViewModel
 
     private void ShowCurtsyPopup()
     {
-        if (!_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
+        if (!_mainVm.Webcam.Start(_mainVm.Webcam.PreferredCameraIndex))
         {
             return;
         }
 
-        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_settings.SelectedCameraIndex);
+        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_mainVm.Webcam.PreferredCameraIndex);
 
         IsCurtsyPopupActive = true;
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
@@ -445,14 +445,14 @@ public partial class DashboardViewModel
 
     private void OnKneelConfirm()
     {
-        if (!_mainVm.Webcam.Start(_settings.SelectedCameraIndex))
+        if (!_mainVm.Webcam.Start(_mainVm.Webcam.PreferredCameraIndex))
         {
             PopupOutcomeMessage = Resources.Get("KneelFailedMessage");
             ShowPopupOutcome(true);
             return;
         }
 
-        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_settings.SelectedCameraIndex);
+        _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(_mainVm.Webcam.PreferredCameraIndex);
 
         IsKneelFramingActive = true;
         this.RaisePropertyChanged(nameof(IsShowingQuestionPanel));
@@ -503,7 +503,7 @@ public partial class DashboardViewModel
                 try
                 {
                     var path = NewMediaPath("kneel", "png");
-                    if (await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, _settings.SelectedCameraIndex))
+                    if (await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, _mainVm.Webcam.PreferredCameraIndex))
                     {
                         photos.Add(path);
                     }

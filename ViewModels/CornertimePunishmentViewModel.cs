@@ -37,7 +37,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         _requiredSeconds = punishment.CornertimeRequiredSeconds ?? 0;
         _maxSeconds = punishment.CornertimeMaxSeconds ?? _requiredSeconds;
 
-        MainVm.Webcam.Start(_settings.SelectedCameraIndex);
+        MainVm.Webcam.Start(MainVm.Webcam.PreferredCameraIndex);
 
         // Loading the voice model alone takes several seconds; kick it off now so it's ready by
         // the time the user confirms framing, instead of stalling the first narration line.

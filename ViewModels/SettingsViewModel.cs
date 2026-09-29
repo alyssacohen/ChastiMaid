@@ -482,7 +482,15 @@ public partial class SettingsViewModel : ViewModelBase
         Dispatcher.UIThread.Post(() =>
         {
             AvailableCameras = options;
-            SelectedCamera = options.FirstOrDefault(c => c.Index == persistedCameraIndex) ?? options[0];
+            if (options.Any(c => c.Index == persistedCameraIndex))
+            {
+                SyncSelectedCamera(persistedCameraIndex);
+            }
+            else
+            {
+                SelectedCamera = options[0]; // saved camera is gone: a real change for the user to save
+            }
+
             WebcamStatusDisplay = Resources.Get(availability.HasWebcam ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
             var speechAvailable = availability.HasSpeechRecognizer && availability.HasMicrophone;
             SpeechRecognitionStatusDisplay = Resources.Get(
@@ -490,6 +498,17 @@ public partial class SettingsViewModel : ViewModelBase
             IsMicrophoneAvailableForTest = speechAvailable;
             TestQuoteUnavailableTooltip = speechAvailable ? null : Resources.Get("HardwareCheckSpeechRecognizerMissing");
         });
+    }
+
+    /// <summary>
+    ///     Shows <paramref name="index" /> as the saved camera — its real name replacing the startup placeholder,
+    ///     or a pick made in a live selector elsewhere — without marking the General tab dirty.
+    /// </summary>
+    internal void SyncSelectedCamera(int index)
+    {
+        var option = AvailableCameras.FirstOrDefault(c => c.Index == index) ?? new CameraOption(index, $"Camera {index}");
+        _snapshot.Item9 = option;
+        SelectedCamera = option;
     }
 
     /// <summary>Repoints the "back"/"discard" navigation target when the cached instance is reopened from a different screen.</summary>
@@ -1018,6 +1037,7 @@ public partial class SettingsViewModel : ViewModelBase
         s.KneelPhotoMinIntervalSeconds = KneelPhotoMinInterval;
         s.KneelPhotoMaxIntervalSeconds = KneelPhotoMaxInterval;
         s.SelectedCameraIndex = SelectedCamera.Index;
+        _mainVm.Webcam.PreferredCameraIndex = SelectedCamera.Index;
         s.Language = SelectedLanguage.Code;
         s.PlugAndPlayEnabled = PlugAndPlayEnabled;
         s.DiaperPlayEnabled = DiaperPlayEnabled;

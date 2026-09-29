@@ -18,7 +18,7 @@ public class CameraSetupViewModel : ViewModelBase
         _saveRepo = saveRepo;
         _chore = chore;
 
-        var cameraIndex = saveRepo.GetGameSettings().SelectedCameraIndex;
+        var cameraIndex = mainVm.Webcam.PreferredCameraIndex;
         _mainVm.Webcam.Start(cameraIndex);
         _ = _mainVm.Webcam.RefreshAvailableCamerasAsync(cameraIndex);
 

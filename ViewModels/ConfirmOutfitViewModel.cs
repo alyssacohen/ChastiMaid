@@ -78,7 +78,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Video, videoPath,
             Resources.Get("ConfirmOutfitPreviewMessage"),
             Resources.Get("ConfirmOutfitNoWebcamMessage"),
-            cameraIndex: _saveRepo.GetGameSettings().SelectedCameraIndex);
+            cameraIndex: _mainVm.Webcam.PreferredCameraIndex);
         ActiveDialog = dialog;
         var recordedPath = await dialog.Result;
         ActiveDialog = null;

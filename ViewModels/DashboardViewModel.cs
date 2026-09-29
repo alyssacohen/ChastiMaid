@@ -373,7 +373,7 @@ public partial class DashboardViewModel : ViewModelBase
         }
 
         // Webcam available — navigate to camera setup
-        if (WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex))
+        if (WebcamPreviewService.DetectWebcam(_mainVm.Webcam.PreferredCameraIndex))
         {
             // CameraSetupViewModel replaces this instance with a brand-new DashboardViewModel on
             // both Confirm and Cancel (see its constructor) — NavigateTo never disposes the page it
@@ -512,7 +512,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _captureCts = new CancellationTokenSource();
         var slotName = _saveRepo.GetGameState()?.SlotName ?? "unknown";
-        SilentCaptureLoop.Start(_settings, slotName, "chore", _captureCts.Token);
+        SilentCaptureLoop.Start(_settings, _mainVm.Webcam.PreferredCameraIndex, slotName, "chore", _captureCts.Token);
     }
 
     private void StopSilentCapture()
@@ -644,7 +644,7 @@ public partial class DashboardViewModel : ViewModelBase
         switch (punishment.Kind)
         {
             case PunishmentKind.Cornertime:
-                if (WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex))
+                if (WebcamPreviewService.DetectWebcam(_mainVm.Webcam.PreferredCameraIndex))
                 {
                     _mainVm.NavigateTo(new CornertimePunishmentViewModel(_mainVm, _saveRepo, punishment));
                 }

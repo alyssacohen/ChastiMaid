@@ -10,7 +10,8 @@ namespace ChastiMaid.Services;
 /// </summary>
 public static class SilentCaptureLoop
 {
-    public static void Start(GameSettings settings, string slotName, string filePrefix, CancellationToken ct)
+    public static void Start(GameSettings settings, int cameraIndex, string slotName, string filePrefix,
+        CancellationToken ct)
     {
         var dir = AppPaths.SaveDir(slotName);
         var random = new Random();
@@ -33,14 +34,14 @@ public static class SilentCaptureLoop
                     if (random.Next(2) == 0)
                     {
                         var path = Path.Combine(dir, $"{filePrefix}_{timestamp}.png");
-                        await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, settings.SelectedCameraIndex);
+                        await WebcamPreviewService.CaptureFrameStandaloneAsync(path, ct, cameraIndex);
                     }
                     else
                     {
                         var duration = random.Next(3, 11);
                         var path = Path.Combine(dir, $"{filePrefix}_{timestamp}.avi");
                         await WebcamPreviewService.RecordVideoStandaloneAsync(path, duration, ct: ct,
-                            cameraIndex: settings.SelectedCameraIndex);
+                            cameraIndex: cameraIndex);
                     }
                 }
                 catch (OperationCanceledException)

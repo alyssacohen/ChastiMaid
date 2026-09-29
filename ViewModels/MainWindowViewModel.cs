@@ -38,6 +38,7 @@ public partial class MainWindowViewModel : ViewModelBase
         SaveSlotManager = saveSlotManager;
         AutoSaveService = autoSaveService;
         Webcam = webcam;
+        Webcam.PreferredCameraChanged += OnPreferredCameraChanged;
         Tts = tts;
         Stt = stt;
         CurrentPage = new LoadingViewModel();
@@ -78,6 +79,18 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _activeSaveDb?.Dispose();
         _activeSaveDb = null;
+    }
+
+    /// <summary>
+    ///     The camera is a device setting, so a pick made in any live selector goes to the profile — not the
+    ///     save, whose settings are a new-game snapshot — and into the cached Settings screen.
+    /// </summary>
+    private void OnPreferredCameraChanged(int index)
+    {
+        var settings = ProfileRepository.GetGameSettings();
+        settings.SelectedCameraIndex = index;
+        ProfileRepository.SaveGameSettings(settings);
+        _cachedSettingsVm?.SyncSelectedCamera(index);
     }
 
     public void NavigateTo(ViewModelBase page)

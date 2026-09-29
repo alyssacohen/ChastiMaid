@@ -47,7 +47,7 @@ public partial class SafeLockViewModel : ViewModelBase
         var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Photo, tempPath,
             Resources.Get("SafeLockPreviewMessage"),
             Resources.Get("SafeLockNoWebcamMessage"),
-            Resources.Get("SafeLockContinueWithoutSafe"), cameraIndex: _saveRepo.GetGameSettings().SelectedCameraIndex,
+            Resources.Get("SafeLockContinueWithoutSafe"), cameraIndex: _mainVm.Webcam.PreferredCameraIndex,
             pixelateCenterOverlay: true);
         ActiveDialog = dialog;
         var capturedPath = await dialog.Result;

@@ -93,14 +93,14 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
 
     private void StartSilentCaptureIfAvailable()
     {
-        if (!WebcamPreviewService.DetectWebcam(_settings.SelectedCameraIndex))
+        if (!WebcamPreviewService.DetectWebcam(MainVm.Webcam.PreferredCameraIndex))
         {
             return;
         }
 
         _captureCts = new CancellationTokenSource();
         var slotName = SaveRepo.GetGameState()?.SlotName ?? "unknown";
-        SilentCaptureLoop.Start(_settings, slotName, "writingLines", _captureCts.Token);
+        SilentCaptureLoop.Start(_settings, MainVm.Webcam.PreferredCameraIndex, slotName, "writingLines", _captureCts.Token);
     }
 
     /// <summary>Called from the View's TextInput handler for every character the player types. There is no

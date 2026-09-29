@@ -18,18 +18,20 @@
             PointerPressed="OnDialogBoxPointerPressed">
             <Panel>
                 <StackPanel IsVisible="{Binding IsShowingQuestionPanel}" Spacing="16">
-                    <controls:WebcamPreviewControl
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}"
-                        Service="{Binding Webcam}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <ComboBox
-                        HorizontalAlignment="Stretch"
-                        IsVisible="{Binding Webcam.HasMultipleCameras}"
-                        ItemsSource="{Binding Webcam.AvailableCameras}"
-                        SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    <!-- Camera list outlives the popup that filled it, so the selector must share the preview's gate. -->
+                    <StackPanel IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}" Spacing="16">
+                        <controls:WebcamPreviewControl
+                            Height="{Binding PopupPreviewHeight}"
+                            HorizontalAlignment="Center"
+                            Service="{Binding Webcam}"
+                            Stretch="UniformToFill"
+                            Width="{Binding PopupPreviewWidth}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                    </StackPanel>
                     <Image
                         Height="{Binding PopupPreviewHeight}"
                         HorizontalAlignment="Center"
@@ -64,11 +66,6 @@
                         Service="{Binding Webcam}"
                         Stretch="UniformToFill"
                         Width="{Binding PopupPreviewWidth}" />
-                    <ComboBox
-                        HorizontalAlignment="Stretch"
-                        IsVisible="{Binding Webcam.HasMultipleCameras}"
-                        ItemsSource="{Binding Webcam.AvailableCameras}"
-                        SelectedItem="{Binding Webcam.SelectedCamera}" />
                     <TextBlock
                         Classes="EmployerVoice"
                         HorizontalAlignment="Center"
@@ -99,11 +96,6 @@
                         Service="{Binding Webcam}"
                         Stretch="UniformToFill"
                         Width="{Binding PopupPreviewWidth}" />
-                    <ComboBox
-                        HorizontalAlignment="Stretch"
-                        IsVisible="{Binding Webcam.HasMultipleCameras}"
-                        ItemsSource="{Binding Webcam.AvailableCameras}"
-                        SelectedItem="{Binding Webcam.SelectedCamera}" />
                     <TextBlock
                         Classes="EmployerVoice"
                         HorizontalAlignment="Center"
@@ -121,12 +113,6 @@
                         Service="{Binding Webcam}"
                         Stretch="UniformToFill"
                         Width="{Binding PopupPreviewWidth}" />
-                    <ComboBox
-                        HorizontalAlignment="Stretch"
-                        IsEnabled="False"
-                        IsVisible="{Binding Webcam.HasMultipleCameras}"
-                        ItemsSource="{Binding Webcam.AvailableCameras}"
-                        SelectedItem="{Binding Webcam.SelectedCamera}" />
                     <TextBlock
                         Classes="EmployerVoice"
                         HorizontalAlignment="Center"

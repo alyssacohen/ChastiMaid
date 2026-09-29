@@ -83,9 +83,17 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     private CameraOption? _selectedCamera;
 
     /// <summary>
-    ///     The camera currently chosen for the live preview. Setting it to a different index than the one
-    ///     the preview is currently open on restarts the preview on the new camera (only while running —
-    ///     this choice is session-only and is never persisted to <c>GameSettings</c>).
+    ///     The camera every capture uses: the last one the user picked, from any selector. Seeded from the
+    ///     profile at startup; <see cref="PreferredCameraChanged" /> lets the owner persist new picks.
+    /// </summary>
+    public int PreferredCameraIndex { get; set; }
+
+    /// <summary>Raised when the user picks a different camera in a live selector.</summary>
+    public event Action<int>? PreferredCameraChanged;
+
+    /// <summary>
+    ///     The camera chosen in the live selector. A user pick becomes the <see cref="PreferredCameraIndex" />
+    ///     and, while the preview runs on another camera, restarts it on the new one.
     /// </summary>
     public CameraOption? SelectedCamera
     {
@@ -93,7 +101,18 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedCamera, value);
-            if (value is not null && value.Index != _currentCameraIndex && IsRunning)
+            if (value is null)
+            {
+                return;
+            }
+
+            if (value.Index != PreferredCameraIndex)
+            {
+                PreferredCameraIndex = value.Index;
+                PreferredCameraChanged?.Invoke(value.Index);
+            }
+
+            if (value.Index != _currentCameraIndex && IsRunning)
             {
                 Stop();
                 Start(value.Index);
@@ -566,7 +585,9 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         Dispatcher.UIThread.Post(() =>
         {
             AvailableCameras = options;
-            SelectedCamera = options.FirstOrDefault(c => c.Index == currentIndex) ?? options[0];
+            // Field, not the setter: showing the fallback when the preferred camera is missing is not a pick.
+            this.RaiseAndSetIfChanged(ref _selectedCamera,
+                options.FirstOrDefault(c => c.Index == currentIndex) ?? options[0], nameof(SelectedCamera));
         });
     }
 
