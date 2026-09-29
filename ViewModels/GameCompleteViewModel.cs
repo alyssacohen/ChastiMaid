@@ -28,7 +28,7 @@ public partial class GameCompleteViewModel : ViewModelBase
         var state = saveRepo.GetGameState();
         _slotName = state?.SlotName ?? "unknown";
 
-        var mediaDir = Path.Combine(AppPaths.Root, "data", "saves", _slotName);
+        var mediaDir = AppPaths.SaveDir(_slotName);
         var videoPath = Path.Combine(mediaDir, "outfit.avi");
         var encPath = Path.Combine(mediaDir, "safe_combo.enc");
 

@@ -5,6 +5,18 @@ using Windows.Devices.Enumeration;
 
 namespace ChastiMaid.Services;
 
+/// <summary>The two phases of a single <see cref="SherpaOnnxSttService.ListenForPhraseAsync" /> attempt.</summary>
+public enum SpeechListenPhase
+{
+    /// <summary>The microphone is open and recording — bounded by <see cref="SherpaOnnxSttService.AttemptRecordDuration" />.</summary>
+    Listening,
+
+    /// <summary>Recording has stopped; the captured audio is being transcribed. Duration is not predictable
+    /// (depends on CPU speed and utterance length), so callers should show an indeterminate indicator, not
+    /// a countdown, during this phase.</summary>
+    Processing
+}
+
 /// <summary>
 ///     Verifies that the user reads a specific phrase aloud, using sherpa-onnx's offline (non-streaming)
 ///     multilingual Whisper model shared across it/en — the target language doesn't need auto-detection, it's
@@ -24,7 +36,7 @@ namespace ChastiMaid.Services;
 ///         after construction, so by the time either of those runs, loading has usually already finished.
 ///     </para>
 /// </summary>
-public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposable
+public sealed class SherpaOnnxSttService : IDisposable
 {
     private const string WhisperVariant = "base";
     private const int SampleRate = 16000;
@@ -51,6 +63,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
     private TaskCompletionSource<float[]>? _testCaptureTcs;
     private CancellationTokenSource? _testSafetyCts;
 
+    /// <summary>Whether the STT model loaded successfully (lazily, on first use).</summary>
     public bool IsModelReady
     {
         get
@@ -60,8 +73,14 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         }
     }
 
+    /// <summary>
+    ///     How long a single <see cref="ListenForPhraseAsync" /> attempt records for before moving to the
+    ///     (unbounded) transcription phase. Exposed so callers can size a per-attempt countdown correctly
+    ///     instead of duplicating the constant.
+    /// </summary>
     public TimeSpan AttemptRecordDuration => AttemptRecordDurationValue;
 
+    /// <summary>Whether an input audio device is available.</summary>
     public bool DetectMicrophone()
     {
         if (!IsModelReady)
@@ -71,7 +90,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
 
         try
         {
-            var devices = WinRtAsyncExtensions.ToTask(DeviceInformation.FindAllAsync(DeviceClass.AudioCapture))
+            var devices = DeviceInformation.FindAllAsync(DeviceClass.AudioCapture).AsTask()
                 .GetAwaiter().GetResult();
             return devices.Count > 0;
         }
@@ -81,6 +100,15 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         }
     }
 
+    /// <summary>
+    ///     Listens for up to <paramref name="maxAttempts" /> tries within <paramref name="timeout" /> total,
+    ///     accepting only transcriptions whose similarity to <paramref name="targetPhrase" /> (see
+    ///     <see cref="SpeechTextMatcher" />) meets <paramref name="minSimilarity" />. Returns true on the first
+    ///     accepted match, false if attempts or the timeout are exhausted first.
+    ///     <paramref name="timeout" /> only gates whether a *new* attempt is allowed to start — once an attempt's
+    ///     recording window ends, its transcription always runs to completion, since decoding can't be aborted
+    ///     mid-flight. The overall call can therefore run somewhat longer than <paramref name="timeout" />.
+    /// </summary>
     public async Task<bool> ListenForPhraseAsync(
         string targetPhrase,
         int maxAttempts,
@@ -120,6 +148,11 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         return false;
     }
 
+    /// <summary>
+    ///     Starts an open-ended test recording (Settings' "try your sensitivity" panel) — no fixed duration,
+    ///     the caller decides when to stop via <see cref="StopTestListeningAsync" /> or
+    ///     <see cref="CancelTestListening" />.
+    /// </summary>
     public void StartTestListening()
     {
         CancelTestListening();
@@ -151,6 +184,7 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         }
     }
 
+    /// <summary>Stops a test recording started by <see cref="StartTestListening" /> without transcribing it.</summary>
     public void CancelTestListening()
     {
         _testSafetyCts?.Dispose();
@@ -170,6 +204,12 @@ public sealed class SherpaOnnxSttService : ISpeechRecognitionService, IDisposabl
         _testCaptureTcs = null;
     }
 
+    /// <summary>
+    ///     Stops a test recording started by <see cref="StartTestListening" />, transcribes it, and returns the
+    ///     raw similarity score against <paramref name="targetPhrase" /> — not a pass/fail, so Settings can show
+    ///     the user the actual number while they tune the sensitivity. Returns 0 if the model isn't ready, no
+    ///     recording was active, or nothing was captured.
+    /// </summary>
     public async Task<double> StopTestListeningAsync(string targetPhrase, CancellationToken ct = default)
     {
         var tcs = _testCaptureTcs;

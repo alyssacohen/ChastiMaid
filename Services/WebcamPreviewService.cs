@@ -492,7 +492,7 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         try
         {
-            var devices = await WinRtAsyncExtensions.ToTask(DeviceInformation.FindAllAsync(DeviceClass.VideoCapture));
+            var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
             return _cachedFriendlyNames = devices.Select(d => d.Name).ToList();
         }
         catch (Exception)

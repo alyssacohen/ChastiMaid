@@ -43,7 +43,7 @@ public class SaveSlotManager(DatabaseService dbService)
         dbService.DeleteSave(slotName);
 
         // Also delete the media folder (outfit video, safe combo, etc.)
-        var mediaDir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
+        var mediaDir = AppPaths.SaveDir(slotName);
         if (Directory.Exists(mediaDir))
         {
             Directory.Delete(mediaDir, true);

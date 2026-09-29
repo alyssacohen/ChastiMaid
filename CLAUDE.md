@@ -22,7 +22,7 @@ Detailed domain specs live in `docs/specs/` (always-relevant design docs):
 dotnet build               # Build
 dotnet run                 # Run (fullscreen desktop app)
 dotnet test                # Run unit tests (ChastiMaid.Tests project)
-dotnet publish -c Release  # Publish (excludes Avalonia.Diagnostics)
+dotnet publish -c Release  # Publish
 ```
 
 ## Target Platforms

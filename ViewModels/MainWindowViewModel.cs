@@ -31,7 +31,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(DatabaseService databaseService, ProfileRepository profileRepository,
         SaveSlotManager saveSlotManager, AutoSaveService autoSaveService, WebcamPreviewService webcam,
-        ITtsService tts, ISpeechRecognitionService stt)
+        SherpaOnnxTtsService tts, SherpaOnnxSttService stt)
     {
         DatabaseService = databaseService;
         ProfileRepository = profileRepository;
@@ -57,8 +57,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public SaveSlotManager SaveSlotManager { get; }
     public AutoSaveService AutoSaveService { get; }
     public WebcamPreviewService Webcam { get; }
-    public ITtsService Tts { get; }
-    public ISpeechRecognitionService Stt { get; }
+    public SherpaOnnxTtsService Tts { get; }
+    public SherpaOnnxSttService Stt { get; }
 
     /// <summary>
     ///     Opens a save slot and tracks its DB for automatic disposal.

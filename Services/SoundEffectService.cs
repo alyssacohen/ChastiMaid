@@ -37,7 +37,7 @@ public static class SoundEffectService
                 writer.WriteBytes(ms.ToArray());
             }
 
-            await WinRtAsyncExtensions.ToTask(writer.StoreAsync());
+            await writer.StoreAsync();
             writer.DetachStream();
             writer.Dispose();
             stream.Seek(0);

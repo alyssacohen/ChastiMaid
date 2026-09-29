@@ -118,13 +118,13 @@ public partial class SettingsViewModel : ViewModelBase
 
     [Reactive] private string? _testQuoteUnavailableTooltip;
     [Reactive] private CameraOption _selectedCamera = null!;
-    [Reactive] private LanguageOption _selectedLanguage = null!;
+    [Reactive] private Option<string> _selectedLanguage = null!;
 
     // --- Tab selection with interception ---
     private int _selectedTabIndex;
 
     // Snapshot for General tab dirty detection
-    private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption) _snapshot;
+    private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, Option<string>) _snapshot;
     [Reactive] private int? _wardrobeLayerFilter;
 
     // --- Wardrobe filter & selection ---
@@ -202,14 +202,10 @@ public partial class SettingsViewModel : ViewModelBase
 
         foreach (var c in _repo.GetChores())
         {
-            Chores.Add(WireChild(new ChoreEditViewModel(c, id => RemoveFrom(Chores, id, _repo.DeleteChore)),
-                () => IsChoresDirty = true));
+            Chores.Add(NewChoreVm(c));
         }
 
-        foreach (var p in _repo.GetForcedOutfitPresets())
-        {
-            ForcedOutfitPresets.Add(BuildForcedOutfitPresetSummary(p));
-        }
+        RefreshForcedOutfitPresets();
 
         foreach (var p in _repo.GetPermissionTypes())
         {
@@ -222,8 +218,7 @@ public partial class SettingsViewModel : ViewModelBase
         var initSlots = allWardrobe.SelectMany(i => i.Slots).Distinct().OrderBy(s => s).ToList();
         foreach (var w in allWardrobe)
         {
-            var vm = new WardrobeEditViewModel(w, id => RemoveWardrobeItem(id), initTags, initSlots,
-                ExpandWardrobeItem);
+            var vm = new WardrobeEditViewModel(w, RemoveWardrobeItem, initTags, initSlots, ExpandWardrobeItem);
             WireWardrobeItem(vm);
             WardrobeItems.Add(vm);
         }
@@ -260,9 +255,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         foreach (var r in _repo.GetOutfitRules())
         {
-            OutfitRules.Add(WireChild(
-                new OutfitRuleEditViewModel(r, AllUsedTags,
-                    id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true));
+            OutfitRules.Add(NewRuleVm(r));
         }
 
         // Filtered wardrobe view — reactive to filter controls and to add/remove on WardrobeItems
@@ -287,71 +280,7 @@ public partial class SettingsViewModel : ViewModelBase
                 }
             });
 
-        this.WhenAnyValue(
-                x => x.PlayerName, x => x.Appellatives, x => x.AutoSaveInterval, x => x.MinDebt,
-                x => x.MaxDebt, x => x.DailyInterestRate, x => x.IdleWageAmount,
-                (_, _, _, _, _, _, _) => Unit.Default).Merge(this.WhenAnyValue(
-                x => x.IdleWageInterval, x => x.SelectedCamera, x => x.SelectedLanguage,
-                (_, _, _) => Unit.Default))
-            .Subscribe(_ => UpdateGeneralDirty());
-
-        this.WhenAnyValue(x => x.Appellatives)
-            .Subscribe(_ => this.RaisePropertyChanged(nameof(AppellativesWarning)));
-
-        this.WhenAnyValue(x => x.PlugAndPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
-
-        this.WhenAnyValue(x => x.DiaperPlayEnabled).Skip(1).Subscribe(_ => IsGeneralDirty = true);
-
-        this.WhenAnyValue(x => x.CaptureMinInterval, x => x.CaptureMaxInterval, (_, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsChoresDirty = true);
-
-        this.WhenAnyValue(
-                x => x.PopupMinInterval, x => x.PopupMaxInterval, x => x.PopupTimeout,
-                x => x.HydrationMinInterval, x => x.CurtsyVideoDuration, x => x.QuoteListenTimeout,
-                x => x.QuoteMatchMinSimilarityPercent, (_, _, _, _, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPopupsDirty = true);
-
-        this.WhenAnyValue(
-                x => x.KneelMinDuration, x => x.KneelMaxDuration,
-                x => x.KneelPhotoMinInterval, x => x.KneelPhotoMaxInterval,
-                (_, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPopupsDirty = true);
-
-        this.WhenAnyValue(x => x.HydrationEnabled, x => x.CurtsyEnabled, x => x.QuoteReadingEnabled,
-                x => x.KneelEnabled, (_, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPopupsDirty = true);
-
-        this.WhenAnyValue(x => x.FineSeverityValue, x => x.CornertimeEnabled, x => x.CornertimeSeverityValue,
-                x => x.CornertimeMinRequiredSeconds, x => x.CornertimeMaxOverrunSeconds,
-                x => x.CornertimeMaxRequiredSeconds,
-                (_, _, _, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.CornertimeMovementCooldownMinSeconds, x => x.CornertimeMovementCooldownMaxSeconds,
-                x => x.CornertimeMovementSensitivityPercent, x => x.CornertimeMovementPenaltyMinSeconds,
-                x => x.CornertimeMovementPenaltyMaxSeconds, (_, _, _, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.CornertimeVoiceEnabled)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.WritingLinesEnabled, x => x.WritingLinesSeverityValue,
-                x => x.WritingLinesPenaltyLinesPerMistake, (_, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.WritingLinesMinLines, x => x.WritingLinesMaxLines, (_, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.WritingLinesNoIdleEnabled, x => x.WritingLinesNoIdleTimeoutSeconds,
-                x => x.WritingLinesNoIdleLinesToAdd, (_, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.WritingLinesInterruptionsEnabled, x => x.WritingLinesInterruptionMinIntervalSeconds,
-                x => x.WritingLinesInterruptionMaxIntervalSeconds, (_, _, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
-
-        this.WhenAnyValue(x => x.ForcedOutfitEnabled, x => x.ForcedOutfitMaxHours, (_, _) => Unit.Default)
-            .Skip(1).Subscribe(_ => IsPunishmentsDirty = true);
+        Changed.Subscribe(e => OnSettingChanged(e.PropertyName));
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
         WardrobeItems.CollectionChanged += (_, _) =>
@@ -383,18 +312,12 @@ public partial class SettingsViewModel : ViewModelBase
                 SelectedTabIndex = i;
             }
         });
-        AddChoreCommand = ReactiveCommand.Create(() =>
-            Chores.Add(WireChild(
-                new ChoreEditViewModel(new Chore(), id => RemoveFrom(Chores, id, _repo.DeleteChore)),
-                () => IsChoresDirty = true)));
+        AddChoreCommand = ReactiveCommand.Create(() => Chores.Add(NewChoreVm(new Chore())));
         ShowAddItemPanelCommand = ReactiveCommand.Create(() => IsAddingNewItem = true);
         CancelAddItemCommand = ReactiveCommand.Create(ResetNewItemPanel);
         var canAddWardrobe = this.WhenAnyValue(x => x.NewItemName, name => !string.IsNullOrWhiteSpace(name));
         AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
-        AddOutfitRuleCommand = ReactiveCommand.Create(() =>
-            OutfitRules.Add(WireChild(
-                new OutfitRuleEditViewModel(new OutfitRule(), AllUsedTags,
-                    id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true)));
+        AddOutfitRuleCommand = ReactiveCommand.Create(() => OutfitRules.Add(NewRuleVm(new OutfitRule())));
         AddForcedOutfitPresetCommand = ReactiveCommand.Create(() => OpenForcedOutfitPresetEditor(new ForcedOutfitPreset()));
         TestRulesCommand = ReactiveCommand.Create(() =>
             TestOutfitDialog = new TestOutfitDialogViewModel(
@@ -406,11 +329,7 @@ public partial class SettingsViewModel : ViewModelBase
             this.WhenAnyValue(x => x.WardrobeSelectedCount, n => n > 0));
         CollapseExpandedWardrobeItemCommand = ReactiveCommand.Create(() =>
         {
-            foreach (var item in WardrobeItems)
-            {
-                item.IsExpanded = false;
-            }
-
+            ExpandWardrobeItem(null);
             if (IsAddingNewItem)
             {
                 ResetNewItemPanel();
@@ -457,10 +376,7 @@ public partial class SettingsViewModel : ViewModelBase
                 ContentActionStatusMessage = outcome.Message;
                 break;
             case ContractImportOutcomeKind.Applied:
-                // Same rebuild as ImportContent: the whole screen must reflect the replaced profile.
-                var fresh = new SettingsViewModel(_mainVm, _returnTo, outcome.Message);
-                _mainVm.ReplaceSettingsCache(fresh);
-                NavigateAway(fresh);
+                RebuildScreen(outcome.Message);
                 break;
         }
     }
@@ -506,9 +422,16 @@ public partial class SettingsViewModel : ViewModelBase
                 result.RulesDiscarded, missingTags);
         }
 
-        // Rebuild the whole tab from the repo (same pattern as "Discard" — see TryChangeTab) so
-        // wardrobe/rules/chores collections reflect the just-replaced content.
-        var fresh = new SettingsViewModel(_mainVm, _returnTo, message);
+        RebuildScreen(message);
+    }
+
+    /// <summary>
+    ///     Rebuilds the whole screen from the repo so every collection reflects the saved profile — used after
+    ///     a content/contract import replaced it, and by "Discard" to drop pending edits.
+    /// </summary>
+    private void RebuildScreen(string? statusMessage = null)
+    {
+        var fresh = new SettingsViewModel(_mainVm, _returnTo, statusMessage);
         _mainVm.ReplaceSettingsCache(fresh);
         NavigateAway(fresh);
     }
@@ -554,7 +477,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         var names = await WebcamPreviewService.GetFriendlyNamesAsync(indices);
         var options = indices.Zip(names, (idx, name) => new CameraOption(idx, name)).ToList();
-        var availability = HardwareAvailabilityChecker.Check(indices, persistedCameraIndex, _mainVm.Stt);
+        var availability = HardwareAvailability.Check(indices, persistedCameraIndex, _mainVm.Stt);
 
         Dispatcher.UIThread.Post(() =>
         {
@@ -585,7 +508,7 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
 
-    public IReadOnlyList<LanguageOption> AvailableLanguages { get; } =
+    public IReadOnlyList<Option<string>> AvailableLanguages { get; } =
     [
         new("system", Resources.Get("LanguageSystem")),
         new("en", Resources.Get("LanguageEnglish")),
@@ -711,29 +634,27 @@ public partial class SettingsViewModel : ViewModelBase
     ///     Chastity Device) so the lists reflect the item's current Layers immediately — needed both
     ///     for a freshly-added row (whose initial Layers never fire Layers.CollectionChanged, since
     ///     they're set directly in the WardrobeEditViewModel constructor) and for later layer toggles
-    ///     on any existing item.
+    ///     on any existing item. <paramref name="removed" /> drops the item's chips (and persisted
+    ///     configs) from every list.
     /// </summary>
-    private void SyncEligibilityChips(WardrobeEditViewModel item)
+    private void SyncEligibilityChips(WardrobeEditViewModel item, bool removed = false)
     {
-        SyncEligibilityChip(PlugAndPlayItems, item, 4, w => new PlugAndPlayItemEditViewModel(w, null),
-            _repo.DeletePlugAndPlayItem);
-        SyncEligibilityChip(DiaperPlayItems, item, 0, w => new DiaperPlayItemEditViewModel(w, null),
-            _repo.DeleteDiaperPlayItem);
-        SyncEligibilityChip(ChastityDeviceItems, item, 0, w => new ChastityDeviceItemEditViewModel(w, null),
-            _repo.DeleteChastityDeviceItem);
+        SyncEligibilityChip(PlugAndPlayItems, item, !removed && item.Layers.Contains(4), // 4 = Accessories
+            w => new PlugAndPlayItemEditViewModel(w, null));
+        SyncEligibilityChip(DiaperPlayItems, item, !removed && item.Layers.Contains(0), // 0 = Underwear
+            w => new DiaperPlayItemEditViewModel(w, null));
+        SyncEligibilityChip(ChastityDeviceItems, item, !removed && item.Layers.Contains(0),
+            w => new ChastityDeviceItemEditViewModel(w, null));
     }
 
     private void SyncEligibilityChip<TChip>(
         ObservableCollection<TChip> chips,
         WardrobeEditViewModel item,
-        int requiredLayer,
-        Func<WardrobeEditViewModel, TChip> factory,
-        Action<int> deleteConfig)
-        where TChip : class, IWardrobeEligibilityChip
+        bool shouldExist,
+        Func<WardrobeEditViewModel, TChip> factory)
+        where TChip : EligibilityChipViewModel
     {
         var existingChip = chips.FirstOrDefault(c => ReferenceEquals(c.Source, item));
-        var shouldExist = item.Layers.Contains(requiredLayer);
-
         if (shouldExist && existingChip is null)
         {
             chips.Add(WireChild(factory(item), () => IsGeneralDirty = true));
@@ -741,62 +662,27 @@ public partial class SettingsViewModel : ViewModelBase
         else if (!shouldExist && existingChip is not null)
         {
             chips.Remove(existingChip);
-            if (existingChip.ConfigId is { } configId)
-            {
-                deleteConfig(configId);
-            }
+            existingChip.DeleteStoredConfig(_repo);
         }
     }
 
-    /// <summary>Removes this item's chip (and any persisted config) from every eligibility list.</summary>
-    private void RemoveEligibilityChips(WardrobeEditViewModel item)
+    private void RemoveWardrobeItem(WardrobeEditViewModel item)
     {
-        RemoveEligibilityChip(PlugAndPlayItems, item, _repo.DeletePlugAndPlayItem);
-        RemoveEligibilityChip(DiaperPlayItems, item, _repo.DeleteDiaperPlayItem);
-        RemoveEligibilityChip(ChastityDeviceItems, item, _repo.DeleteChastityDeviceItem);
-    }
-
-    private static void RemoveEligibilityChip<TChip>(
-        ObservableCollection<TChip> chips, WardrobeEditViewModel item, Action<int> deleteConfig)
-        where TChip : class, IWardrobeEligibilityChip
-    {
-        var chip = chips.FirstOrDefault(c => ReferenceEquals(c.Source, item));
-        if (chip is null)
-        {
-            return;
-        }
-
-        chips.Remove(chip);
-        if (chip.ConfigId is { } configId)
-        {
-            deleteConfig(configId);
-        }
-    }
-
-    private void RemoveWardrobeItem(int id)
-    {
-        var item = WardrobeItems.FirstOrDefault(i => i.Id == id);
-        if (item is null)
-        {
-            return;
-        }
-
         WardrobeItems.Remove(item);
-        RemoveEligibilityChips(item);
-        if (id > 0)
+        SyncEligibilityChips(item, removed: true);
+        if (item.Id > 0)
         {
-            _repo.DeleteClothingItem(id);
+            _repo.DeleteClothingItem(item.Id);
         }
     }
 
-    private void ExpandWardrobeItem(WardrobeEditViewModel target)
+    /// <summary>Expands <paramref name="target" /> and collapses every other row; null collapses all.</summary>
+    private void ExpandWardrobeItem(WardrobeEditViewModel? target)
     {
         foreach (var item in WardrobeItems)
         {
-            item.IsExpanded = false;
+            item.IsExpanded = ReferenceEquals(item, target);
         }
-
-        target.IsExpanded = true;
     }
 
     private void UpdateSelectedCount()
@@ -816,8 +702,7 @@ public partial class SettingsViewModel : ViewModelBase
             Weight = (double)NewItemWeight,
         };
 
-        var vm = new WardrobeEditViewModel(item, id => RemoveWardrobeItem(id), AllUsedTags, AllUsedSlots,
-            ExpandWardrobeItem);
+        var vm = new WardrobeEditViewModel(item, RemoveWardrobeItem, AllUsedTags, AllUsedSlots, ExpandWardrobeItem);
         WireWardrobeItem(vm);
         WardrobeItems.Add(vm);
         SyncEligibilityChips(vm);
@@ -840,15 +725,9 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void DeleteSelectedWardrobeItems()
     {
-        var toDelete = WardrobeItems.Where(x => x.IsSelected).ToList();
-        foreach (var item in toDelete)
+        foreach (var item in WardrobeItems.Where(x => x.IsSelected).ToList())
         {
-            WardrobeItems.Remove(item);
-            RemoveEligibilityChips(item);
-            if (item.Id > 0)
-            {
-                _repo.DeleteClothingItem(item.Id);
-            }
+            RemoveWardrobeItem(item);
         }
     }
 
@@ -892,13 +771,26 @@ public partial class SettingsViewModel : ViewModelBase
         }
     }
 
-    // --- Forced Outfit presets ---
-    private ForcedOutfitPresetSummaryViewModel BuildForcedOutfitPresetSummary(ForcedOutfitPreset preset)
+    private ChoreEditViewModel NewChoreVm(Chore chore)
     {
-        return new ForcedOutfitPresetSummaryViewModel(preset, _repo, OpenForcedOutfitPresetEditor,
-            id => RemoveFrom(ForcedOutfitPresets, id, _repo.DeleteForcedOutfitPreset));
+        return WireChild(new ChoreEditViewModel(chore, id => RemoveFrom(Chores, id, _repo.DeleteChore)),
+            () => IsChoresDirty = true);
     }
 
+    private OutfitRuleEditViewModel NewRuleVm(OutfitRule rule)
+    {
+        return WireChild(new OutfitRuleEditViewModel(rule, AllUsedTags,
+            id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true);
+    }
+
+    /// <summary>Saves <paramref name="model" /> and returns the Id the save assigned to it.</summary>
+    private static int Persist<T>(T model, Action<T> save, Func<T, int> id)
+    {
+        save(model);
+        return id(model);
+    }
+
+    // --- Forced Outfit presets ---
     private void OpenForcedOutfitPresetEditor(ForcedOutfitPresetSummaryViewModel summary)
     {
         var preset = _repo.GetForcedOutfitPresets().FirstOrDefault(p => p.Id == summary.Id) ?? new ForcedOutfitPreset();
@@ -919,7 +811,8 @@ public partial class SettingsViewModel : ViewModelBase
         ForcedOutfitPresets.Clear();
         foreach (var p in _repo.GetForcedOutfitPresets())
         {
-            ForcedOutfitPresets.Add(BuildForcedOutfitPresetSummary(p));
+            ForcedOutfitPresets.Add(new ForcedOutfitPresetSummaryViewModel(p, _repo, OpenForcedOutfitPresetEditor,
+                id => RemoveFrom(ForcedOutfitPresets, id, _repo.DeleteForcedOutfitPreset)));
         }
     }
 
@@ -939,9 +832,7 @@ public partial class SettingsViewModel : ViewModelBase
                 SetTab(newIndex);
                 break;
             case SaveDialogResult.Discard:
-                var fresh = new SettingsViewModel(_mainVm, _returnTo);
-                _mainVm.ReplaceSettingsCache(fresh);
-                NavigateAway(fresh);
+                RebuildScreen();
                 break;
             case SaveDialogResult.Cancel: this.RaisePropertyChanged(nameof(SelectedTabIndex)); break;
         }
@@ -1003,7 +894,7 @@ public partial class SettingsViewModel : ViewModelBase
         _snapshot = CurrentValues();
     }
 
-    private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, LanguageOption)
+    private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, Option<string>)
         CurrentValues()
     {
         return (_playerName, _appellatives, _autoSaveInterval, _minDebt, _maxDebt, _dailyInterestRate,
@@ -1013,6 +904,41 @@ public partial class SettingsViewModel : ViewModelBase
     private void UpdateGeneralDirty()
     {
         IsGeneralDirty = CurrentValues() != _snapshot;
+    }
+
+    /// <summary>
+    ///     Routes every property change to its tab's dirty flag. The General fields in the snapshot tuple are
+    ///     compared against it, so reverting one clears the flag again; every other tab is dirty on any edit.
+    ///     Non-General tabs are matched by property-name prefix, so a new setting only needs a matching name.
+    /// </summary>
+    private void OnSettingChanged(string? name)
+    {
+        switch (name)
+        {
+            case nameof(PlayerName) or nameof(AutoSaveInterval) or nameof(MinDebt) or nameof(MaxDebt)
+                or nameof(DailyInterestRate) or nameof(IdleWageAmount) or nameof(IdleWageInterval)
+                or nameof(SelectedCamera) or nameof(SelectedLanguage):
+                UpdateGeneralDirty();
+                break;
+            case nameof(Appellatives):
+                UpdateGeneralDirty();
+                this.RaisePropertyChanged(nameof(AppellativesWarning));
+                break;
+            case nameof(PlugAndPlayEnabled) or nameof(DiaperPlayEnabled):
+                IsGeneralDirty = true;
+                break;
+            case nameof(CaptureMinInterval) or nameof(CaptureMaxInterval):
+                IsChoresDirty = true;
+                break;
+            case nameof(FineSeverityValue):
+            case { } n when n.StartsWith("Cornertime") || n.StartsWith("WritingLines") || n.StartsWith("ForcedOutfit"):
+                IsPunishmentsDirty = true;
+                break;
+            case { } n when n.StartsWith("Popup") || n.StartsWith("Hydration") || n.StartsWith("Curtsy") ||
+                            n.StartsWith("Quote") || n.StartsWith("Kneel"):
+                IsPopupsDirty = true;
+                break;
+        }
     }
 
     private void Save()
@@ -1122,91 +1048,22 @@ public partial class SettingsViewModel : ViewModelBase
         s.ForcedOutfitMaxHours = ForcedOutfitMaxHours;
         _repo.SaveGameSettings(s);
 
-        foreach (var c in Chores)
-        {
-            var model = c.ToModel();
-            _repo.SaveChore(model);
-            c.Id = model.Id; // newly-added rows have Id 0 until the first save assigns a real one;
-                              // without this, every subsequent save would upsert as a fresh duplicate
-        }
+        // Newly-added rows have Id 0 until the first save assigns a real one; writing it back keeps
+        // every later save from upserting them again as fresh duplicates.
+        foreach (var c in Chores) c.Id = Persist(c.ToModel(), _repo.SaveChore, m => m.Id);
+        foreach (var w in WardrobeItems) w.Id = Persist(w.ToModel(), _repo.SaveClothingItem, m => m.Id);
+        foreach (var p in PermissionTypes) p.Id = Persist(p.ToModel(), _repo.SavePermissionType, m => m.Id);
+        foreach (var r in OutfitRules) r.Id = Persist(r.ToModel(), _repo.SaveOutfitRule, m => m.Id);
 
-        foreach (var w in WardrobeItems)
+        foreach (var chip in PlugAndPlayItems.Concat<EligibilityChipViewModel>(DiaperPlayItems).Concat(ChastityDeviceItems))
         {
-            var model = w.ToModel();
-            _repo.SaveClothingItem(model);
-            w.Id = model.Id;
-        }
-
-        foreach (var p in PermissionTypes)
-        {
-            var model = p.ToModel();
-            _repo.SavePermissionType(model);
-            p.Id = model.Id;
-        }
-
-        foreach (var r in OutfitRules)
-        {
-            var model = r.ToModel();
-            _repo.SaveOutfitRule(model);
-            r.Id = model.Id;
-        }
-
-        foreach (var p in PlugAndPlayItems)
-        {
-            if (p.IsEligible)
-            {
-                var model = p.ToModel();
-                _repo.SavePlugAndPlayItem(model);
-                p.ConfigId = model.Id;
-            }
-            else if (p.ConfigId is { } configId)
-            {
-                _repo.DeletePlugAndPlayItem(configId);
-                p.ConfigId = null;
-            }
-        }
-
-        foreach (var d in DiaperPlayItems)
-        {
-            if (d.IsEligible)
-            {
-                var model = d.ToModel();
-                _repo.SaveDiaperPlayItem(model);
-                d.ConfigId = model.Id;
-            }
-            else if (d.ConfigId is { } configId)
-            {
-                _repo.DeleteDiaperPlayItem(configId);
-                d.ConfigId = null;
-            }
-        }
-
-        foreach (var c in ChastityDeviceItems)
-        {
-            if (c.IsEligible)
-            {
-                var model = c.ToModel();
-                _repo.SaveChastityDeviceItem(model);
-                c.ConfigId = model.Id;
-            }
-            else if (c.ConfigId is { } configId)
-            {
-                _repo.DeleteChastityDeviceItem(configId);
-                c.ConfigId = null;
-            }
+            chip.Persist(_repo);
         }
     }
 }
 
-public record LanguageOption(string Code, string DisplayName)
-{
-    public override string ToString()
-    {
-        return DisplayName;
-    }
-}
-
-public record OutfitRelationOption(OutfitRelation Code, string DisplayName)
+/// <summary>A ComboBox entry: a stored code shown under a localized label.</summary>
+public record Option<T>(T Code, string DisplayName)
 {
     public override string ToString()
     {
@@ -1317,17 +1174,13 @@ public partial class PermissionTypeEditViewModel : ViewModelBase
 
 public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
 {
-    private readonly ProfileRepository _repo;
     [Reactive] private bool _isEnabled;
 
     public ForcedOutfitPresetSummaryViewModel(ForcedOutfitPreset preset, ProfileRepository repo,
         Action<ForcedOutfitPresetSummaryViewModel> onEdit, Action<int> onDelete)
     {
-        _repo = repo;
         Id = preset.Id;
         Name = preset.Name;
-        HoursPerSeverityPoint = preset.HoursPerSeverityPoint;
-        IsFullOutfit = preset.IsFullOutfit;
         _isEnabled = preset.IsEnabled;
         SummaryLabel = string.Format(Resources.Get("SettingsForcedOutfitPresetSummaryFormat"),
             preset.HoursPerSeverityPoint,
@@ -1336,7 +1189,7 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
         this.WhenAnyValue(x => x.IsEnabled).Skip(1).Subscribe(enabled =>
         {
             preset.IsEnabled = enabled;
-            _repo.SaveForcedOutfitPreset(preset);
+            repo.SaveForcedOutfitPreset(preset);
         });
 
         EditCommand = ReactiveCommand.Create(() => onEdit(this));
@@ -1345,8 +1198,6 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
 
     public int Id { get; }
     public string Name { get; }
-    public double HoursPerSeverityPoint { get; }
-    public bool IsFullOutfit { get; }
     public string SummaryLabel { get; }
 
     public ICommand EditCommand { get; }
@@ -1354,99 +1205,102 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
 }
 
 /// <summary>
-///     Implemented by the per-mechanism wardrobe eligibility chip VMs (Plug &amp; Play, Diaper Play,
+///     Base of the per-mechanism wardrobe eligibility chip VMs (Plug &amp; Play, Diaper Play,
 ///     Chastity Device). Holding a live reference to the source <see cref="WardrobeEditViewModel" />
 ///     instead of a copied id keeps the chip correct across renames and across the Id reassignment
 ///     that happens when a brand-new (unsaved, Id == 0) wardrobe item is first persisted.
 /// </summary>
-public interface IWardrobeEligibilityChip : INotifyPropertyChanged
-{
-    WardrobeEditViewModel Source { get; }
-    int? ConfigId { get; }
-}
-
-public partial class PlugAndPlayItemEditViewModel : ViewModelBase, IWardrobeEligibilityChip
+public abstract partial class EligibilityChipViewModel : ViewModelBase
 {
     [Reactive] private bool _isEligible;
-    [Reactive] private int _minDurationMinutes;
-    [Reactive] private int _maxDurationMinutes;
 
-    public PlugAndPlayItemEditViewModel(WardrobeEditViewModel source, PlugAndPlayItemConfig? existing)
+    protected EligibilityChipViewModel(WardrobeEditViewModel source, int? configId)
     {
         Source = source;
-        ConfigId = existing?.Id;
-        _isEligible = existing is not null;
-        _minDurationMinutes = existing?.MinDurationMinutes ?? 30;
-        _maxDurationMinutes = existing?.MaxDurationMinutes ?? 120;
+        ConfigId = configId;
+        _isEligible = configId is not null;
     }
 
     public WardrobeEditViewModel Source { get; }
     public int ClothingItemId => Source.Id;
     public string Name => Source.Name;
-    public int? ConfigId { get; internal set; }
+    public int? ConfigId { get; private set; }
 
-    public PlugAndPlayItemConfig ToModel()
+    /// <summary>Saves this chip's config and returns its Id.</summary>
+    protected abstract int SaveConfig(ProfileRepository repo);
+
+    protected abstract void DeleteConfig(ProfileRepository repo, int configId);
+
+    /// <summary>Saves the config when eligible, deletes any stored one otherwise.</summary>
+    public void Persist(ProfileRepository repo)
     {
-        return new PlugAndPlayItemConfig
+        if (IsEligible)
+        {
+            ConfigId = SaveConfig(repo);
+        }
+        else
+        {
+            DeleteStoredConfig(repo);
+        }
+    }
+
+    public void DeleteStoredConfig(ProfileRepository repo)
+    {
+        if (ConfigId is { } configId)
+        {
+            DeleteConfig(repo, configId);
+            ConfigId = null;
+        }
+    }
+}
+
+public partial class PlugAndPlayItemEditViewModel(WardrobeEditViewModel source, PlugAndPlayItemConfig? existing)
+    : EligibilityChipViewModel(source, existing?.Id)
+{
+    [Reactive] private int _minDurationMinutes = existing?.MinDurationMinutes ?? 30;
+    [Reactive] private int _maxDurationMinutes = existing?.MaxDurationMinutes ?? 120;
+
+    protected override int SaveConfig(ProfileRepository repo)
+    {
+        var model = new PlugAndPlayItemConfig
         {
             Id = ConfigId ?? 0,
             ClothingItemId = ClothingItemId,
             MinDurationMinutes = MinDurationMinutes,
             MaxDurationMinutes = MaxDurationMinutes,
         };
+        repo.SavePlugAndPlayItem(model);
+        return model.Id;
     }
+
+    protected override void DeleteConfig(ProfileRepository repo, int configId) => repo.DeletePlugAndPlayItem(configId);
 }
 
-public partial class DiaperPlayItemEditViewModel : ViewModelBase, IWardrobeEligibilityChip
+public class DiaperPlayItemEditViewModel(WardrobeEditViewModel source, DiaperPlayItemConfig? existing)
+    : EligibilityChipViewModel(source, existing?.Id)
 {
-    [Reactive] private bool _isEligible;
-
-    public DiaperPlayItemEditViewModel(WardrobeEditViewModel source, DiaperPlayItemConfig? existing)
+    protected override int SaveConfig(ProfileRepository repo)
     {
-        Source = source;
-        ConfigId = existing?.Id;
-        _isEligible = existing is not null;
+        var model = new DiaperPlayItemConfig { Id = ConfigId ?? 0, ClothingItemId = ClothingItemId };
+        repo.SaveDiaperPlayItem(model);
+        return model.Id;
     }
 
-    public WardrobeEditViewModel Source { get; }
-    public int ClothingItemId => Source.Id;
-    public string Name => Source.Name;
-    public int? ConfigId { get; internal set; }
-
-    public DiaperPlayItemConfig ToModel()
-    {
-        return new DiaperPlayItemConfig
-        {
-            Id = ConfigId ?? 0,
-            ClothingItemId = ClothingItemId,
-        };
-    }
+    protected override void DeleteConfig(ProfileRepository repo, int configId) => repo.DeleteDiaperPlayItem(configId);
 }
 
-public partial class ChastityDeviceItemEditViewModel : ViewModelBase, IWardrobeEligibilityChip
+public class ChastityDeviceItemEditViewModel(WardrobeEditViewModel source, ChastityDeviceItemConfig? existing)
+    : EligibilityChipViewModel(source, existing?.Id)
 {
-    [Reactive] private bool _isEligible;
-
-    public ChastityDeviceItemEditViewModel(WardrobeEditViewModel source, ChastityDeviceItemConfig? existing)
+    protected override int SaveConfig(ProfileRepository repo)
     {
-        Source = source;
-        ConfigId = existing?.Id;
-        _isEligible = existing is not null;
+        var model = new ChastityDeviceItemConfig { Id = ConfigId ?? 0, ClothingItemId = ClothingItemId };
+        repo.SaveChastityDeviceItem(model);
+        return model.Id;
     }
 
-    public WardrobeEditViewModel Source { get; }
-    public int ClothingItemId => Source.Id;
-    public string Name => Source.Name;
-    public int? ConfigId { get; internal set; }
-
-    public ChastityDeviceItemConfig ToModel()
-    {
-        return new ChastityDeviceItemConfig
-        {
-            Id = ConfigId ?? 0,
-            ClothingItemId = ClothingItemId,
-        };
-    }
+    protected override void DeleteConfig(ProfileRepository repo, int configId) =>
+        repo.DeleteChastityDeviceItem(configId);
 }
 
 public partial class WardrobeEditViewModel : ViewModelBase
@@ -1459,10 +1313,10 @@ public partial class WardrobeEditViewModel : ViewModelBase
 
     public WardrobeEditViewModel(
         ClothingItem item,
-        Action<int> onDelete,
+        Action<WardrobeEditViewModel> onDelete,
         IEnumerable<string>? tagSuggestions = null,
         IEnumerable<string>? slotSuggestions = null,
-        Action<WardrobeEditViewModel>? onExpandRequest = null)
+        Action<WardrobeEditViewModel?>? onExpandRequest = null)
     {
         Id = item.Id;
         _name = item.Name;
@@ -1482,7 +1336,7 @@ public partial class WardrobeEditViewModel : ViewModelBase
         SlotSuggestions = slotSuggestions ?? [];
         TagSuggestions = tagSuggestions ?? [];
 
-        DeleteCommand = ReactiveCommand.Create(() => onDelete(Id));
+        DeleteCommand = ReactiveCommand.Create(() => onDelete(this));
         ToggleExpandedCommand = ReactiveCommand.Create(() =>
         {
             if (!IsExpanded)
@@ -1543,7 +1397,7 @@ public partial class OutfitRuleEditViewModel : ViewModelBase
 {
     [Reactive] private string _sourceTag;
     [Reactive] private string _relatedTag;
-    [Reactive] private OutfitRelationOption _relationOption = null!;
+    [Reactive] private Option<OutfitRelation> _relationOption = null!;
 
     public OutfitRuleEditViewModel(OutfitRule rule, IEnumerable<string> tagSuggestions, Action<int> onDelete)
     {
@@ -1562,7 +1416,7 @@ public partial class OutfitRuleEditViewModel : ViewModelBase
 
     // Relation is stored internally as a compact enum code (OutfitRelation); the ComboBox
     // shows a localized label instead of the raw enum name via this display wrapper.
-    public static IReadOnlyList<OutfitRelationOption> RelationOptions { get; } =
+    public static IReadOnlyList<Option<OutfitRelation>> RelationOptions { get; } =
     [
         new(OutfitRelation.Requires, Resources.Get("SettingsOutfitRelationRequires")),
         new(OutfitRelation.Incompatible, Resources.Get("SettingsOutfitRelationExcludes")),

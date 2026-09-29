@@ -12,7 +12,7 @@ public static class SilentCaptureLoop
 {
     public static void Start(GameSettings settings, string slotName, string filePrefix, CancellationToken ct)
     {
-        var dir = Path.Combine(AppPaths.Root, "data", "saves", slotName);
+        var dir = AppPaths.SaveDir(slotName);
         var random = new Random();
 
         _ = Task.Run(async () =>

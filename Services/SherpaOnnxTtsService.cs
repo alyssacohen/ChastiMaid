@@ -16,7 +16,7 @@ namespace ChastiMaid.Services;
 ///         show the spoken text on screen, so silence is an acceptable fallback, never a crash.
 ///     </para>
 /// </summary>
-public sealed class SherpaOnnxTtsService : ITtsService, IDisposable
+public sealed class SherpaOnnxTtsService : IDisposable
 {
     private static readonly string ContentRoot =
         Path.Combine(AppPaths.Root, "Content", "Speech", "TTS");
@@ -68,6 +68,12 @@ public sealed class SherpaOnnxTtsService : ITtsService, IDisposable
         }
     }
 
+    /// <summary>
+    ///     Loads the current UI culture's voice model in the background, ahead of the first
+    ///     <see cref="SpeakAsync" /> call. Model loading alone takes several seconds — callers with a
+    ///     lead-in window before narration matters (e.g. Cornertime's camera-framing step) should call
+    ///     this early so that first call doesn't pay the load cost on top of generation.
+    /// </summary>
     public Task WarmUpAsync(CancellationToken ct = default)
     {
         var language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
