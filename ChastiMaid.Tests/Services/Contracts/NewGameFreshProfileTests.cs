@@ -16,15 +16,9 @@ public class NewGameFreshProfileTests : IDisposable
     private readonly string _root = Path.Combine(Path.GetTempPath(), "ChastiMaidTests_" + Guid.NewGuid());
     private readonly LiteDatabase _profileDb = new(":memory:");
 
-    public NewGameFreshProfileTests()
-    {
-        Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", _root);
-    }
-
     public void Dispose()
     {
         _profileDb.Dispose();
-        Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", null);
         try
         {
             // ponytail: the save's LiteDatabase (opened inside SaveRepository.CreateFromProfile) isn't
@@ -56,7 +50,9 @@ public class NewGameFreshProfileTests : IDisposable
         var settings = profile.GetGameSettings();
         var debt = settings.RollDebt();
 
-        using var dbService = new DatabaseService();
+        // Own data dir rather than CHASTIMAID_ROOT: that env var is process-wide, so it would leak into
+        // tests running in parallel, and a fresh dir per run means no leftover save to collide with.
+        using var dbService = new DatabaseService(_root);
         var save = SaveRepository.CreateFromProfile(profile, dbService, "test_slot", debt);
 
         Assert.NotNull(save.GetGameState());

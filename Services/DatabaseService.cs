@@ -26,13 +26,16 @@ public class DatabaseService : IDisposable
             deserialize: bson => bson.AsDateTime.ToUniversalTime());
     }
 
-    private static readonly string DataDir =
-        Path.Combine(AppPaths.Root, "data");
-
-    private static readonly string SavesDir =
-        Path.Combine(DataDir, "saves");
-
+    private readonly string _dataDir;
+    private readonly string _savesDir;
     private LiteDatabase? _profileDb;
+
+    /// <param name="dataDir">Defaults to <c>data/</c> under <see cref="AppPaths.Root" />; tests pass their own.</param>
+    public DatabaseService(string? dataDir = null)
+    {
+        _dataDir = dataDir ?? Path.Combine(AppPaths.Root, "data");
+        _savesDir = Path.Combine(_dataDir, "saves");
+    }
 
     public void Dispose()
     {
@@ -66,28 +69,28 @@ public class DatabaseService : IDisposable
             return _profileDb;
         }
 
-        Directory.CreateDirectory(DataDir);
-        _profileDb = new LiteDatabase(BuildConnectionString(Path.Combine(DataDir, "profile.db")));
+        Directory.CreateDirectory(_dataDir);
+        _profileDb = new LiteDatabase(BuildConnectionString(Path.Combine(_dataDir, "profile.db")));
         return _profileDb;
     }
 
     public LiteDatabase OpenSave(string slotName)
     {
-        Directory.CreateDirectory(SavesDir);
-        var path = Path.Combine(SavesDir, $"{slotName}.db");
+        Directory.CreateDirectory(_savesDir);
+        var path = Path.Combine(_savesDir, $"{slotName}.db");
         return new LiteDatabase(BuildConnectionString(path));
     }
 
     public IEnumerable<string> ListSaveSlots()
     {
-        return Directory.Exists(SavesDir)
-            ? Directory.EnumerateFiles(SavesDir, "*.db").Select(f => Path.GetFileNameWithoutExtension(f)!)
+        return Directory.Exists(_savesDir)
+            ? Directory.EnumerateFiles(_savesDir, "*.db").Select(f => Path.GetFileNameWithoutExtension(f)!)
             : [];
     }
 
     public void DeleteSave(string slotName)
     {
-        var path = Path.Combine(SavesDir, $"{slotName}.db");
+        var path = Path.Combine(_savesDir, $"{slotName}.db");
         if (File.Exists(path))
         {
             File.Delete(path);
