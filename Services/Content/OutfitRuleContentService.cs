@@ -1,21 +1,11 @@
-using System.Text.Json;
 using ChastiMaid.Models;
 
 namespace ChastiMaid.Services.Content;
 
+public record DiscardedOutfitRuleInfo(List<string> MissingTags);
+
 public class OutfitRuleContentService
 {
-    public List<OutfitRule> Load(string filePath)
-    {
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<List<OutfitRule>>(json, ContentJsonOptions.Options) ?? [];
-    }
-
-    public void Export(List<OutfitRule> rules, string filePath)
-    {
-        File.WriteAllText(filePath, JsonSerializer.Serialize(rules, ContentJsonOptions.Options));
-    }
-
     /// <summary>
     ///     Discards any rule referencing a wardrobe tag that doesn't exist. <see cref="OutfitRelation.Requires" />
     ///     is valid if at least one of SourceTag/RelatedTag exists (mirrors the OR semantics <c>OutfitBuilder</c>

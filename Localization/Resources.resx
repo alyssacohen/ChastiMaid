@@ -1568,31 +1568,7 @@ You may export your session media before the save slot is freed.</value>
     <value>Finish and Free Slot</value>
   </data>
   <data name="SettingsHeadingContent" xml:space="preserve">
-    <value>Content Import/Export</value>
-  </data>
-  <data name="SettingsContentDescription" xml:space="preserve">
-    <value>Export your wardrobe, outfit rules, and tasks to a folder as a personal backup or a shareable language pack. Importing replaces the current content outright.</value>
-  </data>
-  <data name="SettingsExportContent" xml:space="preserve">
-    <value>Export Content</value>
-  </data>
-  <data name="SettingsImportContent" xml:space="preserve">
-    <value>Import Content</value>
-  </data>
-  <data name="SettingsExportFolderDialogTitle" xml:space="preserve">
-    <value>Choose export folder</value>
-  </data>
-  <data name="SettingsImportFolderDialogTitle" xml:space="preserve">
-    <value>Choose folder to import from</value>
-  </data>
-  <data name="SettingsContentExportedStatus" xml:space="preserve">
-    <value>Exported {0} wardrobe items, {1} outfit rules, and {2} tasks.</value>
-  </data>
-  <data name="SettingsContentImportedStatus" xml:space="preserve">
-    <value>Imported {0} wardrobe items, {1} outfit rules, and {2} tasks.</value>
-  </data>
-  <data name="SettingsContentImportDiscardedStatus" xml:space="preserve">
-    <value> {0} outfit rules were skipped because they reference items not present in the imported wardrobe: {1}.</value>
+    <value>Contract</value>
   </data>
   <data name="SettingsContractDescription" xml:space="preserve">
     <value>Export every game setting as a single contract file — including the wardrobe, outfit rules, tasks, punishments and permissions — or load one to replace your current terms outright. Your name, language, camera and autosave settings are never included.</value>

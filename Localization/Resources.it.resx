@@ -1567,31 +1567,7 @@
     <value>Termina e libera slot</value>
   </data>
   <data name="SettingsHeadingContent" xml:space="preserve">
-    <value>Importa/Esporta contenuti</value>
-  </data>
-  <data name="SettingsContentDescription" xml:space="preserve">
-    <value>Esporta guardaroba, regole degli abbinamenti e task in una cartella come backup personale o pacchetto di traduzione condivisibile. L'importazione sostituisce integralmente i contenuti attuali.</value>
-  </data>
-  <data name="SettingsExportContent" xml:space="preserve">
-    <value>Esporta contenuti</value>
-  </data>
-  <data name="SettingsImportContent" xml:space="preserve">
-    <value>Importa contenuti</value>
-  </data>
-  <data name="SettingsExportFolderDialogTitle" xml:space="preserve">
-    <value>Scegli la cartella di esportazione</value>
-  </data>
-  <data name="SettingsImportFolderDialogTitle" xml:space="preserve">
-    <value>Scegli la cartella da cui importare</value>
-  </data>
-  <data name="SettingsContentExportedStatus" xml:space="preserve">
-    <value>Esportati {0} capi del guardaroba, {1} regole di abbinamento e {2} task.</value>
-  </data>
-  <data name="SettingsContentImportedStatus" xml:space="preserve">
-    <value>Importati {0} capi del guardaroba, {1} regole di abbinamento e {2} task.</value>
-  </data>
-  <data name="SettingsContentImportDiscardedStatus" xml:space="preserve">
-    <value> {0} regole di abbinamento sono state scartate perché fanno riferimento a capi non presenti nel guardaroba importato: {1}.</value>
+    <value>Contratto</value>
   </data>
   <data name="SettingsContractDescription" xml:space="preserve">
     <value>Esporta tutte le impostazioni di gioco in un unico file contratto — compresi guardaroba, regole degli abbinamenti, task, punizioni e permessi — oppure caricane uno per sostituire integralmente le condizioni attuali. Nome, lingua, fotocamera e salvataggio automatico non sono mai inclusi.</value>

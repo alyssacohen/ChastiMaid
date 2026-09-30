@@ -1,6 +1,5 @@
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
-using ChastiMaid.Services.Content;
 using ChastiMaid.Services.Contracts;
 using LiteDB;
 
@@ -37,8 +36,7 @@ public class NewGameFreshProfileTests : IDisposable
     public void FreshlySeededProfile_NewGameFlow_DoesNotThrow()
     {
         var profile = new ProfileRepository(_profileDb);
-        var loader = new ContentLoaderService("en");
-        DataSeeder.SeedIfEmpty(profile, loader);
+        DataSeeder.SeedIfEmpty(profile, "en");
 
         var reread = profile.GetGameSettings();
         Assert.NotNull(reread.ParseAppellatives()); // null Appellatives after the LiteDB round-trip must not throw

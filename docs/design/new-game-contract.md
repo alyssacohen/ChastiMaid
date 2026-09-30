@@ -4,9 +4,8 @@ The New Game screen presents the current configuration as a **contract**. The sa
 to a file (`.contract.json`) and loaded again, on this machine or another, so that a whole game can be prepared for
 someone else.
 
-> The implementation prompt referred to `docs/design/content-import-export.md`. That document never existed; the
-> three-file content import/export (wardrobe, outfit rules, tasks) is described only by its code in
-> `Services/Content/`. The contract does not replace it — see [Relation to content import/export](#relation-to-content-importexport).
+The contract is the app's only data file format: it is also the per-language seed (see
+[Default contracts (seed)](#default-contracts-seed)).
 
 ## Where the settings live
 
@@ -142,7 +141,7 @@ Validate-first and all-or-nothing: a file that fails changes nothing.
 | Preset item ids not in the wardrobe | Trimmed, reported; preset discarded if none remain |
 | Permission kind unknown or duplicated | Discarded, reported |
 
-Rules are validated against **tags**, not ids, exactly as the existing content import does.
+Rules are validated against **tags**, not ids (`OutfitRuleContentService.Validate`).
 
 Ranges live in one table (`GameContractService.Ranges`/`Pairs`) and mirror the limits of the Settings inputs; fields
 the UI leaves unbounded above get a generous ceiling. A test fails if a numeric game-rule setting has no entry, so
@@ -151,7 +150,7 @@ make the Settings views read it.
 
 ## Export / import UI
 
-Settings → General → *Content Import/Export* gains *Export Contract* and *Import Contract*.
+Settings → General → *Contract* has *Export Contract* and *Import Contract*.
 
 - **Export** builds from the **saved** profile (unsaved edits on screen are not included; the status says so) and
   writes a single file. `ContractFileDialogs` forces the `.contract.json` extension.
@@ -161,11 +160,15 @@ Settings → General → *Content Import/Export* gains *Export Contract* and *Im
   be lost. Cancelling changes nothing.
 - After a successful import the cached Settings screen is rebuilt or invalidated so it never shows old values.
 
-## Relation to content import/export
+## Default contracts (seed)
 
-The three-file content export/import (Settings → General) is untouched and keeps working. Unlike the contract it is
-not versioned, not atomic (a bad file can throw after an earlier file was already applied) and has no value
-validation. Contract loading was written not to inherit those limits.
+On first run (wardrobe, outfit rules and tasks all empty) `DataSeeder.SeedIfEmpty` loads
+`Content/{language}/default.contract.json` for the resolved UI language and applies it through the same
+`Validate` + `Apply` path as an import. If the file is missing, unreadable or fatally invalid, the in-code
+`MinimalContentSeeder.Contract` is applied instead. A test checks that every shipped seed validates with no issues.
+To change the default content, edit the profile in Settings and export it over the seed file.
+
+The former three-file content import/export (wardrobe, outfit rules, tasks) was removed: the contract is a superset.
 
 ## Styling
 

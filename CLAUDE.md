@@ -59,7 +59,8 @@ Full keyboard and mouse, large screen. Used for development and testing.
   `MainWindowViewModel` to navigate and to reach shared services.
 
 **Startup wiring** (`App.axaml.cs` → `OnFrameworkInitializationCompleted`): constructs `DatabaseService`, opens the
-profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` with the shared services (
+profile DB, runs `DataSeeder.SeedIfEmpty` (first run only: applies the per-language seed contract
+`Content/{lang}/default.contract.json`, falling back to `MinimalContentSeeder`), then builds `MainWindowViewModel` with the shared services (
 `ProfileRepository`, `SaveSlotManager`, `AutoSaveService`, `WebcamPreviewService`). All are disposed on `desktop.Exit`.
 
 **Two-database persistence model (LiteDB, encrypted).**
@@ -81,8 +82,8 @@ profile DB, runs `DataSeeder.SeedIfEmpty`, then builds `MainWindowViewModel` wit
 (`Services/Contracts/`) is the single place that builds, serializes, validates and applies a `GameContract` (settings +
 every collection a save snapshots; machine-specific `GameSettings` fields are `[JsonIgnore]`). Loading overwrites the
 profile after a confirmation, through the shared `ContractImportFlow`. Keep `GameSettings` device-level fields marked
-`[JsonIgnore]` and give every new numeric setting a range in `GameContractService.Ranges` (a test enforces it). See
-`docs/design/new-game-contract.md`.
+`[JsonIgnore]` and give every new numeric setting a range in `GameContractService.Ranges` (a test enforces it). The
+contract is the only import/export format (no separate content export). See `docs/design/new-game-contract.md`.
 
 **Session runtime services** (created per active session, hold a `SaveRepository`):
 

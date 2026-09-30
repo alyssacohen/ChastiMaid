@@ -335,8 +335,6 @@ public partial class SettingsViewModel : ViewModelBase
                 ResetNewItemPanel();
             }
         });
-        ExportContentCommand = ReactiveCommand.CreateFromTask(ExportContent);
-        ImportContentCommand = ReactiveCommand.CreateFromTask(ImportContent);
         ExportContractCommand = ReactiveCommand.CreateFromTask(ExportContract);
         ImportContractCommand = ReactiveCommand.CreateFromTask(ImportContract);
     }
@@ -389,42 +387,6 @@ public partial class SettingsViewModel : ViewModelBase
         return confirmed;
     }
 
-    private async Task ExportContent()
-    {
-        var folder = await PickFolder(Resources.Get("SettingsExportFolderDialogTitle"));
-        if (folder is null)
-        {
-            return;
-        }
-
-        new ContentExportService().ExportAll(_repo, folder);
-        ContentActionStatusMessage = string.Format(Resources.Get("SettingsContentExportedStatus"),
-            _repo.GetWardrobe().Count, _repo.GetOutfitRules().Count, _repo.GetChores().Count);
-    }
-
-    private async Task ImportContent()
-    {
-        var folder = await PickFolder(Resources.Get("SettingsImportFolderDialogTitle"));
-        if (folder is null)
-        {
-            return;
-        }
-
-        var loader = new ContentLoaderService(_repo.GetGameSettings().Language);
-        var result = loader.ImportAll(folder, _repo);
-
-        var message = string.Format(Resources.Get("SettingsContentImportedStatus"),
-            result.WardrobeImported, result.RulesImported, result.TasksImported);
-        if (result.RulesDiscarded > 0)
-        {
-            var missingTags = string.Join(", ", result.DiscardedRules.SelectMany(r => r.MissingTags).Distinct());
-            message += string.Format(Resources.Get("SettingsContentImportDiscardedStatus"),
-                result.RulesDiscarded, missingTags);
-        }
-
-        RebuildScreen(message);
-    }
-
     /// <summary>
     ///     Rebuilds the whole screen from the repo so every collection reflects the saved profile — used after
     ///     a content/contract import replaced it, and by "Discard" to drop pending edits.
@@ -434,23 +396,6 @@ public partial class SettingsViewModel : ViewModelBase
         var fresh = new SettingsViewModel(_mainVm, _returnTo, statusMessage);
         _mainVm.ReplaceSettingsCache(fresh);
         NavigateAway(fresh);
-    }
-
-    private static async Task<string?> PickFolder(string title)
-    {
-        var topLevel = GetTopLevel();
-        if (topLevel is null)
-        {
-            return null;
-        }
-
-        var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
-        {
-            Title = title,
-            AllowMultiple = false,
-        });
-
-        return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;
     }
 
     private static TopLevel? GetTopLevel()
@@ -614,8 +559,6 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand AddForcedOutfitPresetCommand { get; }
     public ICommand DeleteSelectedWardrobeItemsCommand { get; }
     public ICommand CollapseExpandedWardrobeItemCommand { get; }
-    public ICommand ExportContentCommand { get; }
-    public ICommand ImportContentCommand { get; }
     public ICommand ExportContractCommand { get; }
     public ICommand ImportContractCommand { get; }
 

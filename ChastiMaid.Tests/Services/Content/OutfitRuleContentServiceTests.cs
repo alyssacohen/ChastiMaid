@@ -3,40 +3,9 @@ using ChastiMaid.Services.Content;
 
 namespace ChastiMaid.Tests.Services.Content;
 
-public class OutfitRuleContentServiceTests : IDisposable
+public class OutfitRuleContentServiceTests
 {
-    private readonly string _tempFile = Path.GetTempFileName();
     private readonly OutfitRuleContentService _service = new();
-
-    public void Dispose()
-    {
-        File.Delete(_tempFile);
-    }
-
-    [Fact]
-    public void ExportThenLoad_RoundTripsEqualRules()
-    {
-        var rules = new List<OutfitRule>
-        {
-            new() { Id = 1, SourceTag = "girdle", RelatedTag = "stockings", Relation = OutfitRelation.Requires },
-        };
-
-        _service.Export(rules, _tempFile);
-        var loaded = _service.Load(_tempFile);
-
-        var rule = Assert.Single(loaded);
-        Assert.Equal("girdle", rule.SourceTag);
-        Assert.Equal("stockings", rule.RelatedTag);
-        Assert.Equal(OutfitRelation.Requires, rule.Relation);
-    }
-
-    [Fact]
-    public void Export_SerializesRelationAsCamelCaseString()
-    {
-        _service.Export([new OutfitRule { Id = 1, SourceTag = "a", RelatedTag = "b", Relation = OutfitRelation.Incompatible }], _tempFile);
-
-        Assert.Contains("\"incompatible\"", File.ReadAllText(_tempFile));
-    }
 
     [Fact]
     public void Validate_RequiresRule_SurvivesIfEitherTagIsValid()
