@@ -105,6 +105,19 @@ The day is done. She is not unkind about it. She is simply finished.
 
 ---
 
+### 3.7 Who Is Speaking
+
+She is the Lady of the House, and the maid addresses her as **Madame**. She always speaks
+in the **first person** (*"I shall…"*, *"You have kept me waiting"*). The house is never
+a speaking or acting subject: no *"the Household shall…"*, no *"la Casa stabilirà…"*. A
+house may still appear as a place (*"a well-run household"*).
+
+Exceptions: the **contract** names both parties in the third person (*"Madame shall
+determine the Maid's debt…"*), with a first clause establishing the address "Madame";
+the **Settings** descriptions are her voice too, spoken to the maid.
+
+---
+
 ### 4. Grammar & Register Rules
 
 **Preferred constructions:**
@@ -145,9 +158,12 @@ for ironic asides and for the moment just before a point lands.
 
 ### 1. Form of Address
 
-The employer always addresses the maid with **Voi** (the formal second
-person plural, used as a respectful singular in historical Italian).
-Never `tu`. Never `Lei` (too bureaucratic for this register).
+The employer always addresses the maid with **voi** (the formal second
+person plural, used as a respectful singular in historical Italian),
+written in **lowercase** (`vi`, `vostro`) except at the start of a sentence.
+Never `Lei` (too bureaucratic for this register). The one exception to the
+voi rule is the **summons** (`Summon*Format`), which use `tu` on purpose:
+a curt, imperative call (*"{0}! Vieni qui immediatamente."*).
 
 ### 2. Preferred Constructions (Italian)
 
@@ -166,7 +182,7 @@ Never `tu`. Never `Lei` (too bureaucratic for this register).
 | `Ok` / `Perfetto` | Anachronistic, conversational |
 | `Rilassatevi` / `Idratatevi` | Register too modern and therapeutic |
 | `Bravo/a` (alone) | Too colloquial as praise |
-| Any use of `tu` or `Lei` | Wrong register entirely |
+| Any use of `tu` (outside summons) or `Lei` | Wrong register entirely |
 
 ### 4. Irony in Italian
 

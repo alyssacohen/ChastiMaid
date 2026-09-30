@@ -10,6 +10,9 @@ The game simulates an Eduardian-era landlady who hires a maid to help her repay 
 
 ### Voice & Tone Guide — The Employer Character
 
+The employer is the Lady of the House, addressed by the maid as "Madame". She always speaks in the first person;
+the house itself never speaks or acts (see `docs/design/TONE_GUIDE.md` §3.7).
+
 ChastiMaid features a virtual employer character whose voice is central to the application's identity and user
 experience.
 

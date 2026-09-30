@@ -136,7 +136,7 @@
     <value>Lingua</value>
   </data>
   <data name="WelcomeQuote" xml:space="preserve">
-    <value>Accomodati pure. La porta è aperta... per ora.</value>
+    <value>Accomodatevi pure. La porta è aperta... per ora.</value>
   </data>
   <data name="WelcomeContinue" xml:space="preserve">
     <value>Continua</value>
@@ -154,7 +154,7 @@
     <value>Esci</value>
   </data>
   <data name="WebcamRecordingLabel" xml:space="preserve">
-    <value>Registrazione in corso... Mettiti in posa.</value>
+    <value>Registrazione in corso... Mettetevi in posa.</value>
   </data>
   <data name="WebcamNotDetected" xml:space="preserve">
     <value>Nessuna webcam rilevata.</value>
@@ -181,7 +181,7 @@
     <value>{0} min</value>
   </data>
   <data name="PunishmentReasonPopupLate" xml:space="preserve">
-    <value>Per aver fatto attendere la casa.</value>
+    <value>Per avermi fatta attendere.</value>
   </data>
   <data name="PunishmentReasonImpossibleQuestionFailed" xml:space="preserve">
     <value>Per una risposta insoddisfacente alla mia domanda.</value>
@@ -190,10 +190,10 @@
     <value>Per aver mal pronunciato la frase richiesta.</value>
   </data>
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
-    <value>Per un'indecorosa fretta nei suoi doveri.</value>
+    <value>Per un'indecorosa fretta nei vostri doveri.</value>
   </data>
   <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
-    <value>Per aver dichiarato concluso un compito che, palesemente, non lo era..</value>
+    <value>Per aver dichiarato concluso un compito che, palesemente, non lo era.</value>
   </data>
   <data name="PunishmentReasonChoreTooSlow" xml:space="preserve">
     <value>Per aver bighellonato ben oltre il necessario.</value>
@@ -205,7 +205,7 @@
     <value>Per non essere riuscita a star ferma nell'angolo.</value>
   </data>
   <data name="PunishmentReasonPermissionOverrun" xml:space="preserve">
-    <value>Per essersi trattenuta oltre la pausa concessa.</value>
+    <value>Per esservi trattenuta oltre la pausa concessa.</value>
   </data>
   <data name="PunishmentReasonSelfCheckWronglyHidden" xml:space="preserve">
     <value>Per aver negato ciò che la macchina fotografica richiedeva chiaramente.</value>
@@ -319,7 +319,7 @@
     <value>{0} errore/i — righe aggiunte</value>
   </data>
   <data name="WritingLinesSuccessMessage" xml:space="preserve">
-    <value>Ogni riga, fedelmente ricopiata. La vostra calligrafia è stata notata.</value>
+    <value>Ogni riga, fedelmente ricopiata. Ho preso nota della vostra calligrafia.</value>
   </data>
   <data name="WritingLinesFailureMessage" xml:space="preserve">
     <value>Avete posato la penna troppo presto. È stata aggiunta una multa, e le righe restano da scrivere.</value>
@@ -328,16 +328,16 @@
     <value>Posare la Penna</value>
   </data>
   <data name="WritingLinesInterruption1" xml:space="preserve">
-    <value>Continui a muovere quelle dita.</value>
+    <value>Continuate a muovere quelle dita.</value>
   </data>
   <data name="WritingLinesInterruption2" xml:space="preserve">
     <value>Gli errori si addicono così poco.</value>
   </data>
   <data name="WritingLinesInterruption3" xml:space="preserve">
-    <value>L'inchiostro si secca, che scriva o meno.</value>
+    <value>L'inchiostro si secca, che scriviate o meno.</value>
   </data>
   <data name="WritingLinesInterruption4" xml:space="preserve">
-    <value>Ho tutta la sera. E lei?</value>
+    <value>Io ho tutta la sera. E voi?</value>
   </data>
   <data name="WritingLinesInterruption5" xml:space="preserve">
     <value>Una mano ferma tradisce una mente ferma.</value>
@@ -415,13 +415,13 @@
     <value>Già finito? O avete lavorato male, o non avete lavorato affatto — questa perdita di tempo non resterà impunita.</value>
   </data>
   <data name="DashboardOccasionalTaskRejectedMessage" xml:space="preserve">
-    <value>Un compito dichiarato concluso in pochi istanti non è un compito concluso affatto — sarà considerato nullo, e ne risponderete.</value>
+    <value>Un compito dichiarato concluso in pochi istanti non è un compito concluso affatto — lo considero nullo, e ne risponderete.</value>
   </data>
   <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
-      <value>Il lavoro è accettato, benché a un passo così placido valga appena metà del salario — e l'indugio non resterà impunito.</value>
+      <value>Accetto il lavoro, benché a un passo così placido valga appena metà del salario — e l'indugio non resterà impunito.</value>
   </data>
   <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
-    <value>Il compito è svolto, se non proprio con diligenza — metà salario per metà zelo, e dell'ozio si renderà conto.</value>
+    <value>Il compito è svolto, se non proprio con diligenza — metà salario per metà zelo, e dell'ozio mi renderete conto.</value>
   </data>
   <data name="DashboardAddOccasionalTask" xml:space="preserve">
     <value>Aggiungi compito</value>
@@ -514,25 +514,25 @@
       <value>Impaziente</value>
   </data>
   <data name="CardCooldownBypassDesc" xml:space="preserve">
-    <value>Azzera l'attesa che separa dalla prossima richiesta.</value>
+    <value>Azzera l'attesa che vi separa dalla prossima richiesta.</value>
   </data>
   <data name="CardDurationBoostName" xml:space="preserve">
     <value>+{0} Minuti</value>
   </data>
   <data name="CardDurationBoostDesc" xml:space="preserve">
-    <value>Allunga la durata della prossima richiesta concessa.</value>
+    <value>Allunga la durata della vostra prossima richiesta concessa.</value>
   </data>
   <data name="CardProbabilityBoostName" xml:space="preserve">
     <value>+{0}%</value>
   </data>
   <data name="CardProbabilityBoostDesc" xml:space="preserve">
-    <value>Migliora le probabilità di approvazione della prossima richiesta.</value>
+    <value>Migliora le probabilità che la vostra prossima richiesta sia approvata.</value>
   </data>
   <data name="CardGrantPermissionName" xml:space="preserve">
     <value>Approvazione Garantita</value>
   </data>
   <data name="CardGrantPermissionDesc" xml:space="preserve">
-    <value>La prossima richiesta è approvata senza obiezioni — solo questa volta.</value>
+    <value>La vostra prossima richiesta sarà approvata senza obiezioni — solo questa volta.</value>
   </data>
   <data name="CardSoftenPunishmentName" xml:space="preserve">
     <value>Mitiga Punizione</value>
@@ -574,7 +574,7 @@
     <value>Alleggerita</value>
   </data>
   <data name="FortuneOutcomeSoftenDesc" xml:space="preserve">
-      <value>Il mio buon cuore ha alleggerito una delle vostre punizioni.</value>
+      <value>Il mio buon cuore ha alleggerito una delle vostre punizioni. Quale, sta a voi accorgervene.</value>
   </data>
   <data name="FortuneOutcomeCancelTitle" xml:space="preserve">
     <value>Annullata</value>
@@ -592,7 +592,7 @@
       <value>Uno dei prossimi permessi durerà più a lungo del previsto. Approfittatene finché dura.</value>
   </data>
   <data name="FortuneOutcomeDurationDebuffDesc" xml:space="preserve">
-      <value>Uno dei prossimi permessi e sarà più breve del previsto.</value>
+      <value>Uno dei prossimi permessi sarà più breve del previsto.</value>
   </data>
   <data name="FortuneOutcomeAggravateTitle" xml:space="preserve">
     <value>Notata</value>
@@ -628,7 +628,7 @@
       <value>Se proprio dovete. Il tempo sta già scorrendo.</value>
   </data>
   <data name="PermissionDeniedBusy" xml:space="preserve">
-      <value>Non ora. La casa non si ferma per voi.</value>
+      <value>Non ora. Il lavoro non si ferma per voi, e nemmeno io.</value>
   </data>
   <data name="PermissionDeniedNotNow" xml:space="preserve">
       <value>Negato. Riprovate più tardi, se ne avete il coraggio.</value>
@@ -709,7 +709,7 @@
     <value>Una domestica contenta è il fondamento di una casa ben governata.</value>
   </data>
   <data name="ImpossibleQuestionContentmentYesNegative" xml:space="preserve">
-      <value>Troppa soddifazione genera pigrizia. Bisogna sempre aspirare a qualcosa in più.</value>
+      <value>Troppa soddisfazione genera pigrizia. Bisogna sempre aspirare a qualcosa in più.</value>
   </data>
   <data name="ImpossibleQuestionContentmentNoPositive" xml:space="preserve">
     <value>Bene. L'insoddisfazione è la vera madre del miglioramento.</value>
@@ -805,7 +805,7 @@
       <value>Anche la diligenza ha bisogno di nutrimento. Bevete un bicchiere.</value>
   </data>
   <data name="HydrationReminderPause" xml:space="preserve">
-      <value>Puoi fare una pausa e bere. Non avrò meno stima di voi per questo. Bevete mezzo bicchiere.</value>
+      <value>Potete fare una pausa e bere. Non avrò meno stima di voi per questo. Bevete mezzo bicchiere.</value>
   </data>
   <data name="HydrationConfirmedMessage" xml:space="preserve">
     <value>Molto bene.</value>
@@ -955,7 +955,7 @@
     <value>Ben detto.</value>
   </data>
   <data name="MotivationalQuoteSuccessLateMessage" xml:space="preserve">
-    <value>Bene, ma non posso transigere sul tuo ritardo.</value>
+    <value>Bene, ma non posso transigere sul vostro ritardo.</value>
   </data>
   <data name="MotivationalQuoteFailedMessage" xml:space="preserve">
     <value>Non era ciò che desideravo udire. Fate in modo di prestare maggiore attenzione la prossima volta.</value>
@@ -1042,7 +1042,7 @@
     <value>L'abito di oggi</value>
   </data>
   <data name="StartSessionEmployerQuote" xml:space="preserve">
-    <value>Mi sono presa la libertà di scegliere il tuo abbigliamento. Sono certa che ti piacerà.</value>
+    <value>Mi sono presa la libertà di scegliere il vostro abbigliamento. Sono certa che vi piacerà.</value>
   </data>
   <data name="StartSessionTotalMultiplier" xml:space="preserve">
     <value>Moltiplicatore totale</value>
@@ -1141,7 +1141,7 @@
     <value>Outfit confermato</value>
   </data>
   <data name="ConfirmOutfitEmployerQuote" xml:space="preserve">
-    <value>Ora vai a cambiarti. Quando sei pronta, premi il pulsante per confermare.</value>
+    <value>Ora andate a cambiarvi. Quando siete pronta, premete il pulsante per confermare.</value>
   </data>
   <data name="ConfirmOutfitConfirmButton" xml:space="preserve">
     <value>Sono pronta, Madame</value>
@@ -1201,7 +1201,7 @@
     <value>Appellativi</value>
   </data>
   <data name="SettingsFieldAppellativesCaption" xml:space="preserve">
-    <value>Separati da virgola. Usati a caso (insieme al Nome) quando venite richiamate a un popup.</value>
+    <value>Separati da virgola. Usati a caso (insieme al Nome) quando venite convocata da un popup.</value>
   </data>
   <data name="AppellativesWarningTooManyFormat" xml:space="preserve">
     <value>Solo i primi {0} vengono usati.</value>
@@ -1234,7 +1234,7 @@
     <value>Promemoria idratazione</value>
   </data>
   <data name="SettingsHydrationDescription" xml:space="preserve">
-    <value>Un promemoria: una cameriera assetata non è utile a nessuno. Basterà una pausa per bere.</value>
+    <value>Una cameriera assetata non mi è di alcuna utilità. Vi basterà una pausa per bere.</value>
   </data>
   <data name="SettingsHeadingCurtsyVideo" xml:space="preserve">
     <value>Video riverenza</value>
@@ -1246,13 +1246,13 @@
     <value>Lettura delle frasi</value>
   </data>
   <data name="SettingsQuoteReadingDescription" xml:space="preserve">
-    <value>Ella pronuncerà le parole richieste, con sufficiente chiarezza da convincere la macchina.</value>
+    <value>Pronuncerete le parole che vi richiedo, con chiarezza sufficiente a convincere la macchina.</value>
   </data>
   <data name="SettingsHeadingKneel" xml:space="preserve">
     <value>Inginocchiarsi</value>
   </data>
   <data name="SettingsKneelDescription" xml:space="preserve">
-      <value>Starete in ginocchio per il tempo stabilito, e la fotocamera ne conserverà la prova.</value>
+      <value>Starete in ginocchio per il tempo che stabilirò, e la fotocamera ne conserverà la prova.</value>
   </data>
   <data name="SettingsKneelDurationLabel" xml:space="preserve">
     <value>Durata minima/massima (secondi)</value>
@@ -1387,19 +1387,19 @@
     <value>Nome</value>
   </data>
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
-    <value>Certi accessori, una volta indossati, non si tolgono finché lei non giudica che abbiano assolto al loro scopo.</value>
+    <value>Certi accessori, una volta indossati, non si tolgono finché non giudico che abbiano assolto al loro scopo.</value>
   </data>
   <data name="SettingsHeadingDiaperPlay" xml:space="preserve">
     <value>Diaper Play</value>
   </data>
   <data name="SettingsDiaperPlayDescription" xml:space="preserve">
-    <value>Se la tenuta del giorno prevede tale imbottitura, non le sarà concesso di recarsi alla toilette, e scoprirà di aver bisogno di bere assai più spesso.</value>
+    <value>Se la tenuta del giorno prevede tale imbottitura, non vi concederò di recarvi alla toilette, e scoprirete di aver bisogno di bere assai più spesso.</value>
   </data>
   <data name="SettingsHeadingChastityDevice" xml:space="preserve">
     <value>Dispositivo di castità</value>
   </data>
   <data name="SettingsChastityDeviceDescription" xml:space="preserve">
-    <value>Uno dei capi contrassegnati verrà scelto a caso e chiuso su di lei ad ogni sessione; la chiave attende in cassaforte, e solo una cassaforte aperta consente di cambiare compagnia.</value>
+    <value>Uno dei capi contrassegnati verrà scelto a caso e chiuso su di voi ad ogni sessione; la chiave attende in cassaforte, e solo una cassaforte aperta consente di cambiare compagnia.</value>
   </data>
   <data name="SettingsEnabled" xml:space="preserve">
     <value>Attivo</value>
@@ -1447,7 +1447,7 @@
     <value>Ferma</value>
   </data>
   <data name="SettingsTestQuoteInstructions" xml:space="preserve">
-    <value>Prova le impostazioni, leggi la frase seguente:</value>
+    <value>Provate le impostazioni — leggete la frase seguente:</value>
   </data>
   <data name="SettingsTestQuoteFixedPhrase" xml:space="preserve">
     <value>Bene, non è forse magnifico? Il 100% di successo — ovviamente.</value>
@@ -1459,7 +1459,7 @@
     <value>La macchina è soddisfatta — {0:P0} compreso, ben oltre quanto richiedo.</value>
   </data>
   <data name="SettingsTestQuoteRecognitionResultFail" xml:space="preserve">
-    <value>La macchina resta perplessa — solo {0:P0} compreso. Riprova, e scandisci meglio.</value>
+    <value>La macchina resta perplessa — solo {0:P0} compreso. Riprovate, e scandite meglio.</value>
   </data>
   <data name="SettingsWebcamStatus" xml:space="preserve">
     <value>Webcam</value>
@@ -1543,19 +1543,20 @@
     <value>Rigenera</value>
   </data>
   <data name="CameraSetupTitle" xml:space="preserve">
-    <value>Posiziona la fotocamera</value>
+    <value>Posizionate la fotocamera</value>
   </data>
   <data name="CameraSetupFrameFormat" xml:space="preserve">
-    <value>Inquadra l'area di lavoro per: {0}</value>
+    <value>Inquadrate l'area di lavoro per: {0}</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Conferma</value>
   </data>
   <data name="GameCompleteTitle" xml:space="preserve">
-    <value>Servizio completato!</value>
+    <value>Servizio completato</value>
   </data>
   <data name="GameCompleteEmployerQuote" xml:space="preserve">
-      <value>Congratulazioni! Avete saldato il vostro debito. Potete esportare i contenuti della sessione prima che lo slot venga liberato.</value>
+      <value>Il vostro debito è saldato. Ne sono soddisfatta.
+Potete esportare i contenuti della sessione prima che lo slot venga liberato.</value>
   </data>
   <data name="GameCompleteExportVideo" xml:space="preserve">
     <value>Esporta video outfit</value>
@@ -1570,7 +1571,7 @@
     <value>Contratto</value>
   </data>
   <data name="SettingsContractDescription" xml:space="preserve">
-    <value>Esporta tutte le impostazioni di gioco in un unico file contratto — compresi guardaroba, regole degli abbinamenti, task, punizioni e permessi — oppure caricane uno per sostituire integralmente le condizioni attuali. Nome, lingua, fotocamera e salvataggio automatico non sono mai inclusi.</value>
+    <value>Esportate tutte le impostazioni di gioco in un unico file contratto — compresi guardaroba, regole degli abbinamenti, task, punizioni e permessi — oppure caricatene uno per sostituire integralmente le condizioni attuali. Nome, lingua, fotocamera e salvataggio automatico non sono mai inclusi.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="SettingsExportContract" xml:space="preserve">
@@ -1630,7 +1631,7 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractReplaceMessage" xml:space="preserve">
-    <value>Caricando questo contratto Voi sostituirete impostazioni, guardaroba, regole degli abbinamenti, task, punizioni e permessi attuali. Nome, lingua, fotocamera e salvataggio automatico restano invariati.</value>
+    <value>Caricando questo contratto sostituirete impostazioni, guardaroba, regole degli abbinamenti, task, punizioni e permessi attuali. Nome, lingua, fotocamera e salvataggio automatico restano invariati.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractReplaceReportHeader" xml:space="preserve">
@@ -1670,11 +1671,11 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractPreamble" xml:space="preserve">
-    <value>Si conviene tra la Casa e il suo più recente membro — d'ora innanzi, con qualche ottimismo, «la Cameriera» — che i termini seguenti regolino il periodo di servizio. Vogliate leggerli con attenzione. Non saranno letti ad alta voce.</value>
+    <value>Si conviene tra la Padrona di casa e il più recente membro della sua servitù — d'ora innanzi, con qualche ottimismo, «la Cameriera» — che i termini seguenti regolino il periodo di servizio. Vogliate leggerli con attenzione. Non saranno letti ad alta voce.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractClosing" xml:space="preserve">
-    <value>Se qualcosa di ciò Vi dispiacesse, la porta è dove è sempre stata. Tende a incepparsi, va detto.</value>
+    <value>Se qualcosa di ciò vi dispiacesse, la porta è dove è sempre stata. Tende a incepparsi, va detto.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractAccept" xml:space="preserve">
@@ -1688,6 +1689,12 @@
   <data name="ContractLoad" xml:space="preserve">
     <value>Carica un altro contratto</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
+  </data>
+  <data name="ContractAddressTitle" xml:space="preserve">
+    <value>Forme di cortesia</value>
+  </data>
+  <data name="ContractAddress" xml:space="preserve">
+    <value>La Cameriera si rivolgerà alla Padrona di casa con l'appellativo di «Madame», e con nessun altro.</value>
   </data>
   <data name="ContractDebtTitle" xml:space="preserve">
     <value>Debito e interessi</value>
@@ -1726,15 +1733,15 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractDebtRange" xml:space="preserve">
-    <value>All'atto della Vostra accettazione, la Casa stabilirà a propria discrezione il Vostro debito, in una somma compresa tra {0} e {1}.</value>
+    <value>All'atto dell'accettazione, Madame stabilirà a propria discrezione il debito della Cameriera, in una somma compresa tra {0} e {1}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractInterest" xml:space="preserve">
-    <value>Gli interessi maturano ogni giorno al {0}%. La Casa si rammarica che l'aritmetica non ammetta trattative.</value>
+    <value>Gli interessi maturano ogni giorno al {0}%. Madame si rammarica che l'aritmetica non ammetta trattative.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractWage" xml:space="preserve">
-    <value>Finché Vi trovate senza incarichi, la Casa Vi corrisponderà {0} ogni {1}. «Senza incarichi» è, in questa casa, un'espressione assai generosa.</value>
+    <value>Finché la Cameriera si trova senza incarichi, Madame le corrisponderà {0} ogni {1}. «Senza incarichi» è, in questa casa, un'espressione assai generosa.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractWardrobeCount" xml:space="preserve">
@@ -1742,7 +1749,7 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractRulesNone" xml:space="preserve">
-    <value>Nessuna regola limita l'abbinamento dei capi. La Casa ripone fiducia nel Vostro gusto — per il momento.</value>
+    <value>Nessuna regola limita l'abbinamento dei capi. Madame ripone fiducia nel gusto della Cameriera — per il momento.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractRules" xml:space="preserve">
@@ -1770,15 +1777,15 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractTasks" xml:space="preserve">
-    <value>La casa mantiene {0} incombenze fisse, ciascuna retribuita al termine. Se le portaste a compimento tutte, ammonterebbero a {1}.</value>
+    <value>Madame stabilisce {0} incombenze fisse, ciascuna retribuita al termine. Se la Cameriera le portasse a compimento tutte, ammonterebbero a {1}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractTasksNone" xml:space="preserve">
-    <value>Non è stata fissata alcuna incombenza. La Casa lo ritiene improbabile e sospetta una svista.</value>
+    <value>Non è stata fissata alcuna incombenza. Madame lo ritiene improbabile e sospetta una svista.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractSummons" xml:space="preserve">
-    <value>La Casa potrà convocarVi a intervalli compresi tra {0} e {1}; Voi risponderete entro {2}.</value>
+    <value>Madame potrà convocare la Cameriera a intervalli compresi tra {0} e {1}; la Cameriera risponderà entro {2}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractHydrationOn" xml:space="preserve">
@@ -1786,35 +1793,35 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractHydrationOff" xml:space="preserve">
-    <value>I richiami all'idratazione Vi sono risparmiati.</value>
+    <value>I richiami all'idratazione sono risparmiati alla Cameriera.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractCurtsyOn" xml:space="preserve">
-    <value>Potrà esservi richiesta una riverenza, ripresa in video per {0}.</value>
+    <value>Alla Cameriera potrà essere richiesta una riverenza, ripresa in video per {0}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractCurtsyOff" xml:space="preserve">
-    <value>Non Vi sarà richiesta alcuna riverenza.</value>
+    <value>Alla Cameriera non sarà richiesta alcuna riverenza.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractQuoteOn" xml:space="preserve">
-    <value>Potrà esservi affidata una massima motivazionale da leggere ad alta voce, con {0} di tempo per farlo. Una fedeltà al testo di almeno il {1}% soddisferà la Casa.</value>
+    <value>Alla Cameriera potrà essere affidata una massima motivazionale da leggere ad alta voce, con {0} di tempo per farlo. Una fedeltà al testo di almeno il {1}% soddisferà Madame.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractQuoteOff" xml:space="preserve">
-    <value>Non Vi sarà chiesto di recitare.</value>
+    <value>Alla Cameriera non sarà chiesto di recitare.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractKneelOn" xml:space="preserve">
-    <value>Potrà esservi chiesto di restare in ginocchio per un tempo compreso tra {0} e {1}, con una fotografia scattata a intervalli compresi tra {2} e {3}.</value>
+    <value>Alla Cameriera potrà essere chiesto di restare in ginocchio per un tempo compreso tra {0} e {1}, con una fotografia scattata a intervalli compresi tra {2} e {3}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractKneelOff" xml:space="preserve">
-    <value>Non Vi sarà chiesto di inginocchiarVi.</value>
+    <value>Alla Cameriera non sarà chiesto di inginocchiarsi.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractBusyCapture" xml:space="preserve">
-    <value>Durante le Vostre occupazioni, verranno scattate fotografie a intervalli compresi tra {0} e {1}.</value>
+    <value>Durante le occupazioni della Cameriera, verranno scattate fotografie a intervalli compresi tra {0} e {1}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractFine" xml:space="preserve">
@@ -1822,7 +1829,7 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractCornertimeOn" xml:space="preserve">
-    <value>Cornertime: resterete perfettamente immobile per {0} per ogni punto di severità — non meno di {1}, non più di {2} — con {3} di tolleranza oltre tale limite.</value>
+    <value>Cornertime: la Cameriera resterà perfettamente immobile per {0} per ogni punto di severità — non meno di {1}, non più di {2} — con {3} di tolleranza oltre tale limite.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractCornertimeMovement" xml:space="preserve">
@@ -1838,11 +1845,11 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractWritingNoIdle" xml:space="preserve">
-    <value>Se lascerete la penna inattiva per {0}, verranno aggiunte {1} righe.</value>
+    <value>Se la Cameriera lascerà la penna inattiva per {0}, verranno aggiunte {1} righe.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractWritingInterruptions" xml:space="preserve">
-    <value>La Casa potrà interrompere la Vostra scrittura a intervalli compresi tra {0} e {1}.</value>
+    <value>Madame potrà interrompere la scrittura della Cameriera a intervalli compresi tra {0} e {1}.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractWritingLinesOff" xml:space="preserve">
@@ -1858,7 +1865,7 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractPermissionsIntro" xml:space="preserve">
-    <value>Il congedo per certe necessità è concesso a discrezione della Casa:</value>
+    <value>Il congedo per certe necessità è concesso a discrezione di Madame:</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractPermissionLine" xml:space="preserve">
@@ -1866,27 +1873,27 @@
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractPermissionsNone" xml:space="preserve">
-    <value>Non è previsto alcun congedo di sorta. Regolatevi di conseguenza.</value>
+    <value>Non è previsto alcun congedo di sorta. La Cameriera si regoli di conseguenza.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractCornertimeVoiceOn" xml:space="preserve">
-    <value>La Casa narrerà ad alta voce il Vostro Cornertime.</value>
+    <value>Madame narrerà ad alta voce il Cornertime della Cameriera.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractCornertimeVoiceOff" xml:space="preserve">
-    <value>Il Vostro Cornertime sarà osservato in silenzio.</value>
+    <value>Il Cornertime della Cameriera sarà osservato in silenzio.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractAppellatives" xml:space="preserve">
-    <value>La Casa tiene in serbo {0} appellativi per convocarVi.</value>
+    <value>Madame tiene in serbo {0} appellativi per convocare la Cameriera.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractAppellativesNone" xml:space="preserve">
-    <value>La Casa Vi convocherà con il solo nome.</value>
+    <value>Madame convocherà la Cameriera con il solo nome.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractSeverity" xml:space="preserve">
-    <value>La severità delle punizioni non è fissa. Varierà in base alla Vostra condotta: con quanta fedeltà siano osservate le abitudini della casa, quante faccende restino in sospeso e quanto spesso sia stata rifiutata la scelta d'abito della Casa. La Casa non rivela i propri metodi. Osserva, semplicemente.</value>
+    <value>La severità delle punizioni non è fissa. Varierà in base alla condotta della Cameriera: con quanta fedeltà siano osservate le abitudini della casa, quante faccende restino in sospeso e quanto spesso sia stata rifiutata la scelta d'abito di Madame. Madame non rivela i propri metodi. Osserva, semplicemente.</value>
     <comment>NEEDS REVIEW: Italian draft</comment>
   </data>
   <data name="ContractSecondOne" xml:space="preserve">
@@ -1998,8 +2005,8 @@
     <value>Blocco cassaforte</value>
   </data>
   <data name="SafeLockInstructions" xml:space="preserve">
-    <value>Riponi il tuo oggetto di distrazione dentro la cassaforte.
-Inquadra la combinazione con la fotocamera senza guardarla.</value>
+    <value>Riponete il vostro oggetto di distrazione dentro la cassaforte.
+Inquadrate la combinazione con la fotocamera senza guardarla.</value>
   </data>
   <data name="SafeLockStartCamera" xml:space="preserve">
     <value>Avvia fotocamera</value>
@@ -2011,7 +2018,7 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
     <value>Cassaforte bloccata!</value>
   </data>
   <data name="SafeLockEncryptedNotice" xml:space="preserve">
-    <value>La foto della combinazione è stata cifrata e archiviata. La rivedrai solo a partita completata o se scegli di sbloccare la cassaforte. Puoi riprovare a scattare la foto della combinazione se non hai certezza che il primo tentativo sia venuto bene.</value>
+    <value>La foto della combinazione è stata cifrata e archiviata. La rivedrete solo a partita completata o se sceglierete di sbloccare la cassaforte. Potete riprovare a scattare la foto della combinazione se non siete certa che il primo tentativo sia venuto bene.</value>
   </data>
   <data name="SafeLockStartSession" xml:space="preserve">
     <value>Avvia sessione</value>
@@ -2038,10 +2045,10 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
     <value>Prossima paga tra {0:D2}:{1:D2}</value>
   </data>
   <data name="SafeLockPreviewMessage" xml:space="preserve">
-    <value>Inquadra la combinazione con la fotocamera, poi premi Cattura.</value>
+    <value>Inquadrate la combinazione con la fotocamera, poi premete Cattura.</value>
   </data>
   <data name="SafeLockNoWebcamMessage" xml:space="preserve">
-    <value>Non è possibile catturare la foto della combinazione. Puoi continuare senza bloccare la cassaforte.</value>
+    <value>Non è possibile catturare la foto della combinazione. Potete continuare senza bloccare la cassaforte.</value>
   </data>
   <data name="SafeLockContinueWithoutSafe" xml:space="preserve">
     <value>Continua senza cassaforte</value>
@@ -2059,7 +2066,7 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
     <value>Ci sono modifiche non salvate in questa scheda.</value>
   </data>
   <data name="SettingsUnsavedGeneralMessage" xml:space="preserve">
-    <value>Ci sono modifiche non salvate. Cosa vuoi fare?</value>
+    <value>Ci sono modifiche non salvate. Cosa desiderate fare?</value>
   </data>
   <data name="SettingsUnsavedChangesTitle" xml:space="preserve">
     <value>Modifiche non salvate</value>
@@ -2068,10 +2075,10 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
     <value>{0} capi · {1} strati occupati</value>
   </data>
   <data name="ConfirmOutfitPreviewMessage" xml:space="preserve">
-    <value>Controlla l'anteprima, poi premi Registra.</value>
+    <value>Controllate l'anteprima, poi premete Registra.</value>
   </data>
   <data name="ConfirmOutfitNoWebcamMessage" xml:space="preserve">
-    <value>Il video dell'outfit non può essere registrato. Puoi saltare questo passaggio e continuare.</value>
+    <value>Il video dell'outfit non può essere registrato. Potete saltare questo passaggio e continuare.</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
@@ -2099,7 +2106,7 @@ Inquadra la combinazione con la fotocamera senza guardarla.</value>
   <data name="LoadGameDeleteWarningLockedFormat" xml:space="preserve">
     <value>Eliminare "{0}"?
 
-ATTENZIONE: la cassaforte è bloccata. Eliminando questo salvataggio distruggerai permanentemente la foto cifrata della combinazione. La combinazione andrà persa per sempre.</value>
+ATTENZIONE: la cassaforte è bloccata. Eliminando questo salvataggio distruggerete permanentemente la foto cifrata della combinazione. La combinazione andrà persa per sempre.</value>
   </data>
   <data name="LoadGameDeleteConfirmFormat" xml:space="preserve">
     <value>Eliminare "{0}"? Questa partita verrà contrassegnata come fallita.</value>
@@ -2117,19 +2124,19 @@ ATTENZIONE: la cassaforte è bloccata. Eliminando questo salvataggio distruggera
     <value>Rigenera outfit</value>
   </data>
   <data name="StartSessionRegenerateMessageFormat" xml:space="preserve">
-    <value>Rigenerare ridurrà il tuo bonus al {0:F0}% del moltiplicatore base. Procedere?</value>
+    <value>Rigenerare ridurrà il vostro bonus al {0:F0}% del moltiplicatore base. Procedere?</value>
   </data>
   <data name="StartSessionModifyOutfitTitle" xml:space="preserve">
     <value>Modifica outfit</value>
   </data>
   <data name="StartSessionModifyMessageFormat" xml:space="preserve">
-    <value>Scegliere manualmente i capi ridurrà il tuo bonus al {0:F0}% del moltiplicatore base e bloccherà l'outfit. Procedere?</value>
+    <value>Scegliere manualmente i capi ridurrà il vostro bonus al {0:F0}% del moltiplicatore base e bloccherà l'outfit. Procedere?</value>
   </data>
   <data name="WelcomeNoFreeSlotsTitle" xml:space="preserve">
     <value>Nessuno slot libero</value>
   </data>
   <data name="WelcomeNoFreeSlotsMessage" xml:space="preserve">
-    <value>Tutti i 5 slot di salvataggio sono occupati. Completa o elimina una partita esistente prima di iniziarne una nuova.</value>
+    <value>Tutti i 5 slot di salvataggio sono occupati. Completate o eliminate una partita esistente prima di iniziarne una nuova.</value>
   </data>
   <data name="GameCompleteAviVideoFilter" xml:space="preserve">
     <value>Video AVI</value>

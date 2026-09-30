@@ -51,6 +51,7 @@ public class ContractClauseBuilderTests : IDisposable
 
         Assert.Equal(Enumerable.Range(1, clauses.Count), clauses.Select(c => c.Number));
         Assert.All(clauses, c => Assert.NotEmpty(c.Paragraphs));
+        Assert.Equal(Resources.Get("ContractAddressTitle"), clauses[0].Title);
         Assert.Equal(Resources.Get("ContractSeverityTitle"), clauses[^1].Title);
         Assert.Equal([Resources.Get("ContractSeverity")], clauses[^1].Paragraphs);
     }

@@ -34,6 +34,7 @@ public static class ContractClauseBuilder
 
         List<(string TitleKey, List<string> Paragraphs)> clauses =
         [
+            ("ContractAddressTitle", [Resources.Get("ContractAddress")]),
             ("ContractDebtTitle",
             [
                 F("ContractDebtRange", Money(s.MinDebt), Money(s.MaxDebt)),

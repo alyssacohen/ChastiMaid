@@ -154,7 +154,7 @@
     <value>Exit</value>
   </data>
   <data name="WebcamRecordingLabel" xml:space="preserve">
-    <value>Recording... Strike a pose!</value>
+    <value>Recording... Strike a pose.</value>
   </data>
   <data name="WebcamNotDetected" xml:space="preserve">
     <value>No webcam detected.</value>
@@ -181,16 +181,16 @@
     <value>{0} min</value>
   </data>
   <data name="PunishmentReasonPopupLate" xml:space="preserve">
-    <value>For keeping the household waiting.</value>
+    <value>For keeping me waiting.</value>
   </data>
   <data name="PunishmentReasonImpossibleQuestionFailed" xml:space="preserve">
     <value>For an unsatisfactory answer to my question.</value>
   </data>
   <data name="PunishmentReasonMotivationalQuoteFailed" xml:space="preserve">
-    <value>For fumbling her lines, tardily.</value>
+    <value>For fumbling your lines, tardily.</value>
   </data>
   <data name="PunishmentReasonChoreTooEarly" xml:space="preserve">
-    <value>For unseemly haste in her duties.</value>
+    <value>For unseemly haste in your duties.</value>
   </data>
   <data name="PunishmentReasonOccasionalTaskTooEarly" xml:space="preserve">
     <value>For declaring a task done when it plainly was not.</value>
@@ -208,10 +208,10 @@
     <value>For overstaying a granted respite.</value>
   </data>
   <data name="PunishmentReasonSelfCheckWronglyHidden" xml:space="preserve">
-    <value>For denying what the camera plainly required of her.</value>
+    <value>For denying what the camera plainly required of you.</value>
   </data>
   <data name="PunishmentReasonSelfCheckWronglyVisible" xml:space="preserve">
-      <value>For lying through her teeth.</value>
+      <value>For lying through your teeth.</value>
   </data>
   <data name="ForcedOutfitInfoTitle" xml:space="preserve">
     <value>A Matter Already Settled</value>
@@ -319,7 +319,7 @@
     <value>{0} mistake(s) — lines added</value>
   </data>
   <data name="WritingLinesSuccessMessage" xml:space="preserve">
-    <value>Every line, faithfully copied. Your penmanship has been noted.</value>
+    <value>Every line, faithfully copied. I have taken note of your penmanship.</value>
   </data>
   <data name="WritingLinesFailureMessage" xml:space="preserve">
     <value>You set down the pen too soon. A fine has been added, and the lines remain unwritten.</value>
@@ -415,13 +415,13 @@
     <value>Finished already? Either the work was poor, or none was done at all — this waste of my time shall not go unanswered.</value>
   </data>
   <data name="DashboardOccasionalTaskRejectedMessage" xml:space="preserve">
-    <value>A task declared complete in mere moments is no task completed at all — it shall be marked void, and answered for.</value>
+    <value>A task declared complete in mere moments is no task completed at all — I shall mark it void, and you shall answer for it.</value>
   </data>
   <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
-    <value>The work is accepted, though at such a leisurely pace it earns but half its wage — and the dawdling shall not go unanswered.</value>
+    <value>I accept the work, though at such a leisurely pace it earns but half its wage — and the dawdling shall not go unanswered.</value>
   </data>
   <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
-    <value>The task is done, if hardly with diligence — half the wage for half the zeal, and the dawdling shall be answered for.</value>
+    <value>The task is done, if hardly with diligence — half the wage for half the zeal, and you shall answer to me for the dawdling.</value>
   </data>
   <data name="DashboardAddOccasionalTask" xml:space="preserve">
     <value>Add task</value>
@@ -628,7 +628,7 @@
     <value>If you must. The clock is already ticking.</value>
   </data>
   <data name="PermissionDeniedBusy" xml:space="preserve">
-    <value>Not at present. The household does not pause for you.</value>
+    <value>Not at present. The work does not pause for you — nor do I.</value>
   </data>
   <data name="PermissionDeniedNotNow" xml:space="preserve">
     <value>Denied. Ask again later, if you dare.</value>
@@ -1234,7 +1234,7 @@
     <value>Hydration Reminders</value>
   </data>
   <data name="SettingsHydrationDescription" xml:space="preserve">
-    <value>A reminder that a parched maid is no use to anyone. She need only pause and drink.</value>
+    <value>A parched maid is of no use to me. You need only pause and drink.</value>
   </data>
   <data name="SettingsHeadingCurtsyVideo" xml:space="preserve">
     <value>Curtsy Video</value>
@@ -1246,13 +1246,13 @@
     <value>Quote Reading</value>
   </data>
   <data name="SettingsQuoteReadingDescription" xml:space="preserve">
-    <value>She shall speak the words required of her, clearly enough for the machine to believe it.</value>
+    <value>You shall speak the words I require of you, clearly enough for the machine to believe them.</value>
   </data>
   <data name="SettingsHeadingKneel" xml:space="preserve">
     <value>Kneel</value>
   </data>
   <data name="SettingsKneelDescription" xml:space="preserve">
-    <value>She shall kneel for exactly as long as decided, and the camera shall keep proof of it.</value>
+    <value>You shall kneel for exactly as long as I decide, and the camera shall keep proof of it.</value>
   </data>
   <data name="SettingsKneelDurationLabel" xml:space="preserve">
     <value>Duration minimum/maximum (seconds)</value>
@@ -1387,19 +1387,19 @@
     <value>Name</value>
   </data>
   <data name="SettingsPlugAndPlayDescription" xml:space="preserve">
-    <value>Certain accessories, once donned, do not come off again until she is satisfied they have served their purpose.</value>
+    <value>Certain accessories, once donned, do not come off again until I am satisfied they have served their purpose.</value>
   </data>
   <data name="SettingsHeadingDiaperPlay" xml:space="preserve">
     <value>Diaper Play</value>
   </data>
   <data name="SettingsDiaperPlayDescription" xml:space="preserve">
-    <value>Should the day's outfit call for such padding, she will not be excused to the water closet, and she will find herself needing a drink rather more often.</value>
+    <value>Should the day's outfit call for such padding, I shall not excuse you to the water closet, and you will find yourself needing a drink rather more often.</value>
   </data>
   <data name="SettingsHeadingChastityDevice" xml:space="preserve">
     <value>Chastity Device</value>
   </data>
   <data name="SettingsChastityDeviceDescription" xml:space="preserve">
-    <value>One of the marked pieces will be selected at random and locked upon her each session; the key waits in the safe, and only an open safe permits a change of company.</value>
+    <value>One of the marked pieces will be selected at random and locked upon you each session; the key waits in the safe, and only an open safe permits a change of company.</value>
   </data>
   <data name="SettingsEnabled" xml:space="preserve">
     <value>Enabled</value>
@@ -1552,10 +1552,10 @@
     <value>Confirm</value>
   </data>
   <data name="GameCompleteTitle" xml:space="preserve">
-    <value>Game Complete!</value>
+    <value>Service Complete</value>
   </data>
   <data name="GameCompleteEmployerQuote" xml:space="preserve">
-    <value>Congratulations! You have paid off your debt.
+    <value>Your debt is paid in full. That will do very nicely indeed.
 You may export your session media before the save slot is freed.</value>
   </data>
   <data name="GameCompleteExportVideo" xml:space="preserve">
@@ -1646,7 +1646,7 @@ You may export your session media before the save slot is freed.</value>
     <value>Contract of Service</value>
   </data>
   <data name="ContractPreamble" xml:space="preserve">
-    <value>It is hereby agreed between the Household and its newest member — hereafter, with some optimism, “the Maid” — that the following terms shall govern the period of service. Kindly read them attentively. They will not be read aloud.</value>
+    <value>It is hereby agreed between the Lady of the House and the newest member of her staff — hereafter, with some optimism, “the Maid” — that the following terms shall govern the period of service. Kindly read them attentively. They will not be read aloud.</value>
   </data>
   <data name="ContractClosing" xml:space="preserve">
     <value>Should any of this displease you, the door remains where it has always been. It does tend to stick.</value>
@@ -1659,6 +1659,12 @@ You may export your session media before the save slot is freed.</value>
   </data>
   <data name="ContractLoad" xml:space="preserve">
     <value>Load another contract</value>
+  </data>
+  <data name="ContractAddressTitle" xml:space="preserve">
+    <value>Forms of Address</value>
+  </data>
+  <data name="ContractAddress" xml:space="preserve">
+    <value>The Maid shall address the Lady of the House as “Madame”, and by no other name.</value>
   </data>
   <data name="ContractDebtTitle" xml:space="preserve">
     <value>Debt and Interest</value>
@@ -1688,19 +1694,19 @@ You may export your session media before the save slot is freed.</value>
     <value>Variable Severity</value>
   </data>
   <data name="ContractDebtRange" xml:space="preserve">
-    <value>Upon your acceptance, the Household shall determine your debt, at its own discretion, at a sum between {0} and {1}.</value>
+    <value>Upon acceptance, Madame shall determine the Maid's debt, at her own discretion, at a sum between {0} and {1}.</value>
   </data>
   <data name="ContractInterest" xml:space="preserve">
-    <value>Interest accrues daily at {0}%. The Household regrets that arithmetic is not open to negotiation.</value>
+    <value>Interest accrues daily at {0}%. Madame regrets that arithmetic is not open to negotiation.</value>
   </data>
   <data name="ContractWage" xml:space="preserve">
-    <value>While you are idle, the Household shall pay you {0} every {1}. “Idle” is, in this household, a generously loose term.</value>
+    <value>While the Maid is idle, Madame shall pay her {0} every {1}. “Idle” is, in this household, a generously loose term.</value>
   </data>
   <data name="ContractWardrobeCount" xml:space="preserve">
     <value>The wardrobe comprises {0} garments: {1}.</value>
   </data>
   <data name="ContractRulesNone" xml:space="preserve">
-    <value>No rules restrict how garments may be combined. The Household has faith in your taste — for the present.</value>
+    <value>No rules restrict how garments may be combined. Madame has faith in the Maid's taste — for the present.</value>
   </data>
   <data name="ContractRules" xml:space="preserve">
     <value>{0} rules govern which garments may be worn together: {1} requiring, {2} forbidding.</value>
@@ -1721,46 +1727,46 @@ You may export your session media before the save slot is freed.</value>
     <value>{0} garments are designated as chastity devices.</value>
   </data>
   <data name="ContractTasks" xml:space="preserve">
-    <value>The household keeps {0} standing tasks, each paid upon completion. Were you to complete every one, they would earn {1}.</value>
+    <value>Madame sets {0} standing tasks, each paid upon completion. Were the Maid to complete every one, they would earn {1}.</value>
   </data>
   <data name="ContractTasksNone" xml:space="preserve">
-    <value>No standing tasks are set. The Household finds this improbable, and suspects an oversight.</value>
+    <value>No standing tasks are set. Madame finds this improbable, and suspects an oversight.</value>
   </data>
   <data name="ContractSummons" xml:space="preserve">
-    <value>You may be summoned at intervals of between {0} and {1}, and shall answer within {2}.</value>
+    <value>Madame may summon the Maid at intervals of between {0} and {1}; the Maid shall answer within {2}.</value>
   </data>
   <data name="ContractHydrationOn" xml:space="preserve">
     <value>Hydration reminders shall come no more often than once every {0}.</value>
   </data>
   <data name="ContractHydrationOff" xml:space="preserve">
-    <value>You are excused from hydration reminders.</value>
+    <value>The Maid is excused from hydration reminders.</value>
   </data>
   <data name="ContractCurtsyOn" xml:space="preserve">
-    <value>You may be required to curtsy, recorded on video for {0}.</value>
+    <value>The Maid may be required to curtsy, recorded on video for {0}.</value>
   </data>
   <data name="ContractCurtsyOff" xml:space="preserve">
-    <value>No curtsy will be required of you.</value>
+    <value>No curtsy will be required of the Maid.</value>
   </data>
   <data name="ContractQuoteOn" xml:space="preserve">
-    <value>You may be given a motivational quotation to read aloud, with {0} in which to do so. Fidelity to the text of at least {1}% will satisfy the Household.</value>
+    <value>The Maid may be given a motivational quotation to read aloud, with {0} in which to do so. Fidelity to the text of at least {1}% will satisfy Madame.</value>
   </data>
   <data name="ContractQuoteOff" xml:space="preserve">
-    <value>You shall not be asked to recite.</value>
+    <value>The Maid shall not be asked to recite.</value>
   </data>
   <data name="ContractKneelOn" xml:space="preserve">
-    <value>You may be asked to kneel for between {0} and {1}, photographed at intervals of between {2} and {3}.</value>
+    <value>The Maid may be asked to kneel for between {0} and {1}, photographed at intervals of between {2} and {3}.</value>
   </data>
   <data name="ContractKneelOff" xml:space="preserve">
-    <value>You shall not be asked to kneel.</value>
+    <value>The Maid shall not be asked to kneel.</value>
   </data>
   <data name="ContractBusyCapture" xml:space="preserve">
-    <value>While you are occupied, photographs shall be taken at intervals of between {0} and {1}.</value>
+    <value>While the Maid is occupied, photographs shall be taken at intervals of between {0} and {1}.</value>
   </data>
   <data name="ContractFine" xml:space="preserve">
     <value>Every infraction carries a fine of {0} per point of severity.</value>
   </data>
   <data name="ContractCornertimeOn" xml:space="preserve">
-    <value>Cornertime: you shall stand perfectly still for {0} per point of severity — no less than {1}, no more than {2} — with {3} of grace beyond that.</value>
+    <value>Cornertime: the Maid shall stand perfectly still for {0} per point of severity — no less than {1}, no more than {2} — with {3} of grace beyond that.</value>
   </data>
   <data name="ContractCornertimeMovement" xml:space="preserve">
     <value>Movement is detected at a sensitivity of {0}% and adds between {1} and {2} to the sentence, with a pause of between {3} and {4} before another may be counted.</value>
@@ -1769,13 +1775,13 @@ You may export your session media before the save slot is freed.</value>
     <value>Cornertime is not in force.</value>
   </data>
   <data name="ContractWritingLinesOn" xml:space="preserve">
-    <value>Lines: you shall write {0} lines per point of severity — at least {1}, at most {2} — and {3} more for each mistake.</value>
+    <value>Lines: the Maid shall write {0} lines per point of severity — at least {1}, at most {2} — and {3} more for each mistake.</value>
   </data>
   <data name="ContractWritingNoIdle" xml:space="preserve">
-    <value>Should you leave the pen idle for {0}, {1} lines shall be added.</value>
+    <value>Should the Maid leave the pen idle for {0}, {1} lines shall be added.</value>
   </data>
   <data name="ContractWritingInterruptions" xml:space="preserve">
-    <value>The Household may interrupt your writing at intervals of between {0} and {1}.</value>
+    <value>Madame may interrupt the Maid's writing at intervals of between {0} and {1}.</value>
   </data>
   <data name="ContractWritingLinesOff" xml:space="preserve">
     <value>Lines are not in force.</value>
@@ -1787,28 +1793,28 @@ You may export your session media before the save slot is freed.</value>
     <value>Forced outfits are not in force.</value>
   </data>
   <data name="ContractPermissionsIntro" xml:space="preserve">
-    <value>Leave to attend to certain needs is granted at the Household's discretion:</value>
+    <value>Leave to attend to certain needs is granted at Madame's discretion:</value>
   </data>
   <data name="ContractPermissionLine" xml:space="preserve">
     <value>{0}: granted {1}% of the time, for {2}, and not again for {3}.</value>
   </data>
   <data name="ContractPermissionsNone" xml:space="preserve">
-    <value>No provision has been made for leave of any kind. Plan accordingly.</value>
+    <value>No provision has been made for leave of any kind. The Maid will plan accordingly.</value>
   </data>
   <data name="ContractCornertimeVoiceOn" xml:space="preserve">
-    <value>The Household shall narrate your Cornertime aloud.</value>
+    <value>Madame shall narrate the Maid's Cornertime aloud.</value>
   </data>
   <data name="ContractCornertimeVoiceOff" xml:space="preserve">
-    <value>Your Cornertime shall be observed in silence.</value>
+    <value>The Maid's Cornertime shall be observed in silence.</value>
   </data>
   <data name="ContractAppellatives" xml:space="preserve">
-    <value>The Household keeps {0} forms of address in reserve for summoning you.</value>
+    <value>Madame keeps {0} forms of address in reserve for summoning the Maid.</value>
   </data>
   <data name="ContractAppellativesNone" xml:space="preserve">
-    <value>The Household will summon you by name alone.</value>
+    <value>Madame will summon the Maid by name alone.</value>
   </data>
   <data name="ContractSeverity" xml:space="preserve">
-    <value>The severity of punishments is not fixed. It shall vary with your conduct: how faithfully the household's routines are kept, how many matters remain outstanding, and how often the Household's choice of attire has been declined. The Household does not disclose its methods. It merely observes.</value>
+    <value>The severity of punishments is not fixed. It shall vary with the Maid's conduct: how faithfully the household's routines are kept, how many matters remain outstanding, and how often Madame's choice of attire has been declined. Madame does not disclose her methods. She merely observes.</value>
   </data>
   <data name="ContractSecondOne" xml:space="preserve">
     <value>{0} second</value>
