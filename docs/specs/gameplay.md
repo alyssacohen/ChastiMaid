@@ -146,10 +146,11 @@ used to judge the chore when it ends, so the user cannot learn the exact cutoff 
 is valid only if ended within `[target, target × 1.35]`:
 
 - Ended before `target`: too fast, no pay, void, punishment assigned ("too early").
-- Ended after `target × 1.35`: too slow, no pay, void, punishment assigned ("too slow").
+- Ended after `target × 1.35`: too slow, but still valid — marked done, paid at 50% of its value, and a
+  punishment is assigned ("too slow").
 - Ended in between: paid normally.
 
-In both failure cases, the punishment severity is `5 + minutes off the valid window` (rounded up) — the further
+In both cases where a punishment is assigned, its severity is `5 + minutes off the valid window` (rounded up) — the further
 outside the window, the harsher the punishment.
 
 
@@ -168,10 +169,10 @@ dashboard for irregular work that has no fixed cadence.
   spent — double the idle wage rate (idle wage amount / idle wage interval) per minute, times the
   outfit multiplier.
 - The estimated time doubles as the chore's configured minimum completion time, so it is subject to the same
-  randomized target and too-fast/too-slow window described above. If the user ends the task outside that
-  window, no pay is given, the task is declared void, and a punishment is assigned — same mechanism as
-  finishing a regular chore too early or too slow. In that case, the task remains in the list to be retried.
-- Once paid successfully, the task is removed from the list.
+  randomized target and too-fast/too-slow window described above, with the same outcomes. Ended too fast:
+  no pay, void, punishment, and the task remains in the list to be retried. Ended too slow: punishment, and
+  half pay computed on the **estimated** minutes (not the actual time, so dawdling never pays more).
+- Once paid (fully or at half rate), the task is removed from the list.
 
 ### Busy mode (cornertime)
 This mode is active when the user chooses to perform a cornertime punsihment.

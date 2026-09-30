@@ -196,7 +196,7 @@
     <value>Per aver dichiarato concluso un compito che, palesemente, non lo era..</value>
   </data>
   <data name="PunishmentReasonChoreTooSlow" xml:space="preserve">
-    <value>Per aver bighellonato ben oltre il necessario..</value>
+    <value>Per aver bighellonato ben oltre il necessario.</value>
   </data>
   <data name="PunishmentReasonOccasionalTaskTooSlow" xml:space="preserve">
     <value>Per aver trattato un compito semplice come scusa per oziare.</value>
@@ -418,10 +418,10 @@
     <value>Un compito dichiarato concluso in pochi istanti non è un compito concluso affatto — sarà considerato nullo, e ne risponderete.</value>
   </data>
   <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
-      <value>Tanta lentezza suggerisce mani inoperose, non un lavoro onesto — anche questo non resterà impunito.</value>
+      <value>Il lavoro è accettato, benché a un passo così placido valga appena metà del salario — e l'indugio non resterà impunito.</value>
   </data>
   <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
-    <value>Un compito trascinato così a lungo non era diligenza — era ozio, e sarà considerato nullo.</value>
+    <value>Il compito è svolto, se non proprio con diligenza — metà salario per metà zelo, e dell'ozio si renderà conto.</value>
   </data>
   <data name="DashboardAddOccasionalTask" xml:space="preserve">
     <value>Aggiungi compito</value>

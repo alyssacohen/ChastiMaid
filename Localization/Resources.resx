@@ -418,10 +418,10 @@
     <value>A task declared complete in mere moments is no task completed at all — it shall be marked void, and answered for.</value>
   </data>
   <data name="DashboardChoreTooSlowRejectedMessage" xml:space="preserve">
-    <value>Such leisurely pace suggests idle hands, not honest labour — this too shall not go unanswered.</value>
+    <value>The work is accepted, though at such a leisurely pace it earns but half its wage — and the dawdling shall not go unanswered.</value>
   </data>
   <data name="DashboardOccasionalTaskTooSlowRejectedMessage" xml:space="preserve">
-    <value>A task drawn out this long was not diligence — it was dawdling, and it shall be marked void.</value>
+    <value>The task is done, if hardly with diligence — half the wage for half the zeal, and the dawdling shall be answered for.</value>
   </data>
   <data name="DashboardAddOccasionalTask" xml:space="preserve">
     <value>Add task</value>

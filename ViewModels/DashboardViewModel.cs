@@ -445,53 +445,39 @@ public partial class DashboardViewModel : ViewModelBase
         var tooEarly = chore is not null && elapsed.TotalMinutes < _choreTargetMinutes;
         var tooSlow = chore is not null && !tooEarly && elapsed.TotalMinutes > _choreTargetMinutes * 1.35;
 
-        if (tooEarly || tooSlow)
+        var ratePerMinute = _settings.IdleWageAmount / _settings.IdleWageIntervalMinutes;
+        if (tooEarly)
         {
-            var minutesOff = tooEarly
-                ? _choreTargetMinutes - elapsed.TotalMinutes
-                : elapsed.TotalMinutes - _choreTargetMinutes * 1.35;
-            var severity = 5 + (int)Math.Ceiling(minutesOff);
-
-            var reason = (chore!.IsOccasional, tooEarly) switch
-            {
-                (true, true) => "PunishmentReasonOccasionalTaskTooEarly",
-                (true, false) => "PunishmentReasonOccasionalTaskTooSlow",
-                (false, true) => "PunishmentReasonChoreTooEarly",
-                (false, false) => "PunishmentReasonChoreTooSlow",
-            };
-            _saveRepo.AssignPunishment((severity, severity), reason);
+            var severity = 5 + (int)Math.Ceiling(_choreTargetMinutes - elapsed.TotalMinutes);
+            _saveRepo.AssignPunishment((severity, severity), chore!.IsOccasional
+                ? "PunishmentReasonOccasionalTaskTooEarly"
+                : "PunishmentReasonChoreTooEarly");
             RefreshPunishments();
-            ShowChoreResultMessage((chore.IsOccasional, tooEarly) switch
-            {
-                (true, true) => Resources.Get("DashboardOccasionalTaskRejectedMessage"),
-                (true, false) => Resources.Get("DashboardOccasionalTaskTooSlowRejectedMessage"),
-                (false, true) => Resources.Get("DashboardChoreRejectedMessage"),
-                (false, false) => Resources.Get("DashboardChoreTooSlowRejectedMessage"),
-            });
+            ShowChoreResultMessage(Resources.Get(chore.IsOccasional
+                ? "DashboardOccasionalTaskRejectedMessage"
+                : "DashboardChoreRejectedMessage"));
+        }
+        else if (tooSlow)
+        {
+            // Late work still counts, but earns half — occasional tasks on their estimate, so dawdling never pays more.
+            var severity = 5 + (int)Math.Ceiling(elapsed.TotalMinutes - _choreTargetMinutes * 1.35);
+            _saveRepo.AssignPunishment((severity, severity), chore!.IsOccasional
+                ? "PunishmentReasonOccasionalTaskTooSlow"
+                : "PunishmentReasonChoreTooSlow");
+            RefreshPunishments();
+            var fullPay = chore.IsOccasional ? 2m * ratePerMinute * chore.MinCompletionMinutes : chore.Value;
+            CompleteChore(chore, Math.Round(0.5m * fullPay * (decimal)_outfitBonus, 0));
+            ShowChoreResultMessage(Resources.Get(chore.IsOccasional
+                ? "DashboardOccasionalTaskTooSlowRejectedMessage"
+                : "DashboardChoreTooSlowRejectedMessage"));
         }
         else
         {
-            var state = _saveRepo.GetGameState();
-            if (state is not null && chore is not null)
-            {
-                var credit = chore.IsOccasional
-                    ? Math.Round(2m * (_settings.IdleWageAmount / _settings.IdleWageIntervalMinutes) *
-                        (decimal)elapsed.TotalMinutes * (decimal)_outfitBonus, 0)
-                    : Math.Round(chore.Value * (decimal)_outfitBonus, 0);
-                state.CurrentDebt -= credit;
-                _saveRepo.SaveGameState(state);
-            }
-
             if (chore is not null)
             {
-                if (chore.IsOccasional)
-                {
-                    _saveRepo.DeleteChore(chore.Id);
-                }
-                else
-                {
-                    _saveRepo.UpdateChoreCompletion(chore.Id, DateTime.UtcNow);
-                }
+                CompleteChore(chore, chore.IsOccasional
+                    ? Math.Round(2m * ratePerMinute * (decimal)elapsed.TotalMinutes * (decimal)_outfitBonus, 0)
+                    : Math.Round(chore.Value * (decimal)_outfitBonus, 0));
             }
 
             ChoreResultMessage = "";
@@ -505,6 +491,25 @@ public partial class DashboardViewModel : ViewModelBase
 
         _sessionLoop.Resume();
         _countdownTimer?.Start();
+    }
+
+    private void CompleteChore(Chore chore, decimal credit)
+    {
+        var state = _saveRepo.GetGameState();
+        if (state is not null)
+        {
+            state.CurrentDebt -= credit;
+            _saveRepo.SaveGameState(state);
+        }
+
+        if (chore.IsOccasional)
+        {
+            _saveRepo.DeleteChore(chore.Id);
+        }
+        else
+        {
+            _saveRepo.UpdateChoreCompletion(chore.Id, DateTime.UtcNow);
+        }
     }
 
     // --- Silent media capture ---
