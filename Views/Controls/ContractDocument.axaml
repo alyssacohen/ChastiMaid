@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:contracts="using:ChastiMaid.Services.Contracts"
+             xmlns:conv="using:ChastiMaid.Converters"
+             x:Class="ChastiMaid.Views.Controls.ContractDocument">
+
+    <!-- The contract sheet: title, preamble, clauses and closing. DataContext is the clause list. -->
+    <Border Classes="contractPaper">
+        <StackPanel Spacing="{StaticResource SpacingXl}">
+
+            <TextBlock Classes="PageTitle"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Text="{conv:Tr ContractTitle}" />
+
+            <TextBlock Classes="EmployerVoice"
+                       TextWrapping="Wrap"
+                       Text="{conv:Tr ContractPreamble}" />
+
+            <ItemsControl ItemsSource="{ReflectionBinding}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="{StaticResource SpacingXl}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="contracts:ContractClause">
+                        <StackPanel Spacing="{StaticResource SpacingSm}">
+                            <TextBlock Classes="SectionTitle"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding Heading}" />
+                            <ItemsControl ItemsSource="{Binding Paragraphs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Spacing="{StaticResource SpacingSm}" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <TextBlock Classes="Body"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Classes="EmployerVoice"
+                       TextWrapping="Wrap"
+                       Text="{conv:Tr ContractClosing}" />
+
+        </StackPanel>
+    </Border>
+
+</UserControl>

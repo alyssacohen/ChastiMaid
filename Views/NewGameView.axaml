@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
-             xmlns:contracts="using:ChastiMaid.Services.Contracts"
+             xmlns:controls="using:ChastiMaid.Views.Controls"
              xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:NewGameViewModel"
              x:Class="ChastiMaid.Views.NewGameView">
@@ -13,56 +13,7 @@
 
             <!-- The contract itself scrolls; the action bar below stays pinned -->
             <ScrollViewer Grid.Row="0">
-                <Border Classes="contractPaper">
-                    <StackPanel Spacing="{StaticResource SpacingXl}">
-
-                        <TextBlock Classes="PageTitle"
-                                   HorizontalAlignment="Center"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   Text="{conv:Tr ContractTitle}" />
-
-                        <TextBlock Classes="EmployerVoice"
-                                   TextWrapping="Wrap"
-                                   Text="{conv:Tr ContractPreamble}" />
-
-                        <ItemsControl ItemsSource="{Binding Clauses}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Spacing="{StaticResource SpacingXl}" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="contracts:ContractClause">
-                                    <StackPanel Spacing="{StaticResource SpacingSm}">
-                                        <TextBlock Classes="SectionTitle"
-                                                   TextWrapping="Wrap"
-                                                   Text="{Binding Heading}" />
-                                        <ItemsControl ItemsSource="{Binding Paragraphs}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Spacing="{StaticResource SpacingSm}" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="x:String">
-                                                    <TextBlock Classes="Body"
-                                                               TextWrapping="Wrap"
-                                                               Text="{Binding}" />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <TextBlock Classes="EmployerVoice"
-                                   TextWrapping="Wrap"
-                                   Text="{conv:Tr ContractClosing}" />
-
-                    </StackPanel>
-                </Border>
+                <controls:ContractDocument DataContext="{Binding Clauses}" />
             </ScrollViewer>
 
             <Border Grid.Row="1" Classes="contractActionBar">

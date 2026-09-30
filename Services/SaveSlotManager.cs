@@ -1,4 +1,5 @@
 using ChastiMaid.Models;
+using ChastiMaid.Repositories;
 
 namespace ChastiMaid.Services;
 
@@ -36,6 +37,28 @@ public class SaveSlotManager(DatabaseService dbService)
         }
 
         return slots;
+    }
+
+    /// <summary>
+    ///     The contract a save was started under, rebuilt from its new-game snapshot. Occasional tasks are
+    ///     added mid-session, not agreed at signing, so they are left out.
+    /// </summary>
+    public GameContract ReadContract(string slotName)
+    {
+        using var saveDb = dbService.OpenSave(slotName);
+        var save = new SaveRepository(saveDb);
+        return new()
+        {
+            Settings = save.GetGameSettings(),
+            Wardrobe = save.GetWardrobe(),
+            OutfitRules = save.GetOutfitRules(),
+            Tasks = [..save.GetChores().Where(c => !c.IsOccasional)],
+            ForcedOutfitPresets = save.GetForcedOutfitPresets(),
+            PlugAndPlayItems = save.GetPlugAndPlayItems(),
+            DiaperPlayItems = save.GetDiaperPlayItems(),
+            ChastityDeviceItems = save.GetChastityDeviceItems(),
+            PermissionTypes = save.GetPermissionTypes(),
+        };
     }
 
     public void DeleteSlot(string slotName)

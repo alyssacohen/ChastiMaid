@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
+using ChastiMaid.Services.Contracts;
 using FluentIcons.Common;
 using ReactiveUI;
 
@@ -20,6 +21,7 @@ public class SlotCardViewModel : ViewModelBase
         CurrentDebt = 0;
         SafeStatus = "";
         LoadCommand = ReactiveCommand.Create(() => { });
+        InfoCommand = ReactiveCommand.Create(() => { });
         DeleteCommand = ReactiveCommand.Create(() => { });
     }
 
@@ -37,6 +39,7 @@ public class SlotCardViewModel : ViewModelBase
 
         var canLoad = Observable.Return(!slot.IsCompleted);
         LoadCommand = ReactiveCommand.CreateFromTask(() => parent.LoadSlot(slot.SlotName), canLoad);
+        InfoCommand = ReactiveCommand.CreateFromTask(() => parent.ShowContract(slot.SlotName));
         DeleteCommand = ReactiveCommand.CreateFromTask(() => parent.ConfirmDeleteSlot(this));
     }
 
@@ -52,12 +55,14 @@ public class SlotCardViewModel : ViewModelBase
     public string CompletedLabel => IsCompleted ? Resources.Get("LoadGameCompleted") : "";
 
     public ICommand LoadCommand { get; }
+    public ICommand InfoCommand { get; }
     public ICommand DeleteCommand { get; }
 }
 
 public partial class LoadGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
+    private IReadOnlyList<ContractClause>? _contractClauses;
 
     public LoadGameViewModel(MainWindowViewModel mainVm)
     {
@@ -66,11 +71,20 @@ public partial class LoadGameViewModel : ViewModelBase
         RefreshSlots();
 
         BackCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
+        CloseContractCommand = ReactiveCommand.Create(() => { ContractClauses = null; });
     }
 
     public ObservableCollection<SlotCardViewModel> Slots { get; } = [];
 
+    /// <summary>The clauses of the save being viewed read-only; null while the contract overlay is closed.</summary>
+    public IReadOnlyList<ContractClause>? ContractClauses
+    {
+        get => _contractClauses;
+        set => this.RaiseAndSetIfChanged(ref _contractClauses, value);
+    }
+
     public ICommand BackCommand { get; }
+    public ICommand CloseContractCommand { get; }
 
     public void RefreshSlots()
     {
@@ -104,6 +118,22 @@ public partial class LoadGameViewModel : ViewModelBase
                 null);
 
             await ShowConfirmAsync(dialog);
+        }
+    }
+
+    public async Task ShowContract(string slotName)
+    {
+        try
+        {
+            ContractClauses = ContractClauseBuilder.Build(_mainVm.SaveSlotManager.ReadContract(slotName));
+        }
+        catch (Exception ex)
+        {
+            await ShowConfirmAsync(new ConfirmDialogViewModel(
+                Resources.Get("LoadGameErrorTitle"),
+                string.Format(Resources.Get("LoadGameErrorMessageFormat"), slotName, ex.Message),
+                Resources.Get("Ok"),
+                null));
         }
     }
 

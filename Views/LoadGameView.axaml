@@ -3,6 +3,7 @@
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
              xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:controls="using:ChastiMaid.Views.Controls"
              xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:LoadGameViewModel"
              x:Class="ChastiMaid.Views.LoadGameView">
@@ -87,16 +88,22 @@
                                 </Grid>
                             </Button>
 
-                            <!-- Delete button, overlaid on top of the card -->
-                            <Button Command="{Binding DeleteCommand}"
-                                    Classes="Danger"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,20,0"
-                                    ZIndex="1"
-                                    IsVisible="{Binding !IsEmpty}">
-                                <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
-                            </Button>
+                            <!-- Info (read-only contract) and Delete, stacked and overlaid on top of the card -->
+                            <StackPanel HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,20,0"
+                                        Spacing="{StaticResource SpacingSm}"
+                                        ZIndex="1"
+                                        IsVisible="{Binding !IsEmpty}">
+                                <Button Command="{Binding InfoCommand}"
+                                        Classes="Ghost">
+                                    <ic:SymbolIcon Symbol="Info" IconVariant="Regular" FontSize="27" />
+                                </Button>
+                                <Button Command="{Binding DeleteCommand}"
+                                        Classes="Danger">
+                                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
+                                </Button>
+                            </StackPanel>
 
                         </Grid>
                     </DataTemplate>
@@ -109,6 +116,22 @@
                     HorizontalAlignment="Center" />
 
         </StackPanel>
+
+        <!-- Read-only contract of a save: the New Game sheet with a single Close action -->
+        <Panel Classes="dialogOverlay"
+               IsVisible="{Binding ContractClauses, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Grid RowDefinitions="*,Auto">
+                <ScrollViewer Grid.Row="0">
+                    <controls:ContractDocument DataContext="{Binding ContractClauses}" />
+                </ScrollViewer>
+                <Border Grid.Row="1" Classes="contractActionBar">
+                    <Button Classes="Primary"
+                            HorizontalAlignment="Center"
+                            Content="{conv:Tr Close}"
+                            Command="{Binding CloseContractCommand}" />
+                </Border>
+            </Grid>
+        </Panel>
 
         <views:ConfirmDialog DataContext="{Binding ActiveDialog}"
                              IsVisible="{Binding $parent[UserControl].((vm:LoadGameViewModel)DataContext).ActiveDialog, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}" />
