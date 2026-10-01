@@ -472,10 +472,12 @@ public class SaveRepository(LiteDatabase db)
     ///     Rolls a severity within the given infraction range, picks uniformly among Fine (always available) and
     ///     whichever other punishment kinds are enabled in <see cref="GameSettings" />, then applies it: Fine takes
     ///     effect immediately, the others become a pending <see cref="ActivePunishment" /> sized by severity.
+    ///     Severity a capped kind cannot absorb is not lost: the residual is drawn again among all kinds (possibly the
+    ///     same one) until it is spent. A residual too small to reach the drawn kind's minimum is charged as a fine.
     /// </summary>
     public void AssignPunishment((int Min, int Max) severityRange, string reason)
     {
-        var severity = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
+        var remaining = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
         var settings = GetGameSettings();
 
         var candidates = new List<PunishmentKind?> { null }; // null = Fine
@@ -495,65 +497,103 @@ public class SaveRepository(LiteDatabase db)
             candidates.Add(PunishmentKind.ForcedOutfit);
         }
 
-        var kind = candidates[Random.Shared.Next(candidates.Count)];
-        switch (kind)
+        // Terminates: Fine is always a candidate and absorbs everything, and a capped piece consumes at least 1 point.
+        var isResidual = false;
+        do
         {
-            case null:
-                ApplyFine(severity, settings);
-                break;
+            var kind = candidates[Random.Shared.Next(candidates.Count)];
+            var preset = kind is PunishmentKind.ForcedOutfit
+                ? enabledForcedOutfitPresets[Random.Shared.Next(enabledForcedOutfitPresets.Count)]
+                : null;
+            var piece = kind switch
+            {
+                PunishmentKind.Cornertime => SizePiece(remaining, isResidual, settings.CornertimeSeverityValue,
+                    settings.CornertimeMinRequiredSeconds, settings.CornertimeMaxRequiredSeconds),
+                PunishmentKind.WritingLines => SizePiece(remaining, isResidual, settings.WritingLinesSeverityValue,
+                    settings.WritingLinesMinLines, settings.WritingLinesMaxLines),
+                PunishmentKind.ForcedOutfit => SizePiece(remaining, isResidual, preset!.HoursPerSeverityPoint * 3600,
+                    ForcedOutfitMinRequiredHours * 3600, settings.ForcedOutfitMaxHours * 3600),
+                _ => null,
+            };
 
+            if (kind is null || piece is null)
+            {
+                ApplyFine(remaining, settings);
+                return;
+            }
+
+            var punishment = new ActivePunishment
+            {
+                Kind = kind.Value,
+                Severity = piece.Value.Consumed,
+                AssignedAt = DateTime.UtcNow,
+                Reason = reason,
+            };
+            switch (kind)
+            {
+                case PunishmentKind.WritingLines:
+                    var phraseCount = Random.Shared.Next(1, EmployerPhraseBank.AllKeys.Count + 1);
+                    punishment.WritingLinesSentenceKeys = EmployerPhraseBank.GetRandomSet(phraseCount);
+                    punishment.WritingLinesNoIdleActive =
+                        settings.WritingLinesNoIdleEnabled && Random.Shared.NextDouble() < 0.5;
+                    punishment.WritingLinesInterruptionsActive =
+                        settings.WritingLinesInterruptionsEnabled && Random.Shared.NextDouble() < 0.5;
+                    break;
+
+                case PunishmentKind.ForcedOutfit:
+                    punishment.ForcedClothingItemIds = preset!.ClothingItemIds;
+                    punishment.ForceFullOutfit = preset.IsFullOutfit;
+                    punishment.ForcedOutfitPresetName = preset.Name;
+                    break;
+            }
+
+            SetQuantity(
+                punishment,
+                kind is PunishmentKind.ForcedOutfit ? piece.Value.Quantity : Math.Round(piece.Value.Quantity),
+                settings);
+            SaveActivePunishment(punishment);
+
+            remaining -= piece.Value.Consumed;
+            isResidual = true;
+        } while (remaining > 0);
+    }
+
+    /// <summary>
+    ///     Sizes one capped punishment for <paramref name="severity" /> points at <paramref name="rate" /> units per
+    ///     point: the quantity (clamped to the kind's limits) and how many points it absorbs — all of them, unless
+    ///     the cap is hit, in which case only what fits (at least 1, so the caller's loop always progresses). Null
+    ///     when a residual is too small to reach the kind's minimum, which the caller charges as a fine instead.
+    /// </summary>
+    private static (int Consumed, double Quantity)? SizePiece(
+        int severity, bool isResidual, double rate, double min, double max)
+    {
+        var quantity = severity * rate;
+        if (isResidual && quantity < min)
+        {
+            return null;
+        }
+
+        var consumed = quantity > max ? Math.Max(1, (int)(max / rate)) : severity;
+        return (consumed, Math.Clamp(quantity, min, max));
+    }
+
+    /// <summary>Writes the quantity that represents the punishment's size: seconds for Cornertime and Forced Outfit,
+    /// lines for Writing Lines.</summary>
+    private static void SetQuantity(ActivePunishment punishment, double quantity, GameSettings settings)
+    {
+        switch (punishment.Kind)
+        {
             case PunishmentKind.Cornertime:
-                var required = Math.Clamp(
-                    (int)Math.Round(severity * settings.CornertimeSeverityValue),
-                    settings.CornertimeMinRequiredSeconds,
-                    settings.CornertimeMaxRequiredSeconds);
-                SaveActivePunishment(new ActivePunishment
-                {
-                    Kind = PunishmentKind.Cornertime,
-                    Severity = severity,
-                    AssignedAt = DateTime.UtcNow,
-                    Reason = reason,
-                    CornertimeRequiredSeconds = required,
-                    CornertimeMaxSeconds = required + settings.CornertimeMaxOverrunSeconds,
-                });
+                punishment.CornertimeRequiredSeconds = (int)quantity;
+                punishment.CornertimeMaxSeconds = (int)quantity + settings.CornertimeMaxOverrunSeconds;
                 break;
 
             case PunishmentKind.WritingLines:
-                var phraseCount = Random.Shared.Next(1, EmployerPhraseBank.AllKeys.Count + 1);
-                SaveActivePunishment(new ActivePunishment
-                {
-                    Kind = PunishmentKind.WritingLines,
-                    Severity = severity,
-                    AssignedAt = DateTime.UtcNow,
-                    Reason = reason,
-                    WritingLinesSentenceKeys = EmployerPhraseBank.GetRandomSet(phraseCount),
-                    WritingLinesTotalLines = Math.Clamp(
-                        (int)Math.Round(severity * settings.WritingLinesSeverityValue),
-                        settings.WritingLinesMinLines,
-                        settings.WritingLinesMaxLines),
-                    WritingLinesAttemptActive = false,
-                    WritingLinesNoIdleActive = settings.WritingLinesNoIdleEnabled && Random.Shared.NextDouble() < 0.5,
-                    WritingLinesInterruptionsActive = settings.WritingLinesInterruptionsEnabled && Random.Shared.NextDouble() < 0.5,
-                });
+                punishment.WritingLinesTotalLines = (int)quantity;
                 break;
 
             case PunishmentKind.ForcedOutfit:
-                var preset = enabledForcedOutfitPresets[Random.Shared.Next(enabledForcedOutfitPresets.Count)];
-                var requiredHours = Math.Clamp(
-                    severity * preset.HoursPerSeverityPoint,
-                    ForcedOutfitMinRequiredHours,
-                    settings.ForcedOutfitMaxHours);
-                SaveActivePunishment(new ActivePunishment
-                {
-                    Kind = PunishmentKind.ForcedOutfit,
-                    Severity = severity,
-                    AssignedAt = DateTime.UtcNow,
-                    Reason = reason,
-                    ForcedOutfitRequiredSeconds = requiredHours * 3600,
-                    ForcedClothingItemIds = preset.ClothingItemIds,
-                    ForceFullOutfit = preset.IsFullOutfit,
-                    ForcedOutfitPresetName = preset.Name,
-                });
+                punishment.ForcedOutfitRequiredSeconds = quantity;
                 break;
         }
     }
@@ -566,7 +606,7 @@ public class SaveRepository(LiteDatabase db)
 
     /// <summary>
     ///     Fortune Deck's negative mirror of <see cref="SoftenPunishment" />: multiplies severity by 1.5×,
-    ///     rounding up, capped by the punishment kind's configured maximum.
+    ///     rounding up. What exceeds the kind's configured maximum spills into a new punishment of the same kind.
     /// </summary>
     public bool AggravatePunishment(int punishmentId)
     {
@@ -589,7 +629,10 @@ public class SaveRepository(LiteDatabase db)
     /// <summary>
     ///     Scales the quantity that represents the punishment's severity (writing lines, cornertime seconds, or
     ///     forced-outfit total sessions — always recomputed from the original total, never from what's left) by
-    ///     <paramref name="factor" />, rounding up and re-clamping to the kind's configured limits. A forced-outfit
+    ///     <paramref name="factor" />, rounding up and re-clamping to the kind's configured limits, and scales
+    ///     <see cref="ActivePunishment.Severity" /> (the failure fine) along with it. Whatever exceeds the kind's
+    ///     maximum spills into a new pending punishment of the same kind and configuration — or into a fine, when it
+    ///     is too small to reach the kind's minimum — taking its proportional share of the severity. A forced-outfit
     ///     punishment whose recalculated total falls at or below its completed session count is marked resolved.
     ///     Never touches the outfit already in effect for the current session (see docs/specs/shop.md
     ///     "Forced-Outfit Timing Rules") — StartSessionViewModel only reads this state at the next session's start.
@@ -603,39 +646,74 @@ public class SaveRepository(LiteDatabase db)
         }
 
         var settings = GetGameSettings();
+        double scaled, min, max;
         switch (punishment.Kind)
         {
             case PunishmentKind.Cornertime when punishment.CornertimeRequiredSeconds is { } seconds:
-                var required = Math.Clamp(
-                    (int)Math.Ceiling(seconds * factor),
-                    settings.CornertimeMinRequiredSeconds,
-                    settings.CornertimeMaxRequiredSeconds);
-                punishment.CornertimeRequiredSeconds = required;
-                punishment.CornertimeMaxSeconds = required + settings.CornertimeMaxOverrunSeconds;
+                scaled = Math.Ceiling(seconds * factor);
+                min = settings.CornertimeMinRequiredSeconds;
+                max = settings.CornertimeMaxRequiredSeconds;
                 break;
 
             case PunishmentKind.WritingLines when punishment.WritingLinesTotalLines is { } lines:
-                punishment.WritingLinesTotalLines = Math.Clamp(
-                    (int)Math.Ceiling(lines * factor),
-                    settings.WritingLinesMinLines,
-                    settings.WritingLinesMaxLines);
+                scaled = Math.Ceiling(lines * factor);
+                min = settings.WritingLinesMinLines;
+                max = settings.WritingLinesMaxLines;
                 break;
 
             case PunishmentKind.ForcedOutfit when punishment.ForcedOutfitRequiredSeconds is { } requiredSeconds:
-                var newRequiredSeconds = Math.Clamp(
-                    requiredSeconds * factor,
-                    ForcedOutfitMinRequiredHours * 3600,
-                    settings.ForcedOutfitMaxHours * 3600);
-                punishment.ForcedOutfitRequiredSeconds = newRequiredSeconds;
-                if (punishment.ForcedOutfitElapsedSeconds >= newRequiredSeconds)
-                {
-                    punishment.IsResolved = true;
-                }
-
+                scaled = requiredSeconds * factor;
+                min = ForcedOutfitMinRequiredHours * 3600;
+                max = settings.ForcedOutfitMaxHours * 3600;
                 break;
 
             default:
                 return false;
+        }
+
+        var severity = (int)Math.Ceiling(punishment.Severity * factor);
+
+        // ponytail: one spill piece is enough because "target quantity ≤ cap" is an invariant (assignment, cards and
+        // in-execution penalties all respect the cap), so the excess never exceeds the cap itself. Loop here if a
+        // larger factor or an uncapped penalty ever breaks that.
+        var excess = scaled - max;
+        if (excess > 0)
+        {
+            // Split by quantity share, not by the kind's global rate: the target's own rate may differ (raised to
+            // the minimum, grown by penalty lines, per-preset hours).
+            var spillSeverity = Math.Max(1, (int)Math.Round(severity * excess / scaled));
+            severity = Math.Max(1, severity - spillSeverity);
+
+            if (excess < min)
+            {
+                ApplyFine(spillSeverity, settings);
+            }
+            else
+            {
+                var spill = new ActivePunishment
+                {
+                    Kind = punishment.Kind,
+                    Severity = spillSeverity,
+                    AssignedAt = DateTime.UtcNow,
+                    Reason = punishment.Reason,
+                    WritingLinesSentenceKeys = punishment.WritingLinesSentenceKeys,
+                    WritingLinesNoIdleActive = punishment.WritingLinesNoIdleActive,
+                    WritingLinesInterruptionsActive = punishment.WritingLinesInterruptionsActive,
+                    ForcedClothingItemIds = punishment.ForcedClothingItemIds,
+                    ForceFullOutfit = punishment.ForceFullOutfit,
+                    ForcedOutfitPresetName = punishment.ForcedOutfitPresetName,
+                };
+                SetQuantity(spill, excess, settings);
+                SaveActivePunishment(spill);
+            }
+        }
+
+        punishment.Severity = severity;
+        SetQuantity(punishment, Math.Clamp(scaled, min, max), settings);
+        if (punishment.Kind == PunishmentKind.ForcedOutfit
+            && punishment.ForcedOutfitElapsedSeconds >= punishment.ForcedOutfitRequiredSeconds)
+        {
+            punishment.IsResolved = true;
         }
 
         SaveActivePunishment(punishment);

@@ -66,14 +66,12 @@ Some immediate effects are "immediate" variants of a Shop card, but with a **ran
 
 - Multiplies the target punishment's severity by **1.5×**, rounding up.
 - Multiple aggravations on the same punishment stack multiplicatively (mirroring `SOFTEN_PUNISHMENT`'s stacking rule), with rounding up applied at each step.
-- The resulting severity must never exceed the maximum punishment severity cap.
-
-> **TODO:** Verify that a maximum severity cap for punishments exists under **Settings → Popup and Punishments**, and ensure Punishment Aggravation can never push a punishment's severity above it.
+- The target itself never exceeds its kind's maximum: the excess becomes a new pending punishment of the **same kind** (or a fine, when it is too small to reach that kind's minimum). See "Residual severity" in `punishments.md`.
 
 - Targets a randomly-selected eligible pending punishment, following the same eligibility rules as `SOFTEN_PUNISHMENT` (fines are never eligible, as they are applied immediately and are never pending).
 - Missing target: draw is lost (whiff), as described above.
 
-A maximum severity cap exists per punishment kind under **Settings → Popup and Punishments**: `CornertimeMaxRequiredSeconds` and `ForcedOutfitMaxSessions` (Writing Lines already had `WritingLinesMaxLines`). Aggravation — and ordinary assignment via `AssignPunishment` — always clamps to these caps, so repeated aggravation can never push a punishment's severity unboundedly high.
+A maximum exists per punishment kind under **Settings → Popup and Punishments**: `CornertimeMaxRequiredSeconds`, `WritingLinesMaxLines` and `ForcedOutfitMaxHours`. Aggravation — and ordinary assignment via `AssignPunishment` — never sizes a single punishment above these caps; what does not fit is spent on further punishments rather than discarded.
 
 ## Card Pool
 

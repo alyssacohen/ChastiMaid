@@ -69,8 +69,9 @@ No weights or formulas are defined, in code or here. The clause names the factor
 are applied when a punishment is assigned or scaled (`SaveRepository.AssignPunishment` / `ScalePunishment`):
 Cornertime `CornertimeMin/MaxRequiredSeconds`, Writing Lines `WritingLinesMin/MaxLines`, Forced Outfit
 `ForcedOutfitMaxHours`. The fine has no cap. Severity itself is unbounded (popup lateness adds seconds without a
-ceiling). A variable severity should therefore feed into the severity *before* those clamps, and the clause must not
-promise any overall maximum.
+ceiling). The caps bound a *single* punishment only: severity that does not fit is spent on further punishments (see
+"Residual severity" in `docs/specs/punishments.md`), never discarded. A variable severity should therefore feed into
+the severity *before* those clamps, and the clause must not promise any overall maximum.
 
 ## File format
 

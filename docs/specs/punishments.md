@@ -66,6 +66,26 @@ Example:
 
 This system allows different punishment types to be balanced against each other, making them interchangeable in gameplay.
 
+### Residual severity
+
+Cornertime, Writing Lines and Forced Outfit each have a configured maximum (the Fine has none). Severity that a single
+punishment cannot hold is never thrown away — it is spent on further punishments until none is left, so one infraction
+may produce two, three or more punishments.
+
+- **On assignment:** the punishment is sized at its maximum and absorbs only the points that fit. The residual is
+  drawn again among all enabled kinds (the same kind may come up again), and so on. The Fine absorbs whatever it is
+  given, so the draw always ends. Every punishment produced carries the same reason.
+- **On aggravation** (Fortune Deck): the target is brought to its maximum and the excess becomes a new pending
+  punishment of the **same kind** and configuration (same sentences and options for Writing Lines, same preset for
+  Forced Outfit, which queues behind the existing one).
+- **Residual below the minimum:** a residual too small to reach the minimum of the kind it lands on is charged as a
+  Fine instead of being raised to that minimum. (The first punishment of an assignment is still raised to the minimum,
+  as before.)
+- Each punishment stores only its own share of the severity, which is what the fine for failing or abandoning it is
+  based on. Softening and aggravating scale that share along with the punishment.
+
+Not affected: penalty lines added *while writing* (mistakes, idling) still stop at the Writing Lines maximum.
+
 ### Popup lateness
 
 The check-in popup shows no countdown and never closes itself on timeout — it stays open until the player

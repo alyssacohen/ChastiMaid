@@ -288,7 +288,9 @@ public class SaveRepositoryTests : IDisposable
         var softened = _repo.SoftenPunishment(1);
 
         Assert.True(softened);
-        Assert.Equal(18, _repo.GetActivePunishments().Single(p => p.Id == 1).WritingLinesTotalLines);
+        var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
+        Assert.Equal(18, punishment.WritingLinesTotalLines);
+        Assert.Equal(5, punishment.Severity);
     }
 
     [Fact]
@@ -328,6 +330,61 @@ public class SaveRepositoryTests : IDisposable
         var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
         Assert.Equal(120, punishment.CornertimeRequiredSeconds);
         Assert.Equal(150, punishment.CornertimeMaxSeconds);
+        Assert.Equal(12, punishment.Severity); // stays at the cap's share instead of ratcheting up
+
+        // 100 -> 150 spills 30s, then 120 -> 180 spills 60s four times: nothing is truncated away.
+        var spills = _repo.GetActivePunishments().Where(p => p.Id != 1).ToList();
+        Assert.Equal(5, spills.Count);
+        Assert.All(spills, p => Assert.Equal(PunishmentKind.Cornertime, p.Kind));
+        Assert.All(spills, p => Assert.Equal(p.CornertimeRequiredSeconds + 30, p.CornertimeMaxSeconds));
+        Assert.Equal(270, spills.Sum(p => p.CornertimeRequiredSeconds));
+        Assert.Equal(3 + 4 * 6, spills.Sum(p => p.Severity));
+    }
+
+    [Fact]
+    public void AggravatePunishment_ExcessBelowMinimum_BecomesAFine()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            FineSeverityValue = 5, CornertimeMinRequiredSeconds = 60, CornertimeMaxRequiredSeconds = 120,
+        });
+        _repo.SaveActivePunishment(new ActivePunishment
+        {
+            Id = 1, Kind = PunishmentKind.Cornertime, Severity = 10, CornertimeRequiredSeconds = 100,
+        });
+
+        _repo.AggravatePunishment(1); // 150s: 30s over the cap, below the 60s minimum -> 3 of the 15 points as a fine
+
+        Assert.Equal(120, _repo.GetActivePunishments().Single().CornertimeRequiredSeconds);
+        Assert.Equal(115, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void AssignPunishment_SeverityOverTheCap_IsSpentOnFurtherPunishmentsInsteadOfTruncated()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            FineSeverityValue = 1,
+            CornertimeEnabled = true,
+            CornertimeSeverityValue = 30,
+            CornertimeMinRequiredSeconds = 60,
+            CornertimeMaxRequiredSeconds = 600, // 20 points per cornertime
+            WritingLinesEnabled = false,
+            ForcedOutfitEnabled = false,
+        });
+
+        // 41 points: at most two capped cornertimes, and a 1-point residual (30s, below the minimum) must be fined.
+        const int rounds = 30;
+        for (var i = 0; i < rounds; i++)
+        {
+            _repo.AssignPunishment((41, 41), "TestReason");
+        }
+
+        var punishments = _repo.GetActivePunishments();
+        var fined = (int)(_repo.GetGameState()!.CurrentDebt - 100);
+        Assert.Equal(41 * rounds, fined + punishments.Sum(p => p.Severity));
+        Assert.All(punishments, p => Assert.InRange(p.CornertimeRequiredSeconds!.Value, 60, 600));
+        Assert.All(punishments, p => Assert.Equal(p.Severity * 30, p.CornertimeRequiredSeconds));
     }
 
     [Fact]
