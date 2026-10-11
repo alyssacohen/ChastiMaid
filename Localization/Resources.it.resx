@@ -2130,7 +2130,7 @@ ATTENZIONE: la cassaforte è bloccata. Eliminando questo salvataggio distruggere
     <value>Modifica outfit</value>
   </data>
   <data name="StartSessionModifyMessageFormat" xml:space="preserve">
-    <value>Scegliere manualmente i capi ridurrà il vostro bonus al {0:F0}% del moltiplicatore base e bloccherà l'outfit. Procedere?</value>
+    <value>Scegliere manualmente i capi ridurrà il vostro bonus al {0:F0}% del moltiplicatore base e bloccherà l'outfit in via definitiva: non sarà possibile ripensarci né tornare indietro. Procedere?</value>
   </data>
   <data name="WelcomeNoFreeSlotsTitle" xml:space="preserve">
     <value>Nessuno slot libero</value>

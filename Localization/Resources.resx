@@ -2044,7 +2044,7 @@ WARNING: The safe is locked. Deleting this save will permanently destroy the enc
     <value>Modify Outfit</value>
   </data>
   <data name="StartSessionModifyMessageFormat" xml:space="preserve">
-    <value>Manually choosing clothes will reduce your bonus to {0:F0}% of the base multiplier and lock the outfit. Proceed?</value>
+    <value>Manually choosing clothes will reduce your bonus to {0:F0}% of the base multiplier and lock the outfit for good: there is no changing your mind or going back. Proceed?</value>
   </data>
   <data name="WelcomeNoFreeSlotsTitle" xml:space="preserve">
     <value>No Free Slots</value>
