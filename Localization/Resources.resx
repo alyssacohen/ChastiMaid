@@ -2038,7 +2038,7 @@ WARNING: The safe is locked. Deleting this save will permanently destroy the enc
     <value>Regenerate Outfit</value>
   </data>
   <data name="StartSessionRegenerateMessageFormat" xml:space="preserve">
-    <value>Regenerating will reduce your bonus to {0:F0}% of the base multiplier. Proceed?</value>
+    <value>Regenerating will reduce your bonus to {0:F0}% of the base multiplier. The new outfit replaces this one for good: there is no going back to it. Proceed?</value>
   </data>
   <data name="StartSessionModifyOutfitTitle" xml:space="preserve">
     <value>Modify Outfit</value>

@@ -49,6 +49,9 @@ public class GameState
     /// </summary>
     public int OutfitRefusals { get; set; }
 
+    /// <summary>When a garment was last refused; a day with a refusal earns no forgiveness for accepting an outfit.</summary>
+    public DateTime? OutfitRefusalDate { get; set; }
+
     /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
     [BsonIgnore]
     public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;

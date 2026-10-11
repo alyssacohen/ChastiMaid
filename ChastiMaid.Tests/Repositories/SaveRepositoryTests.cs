@@ -169,6 +169,14 @@ public class SaveRepositoryTests : IDisposable
         _repo.RecordOutfitRefusal(500);
         Assert.Equal(SeverityBalance.RefusalSaturation, _repo.GetGameState()!.OutfitRefusals);
 
+        // A refusal today withholds forgiveness, whatever view model asks for it.
+        _repo.ForgiveOutfitRefusals();
+        Assert.Equal(SeverityBalance.RefusalSaturation, _repo.GetGameState()!.OutfitRefusals);
+
+        var state = _repo.GetGameState()!;
+        state.OutfitRefusalDate = DateTime.UtcNow.AddDays(-1);
+        _repo.SaveGameState(state);
+
         _repo.ForgiveOutfitRefusals();
         Assert.Equal(10, _repo.GetGameState()!.OutfitRefusals);
 

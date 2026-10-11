@@ -105,7 +105,8 @@ Separately from the per-item count above, the save keeps a single tally of garme
 - regenerating a proposed outfit adds every garment of the refused outfit (the chastity device excepted);
 - modifying an outfit adds the proposed garments that were taken off — at least 1, even if garments were only added;
 - the tally is capped at 20, and accepting a freshly proposed outfit untouched halves it (at most once a day, and
-  not for an outfit the player had no say in).
+  not for an outfit the player had no say in, and not on a day that already recorded a refusal:
+  `GameState.OutfitRefusalDate` remembers it across relaunches and back navigation).
 
 
 ## Session Flow: Outfit Proposal

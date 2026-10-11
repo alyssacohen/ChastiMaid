@@ -2124,7 +2124,7 @@ ATTENZIONE: la cassaforte è bloccata. Eliminando questo salvataggio distruggere
     <value>Rigenera outfit</value>
   </data>
   <data name="StartSessionRegenerateMessageFormat" xml:space="preserve">
-    <value>Rigenerare ridurrà il vostro bonus al {0:F0}% del moltiplicatore base. Procedere?</value>
+    <value>Rigenerare ridurrà il vostro bonus al {0:F0}% del moltiplicatore base. Il nuovo outfit prenderà il posto di questo in via definitiva: non sarà possibile ripensarci né tornare indietro. Procedere?</value>
   </data>
   <data name="StartSessionModifyOutfitTitle" xml:space="preserve">
     <value>Modifica outfit</value>

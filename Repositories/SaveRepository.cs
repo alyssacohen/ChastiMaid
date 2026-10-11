@@ -596,14 +596,18 @@ public class SaveRepository(LiteDatabase db)
 
         // Capped so that a long streak of refusals is still forgiven in a handful of well-behaved days.
         state.OutfitRefusals = Math.Min(SeverityBalance.RefusalSaturation, state.OutfitRefusals + garments);
+        state.OutfitRefusalDate = DateTime.UtcNow;
         SaveGameState(state);
     }
 
-    /// <summary>Halves the refusal count: the reward for accepting a proposed outfit untouched.</summary>
+    /// <summary>
+    ///     Halves the refusal count: the reward for accepting a proposed outfit untouched. Withheld on a day that
+    ///     already recorded a refusal, however the player got back to the proposal (relaunch, back navigation).
+    /// </summary>
     public void ForgiveOutfitRefusals()
     {
         var state = GetGameState();
-        if (state is null)
+        if (state is null || state.OutfitRefusalDate?.Date == DateTime.UtcNow.Date)
         {
             return;
         }

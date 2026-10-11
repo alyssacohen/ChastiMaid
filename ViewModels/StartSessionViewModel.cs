@@ -294,11 +294,9 @@ public partial class StartSessionViewModel : ViewModelBase
         _saveRepo.AcceptItems(_outfit.Items);
 
         // Only a freshly proposed outfit taken as it is counts: not one already locked for the day (or every
-        // relaunch would forgive again), nor one the player had no say in.
-        // ponytail: _regenCount lives in this view model, so a fresh one forgets it — regenerate → modify → back,
-        // or regenerate → quit → relaunch, then accept still forgives, merely halving the refusal just recorded.
-        // Track refusals per day on GameState if that loophole ever matters.
-        if (!_isLocked && !_isForced && _regenCount == 0)
+        // relaunch would forgive again), nor one the player had no say in. A day with a refusal is withheld by
+        // the repository, which remembers it across view models and relaunches.
+        if (!_isLocked && !_isForced)
         {
             _saveRepo.ForgiveOutfitRefusals();
         }
