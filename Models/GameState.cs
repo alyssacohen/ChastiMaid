@@ -43,6 +43,12 @@ public class GameState
     /// <summary>Aggregate RejectItems calls since the last rescale; triggers WardrobeBalance.RescaleEveryNRejections.</summary>
     public int WardrobeRejectionsSinceRescale { get; set; }
 
+    /// <summary>
+    ///     Garments explicitly refused (outfit regenerated or modified), capped at SeverityBalance.RefusalSaturation
+    ///     and halved each time a proposed outfit is accepted untouched. Feeds the variable-severity mood.
+    /// </summary>
+    public int OutfitRefusals { get; set; }
+
     /// <summary>Effective multiplier applied to credits: base multiplier × bonus penalty.</summary>
     [BsonIgnore]
     public double EffectiveMultiplier => OutfitMultiplier * OutfitBonusPercent;

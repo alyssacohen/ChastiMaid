@@ -125,7 +125,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? cornertime = null;
         for (var i = 0; i < 50 && cornertime is null; i++)
         {
-            _repo.AssignPunishment((10, 10), "TestReason");
+            _repo.AssignPunishment((10, 10), "TestReason", coefficient: 1);
             cornertime = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.Cornertime);
         }
 
@@ -133,6 +133,51 @@ public class SaveRepositoryTests : IDisposable
         Assert.Equal(10, cornertime!.Severity);
         Assert.Equal(300, cornertime.CornertimeRequiredSeconds);
         Assert.Equal(420, cornertime.CornertimeMaxSeconds);
+    }
+
+    [Fact]
+    public void AssignPunishment_MultipliesTheRolledSeverityByTheCoefficient()
+    {
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            FineSeverityValue = 5,
+            CornertimeEnabled = false,
+            WritingLinesEnabled = false,
+            ForcedOutfitEnabled = false,
+        });
+
+        _repo.AssignPunishment((10, 10), "TestReason", coefficient: 2.5);
+
+        Assert.Equal(100 + 25 * 5, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void RollSeverityCoefficient_ReflectsTheSaveState()
+    {
+        Assert.Equal(1.0, _repo.RollSeverityCoefficient()); // fixture: no chores, refusals, punishments or debt total
+
+        _repo.RecordOutfitRefusal(SeverityBalance.RefusalSaturation);
+
+        // Wardrobe factor alone at its maximum: mood 0.3, drawn between halfway and the ceiling.
+        Assert.InRange(_repo.RollSeverityCoefficient(), 1.3, 1.6);
+    }
+
+    [Fact]
+    public void OutfitRefusals_AreCappedAndHalvedByForgiveness()
+    {
+        _repo.RecordOutfitRefusal(7);
+        _repo.RecordOutfitRefusal(500);
+        Assert.Equal(SeverityBalance.RefusalSaturation, _repo.GetGameState()!.OutfitRefusals);
+
+        _repo.ForgiveOutfitRefusals();
+        Assert.Equal(10, _repo.GetGameState()!.OutfitRefusals);
+
+        for (var i = 0; i < 4; i++)
+        {
+            _repo.ForgiveOutfitRefusals();
+        }
+
+        Assert.Equal(0, _repo.GetGameState()!.OutfitRefusals);
     }
 
     [Fact]
@@ -161,7 +206,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? writingLines = null;
         for (var i = 0; i < 50 && writingLines is null; i++)
         {
-            _repo.AssignPunishment((1, 1), "TestReason");
+            _repo.AssignPunishment((1, 1), "TestReason", coefficient: 1);
             writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
         }
 
@@ -185,7 +230,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? writingLines = null;
         for (var i = 0; i < 50 && writingLines is null; i++)
         {
-            _repo.AssignPunishment((10, 10), "TestReason");
+            _repo.AssignPunishment((10, 10), "TestReason", coefficient: 1);
             writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
         }
 
@@ -206,7 +251,7 @@ public class SaveRepositoryTests : IDisposable
         ActivePunishment? writingLines = null;
         for (var i = 0; i < 50 && writingLines is null; i++)
         {
-            _repo.AssignPunishment((10, 10), "TestReason");
+            _repo.AssignPunishment((10, 10), "TestReason", coefficient: 1);
             writingLines = _repo.GetActivePunishments().FirstOrDefault(p => p.Kind == PunishmentKind.WritingLines);
         }
 
@@ -377,7 +422,8 @@ public class SaveRepositoryTests : IDisposable
         const int rounds = 30;
         for (var i = 0; i < rounds; i++)
         {
-            _repo.AssignPunishment((41, 41), "TestReason");
+            // Fixed coefficient: the pending punishments piling up here would otherwise raise the severity.
+            _repo.AssignPunishment((41, 41), "TestReason", coefficient: 1);
         }
 
         var punishments = _repo.GetActivePunishments();

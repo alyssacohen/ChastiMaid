@@ -159,6 +159,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         var newOutfit = builder.Build();
 
         _saveRepo.RejectItems(droppedFromPrevious);
+        _saveRepo.RecordOutfitRefusal(Math.Max(1, droppedFromPrevious.Count)); // modifying at all counts for one
         _saveRepo.AcceptItems(newOutfit.Items);
         LockOutfit(newOutfit);
     }
@@ -175,6 +176,10 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         _saveRepo.AcceptItems(seeds);
         var autoFilled = referenceOutfit.Items.Where(i => seeds.All(s => s.Id != i.Id)).ToList();
         _saveRepo.RejectItems(autoFilled);
+
+        // The explicit refusals are the proposed garments the player took off; modifying at all counts for one.
+        var droppedFromPrevious = _currentOutfit.Items.Count(i => seeds.All(s => s.Id != i.Id));
+        _saveRepo.RecordOutfitRefusal(Math.Max(1, droppedFromPrevious));
 
         var seedOutfit = PlaceSeedsOnOutfit(selectedChips);
         LockOutfit(seedOutfit);

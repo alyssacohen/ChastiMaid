@@ -66,6 +66,41 @@ Example:
 
 This system allows different punishment types to be balanced against each other, making them interchangeable in gameplay.
 
+### Variable severity
+
+The severity of an infraction is not applied as rolled: when a punishment is assigned it is first multiplied by a
+coefficient between 1 and 3 that reflects how displeased the employer currently is. The constants live in
+`Services/SeverityBalance.cs`; they are deliberately not settings (the contract only says that Madame "does not
+disclose her methods").
+
+**Mood** (0 = content, 1 = thoroughly displeased) is a weighted sum of four factors, each saturating at 1:
+
+| Factor | Weight | Measure | At its maximum when |
+|---|---|---|---|
+| Overdue chores | 40% | mean, over the recurring chores, of `(days − frequency) / frequency`; days count from the last completion, never earlier than the start of the game | a chore is late by twice its recommended frequency |
+| Refused garments | 30% | `GameState.OutfitRefusals` (see `wardrobe.md`) | 20 garments |
+| Pending punishments | 20% | number of pending punishments, residual pieces included | 10 punishments |
+| Debt still owed | 10% | `CurrentDebt / InitialDebt`, ramping from one third to the whole | the whole debt is still owed |
+
+**Coefficient** = `1 + mood × 2 × U(0.5, 1)`: drawn between halfway and the ceiling the mood allows, so poor conduct is
+always felt but by an unpredictable amount. With a mood of 0 — less than a third of the debt left, nothing pending,
+no chore overdue, no outfit refused or modified — it is exactly 1.
+
+| Situation | Ceiling | Drawn between |
+|---|---|---|
+| Start of the game, perfect conduct | ×1.20 | 1.10–1.20 |
+| Mid-game: 60% owed, 2 pending, 1 chore in 5 late by twice its frequency | ×1.32 | 1.16–1.32 |
+| Back after a week away (chores at 80%, 80% owed, nothing pending) | ×1.78 | 1.39–1.78 |
+| Worst case | ×3.00 | 2.00–3.00 |
+| Endgame, nothing to reproach | ×1.00 | 1.00 |
+
+- The coefficient is drawn once per assignment, before the residual-severity draw below, and the result is rounded to
+  the nearest point.
+- It applies to every infraction (check-ins, chores, permission overruns, a failed Cornertime's escalation). It is
+  **not** applied again to the fine for failing or abandoning a punishment — the stored severity already includes
+  it — nor to Fortune Deck aggravation.
+- Days with the app closed count: chores fall behind while the player is away.
+
 ### Residual severity
 
 Cornertime, Writing Lines and Forced Outfit each have a configured maximum (the Fine has none). Severity that a single

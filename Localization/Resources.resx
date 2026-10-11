@@ -1814,7 +1814,7 @@ You may export your session media before the save slot is freed.</value>
     <value>Madame will summon the Maid by name alone.</value>
   </data>
   <data name="ContractSeverity" xml:space="preserve">
-    <value>The severity of punishments is not fixed. It shall vary with the Maid's conduct: how faithfully the household's routines are kept, how many matters remain outstanding, and how often Madame's choice of attire has been declined. Madame does not disclose her methods. She merely observes.</value>
+    <value>The severity of punishments is not fixed. It shall vary with the Maid's conduct: how faithfully the household's routines are kept, how many matters remain outstanding, how often Madame's choice of attire has been declined, and how much of the debt still stands. Madame does not disclose her methods. She merely observes.</value>
   </data>
   <data name="ContractSecondOne" xml:space="preserve">
     <value>{0} second</value>

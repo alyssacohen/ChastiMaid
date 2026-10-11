@@ -474,10 +474,15 @@ public class SaveRepository(LiteDatabase db)
     ///     effect immediately, the others become a pending <see cref="ActivePunishment" /> sized by severity.
     ///     Severity a capped kind cannot absorb is not lost: the residual is drawn again among all kinds (possibly the
     ///     same one) until it is spent. A residual too small to reach the drawn kind's minimum is charged as a fine.
+    ///     The rolled severity is first multiplied by the variable-severity coefficient (see
+    ///     <see cref="RollSeverityCoefficient" />), drawn once per assignment unless <paramref name="coefficient" />
+    ///     supplies it.
     /// </summary>
-    public void AssignPunishment((int Min, int Max) severityRange, string reason)
+    public void AssignPunishment((int Min, int Max) severityRange, string reason, double? coefficient = null)
     {
-        var remaining = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
+        var rolled = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
+        var remaining = (int)Math.Round(
+            rolled * (coefficient ?? RollSeverityCoefficient()), MidpointRounding.AwayFromZero);
         var settings = GetGameSettings();
 
         var candidates = new List<PunishmentKind?> { null }; // null = Fine
@@ -556,6 +561,55 @@ public class SaveRepository(LiteDatabase db)
             remaining -= piece.Value.Consumed;
             isResidual = true;
         } while (remaining > 0);
+    }
+
+    /// <summary>
+    ///     Draws the coefficient (1 to <see cref="SeverityBalance.MaxCoefficient" />) that the employer's current
+    ///     displeasure applies to a new infraction: overdue chores, refused garments, pending punishments and the
+    ///     share of the debt still owed. Exactly 1 when she has nothing to reproach.
+    /// </summary>
+    public double RollSeverityCoefficient()
+    {
+        var state = GetGameState();
+        if (state is null)
+        {
+            return 1;
+        }
+
+        var mood = SeverityBalance.Mood(
+            SeverityBalance.AverageChoreLateness(GetChores(), state.StartedAt, DateTime.UtcNow),
+            state.OutfitRefusals,
+            GetActivePunishments().Count,
+            state.CurrentDebt,
+            state.InitialDebt);
+        return SeverityBalance.Coefficient(mood, Random.Shared);
+    }
+
+    /// <summary>Counts garments the player explicitly refused (outfit regenerated or modified).</summary>
+    public void RecordOutfitRefusal(int garments)
+    {
+        var state = GetGameState();
+        if (state is null)
+        {
+            return;
+        }
+
+        // Capped so that a long streak of refusals is still forgiven in a handful of well-behaved days.
+        state.OutfitRefusals = Math.Min(SeverityBalance.RefusalSaturation, state.OutfitRefusals + garments);
+        SaveGameState(state);
+    }
+
+    /// <summary>Halves the refusal count: the reward for accepting a proposed outfit untouched.</summary>
+    public void ForgiveOutfitRefusals()
+    {
+        var state = GetGameState();
+        if (state is null)
+        {
+            return;
+        }
+
+        state.OutfitRefusals /= 2;
+        SaveGameState(state);
     }
 
     /// <summary>

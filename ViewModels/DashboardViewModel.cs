@@ -271,9 +271,10 @@ public partial class DashboardViewModel : ViewModelBase
     private void LoadChores()
     {
         Tasks.Clear();
+        var gameStartedAt = _saveRepo.GetGameState()?.StartedAt ?? DateTime.UtcNow;
         foreach (var chore in _saveRepo.GetChores())
         {
-            Tasks.Add(new TaskItemViewModel(chore, OnStartTask));
+            Tasks.Add(new TaskItemViewModel(chore, gameStartedAt, OnStartTask));
         }
     }
 

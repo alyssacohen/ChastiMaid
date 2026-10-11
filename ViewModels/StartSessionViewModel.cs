@@ -293,6 +293,16 @@ public partial class StartSessionViewModel : ViewModelBase
     {
         _saveRepo.AcceptItems(_outfit.Items);
 
+        // Only a freshly proposed outfit taken as it is counts: not one already locked for the day (or every
+        // relaunch would forgive again), nor one the player had no say in.
+        // ponytail: _regenCount lives in this view model, so a fresh one forgets it — regenerate → modify → back,
+        // or regenerate → quit → relaunch, then accept still forgives, merely halving the refusal just recorded.
+        // Track refusals per day on GameState if that loophole ever matters.
+        if (!_isLocked && !_isForced && _regenCount == 0)
+        {
+            _saveRepo.ForgiveOutfitRefusals();
+        }
+
         if (_forcedOutfitPunishment is not null)
         {
             // New continuous play stretch: reset the real-time progress baseline (see
@@ -322,6 +332,8 @@ public partial class StartSessionViewModel : ViewModelBase
         }
 
         _saveRepo.RejectItems(_outfit.Items);
+        // The chastity device is re-seeded into every proposal, so it was never the player's to refuse.
+        _saveRepo.RecordOutfitRefusal(_outfit.Items.Count(i => i.Id != _chastityDeviceItem?.Id));
         _currentBonus = resultBonus;
         _regenCount++;
 

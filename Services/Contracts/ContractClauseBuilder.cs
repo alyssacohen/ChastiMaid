@@ -57,9 +57,8 @@ public static class ContractClauseBuilder
                     : Resources.Get("ContractAppellativesNone"),
             ]),
 
-            // TODO(variable-severity): informational only. The future "behavior" parameter (task frequencies
-            // respected, pending punishments, refused garments) will scale punishment severity; no calculation
-            // exists yet and none may be implied here. See docs/design/new-game-contract.md.
+            // Fixed text: the mechanic lives in SeverityBalance and is deliberately not a setting, so the clause
+            // names the factors loosely and promises no figure. See docs/design/new-game-contract.md.
             ("ContractSeverityTitle", [Resources.Get("ContractSeverity")]),
         ];
 

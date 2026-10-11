@@ -98,6 +98,15 @@ The app keep track of how many times each item has been rejected. The count can 
 item is included in a subsequent outfit and accepted, but it can never be negative. If the count reaches 5,
 a non-editable outfit is generated and locked for the next session (already implemented, to be balanced).
 
+### Refusals and the employer's mood
+Separately from the per-item count above, the save keeps a single tally of garments the player **explicitly** refused
+(`GameState.OutfitRefusals`), which feeds the variable severity of punishments (see `punishments.md`):
+
+- regenerating a proposed outfit adds every garment of the refused outfit (the chastity device excepted);
+- modifying an outfit adds the proposed garments that were taken off — at least 1, even if garments were only added;
+- the tally is capped at 20, and accepting a freshly proposed outfit untouched halves it (at most once a day, and
+  not for an outfit the player had no say in).
+
 
 ## Session Flow: Outfit Proposal
 

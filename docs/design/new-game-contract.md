@@ -51,27 +51,30 @@ name. Voice follows `TONE_GUIDE.md` (Italian: "Voi", no gendered adjectives).
 
 A feature that is disabled (or enabled but with nothing designated) is stated as "not in force" rather than omitted.
 
-### Variable severity (not implemented)
+### Variable severity
 
-Clause 9 warns that the severity of punishments varies with the player's behaviour. It is **informational only**:
-fixed text, present in every contract, not a setting, not serialized. There is a
-`TODO(variable-severity)` in `ContractClauseBuilder`.
+Clause 9 warns that the severity of punishments varies with the player's behaviour. The clause itself is fixed text,
+present in every contract, not a setting, not serialized: it names the factors loosely, in-world, and states no figure.
 
-The future "behavior" parameter will be computed from:
+The mechanic behind it is implemented in `Services/SeverityBalance.cs` and applied by
+`SaveRepository.AssignPunishment`: a coefficient between 1 and 3 multiplies the severity of each infraction, computed
+from
 
-1. how well the recommended task frequencies (`Chore.FrequencyDays`) are respected;
-2. the number of pending punishments;
-3. the number of refused garments (`ClothingItem.RejectionCount`).
+1. how well the recommended task frequencies (`Chore.FrequencyDays`) are respected, counted from the start of the game;
+2. the number of garments explicitly refused (`GameState.OutfitRefusals`, not `ClothingItem.RejectionCount`);
+3. the number of pending punishments;
+4. the share of the debt still owed.
 
-No weights or formulas are defined, in code or here. The clause names the factors loosely, in-world.
+Weights, saturation points and worked examples are in `docs/specs/punishments.md` ("Variable severity"). They are
+constants, not contract settings, so they need no entry in `GameContractService.Ranges`.
 
 **Interaction with existing caps.** There is **no global severity cap** in Settings. Caps exist per punishment kind and
 are applied when a punishment is assigned or scaled (`SaveRepository.AssignPunishment` / `ScalePunishment`):
 Cornertime `CornertimeMin/MaxRequiredSeconds`, Writing Lines `WritingLinesMin/MaxLines`, Forced Outfit
 `ForcedOutfitMaxHours`. The fine has no cap. Severity itself is unbounded (popup lateness adds seconds without a
 ceiling). The caps bound a *single* punishment only: severity that does not fit is spent on further punishments (see
-"Residual severity" in `docs/specs/punishments.md`), never discarded. A variable severity should therefore feed into
-the severity *before* those clamps, and the clause must not promise any overall maximum.
+"Residual severity" in `docs/specs/punishments.md`), never discarded. The variable severity therefore feeds into the
+severity *before* those clamps, and the clause must not promise any overall maximum.
 
 ## File format
 
