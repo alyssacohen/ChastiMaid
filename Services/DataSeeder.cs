@@ -20,16 +20,21 @@ public static class DataSeeder
 
         var service = new GameContractService(profile);
         var result = service.Validate(MinimalContentSeeder.Contract);
-        try
+        // Language seed first, then English, then the in-code minimal contract.
+        foreach (var lang in new[] { language, "en" }.Distinct())
         {
-            var seed = service.Validate(File.ReadAllText(SeedPath(language)));
-            if (seed.Contract is not null)
+            try
             {
-                result = seed;
+                var seed = service.Validate(File.ReadAllText(SeedPath(lang)));
+                if (seed.Contract is not null)
+                {
+                    result = seed;
+                    break;
+                }
             }
-        }
-        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-        {
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+            }
         }
 
         service.Apply(result);

@@ -22,15 +22,17 @@ public class DataSeederTests
     }
 
     [Fact]
-    public void SeedIfEmpty_MissingSeedFile_FallsBackToMinimalContract()
+    public void SeedIfEmpty_UnknownLanguage_FallsBackToEnglishSeed()
     {
         using var db = new LiteDatabase(":memory:");
         var profile = new ProfileRepository(db);
 
         DataSeeder.SeedIfEmpty(profile, "xx");
 
-        Assert.Equal(MinimalContentSeeder.Contract.Wardrobe!.Count, profile.GetWardrobe().Count);
-        Assert.Equal(MinimalContentSeeder.Contract.PermissionTypes!.Count, profile.GetPermissionTypes().Count);
+        var english = new GameContractService(profile)
+            .Validate(File.ReadAllText(DataSeeder.SeedPath("en"))).Contract!;
+        Assert.Equal(english.Wardrobe!.Count, profile.GetWardrobe().Count);
+        Assert.Equal(english.PermissionTypes!.Count, profile.GetPermissionTypes().Count);
     }
 
     [Fact]

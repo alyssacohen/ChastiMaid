@@ -13,7 +13,7 @@ public static class MinimalContentSeeder
         Settings = new GameSettings(),
         Wardrobe =
         [
-            new() { Id = 1, Name = "plain dress", Layers = [3], Slots = ["torso", "legs"], Multiplier = 1.0, Weight = 1.0, Tags = [] },
+            new() { Id = 1, Name = "plain dress", Layers = [3], Slots = ["chest", "legs"], Multiplier = 1.0, Weight = 1.0, Tags = [] },
         ],
         // A single wardrobe item cannot form a meaningful requires/incompatible pair.
         OutfitRules = [],

@@ -23,6 +23,7 @@ public static class ContractFileDialogs
         {
             Title = title,
             AllowMultiple = false,
+            SuggestedStartLocation = await DataFolderAsync(topLevel),
             FileTypeFilter = [new FilePickerFileType("Contract") { Patterns = ["*.contract.json", "*.json"] }],
         });
 
@@ -40,6 +41,7 @@ public static class ContractFileDialogs
         var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
             Title = title,
+            SuggestedStartLocation = await DataFolderAsync(topLevel),
             SuggestedFileName = "chastimaid" + Extension,
             FileTypeChoices = [new FilePickerFileType("Contract") { Patterns = ["*.contract.json"] }],
         });
@@ -57,6 +59,14 @@ public static class ContractFileDialogs
 
         return (path.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ? path[..^".json".Length] : path)
                + Extension;
+    }
+
+    /// <summary>The <c>data</c> folder next to the exe, so contracts live with the rest of the app's data wherever it is moved.</summary>
+    private static async Task<IStorageFolder?> DataFolderAsync(TopLevel topLevel)
+    {
+        var dir = Path.Combine(AppPaths.Root, "data");
+        Directory.CreateDirectory(dir);
+        return await topLevel.StorageProvider.TryGetFolderFromPathAsync(dir);
     }
 
     private static TopLevel? GetTopLevel() =>

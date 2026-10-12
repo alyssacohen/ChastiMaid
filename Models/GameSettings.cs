@@ -35,12 +35,12 @@ public class GameSettings
 
     // Popup intervals
     public int PopupMinIntervalSeconds { get; set; } = 180;
-    public int PopupMaxIntervalSeconds { get; set; } = 600;
+    public int PopupMaxIntervalSeconds { get; set; } = 1200;
     public int PopupTimeoutSeconds { get; set; } = 15;
 
     // Hydration popup — minimum time between hydration reminders, independent of the general popup cycle
     public bool HydrationEnabled { get; set; } = true;
-    public int HydrationMinIntervalMinutes { get; set; } = 60;
+    public int HydrationMinIntervalMinutes { get; set; } = 30;
 
     // Curtsy popup — video recording duration
     public bool CurtsyEnabled { get; set; } = true;
@@ -52,51 +52,51 @@ public class GameSettings
     public int QuoteMatchMinSimilarityPercent { get; set; } = 82;
 
     // Busy mode capture
-    public int BusyCaptureMinIntervalSeconds { get; set; } = 3;
-    public int BusyCaptureMaxIntervalSeconds { get; set; } = 10;
+    public int BusyCaptureMinIntervalSeconds { get; set; } = 300;
+    public int BusyCaptureMaxIntervalSeconds { get; set; } = 600;
 
     // Kneel popup — total duration range (spec: 1-5 minutes) and verification-photo interval
     public bool KneelEnabled { get; set; } = true;
     public int KneelMinDurationSeconds { get; set; } = 60;
     public int KneelMaxDurationSeconds { get; set; } = 300;
-    public int KneelPhotoMinIntervalSeconds { get; set; } = 3;
-    public int KneelPhotoMaxIntervalSeconds { get; set; } = 10;
+    public int KneelPhotoMinIntervalSeconds { get; set; } = 5;
+    public int KneelPhotoMaxIntervalSeconds { get; set; } = 30;
 
     // Plug and Play — enable/disable toggle (per-item eligibility/duration configured separately)
-    public bool PlugAndPlayEnabled { get; set; }
+    public bool PlugAndPlayEnabled { get; set; } = true;
 
     // Diaper Play — halves the Hydration interval and (once a permission system exists) denies
     // toilet permission for the session, whenever the confirmed outfit includes a "diaper"-tagged item.
-    public bool DiaperPlayEnabled { get; set; }
+    public bool DiaperPlayEnabled { get; set; } = true;
 
     // Fine punishment — always active, cannot be disabled
-    public decimal FineSeverityValue { get; set; } = 5; // $ per severity point
+    public decimal FineSeverityValue { get; set; } = 10; // $ per severity point
 
     // Cornertime punishment
     public bool CornertimeEnabled { get; set; } = true;
     public double CornertimeSeverityValue { get; set; } = 30; // seconds of required stillness per severity point
     public int CornertimeMinRequiredSeconds { get; set; } = 60; // floor for the initial required duration
-    public int CornertimeMaxOverrunSeconds { get; set; } = 120; // fixed buffer beyond the initial requirement before it fails
+    public int CornertimeMaxOverrunSeconds { get; set; } = 180; // fixed buffer beyond the initial requirement before it fails
     public int CornertimeMovementCooldownMinSeconds { get; set; } = 10; // min seconds between two movement penalties (motion is checked continuously)
     public int CornertimeMovementCooldownMaxSeconds { get; set; } = 30; // max seconds between two movement penalties
     public int CornertimeMovementSensitivityPercent { get; set; } = 3; // % of changed pixels counted as movement
     public int CornertimeMovementPenaltyMinSeconds { get; set; } = 10; // min seconds added to the required duration per detected movement
-    public int CornertimeMovementPenaltyMaxSeconds { get; set; } = 20; // max seconds added to the required duration per detected movement
+    public int CornertimeMovementPenaltyMaxSeconds { get; set; } = 30; // max seconds added to the required duration per detected movement
     public bool CornertimeVoiceEnabled { get; set; } = true; // spoken narration (the completion chime always plays)
-    public int CornertimeMaxRequiredSeconds { get; set; } = 600; // ceiling for a single Cornertime punishment; severity beyond it spills into further punishments
+    public int CornertimeMaxRequiredSeconds { get; set; } = 900; // ceiling for a single Cornertime punishment; severity beyond it spills into further punishments
 
     // Writing Lines punishment
     public bool WritingLinesEnabled { get; set; } = true;
     public double WritingLinesSeverityValue { get; set; } = 3; // lines per severity point
     public int WritingLinesPenaltyLinesPerMistake { get; set; } = 1;
-    public int WritingLinesMinLines { get; set; } = 20;
+    public int WritingLinesMinLines { get; set; } = 5;
     public int WritingLinesMaxLines { get; set; } = 150;
     public bool WritingLinesNoIdleEnabled { get; set; } = true;
-    public int WritingLinesNoIdleTimeoutSeconds { get; set; } = 20;
+    public int WritingLinesNoIdleTimeoutSeconds { get; set; } = 5;
     public int WritingLinesNoIdleLinesToAdd { get; set; } = 2;
     public bool WritingLinesInterruptionsEnabled { get; set; } = true;
-    public int WritingLinesInterruptionMinIntervalSeconds { get; set; } = 30;
-    public int WritingLinesInterruptionMaxIntervalSeconds { get; set; } = 90;
+    public int WritingLinesInterruptionMinIntervalSeconds { get; set; } = 60;
+    public int WritingLinesInterruptionMaxIntervalSeconds { get; set; } = 180;
 
     // Forced Outfit punishment — the concrete outfit presets live in ForcedOutfitPreset (per-profile collection)
     public bool ForcedOutfitEnabled { get; set; } = true;
