@@ -49,4 +49,18 @@ public class DataSeederTests
         Assert.Equal(wardrobe, profile.GetWardrobe().Count);
         Assert.Empty(profile.GetChores());
     }
+
+    [Fact]
+    public void Seed_ExistingProfile_ReplacesContentWithTheRequestedLanguage()
+    {
+        using var db = new LiteDatabase(":memory:");
+        var profile = new ProfileRepository(db);
+        DataSeeder.SeedIfEmpty(profile, "en");
+        var english = profile.GetChores().Select(c => c.Name).ToHashSet();
+
+        DataSeeder.Seed(profile, "it");
+
+        Assert.NotEmpty(profile.GetChores());
+        Assert.DoesNotContain(profile.GetChores(), c => english.Contains(c.Name));
+    }
 }

@@ -193,6 +193,7 @@ public partial class SettingsViewModel : ViewModelBase
         _forcedOutfitEnabled = s.ForcedOutfitEnabled;
         _forcedOutfitMaxHours = s.ForcedOutfitMaxHours;
         _selectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == s.Language) ?? AvailableLanguages[0];
+        _confirmedLanguage = _selectedLanguage.Code;
 
         // Show a default immediately so Settings opens instantly; the real camera list and hardware
         // status are probed off the UI thread and applied once ready (see LoadHardwareAvailability).
@@ -291,7 +292,7 @@ public partial class SettingsViewModel : ViewModelBase
         OutfitRules.CollectionChanged += (_, _) => IsRulesDirty = true;
 
         SaveCommand = ReactiveCommand.Create(SaveAndBack);
-        QuickSaveCommand = ReactiveCommand.Create(Save);
+        QuickSaveCommand = ReactiveCommand.Create(SaveInPlace);
         StartTestQuoteListeningCommand = ReactiveCommand.Create(StartTestQuoteListening,
             this.WhenAnyValue(x => x.IsTestQuoteListening, x => x.IsMicrophoneAvailableForTest,
                 (listening, micAvailable) => !listening && micAvailable));
@@ -474,7 +475,6 @@ public partial class SettingsViewModel : ViewModelBase
 
     public IReadOnlyList<Option<string>> AvailableLanguages { get; } =
     [
-        new("system", Resources.Get("LanguageSystem")),
         new("en", Resources.Get("LanguageEnglish")),
         new("it", Resources.Get("LanguageItalian")),
     ];
@@ -790,7 +790,7 @@ public partial class SettingsViewModel : ViewModelBase
         switch (await ShowSaveDialog(Resources.Get("SettingsUnsavedTabMessage")))
         {
             case SaveDialogResult.Save:
-                Save();
+                SaveInPlace();
                 SetTab(newIndex);
                 break;
             case SaveDialogResult.Discard:
@@ -879,8 +879,12 @@ public partial class SettingsViewModel : ViewModelBase
         {
             case nameof(PlayerName) or nameof(AutoSaveInterval) or nameof(MinDebt) or nameof(MaxDebt)
                 or nameof(DailyInterestRate) or nameof(IdleWageAmount) or nameof(IdleWageInterval)
-                or nameof(SelectedCamera) or nameof(SelectedLanguage):
+                or nameof(SelectedCamera):
                 UpdateGeneralDirty();
+                break;
+            case nameof(SelectedLanguage):
+                UpdateGeneralDirty();
+                _ = ConfirmLanguageChangeAsync();
                 break;
             case nameof(Appellatives):
                 UpdateGeneralDirty();
@@ -903,12 +907,73 @@ public partial class SettingsViewModel : ViewModelBase
         }
     }
 
+    private bool _contentRestored;
+    private bool _restoreContentOnSave;
+    private bool _revertingLanguage;
+    private string _confirmedLanguage = "";
+
+    /// <summary>
+    ///     Asked as soon as the language selector changes (not at save time, so the other edits keep their
+    ///     context): restore the new language's defaults on the next save, keep the current content, or cancel
+    ///     and put the selector back.
+    /// </summary>
+    private async Task ConfirmLanguageChangeAsync()
+    {
+        var code = SelectedLanguage.Code;
+        if (_revertingLanguage || code == _confirmedLanguage)
+        {
+            return;
+        }
+
+        if (code == _repo.GetGameSettings().Language)
+        {
+            _restoreContentOnSave = false;
+            _confirmedLanguage = code;
+            return;
+        }
+
+        var dialog = new ConfirmDialogViewModel(Resources.Get("LanguageChangeTitle"),
+            Resources.Get("LanguageChangeMessage"), Resources.Get("LanguageChangeRestore"),
+            Resources.Get("Cancel"), Resources.Get("LanguageChangeKeep"));
+        if (!await ShowContractDialog(dialog))
+        {
+            _revertingLanguage = true;
+            SelectedLanguage = AvailableLanguages.First(l => l.Code == _confirmedLanguage);
+            _revertingLanguage = false;
+            return;
+        }
+
+        _confirmedLanguage = code;
+        _restoreContentOnSave = !dialog.SecondaryChosen;
+    }
+
+    /// <summary>
+    ///     Saves everything; when the user chose to restore defaults for a new language, the profile is also
+    ///     reseeded (<see cref="_contentRestored" /> tells the caller to rebuild the screen).
+    /// </summary>
     private void Save()
     {
+        _contentRestored = _restoreContentOnSave;
+        _restoreContentOnSave = false;
         SaveAll();
+        if (_contentRestored)
+        {
+            DataSeeder.Seed(_repo, SelectedLanguage.Code);
+        }
+
         TakeSnapshot();
         IsGeneralDirty = IsChoresDirty = IsPopupsDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty =
             IsPermissionsDirty = false;
+    }
+
+    /// <summary>Save without leaving: rebuilds the screen when the content was reseeded.</summary>
+    private void SaveInPlace()
+    {
+        Save();
+        if (_contentRestored)
+        {
+            RebuildScreen();
+        }
     }
 
     private void SaveAndBack()

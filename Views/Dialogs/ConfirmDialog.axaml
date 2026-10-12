@@ -5,14 +5,14 @@
              x:Class="ChastiMaid.Views.Dialogs.ConfirmDialog">
 
     <Panel Classes="dialogOverlay">
-        <Border Classes="dialogBox">
+        <Border Classes="dialogBox fit">
             <StackPanel Spacing="16">
 
                 <TextBlock Classes="Heading"
                            Text="{Binding Title}"
                            HorizontalAlignment="Center" />
 
-                <TextBlock Classes="Body"
+                <TextBlock Classes="Body dialogMessage"
                            Text="{Binding Message}"
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
@@ -24,6 +24,10 @@
                     <Button Content="{Binding ConfirmLabel}"
                             Command="{Binding ConfirmCommand}"
                             Classes="Primary" />
+                    <Button Content="{Binding SecondaryLabel}"
+                            Command="{Binding SecondaryCommand}"
+                            Classes="Ghost"
+                            IsVisible="{Binding HasSecondary}" />
                     <Button Content="{Binding CancelLabel}"
                             Command="{Binding CancelCommand}"
                             Classes="Ghost"

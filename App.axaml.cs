@@ -32,7 +32,16 @@ public class App : Application
             _databaseService = new DatabaseService();
             var profileDb = _databaseService.OpenProfile();
             var profileRepo = new ProfileRepository(profileDb);
-            ApplyLanguage(profileRepo.GetGameSettings().Language);
+            var settings = profileRepo.GetGameSettings();
+            ApplyLanguage(settings.Language);
+            if (settings.Language == "system")
+            {
+                // First run (or a profile from before the selector dropped "System"): pin the resolved language.
+                settings.Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                settings.PlayerName = Localization.Resources.Get("DefaultPlayerName");
+                profileRepo.SaveGameSettings(settings);
+            }
+
             DataSeeder.SeedIfEmpty(profileRepo, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             var slotManager = new SaveSlotManager(_databaseService);
             _autoSaveService = new AutoSaveService();

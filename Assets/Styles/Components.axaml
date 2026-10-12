@@ -20,6 +20,16 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <!-- fit — dialogBox that grows with its content instead of capping at the default width -->
+    <Style Selector="Border.dialogBox.fit">
+        <Setter Property="MaxWidth" Value="{x:Static x:Double.PositiveInfinity}" />
+    </Style>
+
+    <!-- dialogMessage — wrapped dialog text, capped so long copy wraps while the box can still grow for its buttons -->
+    <Style Selector="TextBlock.dialogMessage">
+        <Setter Property="MaxWidth" Value="432" />
+    </Style>
+
     <!-- punishmentDrawer — bottom-anchored drawer inside a dialogOverlay; .landscape offsets it past the left nav rail -->
     <Style Selector="Border.punishmentDrawer">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />

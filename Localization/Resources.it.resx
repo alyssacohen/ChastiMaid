@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LanguageSystem" xml:space="preserve">
-    <value>Sistema</value>
+  <data name="DefaultPlayerName" xml:space="preserve">
+    <value>Cameriera</value>
+  </data>
+  <data name="LanguageChangeTitle" xml:space="preserve">
+    <value>Cambio lingua</value>
+  </data>
+  <data name="LanguageChangeMessage" xml:space="preserve">
+    <value>Guardaroba, regole degli outfit, faccende e impostazioni di gioco sono salvati nella lingua attuale. «Ripristina» li sostituisce con i valori predefiniti della nuova lingua al salvataggio; le modifiche apportate andranno perse. «Conserva» li lascia invariati.</value>
+  </data>
+  <data name="LanguageChangeRestore" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
+  <data name="LanguageChangeKeep" xml:space="preserve">
+    <value>Conserva</value>
   </data>
   <data name="LanguageEnglish" xml:space="preserve">
     <value>Inglese</value>

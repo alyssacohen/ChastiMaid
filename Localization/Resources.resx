@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LanguageSystem" xml:space="preserve">
-    <value>System</value>
+  <data name="DefaultPlayerName" xml:space="preserve">
+    <value>Maid</value>
+  </data>
+  <data name="LanguageChangeTitle" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="LanguageChangeMessage" xml:space="preserve">
+    <value>Wardrobe, outfit rules, chores and gameplay settings are stored in the current language. Restore replaces them with the defaults of the new language when you save; your edits to them are lost. Keep leaves them unchanged.</value>
+  </data>
+  <data name="LanguageChangeRestore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="LanguageChangeKeep" xml:space="preserve">
+    <value>Keep</value>
   </data>
   <data name="LanguageEnglish" xml:space="preserve">
     <value>English</value>

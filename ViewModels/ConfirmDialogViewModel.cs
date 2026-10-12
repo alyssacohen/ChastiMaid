@@ -16,12 +16,19 @@ public class ConfirmDialogViewModel : ViewModelBase
         string title,
         string message,
         string confirmLabel = "Confirm",
-        string? cancelLabel = "Cancel")
+        string? cancelLabel = "Cancel",
+        string? secondaryLabel = null)
     {
         Title = title;
         Message = message;
         ConfirmLabel = confirmLabel;
         CancelLabel = cancelLabel;
+        SecondaryLabel = secondaryLabel;
+        SecondaryCommand = ReactiveCommand.Create(() =>
+        {
+            SecondaryChosen = true;
+            _tcs.TrySetResult(true);
+        });
 
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.TrySetResult(true));
         CancelCommand = ReactiveCommand.Create(() => _tcs.TrySetResult(false));
@@ -32,6 +39,12 @@ public class ConfirmDialogViewModel : ViewModelBase
     public string ConfirmLabel { get; }
     public string? CancelLabel { get; }
     public bool HasCancel => CancelLabel is not null;
+
+    /// <summary>Optional middle choice; it completes <see cref="Result" /> with true and sets <see cref="SecondaryChosen" />.</summary>
+    public string? SecondaryLabel { get; }
+    public bool HasSecondary => SecondaryLabel is not null;
+    public bool SecondaryChosen { get; private set; }
+    public ICommand SecondaryCommand { get; }
 
     public Task<bool> Result => _tcs.Task;
 

@@ -18,6 +18,12 @@ public static class DataSeeder
             return;
         }
 
+        Seed(profile, language);
+    }
+
+    /// <summary>Replaces the profile content with the language's seed contract, whatever is there now.</summary>
+    public static void Seed(ProfileRepository profile, string language)
+    {
         var service = new GameContractService(profile);
         var result = service.Validate(MinimalContentSeeder.Contract);
         // Language seed first, then English, then the in-code minimal contract.

@@ -21,7 +21,8 @@ public class GameSettings
     // player to a popup (in addition to PlayerName), e.g. "pet, maid, girl"
     public string Appellatives { get; set; } = "";
 
-    // Localization: "system", "en", or "it". Requires a restart to take effect.
+    // Localization: "en" or "it" ("system" is only the unset default, resolved and persisted at startup).
+    // Requires a restart to take effect.
     [JsonIgnore] public string Language { get; set; } = "system";
 
     // Game balance
