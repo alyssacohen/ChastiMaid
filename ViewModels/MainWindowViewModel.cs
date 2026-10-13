@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using ChastiMaid.Localization;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using LiteDB;
@@ -31,7 +32,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(DatabaseService databaseService, ProfileRepository profileRepository,
         SaveSlotManager saveSlotManager, AutoSaveService autoSaveService, WebcamPreviewService webcam,
-        SherpaOnnxTtsService tts, SherpaOnnxSttService stt)
+        SherpaOnnxTtsService tts, SherpaOnnxSttService stt, ILocalizer localizer)
     {
         DatabaseService = databaseService;
         ProfileRepository = profileRepository;
@@ -41,6 +42,7 @@ public partial class MainWindowViewModel : ViewModelBase
         Webcam.PreferredCameraChanged += OnPreferredCameraChanged;
         Tts = tts;
         Stt = stt;
+        Localizer = localizer;
         CurrentPage = new LoadingViewModel();
         _ = InitializeAsync();
 
@@ -60,6 +62,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public WebcamPreviewService Webcam { get; }
     public SherpaOnnxTtsService Tts { get; }
     public SherpaOnnxSttService Stt { get; }
+    public ILocalizer Localizer { get; }
 
     /// <summary>
     ///     Opens a save slot and tracks its DB for automatic disposal.

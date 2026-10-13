@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ChastiMaid.Localization;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.ViewModels;
@@ -58,7 +59,7 @@ public class App : Application
             _ = Task.Run(() => _sttService.IsModelReady);
 
             mainWindow.DataContext = new MainWindowViewModel(_databaseService, profileRepo, slotManager,
-                _autoSaveService, _webcamService, _ttsService, _sttService);
+                _autoSaveService, _webcamService, _ttsService, _sttService, Localizer.Current);
             desktop.MainWindow = mainWindow;
             ApplyWindowGeometry(mainWindow);
 
@@ -79,8 +80,9 @@ public class App : Application
     private static readonly string[] SupportedLanguages = ["en", "it"];
 
     /// <summary>
-    ///     Resolves the persisted language preference ("system", "en", or "it") to a UI culture
-    ///     and sets <see cref="CultureInfo.CurrentUICulture" /> before any view is constructed.
+    ///     Resolves the persisted language preference ("system", "en", or "it") to a UI culture,
+    ///     sets <see cref="CultureInfo.CurrentUICulture" /> and loads that language's translation catalog.
+    ///     Must run before any view is constructed.
     /// </summary>
     internal static void ApplyLanguage(string language)
     {
@@ -88,7 +90,9 @@ public class App : Application
             ? SupportedLanguages.FirstOrDefault(l => CultureInfo.InstalledUICulture.TwoLetterISOLanguageName == l) ?? "en"
             : language;
 
-        CultureInfo.CurrentUICulture = new CultureInfo(SupportedLanguages.Contains(code) ? code : "en");
+        code = SupportedLanguages.Contains(code) ? code : "en";
+        CultureInfo.CurrentUICulture = new CultureInfo(code);
+        Localizer.Current.SetLanguage(code);
     }
 
     /// <summary>

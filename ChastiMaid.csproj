@@ -14,6 +14,7 @@
     <AvaloniaResource Include="Assets\**" />
     <Compile Remove="ChastiMaid.Tests\**\*.cs" />
     <Compile Remove="ChastiMaid.Launcher\**\*.cs" />
+    <Compile Remove="tools\**\*.cs" />
     <None Include="Content\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
@@ -36,5 +37,30 @@
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.13.0.20260627" />
     <PackageReference Include="FluentIcons.Avalonia" Version="2.1.335" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
+    <PackageReference Include="GetText.NET" Version="10.0.1" />
   </ItemGroup>
+
+  <!-- Translations: locale/*.po are the source of truth; the .mo catalogs are compiled on every build
+       (never committed) and shipped as Content/locale/{lang}/LC_MESSAGES/ChastiMaid.mo. -->
+  <PropertyGroup>
+    <LocaleMoDir>$(MSBuildProjectDirectory)/$(BaseIntermediateOutputPath)locale</LocaleMoDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <LocalePo Include="locale/*.po" />
+  </ItemGroup>
+
+  <Target Name="CompileLocale"
+          Inputs="@(LocalePo);tools/ChastiMaid.L10n/MoCompiler.cs;tools/ChastiMaid.L10n/Program.cs"
+          Outputs="@(LocalePo->'$(LocaleMoDir)/%(Filename)/LC_MESSAGES/ChastiMaid.mo')">
+    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/tools/ChastiMaid.L10n&quot; -c Release -- compile &quot;$(MSBuildProjectDirectory)/locale&quot; &quot;$(LocaleMoDir)&quot;" />
+  </Target>
+
+  <Target Name="IncludeLocale" DependsOnTargets="CompileLocale" BeforeTargets="AssignTargetPaths">
+    <ItemGroup>
+      <None Include="@(LocalePo->'$(LocaleMoDir)/%(Filename)/LC_MESSAGES/ChastiMaid.mo')"
+            Link="Content/locale/%(Filename)/LC_MESSAGES/ChastiMaid.mo"
+            CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
 </Project>

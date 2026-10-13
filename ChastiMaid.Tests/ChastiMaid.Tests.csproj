@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChastiMaid.csproj"/>
+    <ProjectReference Include="../tools/ChastiMaid.L10n/ChastiMaid.L10n.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
