@@ -25,6 +25,7 @@ public static partial class PotExtractor
     private static partial Regex AnyTrRegex();
 
     // A "// translators: ..." (C#) or "<!-- translators: ... -->" (XAML) line right above the string.
+    // A note spanning several lines repeats the "translators:" prefix on each line.
     [GeneratedRegex(@"^\s*(?://|<!--)\s*translators:\s*(?<text>.*?)\s*(?:-->)?\s*$", RegexOptions.IgnoreCase)]
     private static partial Regex TranslatorCommentRegex();
 
@@ -209,7 +210,15 @@ public static partial class PotExtractor
     {
         if (!entries.TryGetValue(key, out var entry))
         {
-            entries[key] = entry = new Entry();
+            return entries[key] = new Entry();
+        }
+
+        // gettext identifies a message by context + msgid: when the same text is used both as T("x") and as
+        // N("x", "xs", n), the plural form must win or the template loses msgid_plural.
+        if (key.PluralId is not null && entries.Keys.First(k => Compare(k, key) == 0).PluralId is null)
+        {
+            entries.Remove(key);
+            entries[key] = entry;
         }
 
         return entry;
