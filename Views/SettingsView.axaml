@@ -101,6 +101,21 @@
                             Height="1"
                             Margin="0,0,0,4" />
                         <Button
+                            Classes="Ghost"
+                            Command="{Binding QuickSaveCommand}"
+                            HorizontalAlignment="Stretch">
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal"
+                                Spacing="8">
+                                <ic:SymbolIcon
+                                    FontSize="16"
+                                    IconVariant="Regular"
+                                    Symbol="Save" />
+                                <TextBlock Text="{converters:Tr Save}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button
                             Classes="Primary"
                             Command="{Binding SaveCommand}"
                             HorizontalAlignment="Stretch">

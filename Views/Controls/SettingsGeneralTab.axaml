@@ -302,10 +302,6 @@
                             ItemsSource="{Binding AvailableLanguages}"
                             SelectedItem="{Binding SelectedLanguage}" />
                     </Grid>
-                    <TextBlock
-                        Classes="Caption"
-                        Text="{converters:Tr LanguageRestartNotice}"
-                        TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
 

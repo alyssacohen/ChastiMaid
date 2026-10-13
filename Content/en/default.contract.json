@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "settings": {
+    "appellatives": "",
+    "minDebt": 500,
+    "maxDebt": 1000,
+    "dailyInterestRate": 0.03,
+    "idleWageAmount": 5,
+    "idleWageIntervalMinutes": 30,
+    "popupMinIntervalSeconds": 180,
+    "popupMaxIntervalSeconds": 1200,
+    "popupTimeoutSeconds": 15,
+    "hydrationEnabled": true,
+    "hydrationMinIntervalMinutes": 30,
+    "curtsyEnabled": true,
+    "curtsyVideoDurationSeconds": 5,
+    "quoteReadingEnabled": true,
+    "quoteListenTimeoutSeconds": 45,
+    "quoteMatchMinSimilarityPercent": 82,
+    "busyCaptureMinIntervalSeconds": 300,
+    "busyCaptureMaxIntervalSeconds": 600,
+    "kneelEnabled": true,
+    "kneelMinDurationSeconds": 60,
+    "kneelMaxDurationSeconds": 300,
+    "kneelPhotoMinIntervalSeconds": 5,
+    "kneelPhotoMaxIntervalSeconds": 30,
+    "plugAndPlayEnabled": true,
+    "diaperPlayEnabled": true,
+    "fineSeverityValue": 10.0,
+    "cornertimeEnabled": true,
+    "cornertimeSeverityValue": 30,
+    "cornertimeMinRequiredSeconds": 60,
+    "cornertimeMaxOverrunSeconds": 180,
+    "cornertimeMovementCooldownMinSeconds": 10,
+    "cornertimeMovementCooldownMaxSeconds": 30,
+    "cornertimeMovementSensitivityPercent": 3,
+    "cornertimeMovementPenaltyMinSeconds": 10,
+    "cornertimeMovementPenaltyMaxSeconds": 30,
+    "cornertimeVoiceEnabled": true,
+    "cornertimeMaxRequiredSeconds": 900,
+    "writingLinesEnabled": true,
+    "writingLinesSeverityValue": 3,
+    "writingLinesPenaltyLinesPerMistake": 1,
+    "writingLinesMinLines": 5,
+    "writingLinesMaxLines": 150,
+    "writingLinesNoIdleEnabled": true,
+    "writingLinesNoIdleTimeoutSeconds": 5,
+    "writingLinesNoIdleLinesToAdd": 2,
+    "writingLinesInterruptionsEnabled": true,
+    "writingLinesInterruptionMinIntervalSeconds": 60,
+    "writingLinesInterruptionMaxIntervalSeconds": 180,
+    "forcedOutfitEnabled": true,
+    "forcedOutfitMaxHours": 30
+  },
+  "wardrobe": [
+    {
+      "id": 1,
+      "name": "pink cage",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "genitals"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "chastity device"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "black lace briefs",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "underwear"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "black",
+        "sexy"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "black lace bra",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "bra"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "black",
+        "sexy"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "beige tights",
+      "layers": [
+        2
+      ],
+      "slots": [
+        "legs"
+      ],
+      "multiplier": 0.9,
+      "weight": 1.2,
+      "tags": [
+        "nude",
+        "retro"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "floral dress",
+      "layers": [
+        3
+      ],
+      "slots": [
+        "chest",
+        "waist",
+        "hips",
+        "legs"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "classic",
+        "casual"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "white nylon bodysuit",
+      "layers": [
+        1,
+        2
+      ],
+      "slots": [
+        "chest",
+        "waist",
+        "hips",
+        "legs",
+        "arms"
+      ],
+      "multiplier": 1.2,
+      "weight": 0.7,
+      "tags": [
+        "sexy",
+        "white"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "flat shoes",
+      "layers": [
+        3
+      ],
+      "slots": [
+        "feet"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "classic"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "plain apron",
+      "layers": [
+        3
+      ],
+      "slots": [
+        "apron"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "classic"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "rubber gloves",
+      "layers": [
+        4
+      ],
+      "slots": [
+        "hands"
+      ],
+      "multiplier": 1.1,
+      "weight": 0,
+      "tags": [
+        "optional"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "diaper",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "underwear"
+      ],
+      "multiplier": 1.2,
+      "weight": 0.5,
+      "tags": [
+        "diaper",
+        "bulky",
+        "humiliating"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "beige garter stockings",
+      "layers": [
+        2
+      ],
+      "slots": [
+        "legs"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "for garter belt"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "black lace garter belt",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "waist"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "garter belt"
+      ]
+    }
+  ],
+  "outfitRules": [
+    {
+      "id": 1,
+      "sourceTag": "garter belt",
+      "relatedTag": "for garter belt",
+      "relation": "requires"
+    },
+    {
+      "id": 2,
+      "sourceTag": "diaper",
+      "relatedTag": "garter belt",
+      "relation": "incompatible"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Dusting",
+      "description": "Run a feather duster or cloth over every surface in the house, taking care to lift and replace each ornament",
+      "value": 10,
+      "frequencyDays": 3,
+      "minCompletionMinutes": 20
+    },
+    {
+      "id": 2,
+      "name": "Sweeping the floors",
+      "description": "Vacuum all the floors in the house",
+      "value": 10,
+      "frequencyDays": 1,
+      "minCompletionMinutes": 15
+    },
+    {
+      "id": 3,
+      "name": "Mopping the floors",
+      "description": "Clean the floors with a damp cloth or steam, but only after they have been thoroughly swept",
+      "value": 20,
+      "frequencyDays": 3,
+      "minCompletionMinutes": 20
+    }
+  ],
+  "forcedOutfitPresets": [
+    {
+      "id": 1,
+      "name": "Half-dressed",
+      "isEnabled": true,
+      "hoursPerSeverityPoint": 1,
+      "clothingItemIds": [
+        2,
+        3,
+        8
+      ],
+      "isFullOutfit": true
+    }
+  ],
+  "plugAndPlayItems": [
+    {
+      "id": 1,
+      "clothingItemId": 9,
+      "minDurationMinutes": 30,
+      "maxDurationMinutes": 120
+    }
+  ],
+  "diaperPlayItems": [
+    {
+      "id": 1,
+      "clothingItemId": 10
+    }
+  ],
+  "chastityDeviceItems": [
+    {
+      "id": 1,
+      "clothingItemId": 1
+    }
+  ],
+  "permissionTypes": [
+    {
+      "id": 1,
+      "kind": "pee",
+      "baseGrantPercent": 70,
+      "durationMinutes": 5,
+      "cooldownMinutes": 10
+    },
+    {
+      "id": 2,
+      "kind": "poop",
+      "baseGrantPercent": 50,
+      "durationMinutes": 8,
+      "cooldownMinutes": 10
+    },
+    {
+      "id": 3,
+      "kind": "sitDown",
+      "baseGrantPercent": 20,
+      "durationMinutes": 3,
+      "cooldownMinutes": 20
+    },
+    {
+      "id": 4,
+      "kind": "smoke",
+      "baseGrantPercent": 20,
+      "durationMinutes": 5,
+      "cooldownMinutes": 30
+    },
+    {
+      "id": 5,
+      "kind": "teaCoffee",
+      "baseGrantPercent": 60,
+      "durationMinutes": 10,
+      "cooldownMinutes": 30
+    }
+  ]
+}

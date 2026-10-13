@@ -22,7 +22,6 @@ public class GameSettings
     public string Appellatives { get; set; } = "";
 
     // Localization: "en" or "it" ("system" is only the unset default, resolved and persisted at startup).
-    // Requires a restart to take effect.
     [JsonIgnore] public string Language { get; set; } = "system";
 
     // Game balance

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive;
@@ -908,6 +909,7 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     private bool _contentRestored;
+    private bool _languageChanged;
     private bool _restoreContentOnSave;
     private bool _revertingLanguage;
     private string _confirmedLanguage = "";
@@ -945,6 +947,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         _confirmedLanguage = code;
         _restoreContentOnSave = !dialog.SecondaryChosen;
+        SaveInPlace();
     }
 
     /// <summary>
@@ -955,7 +958,19 @@ public partial class SettingsViewModel : ViewModelBase
     {
         _contentRestored = _restoreContentOnSave;
         _restoreContentOnSave = false;
+        _languageChanged = SelectedLanguage.Code != _repo.GetGameSettings().Language;
+        if (_languageChanged)
+        {
+            App.ApplyLanguage(SelectedLanguage.Code);
+            // A name still equal to a language's default follows the language; an edited one is left alone.
+            if (new[] { "en", "it" }.Any(l => PlayerName == Resources.Get("DefaultPlayerName", new CultureInfo(l))))
+            {
+                PlayerName = Resources.Get("DefaultPlayerName");
+            }
+        }
+
         SaveAll();
+
         if (_contentRestored)
         {
             DataSeeder.Seed(_repo, SelectedLanguage.Code);
@@ -966,11 +981,11 @@ public partial class SettingsViewModel : ViewModelBase
             IsPermissionsDirty = false;
     }
 
-    /// <summary>Save without leaving: rebuilds the screen when the content was reseeded.</summary>
+    /// <summary>Save without leaving: rebuilds the screen when the content was reseeded or the language changed.</summary>
     private void SaveInPlace()
     {
         Save();
-        if (_contentRestored)
+        if (_contentRestored || _languageChanged)
         {
             RebuildScreen();
         }
@@ -979,6 +994,12 @@ public partial class SettingsViewModel : ViewModelBase
     private void SaveAndBack()
     {
         Save();
+        if (_languageChanged)
+        {
+            // Texts are resolved when a screen is built, so drop the cached one built in the old language.
+            _mainVm.InvalidateSettingsCache();
+        }
+
         NavigateAway(_returnTo());
     }
 

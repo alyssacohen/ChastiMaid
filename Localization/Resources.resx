@@ -138,9 +138,6 @@
   <data name="LanguageItalian" xml:space="preserve">
     <value>Italian</value>
   </data>
-  <data name="LanguageRestartNotice" xml:space="preserve">
-    <value>Restart the application for the new language to take effect.</value>
-  </data>
   <data name="LanguageHeading" xml:space="preserve">
     <value>Language</value>
   </data>

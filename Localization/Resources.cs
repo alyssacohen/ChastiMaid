@@ -17,4 +17,9 @@ public static class Resources
     {
         return ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
     }
+
+    public static string Get(string key, CultureInfo culture)
+    {
+        return ResourceManager.GetString(key, culture) ?? key;
+    }
 }

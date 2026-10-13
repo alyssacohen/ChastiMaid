@@ -82,7 +82,7 @@ public class App : Application
     ///     Resolves the persisted language preference ("system", "en", or "it") to a UI culture
     ///     and sets <see cref="CultureInfo.CurrentUICulture" /> before any view is constructed.
     /// </summary>
-    private static void ApplyLanguage(string language)
+    internal static void ApplyLanguage(string language)
     {
         var code = language == "system"
             ? SupportedLanguages.FirstOrDefault(l => CultureInfo.InstalledUICulture.TwoLetterISOLanguageName == l) ?? "en"

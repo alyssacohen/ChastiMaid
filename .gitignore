@@ -181,8 +181,8 @@ chastimaid-session.json
 .claude/
 .mcp.json
 
-## Content export directory (generated at runtime by the import/export system)
-/Content/
+## Speech models (large, downloaded separately); the seed contracts under Content/{lang}/ are tracked
+/Content/Speech/
 
 ## publish.ps1 output
 /dist/

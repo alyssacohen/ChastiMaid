@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "settings": {
+    "appellatives": "",
+    "minDebt": 500,
+    "maxDebt": 1000,
+    "dailyInterestRate": 0.03,
+    "idleWageAmount": 5,
+    "idleWageIntervalMinutes": 30,
+    "popupMinIntervalSeconds": 180,
+    "popupMaxIntervalSeconds": 1200,
+    "popupTimeoutSeconds": 15,
+    "hydrationEnabled": true,
+    "hydrationMinIntervalMinutes": 30,
+    "curtsyEnabled": true,
+    "curtsyVideoDurationSeconds": 5,
+    "quoteReadingEnabled": true,
+    "quoteListenTimeoutSeconds": 45,
+    "quoteMatchMinSimilarityPercent": 82,
+    "busyCaptureMinIntervalSeconds": 300,
+    "busyCaptureMaxIntervalSeconds": 600,
+    "kneelEnabled": true,
+    "kneelMinDurationSeconds": 60,
+    "kneelMaxDurationSeconds": 300,
+    "kneelPhotoMinIntervalSeconds": 5,
+    "kneelPhotoMaxIntervalSeconds": 30,
+    "plugAndPlayEnabled": true,
+    "diaperPlayEnabled": true,
+    "fineSeverityValue": 10.0,
+    "cornertimeEnabled": true,
+    "cornertimeSeverityValue": 30,
+    "cornertimeMinRequiredSeconds": 60,
+    "cornertimeMaxOverrunSeconds": 180,
+    "cornertimeMovementCooldownMinSeconds": 10,
+    "cornertimeMovementCooldownMaxSeconds": 30,
+    "cornertimeMovementSensitivityPercent": 3,
+    "cornertimeMovementPenaltyMinSeconds": 10,
+    "cornertimeMovementPenaltyMaxSeconds": 30,
+    "cornertimeVoiceEnabled": true,
+    "cornertimeMaxRequiredSeconds": 900,
+    "writingLinesEnabled": true,
+    "writingLinesSeverityValue": 3,
+    "writingLinesPenaltyLinesPerMistake": 1,
+    "writingLinesMinLines": 5,
+    "writingLinesMaxLines": 150,
+    "writingLinesNoIdleEnabled": true,
+    "writingLinesNoIdleTimeoutSeconds": 5,
+    "writingLinesNoIdleLinesToAdd": 2,
+    "writingLinesInterruptionsEnabled": true,
+    "writingLinesInterruptionMinIntervalSeconds": 60,
+    "writingLinesInterruptionMaxIntervalSeconds": 180,
+    "forcedOutfitEnabled": true,
+    "forcedOutfitMaxHours": 30
+  },
+  "wardrobe": [
+    {
+      "id": 1,
+      "name": "gabbia rosa",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "genitali"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "chastity device"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "slip in pizzo neri",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "mutande"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "nero",
+        "sexy"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "reggiseno in pizzo nero",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "reggiseno"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "nero",
+        "sexy"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "collant beige",
+      "layers": [
+        2
+      ],
+      "slots": [
+        "gambe"
+      ],
+      "multiplier": 0.9,
+      "weight": 1.2,
+      "tags": [
+        "nude",
+        "retr\u00F2"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "abito a fiori",
+      "layers": [
+        3
+      ],
+      "slots": [
+        "petto",
+        "vita",
+        "fianchi",
+        "gambe"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "classico",
+        "casual"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "tutina nylon bianca",
+      "layers": [
+        1,
+        2
+      ],
+      "slots": [
+        "petto",
+        "vita",
+        "fianchi",
+        "gambe",
+        "braccia"
+      ],
+      "multiplier": 1.2,
+      "weight": 0.7,
+      "tags": [
+        "sexy",
+        "bianco"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "scarpe basse",
+      "layers": [
+        3
+      ],
+      "slots": [
+        "piedi"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "classico"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "grembiule semplice",
+      "layers": [
+        3
+      ],
+      "slots": [
+        "grembiule"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "classico"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "guanti in gomma",
+      "layers": [
+        4
+      ],
+      "slots": [
+        "mani"
+      ],
+      "multiplier": 1.1,
+      "weight": 0,
+      "tags": [
+        "opzionale"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "pannolino",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "mutande"
+      ],
+      "multiplier": 1.2,
+      "weight": 0.5,
+      "tags": [
+        "pannolino",
+        "ingombrante",
+        "umiliante"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "calze beige da reggicalze",
+      "layers": [
+        2
+      ],
+      "slots": [
+        "gambe"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "per reggicalze"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "reggicalze in pizzo nero",
+      "layers": [
+        0
+      ],
+      "slots": [
+        "vita"
+      ],
+      "multiplier": 1,
+      "weight": 1,
+      "tags": [
+        "reggicalze"
+      ]
+    }
+  ],
+  "outfitRules": [
+    {
+      "id": 1,
+      "sourceTag": "reggicalze",
+      "relatedTag": "per reggicalze",
+      "relation": "requires"
+    },
+    {
+      "id": 2,
+      "sourceTag": "pannolino",
+      "relatedTag": "reggicalze",
+      "relation": "incompatible"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Spolverare",
+      "description": "Passare un piumino o un panno su tutte le superfici della casa, facendo attenzione a rimuovere e rimettere a posto ogni suppellettile",
+      "value": 10,
+      "frequencyDays": 3,
+      "minCompletionMinutes": 20
+    },
+    {
+      "id": 2,
+      "name": "Spazzare i pavimenti",
+      "description": "Passare l\u0027aspirapolvere su tutti i pavimenti della casa",
+      "value": 10,
+      "frequencyDays": 1,
+      "minCompletionMinutes": 15
+    },
+    {
+      "id": 3,
+      "name": "Lavare i pavimenti",
+      "description": "Pulire i pavimenti con un panno umido o con vapore, ma solo dopo averli accuratamente spazzati",
+      "value": 20,
+      "frequencyDays": 3,
+      "minCompletionMinutes": 20
+    }
+  ],
+  "forcedOutfitPresets": [
+    {
+      "id": 1,
+      "name": "Seminuda",
+      "isEnabled": true,
+      "hoursPerSeverityPoint": 1,
+      "clothingItemIds": [
+        2,
+        3,
+        8
+      ],
+      "isFullOutfit": true
+    }
+  ],
+  "plugAndPlayItems": [
+    {
+      "id": 1,
+      "clothingItemId": 9,
+      "minDurationMinutes": 30,
+      "maxDurationMinutes": 120
+    }
+  ],
+  "diaperPlayItems": [
+    {
+      "id": 1,
+      "clothingItemId": 10
+    }
+  ],
+  "chastityDeviceItems": [
+    {
+      "id": 1,
+      "clothingItemId": 1
+    }
+  ],
+  "permissionTypes": [
+    {
+      "id": 1,
+      "kind": "pee",
+      "baseGrantPercent": 70,
+      "durationMinutes": 5,
+      "cooldownMinutes": 10
+    },
+    {
+      "id": 2,
+      "kind": "poop",
+      "baseGrantPercent": 50,
+      "durationMinutes": 8,
+      "cooldownMinutes": 10
+    },
+    {
+      "id": 3,
+      "kind": "sitDown",
+      "baseGrantPercent": 20,
+      "durationMinutes": 3,
+      "cooldownMinutes": 20
+    },
+    {
+      "id": 4,
+      "kind": "smoke",
+      "baseGrantPercent": 20,
+      "durationMinutes": 5,
+      "cooldownMinutes": 30
+    },
+    {
+      "id": 5,
+      "kind": "teaCoffee",
+      "baseGrantPercent": 60,
+      "durationMinutes": 10,
+      "cooldownMinutes": 30
+    }
+  ]
+}
