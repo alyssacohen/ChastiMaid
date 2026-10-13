@@ -95,7 +95,7 @@ public class MoCompilerTests
             var localizer = new ChastiMaid.Localization.Localizer();
             localizer.SetLanguage("it");
 
-            Assert.Equal("Cancel", localizer.GetString("Cancel"));
+            Assert.Equal("Cancel", localizer.T("Cancel"));
         }
         finally
         {

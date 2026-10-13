@@ -13,7 +13,7 @@ public class TrExtension(string text) : MarkupExtension
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         return Context is null
-            ? Localizer.Current.GetString(text)
-            : Localizer.Current.GetParticularString(Context, text);
+            ? Localizer.Current.T(text)
+            : Localizer.Current.P(Context, text);
     }
 }

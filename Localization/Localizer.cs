@@ -44,15 +44,25 @@ public sealed class Localizer : ILocalizer
         _catalog = new Catalog(culture);
     }
 
-    public string GetString(string text) => _catalog.GetString(text);
+    /// <summary>
+    ///     Marks <paramref name="text" /> for extraction without translating it, for texts kept in a table and
+    ///     translated later with <see cref="T(string)" />.
+    /// </summary>
+    public static string Mark(string text) => text;
 
-    public string GetString(string text, params object[] args) => _catalog.GetString(text, args);
+    public string T(string text) => _catalog.GetString(text);
 
-    public string GetPluralString(string text, string pluralText, long n, params object[] args) =>
-        _catalog.GetPluralString(text, pluralText, n, args);
+    public string T(string text, params object[] args) => Format(_catalog.GetString(text), args);
 
-    public string GetParticularString(string context, string text) => _catalog.GetParticularString(context, text);
+    public string N(string text, string pluralText, long n, params object[] args) =>
+        Format(_catalog.GetPluralString(text, pluralText, n), args);
 
-    public string GetParticularString(string context, string text, params object[] args) =>
-        _catalog.GetParticularString(context, text, args);
+    public string P(string context, string text) => _catalog.GetParticularString(context, text);
+
+    public string P(string context, string text, params object[] args) =>
+        Format(_catalog.GetParticularString(context, text), args);
+
+    // Invariant on purpose: amounts keep a decimal point in every language (GetText would use the catalog's culture).
+    private static string Format(string format, object[] args) =>
+        string.Format(CultureInfo.InvariantCulture, format, args);
 }
