@@ -18,6 +18,4 @@ public interface ILocalizer
     string GetParticularString(string context, string text);
 
     string GetParticularString(string context, string text, params object[] args);
-
-    string GetParticularPluralString(string context, string text, string pluralText, long n, params object[] args);
 }

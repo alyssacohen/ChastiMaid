@@ -27,14 +27,21 @@ public sealed class Localizer : ILocalizer
     {
         var culture = new CultureInfo(language);
         var path = CatalogPath(language);
-        if (!File.Exists(path))
+        try
         {
-            _catalog = new Catalog(culture);
-            return;
+            if (File.Exists(path))
+            {
+                using var stream = File.OpenRead(path);
+                _catalog = new Catalog(stream, culture);
+                return;
+            }
+        }
+        catch (Exception)
+        {
+            // An unreadable or corrupt catalog must not stop the app from starting: fall back to English.
         }
 
-        using var stream = File.OpenRead(path);
-        _catalog = new Catalog(stream, culture);
+        _catalog = new Catalog(culture);
     }
 
     public string GetString(string text) => _catalog.GetString(text);
@@ -48,8 +55,4 @@ public sealed class Localizer : ILocalizer
 
     public string GetParticularString(string context, string text, params object[] args) =>
         _catalog.GetParticularString(context, text, args);
-
-    public string GetParticularPluralString(string context, string text, string pluralText, long n,
-        params object[] args) =>
-        _catalog.GetParticularPluralString(context, text, pluralText, n, args);
 }

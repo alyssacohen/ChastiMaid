@@ -79,4 +79,28 @@ public class MoCompilerTests
             Directory.Delete(dir, true);
         }
     }
+
+    [Fact]
+    public void SetLanguage_FallsBackToEnglishWhenCatalogIsCorrupt()
+    {
+        var root = Directory.CreateTempSubdirectory("chastimaid-l10n").FullName;
+        var previousRoot = Environment.GetEnvironmentVariable("CHASTIMAID_ROOT");
+        Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", root);
+        try
+        {
+            var path = ChastiMaid.Localization.Localizer.CatalogPath("it");
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.WriteAllText(path, "not a catalog");
+
+            var localizer = new ChastiMaid.Localization.Localizer();
+            localizer.SetLanguage("it");
+
+            Assert.Equal("Cancel", localizer.GetString("Cancel"));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", previousRoot);
+            Directory.Delete(root, true);
+        }
+    }
 }

@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <Target Name="CompileLocale"
-          Inputs="@(LocalePo);tools/ChastiMaid.L10n/MoCompiler.cs;tools/ChastiMaid.L10n/Program.cs"
+          Inputs="@(LocalePo);tools/ChastiMaid.L10n/MoCompiler.cs;tools/ChastiMaid.L10n/Program.cs;tools/ChastiMaid.L10n/ChastiMaid.L10n.csproj"
           Outputs="@(LocalePo->'$(LocaleMoDir)/%(Filename)/LC_MESSAGES/ChastiMaid.mo')">
     <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/tools/ChastiMaid.L10n&quot; -c Release -- compile &quot;$(MSBuildProjectDirectory)/locale&quot; &quot;$(LocaleMoDir)&quot;" />
   </Target>
