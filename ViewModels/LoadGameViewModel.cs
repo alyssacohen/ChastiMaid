@@ -19,23 +19,32 @@ public class SlotCardViewModel : ViewModelBase
         SlotName = "";
         SavedAt = "";
         CurrentDebt = 0;
+        BalanceLabel = "";
         SafeStatus = "";
+        CompletedLabel = "";
         LoadCommand = ReactiveCommand.Create(() => { });
         InfoCommand = ReactiveCommand.Create(() => { });
         DeleteCommand = ReactiveCommand.Create(() => { });
     }
 
     // Filled slot
-    public SlotCardViewModel(int number, SaveSlotInfo slot, LoadGameViewModel parent)
+    public SlotCardViewModel(int number, SaveSlotInfo slot, LoadGameViewModel parent, ILocalizer l)
     {
         SlotNumber = number;
         IsEmpty = false;
         SlotName = slot.SlotName;
         SavedAt = slot.LastSessionAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm");
         CurrentDebt = slot.CurrentDebt;
+        // A negative debt is accumulated credit.
+        BalanceLabel = slot.CurrentDebt < 0
+            ? l.T("Credit: £{0:F2}", -slot.CurrentDebt)
+            : l.T("Debt: £{0:F2}", slot.CurrentDebt);
         IsSafeLocked = slot.IsSafeLocked;
-        SafeStatus = slot.IsSafeLocked ? Resources.Get("LoadGameSafeLocked") : Resources.Get("LoadGameSafeOpen");
+        // translators: state of the safe holding the key (feminine in Italian: "la cassaforte")
+        SafeStatus = slot.IsSafeLocked ? l.P("safe", "Locked") : l.P("safe", "Open");
         IsCompleted = slot.IsCompleted;
+        // translators: a finished game (feminine in Italian: "la partita")
+        CompletedLabel = slot.IsCompleted ? l.P("game", "Completed") : "";
 
         var canLoad = Observable.Return(!slot.IsCompleted);
         LoadCommand = ReactiveCommand.CreateFromTask(() => parent.LoadSlot(slot.SlotName), canLoad);
@@ -48,11 +57,12 @@ public class SlotCardViewModel : ViewModelBase
     public string SlotName { get; }
     public string SavedAt { get; }
     public decimal CurrentDebt { get; }
+    public string BalanceLabel { get; }
     public string SafeStatus { get; }
     public bool IsSafeLocked { get; }
     public Symbol SafeIcon => IsSafeLocked ? Symbol.LockClosed : Symbol.LockOpen;
     public bool IsCompleted { get; }
-    public string CompletedLabel => IsCompleted ? Resources.Get("LoadGameCompleted") : "";
+    public string CompletedLabel { get; }
 
     public ICommand LoadCommand { get; }
     public ICommand InfoCommand { get; }
@@ -97,7 +107,7 @@ public partial class LoadGameViewModel : ViewModelBase
         for (var i = 0; i < 5; i++)
         {
             Slots.Add(i < saves.Count
-                ? new SlotCardViewModel(i + 1, saves[i], this)
+                ? new SlotCardViewModel(i + 1, saves[i], this, _mainVm.Localizer)
                 : new SlotCardViewModel(i + 1));
         }
     }
@@ -111,13 +121,7 @@ public partial class LoadGameViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            var dialog = new ConfirmDialogViewModel(
-                Resources.Get("LoadGameErrorTitle"),
-                string.Format(Resources.Get("LoadGameErrorMessageFormat"), slotName, ex.Message),
-                Resources.Get("Ok"),
-                null);
-
-            await ShowConfirmAsync(dialog);
+            await ShowLoadErrorAsync(slotName, ex);
         }
     }
 
@@ -129,25 +133,33 @@ public partial class LoadGameViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await ShowConfirmAsync(new ConfirmDialogViewModel(
-                Resources.Get("LoadGameErrorTitle"),
-                string.Format(Resources.Get("LoadGameErrorMessageFormat"), slotName, ex.Message),
-                Resources.Get("Ok"),
-                null));
+            await ShowLoadErrorAsync(slotName, ex);
         }
+    }
+
+    private Task<bool> ShowLoadErrorAsync(string slotName, Exception ex)
+    {
+        var l = _mainVm.Localizer;
+        return ShowConfirmAsync(new ConfirmDialogViewModel(
+            l.T("Load Error"),
+            // translators: {0} is the save name, {1} the technical error message
+            l.T("Could not load \"{0}\". The save file may be corrupted.\n\n{1}", slotName, ex.Message),
+            l.T("OK"),
+            null));
     }
 
     public async Task ConfirmDeleteSlot(SlotCardViewModel slot)
     {
+        var l = _mainVm.Localizer;
         var message = slot.IsSafeLocked
-            ? string.Format(Resources.Get("LoadGameDeleteWarningLockedFormat"), slot.SlotName)
-            : string.Format(Resources.Get("LoadGameDeleteConfirmFormat"), slot.SlotName);
+            ? l.T("Delete \"{0}\"?\n\nWARNING: The safe is locked. Deleting this save will permanently destroy the encrypted combination photo. The combination will be lost forever.", slot.SlotName)
+            : l.T("Delete \"{0}\"? This game will be marked as failed.", slot.SlotName);
 
         var dialog = new ConfirmDialogViewModel(
-            Resources.Get("LoadGameDeleteSaveTitle"),
+            l.T("Delete Save"),
             message,
-            Resources.Get("Delete"),
-            Resources.Get("Cancel"));
+            l.T("Delete"),
+            l.T("Cancel"));
 
         var confirmed = await ShowConfirmAsync(dialog);
 

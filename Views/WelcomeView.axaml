@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
-             xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:l="using:ChastiMaid.Localization"
              x:DataType="vm:WelcomeViewModel"
              x:Class="ChastiMaid.Views.WelcomeView">
 
@@ -27,19 +27,19 @@
                        TextAlignment="Center"
                        TextWrapping="Wrap"
                        Margin="0,0,0,32"
-                       Text="{conv:Tr WelcomeQuote}" />
+                       Text="{l:Tr 'Please, come in. The door is unlocked. It always is... at first.'}" />
 
             <Button Classes="Primary"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="{conv:Tr WelcomeContinue}"
+                    Content="{l:Tr 'Continue'}"
                     Command="{Binding ContinueCommand}" />
 
             <Button Classes="Primary"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Margin="0,12,0,0"
-                    Content="{conv:Tr WelcomeNewGame}"
+                    Content="{l:Tr 'New Game'}"
                     Command="{Binding NewGameCommand}" />
 
             <Border Height="1"
@@ -49,19 +49,19 @@
             <Button Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="{conv:Tr WelcomeLoadGame}"
+                    Content="{l:Tr 'Load Game'}"
                     Command="{Binding LoadGameCommand}" />
 
             <Button Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Margin="0,12,0,0"
-                    Content="{conv:Tr WelcomeSettings}"
+                    Content="{l:Tr 'Settings'}"
                     Command="{Binding SettingsCommand}" />
 
             <TextBlock Name="ExitLabel"
                        Classes="BodySmall"
-                       Text="{conv:Tr WelcomeExit}"
+                       Text="{l:Tr 'Exit'}"
                        HorizontalAlignment="Center"
                        Margin="0,20,0,0"
                        Cursor="Hand">

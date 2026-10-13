@@ -5,6 +5,7 @@
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:controls="using:ChastiMaid.Views.Controls"
              xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:l="using:ChastiMaid.Localization"
              x:DataType="vm:LoadGameViewModel"
              x:Class="ChastiMaid.Views.LoadGameView">
 
@@ -16,7 +17,7 @@
                     Spacing="16">
 
             <TextBlock Classes="PageTitle"
-                       Text="{conv:Tr WelcomeLoadGame}"
+                       Text="{l:Tr 'Load Game'}"
                        HorizontalAlignment="Center" />
 
             <ItemsControl ItemsSource="{Binding Slots}" Width="600">
@@ -61,7 +62,7 @@
                                                         Spacing="16"
                                                         Margin="0,4,0,0">
                                                 <TextBlock Classes="BodySmall"
-                                                           Text="{Binding CurrentDebt, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=LoadGameDebtFormat|LoadGameCreditFormat}"
+                                                           Text="{Binding BalanceLabel}"
                                                            Foreground="{Binding CurrentDebt, Converter={x:Static conv:BalanceBrushConverter.Instance}}"
                                                            Opacity="0.85" />
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
@@ -80,8 +81,9 @@
                                             </StackPanel>
                                         </StackPanel>
 
+                                        <!-- translators: label of a save slot with no game in it -->
                                         <TextBlock Classes="Caption"
-                                                   Text="{conv:Tr LoadGameEmptySlot}"
+                                                   Text="{l:Tr 'Empty', Context='save slot'}"
                                                    VerticalAlignment="Center"
                                                    IsVisible="{Binding IsEmpty}" />
                                     </Panel>
@@ -110,7 +112,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <Button Content="{conv:Tr Back}"
+            <Button Content="{l:Tr 'Back'}"
                     Command="{Binding BackCommand}"
                     Classes="Ghost"
                     HorizontalAlignment="Center" />
@@ -127,7 +129,7 @@
                 <Border Grid.Row="1" Classes="contractActionBar">
                     <Button Classes="Primary"
                             HorizontalAlignment="Center"
-                            Content="{conv:Tr Close}"
+                            Content="{l:Tr 'Close'}"
                             Command="{Binding CloseContractCommand}" />
                 </Border>
             </Grid>

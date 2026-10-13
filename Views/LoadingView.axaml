@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:l="using:ChastiMaid.Localization"
              x:Class="ChastiMaid.Views.LoadingView">
 
     <StackPanel HorizontalAlignment="Center"
@@ -13,7 +13,7 @@
         <ProgressBar IsIndeterminate="True" Height="4" />
         <TextBlock Classes="Caption"
                    HorizontalAlignment="Center"
-                   Text="{conv:Tr AppLoading}" />
+                   Text="{l:Tr 'One moment — preparations are underway...'}" />
     </StackPanel>
 
 </UserControl>

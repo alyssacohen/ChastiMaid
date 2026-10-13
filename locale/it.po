@@ -1,10 +1,142 @@
-# Italian translation of ChastiMaid.
-#
+#  Italian translation of ChastiMaid.
 msgid ""
 msgstr ""
 "Project-Id-Version: ChastiMaid\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../ViewModels/WelcomeViewModel.cs:37
+msgid ""
+"All 5 save slots are occupied. Please complete or delete an existing game "
+"before starting a new one."
+msgstr ""
+"Tutti i 5 slot di salvataggio sono occupati. Completate o eliminate una "
+"partita esistente prima di iniziarne una nuova."
+
+#: ../Views/LoadGameView.axaml:115
+msgid "Back"
+msgstr "Indietro"
+
+#: ../ViewModels/LoadGameViewModel.cs:162
+msgid "Cancel"
+msgstr "Annulla"
+
+#: ../Views/LoadGameView.axaml:132
+msgid "Close"
+msgstr "Chiudi"
+
+#. a finished game (feminine in Italian: "la partita")
+#: ../ViewModels/LoadGameViewModel.cs:47
+msgctxt "game"
+msgid "Completed"
+msgstr "Completata"
+
+#: ../Views/WelcomeView.axaml:35
+msgid "Continue"
+msgstr "Continua"
+
+#. {0} is the save name, {1} the technical error message
+#: ../ViewModels/LoadGameViewModel.cs:146
+#, csharp-format
+msgid ""
+"Could not load \"{0}\". The save file may be corrupted.\n"
+"\n"
+"{1}"
+msgstr ""
+"Impossibile caricare \"{0}\". Il file di salvataggio potrebbe essere "
+"danneggiato.\n"
+"\n"
+"{1}"
+
+#: ../ViewModels/LoadGameViewModel.cs:40
+#, csharp-format
+msgid "Credit: £{0:F2}"
+msgstr "Credito: £{0:F2}"
+
+#: ../ViewModels/LoadGameViewModel.cs:41
+#, csharp-format
+msgid "Debt: £{0:F2}"
+msgstr "Debito: £{0:F2}"
+
+#: ../ViewModels/LoadGameViewModel.cs:161
+msgid "Delete"
+msgstr "Elimina"
+
+#: ../ViewModels/LoadGameViewModel.cs:155
+#, csharp-format
+msgid ""
+"Delete \"{0}\"?\n"
+"\n"
+"WARNING: The safe is locked. Deleting this save will permanently destroy the "
+"encrypted combination photo. The combination will be lost forever."
+msgstr ""
+"Eliminare \"{0}\"?\n"
+"\n"
+"ATTENZIONE: la cassaforte è bloccata. Eliminando questo salvataggio "
+"distruggerete permanentemente la foto cifrata della combinazione. La "
+"combinazione andrà persa per sempre."
+
+#: ../ViewModels/LoadGameViewModel.cs:156
+#, csharp-format
+msgid "Delete \"{0}\"? This game will be marked as failed."
+msgstr "Eliminare \"{0}\"? Questa partita verrà contrassegnata come fallita."
+
+#: ../ViewModels/LoadGameViewModel.cs:159
+msgid "Delete Save"
+msgstr "Elimina salvataggio"
+
+#: ../Views/LoadGameView.axaml:86
+msgctxt "save slot"
+msgid "Empty"
+msgstr "Vuoto"
+
+#: ../Views/WelcomeView.axaml:64
+msgid "Exit"
+msgstr "Esci"
+
+#: ../ViewModels/LoadGameViewModel.cs:144
+msgid "Load Error"
+msgstr "Errore di caricamento"
+
+#: ../Views/LoadGameView.axaml:20 ../Views/WelcomeView.axaml:52
+msgid "Load Game"
+msgstr "Carica partita"
+
+#. state of the safe holding the key (feminine in Italian: "la cassaforte")
+#: ../ViewModels/LoadGameViewModel.cs:44
+msgctxt "safe"
+msgid "Locked"
+msgstr "Bloccata"
+
+#: ../Views/WelcomeView.axaml:42
+msgid "New Game"
+msgstr "Nuova partita"
+
+#: ../ViewModels/WelcomeViewModel.cs:36
+msgid "No Free Slots"
+msgstr "Nessuno slot libero"
+
+#: ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
+msgid "OK"
+msgstr "OK"
+
+#: ../Views/LoadingView.axaml:16
+msgid "One moment — preparations are underway..."
+msgstr "Un momento, si sta preparando tutto..."
+
+#. state of the safe holding the key (feminine in Italian: "la cassaforte")
+#: ../ViewModels/LoadGameViewModel.cs:44
+msgctxt "safe"
+msgid "Open"
+msgstr "Aperta"
+
+#: ../Views/WelcomeView.axaml:30
+msgid "Please, come in. The door is unlocked. It always is... at first."
+msgstr "Accomodatevi pure. La porta è aperta... per ora."
+
+#: ../Views/WelcomeView.axaml:59
+msgid "Settings"
+msgstr "Impostazioni"

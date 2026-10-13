@@ -8,3 +8,125 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../ViewModels/WelcomeViewModel.cs:37
+msgid ""
+"All 5 save slots are occupied. Please complete or delete an existing game "
+"before starting a new one."
+msgstr ""
+
+#: ../Views/LoadGameView.axaml:115
+msgid "Back"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:162
+msgid "Cancel"
+msgstr ""
+
+#: ../Views/LoadGameView.axaml:132
+msgid "Close"
+msgstr ""
+
+#. a finished game (feminine in Italian: "la partita")
+#: ../ViewModels/LoadGameViewModel.cs:47
+msgctxt "game"
+msgid "Completed"
+msgstr ""
+
+#: ../Views/WelcomeView.axaml:35
+msgid "Continue"
+msgstr ""
+
+#. {0} is the save name, {1} the technical error message
+#: ../ViewModels/LoadGameViewModel.cs:146
+#, csharp-format
+msgid ""
+"Could not load \"{0}\". The save file may be corrupted.\n"
+"\n"
+"{1}"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:40
+#, csharp-format
+msgid "Credit: £{0:F2}"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:41
+#, csharp-format
+msgid "Debt: £{0:F2}"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:161
+msgid "Delete"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:155
+#, csharp-format
+msgid ""
+"Delete \"{0}\"?\n"
+"\n"
+"WARNING: The safe is locked. Deleting this save will permanently destroy the "
+"encrypted combination photo. The combination will be lost forever."
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:156
+#, csharp-format
+msgid "Delete \"{0}\"? This game will be marked as failed."
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:159
+msgid "Delete Save"
+msgstr ""
+
+#: ../Views/LoadGameView.axaml:86
+msgctxt "save slot"
+msgid "Empty"
+msgstr ""
+
+#: ../Views/WelcomeView.axaml:64
+msgid "Exit"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:144
+msgid "Load Error"
+msgstr ""
+
+#: ../Views/LoadGameView.axaml:20 ../Views/WelcomeView.axaml:52
+msgid "Load Game"
+msgstr ""
+
+#. state of the safe holding the key (feminine in Italian: "la cassaforte")
+#: ../ViewModels/LoadGameViewModel.cs:44
+msgctxt "safe"
+msgid "Locked"
+msgstr ""
+
+#: ../Views/WelcomeView.axaml:42
+msgid "New Game"
+msgstr ""
+
+#: ../ViewModels/WelcomeViewModel.cs:36
+msgid "No Free Slots"
+msgstr ""
+
+#: ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
+msgid "OK"
+msgstr ""
+
+#: ../Views/LoadingView.axaml:16
+msgid "One moment — preparations are underway..."
+msgstr ""
+
+#. state of the safe holding the key (feminine in Italian: "la cassaforte")
+#: ../ViewModels/LoadGameViewModel.cs:44
+msgctxt "safe"
+msgid "Open"
+msgstr ""
+
+#: ../Views/WelcomeView.axaml:30
+msgid "Please, come in. The door is unlocked. It always is... at first."
+msgstr ""
+
+#: ../Views/WelcomeView.axaml:59
+msgid "Settings"
+msgstr ""
