@@ -1,7 +1,8 @@
 using ChastiMaid.L10n;
 
 // Localization tool. Usage (from the repository root):
-//   extract [root]                 regenerate locale/ChastiMaid.pot from the C# and .axaml sources
+//   extract [root]                 regenerate locale/ChastiMaid.pot from the C# and .axaml sources,
+//                                  then update every locale/*.po to match it
 //   compile <localeDir> <outDir>   every <localeDir>/{lang}.po -> <outDir>/{lang}/LC_MESSAGES/ChastiMaid.mo
 //                                  (run by the build, see ChastiMaid.csproj)
 switch (args)
@@ -16,6 +17,10 @@ switch (args)
 
         return errors.Count > 0 ? 1 : 0;
     }
+    case ["import-resx"]:
+        // Temporary, for the resx -> gettext migration only.
+        ResxImporter.Import(Directory.GetCurrentDirectory());
+        return 0;
     case ["compile", var localeDir, var outDir]:
     {
         var failed = false;

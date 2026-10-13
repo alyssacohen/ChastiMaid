@@ -32,6 +32,13 @@ public class MoCompilerTests
         msgid "Close"
         msgstr ""
 
+        msgid ""
+        "Line one\n"
+        "Line two"
+        msgstr ""
+        "Riga uno\n"
+        "Riga due"
+
         """;
 
     [Fact]
@@ -56,6 +63,8 @@ public class MoCompilerTests
             // Fuzzy and untranslated entries fall back to the English source.
             Assert.Equal("Back", catalog.GetString("Back"));
             Assert.Equal("Close", catalog.GetString("Close"));
+            // Line breaks stay LF on every platform, or multi-line messages would never match.
+            Assert.Equal("Riga uno\nRiga due", catalog.GetString("Line one\nLine two"));
         }
         finally
         {

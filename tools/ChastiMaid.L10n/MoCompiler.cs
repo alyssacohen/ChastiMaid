@@ -12,8 +12,7 @@ public static class MoCompiler
     /// <summary>Returns the parse errors; empty when <paramref name="moPath" /> was written.</summary>
     public static IReadOnlyList<string> Compile(string poPath, string moPath)
     {
-        using var reader = new StreamReader(poPath, Encoding.UTF8);
-        var result = new POParser(new POParserSettings()).Parse(reader);
+        var result = PotExtractor.Parse(poPath);
         if (!result.Success)
         {
             return [.. result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.ToString())];
