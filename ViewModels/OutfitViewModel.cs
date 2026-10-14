@@ -13,9 +13,13 @@ public class OutfitViewModel : ViewModelBase
     public IReadOnlyList<OutfitLayerViewModel> Layers { get; }
 
     /// <summary>"5 items · 3 layers covered".</summary>
-    public string CountSummary(ILocalizer l) =>
-        l.N("{0} item", "{0} items", Layers.Sum(x => x.Items.Count), Layers.Sum(x => x.Items.Count)) + " · " +
-        l.N("{0} layer covered", "{0} layers covered", Layers.Count(x => x.HasItems), Layers.Count(x => x.HasItems));
+    public string CountSummary(ILocalizer l)
+    {
+        var items = Layers.Sum(x => x.Items.Count);
+        var layers = Layers.Count(x => x.HasItems);
+        return l.N("{0} item", "{0} items", items, items) + " · " +
+               l.N("{0} layer covered", "{0} layers covered", layers, layers);
+    }
 
     /// <summary>
     ///     Parses the text produced by <see cref="Models.Outfit.ToString" /> into an

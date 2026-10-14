@@ -33,6 +33,7 @@ public partial class DebtWidget : UserControl
     public DebtWidget()
     {
         InitializeComponent();
+        Refresh();
     }
 
     // ── Public accessors ────────────────────────────────────────────────────
@@ -84,16 +85,22 @@ public partial class DebtWidget : UserControl
         base.OnPropertyChanged(change);
         if (change.Property == DebtTotalProperty || change.Property == DebtSettledProperty)
         {
-            DebtRemaining = DebtTotal - DebtSettled;
-            DebtProgress = DebtTotal > 0
-                ? Math.Clamp((double)(DebtSettled / DebtTotal), 0.0, 1.0)
-                : 0.0;
-            // A control has no ViewModel to receive the localizer from: static access.
-            var l = Localizer.Current;
-            // A negative remaining balance is accumulated credit.
-            RemainingLabel = DebtRemaining < 0 ? l.T("Credit") : l.T("Remaining");
-            RemainingAmountText = CurrencyConverter.Format(Math.Abs(DebtRemaining));
-            TotalIncurredText = l.T("Total incurred: {0}", CurrencyConverter.Format(DebtTotal));
+            Refresh();
         }
+    }
+
+    // Also run once from the constructor, so a zero balance still shows its labels.
+    private void Refresh()
+    {
+        DebtRemaining = DebtTotal - DebtSettled;
+        DebtProgress = DebtTotal > 0
+            ? Math.Clamp((double)(DebtSettled / DebtTotal), 0.0, 1.0)
+            : 0.0;
+        // A control has no ViewModel to receive the localizer from: static access.
+        var l = Localizer.Current;
+        // A negative remaining balance is accumulated credit.
+        RemainingLabel = DebtRemaining < 0 ? l.T("Credit") : l.T("Remaining");
+        RemainingAmountText = CurrencyConverter.Format(Math.Abs(DebtRemaining));
+        TotalIncurredText = l.T("Total incurred: {0}", CurrencyConverter.Format(DebtTotal));
     }
 }

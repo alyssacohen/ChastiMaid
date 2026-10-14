@@ -217,7 +217,7 @@ public sealed class ContractClauseBuilder(ILocalizer L)
         [
             L.T("Leave to attend to certain needs is granted at Madame's discretion:"),
             ..permissions.Select(p => L.T("{0}: granted {1}% of the time, for {2}, and not again for {3}.",
-                ViewModels.PermissionTypeItemViewModel.GetName(p.Kind, L), p.BaseGrantPercent,
+                PermissionKindDisplay.NameOf(p.Kind, L), p.BaseGrantPercent,
                 Span(p.DurationMinutes * 60), Span(p.CooldownMinutes * 60))),
         ];
     }

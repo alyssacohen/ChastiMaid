@@ -74,8 +74,12 @@ public class ContractImportFlow(GameContractService service, ILocalizer L)
 
         service.Apply(result);
 
-        var status = L.T("Contract loaded: {0} wardrobe items, {1} outfit rules and {2} tasks.",
-            contract.Wardrobe!.Count, contract.OutfitRules!.Count, contract.Tasks!.Count);
+        int items = contract.Wardrobe!.Count, rules = contract.OutfitRules!.Count, tasks = contract.Tasks!.Count;
+        // translators: {0}, {1} and {2} are the three counts below, e.g. "12 wardrobe items"
+        var status = L.T("Contract loaded: {0}, {1} and {2}.",
+            L.N("{0} wardrobe item", "{0} wardrobe items", items, items),
+            L.N("{0} outfit rule", "{0} outfit rules", rules, rules),
+            L.N("{0} task", "{0} tasks", tasks, tasks));
         return new ContractImportOutcome(ContractImportOutcomeKind.Applied,
             report.Length > 0 ? status + "\n" + report : status);
     }

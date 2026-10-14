@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../Services/Contracts/ContractImportFlow.cs:130
+#: ../Services/Contracts/ContractImportFlow.cs:134
 #, csharp-format, fuzzy
 msgid " (+{0} more)"
 msgstr " (+{0} altri)"
@@ -211,7 +211,7 @@ msgstr "Aggiungi compito"
 msgid "Adequate contrition, for once."
 msgstr "Pentimento adeguato, per una volta."
 
-#: ../Services/Contracts/ContractImportFlow.cs:101
+#: ../Services/Contracts/ContractImportFlow.cs:105
 #, csharp-format, fuzzy
 msgid "Adjusted to the allowed range: {0}."
 msgstr "Riportati entro i limiti consentiti: {0}."
@@ -219,6 +219,10 @@ msgstr "Riportati entro i limiti consentiti: {0}."
 #: ../Models/Banks/ImpossibleQuestionBank.cs:37
 msgid "After all this time? How deeply disappointing."
 msgstr "Dopo tutto questo tempo? Mi avete profondamente delusa."
+
+#: ../ViewModels/SettingsViewModel.cs:273
+msgid "All"
+msgstr ""
 
 #: ../ViewModels/WelcomeViewModel.cs:37
 msgid ""
@@ -305,7 +309,7 @@ msgstr "Compra"
 msgid "CPM"
 msgstr "CPM"
 
-#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/SettingsViewModel.cs:949 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeTable.axaml:358 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:225
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:949 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeTable.axaml:358 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:225
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -359,7 +363,7 @@ msgstr "Nome compito"
 msgid "Chores"
 msgstr "Compiti"
 
-#: ../ViewModels/PermissionTypeItemViewModel.cs:28
+#: ../Models/PermissionKind.cs:22
 msgid "Cigarette break"
 msgstr "Pausa sigaretta"
 
@@ -398,7 +402,7 @@ msgid "Complete Game"
 msgstr "Completa partita"
 
 #. a finished game (feminine in Italian: "la partita")
-#: ../ViewModels/LoadGameViewModel.cs:47
+#: ../ViewModels/LoadGameViewModel.cs:48
 msgctxt "game"
 msgid "Completed"
 msgstr "Completata"
@@ -446,10 +450,11 @@ msgstr "Contratto"
 msgid "Contract exported."
 msgstr "Contratto esportato."
 
-#: ../Services/Contracts/ContractImportFlow.cs:77
-#, csharp-format, fuzzy
-msgid "Contract loaded: {0} wardrobe items, {1} outfit rules and {2} tasks."
-msgstr "Contratto caricato: {0} capi, {1} regole di abbinamento e {2} task."
+#. {0}, {1} and {2} are the three counts below, e.g. "12 wardrobe items"
+#: ../Services/Contracts/ContractImportFlow.cs:79
+#, csharp-format
+msgid "Contract loaded: {0}, {1} and {2}."
+msgstr ""
 
 #: ../Views/Controls/ContractDocument.axaml:15
 #, fuzzy
@@ -485,7 +490,7 @@ msgid "Corrective Measures"
 msgstr "Provvedimenti correttivi"
 
 #. {0} is the save name, {1} the technical error message
-#: ../ViewModels/LoadGameViewModel.cs:146
+#: ../ViewModels/LoadGameViewModel.cs:147
 #, csharp-format
 msgid ""
 "Could not load \"{0}\". The save file may be corrupted.\n"
@@ -497,7 +502,7 @@ msgstr ""
 "\n"
 "{1}"
 
-#: ../Views/Controls/DebtWidget.axaml.cs:94
+#: ../Views/Controls/DebtWidget.axaml.cs:102
 msgid "Credit"
 msgstr "Credito"
 
@@ -505,10 +510,10 @@ msgstr "Credito"
 msgid "Credit available"
 msgstr "Credito disponibile"
 
-#: ../ViewModels/LoadGameViewModel.cs:40
+#: ../ViewModels/LoadGameViewModel.cs:41
 #, csharp-format
-msgid "Credit: £{0:F2}"
-msgstr "Credito: £{0:F2}"
+msgid "Credit: {0}"
+msgstr ""
 
 #: ../Views/Controls/OutfitDrawer.axaml:45
 msgid "Current Outfit"
@@ -535,16 +540,16 @@ msgstr "Il tergiversare non aggiunge nulla, se non il tempo."
 msgid "Debt and Interest"
 msgstr "Debito e interessi"
 
-#: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:41
+#: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:42
 #, csharp-format
-msgid "Debt: £{0:F2}"
-msgstr "Debito: £{0:F2}"
+msgid "Debt: {0}"
+msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:161 ../Views/Controls/SettingsChoresTab.axaml:89 ../Views/Controls/SettingsChoresTab.axaml:90 ../Views/Controls/SettingsOutfitRulesTab.axaml:52 ../Views/Controls/SettingsOutfitRulesTab.axaml:53
+#: ../ViewModels/LoadGameViewModel.cs:162 ../Views/Controls/SettingsChoresTab.axaml:89 ../Views/Controls/SettingsChoresTab.axaml:90 ../Views/Controls/SettingsOutfitRulesTab.axaml:52 ../Views/Controls/SettingsOutfitRulesTab.axaml:53
 msgid "Delete"
 msgstr "Elimina"
 
-#: ../ViewModels/LoadGameViewModel.cs:155
+#: ../ViewModels/LoadGameViewModel.cs:156
 #, csharp-format
 msgid ""
 "Delete \"{0}\"?\n"
@@ -558,12 +563,12 @@ msgstr ""
 "distruggerete permanentemente la foto cifrata della combinazione. La "
 "combinazione andrà persa per sempre."
 
-#: ../ViewModels/LoadGameViewModel.cs:156
+#: ../ViewModels/LoadGameViewModel.cs:157
 #, csharp-format
 msgid "Delete \"{0}\"? This game will be marked as failed."
 msgstr "Eliminare \"{0}\"? Questa partita verrà contrassegnata come fallita."
 
-#: ../ViewModels/LoadGameViewModel.cs:159
+#: ../ViewModels/LoadGameViewModel.cs:160
 msgid "Delete Save"
 msgstr "Elimina salvataggio"
 
@@ -1203,8 +1208,8 @@ msgstr "L'operosità vi si addice."
 
 #: ../ViewModels/DashboardViewModel.cs:126
 #, csharp-format
-msgid "Initial: £{0:F2}"
-msgstr "Iniziale: £{0:F2}"
+msgid "Initial: {0}"
+msgstr ""
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:28
 msgid "Initiative is most commendable in service."
@@ -1315,7 +1320,7 @@ msgstr ""
 msgid "Listening…"
 msgstr "In ascolto…"
 
-#: ../ViewModels/LoadGameViewModel.cs:144
+#: ../ViewModels/LoadGameViewModel.cs:145
 msgid "Load Error"
 msgstr "Errore di caricamento"
 
@@ -1340,7 +1345,7 @@ msgstr ""
 "fotocamera e salvataggio automatico restano invariati."
 
 #. state of the safe holding the key (feminine in Italian: "la cassaforte")
-#: ../ViewModels/LoadGameViewModel.cs:44
+#: ../ViewModels/LoadGameViewModel.cs:45
 msgctxt "safe"
 msgid "Locked"
 msgstr "Bloccata"
@@ -1451,7 +1456,7 @@ msgstr ""
 msgid "Min debt (£)"
 msgstr "Debito minimo (£)"
 
-#: ../Services/Contracts/ContractImportFlow.cs:106
+#: ../Services/Contracts/ContractImportFlow.cs:110
 #, csharp-format, fuzzy
 msgid "Minimum and maximum swapped: {0}."
 msgstr "Minimo e massimo invertiti: {0}."
@@ -1695,7 +1700,7 @@ msgid "Now kneel, look down, and reflect upon your failings."
 msgstr ""
 "Ora inginocchiatevi, guardate a terra e riflettete sui vostri fallimenti."
 
-#: ../ViewModels/DashboardViewModel.cs:642 ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
+#: ../ViewModels/DashboardViewModel.cs:642 ../ViewModels/LoadGameViewModel.cs:148 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
 msgstr "OK"
 
@@ -1725,7 +1730,7 @@ msgid "Only the first {0} are used."
 msgstr "Solo i primi {0} vengono usati."
 
 #. state of the safe holding the key (feminine in Italian: "la cassaforte")
-#: ../ViewModels/LoadGameViewModel.cs:44
+#: ../ViewModels/LoadGameViewModel.cs:45
 msgctxt "safe"
 msgid "Open"
 msgstr "Aperta"
@@ -1980,7 +1985,7 @@ msgstr "Tag correlato"
 msgid "Relation"
 msgstr "Relazione"
 
-#: ../Views/Controls/DebtWidget.axaml.cs:94
+#: ../Views/Controls/DebtWidget.axaml.cs:102
 msgid "Remaining"
 msgstr "Rimanente"
 
@@ -2129,7 +2134,7 @@ msgstr[1] ""
 msgid "Show Safe Combination and Close"
 msgstr "Mostra combinazione cassaforte e chiudi"
 
-#: ../ViewModels/PermissionTypeItemViewModel.cs:27
+#: ../Models/PermissionKind.cs:21
 msgid "Sit down"
 msgstr "Sedersi"
 
@@ -2141,7 +2146,7 @@ msgstr "Salta"
 msgid "Skip (no safe)"
 msgstr "Salta (nessuna cassaforte)"
 
-#: ../Services/Contracts/ContractImportFlow.cs:113
+#: ../Services/Contracts/ContractImportFlow.cs:117
 #, csharp-format, fuzzy
 msgid "Skipped: {0}."
 msgstr "Scartati: {0}."
@@ -2261,7 +2266,7 @@ msgstr "Nome del compito"
 msgid "Tasks"
 msgstr "Compiti"
 
-#: ../ViewModels/PermissionTypeItemViewModel.cs:29
+#: ../Models/PermissionKind.cs:23
 msgid "Tea or coffee break"
 msgstr "Pausa tè o caffè"
 
@@ -2403,7 +2408,7 @@ msgstr ""
 "riprovare a scattare la foto della combinazione se non siete certa che il "
 "primo tentativo sia venuto bene."
 
-#: ../Services/Contracts/ContractImportFlow.cs:91
+#: ../Services/Contracts/ContractImportFlow.cs:95
 #, fuzzy
 msgid "The contract contains no usable wardrobe items."
 msgstr "Il contratto non contiene capi utilizzabili."
@@ -2413,7 +2418,7 @@ msgstr "Il contratto non contiene capi utilizzabili."
 msgid "The contract could not be written: {0}"
 msgstr "Non è stato possibile scrivere il contratto: {0}"
 
-#: ../Services/Contracts/ContractImportFlow.cs:90
+#: ../Services/Contracts/ContractImportFlow.cs:94
 #, csharp-format, fuzzy
 msgid "The contract is missing a section: {0}."
 msgstr "Nel contratto manca una sezione: {0}."
@@ -2438,7 +2443,7 @@ msgstr ""
 msgid "The file could not be read: {0}"
 msgstr "Non è stato possibile leggere il file: {0}"
 
-#: ../Services/Contracts/ContractImportFlow.cs:92
+#: ../Services/Contracts/ContractImportFlow.cs:96
 #, fuzzy
 msgid "The file is not a valid contract."
 msgstr "Il file non è un contratto valido."
@@ -2509,7 +2514,7 @@ msgstr "Allora avete ammesso il fallimento. Assai insoddisfacente."
 msgid "Then you have clearly not been working hard enough."
 msgstr "Allora, evidentemente, non avete lavorato abbastanza."
 
-#: ../Services/Contracts/ContractImportFlow.cs:89
+#: ../Services/Contracts/ContractImportFlow.cs:93
 #, csharp-format, fuzzy
 msgid "This contract uses an unsupported version ({0})."
 msgstr "Questo contratto usa una versione non supportata ({0})."
@@ -2562,7 +2567,7 @@ msgstr "L'abito di oggi"
 msgid "Total Multiplier"
 msgstr "Moltiplicatore totale"
 
-#: ../Views/Controls/DebtWidget.axaml.cs:96
+#: ../Views/Controls/DebtWidget.axaml.cs:104
 #, csharp-format
 msgid "Total incurred: {0}"
 msgstr ""
@@ -2598,11 +2603,11 @@ msgstr ""
 "All'atto dell'accettazione, Madame stabilirà a propria discrezione il debito "
 "della Cameriera, in una somma compresa tra {0} e {1}."
 
-#: ../ViewModels/PermissionTypeItemViewModel.cs:25
+#: ../Models/PermissionKind.cs:19
 msgid "Use the toilet (n.1)"
 msgstr "Usare la toilette (bisogno n.1)"
 
-#: ../ViewModels/PermissionTypeItemViewModel.cs:26
+#: ../Models/PermissionKind.cs:20
 msgid "Use the toilet (n.2)"
 msgstr "Usare la toilette (bisogno n.2)"
 
@@ -2657,8 +2662,8 @@ msgstr "Intervallo paga (minuti)"
 
 #: ../ViewModels/DashboardViewModel.cs:132
 #, csharp-format
-msgid "Wage: £{0:F2} / {1} min"
-msgstr "Paga: £{0:F2} / {1} min"
+msgid "Wage: {0} / {1} min"
+msgstr ""
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:47
 #, fuzzy
@@ -2980,7 +2985,7 @@ msgid_plural "{0} hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../ViewModels/OutfitViewModel.cs:17
+#: ../ViewModels/OutfitViewModel.cs:20
 #, csharp-format
 msgid "{0} item"
 msgid_plural "{0} items"
@@ -2994,7 +2999,7 @@ msgid_plural "{0} items selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../ViewModels/OutfitViewModel.cs:18
+#: ../ViewModels/OutfitViewModel.cs:21
 #, csharp-format
 msgid "{0} layer covered"
 msgid_plural "{0} layers covered"
@@ -3024,6 +3029,13 @@ msgstr[1] ""
 #, csharp-format
 msgid "{0} mistake — lines added"
 msgid_plural "{0} mistakes — lines added"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:81
+#, csharp-format
+msgid "{0} outfit rule"
+msgid_plural "{0} outfit rules"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -3059,6 +3071,20 @@ msgstr[1] ""
 #, csharp-format
 msgid "{0} second"
 msgid_plural "{0} seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:82
+#, csharp-format
+msgid "{0} task"
+msgid_plural "{0} tasks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:80
+#, csharp-format
+msgid "{0} wardrobe item"
+msgid_plural "{0} wardrobe items"
 msgstr[0] ""
 msgstr[1] ""
 

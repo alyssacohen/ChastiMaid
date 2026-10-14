@@ -26,7 +26,6 @@ public static class DataSeeder
     public static void Seed(ProfileRepository profile, string language, ILocalizer l)
     {
         var service = new GameContractService(profile);
-        var result = service.Validate(MinimalContentSeeder.Contract(l));
         // Language seed first, then English, then the in-code minimal contract.
         foreach (var lang in new[] { language, "en" }.Distinct())
         {
@@ -35,8 +34,8 @@ public static class DataSeeder
                 var seed = service.Validate(File.ReadAllText(SeedPath(lang)));
                 if (seed.Contract is not null)
                 {
-                    result = seed;
-                    break;
+                    service.Apply(seed);
+                    return;
                 }
             }
             catch (Exception e) when (e is IOException or UnauthorizedAccessException)
@@ -44,7 +43,7 @@ public static class DataSeeder
             }
         }
 
-        service.Apply(result);
+        service.Apply(service.Validate(MinimalContentSeeder.Contract(l)));
     }
 
     public static string SeedPath(string language) =>

@@ -1,3 +1,4 @@
+using ChastiMaid.Converters;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
@@ -37,8 +38,8 @@ public class SlotCardViewModel : ViewModelBase
         CurrentDebt = slot.CurrentDebt;
         // A negative debt is accumulated credit.
         BalanceLabel = slot.CurrentDebt < 0
-            ? l.T("Credit: £{0:F2}", -slot.CurrentDebt)
-            : l.T("Debt: £{0:F2}", slot.CurrentDebt);
+            ? l.T("Credit: {0}", CurrencyConverter.Format(-slot.CurrentDebt))
+            : l.T("Debt: {0}", CurrencyConverter.Format(slot.CurrentDebt));
         IsSafeLocked = slot.IsSafeLocked;
         // translators: state of the safe holding the key (feminine in Italian: "la cassaforte")
         SafeStatus = slot.IsSafeLocked ? l.P("safe", "Locked") : l.P("safe", "Open");

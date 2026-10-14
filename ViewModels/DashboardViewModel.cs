@@ -123,13 +123,13 @@ public partial class DashboardViewModel : ViewModelBase
 
         CurrentDebt = state?.CurrentDebt ?? 0;
         DebtDisplay = FormatDebt(CurrentDebt);
-        InitialDebtDisplay = L.T("Initial: £{0:F2}", state?.InitialDebt ?? 0);
+        InitialDebtDisplay = L.T("Initial: {0}", CurrencyConverter.Format(state?.InitialDebt ?? 0));
         CurrentOutfit = state?.CurrentOutfit ?? L.T("No outfit set");
 
         _outfitBonus = state?.EffectiveMultiplier ?? 1.0;
         OutfitMultiplierDisplay = $"×{_outfitBonus:F2}";
         var effectiveWage = Math.Round(_settings.IdleWageAmount * (decimal)_outfitBonus, 2);
-        PayRate = L.T("Wage: £{0:F2} / {1} min", effectiveWage, _settings.IdleWageIntervalMinutes);
+        PayRate = L.T("Wage: {0} / {1} min", CurrencyConverter.Format(effectiveWage), _settings.IdleWageIntervalMinutes);
 
         LoadChores();
         RefreshPunishments();
@@ -266,7 +266,7 @@ public partial class DashboardViewModel : ViewModelBase
 
     private string FormatDebt(decimal debt)
     {
-        return L.T("Debt: £{0:F2}", debt);
+        return L.T("Debt: {0}", CurrencyConverter.Format(debt));
     }
 
     private void LoadChores()
@@ -608,7 +608,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             _sessionLoop.Pause();
             _countdownTimer?.Stop();
-            PermissionBreakKindName = PermissionTypeItemViewModel.GetName(kind, L);
+            PermissionBreakKindName = PermissionKindDisplay.NameOf(kind, L);
         }
     }
 

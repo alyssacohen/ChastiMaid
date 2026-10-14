@@ -37,8 +37,8 @@ public partial class TaskItemViewModel : ViewModelBase
     public ICommand StartCommand { get; }
     public ICommand ToggleExpandedCommand { get; }
 
-    public string LastCompletedLabel => LastCompletedAt is { } d
-        ? L.N("Last done: {0} day ago", "Last done: {0} days ago", (DateTime.UtcNow - d).Days, (DateTime.UtcNow - d).Days)
+    public string LastCompletedLabel => LastCompletedAt is { } d && (DateTime.UtcNow - d).Days is var days
+        ? L.N("Last done: {0} day ago", "Last done: {0} days ago", days, days)
         : L.T("Never done");
 
     public string FrequencyLabel => IsOccasional

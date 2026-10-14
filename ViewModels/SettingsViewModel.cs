@@ -270,7 +270,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         TakeSnapshot();
 
-        LayerFilterChips = new LayerFilterChipVm[] { new(null, "All", () => WardrobeLayerFilter = null) }
+        LayerFilterChips = new LayerFilterChipVm[] { new(null, L.T("All"), () => WardrobeLayerFilter = null) }
             .Concat(WardrobeLayer.All.Select(l =>
                 new LayerFilterChipVm(l.Order, L.T(l.DisplayName),
                     () => WardrobeLayerFilter = WardrobeLayerFilter == l.Order ? null : l.Order)))
@@ -1214,7 +1214,7 @@ public partial class PermissionTypeEditViewModel : ViewModelBase
     {
         Id = config.Id;
         Kind = config.Kind;
-        Name = PermissionTypeItemViewModel.GetName(config.Kind, l);
+        Name = PermissionKindDisplay.NameOf(config.Kind, l);
         _baseGrantPercent = config.BaseGrantPercent;
         _durationMinutes = config.DurationMinutes;
         _cooldownMinutes = config.CooldownMinutes;
