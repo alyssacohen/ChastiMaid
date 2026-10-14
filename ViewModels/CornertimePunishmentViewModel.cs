@@ -75,7 +75,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         // The 10s positioning window only starts once the instructions have finished playing —
         // otherwise a user standing away from the screen (that's the point of cornertime) would
         // lose part of it to the narration itself.
-        NarrationText = Resources.Get(CornertimeInstructionBank.GetRandomPosition());
+        NarrationText = L.T(CornertimeInstructionBank.GetRandomPosition());
         await Speak(NarrationText);
 
         if (cts.IsCancellationRequested)
@@ -95,7 +95,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
 
     private void BeginCountdown()
     {
-        NarrationText = Resources.Get(CornertimeInstructionBank.GetRandomBegin());
+        NarrationText = L.T(CornertimeInstructionBank.GetRandomBegin());
         Speak(NarrationText);
 
         _tickTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -128,7 +128,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
                 _requiredSeconds += added;
                 this.RaisePropertyChanged(nameof(RequiredDisplay));
 
-                NarrationText = string.Format(Resources.Get(CornertimeInstructionBank.GetRandomMovementDetected()), added);
+                NarrationText = L.T(CornertimeInstructionBank.GetRandomMovementDetected(), added);
                 Speak(NarrationText);
                 _lastNarratedPenaltyCount = Webcam.MovementPenaltyCount;
             });
@@ -163,7 +163,7 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
 
             if (Webcam.MovementPenaltyCount == _lastNarratedPenaltyCount)
             {
-                NarrationText = Resources.Get(CornertimeInstructionBank.GetRandomStillnessWarning());
+                NarrationText = L.T(CornertimeInstructionBank.GetRandomStillnessWarning());
                 Speak(NarrationText);
             }
 
@@ -202,14 +202,17 @@ public partial class CornertimePunishmentViewModel : PunishmentExecutionViewMode
         Webcam.Stop();
 
         var escalationSeverity = success ? 0 : penaltyCount + (abandoned ? 3 : 0);
-        var failureKey = escalationSeverity > 0 ? "CornertimeFailureWithConsequenceMessage" : "CornertimeFailureMessage";
 
         if (escalationSeverity > 0)
         {
             SaveRepo.AssignPunishment((escalationSeverity, escalationSeverity), "PunishmentReasonCornertimeFailed");
         }
 
-        ResultMessage = Conclude(success, "CornertimeSuccessMessage", failureKey);
+        ResultMessage = Conclude(success,
+            L.T("Stillness, achieved. You may return to your duties."),
+            escalationSeverity > 0
+                ? L.T("You could not manage stillness — and now there are consequences. I trust the new task awaiting you will encourage rather more discipline.")
+                : L.T("You could not hold still. A fine has been added, and the corner remains available to you."));
         IsActive = false;
         IsResult = true;
         SoundEffectService.PlayHandBell();

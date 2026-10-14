@@ -38,8 +38,8 @@ public class EmployerPhraseBankTests
     [Fact]
     public void AllKeys_HasNoDuplicatesOrEmptyEntries()
     {
-        Assert.Equal(EmployerPhraseBank.AllKeys.Count, EmployerPhraseBank.AllKeys.Distinct().Count());
-        Assert.All(EmployerPhraseBank.AllKeys, key => Assert.False(string.IsNullOrEmpty(key)));
+        Assert.Equal(EmployerPhraseBank.All.Count, EmployerPhraseBank.All.Distinct().Count());
+        Assert.All(EmployerPhraseBank.All, key => Assert.False(string.IsNullOrEmpty(key)));
     }
 
     [Theory]
@@ -52,6 +52,6 @@ public class EmployerPhraseBankTests
 
         Assert.Equal(count, set.Count);
         Assert.Equal(count, set.Distinct().Count());
-        Assert.All(set, key => Assert.Contains(key, EmployerPhraseBank.AllKeys));
+        Assert.All(set, key => Assert.Contains(key, EmployerPhraseBank.All));
     }
 }

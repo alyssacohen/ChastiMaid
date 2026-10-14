@@ -537,8 +537,8 @@ public class SaveRepository(LiteDatabase db)
             switch (kind)
             {
                 case PunishmentKind.WritingLines:
-                    var phraseCount = Random.Shared.Next(1, EmployerPhraseBank.AllKeys.Count + 1);
-                    punishment.WritingLinesSentenceKeys = EmployerPhraseBank.GetRandomSet(phraseCount);
+                    var phraseCount = Random.Shared.Next(1, EmployerPhraseBank.All.Count + 1);
+                    punishment.WritingLinesSentences = EmployerPhraseBank.GetRandomSet(phraseCount);
                     punishment.WritingLinesNoIdleActive =
                         settings.WritingLinesNoIdleEnabled && Random.Shared.NextDouble() < 0.5;
                     punishment.WritingLinesInterruptionsActive =
@@ -754,7 +754,7 @@ public class SaveRepository(LiteDatabase db)
                     Severity = spillSeverity,
                     AssignedAt = DateTime.UtcNow,
                     Reason = punishment.Reason,
-                    WritingLinesSentenceKeys = punishment.WritingLinesSentenceKeys,
+                    WritingLinesSentences = punishment.WritingLinesSentences,
                     WritingLinesNoIdleActive = punishment.WritingLinesNoIdleActive,
                     WritingLinesInterruptionsActive = punishment.WritingLinesInterruptionsActive,
                     ForcedClothingItemIds = punishment.ForcedClothingItemIds,

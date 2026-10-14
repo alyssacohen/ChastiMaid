@@ -264,8 +264,8 @@ public class SaveRepositoryTests : IDisposable
         }
 
         Assert.NotNull(writingLines);
-        Assert.NotNull(writingLines!.WritingLinesSentenceKeys);
-        Assert.InRange(writingLines.WritingLinesSentenceKeys!.Count, 1, EmployerPhraseBank.AllKeys.Count);
+        Assert.NotNull(writingLines!.WritingLinesSentences);
+        Assert.InRange(writingLines.WritingLinesSentences!.Count, 1, EmployerPhraseBank.All.Count);
         Assert.False(writingLines.WritingLinesAttemptActive);
     }
 
@@ -317,14 +317,14 @@ public class SaveRepositoryTests : IDisposable
             Kind = PunishmentKind.WritingLines,
             Severity = 10,
             WritingLinesTotalLines = 42,
-            WritingLinesSentenceKeys = ["WritingLineObedience", "WritingLineGratitude"],
+            WritingLinesSentences = ["First sentence", "Second sentence"],
             WritingLinesAttemptActive = true,
         });
 
         var reloaded = _repo.GetActivePunishments().Single(p => p.Id == 1);
 
         Assert.Equal(42, reloaded.WritingLinesTotalLines);
-        Assert.Equal(["WritingLineObedience", "WritingLineGratitude"], reloaded.WritingLinesSentenceKeys);
+        Assert.Equal(["First sentence", "Second sentence"], reloaded.WritingLinesSentences);
         Assert.True(reloaded.WritingLinesAttemptActive);
     }
 

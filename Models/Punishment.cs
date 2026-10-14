@@ -25,7 +25,7 @@ public class ActivePunishment
     public int? CornertimeRequiredSeconds { get; set; }
     public int? CornertimeMaxSeconds { get; set; }
 
-    public List<string>? WritingLinesSentenceKeys { get; set; }
+    public List<string>? WritingLinesSentences { get; set; }
     public int? WritingLinesTotalLines { get; set; }
     public bool WritingLinesAttemptActive { get; set; }
     public bool WritingLinesNoIdleActive { get; set; }

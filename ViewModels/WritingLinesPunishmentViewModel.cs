@@ -12,6 +12,16 @@ namespace ChastiMaid.ViewModels;
 
 public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewModelBase
 {
+    private static readonly string[] Interruptions =
+    [
+        Localizer.Mark("Do keep those fingers moving."),
+        Localizer.Mark("Errors are so unbecoming."),
+        Localizer.Mark("The ink dries whether you write or not."),
+        Localizer.Mark("I have all evening. Do you?"),
+        Localizer.Mark("A steady hand betrays a steady mind."),
+        Localizer.Mark("Dawdling adds nothing but time."),
+    ];
+
     private const int InterruptionDisplayMilliseconds = 2000;
 
     private readonly GameSettings _settings;
@@ -48,7 +58,11 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         Punishment.WritingLinesAttemptActive = true;
         SaveRepo.SaveActivePunishment(Punishment);
 
-        this.WhenAnyValue(x => x.MistakeCount).Subscribe(_ => this.RaisePropertyChanged(nameof(HasMistakes)));
+        this.WhenAnyValue(x => x.MistakeCount).Subscribe(_ =>
+        {
+            this.RaisePropertyChanged(nameof(HasMistakes));
+            this.RaisePropertyChanged(nameof(MistakeCountText));
+        });
 
         AbandonCommand = ReactiveCommand.Create(() => Finish(success: false));
 
@@ -58,10 +72,13 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
 
     public string SentenceText => _lineSequence[CompletedLines];
     public bool HasMistakes => MistakeCount > 0;
+
+    public string MistakeCountText =>
+        L.N("{0} mistake — lines added", "{0} mistakes — lines added", MistakeCount, MistakeCount);
     public ObservableCollection<WritingLineHistoryEntry> History { get; } = [];
 
     public string ProgressPercentText => TotalLines > 0 ? $"{(int)Math.Round(100.0 * CompletedLines / TotalLines)}%" : "0%";
-    public string ProgressHintText => string.Format(Resources.Get("WritingLinesProgressHintFormat"), CompletedLines, TotalLines);
+    public string ProgressHintText => L.N("{0}/{1} line", "{0}/{1} lines", TotalLines, CompletedLines, TotalLines);
     public string CpmText => ElapsedSeconds > 0 ? $"{(int)Math.Round(_correctKeystrokes / (ElapsedSeconds / 60.0))}" : "0";
     public string AccuracyText => _totalKeystrokes > 0 ? $"{(int)Math.Round(100.0 * _correctKeystrokes / _totalKeystrokes)}%" : "100%";
 
@@ -78,14 +95,14 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
 
     private void EnsureLineSequenceLength(int length)
     {
-        var keys = Punishment.WritingLinesSentenceKeys is { Count: > 0 }
-            ? Punishment.WritingLinesSentenceKeys
+        var keys = Punishment.WritingLinesSentences is { Count: > 0 }
+            ? Punishment.WritingLinesSentences
             : EmployerPhraseBank.GetRandomSet(1);
 
         while (_lineSequence.Count < length)
         {
             var shuffled = keys.OrderBy(_ => Random.Shared.Next());
-            _lineSequence.AddRange(shuffled.Select(Resources.Get));
+            _lineSequence.AddRange(shuffled.Select(L.T));
         }
     }
 
@@ -241,7 +258,7 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
             return;
         }
 
-        InterruptionMessage = Resources.Get($"WritingLinesInterruption{Random.Shared.Next(1, 7)}");
+        InterruptionMessage = L.T(Interruptions[Random.Shared.Next(Interruptions.Length)]);
         IsInterruptionVisible = true;
         SoundEffectService.PlayClock();
 
@@ -318,7 +335,9 @@ public partial class WritingLinesPunishmentViewModel : PunishmentExecutionViewMo
         Punishment.WritingLinesAttemptActive = false;
         SaveRepo.SaveActivePunishment(Punishment);
 
-        ResultMessage = Conclude(success, "WritingLinesSuccessMessage", "WritingLinesFailureMessage");
+        ResultMessage = Conclude(success,
+            L.T("Every line, faithfully copied. I have taken note of your penmanship."),
+            L.T("You set down the pen too soon. A fine has been added, and the lines remain unwritten."));
         IsResult = true;
     }
 }

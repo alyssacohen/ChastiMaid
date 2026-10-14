@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:models="using:ChastiMaid.Models"
              xmlns:conv="using:ChastiMaid.Converters"
@@ -17,11 +18,11 @@
                         Spacing="16">
 
                 <TextBlock Classes="SectionTitle"
-                           Text="{conv:Tr PunishmentKindWritingLines}"
+                           Text="{l:Tr 'Writing Lines'}"
                            HorizontalAlignment="Center" />
 
                 <!-- Target phrase — static, always shown in full -->
-                <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesPhraseLabel}" />
+                <TextBlock Classes="LabelUI" Text="{l:Tr 'The line to copy'}" />
                 <Border Classes="card">
                     <TextBlock Classes="Typewriter" Text="{Binding SentenceText}" TextWrapping="Wrap" />
                 </Border>
@@ -33,7 +34,7 @@
                      with the typed text. Keystrokes are intercepted in code-behind (Tunnel
                      TextInput/KeyDown) and routed into the ViewModel exactly as before — the TextBox never
                      inserts characters itself. -->
-                <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesYourWritingLabel}" />
+                <TextBlock Classes="LabelUI" Text="{l:Tr 'Your writing'}" />
                 <Border Classes="card" Background="{DynamicResource BrushSurfaceMuted}">
                     <TextBox x:Name="CaptureBox"
                              Classes="typewriterInput"
@@ -42,12 +43,12 @@
                              PlaceholderText="{Binding SentenceText}" />
                 </Border>
                 <TextBlock Classes="Caption"
-                           Text="{Binding MistakeCount, StringFormat={conv:Tr WritingLinesMistakeCountFormat}}"
+                           Text="{Binding MistakeCountText}"
                            IsVisible="{Binding HasMistakes}" />
 
                 <!-- History — most recent attempt on top; scrolls internally so it never pushes the stats
                      row and the abandon button off screen as it grows. -->
-                <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesPreviousLinesLabel}" />
+                <TextBlock Classes="LabelUI" Text="{l:Tr 'Previous lines'}" />
                 <Border Classes="card">
                     <ScrollViewer MaxHeight="180">
                         <ItemsControl ItemsSource="{Binding History}">
@@ -72,42 +73,42 @@
                 <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="8">
                     <Border Grid.Column="0" Classes="statCard">
                         <StackPanel Spacing="4" HorizontalAlignment="Center">
-                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatProgress}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'Progress'}" HorizontalAlignment="Center" />
                             <TextBlock Classes="NumberLarge" Text="{Binding ProgressPercentText}" HorizontalAlignment="Center" />
                             <TextBlock Classes="Caption" Text="{Binding ProgressHintText}" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
                     <Border Grid.Column="1" Classes="statCard">
                         <StackPanel Spacing="4" HorizontalAlignment="Center">
-                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatCpm}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'CPM'}" HorizontalAlignment="Center" />
                             <TextBlock Classes="NumberLarge" Text="{Binding CpmText}" HorizontalAlignment="Center" />
-                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintCpm}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'Char/min'}" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
                     <Border Grid.Column="2" Classes="statCard">
                         <StackPanel Spacing="4" HorizontalAlignment="Center">
-                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatAccuracy}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'Accuracy'}" HorizontalAlignment="Center" />
                             <TextBlock Classes="NumberLarge" Text="{Binding AccuracyText}" HorizontalAlignment="Center" />
-                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintAccuracy}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'Precision'}" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
                     <Border Grid.Column="3" Classes="statCard">
                         <StackPanel Spacing="4" HorizontalAlignment="Center">
-                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatErrors}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'Errors'}" HorizontalAlignment="Center" />
                             <TextBlock Classes="NumberLarge" Text="{Binding MistakeCount}" HorizontalAlignment="Center" />
-                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintErrors}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'Mistypes'}" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
                     <Border Grid.Column="4" Classes="statCard">
                         <StackPanel Spacing="4" HorizontalAlignment="Center">
-                            <TextBlock Classes="LabelUI" Text="{conv:Tr WritingLinesStatTime}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'Time'}" HorizontalAlignment="Center" />
                             <TextBlock Classes="NumberLarge" Text="{Binding TimeText}" HorizontalAlignment="Center" />
-                            <TextBlock Classes="Caption" Text="{conv:Tr WritingLinesHintTime}" HorizontalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'Elapsed'}" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
                 </Grid>
 
-                <Button Content="{conv:Tr WritingLinesAbandon}"
+                <Button Content="{l:Tr 'Set Down the Pen'}"
                         Command="{Binding AbandonCommand}"
                         Classes="Danger compact"
                         HorizontalAlignment="Center" />
@@ -125,7 +126,7 @@
                        Text="{Binding ResultMessage}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" />
-            <Button Content="{conv:Tr PunishmentDone}"
+            <Button Content="{l:Tr 'Done'}"
                     Command="{Binding DoneCommand}"
                     Classes="Primary"
                     HorizontalAlignment="Center" />

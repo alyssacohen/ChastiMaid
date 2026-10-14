@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:CornertimePunishmentViewModel"
              x:Class="ChastiMaid.Views.CornertimePunishmentView"
              Background="{DynamicResource BrushWindowBackground}">
@@ -16,10 +16,10 @@
         <!-- Framing -->
         <StackPanel IsVisible="{Binding IsFraming}" Spacing="16">
             <TextBlock Classes="PageTitle"
-                       Text="{conv:Tr CornertimeFramingTitle}"
+                       Text="{l:Tr 'The Corner Awaits'}"
                        HorizontalAlignment="Center" />
             <TextBlock Classes="Body"
-                       Text="{conv:Tr CornertimeFramingInstruction}"
+                       Text="{l:Tr 'Frame the corner in which you shall stand, then confirm when ready.'}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" />
             <v:WebcamPreviewControl Service="{Binding Webcam}"
@@ -31,7 +31,7 @@
                       SelectedItem="{Binding Webcam.SelectedCamera}"
                       HorizontalAlignment="Center"
                       MinWidth="240" />
-            <Button Content="{conv:Tr CornertimeConfirmFraming}"
+            <Button Content="{l:Tr 'Begin'}"
                     Command="{Binding ConfirmFramingCommand}"
                     Classes="Primary"
                     HorizontalAlignment="Center" />
@@ -52,7 +52,7 @@
             <TextBlock Classes="Caption"
                        Text="{Binding MaxDisplay, StringFormat='max {0} if you keep moving'}"
                        HorizontalAlignment="Center" />
-            <Button Content="{conv:Tr CornertimeAbandon}"
+            <Button Content="{l:Tr 'Abandon'}"
                     Command="{Binding AbandonCommand}"
                     Classes="Danger compact"
                     HorizontalAlignment="Center" />
@@ -64,7 +64,7 @@
                        Text="{Binding ResultMessage}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" />
-            <Button Content="{conv:Tr PunishmentDone}"
+            <Button Content="{l:Tr 'Done'}"
                     Command="{Binding DoneCommand}"
                     Classes="Primary"
                     HorizontalAlignment="Center" />

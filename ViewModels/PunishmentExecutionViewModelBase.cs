@@ -14,6 +14,8 @@ public abstract class PunishmentExecutionViewModelBase : ViewModelBase
     protected readonly ActivePunishment Punishment;
     protected readonly SaveRepository SaveRepo;
 
+    protected ILocalizer L => MainVm.Localizer;
+
     protected PunishmentExecutionViewModelBase(MainWindowViewModel mainVm, SaveRepository saveRepo, ActivePunishment punishment)
     {
         MainVm = mainVm;
@@ -25,15 +27,15 @@ public abstract class PunishmentExecutionViewModelBase : ViewModelBase
     public ICommand DoneCommand { get; }
 
     /// <summary>Resolves the punishment on success or applies a fine on failure, returning the message to show.</summary>
-    protected string Conclude(bool success, string successMessageKey, string failureMessageKey)
+    protected string Conclude(bool success, string successMessage, string failureMessage)
     {
         if (success)
         {
             SaveRepo.ResolvePunishment(Punishment.Id);
-            return Resources.Get(successMessageKey);
+            return successMessage;
         }
 
         SaveRepo.ApplyFine(Punishment.Severity);
-        return Resources.Get(failureMessageKey);
+        return failureMessage;
     }
 }

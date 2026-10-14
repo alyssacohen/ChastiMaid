@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:vm="using:ChastiMaid.ViewModels"
              x:DataType="vm:DashboardViewModel"
@@ -24,16 +24,16 @@
                             Classes="SectionTitle"
                             Foreground="{DynamicResource BrushAmberText}"
                             Grid.Column="0"
-                            Text="{conv:Tr PendingPunishments}"
+                            Text="{l:Tr 'Pending Punishments'}"
                             VerticalAlignment="Center" />
                         <Button
-                            AutomationProperties.Name="{conv:Tr Close}"
+                            AutomationProperties.Name="{l:Tr 'Close'}"
                             Classes="Ghost"
                             Command="{Binding ClosePunishmentsPanelCommand}"
                             Grid.Column="1"
                             Height="44"
                             Padding="0"
-                            ToolTip.Tip="{conv:Tr Close}"
+                            ToolTip.Tip="{l:Tr 'Close'}"
                             VerticalAlignment="Center"
                             Width="44">
                             <ic:SymbolIcon
@@ -52,7 +52,7 @@
                     <Button
                         Classes="Amber"
                         Command="{Binding ClosePunishmentsPanelCommand}"
-                        Content="{conv:Tr Close}"
+                        Content="{l:Tr 'Close'}"
                         CornerRadius="6"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
@@ -100,14 +100,14 @@
                                                 Classes="Ghost compact"
                                                 Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).SoftenPunishmentCommand}"
                                                 CommandParameter="{Binding}"
-                                                Content="{conv:Tr CardSoftenPunishmentName}"
+                                                Content="{l:Tr 'Soften Punishment'}"
                                                 IsVisible="{Binding CanSoften}"
                                                 MinHeight="44" />
                                             <Button
                                                 Classes="Ghost compact"
                                                 Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).CancelPunishmentCardCommand}"
                                                 CommandParameter="{Binding}"
-                                                Content="{conv:Tr CardCancelPunishmentName}"
+                                                Content="{l:Tr 'Cancel Punishment'}"
                                                 IsVisible="{Binding CanCancel}"
                                                 MinHeight="44" />
                                             <Button

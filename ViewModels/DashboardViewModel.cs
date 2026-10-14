@@ -290,7 +290,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             var isActiveForcedOutfit = punishment.Kind == PunishmentKind.ForcedOutfit &&
                 punishment.Id == activeForcedOutfitId;
-            Punishments.Add(new PunishmentItemViewModel(punishment, canSoften, canCancel, isActiveForcedOutfit));
+            Punishments.Add(new PunishmentItemViewModel(punishment, L, canSoften, canCancel, isActiveForcedOutfit));
         }
     }
 
@@ -638,7 +638,7 @@ public partial class DashboardViewModel : ViewModelBase
                 L.T("A Matter Already Settled"),
                 L.T("The uniform «{0}» shall present itself, unbidden, for the next {1}.",
                     punishment.ForcedOutfitPresetName ?? L.T("The chosen uniform"),
-                    PunishmentItemViewModel.FormatRemainingTime(punishment)),
+                    PunishmentItemViewModel.FormatRemainingTime(punishment, L)),
                 L.T("OK"),
                 null);
             _ = ShowConfirmAsync(dialog);
