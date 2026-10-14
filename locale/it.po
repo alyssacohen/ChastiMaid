@@ -32,7 +32,6 @@ msgid "+ Add Item"
 msgstr "+ Aggiungi capo"
 
 #: ../Views/Controls/WardrobeToolbar.axaml:46
-#, fuzzy
 msgid "+ Add item"
 msgstr "+ Aggiungi capo"
 
@@ -522,7 +521,7 @@ msgid "Credit available"
 msgstr "Credito disponibile"
 
 #: ../ViewModels/LoadGameViewModel.cs:41
-#, csharp-format, fuzzy
+#, csharp-format
 msgid "Credit: {0}"
 msgstr "Credito: {0}"
 
@@ -552,7 +551,7 @@ msgid "Debt and Interest"
 msgstr "Debito e interessi"
 
 #: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:42
-#, csharp-format, fuzzy
+#, csharp-format
 msgid "Debt: {0}"
 msgstr "Debito: {0}"
 
@@ -910,7 +909,6 @@ msgid "For unseemly haste in your duties."
 msgstr "Per un'indecorosa fretta nei vostri doveri."
 
 #: ../ViewModels/PunishmentItemViewModel.cs:19 ../Views/Controls/SettingsPunishmentsTab.axaml:319
-#, fuzzy
 msgid "Forced Outfit"
 msgstr "Abbigliamento obbligatorio"
 
@@ -1232,7 +1230,7 @@ msgid "Industry becomes you."
 msgstr "L'operosità vi si addice."
 
 #: ../ViewModels/DashboardViewModel.cs:126
-#, csharp-format, fuzzy
+#, csharp-format
 msgid "Initial: {0}"
 msgstr "Iniziale: {0}"
 
@@ -2240,7 +2238,6 @@ msgid "Standing Tasks"
 msgstr "Incombenze fisse"
 
 #: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:186 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
-#, fuzzy
 msgid "Start"
 msgstr "Inizia"
 
@@ -2619,7 +2616,7 @@ msgid "Total Multiplier"
 msgstr "Moltiplicatore totale"
 
 #: ../Views/Controls/DebtWidget.axaml.cs:104
-#, csharp-format, fuzzy
+#, csharp-format
 msgid "Total incurred: {0}"
 msgstr "Totale contratto: {0}"
 
@@ -2714,7 +2711,7 @@ msgid "Wage interval (minutes)"
 msgstr "Intervallo paga (minuti)"
 
 #: ../ViewModels/DashboardViewModel.cs:132
-#, csharp-format, fuzzy
+#, csharp-format
 msgid "Wage: {0} / {1} min"
 msgstr "Paga: {0} / {1} min"
 
