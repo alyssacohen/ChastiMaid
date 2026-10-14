@@ -17,10 +17,6 @@ switch (args)
 
         return errors.Count > 0 ? 1 : 0;
     }
-    case ["import-resx"]:
-        // Temporary, for the resx -> gettext migration only.
-        ResxImporter.Import(Directory.GetCurrentDirectory());
-        return 0;
     case ["compile", var localeDir, var outDir]:
     {
         var failed = false;
