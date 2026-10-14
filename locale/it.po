@@ -1771,7 +1771,7 @@ msgstr "Descrizione opzionale"
 #: ../Models/WardrobeLayer.cs:21
 #, fuzzy
 msgid "Outerwear"
-msgstr "Abiti"
+msgstr "Capi esterni"
 
 #: ../Views/ConfirmOutfitView.axaml:24
 msgid "Outfit Confirmed"
