@@ -311,7 +311,7 @@ public partial class DashboardViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         var active = _saveRepo.GetActivePlugAndPlayAccessory();
         var pnpItem = active is null ? null : _saveRepo.GetWardrobe().FirstOrDefault(i => i.Id == active.ClothingItemId);
-        CurrentOutfitVm = OutfitViewModel.FromString(state?.CurrentOutfit, pnpItem);
+        CurrentOutfitVm = OutfitViewModel.FromString(state?.CurrentOutfit, L, pnpItem);
     }
 
     private void UpdateWageCountdown()

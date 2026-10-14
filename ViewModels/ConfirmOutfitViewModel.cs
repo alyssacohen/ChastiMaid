@@ -35,7 +35,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
             saveRepo.SaveGameState(state);
         }
 
-        OutfitVm = OutfitViewModel.FromString(OutfitSummary);
+        OutfitVm = OutfitViewModel.FromString(OutfitSummary, L);
         MultiplierDisplay = $"×{bonusPercent * outfit.TotalMultiplier:F2}";
         ItemCountDisplay = OutfitVm.CountSummary(L);
     }
@@ -52,7 +52,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
 
         ConfirmOutfitCommand = ReactiveCommand.CreateFromTask(OnOutfitConfirmed);
 
-        OutfitVm = OutfitViewModel.FromString(OutfitSummary);
+        OutfitVm = OutfitViewModel.FromString(OutfitSummary, L);
         MultiplierDisplay = $"×{state?.EffectiveMultiplier ?? 1.0:F2}";
         ItemCountDisplay = OutfitVm.CountSummary(L);
     }

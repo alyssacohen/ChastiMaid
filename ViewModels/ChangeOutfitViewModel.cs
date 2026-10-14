@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ChastiMaid.Models;
@@ -52,12 +53,12 @@ public partial class ChipViewModel : ViewModelBase
 
 public class LayerGroupViewModel
 {
-    public LayerGroupViewModel(int layerOrder)
+    public LayerGroupViewModel(int layerOrder, ILocalizer l)
     {
         LayerOrder = layerOrder;
         var def = WardrobeLayer.FindByOrder(layerOrder);
-        DisplayName = def?.DisplayName ?? layerOrder.ToString();
-        Description = def?.Description ?? "";
+        DisplayName = def is null ? layerOrder.ToString() : l.T(def.DisplayName);
+        Description = def is null ? "" : l.T(def.Description);
     }
 
     public int LayerOrder { get; }
@@ -100,7 +101,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         var currentDeviceItem = _currentOutfit.Items.FirstOrDefault(i => deviceEligibleIds.Contains(i.Id));
         _allItems = _allItems.Where(i => !deviceEligibleIds.Contains(i.Id) || i == currentDeviceItem).ToList();
 
-        _composer = new OutfitChipComposer(_allItems, ValidateRules);
+        _composer = new OutfitChipComposer(_allItems, ValidateRules, mainVm.Localizer);
         _ruleValidator = new OutfitRuleValidator(_allRules, mainVm.Localizer);
 
         _composer.PreselectExact(_currentOutfit.Items

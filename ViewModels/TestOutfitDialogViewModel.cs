@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using System.Windows.Input;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
@@ -18,8 +19,11 @@ public partial class TestOutfitDialogViewModel : ViewModelBase
 
     [Reactive] private OutfitViewModel _outfitVm;
 
-    public TestOutfitDialogViewModel(List<ClothingItem> items, List<OutfitRule> rules)
+    private readonly ILocalizer _l;
+
+    public TestOutfitDialogViewModel(List<ClothingItem> items, List<OutfitRule> rules, ILocalizer l)
     {
+        _l = l;
         _items = items;
         _rules = rules;
         _outfitVm = BuildOutfitVm();
@@ -31,6 +35,6 @@ public partial class TestOutfitDialogViewModel : ViewModelBase
     private OutfitViewModel BuildOutfitVm()
     {
         var outfit = new OutfitBuilder(_items, _rules).Build();
-        return OutfitViewModel.FromString(outfit.ToString());
+        return OutfitViewModel.FromString(outfit.ToString(), _l);
     }
 }

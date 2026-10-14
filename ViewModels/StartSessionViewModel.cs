@@ -235,7 +235,7 @@ public partial class StartSessionViewModel : ViewModelBase
 
     private void RefreshDisplayProperties()
     {
-        OutfitVm = OutfitViewModel.FromString(_proposedOutfit);
+        OutfitVm = OutfitViewModel.FromString(_proposedOutfit, L);
         var effective = _currentBonus * _outfitMultiplier;
         MultiplierDisplay = $"×{effective:F2}";
         ItemCountDisplay = OutfitVm.CountSummary(L);

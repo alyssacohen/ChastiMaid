@@ -79,7 +79,7 @@ public sealed class ContractClauseBuilder(ILocalizer L)
         List<ChastityDeviceItemConfig> chastity)
     {
         var perLayer = WardrobeLayer.All
-            .Select(l => (l.DisplayName, Count: wardrobe.Count(i => i.Layers.Contains(l.Order))))
+            .Select(l => (DisplayName: L.T(l.DisplayName), Count: wardrobe.Count(i => i.Layers.Contains(l.Order))))
             .Where(l => l.Count > 0)
             .Select(l => $"{l.DisplayName} {l.Count}");
 

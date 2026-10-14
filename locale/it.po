@@ -13,7 +13,7 @@ msgstr ""
 msgid " (+{0} more)"
 msgstr " (+{0} altri)"
 
-#: ../ViewModels/SettingsViewModel.cs:368
+#: ../ViewModels/SettingsViewModel.cs:369
 #, fuzzy
 msgid " Unsaved changes in Settings are not included."
 msgstr " Le modifiche non salvate nelle Impostazioni non sono incluse."
@@ -171,6 +171,10 @@ msgstr "Accetta"
 msgid "Accept the terms"
 msgstr "Accetto le condizioni"
 
+#: ../Models/WardrobeLayer.cs:22
+msgid "Accessories"
+msgstr ""
+
 #: ../Views/WritingLinesPunishmentView.axaml:89
 msgid "Accuracy"
 msgstr "Precisione"
@@ -261,7 +265,7 @@ msgstr "Assegnata il {0}"
 msgid "Auto-save (minutes)"
 msgstr "Salvataggio automatico (minuti)"
 
-#: ../ViewModels/SettingsViewModel.cs:444 ../ViewModels/SettingsViewModel.cs:446
+#: ../ViewModels/SettingsViewModel.cs:445 ../ViewModels/SettingsViewModel.cs:447
 msgid "Available"
 msgstr "Disponibile"
 
@@ -276,6 +280,10 @@ msgstr "In attesa del suo turno"
 #: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/NewGameView.axaml:34 ../Views/SettingsView.axaml:137 ../Views/ShopView.axaml:14
 msgid "Back"
 msgstr "Indietro"
+
+#: ../Models/WardrobeLayer.cs:20
+msgid "Base"
+msgstr ""
 
 #: ../Views/CornertimePunishmentView.axaml:34
 msgid "Begin"
@@ -433,7 +441,7 @@ msgstr "Continua senza cassaforte"
 msgid "Contract"
 msgstr "Contratto"
 
-#: ../ViewModels/SettingsViewModel.cs:367
+#: ../ViewModels/SettingsViewModel.cs:368
 #, fuzzy
 msgid "Contract exported."
 msgstr "Contratto esportato."
@@ -668,6 +676,11 @@ msgstr "Durata (minuti)"
 msgid "Duration minimum/maximum (seconds)"
 msgstr "Durata minima/massima (secondi)"
 
+#. default chore name; editable by the player
+#: ../Services/Content/MinimalContentSeeder.cs:30
+msgid "Dusting"
+msgstr ""
+
 #: ../Views/Controls/SettingsGeneralTab.axaml:194
 msgid ""
 "Each session one of the marked items is chosen at random and must be worn. It "
@@ -751,7 +764,7 @@ msgid "Every line, faithfully copied. I have taken note of your penmanship."
 msgstr ""
 "Ogni riga, fedelmente ricopiata. Ho preso nota della vostra calligrafia."
 
-#: ../ViewModels/SettingsViewModel.cs:1470
+#: ../ViewModels/SettingsViewModel.cs:1474
 msgid "Excludes"
 msgstr "Esclude"
 
@@ -776,7 +789,7 @@ msgstr "Esporta combinazione cassaforte"
 msgid "Export Safe Combination Photo"
 msgstr "Esporta foto combinazione cassaforte"
 
-#: ../ViewModels/SettingsViewModel.cs:349
+#: ../ViewModels/SettingsViewModel.cs:350
 #, fuzzy
 msgid "Export contract"
 msgstr "Esporta contratto"
@@ -797,6 +810,10 @@ msgstr ""
 #: ../Models/CardDisplay.cs:27
 msgid "Extends the duration of your next granted request."
 msgstr "Allunga la durata della vostra prossima richiesta concessa."
+
+#: ../Models/WardrobeLayer.cs:19
+msgid "Extra"
+msgstr ""
 
 #: ../Views/Controls/WardrobeToolbar.axaml:13
 msgid "Filter by name or tag…"
@@ -1618,7 +1635,7 @@ msgstr ""
 "Nessuna regola limita l'abbinamento dei capi. Madame ripone fiducia nel gusto "
 "della Cameriera — per il momento."
 
-#: ../ViewModels/SettingsViewModel.cs:448 ../ViewModels/StartSessionViewModel.cs:211
+#: ../ViewModels/SettingsViewModel.cs:449 ../ViewModels/StartSessionViewModel.cs:211
 msgid ""
 "No speech recognition engine is installed upon this machine. You will be "
 "asked to write out any spoken citation by hand instead."
@@ -1655,7 +1672,7 @@ msgstr "Esaurite"
 msgid "Not at present. The work does not pause for you — nor do I."
 msgstr "Non ora. Il lavoro non si ferma per voi, e nemmeno io."
 
-#: ../ViewModels/SettingsViewModel.cs:444 ../ViewModels/SettingsViewModel.cs:446
+#: ../ViewModels/SettingsViewModel.cs:445 ../ViewModels/SettingsViewModel.cs:447
 msgid "Not available"
 msgstr "Non disponibile"
 
@@ -1716,6 +1733,10 @@ msgstr "Aperta"
 #: ../Views/Controls/SettingsChoresTab.axaml:84
 msgid "Optional description"
 msgstr "Descrizione opzionale"
+
+#: ../Models/WardrobeLayer.cs:21
+msgid "Outerwear"
+msgstr ""
 
 #: ../Views/ConfirmOutfitView.axaml:24
 msgid "Outfit Confirmed"
@@ -1999,7 +2020,7 @@ msgstr "Durata richiesta — massimo (secondi)"
 msgid "Required duration — minimum (seconds)"
 msgstr "Durata richiesta — minimo (secondi)"
 
-#: ../ViewModels/SettingsViewModel.cs:1469
+#: ../ViewModels/SettingsViewModel.cs:1473
 msgid "Requires"
 msgstr "Richiede"
 
@@ -2387,7 +2408,7 @@ msgstr ""
 msgid "The contract contains no usable wardrobe items."
 msgstr "Il contratto non contiene capi utilizzabili."
 
-#: ../ViewModels/SettingsViewModel.cs:362
+#: ../ViewModels/SettingsViewModel.cs:363
 #, csharp-format, fuzzy
 msgid "The contract could not be written: {0}"
 msgstr "Non è stato possibile scrivere il contratto: {0}"
@@ -2553,6 +2574,11 @@ msgstr ""
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:189
 msgid "Type the quotation here"
 msgstr "Digitate qui la citazione"
+
+#. wardrobe layer names, each with a short hint on what belongs to it
+#: ../Models/WardrobeLayer.cs:18
+msgid "Underwear"
+msgstr ""
 
 #: ../ViewModels/SettingsViewModel.cs:857
 msgid "Unsaved Changes"
@@ -2846,12 +2872,30 @@ msgstr "aggiungi slot..."
 msgid "add tag..."
 msgstr "aggiungi tag..."
 
+#. default wardrobe item, and the body areas (slots) it covers; editable by the player
+#: ../Services/Content/MinimalContentSeeder.cs:21
+msgid "chest"
+msgstr ""
+
+#: ../Models/WardrobeLayer.cs:21
+msgid "dress, skirt, blouse"
+msgstr ""
+
+#. wardrobe layer names, each with a short hint on what belongs to it
+#: ../Models/WardrobeLayer.cs:18
+msgid "foundation · choose freely"
+msgstr ""
+
+#: ../Models/WardrobeLayer.cs:20
+msgid "hosiery, slip · choose at most one pair"
+msgstr ""
+
 #: ../Views/ChangeOutfitView.axaml:28 ../Views/ChangeOutfitView.axaml:37 ../Views/ChangeOutfitView.axaml:46 ../Views/ChangeOutfitView.axaml:55 ../Views/ForcedOutfitPresetEditorView.axaml:52 ../Views/ForcedOutfitPresetEditorView.axaml:61 ../Views/ForcedOutfitPresetEditorView.axaml:70
 msgid "item"
 msgstr "capo"
 
 #. shown after a large number, e.g. "3  items selected"
-#: ../ViewModels/ChangeOutfitViewModel.cs:143
+#: ../ViewModels/ChangeOutfitViewModel.cs:144
 #, csharp-format
 msgid "item selected"
 msgid_plural "items selected"
@@ -2862,9 +2906,19 @@ msgstr[1] ""
 msgid "items selected"
 msgstr "capi selezionati"
 
+#. default wardrobe item, and the body areas (slots) it covers; editable by the player
+#: ../Services/Content/MinimalContentSeeder.cs:21
+msgid "legs"
+msgstr ""
+
 #: ../Views/ChangeOutfitView.axaml:57
 msgid "locked (chastity device)"
 msgstr "bloccato (dispositivo di castità)"
+
+#. default wardrobe item, and the body areas (slots) it covers; editable by the player
+#: ../Services/Content/MinimalContentSeeder.cs:21
+msgid "plain dress"
+msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:39 ../Views/ForcedOutfitPresetEditorView.axaml:63
 msgctxt "outfit item"
@@ -2875,6 +2929,14 @@ msgstr "richiesto"
 msgctxt "outfit item"
 msgid "selected"
 msgstr "selezionato"
+
+#: ../Models/WardrobeLayer.cs:22
+msgid "shoes, jewellery · multiple allowed"
+msgstr ""
+
+#: ../Models/WardrobeLayer.cs:19
+msgid "suspenders, garters · optional unless required by hosiery"
+msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:48 ../Views/ForcedOutfitPresetEditorView.axaml:72
 msgctxt "outfit item"

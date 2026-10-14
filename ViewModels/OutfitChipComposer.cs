@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using System.Collections.ObjectModel;
 using ChastiMaid.Models;
 
@@ -14,8 +15,11 @@ public class OutfitChipComposer
     private readonly List<ClothingItem> _allItems;
     private readonly Action _onChipToggled;
 
-    public OutfitChipComposer(List<ClothingItem> allItems, Action onChipToggled)
+    private readonly ILocalizer _l;
+
+    public OutfitChipComposer(List<ClothingItem> allItems, Action onChipToggled, ILocalizer l)
     {
+        _l = l;
         _allItems = allItems;
         _onChipToggled = onChipToggled;
         BuildLayers();
@@ -27,7 +31,7 @@ public class OutfitChipComposer
     {
         foreach (var layer in Outfit.LayersOrder)
         {
-            var group = new LayerGroupViewModel(layer);
+            var group = new LayerGroupViewModel(layer, _l);
             foreach (var item in _allItems.Where(i => i.Layers.Contains(layer)))
             {
                 group.Chips.Add(new ChipViewModel(item, layer, OnChipToggled));

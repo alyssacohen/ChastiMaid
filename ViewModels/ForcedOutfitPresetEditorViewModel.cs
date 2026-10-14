@@ -54,7 +54,7 @@ public partial class ForcedOutfitPresetEditorViewModel : ViewModelBase
         var deviceEligibleIds = repo.GetChastityDeviceItems().Select(c => c.ClothingItemId).ToHashSet();
         _allItems = _allItems.Where(i => !deviceEligibleIds.Contains(i.Id)).ToList();
 
-        _composer = new OutfitChipComposer(_allItems, ValidateRules);
+        _composer = new OutfitChipComposer(_allItems, ValidateRules, mainVm.Localizer);
         _ruleValidator = new OutfitRuleValidator(_allRules, mainVm.Localizer);
 
         _composer.PreselectByItemId(preset.ClothingItemIds);

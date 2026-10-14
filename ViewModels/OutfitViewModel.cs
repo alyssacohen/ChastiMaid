@@ -22,7 +22,7 @@ public class OutfitViewModel : ViewModelBase
     ///     <see cref="OutfitViewModel" /> with one row per dressing layer.
     ///     Section headers are int layer orders ("0:", "3:", etc.).
     /// </summary>
-    public static OutfitViewModel FromString(string? outfitText, ClothingItem? plugAndPlayItem = null)
+    public static OutfitViewModel FromString(string? outfitText, ILocalizer l, ClothingItem? plugAndPlayItem = null)
     {
         var layerItems = new Dictionary<int, List<(string Name, IReadOnlyList<string> Zones, bool IsPlugAndPlay)>>();
 
@@ -82,7 +82,7 @@ public class OutfitViewModel : ViewModelBase
             var items = layerItems.TryGetValue(def.Order, out var list)
                 ? list.Select(i => new OutfitLayerItem(i.Name, i.Zones, i.IsPlugAndPlay)).ToList()
                 : [];
-            return new OutfitLayerViewModel(def.DisplayName, def.Order, items);
+            return new OutfitLayerViewModel(l.T(def.DisplayName), def.Order, items);
         }).ToList();
 
         return new OutfitViewModel(layers);
