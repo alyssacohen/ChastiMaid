@@ -77,33 +77,14 @@ msgstr ""
 msgid "A household that cannot hear its staff is poorly managed. Speak."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:191
-msgid "A line, copied faithfully, as many times as the occasion warrants."
-msgstr ""
-
 #: ../ViewModels/FortuneDeckViewModel.cs:374
 msgid "A moment of uncharacteristic generosity. Do not grow accustomed to it."
-msgstr ""
-
-#: ../Views/Controls/SettingsPopupsTab.axaml:108
-msgid ""
-"A moment's curtsy, recorded for the record — grace so rarely convinces "
-"without a witness."
 msgstr ""
 
 #: ../Models/Banks/HydrationReminderBank.cs:12
 msgid ""
 "A moment's pause for water is no idleness. Go and take five sips of your "
 "drink."
-msgstr ""
-
-#: ../Views/Controls/SettingsPopupsTab.axaml:79
-msgid "A parched maid is of no use to me. You need only pause and drink."
-msgstr ""
-
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:57
-msgid ""
-"A period of stillness, in a corner of your choosing, observed by the camera."
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:381
@@ -134,8 +115,7 @@ msgstr ""
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:31
 msgid ""
-"A sum, added to the debt at once. Always in effect — there is no toggle for "
-"consequence."
+"A sum added to the debt immediately. Always active; it cannot be turned off."
 msgstr ""
 
 #: ../Models/Banks/EmployerPhraseBank.cs:23
@@ -251,6 +231,10 @@ msgstr ""
 msgid "Ask"
 msgstr ""
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:108
+msgid "Asks for a curtsy, recorded on video."
+msgstr ""
+
 #: ../ViewModels/PunishmentItemViewModel.cs:24
 #, csharp-format
 msgid "Assigned {0}"
@@ -326,12 +310,6 @@ msgstr ""
 msgid "Caught you moving. Your corner grows longer by {0} seconds."
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:225
-msgid ""
-"Certain accessories, once donned, do not come off again until I am satisfied "
-"they have served their purpose."
-msgstr ""
-
 #: ../ViewModels/SettingsViewModel.cs:947
 msgid "Change language"
 msgstr ""
@@ -386,8 +364,8 @@ msgstr ""
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:50
 msgid ""
-"Comma-separated. Used at random (along with Name) when you're summoned to a "
-"popup."
+"Comma-separated. One is picked at random, along with the name, for popup "
+"summons."
 msgstr ""
 
 #: ../Views/DashboardView.axaml:400
@@ -651,6 +629,12 @@ msgstr ""
 
 #: ../Views/Controls/SettingsPopupsTab.axaml:235
 msgid "Duration minimum/maximum (seconds)"
+msgstr ""
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:194
+msgid ""
+"Each session one of the marked items is chosen at random and must be worn. It "
+"can only be changed while the safe is open."
 msgstr ""
 
 #: ../Models/CardDisplay.cs:12
@@ -1177,6 +1161,10 @@ msgstr ""
 msgid "Kneel"
 msgstr ""
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:225
+msgid "Kneel for a random duration while the camera takes photos."
+msgstr ""
+
 #: ../Models/Banks/KneelInstructionBank.cs:12
 msgid "Kneel where you stand, and remain a while with your humility."
 msgstr ""
@@ -1339,6 +1327,10 @@ msgstr ""
 
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:151
 msgid "May I be excused?"
+msgstr ""
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:283
+msgid "Messages shown at random intervals while writing."
 msgstr ""
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:84
@@ -1565,10 +1557,6 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:283
-msgid "Occasional reminders, delivered without warning."
-msgstr ""
-
 #: ../ViewModels/TaskItemViewModel.cs:45
 msgid "Occasional task"
 msgstr ""
@@ -1585,13 +1573,6 @@ msgstr ""
 
 #: ../Views/LoadingView.axaml:16
 msgid "One moment — preparations are underway..."
-msgstr ""
-
-#: ../Views/Controls/SettingsGeneralTab.axaml:194
-msgid ""
-"One of the marked pieces will be selected at random and locked upon you each "
-"session; the key waits in the safe, and only an open safe permits a change of "
-"company."
 msgstr ""
 
 #: ../ViewModels/SettingsViewModel.cs:551
@@ -1651,6 +1632,10 @@ msgstr ""
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:22
 msgid "Perfection belongs to the divine, not the domestic. Reconsider."
+msgstr ""
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:79
+msgid "Periodic reminders to drink water."
 msgstr ""
 
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:30 ../Views/Controls/SettingsPermissionsTab.axaml:11 ../Views/SettingsView.axaml:91
@@ -1787,6 +1772,20 @@ msgstr ""
 msgid "Quote recognition sensitivity"
 msgstr ""
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:138
+msgid "Read a phrase aloud; speech recognition compares it with the text."
+msgstr ""
+
+#: ../ViewModels/SettingsViewModel.cs:540
+#, csharp-format
+msgid "Recognized: {0}%. Below the threshold: try again, speaking clearly."
+msgstr ""
+
+#: ../ViewModels/SettingsViewModel.cs:539
+#, csharp-format
+msgid "Recognized: {0}%. The threshold is met."
+msgstr ""
+
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
 msgid "Record (5s)"
 msgstr ""
@@ -1911,6 +1910,12 @@ msgstr ""
 msgid "Select tag"
 msgstr ""
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:225
+msgid ""
+"Selected accessories must be worn for a random duration before they can be "
+"removed."
+msgstr ""
+
 #: ../Models/Banks/ImpossibleQuestionBank.cs:38
 msgid "Self-sufficiency is a virtue much to be admired."
 msgstr ""
@@ -1952,12 +1957,6 @@ msgid_plural ""
 "Should the Maid leave the pen idle for {0}, {1} lines shall be added."
 msgstr[0] ""
 msgstr[1] ""
-
-#: ../Views/Controls/SettingsGeneralTab.axaml:159
-msgid ""
-"Should the day's outfit call for such padding, I shall not excuse you to the "
-"water closet, and you will find yourself needing a drink rather more often."
-msgstr ""
 
 #: ../Views/EndSessionView.axaml:28
 msgid "Show Safe Combination and Close"
@@ -2008,6 +2007,10 @@ msgstr ""
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:319
 msgid "Speech recognition"
+msgstr ""
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:57
+msgid "Stand still in a corner while the camera watches for movement."
 msgstr ""
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:53
@@ -2093,6 +2096,10 @@ msgstr ""
 msgid "Test Rules"
 msgstr ""
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:172
+msgid "Test speech recognition by reading this phrase:"
+msgstr ""
+
 #: ../Models/Banks/PermissionPhraseBank.cs:35
 msgid "That question answers itself, does it not?"
 msgstr ""
@@ -2176,12 +2183,6 @@ msgstr ""
 msgid "The camera was not cooperative. We shall try again another time."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:324
-msgid ""
-"The chosen garments become mandatory, unbidden, for a number of subsequent "
-"sessions."
-msgstr ""
-
 #: ../ViewModels/DashboardViewModel.cs:640
 msgid "The chosen uniform"
 msgstr ""
@@ -2246,18 +2247,6 @@ msgstr ""
 msgid "The line to copy"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:539
-#, csharp-format
-msgid "The machine is satisfied — {0}% understood, well above what I require."
-msgstr ""
-
-#: ../ViewModels/SettingsViewModel.cs:540
-#, csharp-format
-msgid ""
-"The machine remains unconvinced — only {0}% understood. Speak again, and "
-"enunciate."
-msgstr ""
-
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:171
 msgid "The microphone is not to be found. You will write it instead."
 msgstr ""
@@ -2265,6 +2254,10 @@ msgstr ""
 #: ../ViewModels/ConfirmOutfitViewModel.cs:77
 msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
+msgstr ""
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:324
+msgid "The selected items become mandatory for a number of following sessions."
 msgstr ""
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:71
@@ -2352,8 +2345,8 @@ msgstr ""
 msgid "Total incurred: {0}"
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:172
-msgid "Try the settings — read the following phrase:"
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:191
+msgid "Type a sentence repeatedly, without mistakes."
 msgstr ""
 
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:189
@@ -2471,10 +2464,15 @@ msgstr ""
 msgid "Well, isn't that lovely? A 100% success rate — obviously."
 msgstr ""
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:159
+msgid ""
+"When the outfit includes one of the marked items, toilet requests are refused "
+"and hydration reminders come twice as often."
+msgstr ""
+
 #: ../Views/Controls/SettingsChoresTab.axaml:21
 msgid ""
-"While a chore is under way, the camera shall look in from time to time — "
-"quite without warning."
+"While a chore is in progress, the camera takes photos at random intervals."
 msgstr ""
 
 #: ../Services/Contracts/ContractImportFlow.cs:60
@@ -2546,18 +2544,6 @@ msgstr ""
 msgid ""
 "You set down the pen too soon. A fine has been added, and the lines remain "
 "unwritten."
-msgstr ""
-
-#: ../Views/Controls/SettingsPopupsTab.axaml:225
-msgid ""
-"You shall kneel for exactly as long as I decide, and the camera shall keep "
-"proof of it."
-msgstr ""
-
-#: ../Views/Controls/SettingsPopupsTab.axaml:138
-msgid ""
-"You shall speak the words I require of you, clearly enough for the machine to "
-"believe them."
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:568

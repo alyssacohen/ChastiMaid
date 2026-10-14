@@ -76,7 +76,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'A parched maid is of no use to me. You need only pause and drink.'}"
+                                Text="{l:Tr 'Periodic reminders to drink water.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding HydrationEnabled}"
@@ -105,7 +105,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr &quot;A moment's curtsy, recorded for the record — grace so rarely convinces without a witness.&quot;}"
+                                Text="{l:Tr 'Asks for a curtsy, recorded on video.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding CurtsyEnabled}"
@@ -135,7 +135,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'You shall speak the words I require of you, clearly enough for the machine to believe them.'}"
+                                Text="{l:Tr 'Read a phrase aloud; speech recognition compares it with the text.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding QuoteReadingEnabled}"
@@ -169,7 +169,7 @@
                             </Grid>
                             <TextBlock
                                 Classes="BodySmall"
-                                Text="{l:Tr 'Try the settings — read the following phrase:'}"
+                                Text="{l:Tr 'Test speech recognition by reading this phrase:'}"
                                 TextWrapping="Wrap" />
                             <Border Classes="statCard" HorizontalAlignment="Stretch">
                                 <TextBlock
@@ -222,7 +222,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'You shall kneel for exactly as long as I decide, and the camera shall keep proof of it.'}"
+                                Text="{l:Tr 'Kneel for a random duration while the camera takes photos.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding KneelEnabled}"

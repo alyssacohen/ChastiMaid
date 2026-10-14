@@ -18,7 +18,7 @@
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{l:Tr 'While a chore is under way, the camera shall look in from time to time — quite without warning.'}"
+                        Text="{l:Tr 'While a chore is in progress, the camera takes photos at random intervals.'}"
                         TextWrapping="Wrap" />
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock

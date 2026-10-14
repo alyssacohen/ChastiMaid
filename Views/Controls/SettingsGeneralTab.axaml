@@ -47,7 +47,7 @@
                     </Grid>
                     <TextBlock
                         Classes="Caption"
-                        Text="{l:Tr &quot;Comma-separated. Used at random (along with Name) when you're summoned to a popup.&quot;}"
+                        Text="{l:Tr 'Comma-separated. One is picked at random, along with the name, for popup summons.'}"
                         TextWrapping="Wrap" />
                     <TextBlock
                         Classes="Caption"
@@ -156,7 +156,7 @@
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{l:Tr &quot;Should the day's outfit call for such padding, I shall not excuse you to the water closet, and you will find yourself needing a drink rather more often.&quot;}"
+                        Text="{l:Tr 'When the outfit includes one of the marked items, toilet requests are refused and hydration reminders come twice as often.'}"
                         TextWrapping="Wrap" />
                     <ToggleSwitch
                         IsChecked="{Binding DiaperPlayEnabled}"
@@ -191,7 +191,7 @@
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{l:Tr 'One of the marked pieces will be selected at random and locked upon you each session; the key waits in the safe, and only an open safe permits a change of company.'}"
+                        Text="{l:Tr 'Each session one of the marked items is chosen at random and must be worn. It can only be changed while the safe is open.'}"
                         TextWrapping="Wrap" />
 
                     <ItemsControl ItemsSource="{Binding ChastityDeviceItems}">
@@ -222,7 +222,7 @@
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{l:Tr 'Certain accessories, once donned, do not come off again until I am satisfied they have served their purpose.'}"
+                        Text="{l:Tr 'Selected accessories must be worn for a random duration before they can be removed.'}"
                         TextWrapping="Wrap" />
                     <ToggleSwitch
                         IsChecked="{Binding PlugAndPlayEnabled}"

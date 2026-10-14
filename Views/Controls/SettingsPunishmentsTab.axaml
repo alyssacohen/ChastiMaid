@@ -28,7 +28,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'A sum, added to the debt at once. Always in effect — there is no toggle for consequence.'}"
+                                Text="{l:Tr 'A sum added to the debt immediately. Always active; it cannot be turned off.'}"
                                 TextWrapping="Wrap" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
@@ -54,7 +54,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'A period of stillness, in a corner of your choosing, observed by the camera.'}"
+                                Text="{l:Tr 'Stand still in a corner while the camera watches for movement.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding CornertimeEnabled}"
@@ -188,7 +188,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'A line, copied faithfully, as many times as the occasion warrants.'}"
+                                Text="{l:Tr 'Type a sentence repeatedly, without mistakes.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding WritingLinesEnabled}"
@@ -280,7 +280,7 @@
                             <TextBlock Classes="LabelUI" Text="{l:Tr 'Interruptions'}" />
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'Occasional reminders, delivered without warning.'}"
+                                Text="{l:Tr 'Messages shown at random intervals while writing.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding WritingLinesInterruptionsEnabled}"
@@ -321,7 +321,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'The chosen garments become mandatory, unbidden, for a number of subsequent sessions.'}"
+                                Text="{l:Tr 'The selected items become mandatory for a number of following sessions.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding ForcedOutfitEnabled}"

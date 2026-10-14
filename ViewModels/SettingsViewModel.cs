@@ -536,8 +536,8 @@ public partial class SettingsViewModel : ViewModelBase
     public bool ShowTestQuoteFailResult => HasTestQuoteResult && !TestQuotePassed;
 
     public string TestQuoteResultText => TestQuotePassed
-        ? L.T("The machine is satisfied — {0}% understood, well above what I require.", ScorePercent)
-        : L.T("The machine remains unconvinced — only {0}% understood. Speak again, and enunciate.", ScorePercent);
+        ? L.T("Recognized: {0}%. The threshold is met.", ScorePercent)
+        : L.T("Recognized: {0}%. Below the threshold: try again, speaking clearly.", ScorePercent);
 
     private int ScorePercent => (int)Math.Round((TestQuoteScore ?? 0) * 100);
 
