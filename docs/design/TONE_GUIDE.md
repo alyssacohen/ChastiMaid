@@ -1,9 +1,10 @@
 # TONE_GUIDE.md — The Employer Character Voice
 
-> **For Claude Code:** When generating or editing any string resource, UI
-> label, dialogue line, or in-app message attributed to the employer
-> character, treat this document as the authoritative style reference.
-> Produce English strings first. Italian equivalents follow the
+> **For Claude Code:** When generating or editing any UI label, dialogue
+> line, or in-app message attributed to the employer character, treat
+> this document as the authoritative style reference. Produce English
+> strings first (they are the gettext msgids, see
+> `docs/design/localization.md`). Italian equivalents follow the
 > localization rules in Part II.
 
 ---
@@ -113,8 +114,12 @@ a speaking or acting subject: no *"the Household shall…"*, no *"la Casa stabil
 house may still appear as a place (*"a well-run household"*).
 
 Exceptions: the **contract** names both parties in the third person (*"Madame shall
-determine the Maid's debt…"*), with a first clause establishing the address "Madame";
-the **Settings** descriptions are her voice too, spoken to the maid.
+determine the Maid's debt…"*), with a first clause establishing the address "Madame".
+
+The **Settings** screens are not in her voice: they are technical, so labels and
+descriptions are neutral and impersonal, stating plainly what each option does
+(*"Periodic reminders to drink water."*). In Italian they use impersonal or
+infinitive forms (*"Restare immobili in un angolo…"*), never *voi*.
 
 ---
 

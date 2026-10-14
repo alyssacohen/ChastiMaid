@@ -186,3 +186,6 @@ chastimaid-session.json
 
 ## publish.ps1 output
 /dist/
+
+## Compiled translation catalogs (built from locale/*.po; Poedit also writes one on save)
+*.mo

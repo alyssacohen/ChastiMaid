@@ -138,6 +138,22 @@ relative proportions without a hard floor/ceiling. The effective earning multipl
   - `NumericUpDown.Value` → `Converter={x:Static converters:NullableNumericConverter.Instance}`
   - `TextBox.Text` → `Converter={x:Static converters:NumericTextConverter.Instance}`
 
+### Localization (gettext)
+
+English source text is the msgid; translations live in `locale/*.po` (edited in Poedit), compiled to `.mo` by
+every build. Full workflow: `docs/design/localization.md`.
+
+- C#: `ILocalizer` from `MainWindowViewModel.Localizer` — `L.T("Text {0}", arg)`, `L.N("{0} line", "{0} lines", n, n)`,
+  `L.P("context", "Text")`; `Localizer.Mark("…")` for texts kept in tables. Static `Localizer.Current` only where
+  nothing can be injected (composition root, markup extension, controls without a ViewModel).
+- XAML: static labels only, `{l:Tr 'Text'}` (`xmlns:l="using:ChastiMaid.Localization"`); texts with an apostrophe use
+  `{l:Tr &quot;Don't&quot;}`. Dynamic, conditional or counted text comes from the ViewModel.
+- String literals only (no interpolation, no ternary inside the call), plurals with `L.N`, amounts through
+  `CurrencyConverter.Format`. Never translate identifiers (persistence keys, enum values, JSON ids).
+- After adding or changing strings run `dotnet run --project tools/ChastiMaid.L10n -- extract` and commit the `.pot` and
+  `.po` files with the code. `dotnet test` checks the `.po` files and that no `.axaml` holds a literal text.
+- Tone: in-game text in Madame's voice (`docs/design/TONE_GUIDE.md`); Settings text neutral and impersonal.
+
 ### Comments
 
 - Write comments in English. Italian comments have been fully translated; if you spot any stragglers, translate them
@@ -180,7 +196,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 `PageTitle` · `SectionTitle` · `Heading` · `Subheading` · `Body` · `BodySmall` · `Caption` · `LabelUI` · `NumberLarge` ·
 `EmployerVoice`
 
-`LabelUI` text is written in natural case; uppercasing is applied at render time via `{conv:UpperCase ...}`
+`LabelUI` text is written in natural case; uppercasing is applied at render time via `{conv:UpperCase {l:Tr '...'}}`
 (`Converters/UpperCaseExtension.cs`) for literals or `UpperCaseConverter` for bindings — never hardcode
 ALLCAPS text.
 

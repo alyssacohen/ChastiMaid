@@ -187,17 +187,16 @@ Touch: every action is at least 44 px tall; the bar wraps in portrait; nothing d
 
 ## Localization
 
-English first, Italian drafted. Every Italian contract string carries `NEEDS REVIEW: Italian draft` as a resx
-`<comment>` — **the Italian copy has not been reviewed**. Known limits:
+English first, Italian drafted (gettext, see `docs/design/localization.md`). The Italian contract strings are
+marked **fuzzy** in `locale/it.po` until reviewed in Poedit. Known limits:
 
-- the layer names in the wardrobe summary come from `WardrobeLayer.DisplayName`, which is hardcoded English
-  (as in Settings);
-- durations use whole units with singular/plural keys (`ContractSecondOne`/`Many`, …); ranges such as "between 1
-  and 1 lines" are not special-cased.
+- counts (garments, rules, tasks, outfits, forms of address) and durations use gettext plurals; ranges such as
+  "between 1 and 1 lines" are not special-cased, and the decimal "{0} lines per point of severity" has no plural;
+- layer names in the wardrobe summary are the translated `WardrobeLayer` names.
 
 ## Open items
 
-- Italian review of all `Contract*`, `SettingsContract*` and related strings.
+- Italian review of the fuzzy contract strings in `locale/it.po`.
 - `docs/specs/fortune-deck.md` (≈ lines 71 and 76) is stale: it cites `ForcedOutfitMaxSessions`, which does not exist
   (the code uses `ForcedOutfitMaxHours`). Not touched here.
 - Starting a game has pre-existing quirks that *Accept* deliberately keeps: the save is created without going
