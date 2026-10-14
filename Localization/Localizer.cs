@@ -11,7 +11,7 @@ namespace ChastiMaid.Localization;
 /// </summary>
 public sealed class Localizer : ILocalizer
 {
-    private ICatalog _catalog = new Catalog(CultureInfo.InvariantCulture);
+    private Catalog _catalog = new(CultureInfo.InvariantCulture);
 
     /// <summary>
     ///     The application's localizer. Static access is reserved for code that cannot receive it
@@ -50,17 +50,19 @@ public sealed class Localizer : ILocalizer
     /// </summary>
     public static string Mark(string text) => text;
 
-    public string T(string text) => _catalog.GetString(text);
+    // The *Default lookups return the raw translation: GetText's other overloads already run string.Format
+    // (the plural ones with n as the only argument), which breaks texts with more than one placeholder.
+    public string T(string text) => _catalog.GetStringDefault(text, text);
 
-    public string T(string text, params object[] args) => Format(_catalog.GetString(text), args);
+    public string T(string text, params object[] args) => Format(T(text), args);
 
     public string N(string text, string pluralText, long n, params object[] args) =>
-        Format(_catalog.GetPluralString(text, pluralText, n), args);
+        Format(_catalog.GetPluralStringDefault(text, text, pluralText, n), args);
 
-    public string P(string context, string text) => _catalog.GetParticularString(context, text);
+    // gettext keys a message with a context as "context\u0004msgid".
+    public string P(string context, string text) => _catalog.GetStringDefault(context + "\u0004" + text, text);
 
-    public string P(string context, string text, params object[] args) =>
-        Format(_catalog.GetParticularString(context, text), args);
+    public string P(string context, string text, params object[] args) => Format(P(context, text), args);
 
     // Invariant on purpose: amounts keep a decimal point in every language (GetText would use the catalog's culture).
     private static string Format(string format, object[] args) =>

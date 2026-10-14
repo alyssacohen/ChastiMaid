@@ -90,6 +90,41 @@ public class MoCompilerTests
     }
 
     [Fact]
+    public void Localizer_FillsEveryPlaceholder_InPluralAndContextMessages()
+    {
+        var root = Directory.CreateTempSubdirectory("chastimaid-l10n").FullName;
+        var previousRoot = Environment.GetEnvironmentVariable("CHASTIMAID_ROOT");
+        Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", root);
+        try
+        {
+            var po = Path.Combine(root, "it.po");
+            File.WriteAllText(po, Po + """
+                msgid "{0} garment: {1}."
+                msgid_plural "{0} garments: {1}."
+                msgstr[0] "{0} capo: {1}."
+                msgstr[1] "{0} capi: {1}."
+
+                """);
+            var mo = ChastiMaid.Localization.Localizer.CatalogPath("it");
+            Directory.CreateDirectory(Path.GetDirectoryName(mo)!);
+            Assert.Empty(MoCompiler.Compile(po, mo));
+
+            var localizer = new ChastiMaid.Localization.Localizer();
+            localizer.SetLanguage("it");
+
+            Assert.Equal("3 capi: abiti.", localizer.N("{0} garment: {1}.", "{0} garments: {1}.", 3, 3, "abiti"));
+            Assert.Equal("Inizia", localizer.P("button", "Start"));
+            Assert.Equal("Start", localizer.T("Start"));
+            Assert.Equal("1.50", localizer.T("{0:F2}", 1.5m)); // invariant: always a decimal point
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("CHASTIMAID_ROOT", previousRoot);
+            Directory.Delete(root, true);
+        }
+    }
+
+    [Fact]
     public void SetLanguage_FallsBackToEnglishWhenCatalogIsCorrupt()
     {
         var root = Directory.CreateTempSubdirectory("chastimaid-l10n").FullName;
