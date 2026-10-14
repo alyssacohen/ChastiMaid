@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services.Content;
 using ChastiMaid.Services.Contracts;
@@ -11,21 +12,21 @@ namespace ChastiMaid.Services;
 /// </summary>
 public static class DataSeeder
 {
-    public static void SeedIfEmpty(ProfileRepository profile, string language)
+    public static void SeedIfEmpty(ProfileRepository profile, string language, ILocalizer l)
     {
         if (profile.GetWardrobe().Count > 0 || profile.GetOutfitRules().Count > 0 || profile.GetChores().Count > 0)
         {
             return;
         }
 
-        Seed(profile, language);
+        Seed(profile, language, l);
     }
 
     /// <summary>Replaces the profile content with the language's seed contract, whatever is there now.</summary>
-    public static void Seed(ProfileRepository profile, string language)
+    public static void Seed(ProfileRepository profile, string language, ILocalizer l)
     {
         var service = new GameContractService(profile);
-        var result = service.Validate(MinimalContentSeeder.Contract);
+        var result = service.Validate(MinimalContentSeeder.Contract(l));
         // Language seed first, then English, then the in-code minimal contract.
         foreach (var lang in new[] { language, "en" }.Distinct())
         {

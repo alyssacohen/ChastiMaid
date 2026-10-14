@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.Services.Content;
@@ -27,7 +28,7 @@ public class DataSeederTests
         using var db = new LiteDatabase(":memory:");
         var profile = new ProfileRepository(db);
 
-        DataSeeder.SeedIfEmpty(profile, "xx");
+        DataSeeder.SeedIfEmpty(profile, "xx", new Localizer());
 
         var english = new GameContractService(profile)
             .Validate(File.ReadAllText(DataSeeder.SeedPath("en"))).Contract!;
@@ -40,11 +41,11 @@ public class DataSeederTests
     {
         using var db = new LiteDatabase(":memory:");
         var profile = new ProfileRepository(db);
-        DataSeeder.SeedIfEmpty(profile, "xx");
+        DataSeeder.SeedIfEmpty(profile, "xx", new Localizer());
         profile.ReplaceChores([]);
         var wardrobe = profile.GetWardrobe().Count;
 
-        DataSeeder.SeedIfEmpty(profile, "en");
+        DataSeeder.SeedIfEmpty(profile, "en", new Localizer());
 
         Assert.Equal(wardrobe, profile.GetWardrobe().Count);
         Assert.Empty(profile.GetChores());
@@ -55,10 +56,10 @@ public class DataSeederTests
     {
         using var db = new LiteDatabase(":memory:");
         var profile = new ProfileRepository(db);
-        DataSeeder.SeedIfEmpty(profile, "en");
+        DataSeeder.SeedIfEmpty(profile, "en", new Localizer());
         var english = profile.GetChores().Select(c => c.Name).ToHashSet();
 
-        DataSeeder.Seed(profile, "it");
+        DataSeeder.Seed(profile, "it", new Localizer());
 
         Assert.NotEmpty(profile.GetChores());
         Assert.DoesNotContain(profile.GetChores(), c => english.Contains(c.Name));

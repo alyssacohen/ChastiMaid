@@ -1,25 +1,33 @@
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 
 namespace ChastiMaid.Services.Content;
 
 /// <summary>
 ///     In-code, filesystem-independent fallback contract used when a language's seed contract is
-///     missing or fails validation at startup. Must never depend on the filesystem.
+///     missing or fails validation at startup. Must never depend on the filesystem. Its texts are translated
+///     once, into the language active when the profile is seeded, and saved as ordinary editable data.
 /// </summary>
 public static class MinimalContentSeeder
 {
-    public static GameContract Contract => new()
+    public static GameContract Contract(ILocalizer l) => new()
     {
         Settings = new GameSettings(),
         Wardrobe =
         [
-            new() { Id = 1, Name = "plain dress", Layers = [3], Slots = ["chest", "legs"], Multiplier = 1.0, Weight = 1.0, Tags = [] },
+            new()
+            {
+                // translators: default wardrobe item, and the body areas (slots) it covers; editable by the player
+                Id = 1, Name = l.T("plain dress"), Layers = [3], Slots = [l.T("chest"), l.T("legs")], Multiplier = 1.0,
+                Weight = 1.0, Tags = [],
+            },
         ],
         // A single wardrobe item cannot form a meaningful requires/incompatible pair.
         OutfitRules = [],
         Tasks =
         [
-            new() { Id = 1, Name = "Dusting", Description = "", Value = 10, FrequencyDays = 1, MinCompletionMinutes = 5 },
+            // translators: default chore name; editable by the player
+            new() { Id = 1, Name = l.T("Dusting"), Description = "", Value = 10, FrequencyDays = 1, MinCompletionMinutes = 5 },
         ],
         ForcedOutfitPresets = [],
         PlugAndPlayItems = [],

@@ -37,7 +37,7 @@ public class NewGameFreshProfileTests : IDisposable
     public void FreshlySeededProfile_NewGameFlow_DoesNotThrow()
     {
         var profile = new ProfileRepository(_profileDb);
-        DataSeeder.SeedIfEmpty(profile, "en");
+        DataSeeder.SeedIfEmpty(profile, "en", new Localizer());
 
         var reread = profile.GetGameSettings();
         Assert.NotNull(reread.ParseAppellatives()); // null Appellatives after the LiteDB round-trip must not throw

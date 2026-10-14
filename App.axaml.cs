@@ -44,7 +44,7 @@ public class App : Application
                 profileRepo.SaveGameSettings(settings);
             }
 
-            DataSeeder.SeedIfEmpty(profileRepo, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+            DataSeeder.SeedIfEmpty(profileRepo, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, Localizer.Current);
             var slotManager = new SaveSlotManager(_databaseService);
             _autoSaveService = new AutoSaveService();
             _webcamService = new WebcamPreviewService
