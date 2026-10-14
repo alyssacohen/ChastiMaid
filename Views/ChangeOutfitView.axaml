@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:ChangeOutfitViewModel"
              x:Class="ChastiMaid.Views.ChangeOutfitView"
              Background="{DynamicResource BrushWindowBackground}">
@@ -14,7 +14,7 @@
             <StackPanel Margin="48,36,48,24" MaxWidth="660">
 
                 <TextBlock Classes="PageTitle"
-                           Text="{conv:Tr ChangeOutfitTitle}"
+                           Text="{l:Tr 'Compose an outfit'}"
                            HorizontalAlignment="Left" />
 
                 <!-- Legend -->
@@ -25,36 +25,36 @@
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
                             <Border Classes="chip selected">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendSelected}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'selected', Context='outfit item'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Required state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
                             <Border Classes="chip required">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendRequired}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'required', Context='outfit item'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Unavailable state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center" Opacity="0.28">
                             <Border Classes="chip">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendUnavailable}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'unavailable', Context='outfit item'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Locked state (chastity device) -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
                             <Border Classes="chip locked">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendLocked}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'locked (chastity device)'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                     </StackPanel>
@@ -143,18 +143,18 @@
                                    Text="{Binding SelectedCount}"
                                    FontStyle="Italic" />
                         <TextBlock Classes="Caption"
-                                   Text="{conv:Tr ChangeOutfitItemsSelectedLabel}"
+                                   Text="{Binding SelectedCountCaption}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal"
                                 HorizontalAlignment="Right" Spacing="8">
-                        <Button Content="{conv:Tr ChangeOutfitClear}" Command="{Binding ClearCommand}"
+                        <Button Content="{l:Tr 'Clear'}" Command="{Binding ClearCommand}"
                                 Classes="Ghost compact" />
-                        <Button Content="{conv:Tr Back}" Command="{Binding BackCommand}"
+                        <Button Content="{l:Tr 'Back'}" Command="{Binding BackCommand}"
                                 Classes="Ghost compact" />
-                        <Button Content="{conv:Tr ChangeOutfitIntegrate}" Command="{Binding IntegrateCommand}"
+                        <Button Content="{l:Tr 'Integrate Outfit'}" Command="{Binding IntegrateCommand}"
                                 Classes="Primary" IsEnabled="{Binding CanFinalize}" />
-                        <Button Content="{conv:Tr ChangeOutfitSaveOutfit}" Command="{Binding SaveOutfitCommand}"
+                        <Button Content="{l:Tr 'Save outfit'}" Command="{Binding SaveOutfitCommand}"
                                 Classes="Primary" IsEnabled="{Binding CanFinalize}" />
                     </StackPanel>
                 </Grid>

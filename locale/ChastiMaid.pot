@@ -9,12 +9,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../Views/Controls/OutfitDrawer.axaml:109
+msgid "(none)"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:219
+msgid "A Word Before We Begin"
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:36
 msgid "A daily interest will be applied until you resume your session."
 msgstr ""
 
 #: ../ViewModels/GameCompleteViewModel.cs:41
 msgid "AVI Video"
+msgstr ""
+
+#: ../Views/StartSessionView.axaml:138
+msgid "Accept"
 msgstr ""
 
 #: ../ViewModels/WelcomeViewModel.cs:37
@@ -27,16 +39,24 @@ msgstr ""
 msgid "Are you sure you want to end this session?"
 msgstr ""
 
-#: ../Views/LoadGameView.axaml:115
+#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/LoadGameView.axaml:115
 msgid "Back"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:162 ../Views/CameraSetupView.axaml:39 ../Views/EndSessionView.axaml:47
+#: ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/EndSessionView.axaml:47
 msgid "Cancel"
 msgstr ""
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
 msgid "Capture"
+msgstr ""
+
+#: ../ViewModels/ConfirmOutfitViewModel.cs:76
+msgid "Check yourself in the preview, then press Record."
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:151 ../Views/ForcedOutfitPresetEditorView.axaml:165
+msgid "Clear"
 msgstr ""
 
 #: ../Views/LoadGameView.axaml:132
@@ -51,10 +71,22 @@ msgstr ""
 msgid "Close Without Combination"
 msgstr ""
 
+#: ../Views/Controls/OutfitDrawer.axaml:53 ../Views/Controls/OutfitDrawer.axaml:54
+msgid "Close drawer"
+msgstr ""
+
 #. a finished game (feminine in Italian: "la partita")
 #: ../ViewModels/LoadGameViewModel.cs:47
 msgctxt "game"
 msgid "Completed"
+msgstr ""
+
+#: ../Views/ForcedOutfitPresetEditorView.axaml:18
+msgid "Compose a forced outfit"
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:17
+msgid "Compose an outfit"
 msgstr ""
 
 #: ../Views/CameraSetupView.axaml:36
@@ -81,6 +113,10 @@ msgstr ""
 #: ../ViewModels/LoadGameViewModel.cs:40
 #, csharp-format
 msgid "Credit: £{0:F2}"
+msgstr ""
+
+#: ../Views/Controls/OutfitDrawer.axaml:45
+msgid "Current Outfit"
 msgstr ""
 
 #: ../ViewModels/LoadGameViewModel.cs:41
@@ -110,9 +146,17 @@ msgstr ""
 msgid "Delete Save"
 msgstr ""
 
+#: ../Views/ForcedOutfitPresetEditorView.axaml:40
+msgid "Disabled"
+msgstr ""
+
 #: ../Views/LoadGameView.axaml:86
 msgctxt "save slot"
 msgid "Empty"
+msgstr ""
+
+#: ../Views/ForcedOutfitPresetEditorView.axaml:39
+msgid "Enabled"
 msgstr ""
 
 #: ../Views/EndSessionView.axaml:19
@@ -139,9 +183,36 @@ msgstr ""
 msgid "Finish and Free Slot"
 msgstr ""
 
+#: ../Views/ForcedOutfitPresetEditorView.axaml:37
+msgid "Fix the entire outfit, not just the selected items"
+msgstr ""
+
 #: ../ViewModels/CameraSetupViewModel.cs:38
 #, csharp-format
 msgid "Frame your work area for: {0}"
+msgstr ""
+
+#: ../Views/ConfirmOutfitView.axaml:28
+msgid ""
+"Go change into the outfit below. When you are ready, press the button to "
+"confirm."
+msgstr ""
+
+#: ../Views/ForcedOutfitPresetEditorView.axaml:30
+msgid "Hours per severity"
+msgstr ""
+
+#: ../Views/ConfirmOutfitView.axaml:134
+msgid "I am ready, Madame"
+msgstr ""
+
+#: ../Views/StartSessionView.axaml:27
+msgid ""
+"I have taken the liberty of choosing your attire. I am sure you will like it."
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:155
+msgid "Integrate Outfit"
 msgstr ""
 
 #: ../ViewModels/LoadGameViewModel.cs:144
@@ -158,12 +229,50 @@ msgctxt "safe"
 msgid "Locked"
 msgstr ""
 
+#: ../ViewModels/StartSessionViewModel.cs:360
+#, csharp-format
+msgid ""
+"Manually choosing clothes will reduce your bonus to {0:F0}% of the base "
+"multiplier and lock the outfit for good: there is no changing your mind or "
+"going back. Proceed?"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:361 ../Views/StartSessionView.axaml:145
+msgid "Modify"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:359
+msgid "Modify Outfit"
+msgstr ""
+
+#: ../Views/ForcedOutfitPresetEditorView.axaml:25
+msgid "Name"
+msgstr ""
+
 #: ../Views/WelcomeView.axaml:42
 msgid "New Game"
 msgstr ""
 
 #: ../ViewModels/WelcomeViewModel.cs:36
 msgid "No Free Slots"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:206
+msgid ""
+"No camera could be found. Certain tasks requiring your likeness to be "
+"observed will not be possible until one is connected."
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:215
+msgid ""
+"No microphone could be found. You will be asked to write out any spoken "
+"citation by hand instead."
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:211
+msgid ""
+"No speech recognition engine is installed upon this machine. You will be "
+"asked to write out any spoken citation by hand instead."
 msgstr ""
 
 #: ../Views/Dialogs/WebcamCaptureDialog.axaml:65
@@ -186,6 +295,10 @@ msgstr ""
 #: ../ViewModels/LoadGameViewModel.cs:44
 msgctxt "safe"
 msgid "Open"
+msgstr ""
+
+#: ../Views/ConfirmOutfitView.axaml:24
+msgid "Outfit Confirmed"
 msgstr ""
 
 #: ../ViewModels/GameCompleteViewModel.cs:48
@@ -214,12 +327,31 @@ msgstr ""
 msgid "Position the camera"
 msgstr ""
 
+#: ../Views/StartSessionView.axaml:149
+msgid "Quit"
+msgstr ""
+
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
 msgid "Record (5s)"
 msgstr ""
 
 #: ../Views/Dialogs/WebcamCaptureDialog.axaml:47
 msgid "Recording... Strike a pose."
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:322 ../Views/StartSessionView.axaml:141
+msgid "Regenerate"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:320
+msgid "Regenerate Outfit"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:321
+#, csharp-format
+msgid ""
+"Regenerating will reduce your bonus to {0:F0}% of the base multiplier. The "
+"new outfit replaces this one for good: there is no going back to it. Proceed?"
 msgstr ""
 
 #: ../Views/SafeLockView.axaml:54
@@ -236,6 +368,14 @@ msgstr ""
 
 #: ../Views/SafeLockView.axaml:48
 msgid "Safe locked!"
+msgstr ""
+
+#: ../Views/ForcedOutfitPresetEditorView.axaml:169
+msgid "Save"
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:157
+msgid "Save outfit"
 msgstr ""
 
 #: ../Views/GameCompleteView.axaml:15
@@ -283,6 +423,23 @@ msgid ""
 "retry to take the combination photo if you are not sure of the first try."
 msgstr ""
 
+#: ../ViewModels/ConfirmOutfitViewModel.cs:77
+msgid ""
+"The outfit video cannot be recorded. You can skip this step and continue."
+msgstr ""
+
+#: ../Views/StartSessionView.axaml:23
+msgid "Today's Outfit"
+msgstr ""
+
+#: ../Views/ConfirmOutfitView.axaml:111 ../Views/Controls/OutfitDrawer.axaml:68 ../Views/StartSessionView.axaml:113
+msgid "Total Multiplier"
+msgstr ""
+
+#: ../ViewModels/StartSessionViewModel.cs:221
+msgid "Very well"
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:66
 msgid "Your Safe Combination"
 msgstr ""
@@ -291,4 +448,71 @@ msgstr ""
 msgid ""
 "Your debt is paid in full. That will do very nicely indeed.\n"
 "You may export your session media before the save slot is freed."
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:28 ../Views/ChangeOutfitView.axaml:37 ../Views/ChangeOutfitView.axaml:46 ../Views/ChangeOutfitView.axaml:55 ../Views/ForcedOutfitPresetEditorView.axaml:52 ../Views/ForcedOutfitPresetEditorView.axaml:61 ../Views/ForcedOutfitPresetEditorView.axaml:70
+msgid "item"
+msgstr ""
+
+#. shown after a large number, e.g. "3  items selected"
+#: ../ViewModels/ChangeOutfitViewModel.cs:143
+#, csharp-format
+msgid "item selected"
+msgid_plural "items selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Views/ForcedOutfitPresetEditorView.axaml:160
+msgid "items selected"
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:57
+msgid "locked (chastity device)"
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:39 ../Views/ForcedOutfitPresetEditorView.axaml:63
+msgctxt "outfit item"
+msgid "required"
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:30 ../Views/ForcedOutfitPresetEditorView.axaml:54
+msgctxt "outfit item"
+msgid "selected"
+msgstr ""
+
+#: ../Views/ChangeOutfitView.axaml:48 ../Views/ForcedOutfitPresetEditorView.axaml:72
+msgctxt "outfit item"
+msgid "unavailable"
+msgstr ""
+
+#. {0} and {1} are lists of clothing item names
+#: ../ViewModels/OutfitRuleValidator.cs:40
+#, csharp-format
+msgid "{0} and {1} cannot be worn together."
+msgstr ""
+
+#: ../ViewModels/OutfitViewModel.cs:17
+#, csharp-format
+msgid "{0} item"
+msgid_plural "{0} items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../ViewModels/OutfitViewModel.cs:18
+#, csharp-format
+msgid "{0} layer covered"
+msgid_plural "{0} layers covered"
+msgstr[0] ""
+msgstr[1] ""
+
+#. {0} is a list of clothing item names, {1} a list of tags
+#: ../ViewModels/OutfitRuleValidator.cs:95
+#, csharp-format
+msgid "{0} requires one of: {1}."
+msgstr ""
+
+#. {0} and {2} are lists of clothing item names, {1} a list of tags
+#: ../ViewModels/OutfitRuleValidator.cs:83
+#, csharp-format
+msgid "{0} requires one of: {1}. {2} selected — requirement satisfied."
 msgstr ""

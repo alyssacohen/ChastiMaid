@@ -11,6 +11,7 @@ namespace ChastiMaid.ViewModels;
 public partial class ConfirmOutfitViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly SaveRepository _saveRepo;
 
     [Reactive]
@@ -35,10 +36,8 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         }
 
         OutfitVm = OutfitViewModel.FromString(OutfitSummary);
-        var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
-        var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
         MultiplierDisplay = $"×{bonusPercent * outfit.TotalMultiplier:F2}";
-        ItemCountDisplay = string.Format(Resources.Get("ConfirmOutfitItemCountFormat"), totalItems, layersCovered);
+        ItemCountDisplay = OutfitVm.CountSummary(L);
     }
 
     /// <summary>Used when outfit is already locked — reads summary from saved state.</summary>
@@ -54,10 +53,8 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         ConfirmOutfitCommand = ReactiveCommand.CreateFromTask(OnOutfitConfirmed);
 
         OutfitVm = OutfitViewModel.FromString(OutfitSummary);
-        var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
-        var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
         MultiplierDisplay = $"×{state?.EffectiveMultiplier ?? 1.0:F2}";
-        ItemCountDisplay = string.Format(Resources.Get("ConfirmOutfitItemCountFormat"), totalItems, layersCovered);
+        ItemCountDisplay = OutfitVm.CountSummary(L);
     }
 
     public string OutfitSummary { get; }
@@ -76,8 +73,8 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         var videoPath = Path.Combine(dir, "outfit.avi");
 
         var dialog = new WebcamCaptureDialogViewModel(Webcam, _mainVm.Localizer, WebcamCaptureMode.Video, videoPath,
-            Resources.Get("ConfirmOutfitPreviewMessage"),
-            Resources.Get("ConfirmOutfitNoWebcamMessage"),
+            L.T("Check yourself in the preview, then press Record."),
+            L.T("The outfit video cannot be recorded. You can skip this step and continue."),
             cameraIndex: _mainVm.Webcam.PreferredCameraIndex);
         ActiveDialog = dialog;
         var recordedPath = await dialog.Result;

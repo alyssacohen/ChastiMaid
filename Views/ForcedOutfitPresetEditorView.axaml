@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Converters"
              xmlns:converters="using:ChastiMaid.Converters"
              x:DataType="vm:ForcedOutfitPresetEditorViewModel"
              x:Class="ChastiMaid.Views.ForcedOutfitPresetEditorView"
@@ -15,29 +15,29 @@
             <StackPanel Margin="48,36,48,24" MaxWidth="660">
 
                 <TextBlock Classes="PageTitle"
-                           Text="{conv:Tr ForcedOutfitEditorTitle}"
+                           Text="{l:Tr 'Compose a forced outfit'}"
                            HorizontalAlignment="Left" />
 
                 <!-- Preset form -->
                 <Border Classes="card" Margin="0,20,0,28">
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="160,*">
-                            <TextBlock Classes="BodySmall" Text="{conv:Tr ForcedOutfitEditorName}"
+                            <TextBlock Classes="BodySmall" Text="{l:Tr 'Name'}"
                                        VerticalAlignment="Center" />
                             <TextBox Grid.Column="1" Text="{Binding Name}" />
                         </Grid>
                         <Grid ColumnDefinitions="160,*">
-                            <TextBlock Classes="BodySmall" Text="{conv:Tr SettingsForcedOutfitSeverityValue}"
+                            <TextBlock Classes="BodySmall" Text="{l:Tr 'Hours per severity'}"
                                        VerticalAlignment="Center" />
                             <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner"
                                            Value="{Binding HoursPerSeverityPoint, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.1}"
                                            Minimum="0.1" Increment="0.1" FormatString="0.00" />
                         </Grid>
                         <CheckBox IsChecked="{Binding IsFullOutfit}"
-                                  Content="{conv:Tr SettingsForcedOutfitForceFull}" />
+                                  Content="{l:Tr 'Fix the entire outfit, not just the selected items'}" />
                         <ToggleSwitch IsChecked="{Binding IsEnabled}"
-                                      OnContent="{conv:Tr SettingsEnabled}"
-                                      OffContent="{conv:Tr SettingsDisabled}" />
+                                      OnContent="{l:Tr 'Enabled'}"
+                                      OffContent="{l:Tr 'Disabled'}" />
                     </StackPanel>
                 </Border>
 
@@ -49,27 +49,27 @@
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
                             <Border Classes="chip selected">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendSelected}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'selected', Context='outfit item'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Required state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
                             <Border Classes="chip required">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendRequired}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'required', Context='outfit item'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <!-- Unavailable state -->
                         <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center" Opacity="0.28">
                             <Border Classes="chip">
                                 <TextBlock Classes="chip-label"
-                                           Text="{conv:Tr ChangeOutfitLegendItem}" />
+                                           Text="{l:Tr 'item'}" />
                             </Border>
-                            <TextBlock Classes="Caption" Text="{conv:Tr ChangeOutfitLegendUnavailable}" VerticalAlignment="Center" />
+                            <TextBlock Classes="Caption" Text="{l:Tr 'unavailable', Context='outfit item'}" VerticalAlignment="Center" />
                         </StackPanel>
 
                     </StackPanel>
@@ -157,16 +157,16 @@
                                    Text="{Binding SelectedCount}"
                                    FontStyle="Italic" />
                         <TextBlock Classes="Caption"
-                                   Text="{conv:Tr ChangeOutfitItemsSelectedLabel}"
+                                   Text="{l:Tr 'items selected'}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal"
                                 HorizontalAlignment="Right" Spacing="8">
-                        <Button Content="{conv:Tr ChangeOutfitClear}" Command="{Binding ClearCommand}"
+                        <Button Content="{l:Tr 'Clear'}" Command="{Binding ClearCommand}"
                                 Classes="Ghost compact" />
-                        <Button Content="{conv:Tr Back}" Command="{Binding BackCommand}"
+                        <Button Content="{l:Tr 'Back'}" Command="{Binding BackCommand}"
                                 Classes="Ghost compact" />
-                        <Button Content="{conv:Tr Save}" Command="{Binding SaveCommand}"
+                        <Button Content="{l:Tr 'Save'}" Command="{Binding SaveCommand}"
                                 Classes="Primary" IsEnabled="{Binding CanFinalize}" />
                     </StackPanel>
                 </Grid>

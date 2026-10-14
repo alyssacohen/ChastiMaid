@@ -80,6 +80,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
     [Reactive] private bool _hasWarning;
     [Reactive] private bool _isViolation;
     [Reactive] private int _selectedCount;
+    [Reactive] private string _selectedCountCaption = "";
 
     [Reactive] private string _statusMessage = "";
 
@@ -100,7 +101,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         _allItems = _allItems.Where(i => !deviceEligibleIds.Contains(i.Id) || i == currentDeviceItem).ToList();
 
         _composer = new OutfitChipComposer(_allItems, ValidateRules);
-        _ruleValidator = new OutfitRuleValidator(_allRules);
+        _ruleValidator = new OutfitRuleValidator(_allRules, mainVm.Localizer);
 
         _composer.PreselectExact(_currentOutfit.Items
             .Select(i => (Id: i.Id, Layer: _currentOutfit.LayerOf(i)))
@@ -138,6 +139,8 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         var outcome = _ruleValidator.Apply(_composer.AllChips());
 
         SelectedCount = _composer.AllChips().Count(c => c.State is ChipState.Selected);
+        // translators: shown after a large number, e.g. "3  items selected"
+        SelectedCountCaption = _mainVm.Localizer.N("item selected", "items selected", SelectedCount);
         CanFinalize = outcome.CanFinalize;
         IsViolation = outcome.IsViolation;
         HasWarning = outcome.HasWarning;

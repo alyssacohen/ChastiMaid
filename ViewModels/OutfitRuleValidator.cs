@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using ChastiMaid.Models;
 using ChastiMaid.Services;
 
@@ -13,7 +14,7 @@ public record RuleValidationOutcome(bool CanFinalize, bool IsViolation, bool Has
 ///     <see cref="OutfitChipComposer.ApplyStructuralReset" />, since it only touches chips still
 ///     in <see cref="ChipState.Normal" />.
 /// </summary>
-public class OutfitRuleValidator(List<OutfitRule> allRules)
+public class OutfitRuleValidator(List<OutfitRule> allRules, ILocalizer l)
 {
     private readonly OutfitRuleEngine _engine = new(allRules);
 
@@ -35,7 +36,8 @@ public class OutfitRuleValidator(List<OutfitRule> allRules)
             {
                 var sourceNames = string.Join(", ", sourceSelected.Select(i => i.Name).Distinct());
                 var relatedNames = string.Join(", ", relatedSelected.Select(i => i.Name).Distinct());
-                violations.Add($"{sourceNames} and {relatedNames} cannot be worn together.");
+                // translators: {0} and {1} are lists of clothing item names
+                violations.Add(l.T("{0} and {1} cannot be worn together.", sourceNames, relatedNames));
             }
             else if (sourceSelected.Count > 0)
             {
@@ -77,8 +79,9 @@ public class OutfitRuleValidator(List<OutfitRule> allRules)
             if (satisfying.Count > 0)
             {
                 var satisfierNames = string.Join(", ", satisfying.Select(i => i.Name).Distinct());
-                infos.Add(
-                    $"{sourceNames} requires one of: {string.Join(", ", requiredTags)}. {satisfierNames} selected — requirement satisfied.");
+                // translators: {0} and {2} are lists of clothing item names, {1} a list of tags
+                infos.Add(l.T("{0} requires one of: {1}. {2} selected — requirement satisfied.",
+                    sourceNames, string.Join(", ", requiredTags), satisfierNames));
             }
             else
             {
@@ -88,7 +91,8 @@ public class OutfitRuleValidator(List<OutfitRule> allRules)
                     chip.State = ChipState.Required;
                 }
 
-                violations.Add($"{sourceNames} requires one of: {string.Join(", ", requiredTags)}.");
+                // translators: {0} is a list of clothing item names, {1} a list of tags
+                violations.Add(l.T("{0} requires one of: {1}.", sourceNames, string.Join(", ", requiredTags)));
                 canFinalize = false;
             }
         }

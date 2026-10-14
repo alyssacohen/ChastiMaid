@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:conv="using:ChastiMaid.Converters"
@@ -41,7 +42,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock Grid.Column="0"
                                    Classes="SectionTitle"
-                                   Text="{conv:Tr OutfitDrawerTitle}"
+                                   Text="{l:Tr 'Current Outfit'}"
                                    VerticalAlignment="Center" />
                         <Button Grid.Column="1"
                                 Click="OnScrimClick"
@@ -49,8 +50,8 @@
                                 Padding="0"
                                 Classes="Ghost"
                                 VerticalAlignment="Center"
-                                ToolTip.Tip="{conv:Tr OutfitDrawerCloseTooltip}"
-                                AutomationProperties.Name="{conv:Tr OutfitDrawerCloseTooltip}">
+                                ToolTip.Tip="{l:Tr 'Close drawer'}"
+                                AutomationProperties.Name="{l:Tr 'Close drawer'}">
                             <ic:SymbolIcon Symbol="Dismiss" IconVariant="Regular" FontSize="14"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center" />
@@ -64,7 +65,7 @@
                         Padding="16,12">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBlock Classes="Caption"
-                                   Text="{conv:Tr StartSessionTotalMultiplier}"
+                                   Text="{l:Tr 'Total Multiplier'}"
                                    Foreground="{DynamicResource TextMuted}"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
@@ -105,7 +106,7 @@
                                         </ItemsControl>
 
                                         <TextBlock Classes="Caption"
-                                                   Text="{conv:Tr OutfitDrawerNoneLabel}"
+                                                   Text="{l:Tr '(none)'}"
                                                    IsVisible="{Binding !HasItems}" />
 
                                     </StackPanel>

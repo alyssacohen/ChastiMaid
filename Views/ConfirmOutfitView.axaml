@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
              xmlns:d="using:ChastiMaid.Views.Dialogs"
@@ -20,11 +21,11 @@
                     Spacing="{StaticResource SpacingLg}">
 
             <TextBlock Classes="PageTitle"
-                       Text="{conv:Tr ConfirmOutfitTitle}"
+                       Text="{l:Tr 'Outfit Confirmed'}"
                        HorizontalAlignment="Center" />
 
             <TextBlock Classes="EmployerVoice"
-                       Text="{conv:Tr ConfirmOutfitEmployerQuote}"
+                       Text="{l:Tr 'Go change into the outfit below. When you are ready, press the button to confirm.'}"
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
 
@@ -107,7 +108,7 @@
                                 HorizontalAlignment="Center"
                                 Spacing="{StaticResource SpacingMd}">
                         <TextBlock Classes="Caption"
-                                   Text="{conv:Tr StartSessionTotalMultiplier}"
+                                   Text="{l:Tr 'Total Multiplier'}"
                                    Foreground="{DynamicResource TextMuted}"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="NumberMedium"
@@ -130,7 +131,7 @@
         <StackPanel Grid.Row="2" Spacing="{StaticResource SpacingMd}"
                     Margin="{StaticResource SpacingButtonStripThickness}">
             <Button Classes="Primary"
-                    Content="{conv:Tr ConfirmOutfitConfirmButton}"
+                    Content="{l:Tr 'I am ready, Madame'}"
                     Command="{Binding ConfirmOutfitCommand}"
                     HorizontalAlignment="Center" />
         </StackPanel>

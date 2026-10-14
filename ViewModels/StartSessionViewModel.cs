@@ -13,6 +13,7 @@ public partial class StartSessionViewModel : ViewModelBase
 {
     private readonly ActivePunishment? _forcedOutfitPunishment;
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly SaveRepository _saveRepo;
     private double _currentBonus = 1.0;
     private double _outfitMultiplier = 1.0;
@@ -202,22 +203,22 @@ public partial class StartSessionViewModel : ViewModelBase
         var lines = new List<string>();
         if (!availability.HasWebcam)
         {
-            lines.Add(Resources.Get("HardwareCheckWebcamMissing"));
+            lines.Add(L.T("No camera could be found. Certain tasks requiring your likeness to be observed will not be possible until one is connected."));
         }
 
         if (!availability.HasSpeechRecognizer)
         {
-            lines.Add(Resources.Get("HardwareCheckSpeechRecognizerMissing"));
+            lines.Add(L.T("No speech recognition engine is installed upon this machine. You will be asked to write out any spoken citation by hand instead."));
         }
         else if (!availability.HasMicrophone)
         {
-            lines.Add(Resources.Get("HardwareCheckMicrophoneMissing"));
+            lines.Add(L.T("No microphone could be found. You will be asked to write out any spoken citation by hand instead."));
         }
 
         var dialog = new ConfirmDialogViewModel(
-            Resources.Get("HardwareCheckTitle"),
+            L.T("A Word Before We Begin"),
             string.Join("\n\n", lines),
-            Resources.Get("HardwareCheckAcknowledge"),
+            L.T("Very well"),
             null);
         _ = ShowConfirmAsync(dialog);
     }
@@ -237,9 +238,7 @@ public partial class StartSessionViewModel : ViewModelBase
         OutfitVm = OutfitViewModel.FromString(_proposedOutfit);
         var effective = _currentBonus * _outfitMultiplier;
         MultiplierDisplay = $"×{effective:F2}";
-        var totalItems = OutfitVm.Layers.Sum(l => l.Items.Count);
-        var layersCovered = OutfitVm.Layers.Count(l => l.HasItems);
-        ItemCountDisplay = $"{totalItems} items · {layersCovered} layers covered";
+        ItemCountDisplay = OutfitVm.CountSummary(L);
     }
 
     /// <summary>
@@ -318,10 +317,10 @@ public partial class StartSessionViewModel : ViewModelBase
         const double penalty = 0.5;
         var resultBonus = _currentBonus * penalty;
         var dialog = new ConfirmDialogViewModel(
-            Resources.Get("StartSessionRegenerateOutfitTitle"),
-            string.Format(Resources.Get("StartSessionRegenerateMessageFormat"), resultBonus * 100),
-            Resources.Get("StartSessionRegenerate"),
-            Resources.Get("Cancel"));
+            L.T("Regenerate Outfit"),
+            L.T("Regenerating will reduce your bonus to {0:F0}% of the base multiplier. The new outfit replaces this one for good: there is no going back to it. Proceed?", resultBonus * 100),
+            L.T("Regenerate"),
+            L.T("Cancel"));
         var confirmed = await ShowConfirmAsync(dialog);
 
         if (!confirmed)
@@ -357,10 +356,10 @@ public partial class StartSessionViewModel : ViewModelBase
     {
         var resultBonus = _currentBonus * 0.2;
         var dialog = new ConfirmDialogViewModel(
-            Resources.Get("StartSessionModifyOutfitTitle"),
-            string.Format(Resources.Get("StartSessionModifyMessageFormat"), resultBonus * 100),
-            Resources.Get("StartSessionModify"),
-            Resources.Get("Cancel"));
+            L.T("Modify Outfit"),
+            L.T("Manually choosing clothes will reduce your bonus to {0:F0}% of the base multiplier and lock the outfit for good: there is no changing your mind or going back. Proceed?", resultBonus * 100),
+            L.T("Modify"),
+            L.T("Cancel"));
         var confirmed = await ShowConfirmAsync(dialog);
 
         if (!confirmed)

@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Dialogs"
              xmlns:conv="using:ChastiMaid.Converters"
@@ -19,11 +20,11 @@
                         Spacing="{StaticResource SpacingLg}">
 
                 <TextBlock Classes="PageTitle"
-                           Text="{conv:Tr StartSessionTitle}"
+                           Text="{l:Tr &quot;Today's Outfit&quot;}"
                            HorizontalAlignment="Center" />
 
                 <TextBlock Classes="EmployerVoice"
-                           Text="{conv:Tr StartSessionEmployerQuote}"
+                           Text="{l:Tr 'I have taken the liberty of choosing your attire. I am sure you will like it.'}"
                            HorizontalAlignment="Center"
                            TextAlignment="Center" />
 
@@ -109,7 +110,7 @@
                                     HorizontalAlignment="Center"
                                     Spacing="{StaticResource SpacingMd}">
                             <TextBlock Classes="Caption"
-                                       Text="{conv:Tr StartSessionTotalMultiplier}"
+                                       Text="{l:Tr 'Total Multiplier'}"
                                        Foreground="{DynamicResource TextMuted}"
                                        VerticalAlignment="Center" />
                             <TextBlock Classes="NumberMedium"
@@ -134,18 +135,18 @@
                         Spacing="{StaticResource SpacingMd}"
                         Margin="{StaticResource SpacingButtonStripThickness}">
                 <Button Classes="Primary"
-                        Content="{conv:Tr Accept}"
+                        Content="{l:Tr 'Accept'}"
                         Command="{Binding AcceptCommand}" />
                 <Button Classes="Ghost"
-                        Content="{conv:Tr StartSessionRegenerate}"
+                        Content="{l:Tr 'Regenerate'}"
                         Command="{Binding RegenerateCommand}"
                         IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Classes="Ghost"
-                        Content="{conv:Tr StartSessionModify}"
+                        Content="{l:Tr 'Modify'}"
                         Command="{Binding ModifyCommand}"
                         IsEnabled="{Binding CanRegenOrModify}" />
                 <Button Classes="Ghost"
-                        Content="{conv:Tr StartSessionQuit}"
+                        Content="{l:Tr 'Quit'}"
                         Command="{Binding QuitCommand}" />
             </StackPanel>
 
