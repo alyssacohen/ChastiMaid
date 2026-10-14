@@ -211,7 +211,7 @@ public partial class SettingsViewModel : ViewModelBase
 
         foreach (var p in _repo.GetPermissionTypes())
         {
-            PermissionTypes.Add(WireChild(new PermissionTypeEditViewModel(p), () => IsPermissionsDirty = true));
+            PermissionTypes.Add(WireChild(new PermissionTypeEditViewModel(p, _mainVm.Localizer), () => IsPermissionsDirty = true));
         }
 
         var allWardrobe = _repo.GetWardrobe().ToList();
@@ -1197,11 +1197,11 @@ public partial class PermissionTypeEditViewModel : ViewModelBase
     [Reactive] private int _durationMinutes;
     [Reactive] private int _cooldownMinutes;
 
-    public PermissionTypeEditViewModel(PermissionTypeConfig config)
+    public PermissionTypeEditViewModel(PermissionTypeConfig config, ILocalizer l)
     {
         Id = config.Id;
         Kind = config.Kind;
-        Name = PermissionTypeItemViewModel.GetName(config.Kind);
+        Name = PermissionTypeItemViewModel.GetName(config.Kind, l);
         _baseGrantPercent = config.BaseGrantPercent;
         _durationMinutes = config.DurationMinutes;
         _cooldownMinutes = config.CooldownMinutes;

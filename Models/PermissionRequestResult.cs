@@ -8,4 +8,4 @@ public enum PermissionRequestOutcome
     DeniedDiaper,
 }
 
-public record PermissionRequestResult(PermissionRequestOutcome Outcome, string PhraseKey);
+public record PermissionRequestResult(PermissionRequestOutcome Outcome, string Phrase);

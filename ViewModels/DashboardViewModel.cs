@@ -35,6 +35,7 @@ public partial class DashboardViewModel : ViewModelBase
     private readonly AutoSaveService _autoSave;
     private readonly DispatcherTimer? _countdownTimer;
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly double _outfitBonus;
     private readonly Random _random = new();
     private readonly SaveRepository _saveRepo;
@@ -122,13 +123,13 @@ public partial class DashboardViewModel : ViewModelBase
 
         CurrentDebt = state?.CurrentDebt ?? 0;
         DebtDisplay = FormatDebt(CurrentDebt);
-        InitialDebtDisplay = string.Format(Resources.Get("DashboardInitialDebtFormat"), state?.InitialDebt ?? 0);
-        CurrentOutfit = state?.CurrentOutfit ?? Resources.Get("DashboardNoOutfitSet");
+        InitialDebtDisplay = L.T("Initial: £{0:F2}", state?.InitialDebt ?? 0);
+        CurrentOutfit = state?.CurrentOutfit ?? L.T("No outfit set");
 
         _outfitBonus = state?.EffectiveMultiplier ?? 1.0;
         OutfitMultiplierDisplay = $"×{_outfitBonus:F2}";
         var effectiveWage = Math.Round(_settings.IdleWageAmount * (decimal)_outfitBonus, 2);
-        PayRate = string.Format(Resources.Get("DashboardWageFormat"), effectiveWage, _settings.IdleWageIntervalMinutes);
+        PayRate = L.T("Wage: £{0:F2} / {1} min", effectiveWage, _settings.IdleWageIntervalMinutes);
 
         LoadChores();
         RefreshPunishments();
@@ -142,7 +143,7 @@ public partial class DashboardViewModel : ViewModelBase
 
         foreach (var kind in Enum.GetValues<PermissionKind>())
         {
-            PermissionTypes.Add(new PermissionTypeItemViewModel(kind, OnRequestPermission));
+            PermissionTypes.Add(new PermissionTypeItemViewModel(kind, OnRequestPermission, L));
         }
 
         // Debt widget
@@ -263,9 +264,9 @@ public partial class DashboardViewModel : ViewModelBase
         _countdownTimer?.Start();
     }
 
-    private static string FormatDebt(decimal debt)
+    private string FormatDebt(decimal debt)
     {
-        return string.Format(Resources.Get("DashboardDebtFormat"), debt);
+        return L.T("Debt: £{0:F2}", debt);
     }
 
     private void LoadChores()
@@ -274,7 +275,7 @@ public partial class DashboardViewModel : ViewModelBase
         var gameStartedAt = _saveRepo.GetGameState()?.StartedAt ?? DateTime.UtcNow;
         foreach (var chore in _saveRepo.GetChores())
         {
-            Tasks.Add(new TaskItemViewModel(chore, gameStartedAt, OnStartTask));
+            Tasks.Add(new TaskItemViewModel(chore, gameStartedAt, OnStartTask, L));
         }
     }
 
@@ -328,7 +329,7 @@ public partial class DashboardViewModel : ViewModelBase
             remaining = TimeSpan.Zero;
         }
 
-        TimeToNextWage = string.Format(Resources.Get("DashboardNextWageFormat"), remaining.Minutes, remaining.Seconds);
+        TimeToNextWage = L.T("Next wage in {0:D2}:{1:D2}", remaining.Minutes, remaining.Seconds);
     }
 
     private void ShowChoreResultMessage(string message)
@@ -454,9 +455,9 @@ public partial class DashboardViewModel : ViewModelBase
                 ? "PunishmentReasonOccasionalTaskTooEarly"
                 : "PunishmentReasonChoreTooEarly");
             RefreshPunishments();
-            ShowChoreResultMessage(Resources.Get(chore.IsOccasional
-                ? "DashboardOccasionalTaskRejectedMessage"
-                : "DashboardChoreRejectedMessage"));
+            ShowChoreResultMessage(chore.IsOccasional
+                ? L.T("A task declared complete in mere moments is no task completed at all — I shall mark it void, and you shall answer for it.")
+                : L.T("Finished already? Either the work was poor, or none was done at all — this waste of my time shall not go unanswered."));
         }
         else if (tooSlow)
         {
@@ -468,9 +469,9 @@ public partial class DashboardViewModel : ViewModelBase
             RefreshPunishments();
             var fullPay = chore.IsOccasional ? 2m * ratePerMinute * chore.MinCompletionMinutes : chore.Value;
             CompleteChore(chore, Math.Round(0.5m * fullPay * (decimal)_outfitBonus, 0));
-            ShowChoreResultMessage(Resources.Get(chore.IsOccasional
-                ? "DashboardOccasionalTaskTooSlowRejectedMessage"
-                : "DashboardChoreTooSlowRejectedMessage"));
+            ShowChoreResultMessage(chore.IsOccasional
+                ? L.T("The task is done, if hardly with diligence — half the wage for half the zeal, and you shall answer to me for the dawdling.")
+                : L.T("I accept the work, though at such a leisurely pace it earns but half its wage — and the dawdling shall not go unanswered."));
         }
         else
         {
@@ -597,7 +598,7 @@ public partial class DashboardViewModel : ViewModelBase
         }
 
         var result = _saveRepo.RequestPermission(kind, mods);
-        PermissionOutcomeMessage = Resources.Get(result.PhraseKey);
+        PermissionOutcomeMessage = L.T(result.Phrase);
         IsPermissionOutcomeGranted = result.Outcome == PermissionRequestOutcome.Granted;
 
         IsPermissionsPanelVisible = false;
@@ -607,7 +608,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             _sessionLoop.Pause();
             _countdownTimer?.Stop();
-            PermissionBreakKindName = PermissionTypeItemViewModel.GetName(kind);
+            PermissionBreakKindName = PermissionTypeItemViewModel.GetName(kind, L);
         }
     }
 
@@ -634,11 +635,11 @@ public partial class DashboardViewModel : ViewModelBase
         if (punishment.Kind == PunishmentKind.ForcedOutfit)
         {
             var dialog = new ConfirmDialogViewModel(
-                Resources.Get("ForcedOutfitInfoTitle"),
-                string.Format(Resources.Get("ForcedOutfitInfoMessageFormat"),
-                    punishment.ForcedOutfitPresetName ?? Resources.Get("ForcedOutfitPresetNameFallback"),
+                L.T("A Matter Already Settled"),
+                L.T("The uniform «{0}» shall present itself, unbidden, for the next {1}.",
+                    punishment.ForcedOutfitPresetName ?? L.T("The chosen uniform"),
                     PunishmentItemViewModel.FormatRemainingTime(punishment)),
-                Resources.Get("Ok"),
+                L.T("OK"),
                 null);
             _ = ShowConfirmAsync(dialog);
             return;
@@ -671,10 +672,10 @@ public partial class DashboardViewModel : ViewModelBase
     private async Task OnSoftenPunishment(PunishmentItemViewModel punishmentVm)
     {
         var dialog = new ConfirmDialogViewModel(
-            Resources.Get("CardSoftenPunishmentName"),
-            string.Format(Resources.Get("PunishmentCardConfirmSoftenFormat"), punishmentVm.Name),
-            Resources.Get("Confirm"),
-            Resources.Get("Cancel"));
+            L.T("Soften Punishment"),
+            L.T("Halve the severity of \"{0}\"?", punishmentVm.Name),
+            L.T("Confirm"),
+            L.T("Cancel"));
         var confirmed = await ShowConfirmAsync(dialog);
         if (!confirmed)
         {
@@ -691,10 +692,10 @@ public partial class DashboardViewModel : ViewModelBase
     private async Task OnCancelPunishmentCard(PunishmentItemViewModel punishmentVm)
     {
         var dialog = new ConfirmDialogViewModel(
-            Resources.Get("CardCancelPunishmentName"),
-            string.Format(Resources.Get("PunishmentCardConfirmCancelFormat"), punishmentVm.Name),
-            Resources.Get("Confirm"),
-            Resources.Get("Cancel"));
+            L.T("Cancel Punishment"),
+            L.T("Cancel \"{0}\" outright?", punishmentVm.Name),
+            L.T("Confirm"),
+            L.T("Cancel"));
         var confirmed = await ShowConfirmAsync(dialog);
         if (!confirmed)
         {

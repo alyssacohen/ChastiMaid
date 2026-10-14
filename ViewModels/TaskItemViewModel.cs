@@ -13,8 +13,11 @@ public partial class TaskItemViewModel : ViewModelBase
     private readonly DateTime _gameStartedAt;
     [Reactive] private bool _isExpanded;
 
-    public TaskItemViewModel(Chore chore, DateTime gameStartedAt, Action<TaskItemViewModel> onStart)
+    private ILocalizer L { get; }
+
+    public TaskItemViewModel(Chore chore, DateTime gameStartedAt, Action<TaskItemViewModel> onStart, ILocalizer l)
     {
+        L = l;
         _chore = chore;
         _gameStartedAt = gameStartedAt;
         ChoreId = chore.Id;
@@ -35,12 +38,12 @@ public partial class TaskItemViewModel : ViewModelBase
     public ICommand ToggleExpandedCommand { get; }
 
     public string LastCompletedLabel => LastCompletedAt is { } d
-        ? string.Format(Resources.Get("TaskLastCompletedDaysAgo"), (DateTime.UtcNow - d).Days)
-        : Resources.Get("TaskNeverCompleted");
+        ? L.N("Last done: {0} day ago", "Last done: {0} days ago", (DateTime.UtcNow - d).Days, (DateTime.UtcNow - d).Days)
+        : L.T("Never done");
 
     public string FrequencyLabel => IsOccasional
-        ? Resources.Get("TaskOccasionalLabel")
-        : string.Format(Resources.Get("TaskSuggestedFrequencyDays"), FrequencyDays);
+        ? L.T("Occasional task")
+        : L.N("Suggested every {0} day", "Suggested every {0} days", FrequencyDays, FrequencyDays);
 
     // Green: not yet due. Amber: overdue by up to 1x the suggested frequency. Red: badly overdue. Same measure the
     // variable-severity mood uses, so a chore never done counts from the start of the game rather than showing red

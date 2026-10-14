@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:conv="using:ChastiMaid.Converters"
              x:Class="ChastiMaid.Views.Controls.DebtWidget"
              x:Name="Root">
@@ -7,22 +8,22 @@
     <Border Classes="card" Margin="0">
         <StackPanel Spacing="10">
 
-            <TextBlock Classes="SectionTitle" Text="{conv:Tr DebtWidgetTitle}" />
+            <TextBlock Classes="SectionTitle" Text="{l:Tr 'Outstanding Balance'}" />
 
             <Grid ColumnDefinitions="*,*">
 
                 <StackPanel Grid.Column="0" Spacing="2">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr DebtWidgetSettled}}" />
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Settled'}}" />
                     <TextBlock Classes="NumberLarge"
                                Text="{Binding #Root.DebtSettled, Converter={x:Static conv:CurrencyConverter.Instance}}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Spacing="2" HorizontalAlignment="Right">
                     <TextBlock Classes="LabelUI"
-                               Text="{Binding #Root.DebtRemaining, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=DebtWidgetRemaining|DebtWidgetCredit|upper}"
+                               Text="{Binding #Root.RemainingLabel, Converter={x:Static conv:UpperCaseConverter.Instance}}"
                                HorizontalAlignment="Right" />
                     <TextBlock Classes="NumberLarge"
-                               Text="{Binding #Root.DebtRemaining, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=DebtWidgetAmountFormat|DebtWidgetAmountFormat}"
+                               Text="{Binding #Root.RemainingAmountText}"
                                Foreground="{Binding #Root.DebtRemaining, Converter={x:Static conv:BalanceBrushConverter.Instance}}"
                                HorizontalAlignment="Right" />
                 </StackPanel>
@@ -37,7 +38,7 @@
                          CornerRadius="3" />
 
             <TextBlock Classes="Caption"
-                       Text="{Binding #Root.DebtTotal, StringFormat={conv:Tr DebtWidgetTotalIncurredFormat}}" />
+                       Text="{Binding #Root.TotalIncurredText}" />
 
         </StackPanel>
     </Border>

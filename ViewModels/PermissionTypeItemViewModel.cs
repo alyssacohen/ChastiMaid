@@ -7,10 +7,10 @@ namespace ChastiMaid.ViewModels;
 
 public class PermissionTypeItemViewModel : ViewModelBase
 {
-    public PermissionTypeItemViewModel(PermissionKind kind, Action<PermissionKind> onRequest)
+    public PermissionTypeItemViewModel(PermissionKind kind, Action<PermissionKind> onRequest, ILocalizer l)
     {
         Kind = kind;
-        Name = GetName(kind);
+        Name = GetName(kind, l);
         RequestCommand = ReactiveCommand.Create(() => onRequest(kind));
     }
 
@@ -18,16 +18,16 @@ public class PermissionTypeItemViewModel : ViewModelBase
     public string Name { get; }
     public ICommand RequestCommand { get; }
 
-    public static string GetName(PermissionKind kind)
+    public static string GetName(PermissionKind kind, ILocalizer l)
     {
-        return Resources.Get(kind switch
+        return kind switch
         {
-            PermissionKind.Pee => "PermissionKindPee",
-            PermissionKind.Poop => "PermissionKindPoop",
-            PermissionKind.SitDown => "PermissionKindSitDown",
-            PermissionKind.Smoke => "PermissionKindSmoke",
-            PermissionKind.TeaCoffee => "PermissionKindTeaCoffee",
+            PermissionKind.Pee => l.T("Use the toilet (n.1)"),
+            PermissionKind.Poop => l.T("Use the toilet (n.2)"),
+            PermissionKind.SitDown => l.T("Sit down"),
+            PermissionKind.Smoke => l.T("Cigarette break"),
+            PermissionKind.TeaCoffee => l.T("Tea or coffee break"),
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
-        });
+        };
     }
 }

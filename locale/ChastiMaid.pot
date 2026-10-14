@@ -23,6 +23,10 @@ msgstr ""
 msgid "+{0}%"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.cs:638
+msgid "A Matter Already Settled"
+msgstr ""
+
 #: ../ViewModels/StartSessionViewModel.cs:219
 msgid "A Word Before We Begin"
 msgstr ""
@@ -43,6 +47,12 @@ msgstr ""
 msgid "A permission, somewhere, will be harder to earn than you'd like."
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.cs:459
+msgid ""
+"A task declared complete in mere moments is no task completed at all — I "
+"shall mark it void, and you shall answer for it."
+msgstr ""
+
 #: ../ViewModels/FortuneDeckViewModel.cs:390
 msgid "A whim of mine, waiting to be indulged. You shall know it when it comes."
 msgstr ""
@@ -53,6 +63,18 @@ msgstr ""
 
 #: ../Views/StartSessionView.axaml:138
 msgid "Accept"
+msgstr ""
+
+#: ../Views/Controls/DashboardAddTaskForm.axaml:52
+msgid "Add"
+msgstr ""
+
+#: ../Views/Controls/DashboardAddTaskForm.axaml:15
+msgid "Add Occasional Task"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:80 ../Views/DashboardView.axaml:338
+msgid "Add task"
 msgstr ""
 
 #: ../ViewModels/WelcomeViewModel.cs:37
@@ -69,6 +91,10 @@ msgstr ""
 msgid "Are you sure you want to end this session?"
 msgstr ""
 
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:85
+msgid "Ask"
+msgstr ""
+
 #: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/ShopView.axaml:14
 msgid "Back"
 msgstr ""
@@ -77,15 +103,24 @@ msgstr ""
 msgid "Blank. Nothing changes hands — except, of course, your money."
 msgstr ""
 
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:104
+msgid "Bonus Cards"
+msgstr ""
+
 #: ../Views/ShopView.axaml:65
 msgid "Buy"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/EndSessionView.axaml:47
+#: ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/EndSessionView.axaml:47
 msgid "Cancel"
 msgstr ""
 
-#: ../Models/CardDisplay.cs:17
+#: ../ViewModels/DashboardViewModel.cs:696
+#, csharp-format
+msgid "Cancel \"{0}\" outright?"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:695
 msgid "Cancel Punishment"
 msgstr ""
 
@@ -102,6 +137,10 @@ msgstr ""
 msgid "Check yourself in the preview, then press Record."
 msgstr ""
 
+#: ../ViewModels/PermissionTypeItemViewModel.cs:28
+msgid "Cigarette break"
+msgstr ""
+
 #: ../Views/ChangeOutfitView.axaml:151 ../Views/ForcedOutfitPresetEditorView.axaml:165
 msgid "Clear"
 msgstr ""
@@ -110,7 +149,7 @@ msgstr ""
 msgid "Clears the cooldown standing between you and your next request."
 msgstr ""
 
-#: ../Views/LoadGameView.axaml:132
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:33 ../Views/Controls/DashboardPermissionsPanel.axaml:39 ../Views/Controls/DashboardPermissionsPanel.axaml:59 ../Views/LoadGameView.axaml:132
 msgid "Close"
 msgstr ""
 
@@ -124,6 +163,10 @@ msgstr ""
 
 #: ../Views/Controls/OutfitDrawer.axaml:53 ../Views/Controls/OutfitDrawer.axaml:54
 msgid "Close drawer"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:400
+msgid "Complete Game"
 msgstr ""
 
 #. a finished game (feminine in Italian: "la partita")
@@ -140,7 +183,7 @@ msgstr ""
 msgid "Compose an outfit"
 msgstr ""
 
-#: ../Views/CameraSetupView.axaml:36
+#: ../ViewModels/DashboardViewModel.cs:677 ../ViewModels/DashboardViewModel.cs:697 ../Views/CameraSetupView.axaml:36
 msgid "Confirm"
 msgstr ""
 
@@ -161,6 +204,10 @@ msgid ""
 "{1}"
 msgstr ""
 
+#: ../Views/Controls/DebtWidget.axaml.cs:94
+msgid "Credit"
+msgstr ""
+
 #: ../ViewModels/FortuneDeckViewModel.cs:140 ../ViewModels/ShopViewModel.cs:88
 msgid "Credit available"
 msgstr ""
@@ -174,7 +221,7 @@ msgstr ""
 msgid "Current Outfit"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:41
+#: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:41
 #, csharp-format
 msgid "Debt: £{0:F2}"
 msgstr ""
@@ -201,6 +248,18 @@ msgstr ""
 msgid "Delete Save"
 msgstr ""
 
+#: ../Models/Banks/PermissionPhraseBank.cs:19
+msgid "Denied. Ask again later, if you dare."
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:21
+msgid "Denied. Discipline does not negotiate."
+msgstr ""
+
+#: ../Views/Controls/DashboardAddTaskForm.axaml:26
+msgid "Description (optional)"
+msgstr ""
+
 #: ../Views/ForcedOutfitPresetEditorView.axaml:40
 msgid "Disabled"
 msgstr ""
@@ -223,8 +282,20 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: ../Views/EndSessionView.axaml:19
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:177
+msgid "End Break"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:492
+msgid "End Chore"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:221 ../Views/DashboardView.axaml:306 ../Views/EndSessionView.axaml:19
 msgid "End Session"
+msgstr ""
+
+#: ../Views/Controls/DashboardAddTaskForm.axaml:35
+msgid "Estimated time (minutes)"
 msgstr ""
 
 #: ../Views/WelcomeView.axaml:64
@@ -251,8 +322,18 @@ msgstr ""
 msgid "Finish and Free Slot"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.cs:460
+msgid ""
+"Finished already? Either the work was poor, or none was done at all — this "
+"waste of my time shall not go unanswered."
+msgstr ""
+
 #: ../Views/ForcedOutfitPresetEditorView.axaml:37
 msgid "Fix the entire outfit, not just the selected items"
+msgstr ""
+
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:157
+msgid "Forgive My Impertinence"
 msgstr ""
 
 #: ../ViewModels/CameraSetupViewModel.cs:38
@@ -270,8 +351,17 @@ msgstr ""
 msgid "Grant permission"
 msgstr ""
 
+#: ../Models/Banks/PermissionPhraseBank.cs:11
+msgid "Granted — briefly."
+msgstr ""
+
 #: ../Models/CardDisplay.cs:15
 msgid "Guaranteed Approval"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.cs:676
+#, csharp-format
+msgid "Halve the severity of \"{0}\"?"
 msgstr ""
 
 #: ../Models/CardDisplay.cs:30
@@ -285,6 +375,24 @@ msgstr ""
 
 #: ../Views/ForcedOutfitPresetEditorView.axaml:30
 msgid "Hours per severity"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:34
+msgid "How curious a request, given what you have on underneath."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.cs:474
+msgid ""
+"I accept the work, though at such a leisurely pace it earns but half its wage "
+"— and the dawdling shall not go unanswered."
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:26
+msgid "I already answered that. Do not ask again so soon."
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:12
+msgid "I am feeling generous today. Do not test it."
 msgstr ""
 
 #: ../Views/ConfirmOutfitView.axaml:134
@@ -302,6 +410,15 @@ msgid ""
 "I have taken the liberty of choosing your attire. I am sure you will like it."
 msgstr ""
 
+#: ../Views/DashboardView.axaml:40 ../Views/DashboardView.axaml:259
+msgctxt "session status"
+msgid "Idle"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:13
+msgid "If you must. The clock is already ticking."
+msgstr ""
+
 #: ../Views/FortuneDeckView.axaml:20 ../Views/ShopView.axaml:86
 msgid "Il Ventaglio della Sorte"
 msgstr ""
@@ -310,9 +427,21 @@ msgstr ""
 msgid "Improves your odds of approval on your next request."
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.cs:126
+#, csharp-format
+msgid "Initial: £{0:F2}"
+msgstr ""
+
 #: ../Views/ChangeOutfitView.axaml:155
 msgid "Integrate Outfit"
 msgstr ""
+
+#: ../ViewModels/TaskItemViewModel.cs:41
+#, csharp-format
+msgid "Last done: {0} day ago"
+msgid_plural "Last done: {0} days ago"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../ViewModels/LoadGameViewModel.cs:144
 msgid "Load Error"
@@ -336,6 +465,10 @@ msgid ""
 "going back. Proceed?"
 msgstr ""
 
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:151
+msgid "May I be excused?"
+msgstr ""
+
 #: ../ViewModels/StartSessionViewModel.cs:361 ../Views/StartSessionView.axaml:145
 msgid "Modify"
 msgstr ""
@@ -354,16 +487,29 @@ msgid ""
 "for you to notice."
 msgstr ""
 
-#: ../Views/ForcedOutfitPresetEditorView.axaml:25
+#: ../Views/Controls/DashboardAddTaskForm.axaml:18 ../Views/ForcedOutfitPresetEditorView.axaml:25
 msgid "Name"
+msgstr ""
+
+#: ../ViewModels/TaskItemViewModel.cs:42
+msgid "Never done"
 msgstr ""
 
 #: ../Views/WelcomeView.axaml:42
 msgid "New Game"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.cs:332
+#, csharp-format
+msgid "Next wage in {0:D2}:{1:D2}"
+msgstr ""
+
 #: ../ViewModels/WelcomeViewModel.cs:36
 msgid "No Free Slots"
+msgstr ""
+
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:109
+msgid "No bonus cards yet."
 msgstr ""
 
 #: ../ViewModels/StartSessionViewModel.cs:206
@@ -376,6 +522,14 @@ msgstr ""
 msgid ""
 "No microphone could be found. You will be asked to write out any spoken "
 "citation by hand instead."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.cs:127
+msgid "No outfit set"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:143
+msgid "No pending tasks"
 msgstr ""
 
 #: ../ViewModels/StartSessionViewModel.cs:211
@@ -392,8 +546,16 @@ msgstr ""
 msgid "No webcam signal"
 msgstr ""
 
+#: ../Models/Banks/PermissionPhraseBank.cs:20
+msgid "No. I simply do not feel like it."
+msgstr ""
+
 #: ../Views/ShopView.axaml:71
 msgid "None left"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:18
+msgid "Not at present. The work does not pause for you — nor do I."
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:397 ../ViewModels/FortuneDeckViewModel.cs:398
@@ -405,8 +567,12 @@ msgctxt "punishment"
 msgid "Noticed"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
+#: ../ViewModels/DashboardViewModel.cs:642 ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
+msgstr ""
+
+#: ../ViewModels/TaskItemViewModel.cs:45
+msgid "Occasional task"
 msgstr ""
 
 #: ../Views/LoadingView.axaml:16
@@ -427,8 +593,28 @@ msgstr ""
 msgid "Outfit video exported."
 msgstr ""
 
+#: ../Views/DashboardView.axaml:46 ../Views/DashboardView.axaml:265
+msgid "Outfit ▸"
+msgstr ""
+
+#: ../Views/Controls/DebtWidget.axaml:11
+msgid "Outstanding Balance"
+msgstr ""
+
 #: ../ViewModels/GameCompleteViewModel.cs:53
 msgid "PNG Image"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:167 ../Views/DashboardView.axaml:429
+msgid "Pending Punishments"
+msgstr ""
+
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:30
+msgid "Permissions"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:27
+msgid "Persistence will not change my mind — only my patience."
 msgstr ""
 
 #: ../Views/SafeLockView.axaml:25
@@ -476,8 +662,16 @@ msgid ""
 "new outfit replaces this one for good: there is no going back to it. Proceed?"
 msgstr ""
 
+#: ../Views/Controls/DebtWidget.axaml.cs:94
+msgid "Remaining"
+msgstr ""
+
 #: ../Models/CardDisplay.cs:31
 msgid "Removes one pending punishment outright."
+msgstr ""
+
+#: ../Views/DashboardView.axaml:205 ../Views/DashboardView.axaml:290
+msgid "Request Permission"
 msgstr ""
 
 #: ../Views/SafeLockView.axaml:54
@@ -512,8 +706,20 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: ../Views/Controls/DebtWidget.axaml:16
+msgid "Settled"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:213 ../Views/DashboardView.axaml:298
+msgid "Shop"
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:28
 msgid "Show Safe Combination and Close"
+msgstr ""
+
+#: ../ViewModels/PermissionTypeItemViewModel.cs:27
+msgid "Sit down"
 msgstr ""
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:45
@@ -524,7 +730,7 @@ msgstr ""
 msgid "Skip (no safe)"
 msgstr ""
 
-#: ../Models/CardDisplay.cs:16
+#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:675
 msgid "Soften Punishment"
 msgstr ""
 
@@ -542,6 +748,10 @@ msgid ""
 "Some future permission will last longer than granted. Enjoy it while it lasts."
 msgstr ""
 
+#: ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
+msgid "Start"
+msgstr ""
+
 #: ../Views/SafeLockView.axaml:28
 msgid "Start Camera"
 msgstr ""
@@ -550,8 +760,39 @@ msgstr ""
 msgid "Start Session"
 msgstr ""
 
+#: ../Models/Banks/PermissionPhraseBank.cs:28
+msgid "Still no. Did you expect a different answer?"
+msgstr ""
+
+#: ../ViewModels/TaskItemViewModel.cs:46
+#, csharp-format
+msgid "Suggested every {0} day"
+msgid_plural "Suggested every {0} days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Views/Controls/DashboardAddTaskForm.axaml:21
+msgid "Task name"
+msgstr ""
+
+#: ../Views/DashboardView.axaml:64 ../Views/DashboardView.axaml:322
+msgid "Tasks"
+msgstr ""
+
+#: ../ViewModels/PermissionTypeItemViewModel.cs:29
+msgid "Tea or coffee break"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:35
+msgid "That question answers itself, does it not?"
+msgstr ""
+
 #: ../Views/ShopView.axaml:20
 msgid "The Shop"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.cs:640
+msgid "The chosen uniform"
 msgstr ""
 
 #: ../Views/EndSessionView.axaml:75
@@ -576,6 +817,17 @@ msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.cs:473
+msgid ""
+"The task is done, if hardly with diligence — half the wage for half the zeal, "
+"and you shall answer to me for the dawdling."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.cs:639
+#, csharp-format
+msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
+msgstr ""
+
 #: ../ViewModels/FortuneDeckViewModel.cs:377
 msgid "This one has cost you rather dearly."
 msgstr ""
@@ -588,8 +840,34 @@ msgstr ""
 msgid "Total Multiplier"
 msgstr ""
 
+#: ../Views/Controls/DebtWidget.axaml.cs:96
+#, csharp-format
+msgid "Total incurred: {0}"
+msgstr ""
+
+#: ../ViewModels/PermissionTypeItemViewModel.cs:25
+msgid "Use the toilet (n.1)"
+msgstr ""
+
+#: ../ViewModels/PermissionTypeItemViewModel.cs:26
+msgid "Use the toilet (n.2)"
+msgstr ""
+
 #: ../ViewModels/StartSessionViewModel.cs:221
 msgid "Very well"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:10
+msgid "Very well. See that it does not become a habit."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.cs:132
+#, csharp-format
+msgid "Wage: £{0:F2} / {1} min"
+msgstr ""
+
+#: ../Models/Banks/PermissionPhraseBank.cs:33
+msgid "You are wearing exactly what you need for that. Figure it out."
 msgstr ""
 
 #: ../Views/ShopView.axaml:88

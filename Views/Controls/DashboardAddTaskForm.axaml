@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:conv="using:ChastiMaid.Converters"
              xmlns:vm="using:ChastiMaid.ViewModels"
              x:DataType="vm:DashboardViewModel"
@@ -11,18 +12,18 @@
                 <TextBlock
                     Classes="SectionTitle"
                     HorizontalAlignment="Center"
-                    Text="{conv:Tr AddOccasionalTaskTitle}" />
+                    Text="{l:Tr 'Add Occasional Task'}" />
 
                 <StackPanel Spacing="4">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr OccasionalTaskNameLabel}}" />
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Name'}}" />
                     <TextBox
                         Classes="underline"
-                        PlaceholderText="{conv:Tr OccasionalTaskNameRequiredPlaceholder}"
+                        PlaceholderText="{l:Tr 'Task name'}"
                         Text="{Binding NewTaskName}" />
                 </StackPanel>
 
                 <StackPanel Spacing="4">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr OccasionalTaskDescriptionLabel}}" />
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Description (optional)'}}" />
                     <TextBox
                         AcceptsReturn="True"
                         Classes="underline"
@@ -31,7 +32,7 @@
                 </StackPanel>
 
                 <StackPanel Spacing="4">
-                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr OccasionalTaskEstimatedMinutesLabel}}" />
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Estimated time (minutes)'}}" />
                     <TextBox
                         Classes="underline"
                         Text="{Binding NewTaskEstimatedMinutes, Converter={x:Static conv:NumericTextConverter.Instance}, ConverterParameter=0}" />
@@ -41,14 +42,14 @@
                     <Button
                         Classes="Ghost"
                         Command="{Binding CloseAddTaskFormCommand}"
-                        Content="{conv:Tr Cancel}"
+                        Content="{l:Tr 'Cancel'}"
                         Grid.Column="0"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center" />
                     <Button
                         Classes="Primary"
                         Command="{Binding SubmitAddTaskCommand}"
-                        Content="{conv:Tr AddOccasionalTaskSubmit}"
+                        Content="{l:Tr 'Add'}"
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center" />
