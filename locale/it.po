@@ -30,14 +30,37 @@ msgstr "Una questione già decisa"
 msgid "A Word Before We Begin"
 msgstr "Una parola prima di cominciare"
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:25
+msgid "A contented servant is the foundation of a well-run household."
+msgstr "Una domestica contenta è il fondamento di una casa ben governata."
+
 #: ../Views/EndSessionView.axaml:36
 msgid "A daily interest will be applied until you resume your session."
 msgstr ""
 "Verrà applicato un interesse giornaliero finché non riprendete la sessione."
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:26
+msgid "A discontented servant is a disloyal one."
+msgstr "Una domestica scontenta è una domestica infedele."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:31
+msgid "A domestic of your standing has no business being tired at this hour."
+msgstr ""
+"Una domestica del vostro rango non ha motivo di essere stanca a quest'ora."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:34
+msgid "A household that cannot hear its staff is poorly managed. Speak."
+msgstr "Una casa che non ascolta la propria servitù è mal governata. Parlate."
+
 #: ../ViewModels/FortuneDeckViewModel.cs:374
 msgid "A moment of uncharacteristic generosity. Do not grow accustomed to it."
 msgstr "Un momento di insolita generosità. Non abituatevi."
+
+#: ../Models/Banks/HydrationReminderBank.cs:12
+msgid ""
+"A moment's pause for water is no idleness. Go and take five sips of your "
+"drink."
+msgstr "Una breve pausa per bere non è ozio. Ora bevete cinque sorsi."
 
 #: ../ViewModels/FortuneDeckViewModel.cs:381
 msgid "A permission, somewhere, will be easier to earn than it deserves."
@@ -50,6 +73,24 @@ msgid "A permission, somewhere, will be harder to earn than you'd like."
 msgstr ""
 "Un permesso, da qualche parte, sarà più difficile da ottenere di quanto "
 "vorreste."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:29
+msgid "A servant without initiative is merely expensive furniture."
+msgstr "Una domestica priva di iniziativa è poco più che un mobile costoso."
+
+#: ../Models/Banks/CurtsyInstructionBank.cs:13
+msgid "A show of respect is due. Curtsy before me, and let it be recorded."
+msgstr ""
+"Un segno di rispetto è dovuto. Fate una riverenza dinanzi a me, e che sia "
+"registrata."
+
+#: ../Models/Banks/SelfCheckInstructionBank.cs:13
+msgid ""
+"A small audit, nothing more. Tell me truthfully — is {0} to be seen in this "
+"image?"
+msgstr ""
+"Un piccolo controllo, nulla più. Ditemi il vero: si vede {0} in questa "
+"immagine?"
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:21
 msgid "A steady hand betrays a steady mind."
@@ -76,6 +117,10 @@ msgid "A whim of mine, waiting to be indulged. You shall know it when it comes."
 msgstr ""
 "Un mio capriccio, in attesa di essere concesso. Saprete riconoscerlo quando "
 "arriverà."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:37
+msgid "A willing student is a joy to instruct."
+msgstr "Un'allieva volenterosa è una gioia da istruire."
 
 #: ../ViewModels/GameCompleteViewModel.cs:41
 msgid "AVI Video"
@@ -105,6 +150,14 @@ msgstr "Aggiungi compito occasionale"
 msgid "Add task"
 msgstr "Aggiungi compito"
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:553
+msgid "Adequate contrition, for once."
+msgstr "Pentimento adeguato, per una volta."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:37
+msgid "After all this time? How deeply disappointing."
+msgstr "Dopo tutto questo tempo? Mi avete profondamente delusa."
+
 #: ../ViewModels/WelcomeViewModel.cs:37
 msgid ""
 "All 5 save slots are occupied. Please complete or delete an existing game "
@@ -116,6 +169,14 @@ msgstr ""
 #: ../ViewModels/FortuneDeckViewModel.cs:140 ../ViewModels/ShopViewModel.cs:88
 msgid "Amount owed"
 msgstr "Importo dovuto"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:24
+msgid "Are you content in your service?"
+msgstr "Siete contenta del vostro servizio?"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:30
+msgid "Are you fatigued?"
+msgstr "Siete affaticata?"
 
 #: ../Views/EndSessionView.axaml:23
 msgid "Are you sure you want to end this session?"
@@ -129,6 +190,10 @@ msgstr "Chiedi"
 #, csharp-format
 msgid "Assigned {0}"
 msgstr "Assegnata il {0}"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:29
+msgid "Awaiting instruction shows admirable restraint."
+msgstr "Attendere istruzioni denota un'ammirevole compostezza."
 
 #: ../ViewModels/PunishmentItemViewModel.cs:42
 msgid "Awaiting its turn"
@@ -179,6 +244,10 @@ msgstr "Annullata"
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
 msgid "Capture"
 msgstr "Cattura"
+
+#: ../Models/Banks/SelfCheckInstructionBank.cs:11
+msgid "Cast your mind back. Does {0} appear in this photograph?"
+msgstr "Richiamate alla mente quel momento. {0} compare in questa fotografia?"
 
 #: ../Models/Banks/CornertimeInstructionBank.cs:31
 msgid "Caught you moving. Your corner grows longer by {0} seconds."
@@ -238,9 +307,19 @@ msgstr "Componi un outfit obbligatorio"
 msgid "Compose an outfit"
 msgstr "Crea un outfit"
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:22
+msgid "Confidence in one's craft is admirable."
+msgstr "La fiducia nella propria arte è cosa ammirevole."
+
 #: ../ViewModels/DashboardViewModel.cs:677 ../ViewModels/DashboardViewModel.cs:697 ../Views/CameraSetupView.axaml:36
 msgid "Confirm"
 msgstr "Conferma"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:25
+msgid "Contentment breeds idleness. One must always strive for more."
+msgstr ""
+"Troppa soddisfazione genera pigrizia. Bisogna sempre aspirare a qualcosa in "
+"più."
 
 #: ../Views/WelcomeView.axaml:35
 msgid "Continue"
@@ -332,22 +411,50 @@ msgstr "Negato. La disciplina non si negozia."
 msgid "Description (optional)"
 msgstr "Descrizione (facoltativa)"
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:27
+msgid "Did you act on your own initiative today?"
+msgstr "Avete agito di vostra iniziativa, oggi?"
+
 #: ../Views/ForcedOutfitPresetEditorView.axaml:40
 msgid "Disabled"
 msgstr "Non attivo"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:40
+msgid "Discipline of the mind must precede discipline of the hands."
+msgstr "La disciplina della mente deve precedere quella delle mani."
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:17
 msgid "Do keep those fingers moving."
 msgstr "Continuate a muovere quelle dita."
 
-#: ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:129
+#: ../Models/Banks/ImpossibleQuestionBank.cs:21
+msgid "Do you consider your work today to have been without fault?"
+msgstr "Ritenete che il vostro lavoro odierno sia stato privo di difetti?"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:36
+msgid "Do you feel you require further instruction?"
+msgstr "Ritenete di aver bisogno di ulteriori istruzioni?"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:33
+msgid "Do you have any complaints about your present conditions?"
+msgstr "Avete lamentele riguardo alle vostre condizioni attuali?"
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:350 ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:129
 msgid "Done"
 msgstr "Fatto"
+
+#: ../Models/Banks/KneelInstructionBank.cs:13
+msgid "Down upon your knees. Stillness becomes you."
+msgstr "A terra, sulle ginocchia. L'immobilità vi si addice."
 
 #: ../ViewModels/FortuneDeckViewModel.cs:118 ../ViewModels/ShopViewModel.cs:61
 #, csharp-format
 msgid "Draw — {0}"
 msgstr "Pesca — {0}"
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:617
+msgid "Duly noted."
+msgstr "Ne prendo atto."
 
 #: ../Models/CardDisplay.cs:12
 msgid "Eager"
@@ -357,6 +464,14 @@ msgstr "Impaziente"
 msgid "Effort I spare today is effort I shall owe tomorrow, with interest"
 msgstr ""
 "Lo sforzo che risparmio oggi è sforzo che dovrò domani, con gli interessi"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:41
+msgid ""
+"Either you deceive me, or you lack the imagination to transgress. Neither "
+"reflects particularly well."
+msgstr ""
+"O mi ingannate, o vi manca l'immaginazione per trasgredire. Nessuna delle due "
+"vi fa onore."
 
 #: ../Views/WritingLinesPunishmentView.axaml:106
 msgid "Elapsed"
@@ -394,6 +509,10 @@ msgstr "Gli errori si addicono così poco."
 #: ../Views/Controls/DashboardAddTaskForm.axaml:35
 msgid "Estimated time (minutes)"
 msgstr "Tempo stimato (minuti)"
+
+#: ../Models/Banks/HydrationReminderBank.cs:13
+msgid "Even diligence requires fuel. Drink one cup."
+msgstr "Anche la diligenza ha bisogno di nutrimento. Bevete un bicchiere."
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:339
 msgid "Every line, faithfully copied. I have taken note of your penmanship."
@@ -498,6 +617,10 @@ msgstr ""
 msgid "Frame your work area for: {0}"
 msgstr "Inquadrate l'area di lavoro per: {0}"
 
+#: ../Models/Banks/SummonPhraseBank.cs:12
+msgid "Get over here, {0}! You know better than keep me waiting."
+msgstr "Vieni qui, {0}! Sai bene che non dovresti farmi aspettare."
+
 #: ../Views/ConfirmOutfitView.axaml:28
 msgid ""
 "Go change into the outfit below. When you are ready, press the button to "
@@ -505,6 +628,10 @@ msgid ""
 msgstr ""
 "Ora andate a cambiarvi. Quando siete pronta, premete il pulsante per "
 "confermare."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:26
+msgid "Good. Dissatisfaction is the very mother of improvement."
+msgstr "Bene. L'insoddisfazione è la vera madre del miglioramento."
 
 #: ../Models/Banks/CornertimeInstructionBank.cs:37
 msgid "Good. Keep it that way."
@@ -535,10 +662,35 @@ msgstr "Dimezzare la severità di \"{0}\"?"
 msgid "Halves the severity of one pending punishment."
 msgstr "Dimezza la severità di una punizione pendente."
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:31
+msgid "Hard labour leaves its mark. You may rest briefly."
+msgstr ""
+"Il lavoro pesante lascia il suo segno. Potete concedervi un breve riposo."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:18
+msgid "Have you been diligent in your duties today?"
+msgstr "Siete stata diligente nei vostri doveri, oggi?"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:39
+msgid "Have you harboured any unbecoming thoughts today?"
+msgstr "Avete nutrito pensieri sconvenienti, oggi?"
+
 #: ../ViewModels/ShopViewModel.cs:35
 #, csharp-format
 msgid "Held: {0}"
 msgstr "Possedute: {0}"
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:90
+msgid "Hold still."
+msgstr "Non muovetevi."
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:73
+msgid "Hold your pose."
+msgstr "Mantenete la posa."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:40
+msgid "Honesty, even in confession, is a virtue."
+msgstr "L'onestà, persino nella confessione, è una virtù."
 
 #: ../Views/ForcedOutfitPresetEditorView.axaml:30
 msgid "Hours per severity"
@@ -547,6 +699,22 @@ msgstr "Ore per gravità"
 #: ../Models/Banks/PermissionPhraseBank.cs:34
 msgid "How curious a request, given what you have on underneath."
 msgstr "Che richiesta curiosa, considerato cosa state indossando."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:34
+msgid "How ungrateful. Many would envy your position greatly."
+msgstr "Quanta ingratitudine. In molte invidierebbero la vostra posizione."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:35
+msgid "How very agreeable you are."
+msgstr "Quanto siete accomodante."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:41
+msgid "How very proper of you."
+msgstr "Quanto siete rispettabile."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:23
+msgid "Humility is the first virtue of good service."
+msgstr "L'umiltà è la prima virtù di un buon servizio."
 
 #: ../ViewModels/DashboardViewModel.cs:474
 msgid ""
@@ -568,7 +736,19 @@ msgstr "Oggi mi sento generosa. Ma non mettetemi alla prova."
 msgid "I am fortunate indeed to be so thoroughly looked after"
 msgstr "Sono fortunata invero ad essere così premurosamente seguita"
 
-#: ../Views/ConfirmOutfitView.axaml:134
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:452
+msgid "I am here"
+msgstr "Sono qui"
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:131
+msgid "I am listening."
+msgstr "Sto ascoltando."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:380 ../ViewModels/DashboardViewModel.IdlePopups.cs:447
+msgid "I am ready"
+msgstr "Sono pronta"
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:440 ../Views/ConfirmOutfitView.axaml:134
 msgid "I am ready, Madame"
 msgstr "Sono pronta, Madame"
 
@@ -606,6 +786,12 @@ msgstr ""
 "So che un compito rimandato è un compito raddoppiato, e non intendo "
 "raddoppiarlo"
 
+#: ../Models/Banks/PoseForCameraInstructionBank.cs:12
+msgid "I require a photograph in which {0} may be clearly inspected. See to it."
+msgstr ""
+"Desidero una fotografia in cui {0} possa essere chiaramente ispezionato. "
+"Provvedete."
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:30
 msgid "I saw that. {0} seconds more for you."
 msgstr "Vi ho vista muovervi. {0} secondi in più per voi."
@@ -617,6 +803,10 @@ msgstr "Devo dedicarmi ai miei doveri senza bisogno che mi vengano ricordati"
 #: ../Models/Banks/EmployerPhraseBank.cs:15
 msgid "I shall speak when addressed, and act before then"
 msgstr "Parlerò quando interpellata, e agirò prima ancora"
+
+#: ../Models/Banks/SelfCheckInstructionBank.cs:12
+msgid "I shall test your memory. Is {0} visible here?"
+msgstr "Metterò alla prova la vostra memoria. {0} è visibile qui?"
 
 #: ../Models/Banks/EmployerPhraseBank.cs:19
 msgid "I shall wait as long as is required, and not a moment more visibly"
@@ -646,10 +836,18 @@ msgstr "Il Ventaglio della Sorte"
 msgid "Improves your odds of approval on your next request."
 msgstr "Migliora le probabilità che la vostra prossima richiesta sia approvata."
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:19
+msgid "Industry becomes you."
+msgstr "L'operosità vi si addice."
+
 #: ../ViewModels/DashboardViewModel.cs:126
 #, csharp-format
 msgid "Initial: £{0:F2}"
 msgstr "Iniziale: £{0:F2}"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:28
+msgid "Initiative is most commendable in service."
+msgstr "L'iniziativa è cosa quanto mai lodevole nel servizio."
 
 #: ../Views/ChangeOutfitView.axaml:155
 msgid "Integrate Outfit"
@@ -663,6 +861,10 @@ msgstr "Andate all'angolo, piedi uniti, mani sulle ginocchia, rivolta al muro."
 msgid ""
 "Into the corner. Feet together, hands clasped before you, eyes on the wall."
 msgstr "All'angolo. Piedi uniti, mani giunte sul grembo, faccia al muro."
+
+#: ../Models/Banks/KneelInstructionBank.cs:12
+msgid "Kneel where you stand, and remain a while with your humility."
+msgstr "Inginocchiatevi dove siete, dimostratemi un po' di umiltà."
 
 #: ../ViewModels/TaskItemViewModel.cs:41
 #, csharp-format
@@ -754,6 +956,10 @@ msgstr "Nuova partita"
 msgid "Next wage in {0:D2}:{1:D2}"
 msgstr "Prossima paga tra {0:D2}:{1:D2}"
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:343 ../ViewModels/DashboardViewModel.IdlePopups.cs:425
+msgid "No"
+msgstr "No"
+
 #: ../ViewModels/WelcomeViewModel.cs:36
 msgid "No Free Slots"
 msgstr "Nessuno slot libero"
@@ -824,6 +1030,11 @@ msgctxt "punishment"
 msgid "Noticed"
 msgstr "Notata"
 
+#: ../Models/Banks/KneelInstructionBank.cs:11
+msgid "Now kneel, look down, and reflect upon your failings."
+msgstr ""
+"Ora inginocchiatevi, guardate a terra e riflettete sui vostri fallimenti."
+
 #: ../ViewModels/DashboardViewModel.cs:642 ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
 msgstr "OK"
@@ -831,6 +1042,18 @@ msgstr "OK"
 #: ../ViewModels/TaskItemViewModel.cs:45
 msgid "Occasional task"
 msgstr "Compito occasionale"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:38
+msgid ""
+"On the contrary — one who believes herself beyond correction needs it most "
+"urgently."
+msgstr ""
+"Al contrario — chi si crede al di là di ogni correzione ne ha il bisogno più "
+"urgente."
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:161
+msgid "One moment — I am considering what was said."
+msgstr "Un momento — sto valutando quanto detto."
 
 #: ../Views/LoadingView.axaml:16
 msgid "One moment — preparations are underway..."
@@ -866,6 +1089,11 @@ msgstr "Immagine PNG"
 msgid "Pending Punishments"
 msgstr "Punizioni in sospeso"
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:22
+msgid "Perfection belongs to the divine, not the domestic. Reconsider."
+msgstr ""
+"La perfezione appartiene al divino, non alla servitù domestica. Riconsiderate."
+
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:30
 msgid "Permissions"
 msgstr "Permessi"
@@ -890,17 +1118,42 @@ msgstr "Accomodatevi pure. La porta è aperta... per ora."
 msgid "Point the camera at the combination, then press Capture."
 msgstr "Inquadrate la combinazione con la fotocamera, poi premete Cattura."
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:223
+msgid "Position confirmed"
+msgstr "Posizione confermata"
+
 #: ../Views/CameraSetupView.axaml:16
 msgid "Position the camera"
 msgstr "Posizionate la fotocamera"
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:218
+msgid "Position the camera to frame where you shall kneel."
+msgstr ""
+"Posizionate la fotocamera per inquadrare il luogo dove vi inginocchierete."
 
 #: ../Views/WritingLinesPunishmentView.axaml:92
 msgid "Precision"
 msgstr "Esattezza"
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:103
+msgid "Prepare yourself."
+msgstr "Preparatevi."
+
+#: ../Models/Banks/PoseForCameraInstructionBank.cs:11
+msgid ""
+"Present yourself before the camera and let {0} be plainly visible, that I may "
+"confirm it."
+msgstr ""
+"Presentatevi dinanzi alla macchina fotografica e fate sì che {0} sia ben "
+"visibile, affinché io possa accertarmene."
+
 #: ../Views/WritingLinesPunishmentView.axaml:51
 msgid "Previous lines"
 msgstr "Righe precedenti"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:19
+msgid "Pride in one's work breeds complacency. Guard against it."
+msgstr "L'orgoglio per il proprio lavoro genera compiacimento. Guardatevene."
 
 #: ../Views/WritingLinesPunishmentView.axaml:76
 msgid "Progress"
@@ -918,6 +1171,10 @@ msgstr "Esci"
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
 msgid "Record (5s)"
 msgstr "Registra (5s)"
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:120
+msgid "Recording now."
+msgstr "Sto registrando."
 
 #: ../Views/Dialogs/WebcamCaptureDialog.axaml:47
 msgid "Recording... Strike a pose."
@@ -945,6 +1202,11 @@ msgstr ""
 msgid "Remaining"
 msgstr "Rimanente"
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:609
+msgctxt "accessory"
+msgid "Removed"
+msgstr "Rimosso"
+
 #: ../Models/CardDisplay.cs:31
 msgid "Removes one pending punishment outright."
 msgstr "Rimuove del tutto una punizione pendente."
@@ -961,6 +1223,11 @@ msgstr ""
 #: ../Views/SafeLockView.axaml:54
 msgid "Retry Capture"
 msgstr "Riprova scatto"
+
+#: ../Models/Banks/CurtsyInstructionBank.cs:12
+msgid "Rise, and offer me a proper curtsy. See that it is done with grace."
+msgstr ""
+"Offritemi una riverenza appropriata. Fate in modo che sia eseguita con grazia."
 
 #: ../Views/SafeLockView.axaml:19
 msgid "Safe Lock"
@@ -981,6 +1248,10 @@ msgstr "Salva"
 #: ../Views/ChangeOutfitView.axaml:157
 msgid "Save outfit"
 msgstr "Salva outfit"
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:38
+msgid "Self-sufficiency is a virtue much to be admired."
+msgstr "L'autosufficienza è una virtù assai ammirevole."
 
 #: ../Views/GameCompleteView.axaml:15
 msgid "Service Complete"
@@ -1066,12 +1337,25 @@ msgstr "L'immobilità vi dona. Non mettete alla prova la mia pazienza ora."
 msgid "Stillness, achieved. You may return to your duties."
 msgstr "Penitenza scontata. Potete tornare alle vostre mansioni."
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:199
+msgid "Submit"
+msgstr "Invia"
+
 #: ../ViewModels/TaskItemViewModel.cs:46
 #, csharp-format
 msgid "Suggested every {0} day"
 msgid_plural "Suggested every {0} days"
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:594
+msgid "Suitably adorned. See that it stays that way."
+msgstr "Adeguatamente adornata. Fate in modo che resti così."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:35
+msgid "Suspicious. Silence most often conceals the loudest grievances."
+msgstr ""
+"Uhm.. strano. Il silenzio, il più delle volte, cela i lamenti più grandi."
 
 #: ../Views/Controls/DashboardAddTaskForm.axaml:21
 msgid "Task name"
@@ -1093,6 +1377,13 @@ msgstr "La domanda si risponde da sola, non credete?"
 msgid "That was not stillness. {0} seconds have been added."
 msgstr "Quella non era immobilità. Sono stati aggiunti {0} secondi."
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:937
+msgid ""
+"That was not what I asked to hear. See that you attend more closely next time."
+msgstr ""
+"Non era ciò che desideravo udire. Fate in modo di prestare maggiore "
+"attenzione la prossima volta."
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:24
 msgid "That will do. Your corner time has begun."
 msgstr "Così va bene. Il vostro castigo inizia ora."
@@ -1104,6 +1395,23 @@ msgstr "L'angolo vi attende"
 #: ../Views/ShopView.axaml:20
 msgid "The Shop"
 msgstr "Il Negozio"
+
+#: ../Models/Banks/HydrationReminderBank.cs:11
+msgid ""
+"The body, like the house, requires its proper upkeep. Go and drink half a cup."
+msgstr ""
+"Il corpo, come la casa, richiede giusta manutenzione. Andate a bere mezzo "
+"bicchiere."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:463 ../ViewModels/DashboardViewModel.IdlePopups.cs:554
+msgid "The camera saw nothing of your penance. A pity."
+msgstr "La fotocamera non ha visto nulla della vostra penitenza. Peccato."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:652 ../ViewModels/DashboardViewModel.IdlePopups.cs:705 ../ViewModels/DashboardViewModel.IdlePopups.cs:810
+msgid "The camera was not cooperative. We shall try again another time."
+msgstr ""
+"La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra "
+"occasione."
 
 #: ../ViewModels/DashboardViewModel.cs:640
 msgid "The chosen uniform"
@@ -1155,6 +1463,10 @@ msgstr "L'inchiostro si secca, che scriviate o meno."
 msgid "The line to copy"
 msgstr "La riga da ricopiare"
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:172
+msgid "The microphone is not to be found. You will write it instead."
+msgstr "Il microfono non si trova. Dovrete scriverlo invece."
+
 #: ../ViewModels/ConfirmOutfitViewModel.cs:77
 msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
@@ -1174,6 +1486,14 @@ msgstr ""
 #, csharp-format
 msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
 msgstr "L'outfit «{0}» sarà obbligatorio per le prossime {1}."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:23
+msgid "Then you have admitted failure. Most unsatisfactory."
+msgstr "Allora avete ammesso il fallimento. Assai insoddisfacente."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:32
+msgid "Then you have clearly not been working hard enough."
+msgstr "Allora, evidentemente, non avete lavorato abbastanza."
 
 #: ../ViewModels/FortuneDeckViewModel.cs:377
 msgid "This one has cost you rather dearly."
@@ -1228,6 +1548,10 @@ msgstr "Moltiplicatore totale"
 msgid "Total incurred: {0}"
 msgstr ""
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:190
+msgid "Type the quotation here"
+msgstr "Digitate qui la citazione"
+
 #: ../ViewModels/PermissionTypeItemViewModel.cs:25
 msgid "Use the toilet (n.1)"
 msgstr "Usare la toilette (bisogno n.1)"
@@ -1236,26 +1560,54 @@ msgstr "Usare la toilette (bisogno n.1)"
 msgid "Use the toilet (n.2)"
 msgstr "Usare la toilette (bisogno n.2)"
 
-#: ../ViewModels/StartSessionViewModel.cs:221
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:569 ../ViewModels/StartSessionViewModel.cs:221
 msgid "Very well"
 msgstr "Molto bene"
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:931
+msgid "Very well spoken."
+msgstr "Ben detto."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:968
+msgid "Very well."
+msgstr "Molto bene."
 
 #: ../Models/Banks/PermissionPhraseBank.cs:10
 msgid "Very well. See that it does not become a habit."
 msgstr "Sia pure. Che non diventi un'abitudine."
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:809
+msgid "Very well. The curtsy has been recorded."
+msgstr "Molto bene. La riverenza è stata registrata."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:704
+msgid "Very well. The photograph has been taken."
+msgstr "Molto bene. La fotografia è stata scattata."
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:23
 msgid "Very well. The time begins now — hold that position."
 msgstr "Molto bene. Rimanete ferma, il castigo inizia adesso."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:32
+msgid "Vigour becomes a good domestic."
+msgstr "Il vigore si addice a una buona domestica."
 
 #: ../ViewModels/DashboardViewModel.cs:132
 #, csharp-format
 msgid "Wage: £{0:F2} / {1} min"
 msgstr "Paga: £{0:F2} / {1} min"
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:930
+msgid "Well read — but I cannot overlook your tardiness."
+msgstr "Bene, ma non posso transigere sul vostro ritardo."
+
 #: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/WritingLinesPunishmentView.axaml:21
 msgid "Writing Lines"
 msgstr "Righe di penitenza"
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:343 ../ViewModels/DashboardViewModel.IdlePopups.cs:425
+msgid "Yes"
+msgstr "Sì"
 
 #: ../Models/Banks/PermissionPhraseBank.cs:33
 msgid "You are wearing exactly what you need for that. Figure it out."
@@ -1277,6 +1629,23 @@ msgstr ""
 "Non siete riuscita a star ferma — e ora ne pagherete le conseguenze. Confido "
 "che il nuovo compito che vi attende vi insegni un po' più di disciplina."
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:20
+msgid "You have confessed to idleness most plainly."
+msgstr "Avete ammesso di essere pigra con fin troppa chiarezza."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:608
+#, csharp-format
+msgid "You may now remove the {0}."
+msgstr "Potete ora rimuovere {0}."
+
+#: ../Models/Banks/HydrationReminderBank.cs:14
+msgid ""
+"You may pause to drink. I shall not think less of you for it. Drink half a "
+"glass."
+msgstr ""
+"Potete fare una pausa e bere. Non avrò meno stima di voi per questo. Bevete "
+"mezzo bicchiere."
+
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:340
 msgid ""
 "You set down the pen too soon. A fine has been added, and the lines remain "
@@ -1285,14 +1654,52 @@ msgstr ""
 "Avete posato la penna troppo presto. È stata aggiunta una multa, e le righe "
 "restano da scrivere."
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:568
+#, csharp-format
+msgid "You shall wear the {0} until further notice."
+msgstr "Indosserete {0} fino a nuovo ordine."
+
 #: ../Views/ShopView.axaml:88
 msgid "You wager, I collect. Do sit down — it will take but a moment."
 msgstr ""
 "Voi scommettete, io incasso. Accomodatevi — sarà questione di un attimo."
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:28
+msgid "You were not engaged to think, but to serve."
+msgstr "Non foste assunta per pensare, bensì per servire."
+
+#: ../Models/Banks/CurtsyInstructionBank.cs:11
+msgid ""
+"You will perform a curtsy before the camera, that I may witness your "
+"deportment."
+msgstr ""
+"Eseguirete una riverenza dinanzi alla macchina fotografica, affinché io possa "
+"constatarne il portamento."
+
+#: ../Models/Banks/PoseForCameraInstructionBank.cs:13
+msgid "You will pose for the camera. {0} must appear in the frame as proof."
+msgstr "Poserete per una foto. {0} deve comparire nell'inquadratura."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:446
+msgid "You will read the following aloud, that I may hear it spoken:"
+msgstr "Leggete quanto segue ad alta voce, affinché io possa udirlo:"
+
 #: ../Views/EndSessionView.axaml:66
 msgid "Your Safe Combination"
 msgstr "Ecco la combinazione della cassaforte"
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:758
+msgid "Your account does not tally with my records. This will not do."
+msgstr ""
+"Il vostro resoconto non coincide con i miei registri. Questo non va bene."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:757
+msgid "Your account tallies. Very well."
+msgstr "Il vostro resoconto coincide. Molto bene."
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:20
+msgid "Your candour does you credit. Now remedy it."
+msgstr "La vostra franchezza vi fa onore. Ora rimediate."
 
 #: ../Views/GameCompleteView.axaml:19
 msgid ""
@@ -1307,6 +1714,10 @@ msgid "Your next request is approved without question — this once."
 msgstr ""
 "La vostra prossima richiesta sarà approvata senza obiezioni — solo questa "
 "volta."
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:452
+msgid "Your presence is required. Attend at once."
+msgstr "È richiesta la vostra presenza. Presentatevi subito."
 
 #: ../Views/WritingLinesPunishmentView.axaml:37
 msgid "Your writing"
@@ -1357,6 +1768,13 @@ msgstr "{0} Min"
 #, csharp-format
 msgid "{0} and {1} cannot be worn together."
 msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:86
+#, csharp-format
+msgid "{0} attempt remaining"
+msgid_plural "{0} attempts remaining"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../ViewModels/PunishmentItemViewModel.cs:56
 #, csharp-format
@@ -1421,6 +1839,18 @@ msgstr ""
 #, csharp-format
 msgid "{0} requires one of: {1}. {2} selected — requirement satisfied."
 msgstr ""
+
+#: ../Models/Banks/SummonPhraseBank.cs:11
+msgid "{0}! Come here at once."
+msgstr "{0}! Vieni qui immediatamente."
+
+#: ../Models/Banks/SummonPhraseBank.cs:13
+msgid "{0}! Do stop dawdling and come here."
+msgstr "{0}! Smettila di gingillarti e vieni qui!"
+
+#: ../Models/Banks/SummonPhraseBank.cs:14
+msgid "{0}! Here. Now."
+msgstr "{0}! Qui. Subito."
 
 #: ../ViewModels/FortuneDeckViewModel.cs:379
 #, csharp-format

@@ -11,11 +11,11 @@ public class ImpossibleQuestionBankTests
         {
             var question = ImpossibleQuestionBank.GetRandom();
 
-            Assert.False(string.IsNullOrEmpty(question.QuestionKey));
-            Assert.False(string.IsNullOrEmpty(question.YesPositiveKey));
-            Assert.False(string.IsNullOrEmpty(question.YesNegativeKey));
-            Assert.False(string.IsNullOrEmpty(question.NoPositiveKey));
-            Assert.False(string.IsNullOrEmpty(question.NoNegativeKey));
+            Assert.False(string.IsNullOrEmpty(question.Question));
+            Assert.False(string.IsNullOrEmpty(question.YesPositive));
+            Assert.False(string.IsNullOrEmpty(question.YesNegative));
+            Assert.False(string.IsNullOrEmpty(question.NoPositive));
+            Assert.False(string.IsNullOrEmpty(question.NoNegative));
         }
     }
 

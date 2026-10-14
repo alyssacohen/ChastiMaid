@@ -70,7 +70,20 @@ public partial class DashboardViewModel
     [Reactive] private bool _isQuoteProcessing;
     [Reactive] private bool _isQuoteTypingActive;
     [Reactive] private int _quoteListenCountdown;
-    [Reactive] private int _quoteAttemptsRemaining;
+    private int _quoteAttemptsRemaining;
+
+    public int QuoteAttemptsRemaining
+    {
+        get => _quoteAttemptsRemaining;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _quoteAttemptsRemaining, value);
+            this.RaisePropertyChanged(nameof(QuoteAttemptsRemainingText));
+        }
+    }
+
+    public string QuoteAttemptsRemainingText =>
+        L.N("{0} attempt remaining", "{0} attempts remaining", QuoteAttemptsRemaining, QuoteAttemptsRemaining);
     [Reactive] private string _quoteTypedAnswer = "";
     [Reactive] private string _currentQuoteText = "";
     private const int QuoteMaxAttempts = 3;
@@ -144,7 +157,7 @@ public partial class DashboardViewModel
         }
 
         var appellative = candidates[_random.Next(candidates.Count)];
-        var phrase = string.Format(Resources.Get(SummonPhraseBank.GetRandom(_random)), appellative);
+        var phrase = L.T(SummonPhraseBank.GetRandom(_random), appellative);
         _ = _mainVm.Tts.SpeakAsync(phrase);
     }
 
@@ -326,15 +339,15 @@ public partial class DashboardViewModel
     private void ShowImpossibleQuestionPopup()
     {
         _currentQuestion = ImpossibleQuestionBank.GetRandom();
-        OpenPopup(IdlePopupKind.ImpossibleQuestion, Resources.Get(_currentQuestion.QuestionKey),
-            Resources.Get("ImpossibleQuestionYes"), Resources.Get("ImpossibleQuestionNo"));
+        OpenPopup(IdlePopupKind.ImpossibleQuestion, L.T(_currentQuestion.Question),
+            L.T("Yes"), L.T("No"));
     }
 
     private void ShowHydrationPopup()
     {
         _lastHydrationPopupAt = DateTime.UtcNow;
-        OpenPopup(IdlePopupKind.Hydration, Resources.Get(HydrationReminderBank.GetRandom()),
-            Resources.Get("HydrationConfirm"));
+        OpenPopup(IdlePopupKind.Hydration, L.T(HydrationReminderBank.GetRandom()),
+            L.T("Done"));
     }
 
     private void ShowPoseForCameraPopup()
@@ -363,8 +376,8 @@ public partial class DashboardViewModel
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
         _currentPoseItem = candidates[_random.Next(candidates.Count)];
         OpenPopup(IdlePopupKind.PoseForCamera,
-            string.Format(Resources.Get(PoseForCameraInstructionBank.GetRandom()), _currentPoseItem.Name),
-            Resources.Get("PoseForCameraConfirm"));
+            L.T(PoseForCameraInstructionBank.GetRandom(), _currentPoseItem.Name),
+            L.T("I am ready"));
     }
 
     /// <summary>
@@ -408,8 +421,8 @@ public partial class DashboardViewModel
         _currentSelfCheckQueriedItem = queriedItem;
         IsSelfCheckPopupActive = true;
         OpenPopup(IdlePopupKind.SelfCheck,
-            string.Format(Resources.Get(SelfCheckInstructionBank.GetRandom()), queriedItem.Name),
-            Resources.Get("SelfCheckYes"), Resources.Get("SelfCheckNo"));
+            L.T(SelfCheckInstructionBank.GetRandom(), queriedItem.Name),
+            L.T("Yes"), L.T("No"));
     }
 
     private void ShowCurtsyPopup()
@@ -423,20 +436,20 @@ public partial class DashboardViewModel
 
         IsCurtsyPopupActive = true;
         this.RaisePropertyChanged(nameof(IsWebcamPreviewNeededInQuestionPanel));
-        OpenPopup(IdlePopupKind.Curtsy, Resources.Get(CurtsyInstructionBank.GetRandom()),
-            Resources.Get("CurtsyConfirm"));
+        OpenPopup(IdlePopupKind.Curtsy, L.T(CurtsyInstructionBank.GetRandom()),
+            L.T("I am ready, Madame"));
     }
 
     private void ShowMotivationalQuotePopup()
     {
-        CurrentQuoteText = Resources.Get(EmployerPhraseBank.GetRandom());
-        OpenPopup(IdlePopupKind.MotivationalQuote, Resources.Get("MotivationalQuoteInstruction"),
-            Resources.Get("MotivationalQuoteConfirm"));
+        CurrentQuoteText = L.T(EmployerPhraseBank.GetRandom());
+        OpenPopup(IdlePopupKind.MotivationalQuote, L.T("You will read the following aloud, that I may hear it spoken:"),
+            L.T("I am ready"));
     }
 
     private void ShowKneelPopup()
     {
-        OpenPopup(IdlePopupKind.Kneel, Resources.Get("KneelSummon"), Resources.Get("KneelSummonConfirm"));
+        OpenPopup(IdlePopupKind.Kneel, L.T("Your presence is required. Attend at once."), L.T("I am here"));
 
         // Loading the voice model alone takes several seconds; kick it off now so it's ready by
         // the time the user confirms framing, instead of stalling the first narration line.
@@ -447,7 +460,7 @@ public partial class DashboardViewModel
     {
         if (!_mainVm.Webcam.Start(_mainVm.Webcam.PreferredCameraIndex))
         {
-            PopupOutcomeMessage = Resources.Get("KneelFailedMessage");
+            PopupOutcomeMessage = L.T("The camera saw nothing of your penance. A pity.");
             ShowPopupOutcome(true);
             return;
         }
@@ -472,7 +485,7 @@ public partial class DashboardViewModel
 
         var totalSeconds = _random.Next(_settings.KneelMinDurationSeconds, _settings.KneelMaxDurationSeconds + 1);
         KneelCountdown = totalSeconds;
-        PopupQuestion = Resources.Get(KneelInstructionBank.GetRandom());
+        PopupQuestion = L.T(KneelInstructionBank.GetRandom());
 
         _kneelCts = new CancellationTokenSource();
         _ = _mainVm.Tts.SpeakAsync(PopupQuestion, _kneelCts.Token);
@@ -536,7 +549,9 @@ public partial class DashboardViewModel
             });
         }
 
-        PopupOutcomeMessage = Resources.Get(photos.Count > 0 ? "KneelCompletedMessage" : "KneelFailedMessage");
+        PopupOutcomeMessage = photos.Count > 0
+            ? L.T("Adequate contrition, for once.")
+            : L.T("The camera saw nothing of your penance. A pity.");
         ShowPopupOutcome(true);
     }
 
@@ -550,8 +565,8 @@ public partial class DashboardViewModel
 
         _currentPlugAndPlayCandidate = candidates[_random.Next(candidates.Count)];
         OpenPopup(IdlePopupKind.PlugAndPlayDon,
-            string.Format(Resources.Get("PlugAndPlayDonPromptFormat"), _currentPlugAndPlayCandidate.Name),
-            Resources.Get("PlugAndPlayDonConfirm"));
+            L.T("You shall wear the {0} until further notice.", _currentPlugAndPlayCandidate.Name),
+            L.T("Very well"));
     }
 
     private void OnPlugAndPlayDonConfirm()
@@ -576,7 +591,7 @@ public partial class DashboardViewModel
         _currentPlugAndPlayCandidate = null;
         RefreshOutfitDisplay();
 
-        PopupOutcomeMessage = Resources.Get("PlugAndPlayDonCompletedMessage");
+        PopupOutcomeMessage = L.T("Suitably adorned. See that it stays that way.");
         ShowPopupOutcome(true);
     }
 
@@ -590,8 +605,8 @@ public partial class DashboardViewModel
         }
 
         OpenPopup(IdlePopupKind.PlugAndPlayRemove,
-            string.Format(Resources.Get("PlugAndPlayRemovePromptFormat"), item.Name),
-            Resources.Get("PlugAndPlayRemoveConfirm"));
+            L.T("You may now remove the {0}.", item.Name),
+            L.P("accessory", "Removed"));
     }
 
     private void OnPlugAndPlayRemoveConfirm()
@@ -599,7 +614,7 @@ public partial class DashboardViewModel
         _saveRepo.ClearActivePlugAndPlayAccessory();
         RefreshOutfitDisplay();
 
-        PopupOutcomeMessage = Resources.Get("PlugAndPlayRemoveCompletedMessage");
+        PopupOutcomeMessage = L.T("Duly noted.");
         ShowPopupOutcome(true);
     }
 
@@ -634,7 +649,7 @@ public partial class DashboardViewModel
         {
             _mainVm.Webcam.Stop();
             IsPoseCapturing = false;
-            PopupOutcomeMessage = Resources.Get("PoseForCameraFailedMessage");
+            PopupOutcomeMessage = L.T("The camera was not cooperative. We shall try again another time.");
             ShowPopupOutcome(true);
             return;
         }
@@ -685,7 +700,9 @@ public partial class DashboardViewModel
         }
 
         IsPoseCapturing = false;
-        PopupOutcomeMessage = Resources.Get(success ? "PoseForCameraCapturedMessage" : "PoseForCameraFailedMessage");
+        PopupOutcomeMessage = success
+            ? L.T("Very well. The photograph has been taken.")
+            : L.T("The camera was not cooperative. We shall try again another time.");
         ShowPopupOutcome(true);
     }
 
@@ -736,7 +753,9 @@ public partial class DashboardViewModel
         record.IsCompliant = positive;
         _saveRepo.SavePoseCheckRecord(record);
 
-        PopupOutcomeMessage = Resources.Get(positive ? "SelfCheckPassedMessage" : "SelfCheckFailedMessage");
+        PopupOutcomeMessage = positive
+            ? L.T("Your account tallies. Very well.")
+            : L.T("Your account does not tally with my records. This will not do.");
         ShowPopupOutcome(positive);
     }
 
@@ -786,7 +805,9 @@ public partial class DashboardViewModel
             });
         }
 
-        PopupOutcomeMessage = Resources.Get(success ? "CurtsyCapturedMessage" : "CurtsyFailedMessage");
+        PopupOutcomeMessage = success
+            ? L.T("Very well. The curtsy has been recorded.")
+            : L.T("The camera was not cooperative. We shall try again another time.");
         ShowPopupOutcome(true);
     }
 
@@ -905,15 +926,15 @@ public partial class DashboardViewModel
     {
         if (success)
         {
-            PopupOutcomeMessage = Resources.Get(_popupSecondsLate > 0
-                ? "MotivationalQuoteSuccessLateMessage"
-                : "MotivationalQuoteSuccessMessage");
+            PopupOutcomeMessage = _popupSecondsLate > 0
+                ? L.T("Well read — but I cannot overlook your tardiness.")
+                : L.T("Very well spoken.");
         }
         else
         {
             Punish(_popupSecondsLate + InfractionSeverity.MotivationalQuoteFailedBonus,
                 "PunishmentReasonMotivationalQuoteFailed");
-            PopupOutcomeMessage = Resources.Get("MotivationalQuoteFailedMessage");
+            PopupOutcomeMessage = L.T("That was not what I asked to hear. See that you attend more closely next time.");
         }
 
         ShowPopupOutcome(success);
@@ -928,9 +949,9 @@ public partial class DashboardViewModel
 
         var isYes = PopupAnswers.Count > 0 && answer == PopupAnswers[0];
         var positive = ImpossibleQuestionBank.RollOutcome();
-        var outcomeKey = isYes
-            ? (positive ? _currentQuestion.YesPositiveKey : _currentQuestion.YesNegativeKey)
-            : (positive ? _currentQuestion.NoPositiveKey : _currentQuestion.NoNegativeKey);
+        var outcome = isYes
+            ? (positive ? _currentQuestion.YesPositive : _currentQuestion.YesNegative)
+            : (positive ? _currentQuestion.NoPositive : _currentQuestion.NoNegative);
 
         if (!positive)
         {
@@ -938,13 +959,13 @@ public partial class DashboardViewModel
                 InfractionSeverity.ImpossibleQuestionFailed.Max + 1), "PunishmentReasonImpossibleQuestionFailed");
         }
 
-        PopupOutcomeMessage = Resources.Get(outcomeKey);
+        PopupOutcomeMessage = L.T(outcome);
         ShowPopupOutcome(positive);
     }
 
     private void OnHydrationConfirm()
     {
-        PopupOutcomeMessage = Resources.Get("HydrationConfirmedMessage");
+        PopupOutcomeMessage = L.T("Very well.");
         ShowPopupOutcome(true);
     }
 

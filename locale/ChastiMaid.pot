@@ -31,12 +31,34 @@ msgstr ""
 msgid "A Word Before We Begin"
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:25
+msgid "A contented servant is the foundation of a well-run household."
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:36
 msgid "A daily interest will be applied until you resume your session."
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:26
+msgid "A discontented servant is a disloyal one."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:31
+msgid "A domestic of your standing has no business being tired at this hour."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:34
+msgid "A household that cannot hear its staff is poorly managed. Speak."
+msgstr ""
+
 #: ../ViewModels/FortuneDeckViewModel.cs:374
 msgid "A moment of uncharacteristic generosity. Do not grow accustomed to it."
+msgstr ""
+
+#: ../Models/Banks/HydrationReminderBank.cs:12
+msgid ""
+"A moment's pause for water is no idleness. Go and take five sips of your "
+"drink."
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:381
@@ -45,6 +67,20 @@ msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:382
 msgid "A permission, somewhere, will be harder to earn than you'd like."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:29
+msgid "A servant without initiative is merely expensive furniture."
+msgstr ""
+
+#: ../Models/Banks/CurtsyInstructionBank.cs:13
+msgid "A show of respect is due. Curtsy before me, and let it be recorded."
+msgstr ""
+
+#: ../Models/Banks/SelfCheckInstructionBank.cs:13
+msgid ""
+"A small audit, nothing more. Tell me truthfully — is {0} to be seen in this "
+"image?"
 msgstr ""
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:21
@@ -67,6 +103,10 @@ msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:390
 msgid "A whim of mine, waiting to be indulged. You shall know it when it comes."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:37
+msgid "A willing student is a joy to instruct."
 msgstr ""
 
 #: ../ViewModels/GameCompleteViewModel.cs:41
@@ -97,6 +137,14 @@ msgstr ""
 msgid "Add task"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:553
+msgid "Adequate contrition, for once."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:37
+msgid "After all this time? How deeply disappointing."
+msgstr ""
+
 #: ../ViewModels/WelcomeViewModel.cs:37
 msgid ""
 "All 5 save slots are occupied. Please complete or delete an existing game "
@@ -105,6 +153,14 @@ msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:140 ../ViewModels/ShopViewModel.cs:88
 msgid "Amount owed"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:24
+msgid "Are you content in your service?"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:30
+msgid "Are you fatigued?"
 msgstr ""
 
 #: ../Views/EndSessionView.axaml:23
@@ -118,6 +174,10 @@ msgstr ""
 #: ../ViewModels/PunishmentItemViewModel.cs:24
 #, csharp-format
 msgid "Assigned {0}"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:29
+msgid "Awaiting instruction shows admirable restraint."
 msgstr ""
 
 #: ../ViewModels/PunishmentItemViewModel.cs:42
@@ -168,6 +228,10 @@ msgstr ""
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
 msgid "Capture"
+msgstr ""
+
+#: ../Models/Banks/SelfCheckInstructionBank.cs:11
+msgid "Cast your mind back. Does {0} appear in this photograph?"
 msgstr ""
 
 #: ../Models/Banks/CornertimeInstructionBank.cs:31
@@ -228,8 +292,16 @@ msgstr ""
 msgid "Compose an outfit"
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:22
+msgid "Confidence in one's craft is admirable."
+msgstr ""
+
 #: ../ViewModels/DashboardViewModel.cs:677 ../ViewModels/DashboardViewModel.cs:697 ../Views/CameraSetupView.axaml:36
 msgid "Confirm"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:25
+msgid "Contentment breeds idleness. One must always strive for more."
 msgstr ""
 
 #: ../Views/WelcomeView.axaml:35
@@ -313,21 +385,49 @@ msgstr ""
 msgid "Description (optional)"
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:27
+msgid "Did you act on your own initiative today?"
+msgstr ""
+
 #: ../Views/ForcedOutfitPresetEditorView.axaml:40
 msgid "Disabled"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:40
+msgid "Discipline of the mind must precede discipline of the hands."
 msgstr ""
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:17
 msgid "Do keep those fingers moving."
 msgstr ""
 
-#: ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:129
+#: ../Models/Banks/ImpossibleQuestionBank.cs:21
+msgid "Do you consider your work today to have been without fault?"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:36
+msgid "Do you feel you require further instruction?"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:33
+msgid "Do you have any complaints about your present conditions?"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:350 ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:129
 msgid "Done"
+msgstr ""
+
+#: ../Models/Banks/KneelInstructionBank.cs:13
+msgid "Down upon your knees. Stillness becomes you."
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:118 ../ViewModels/ShopViewModel.cs:61
 #, csharp-format
 msgid "Draw — {0}"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:617
+msgid "Duly noted."
 msgstr ""
 
 #: ../Models/CardDisplay.cs:12
@@ -336,6 +436,12 @@ msgstr ""
 
 #: ../Models/Banks/EmployerPhraseBank.cs:18
 msgid "Effort I spare today is effort I shall owe tomorrow, with interest"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:41
+msgid ""
+"Either you deceive me, or you lack the imagination to transgress. Neither "
+"reflects particularly well."
 msgstr ""
 
 #: ../Views/WritingLinesPunishmentView.axaml:106
@@ -373,6 +479,10 @@ msgstr ""
 
 #: ../Views/Controls/DashboardAddTaskForm.axaml:35
 msgid "Estimated time (minutes)"
+msgstr ""
+
+#: ../Models/Banks/HydrationReminderBank.cs:13
+msgid "Even diligence requires fuel. Drink one cup."
 msgstr ""
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:339
@@ -474,10 +584,18 @@ msgstr ""
 msgid "Frame your work area for: {0}"
 msgstr ""
 
+#: ../Models/Banks/SummonPhraseBank.cs:12
+msgid "Get over here, {0}! You know better than keep me waiting."
+msgstr ""
+
 #: ../Views/ConfirmOutfitView.axaml:28
 msgid ""
 "Go change into the outfit below. When you are ready, press the button to "
 "confirm."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:26
+msgid "Good. Dissatisfaction is the very mother of improvement."
 msgstr ""
 
 #: ../Models/Banks/CornertimeInstructionBank.cs:37
@@ -509,9 +627,33 @@ msgstr ""
 msgid "Halves the severity of one pending punishment."
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:31
+msgid "Hard labour leaves its mark. You may rest briefly."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:18
+msgid "Have you been diligent in your duties today?"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:39
+msgid "Have you harboured any unbecoming thoughts today?"
+msgstr ""
+
 #: ../ViewModels/ShopViewModel.cs:35
 #, csharp-format
 msgid "Held: {0}"
+msgstr ""
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:90
+msgid "Hold still."
+msgstr ""
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:73
+msgid "Hold your pose."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:40
+msgid "Honesty, even in confession, is a virtue."
 msgstr ""
 
 #: ../Views/ForcedOutfitPresetEditorView.axaml:30
@@ -520,6 +662,22 @@ msgstr ""
 
 #: ../Models/Banks/PermissionPhraseBank.cs:34
 msgid "How curious a request, given what you have on underneath."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:34
+msgid "How ungrateful. Many would envy your position greatly."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:35
+msgid "How very agreeable you are."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:41
+msgid "How very proper of you."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:23
+msgid "Humility is the first virtue of good service."
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.cs:474
@@ -540,7 +698,19 @@ msgstr ""
 msgid "I am fortunate indeed to be so thoroughly looked after"
 msgstr ""
 
-#: ../Views/ConfirmOutfitView.axaml:134
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:452
+msgid "I am here"
+msgstr ""
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:131
+msgid "I am listening."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:380 ../ViewModels/DashboardViewModel.IdlePopups.cs:447
+msgid "I am ready"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:440 ../Views/ConfirmOutfitView.axaml:134
 msgid "I am ready, Madame"
 msgstr ""
 
@@ -571,6 +741,10 @@ msgstr ""
 msgid "I know a task delayed is a task doubled, and I shall not double it"
 msgstr ""
 
+#: ../Models/Banks/PoseForCameraInstructionBank.cs:12
+msgid "I require a photograph in which {0} may be clearly inspected. See to it."
+msgstr ""
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:30
 msgid "I saw that. {0} seconds more for you."
 msgstr ""
@@ -581,6 +755,10 @@ msgstr ""
 
 #: ../Models/Banks/EmployerPhraseBank.cs:15
 msgid "I shall speak when addressed, and act before then"
+msgstr ""
+
+#: ../Models/Banks/SelfCheckInstructionBank.cs:12
+msgid "I shall test your memory. Is {0} visible here?"
 msgstr ""
 
 #: ../Models/Banks/EmployerPhraseBank.cs:19
@@ -609,9 +787,17 @@ msgstr ""
 msgid "Improves your odds of approval on your next request."
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:19
+msgid "Industry becomes you."
+msgstr ""
+
 #: ../ViewModels/DashboardViewModel.cs:126
 #, csharp-format
 msgid "Initial: £{0:F2}"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:28
+msgid "Initiative is most commendable in service."
 msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:155
@@ -625,6 +811,10 @@ msgstr ""
 #: ../Models/Banks/CornertimeInstructionBank.cs:13
 msgid ""
 "Into the corner. Feet together, hands clasped before you, eyes on the wall."
+msgstr ""
+
+#: ../Models/Banks/KneelInstructionBank.cs:12
+msgid "Kneel where you stand, and remain a while with your humility."
 msgstr ""
 
 #: ../ViewModels/TaskItemViewModel.cs:41
@@ -711,6 +901,10 @@ msgstr ""
 msgid "Next wage in {0:D2}:{1:D2}"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:343 ../ViewModels/DashboardViewModel.IdlePopups.cs:425
+msgid "No"
+msgstr ""
+
 #: ../ViewModels/WelcomeViewModel.cs:36
 msgid "No Free Slots"
 msgstr ""
@@ -774,12 +968,26 @@ msgctxt "punishment"
 msgid "Noticed"
 msgstr ""
 
+#: ../Models/Banks/KneelInstructionBank.cs:11
+msgid "Now kneel, look down, and reflect upon your failings."
+msgstr ""
+
 #: ../ViewModels/DashboardViewModel.cs:642 ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
 msgstr ""
 
 #: ../ViewModels/TaskItemViewModel.cs:45
 msgid "Occasional task"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:38
+msgid ""
+"On the contrary — one who believes herself beyond correction needs it most "
+"urgently."
+msgstr ""
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:161
+msgid "One moment — I am considering what was said."
 msgstr ""
 
 #: ../Views/LoadingView.axaml:16
@@ -816,6 +1024,10 @@ msgstr ""
 msgid "Pending Punishments"
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:22
+msgid "Perfection belongs to the divine, not the domestic. Reconsider."
+msgstr ""
+
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:30
 msgid "Permissions"
 msgstr ""
@@ -838,16 +1050,38 @@ msgstr ""
 msgid "Point the camera at the combination, then press Capture."
 msgstr ""
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:223
+msgid "Position confirmed"
+msgstr ""
+
 #: ../Views/CameraSetupView.axaml:16
 msgid "Position the camera"
+msgstr ""
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:218
+msgid "Position the camera to frame where you shall kneel."
 msgstr ""
 
 #: ../Views/WritingLinesPunishmentView.axaml:92
 msgid "Precision"
 msgstr ""
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:103
+msgid "Prepare yourself."
+msgstr ""
+
+#: ../Models/Banks/PoseForCameraInstructionBank.cs:11
+msgid ""
+"Present yourself before the camera and let {0} be plainly visible, that I may "
+"confirm it."
+msgstr ""
+
 #: ../Views/WritingLinesPunishmentView.axaml:51
 msgid "Previous lines"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:19
+msgid "Pride in one's work breeds complacency. Guard against it."
 msgstr ""
 
 #: ../Views/WritingLinesPunishmentView.axaml:76
@@ -864,6 +1098,10 @@ msgstr ""
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
 msgid "Record (5s)"
+msgstr ""
+
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:120
+msgid "Recording now."
 msgstr ""
 
 #: ../Views/Dialogs/WebcamCaptureDialog.axaml:47
@@ -889,6 +1127,11 @@ msgstr ""
 msgid "Remaining"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:609
+msgctxt "accessory"
+msgid "Removed"
+msgstr ""
+
 #: ../Models/CardDisplay.cs:31
 msgid "Removes one pending punishment outright."
 msgstr ""
@@ -903,6 +1146,10 @@ msgstr ""
 
 #: ../Views/SafeLockView.axaml:54
 msgid "Retry Capture"
+msgstr ""
+
+#: ../Models/Banks/CurtsyInstructionBank.cs:12
+msgid "Rise, and offer me a proper curtsy. See that it is done with grace."
 msgstr ""
 
 #: ../Views/SafeLockView.axaml:19
@@ -923,6 +1170,10 @@ msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:157
 msgid "Save outfit"
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:38
+msgid "Self-sufficiency is a virtue much to be admired."
 msgstr ""
 
 #: ../Views/GameCompleteView.axaml:15
@@ -1007,12 +1258,24 @@ msgstr ""
 msgid "Stillness, achieved. You may return to your duties."
 msgstr ""
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:199
+msgid "Submit"
+msgstr ""
+
 #: ../ViewModels/TaskItemViewModel.cs:46
 #, csharp-format
 msgid "Suggested every {0} day"
 msgid_plural "Suggested every {0} days"
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:594
+msgid "Suitably adorned. See that it stays that way."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:35
+msgid "Suspicious. Silence most often conceals the loudest grievances."
+msgstr ""
 
 #: ../Views/Controls/DashboardAddTaskForm.axaml:21
 msgid "Task name"
@@ -1034,6 +1297,11 @@ msgstr ""
 msgid "That was not stillness. {0} seconds have been added."
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:937
+msgid ""
+"That was not what I asked to hear. See that you attend more closely next time."
+msgstr ""
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:24
 msgid "That will do. Your corner time has begun."
 msgstr ""
@@ -1044,6 +1312,19 @@ msgstr ""
 
 #: ../Views/ShopView.axaml:20
 msgid "The Shop"
+msgstr ""
+
+#: ../Models/Banks/HydrationReminderBank.cs:11
+msgid ""
+"The body, like the house, requires its proper upkeep. Go and drink half a cup."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:463 ../ViewModels/DashboardViewModel.IdlePopups.cs:554
+msgid "The camera saw nothing of your penance. A pity."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:652 ../ViewModels/DashboardViewModel.IdlePopups.cs:705 ../ViewModels/DashboardViewModel.IdlePopups.cs:810
+msgid "The camera was not cooperative. We shall try again another time."
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.cs:640
@@ -1087,6 +1368,10 @@ msgstr ""
 msgid "The line to copy"
 msgstr ""
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:172
+msgid "The microphone is not to be found. You will write it instead."
+msgstr ""
+
 #: ../ViewModels/ConfirmOutfitViewModel.cs:77
 msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
@@ -1101,6 +1386,14 @@ msgstr ""
 #: ../ViewModels/DashboardViewModel.cs:639
 #, csharp-format
 msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:23
+msgid "Then you have admitted failure. Most unsatisfactory."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:32
+msgid "Then you have clearly not been working hard enough."
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:377
@@ -1148,6 +1441,10 @@ msgstr ""
 msgid "Total incurred: {0}"
 msgstr ""
 
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:190
+msgid "Type the quotation here"
+msgstr ""
+
 #: ../ViewModels/PermissionTypeItemViewModel.cs:25
 msgid "Use the toilet (n.1)"
 msgstr ""
@@ -1156,16 +1453,36 @@ msgstr ""
 msgid "Use the toilet (n.2)"
 msgstr ""
 
-#: ../ViewModels/StartSessionViewModel.cs:221
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:569 ../ViewModels/StartSessionViewModel.cs:221
 msgid "Very well"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:931
+msgid "Very well spoken."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:968
+msgid "Very well."
 msgstr ""
 
 #: ../Models/Banks/PermissionPhraseBank.cs:10
 msgid "Very well. See that it does not become a habit."
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:809
+msgid "Very well. The curtsy has been recorded."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:704
+msgid "Very well. The photograph has been taken."
+msgstr ""
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:23
 msgid "Very well. The time begins now — hold that position."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:32
+msgid "Vigour becomes a good domestic."
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.cs:132
@@ -1173,8 +1490,16 @@ msgstr ""
 msgid "Wage: £{0:F2} / {1} min"
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:930
+msgid "Well read — but I cannot overlook your tardiness."
+msgstr ""
+
 #: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/WritingLinesPunishmentView.axaml:21
 msgid "Writing Lines"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:343 ../ViewModels/DashboardViewModel.IdlePopups.cs:425
+msgid "Yes"
 msgstr ""
 
 #: ../Models/Banks/PermissionPhraseBank.cs:33
@@ -1193,18 +1518,68 @@ msgid ""
 "new task awaiting you will encourage rather more discipline."
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:20
+msgid "You have confessed to idleness most plainly."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:608
+#, csharp-format
+msgid "You may now remove the {0}."
+msgstr ""
+
+#: ../Models/Banks/HydrationReminderBank.cs:14
+msgid ""
+"You may pause to drink. I shall not think less of you for it. Drink half a "
+"glass."
+msgstr ""
+
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:340
 msgid ""
 "You set down the pen too soon. A fine has been added, and the lines remain "
 "unwritten."
 msgstr ""
 
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:568
+#, csharp-format
+msgid "You shall wear the {0} until further notice."
+msgstr ""
+
 #: ../Views/ShopView.axaml:88
 msgid "You wager, I collect. Do sit down — it will take but a moment."
 msgstr ""
 
+#: ../Models/Banks/ImpossibleQuestionBank.cs:28
+msgid "You were not engaged to think, but to serve."
+msgstr ""
+
+#: ../Models/Banks/CurtsyInstructionBank.cs:11
+msgid ""
+"You will perform a curtsy before the camera, that I may witness your "
+"deportment."
+msgstr ""
+
+#: ../Models/Banks/PoseForCameraInstructionBank.cs:13
+msgid "You will pose for the camera. {0} must appear in the frame as proof."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:446
+msgid "You will read the following aloud, that I may hear it spoken:"
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:66
 msgid "Your Safe Combination"
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:758
+msgid "Your account does not tally with my records. This will not do."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:757
+msgid "Your account tallies. Very well."
+msgstr ""
+
+#: ../Models/Banks/ImpossibleQuestionBank.cs:20
+msgid "Your candour does you credit. Now remedy it."
 msgstr ""
 
 #: ../Views/GameCompleteView.axaml:19
@@ -1215,6 +1590,10 @@ msgstr ""
 
 #: ../Models/CardDisplay.cs:29
 msgid "Your next request is approved without question — this once."
+msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:452
+msgid "Your presence is required. Attend at once."
 msgstr ""
 
 #: ../Views/WritingLinesPunishmentView.axaml:37
@@ -1266,6 +1645,13 @@ msgstr ""
 #, csharp-format
 msgid "{0} and {1} cannot be worn together."
 msgstr ""
+
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:86
+#, csharp-format
+msgid "{0} attempt remaining"
+msgid_plural "{0} attempts remaining"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../ViewModels/PunishmentItemViewModel.cs:56
 #, csharp-format
@@ -1329,6 +1715,18 @@ msgstr ""
 #: ../ViewModels/OutfitRuleValidator.cs:83
 #, csharp-format
 msgid "{0} requires one of: {1}. {2} selected — requirement satisfied."
+msgstr ""
+
+#: ../Models/Banks/SummonPhraseBank.cs:11
+msgid "{0}! Come here at once."
+msgstr ""
+
+#: ../Models/Banks/SummonPhraseBank.cs:13
+msgid "{0}! Do stop dawdling and come here."
+msgstr ""
+
+#: ../Models/Banks/SummonPhraseBank.cs:14
+msgid "{0}! Here. Now."
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:379

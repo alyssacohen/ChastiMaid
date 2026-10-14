@@ -1,3 +1,5 @@
+using ChastiMaid.Localization;
+
 namespace ChastiMaid.Models;
 
 public static class KneelInstructionBank
@@ -6,9 +8,9 @@ public static class KneelInstructionBank
 
     private static readonly List<string> InstructionKeys =
     [
-        "KneelInstructionReflect",
-        "KneelInstructionHumility",
-        "KneelInstructionStillness"
+        Localizer.Mark("Now kneel, look down, and reflect upon your failings."),
+        Localizer.Mark("Kneel where you stand, and remain a while with your humility."),
+        Localizer.Mark("Down upon your knees. Stillness becomes you.")
     ];
 
     public static string GetRandom(Random? rng = null)
