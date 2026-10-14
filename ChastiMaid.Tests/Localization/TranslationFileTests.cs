@@ -13,7 +13,7 @@ namespace ChastiMaid.Tests.Localization;
 public partial class TranslationFileTests(ITestOutputHelper output)
 {
     public static TheoryData<string> Languages =>
-        [.. Directory.EnumerateFiles(LocaleDir, "*.po").Select(Path.GetFileNameWithoutExtension).Order()!];
+        [.. Directory.EnumerateFiles(LocaleDir, "*.po").Select(p => Path.GetFileNameWithoutExtension(p)!).Order()];
 
     [Fact]
     public void LocaleFolder_HasAtLeastOneTranslation()
