@@ -32,8 +32,9 @@ msgid "+ Add Item"
 msgstr "+ Aggiungi capo"
 
 #: ../Views/Controls/WardrobeToolbar.axaml:46
+#, fuzzy
 msgid "+ Add item"
-msgstr ""
+msgstr "+ Aggiungi capo"
 
 #: ../Models/CardDisplay.cs:13
 #, csharp-format
@@ -124,9 +125,12 @@ msgid "A steady hand betrays a steady mind."
 msgstr "Una mano ferma tradisce una mente ferma."
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:31
+#, fuzzy
 msgid ""
 "A sum added to the debt immediately. Always active; it cannot be turned off."
 msgstr ""
+"Una somma aggiunta subito al debito. Sempre attiva, non può essere "
+"disattivata."
 
 #: ../Models/Banks/EmployerPhraseBank.cs:23
 msgid "A task I begin in earnest is a task I count already half completed"
@@ -172,8 +176,9 @@ msgid "Accept the terms"
 msgstr "Accetto le condizioni"
 
 #: ../Models/WardrobeLayer.cs:22
+#, fuzzy
 msgid "Accessories"
-msgstr ""
+msgstr "Accessori"
 
 #: ../Views/WritingLinesPunishmentView.axaml:89
 msgid "Accuracy"
@@ -221,8 +226,9 @@ msgid "After all this time? How deeply disappointing."
 msgstr "Dopo tutto questo tempo? Mi avete profondamente delusa."
 
 #: ../ViewModels/SettingsViewModel.cs:273
+#, fuzzy
 msgid "All"
-msgstr ""
+msgstr "Tutti"
 
 #: ../ViewModels/WelcomeViewModel.cs:37
 msgid ""
@@ -257,8 +263,9 @@ msgid "Ask"
 msgstr "Chiedi"
 
 #: ../Views/Controls/SettingsPopupsTab.axaml:108
+#, fuzzy
 msgid "Asks for a curtsy, recorded on video."
-msgstr ""
+msgstr "Richiede una riverenza, registrata in video."
 
 #: ../ViewModels/PunishmentItemViewModel.cs:24
 #, csharp-format
@@ -286,8 +293,9 @@ msgid "Back"
 msgstr "Indietro"
 
 #: ../Models/WardrobeLayer.cs:20
+#, fuzzy
 msgid "Base"
-msgstr ""
+msgstr "Base"
 
 #: ../Views/CornertimePunishmentView.axaml:34
 msgid "Begin"
@@ -392,10 +400,13 @@ msgid "Close drawer"
 msgstr "Chiudi pannello"
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:50
+#, fuzzy
 msgid ""
 "Comma-separated. One is picked at random, along with the name, for popup "
 "summons."
 msgstr ""
+"Separati da virgola. Ne viene scelto uno a caso, insieme al nome, per le "
+"convocazioni dei popup."
 
 #: ../Views/DashboardView.axaml:400
 msgid "Complete Game"
@@ -452,9 +463,9 @@ msgstr "Contratto esportato."
 
 #. {0}, {1} and {2} are the three counts below, e.g. "12 wardrobe items"
 #: ../Services/Contracts/ContractImportFlow.cs:79
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Contract loaded: {0}, {1} and {2}."
-msgstr ""
+msgstr "Contratto caricato: {0}, {1} e {2}."
 
 #: ../Views/Controls/ContractDocument.axaml:15
 #, fuzzy
@@ -511,9 +522,9 @@ msgid "Credit available"
 msgstr "Credito disponibile"
 
 #: ../ViewModels/LoadGameViewModel.cs:41
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Credit: {0}"
-msgstr ""
+msgstr "Credito: {0}"
 
 #: ../Views/Controls/OutfitDrawer.axaml:45
 msgid "Current Outfit"
@@ -541,9 +552,9 @@ msgid "Debt and Interest"
 msgstr "Debito e interessi"
 
 #: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:42
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Debt: {0}"
-msgstr ""
+msgstr "Debito: {0}"
 
 #: ../ViewModels/LoadGameViewModel.cs:162 ../Views/Controls/SettingsChoresTab.axaml:89 ../Views/Controls/SettingsChoresTab.axaml:90 ../Views/Controls/SettingsOutfitRulesTab.axaml:52 ../Views/Controls/SettingsOutfitRulesTab.axaml:53
 msgid "Delete"
@@ -609,7 +620,7 @@ msgid "Diaper Play"
 msgstr "Diaper Play"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:104
-#, csharp-format
+#, csharp-format, fuzzy
 msgid ""
 "Diaper Play is in force for {0} garment. While it is worn, the interval "
 "between hydration reminders is halved."
@@ -617,7 +628,11 @@ msgid_plural ""
 "Diaper Play is in force for {0} garments. While one is worn, the interval "
 "between hydration reminders is halved."
 msgstr[0] ""
+"Il Diaper Play è in vigore per {0} capo. Finché è indossato, l'intervallo tra "
+"i richiami all'idratazione è dimezzato."
 msgstr[1] ""
+"Il Diaper Play è in vigore per {0} capi. Finché uno di essi è indossato, "
+"l'intervallo tra i richiami all'idratazione è dimezzato."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:107
 #, fuzzy
@@ -683,14 +698,18 @@ msgstr "Durata minima/massima (secondi)"
 
 #. default chore name; editable by the player
 #: ../Services/Content/MinimalContentSeeder.cs:30
+#, fuzzy
 msgid "Dusting"
-msgstr ""
+msgstr "Spolverare"
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:194
+#, fuzzy
 msgid ""
 "Each session one of the marked items is chosen at random and must be worn. It "
 "can only be changed while the safe is open."
 msgstr ""
+"A ogni sessione uno dei capi contrassegnati viene scelto a caso e va "
+"indossato. Si può cambiare solo a cassaforte aperta."
 
 #: ../Models/CardDisplay.cs:12
 msgid "Eager"
@@ -807,18 +826,19 @@ msgid ""
 "your current terms outright. Your name, language, camera and autosave "
 "settings are never included."
 msgstr ""
-"Esportate tutte le impostazioni di gioco in un unico file contratto — "
-"compresi guardaroba, regole degli abbinamenti, task, punizioni e permessi — "
-"oppure caricatene uno per sostituire integralmente le condizioni attuali. "
-"Nome, lingua, fotocamera e salvataggio automatico non sono mai inclusi."
+"Tutte le impostazioni di gioco possono essere esportate in un unico file "
+"contratto — compresi guardaroba, regole di abbinamento, compiti, punizioni e "
+"permessi — oppure sostituite caricandone uno. Nome, lingua, fotocamera e "
+"salvataggio automatico non sono mai inclusi."
 
 #: ../Models/CardDisplay.cs:27
 msgid "Extends the duration of your next granted request."
 msgstr "Allunga la durata della vostra prossima richiesta concessa."
 
 #: ../Models/WardrobeLayer.cs:19
+#, fuzzy
 msgid "Extra"
-msgstr ""
+msgstr "Extra"
 
 #: ../Views/Controls/WardrobeToolbar.axaml:13
 msgid "Filter by name or tag…"
@@ -890,8 +910,9 @@ msgid "For unseemly haste in your duties."
 msgstr "Per un'indecorosa fretta nei vostri doveri."
 
 #: ../ViewModels/PunishmentItemViewModel.cs:19 ../Views/Controls/SettingsPunishmentsTab.axaml:319
+#, fuzzy
 msgid "Forced Outfit"
-msgstr ""
+msgstr "Abbigliamento obbligatorio"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:204
 #, fuzzy
@@ -899,7 +920,7 @@ msgid "Forced outfits are not in force."
 msgstr "Gli abiti imposti non sono in vigore."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:201
-#, csharp-format
+#, csharp-format, fuzzy
 msgid ""
 "Forced outfits may be imposed for as long as {0}, drawn from the {1} outfit "
 "kept ready for the purpose."
@@ -907,7 +928,11 @@ msgid_plural ""
 "Forced outfits may be imposed for as long as {0}, drawn from {1} outfits kept "
 "ready for the purpose."
 msgstr[0] ""
+"L'abito imposto potrà durare fino a {0}, scelto tra {1} solo abito "
+"predisposto allo scopo."
 msgstr[1] ""
+"Gli abiti imposti potranno durare fino a {0}, scelti tra {1} predisposti allo "
+"scopo."
 
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:157
 msgid "Forgive My Impertinence"
@@ -1207,9 +1232,9 @@ msgid "Industry becomes you."
 msgstr "L'operosità vi si addice."
 
 #: ../ViewModels/DashboardViewModel.cs:126
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Initial: {0}"
-msgstr ""
+msgstr "Iniziale: {0}"
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:28
 msgid "Initiative is most commendable in service."
@@ -1263,8 +1288,9 @@ msgid "Kneel"
 msgstr "Inginocchiarsi"
 
 #: ../Views/Controls/SettingsPopupsTab.axaml:225
+#, fuzzy
 msgid "Kneel for a random duration while the camera takes photos."
-msgstr ""
+msgstr "Inginocchiarsi per una durata casuale mentre la fotocamera scatta foto."
 
 #: ../Models/Banks/KneelInstructionBank.cs:12
 msgid "Kneel where you stand, and remain a while with your humility."
@@ -1275,11 +1301,11 @@ msgid "Language"
 msgstr "Lingua"
 
 #: ../ViewModels/TaskItemViewModel.cs:41
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Last done: {0} day ago"
 msgid_plural "Last done: {0} days ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ultima volta: {0} giorno fa"
+msgstr[1] "Ultima volta: {0} giorni fa"
 
 #: ../Views/Controls/WardrobeToolbar.axaml:20
 msgid "Layer:"
@@ -1355,12 +1381,12 @@ msgid "Longest wait between photos (seconds)"
 msgstr "Attesa massima tra uno scatto e l'altro (secondi)"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:63
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Madame keeps {0} form of address in reserve for summoning the Maid."
 msgid_plural ""
 "Madame keeps {0} forms of address in reserve for summoning the Maid."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Madame tiene in serbo {0} appellativo per convocare la Cameriera."
+msgstr[1] "Madame tiene in serbo {0} appellativi per convocare la Cameriera."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:189
 #, csharp-format, fuzzy
@@ -1380,7 +1406,7 @@ msgstr ""
 "Cameriera risponderà entro {2}."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:123
-#, csharp-format
+#, csharp-format, fuzzy
 msgid ""
 "Madame sets {0} standing task, paid upon completion. Were the Maid to "
 "complete it, they would earn {1}."
@@ -1388,7 +1414,11 @@ msgid_plural ""
 "Madame sets {0} standing tasks, each paid upon completion. Were the Maid to "
 "complete every one, they would earn {1}."
 msgstr[0] ""
+"Madame stabilisce {0} incombenza fissa, retribuita al termine. Se la "
+"Cameriera la portasse a compimento, ammonterebbe a {1}."
 msgstr[1] ""
+"Madame stabilisce {0} incombenze fisse, ciascuna retribuita al termine. Se la "
+"Cameriera le portasse a compimento tutte, ammonterebbero a {1}."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:60
 #, fuzzy
@@ -1449,8 +1479,9 @@ msgid "May I be excused?"
 msgstr "Con permesso..."
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:283
+#, fuzzy
 msgid "Messages shown at random intervals while writing."
-msgstr ""
+msgstr "Messaggi mostrati a intervalli casuali durante la scrittura."
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:84
 msgid "Min debt (£)"
@@ -1740,8 +1771,9 @@ msgid "Optional description"
 msgstr "Descrizione opzionale"
 
 #: ../Models/WardrobeLayer.cs:21
+#, fuzzy
 msgid "Outerwear"
-msgstr ""
+msgstr "Abiti"
 
 #: ../Views/ConfirmOutfitView.axaml:24
 msgid "Outfit Confirmed"
@@ -1789,8 +1821,9 @@ msgstr ""
 "La perfezione appartiene al divino, non alla servitù domestica. Riconsiderate."
 
 #: ../Views/Controls/SettingsPopupsTab.axaml:79
+#, fuzzy
 msgid "Periodic reminders to drink water."
-msgstr ""
+msgstr "Promemoria periodici per bere acqua."
 
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:30 ../Views/Controls/SettingsPermissionsTab.axaml:11 ../Views/SettingsView.axaml:91
 msgid "Permissions"
@@ -1825,14 +1858,18 @@ msgid "Plug & Play"
 msgstr "Plug & Play"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:97
-#, csharp-format
+#, csharp-format, fuzzy
 msgid ""
 "Plug and Play is in force for {0} garment, to be worn for between {1} and {2}."
 msgid_plural ""
 "Plug and Play is in force for {0} garments, each to be worn for between {1} "
 "and {2}."
 msgstr[0] ""
+"Il Plug and Play è in vigore per {0} capo, da indossare per un periodo "
+"compreso tra {1} e {2}."
 msgstr[1] ""
+"Il Plug and Play è in vigore per {0} capi, da indossare per un periodo "
+"compreso tra {1} e {2}."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:102
 #, fuzzy
@@ -1934,18 +1971,21 @@ msgid "Quote recognition sensitivity"
 msgstr "Sensibilità riconoscimento citazione"
 
 #: ../Views/Controls/SettingsPopupsTab.axaml:138
+#, fuzzy
 msgid "Read a phrase aloud; speech recognition compares it with the text."
 msgstr ""
+"Leggere una frase ad alta voce: il riconoscimento vocale la confronta con il "
+"testo."
 
 #: ../ViewModels/SettingsViewModel.cs:540
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Recognized: {0}%. Below the threshold: try again, speaking clearly."
-msgstr ""
+msgstr "Riconosciuto: {0}%. Sotto la soglia: riprovare parlando chiaramente."
 
 #: ../ViewModels/SettingsViewModel.cs:539
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Recognized: {0}%. The threshold is met."
-msgstr ""
+msgstr "Riconosciuto: {0}%. Soglia raggiunta."
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
 msgid "Record (5s)"
@@ -2080,10 +2120,13 @@ msgid "Select tag"
 msgstr "Seleziona tag"
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:225
+#, fuzzy
 msgid ""
 "Selected accessories must be worn for a random duration before they can be "
 "removed."
 msgstr ""
+"Gli accessori selezionati vanno indossati per una durata casuale prima di "
+"poterli togliere."
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:38
 msgid "Self-sufficiency is a virtue much to be admired."
@@ -2123,12 +2166,15 @@ msgstr ""
 "incepparsi, va detto."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:181
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Should the Maid leave the pen idle for {0}, {1} line shall be added."
 msgid_plural ""
 "Should the Maid leave the pen idle for {0}, {1} lines shall be added."
 msgstr[0] ""
+"Se la Cameriera lascerà la penna inattiva per {0}, verrà aggiunta {1} riga."
 msgstr[1] ""
+"Se la Cameriera lascerà la penna inattiva per {0}, verranno aggiunte {1} "
+"righe."
 
 #: ../Views/EndSessionView.axaml:28
 msgid "Show Safe Combination and Close"
@@ -2184,8 +2230,9 @@ msgid "Speech recognition"
 msgstr "Riconoscimento vocale"
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:57
+#, fuzzy
 msgid "Stand still in a corner while the camera watches for movement."
-msgstr ""
+msgstr "Restare immobili in un angolo mentre la fotocamera rileva i movimenti."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:53
 #, fuzzy
@@ -2193,8 +2240,9 @@ msgid "Standing Tasks"
 msgstr "Incombenze fisse"
 
 #: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:186 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
+#, fuzzy
 msgid "Start"
-msgstr ""
+msgstr "Inizia"
 
 #: ../Views/SafeLockView.axaml:28
 msgid "Start Camera"
@@ -2225,11 +2273,11 @@ msgid "Submit"
 msgstr "Invia"
 
 #: ../ViewModels/TaskItemViewModel.cs:46
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Suggested every {0} day"
 msgid_plural "Suggested every {0} days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Consigliato ogni {0} giorno"
+msgstr[1] "Consigliato ogni {0} giorni"
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:594
 msgid "Suitably adorned. See that it stays that way."
@@ -2275,8 +2323,9 @@ msgid "Test Rules"
 msgstr "Testa regole"
 
 #: ../Views/Controls/SettingsPopupsTab.axaml:172
+#, fuzzy
 msgid "Test speech recognition by reading this phrase:"
-msgstr ""
+msgstr "Provare il riconoscimento vocale leggendo questa frase:"
 
 #: ../Models/Banks/PermissionPhraseBank.cs:35
 msgid "That question answers itself, does it not?"
@@ -2468,8 +2517,10 @@ msgstr ""
 "passaggio e continuare."
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:324
+#, fuzzy
 msgid "The selected items become mandatory for a number of following sessions."
 msgstr ""
+"I capi selezionati diventano obbligatori per alcune sessioni successive."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:71
 #, fuzzy
@@ -2500,11 +2551,11 @@ msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
 msgstr "L'outfit «{0}» sarà obbligatorio per le prossime {1}."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:88
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "The wardrobe comprises {0} garment: {1}."
 msgid_plural "The wardrobe comprises {0} garments: {1}."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Il guardaroba comprende {0} capo: {1}."
+msgstr[1] "Il guardaroba comprende {0} capi: {1}."
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:23
 msgid "Then you have admitted failure. Most unsatisfactory."
@@ -2568,13 +2619,14 @@ msgid "Total Multiplier"
 msgstr "Moltiplicatore totale"
 
 #: ../Views/Controls/DebtWidget.axaml.cs:104
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Total incurred: {0}"
-msgstr ""
+msgstr "Totale contratto: {0}"
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:191
+#, fuzzy
 msgid "Type a sentence repeatedly, without mistakes."
-msgstr ""
+msgstr "Scrivere una frase più volte, senza errori."
 
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:189
 msgid "Type the quotation here"
@@ -2582,8 +2634,9 @@ msgstr "Digitate qui la citazione"
 
 #. wardrobe layer names, each with a short hint on what belongs to it
 #: ../Models/WardrobeLayer.cs:18
+#, fuzzy
 msgid "Underwear"
-msgstr ""
+msgstr "Biancheria intima"
 
 #: ../ViewModels/SettingsViewModel.cs:857
 msgid "Unsaved Changes"
@@ -2661,9 +2714,9 @@ msgid "Wage interval (minutes)"
 msgstr "Intervallo paga (minuti)"
 
 #: ../ViewModels/DashboardViewModel.cs:132
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "Wage: {0} / {1} min"
-msgstr ""
+msgstr "Paga: {0} / {1} min"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:47
 #, fuzzy
@@ -2706,15 +2759,21 @@ msgid "Well, isn't that lovely? A 100% success rate — obviously."
 msgstr "Bene, non è forse magnifico? Il 100% di successo — ovviamente."
 
 #: ../Views/Controls/SettingsGeneralTab.axaml:159
+#, fuzzy
 msgid ""
 "When the outfit includes one of the marked items, toilet requests are refused "
 "and hydration reminders come twice as often."
 msgstr ""
+"Quando l'outfit include uno dei capi contrassegnati, le richieste per il "
+"bagno vengono rifiutate e i promemoria di idratazione arrivano con frequenza "
+"doppia."
 
 #: ../Views/Controls/SettingsChoresTab.axaml:21
+#, fuzzy
 msgid ""
 "While a chore is in progress, the camera takes photos at random intervals."
 msgstr ""
+"Mentre un compito è in corso, la fotocamera scatta foto a intervalli casuali."
 
 #: ../Services/Contracts/ContractImportFlow.cs:60
 #, fuzzy
@@ -2776,8 +2835,9 @@ msgid "You have unsaved changes in this tab."
 msgstr "Ci sono modifiche non salvate in questa scheda."
 
 #: ../ViewModels/SettingsViewModel.cs:844
+#, fuzzy
 msgid "You have unsaved changes. What would you like to do?"
-msgstr "Ci sono modifiche non salvate. Cosa desiderate fare?"
+msgstr "Ci sono modifiche non salvate. Come procedere?"
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:608
 #, csharp-format
@@ -2879,21 +2939,25 @@ msgstr "aggiungi tag..."
 
 #. default wardrobe item, and the body areas (slots) it covers; editable by the player
 #: ../Services/Content/MinimalContentSeeder.cs:21
+#, fuzzy
 msgid "chest"
-msgstr ""
+msgstr "petto"
 
 #: ../Models/WardrobeLayer.cs:21
+#, fuzzy
 msgid "dress, skirt, blouse"
-msgstr ""
+msgstr "abito, gonna, camicetta"
 
 #. wardrobe layer names, each with a short hint on what belongs to it
 #: ../Models/WardrobeLayer.cs:18
+#, fuzzy
 msgid "foundation · choose freely"
-msgstr ""
+msgstr "base · scelta libera"
 
 #: ../Models/WardrobeLayer.cs:20
+#, fuzzy
 msgid "hosiery, slip · choose at most one pair"
-msgstr ""
+msgstr "calze, sottoveste · al massimo un paio"
 
 #: ../Views/ChangeOutfitView.axaml:28 ../Views/ChangeOutfitView.axaml:37 ../Views/ChangeOutfitView.axaml:46 ../Views/ChangeOutfitView.axaml:55 ../Views/ForcedOutfitPresetEditorView.axaml:52 ../Views/ForcedOutfitPresetEditorView.axaml:61 ../Views/ForcedOutfitPresetEditorView.axaml:70
 msgid "item"
@@ -2901,11 +2965,11 @@ msgstr "capo"
 
 #. shown after a large number, e.g. "3  items selected"
 #: ../ViewModels/ChangeOutfitViewModel.cs:144
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "item selected"
 msgid_plural "items selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "capo selezionato"
+msgstr[1] "capi selezionati"
 
 #: ../Views/ForcedOutfitPresetEditorView.axaml:160
 msgid "items selected"
@@ -2913,8 +2977,9 @@ msgstr "capi selezionati"
 
 #. default wardrobe item, and the body areas (slots) it covers; editable by the player
 #: ../Services/Content/MinimalContentSeeder.cs:21
+#, fuzzy
 msgid "legs"
-msgstr ""
+msgstr "gambe"
 
 #: ../Views/ChangeOutfitView.axaml:57
 msgid "locked (chastity device)"
@@ -2922,8 +2987,9 @@ msgstr "bloccato (dispositivo di castità)"
 
 #. default wardrobe item, and the body areas (slots) it covers; editable by the player
 #: ../Services/Content/MinimalContentSeeder.cs:21
+#, fuzzy
 msgid "plain dress"
-msgstr ""
+msgstr "abito semplice"
 
 #: ../Views/ChangeOutfitView.axaml:39 ../Views/ForcedOutfitPresetEditorView.axaml:63
 msgctxt "outfit item"
@@ -2936,12 +3002,14 @@ msgid "selected"
 msgstr "selezionato"
 
 #: ../Models/WardrobeLayer.cs:22
+#, fuzzy
 msgid "shoes, jewellery · multiple allowed"
-msgstr ""
+msgstr "scarpe, gioielli · più di uno ammesso"
 
 #: ../Models/WardrobeLayer.cs:19
+#, fuzzy
 msgid "suspenders, garters · optional unless required by hosiery"
-msgstr ""
+msgstr "reggicalze, giarrettiere · facoltativi, salvo se richiesti dalle calze"
 
 #: ../Views/ChangeOutfitView.axaml:48 ../Views/ForcedOutfitPresetEditorView.axaml:72
 msgctxt "outfit item"
@@ -2960,58 +3028,58 @@ msgstr "{0} Min"
 
 #. {0} and {1} are lists of clothing item names
 #: ../ViewModels/OutfitRuleValidator.cs:40
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} and {1} cannot be worn together."
-msgstr ""
+msgstr "{0} e {1} non possono essere indossati insieme."
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:86
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} attempt remaining"
 msgid_plural "{0} attempts remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} tentativo rimasto"
+msgstr[1] "{0} tentativi rimasti"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:112
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} garment is designated as a chastity device."
 msgid_plural "{0} garments are designated as chastity devices."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capo è designato come dispositivo di castità."
+msgstr[1] "{0} capi sono designati come dispositivi di castità."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:235 ../ViewModels/PunishmentItemViewModel.cs:56
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} hour"
 msgid_plural "{0} hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} ora"
+msgstr[1] "{0} ore"
 
 #: ../ViewModels/OutfitViewModel.cs:20
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} item"
 msgid_plural "{0} items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capo"
+msgstr[1] "{0} capi"
 
 #: ../ViewModels/SettingsViewModel.cs:663
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} item selected"
 msgid_plural "{0} items selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capo selezionato"
+msgstr[1] "{0} capi selezionati"
 
 #: ../ViewModels/OutfitViewModel.cs:21
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} layer covered"
 msgid_plural "{0} layers covered"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} strato occupato"
+msgstr[1] "{0} strati occupati"
 
 #: ../ViewModels/PunishmentItemViewModel.cs:31
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} line"
 msgid_plural "{0} lines"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} riga"
+msgstr[1] "{0} righe"
 
 #: ../ViewModels/PunishmentItemViewModel.cs:33
 #, csharp-format
@@ -3019,25 +3087,25 @@ msgid "{0} min"
 msgstr "{0} min"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:236 ../ViewModels/PunishmentItemViewModel.cs:55
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} minute"
 msgid_plural "{0} minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} minuto"
+msgstr[1] "{0} minuti"
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:77
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} mistake — lines added"
 msgid_plural "{0} mistakes — lines added"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} errore — righe aggiunte"
+msgstr[1] "{0} errori — righe aggiunte"
 
 #: ../Services/Contracts/ContractImportFlow.cs:81
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} outfit rule"
 msgid_plural "{0} outfit rules"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} regola di abbinamento"
+msgstr[1] "{0} regole di abbinamento"
 
 #: ../ViewModels/PunishmentItemViewModel.cs:41
 #, csharp-format
@@ -3046,18 +3114,18 @@ msgstr "Ancora {0}"
 
 #. {0} is a list of clothing item names, {1} a list of tags
 #: ../ViewModels/OutfitRuleValidator.cs:95
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} requires one of: {1}."
-msgstr ""
+msgstr "{0} richiede uno tra: {1}."
 
 #. {0} and {2} are lists of clothing item names, {1} a list of tags
 #: ../ViewModels/OutfitRuleValidator.cs:83
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} requires one of: {1}. {2} selected — requirement satisfied."
-msgstr ""
+msgstr "{0} richiede uno tra: {1}. Selezionato: {2} — requisito soddisfatto."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:92
-#, csharp-format
+#, csharp-format, fuzzy
 msgid ""
 "{0} rule governs which garments may be worn together: {1} requiring, {2} "
 "forbidding."
@@ -3065,28 +3133,32 @@ msgid_plural ""
 "{0} rules govern which garments may be worn together: {1} requiring, {2} "
 "forbidding."
 msgstr[0] ""
+"{0} regola stabilisce quali capi possano essere indossati insieme: {1} "
+"vincolanti, {2} escludenti."
 msgstr[1] ""
+"{0} regole stabiliscono quali capi possano essere indossati insieme: {1} "
+"vincolanti, {2} escludenti."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:237
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} second"
 msgid_plural "{0} seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} secondo"
+msgstr[1] "{0} secondi"
 
 #: ../Services/Contracts/ContractImportFlow.cs:82
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} task"
 msgid_plural "{0} tasks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} compito"
+msgstr[1] "{0} compiti"
 
 #: ../Services/Contracts/ContractImportFlow.cs:80
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0} wardrobe item"
 msgid_plural "{0} wardrobe items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capo"
+msgstr[1] "{0} capi"
 
 #: ../Models/Banks/SummonPhraseBank.cs:11
 msgid "{0}! Come here at once."
@@ -3106,11 +3178,11 @@ msgid "{0}%"
 msgstr "{0}%"
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:81
-#, csharp-format
+#, csharp-format, fuzzy
 msgid "{0}/{1} line"
 msgid_plural "{0}/{1} lines"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0}/{1} riga"
+msgstr[1] "{0}/{1} righe"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:219
 #, csharp-format, fuzzy
