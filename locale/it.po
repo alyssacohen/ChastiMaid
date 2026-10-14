@@ -8,6 +8,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../Views/EndSessionView.axaml:36
+msgid "A daily interest will be applied until you resume your session."
+msgstr ""
+"Verrà applicato un interesse giornaliero finché non riprendete la sessione."
+
+#: ../ViewModels/GameCompleteViewModel.cs:41
+msgid "AVI Video"
+msgstr "Video AVI"
+
 #: ../ViewModels/WelcomeViewModel.cs:37
 msgid ""
 "All 5 save slots are occupied. Please complete or delete an existing game "
@@ -16,17 +25,33 @@ msgstr ""
 "Tutti i 5 slot di salvataggio sono occupati. Completate o eliminate una "
 "partita esistente prima di iniziarne una nuova."
 
+#: ../Views/EndSessionView.axaml:23
+msgid "Are you sure you want to end this session?"
+msgstr "Siete sicura di voler terminare questa sessione?"
+
 #: ../Views/LoadGameView.axaml:115
 msgid "Back"
 msgstr "Indietro"
 
-#: ../ViewModels/LoadGameViewModel.cs:162
+#: ../ViewModels/LoadGameViewModel.cs:162 ../Views/CameraSetupView.axaml:39 ../Views/EndSessionView.axaml:47
 msgid "Cancel"
 msgstr "Annulla"
+
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
+msgid "Capture"
+msgstr "Cattura"
 
 #: ../Views/LoadGameView.axaml:132
 msgid "Close"
 msgstr "Chiudi"
+
+#: ../Views/EndSessionView.axaml:79
+msgid "Close Application"
+msgstr "Chiudi applicazione"
+
+#: ../Views/EndSessionView.axaml:41
+msgid "Close Without Combination"
+msgstr "Chiudi senza combinazione"
 
 #. a finished game (feminine in Italian: "la partita")
 #: ../ViewModels/LoadGameViewModel.cs:47
@@ -34,9 +59,17 @@ msgctxt "game"
 msgid "Completed"
 msgstr "Completata"
 
+#: ../Views/CameraSetupView.axaml:36
+msgid "Confirm"
+msgstr "Conferma"
+
 #: ../Views/WelcomeView.axaml:35
 msgid "Continue"
 msgstr "Continua"
+
+#: ../ViewModels/SafeLockViewModel.cs:51
+msgid "Continue without safe"
+msgstr "Continua senza cassaforte"
 
 #. {0} is the save name, {1} the technical error message
 #: ../ViewModels/LoadGameViewModel.cs:146
@@ -93,9 +126,34 @@ msgctxt "save slot"
 msgid "Empty"
 msgstr "Vuoto"
 
+#: ../Views/EndSessionView.axaml:19
+msgid "End Session"
+msgstr "Termina sessione"
+
 #: ../Views/WelcomeView.axaml:64
 msgid "Exit"
 msgstr "Esci"
+
+#: ../ViewModels/GameCompleteViewModel.cs:41 ../Views/GameCompleteView.axaml:25
+msgid "Export Outfit Video"
+msgstr "Esporta video outfit"
+
+#: ../ViewModels/GameCompleteViewModel.cs:53
+msgid "Export Safe Combination"
+msgstr "Esporta combinazione cassaforte"
+
+#: ../Views/GameCompleteView.axaml:32
+msgid "Export Safe Combination Photo"
+msgstr "Esporta foto combinazione cassaforte"
+
+#: ../Views/GameCompleteView.axaml:47
+msgid "Finish and Free Slot"
+msgstr "Termina e libera slot"
+
+#: ../ViewModels/CameraSetupViewModel.cs:38
+#, csharp-format
+msgid "Frame your work area for: {0}"
+msgstr "Inquadrate l'area di lavoro per: {0}"
 
 #: ../ViewModels/LoadGameViewModel.cs:144
 msgid "Load Error"
@@ -119,6 +177,14 @@ msgstr "Nuova partita"
 msgid "No Free Slots"
 msgstr "Nessuno slot libero"
 
+#: ../Views/Dialogs/WebcamCaptureDialog.axaml:65
+msgid "No webcam detected."
+msgstr "Nessuna webcam rilevata."
+
+#: ../Views/Controls/WebcamPreviewControl.axaml:10
+msgid "No webcam signal"
+msgstr "Nessun segnale webcam"
+
 #: ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
 msgstr "OK"
@@ -133,10 +199,117 @@ msgctxt "safe"
 msgid "Open"
 msgstr "Aperta"
 
+#: ../ViewModels/GameCompleteViewModel.cs:48
+msgid "Outfit video exported."
+msgstr "Video outfit esportato."
+
+#: ../ViewModels/GameCompleteViewModel.cs:53
+msgid "PNG Image"
+msgstr "Immagine PNG"
+
+#: ../Views/SafeLockView.axaml:25
+msgid ""
+"Place your distracting object inside the safe.\n"
+"Point the camera at the combination without looking at it."
+msgstr ""
+"Riponete il vostro oggetto di distrazione dentro la cassaforte.\n"
+"Inquadrate la combinazione con la fotocamera senza guardarla."
+
 #: ../Views/WelcomeView.axaml:30
 msgid "Please, come in. The door is unlocked. It always is... at first."
 msgstr "Accomodatevi pure. La porta è aperta... per ora."
 
+#: ../ViewModels/SafeLockViewModel.cs:49
+msgid "Point the camera at the combination, then press Capture."
+msgstr "Inquadrate la combinazione con la fotocamera, poi premete Cattura."
+
+#: ../Views/CameraSetupView.axaml:16
+msgid "Position the camera"
+msgstr "Posizionate la fotocamera"
+
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
+msgid "Record (5s)"
+msgstr "Registra (5s)"
+
+#: ../Views/Dialogs/WebcamCaptureDialog.axaml:47
+msgid "Recording... Strike a pose."
+msgstr "Registrazione in corso... Mettetevi in posa."
+
+#: ../Views/SafeLockView.axaml:54
+msgid "Retry Capture"
+msgstr "Riprova scatto"
+
+#: ../Views/SafeLockView.axaml:19
+msgid "Safe Lock"
+msgstr "Blocco cassaforte"
+
+#: ../ViewModels/GameCompleteViewModel.cs:61
+msgid "Safe combination photo exported."
+msgstr "Foto della combinazione cassaforte esportata."
+
+#: ../Views/SafeLockView.axaml:48
+msgid "Safe locked!"
+msgstr "Cassaforte bloccata!"
+
+#: ../Views/GameCompleteView.axaml:15
+msgid "Service Complete"
+msgstr "Servizio completato"
+
 #: ../Views/WelcomeView.axaml:59
 msgid "Settings"
 msgstr "Impostazioni"
+
+#: ../Views/EndSessionView.axaml:28
+msgid "Show Safe Combination and Close"
+msgstr "Mostra combinazione cassaforte e chiudi"
+
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:45
+msgid "Skip"
+msgstr "Salta"
+
+#: ../Views/SafeLockView.axaml:32
+msgid "Skip (no safe)"
+msgstr "Salta (nessuna cassaforte)"
+
+#: ../Views/SafeLockView.axaml:28
+msgid "Start Camera"
+msgstr "Avvia fotocamera"
+
+#: ../Views/SafeLockView.axaml:50
+msgid "Start Session"
+msgstr "Avvia sessione"
+
+#: ../Views/EndSessionView.axaml:75
+msgid "The combination has been saved alongside your session media."
+msgstr "La combinazione è stata salvata insieme ai contenuti della sessione."
+
+#: ../ViewModels/SafeLockViewModel.cs:50
+msgid ""
+"The combination photo cannot be captured. You can continue without locking "
+"the safe."
+msgstr ""
+"Non è possibile catturare la foto della combinazione. Potete continuare senza "
+"bloccare la cassaforte."
+
+#: ../Views/SafeLockView.axaml:42
+msgid ""
+"The combination photo has been encrypted and stored. You will only see it "
+"again when the game is complete or you choose to unlock the safe. You can "
+"retry to take the combination photo if you are not sure of the first try."
+msgstr ""
+"La foto della combinazione è stata cifrata e archiviata. La rivedrete solo a "
+"partita completata o se sceglierete di sbloccare la cassaforte. Potete "
+"riprovare a scattare la foto della combinazione se non siete certa che il "
+"primo tentativo sia venuto bene."
+
+#: ../Views/EndSessionView.axaml:66
+msgid "Your Safe Combination"
+msgstr "Ecco la combinazione della cassaforte"
+
+#: ../Views/GameCompleteView.axaml:19
+msgid ""
+"Your debt is paid in full. That will do very nicely indeed.\n"
+"You may export your session media before the save slot is freed."
+msgstr ""
+"Il vostro debito è saldato. Ne sono soddisfatta.\n"
+"Potete esportare i contenuti della sessione prima che lo slot venga liberato."

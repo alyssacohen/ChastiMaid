@@ -14,6 +14,7 @@ namespace ChastiMaid.ViewModels;
 public partial class GameCompleteViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly SaveRepository _saveRepo;
     private readonly string _slotName;
 
@@ -37,19 +38,19 @@ public partial class GameCompleteViewModel : ViewModelBase
 
         ExportOutfitVideoCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dest = await PickSaveFile(Resources.Get("GameCompleteExportVideo"), "outfit.avi", (Resources.Get("GameCompleteAviVideoFilter"), ["avi"]));
+            var dest = await PickSaveFile(L.T("Export Outfit Video"), "outfit.avi", (L.T("AVI Video"), ["avi"]));
             if (dest is null)
             {
                 return;
             }
 
             File.Copy(videoPath, dest, true);
-            StatusMessage = Resources.Get("GameCompleteVideoExportedStatus");
+            StatusMessage = L.T("Outfit video exported.");
         });
 
         ExportSafePhotoCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dest = await PickSaveFile(Resources.Get("GameCompleteExportPhotoDialogTitle"), "safe_combo.png", (Resources.Get("GameCompletePngImageFilter"), ["png"]));
+            var dest = await PickSaveFile(L.T("Export Safe Combination"), "safe_combo.png", (L.T("PNG Image"), ["png"]));
             if (dest is null)
             {
                 return;
@@ -57,7 +58,7 @@ public partial class GameCompleteViewModel : ViewModelBase
 
             var decrypted = CryptoService.DecryptFile(encPath);
             await File.WriteAllBytesAsync(dest, decrypted);
-            StatusMessage = Resources.Get("GameCompletePhotoExportedStatus");
+            StatusMessage = L.T("Safe combination photo exported.");
         });
 
         FinishCommand = ReactiveCommand.Create(Finish);

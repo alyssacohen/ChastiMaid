@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:WebcamCaptureDialogViewModel"
              x:Class="ChastiMaid.Views.Dialogs.WebcamCaptureDialog">
 
@@ -44,7 +44,7 @@
                             IsVisible="{Binding IsRecording}"
                             HorizontalAlignment="Center">
                     <TextBlock Classes="Body"
-                               Text="{conv:Tr WebcamRecordingLabel}"
+                               Text="{l:Tr 'Recording... Strike a pose.'}"
                                HorizontalAlignment="Center" />
                     <v:WebcamPreviewControl Service="{Binding Webcam}" Width="320" Height="480" Stretch="UniformToFill" />
                     <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
@@ -62,7 +62,7 @@
                             IsVisible="{Binding NoWebcam}"
                             HorizontalAlignment="Center">
                     <TextBlock Classes="Body"
-                               Text="{conv:Tr WebcamNotDetected}"
+                               Text="{l:Tr 'No webcam detected.'}"
                                HorizontalAlignment="Center" />
                     <TextBlock Classes="Caption"
                                Text="{Binding NoWebcamMessage}"

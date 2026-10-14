@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:d="using:ChastiMaid.Views.Dialogs"
              xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:SafeLockViewModel"
              x:Class="ChastiMaid.Views.SafeLockView">
 
@@ -16,20 +16,20 @@
                     Spacing="16">
 
             <TextBlock Classes="PageTitle"
-                       Text="{conv:Tr SafeLockTitle}"
+                       Text="{l:Tr 'Safe Lock'}"
                        HorizontalAlignment="Center" />
 
             <!-- Initial: instructions + start camera -->
             <StackPanel Spacing="16" IsVisible="{Binding !IsDone}">
                 <TextBlock Classes="EmployerVoice"
-                           Text="{conv:Tr SafeLockInstructions}"
+                           Text="{l:Tr 'Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it.'}"
                            HorizontalAlignment="Center"
                            TextAlignment="Center" />
-                <Button Content="{conv:Tr SafeLockStartCamera}"
+                <Button Content="{l:Tr 'Start Camera'}"
                         Command="{Binding StartCameraCommand}"
                         HorizontalAlignment="Center"
                         Classes="Primary" />
-                <Button Content="{conv:Tr SafeLockSkip}"
+                <Button Content="{l:Tr 'Skip (no safe)'}"
                         Command="{Binding SkipCommand}"
                         Classes="Ghost"
                         HorizontalAlignment="Center"
@@ -39,19 +39,19 @@
             <!-- Done -->
             <StackPanel Spacing="16" IsVisible="{Binding IsDone}" HorizontalAlignment="Center">
                 <TextBlock Classes="EmployerVoice"
-                        Text="{conv:Tr SafeLockEncryptedNotice}"           
+                        Text="{l:Tr 'The combination photo has been encrypted and stored. You will only see it again when the game is complete or you choose to unlock the safe. You can retry to take the combination photo if you are not sure of the first try.'}"           
                         TextWrapping="Wrap"
                         HorizontalAlignment="Center"
                         TextAlignment="Center" />
                 <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
                     <ic:SymbolIcon Symbol="LockClosed" IconVariant="Regular" FontSize="16" />
-                    <TextBlock Classes="Body" Text="{conv:Tr SafeLockLockedMessage}" />
+                    <TextBlock Classes="Body" Text="{l:Tr 'Safe locked!'}" />
                 </StackPanel>
-                <Button Content="{conv:Tr SafeLockStartSession}"
+                <Button Content="{l:Tr 'Start Session'}"
                         Command="{Binding ContinueCommand}"
                         HorizontalAlignment="Center"
                         Classes="Primary" />
-                <Button Content="{conv:Tr SafeLockRetryCapture}"
+                <Button Content="{l:Tr 'Retry Capture'}"
                         Command="{Binding StartCameraCommand}"
                         HorizontalAlignment="Center"
                         Classes="Ghost" />

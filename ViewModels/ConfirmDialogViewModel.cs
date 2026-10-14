@@ -15,8 +15,8 @@ public class ConfirmDialogViewModel : ViewModelBase
     public ConfirmDialogViewModel(
         string title,
         string message,
-        string confirmLabel = "Confirm",
-        string? cancelLabel = "Cancel",
+        string confirmLabel,
+        string? cancelLabel,
         string? secondaryLabel = null)
     {
         Title = title;

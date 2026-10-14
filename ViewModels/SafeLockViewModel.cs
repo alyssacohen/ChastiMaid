@@ -11,6 +11,7 @@ namespace ChastiMaid.ViewModels;
 public partial class SafeLockViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly SaveRepository _saveRepo;
 
     [Reactive(SetModifier = AccessModifier.Private)]
@@ -44,10 +45,10 @@ public partial class SafeLockViewModel : ViewModelBase
         var tempPath = Path.Combine(dir, "safe_combo_temp.png");
         var encPath = Path.Combine(dir, "safe_combo.enc");
 
-        var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Photo, tempPath,
-            Resources.Get("SafeLockPreviewMessage"),
-            Resources.Get("SafeLockNoWebcamMessage"),
-            Resources.Get("SafeLockContinueWithoutSafe"), cameraIndex: _mainVm.Webcam.PreferredCameraIndex,
+        var dialog = new WebcamCaptureDialogViewModel(Webcam, L, WebcamCaptureMode.Photo, tempPath,
+            L.T("Point the camera at the combination, then press Capture."),
+            L.T("The combination photo cannot be captured. You can continue without locking the safe."),
+            L.T("Continue without safe"), cameraIndex: _mainVm.Webcam.PreferredCameraIndex,
             pixelateCenterOverlay: true);
         ActiveDialog = dialog;
         var capturedPath = await dialog.Result;

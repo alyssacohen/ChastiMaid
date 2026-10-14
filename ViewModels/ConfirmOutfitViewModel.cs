@@ -75,7 +75,7 @@ public partial class ConfirmOutfitViewModel : ViewModelBase
         var dir = AppPaths.SaveDir(slotName);
         var videoPath = Path.Combine(dir, "outfit.avi");
 
-        var dialog = new WebcamCaptureDialogViewModel(Webcam, WebcamCaptureMode.Video, videoPath,
+        var dialog = new WebcamCaptureDialogViewModel(Webcam, _mainVm.Localizer, WebcamCaptureMode.Video, videoPath,
             Resources.Get("ConfirmOutfitPreviewMessage"),
             Resources.Get("ConfirmOutfitNoWebcamMessage"),
             cameraIndex: _mainVm.Webcam.PreferredCameraIndex);

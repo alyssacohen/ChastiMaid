@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:GameCompleteViewModel"
              x:Class="ChastiMaid.Views.GameCompleteView">
 
@@ -12,24 +12,24 @@
                 Spacing="16">
 
         <TextBlock Classes="PageTitle"
-                   Text="{conv:Tr GameCompleteTitle}"
+                   Text="{l:Tr 'Service Complete'}"
                    HorizontalAlignment="Center" />
 
         <TextBlock Classes="EmployerVoice"
-                   Text="{conv:Tr GameCompleteEmployerQuote}"
+                   Text="{l:Tr 'Your debt is paid in full. That will do very nicely indeed.&#10;You may export your session media before the save slot is freed.'}"
                    HorizontalAlignment="Center"
                    TextAlignment="Center" />
 
         <!-- Export buttons -->
         <StackPanel Spacing="12">
-            <Button Content="{conv:Tr GameCompleteExportVideo}"
+            <Button Content="{l:Tr 'Export Outfit Video'}"
                     Command="{Binding ExportOutfitVideoCommand}"
                     IsVisible="{Binding HasOutfitVideo}"
                     Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center" />
 
-            <Button Content="{conv:Tr GameCompleteExportPhoto}"
+            <Button Content="{l:Tr 'Export Safe Combination Photo'}"
                     Command="{Binding ExportSafePhotoCommand}"
                     IsVisible="{Binding HasSafePhoto}"
                     Classes="Ghost"
@@ -44,7 +44,7 @@
                    IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
         <!-- Finish -->
-        <Button Content="{conv:Tr GameCompleteFinish}"
+        <Button Content="{l:Tr 'Finish and Free Slot'}"
                 Command="{Binding FinishCommand}"
                 HorizontalAlignment="Center"
                 Classes="Primary" />

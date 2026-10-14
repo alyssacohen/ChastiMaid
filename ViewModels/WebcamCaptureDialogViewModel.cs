@@ -35,11 +35,14 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     [Reactive(SetModifier = AccessModifier.Private)]
     private bool _noWebcam;
 
-    public WebcamCaptureDialogViewModel(WebcamPreviewService webcam, WebcamCaptureMode mode, string outputPath,
+    private ILocalizer L { get; }
+
+    public WebcamCaptureDialogViewModel(WebcamPreviewService webcam, ILocalizer l, WebcamCaptureMode mode, string outputPath,
         string previewMessage, string noWebcamMessage, string? skipLabel = null, int videoDurationSeconds = 5,
         int cameraIndex = 0, bool pixelateCenterOverlay = false)
     {
-        skipLabel ??= Resources.Get("WebcamSkipDefault");
+        L = l;
+        skipLabel ??= L.T("Skip");
         Webcam = webcam;
         Mode = mode;
         PreviewMessage = previewMessage;
@@ -70,8 +73,8 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     public string NoWebcamMessage { get; }
     public string SkipLabel { get; }
     public string CaptureLabel => Mode == WebcamCaptureMode.Photo
-        ? Resources.Get("WebcamCaptureLabelPhoto")
-        : Resources.Get("WebcamCaptureLabelVideo");
+        ? L.T("Capture")
+        : L.T("Record (5s)");
     public Symbol CaptureIcon => Mode == WebcamCaptureMode.Photo ? Symbol.Camera : Symbol.Record;
 
     public ICommand CaptureCommand { get; }

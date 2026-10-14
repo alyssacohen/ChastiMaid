@@ -35,7 +35,7 @@ public class CameraSetupViewModel : ViewModelBase
         });
     }
 
-    public string ChoreName => _chore.Name;
+    public string FramingPrompt => _mainVm.Localizer.T("Frame your work area for: {0}", _chore.Name);
     public WebcamPreviewService Webcam => _mainVm.Webcam;
 
     public ICommand ConfirmCommand { get; }

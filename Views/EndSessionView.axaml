@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:EndSessionViewModel"
              x:Class="ChastiMaid.Views.EndSessionView">
 
@@ -16,16 +16,16 @@
                     IsVisible="{Binding !ShowingCombo}">
 
             <TextBlock Classes="PageTitle"
-                       Text="{conv:Tr DashboardEndSession}"
+                       Text="{l:Tr 'End Session'}"
                        HorizontalAlignment="Center" />
 
             <TextBlock Classes="Body"
-                       Text="{conv:Tr EndSessionConfirmQuestion}"
+                       Text="{l:Tr 'Are you sure you want to end this session?'}"
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
 
             <StackPanel Spacing="12">
-                <Button Content="{conv:Tr EndSessionShowComboAndClose}"
+                <Button Content="{l:Tr 'Show Safe Combination and Close'}"
                         Command="{Binding ShowComboAndCloseCommand}"
                         IsVisible="{Binding HasSafeCombo}"
                         HorizontalAlignment="Stretch"
@@ -33,18 +33,18 @@
                         Classes="Amber" />
 
                 <TextBlock Classes="Caption"
-                           Text="{conv:Tr EndSessionInterestNotice}"
+                           Text="{l:Tr 'A daily interest will be applied until you resume your session.'}"
                            HorizontalAlignment="Center"
                            TextAlignment="Center"
                            IsVisible="{Binding HasSafeCombo}" />
 
-                <Button Content="{conv:Tr EndSessionCloseWithoutCombo}"
+                <Button Content="{l:Tr 'Close Without Combination'}"
                         Command="{Binding CloseWithoutComboCommand}"
                         Classes="Ghost"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center" />
 
-                <Button Content="{conv:Tr Cancel}"
+                <Button Content="{l:Tr 'Cancel'}"
                         Command="{Binding CancelCommand}"
                         Classes="Ghost"
                         HorizontalAlignment="Stretch"
@@ -63,7 +63,7 @@
                     IsVisible="{Binding ShowingCombo}">
 
             <TextBlock Classes="SectionTitle"
-                       Text="{conv:Tr EndSessionYourCombo}"
+                       Text="{l:Tr 'Your Safe Combination'}"
                        HorizontalAlignment="Center" />
 
             <Image Source="{Binding ComboImage}"
@@ -72,11 +72,11 @@
                    HorizontalAlignment="Center" />
 
             <TextBlock Classes="Caption"
-                       Text="{conv:Tr EndSessionComboSavedNotice}"
+                       Text="{l:Tr 'The combination has been saved alongside your session media.'}"
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
 
-            <Button Content="{conv:Tr EndSessionCloseApp}"
+            <Button Content="{l:Tr 'Close Application'}"
                     Command="{Binding ConfirmCloseCommand}"
                     HorizontalAlignment="Center"
                     Classes="Primary" />

@@ -9,22 +9,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../Views/EndSessionView.axaml:36
+msgid "A daily interest will be applied until you resume your session."
+msgstr ""
+
+#: ../ViewModels/GameCompleteViewModel.cs:41
+msgid "AVI Video"
+msgstr ""
+
 #: ../ViewModels/WelcomeViewModel.cs:37
 msgid ""
 "All 5 save slots are occupied. Please complete or delete an existing game "
 "before starting a new one."
 msgstr ""
 
+#: ../Views/EndSessionView.axaml:23
+msgid "Are you sure you want to end this session?"
+msgstr ""
+
 #: ../Views/LoadGameView.axaml:115
 msgid "Back"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:162
+#: ../ViewModels/LoadGameViewModel.cs:162 ../Views/CameraSetupView.axaml:39 ../Views/EndSessionView.axaml:47
 msgid "Cancel"
+msgstr ""
+
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
+msgid "Capture"
 msgstr ""
 
 #: ../Views/LoadGameView.axaml:132
 msgid "Close"
+msgstr ""
+
+#: ../Views/EndSessionView.axaml:79
+msgid "Close Application"
+msgstr ""
+
+#: ../Views/EndSessionView.axaml:41
+msgid "Close Without Combination"
 msgstr ""
 
 #. a finished game (feminine in Italian: "la partita")
@@ -33,8 +57,16 @@ msgctxt "game"
 msgid "Completed"
 msgstr ""
 
+#: ../Views/CameraSetupView.axaml:36
+msgid "Confirm"
+msgstr ""
+
 #: ../Views/WelcomeView.axaml:35
 msgid "Continue"
+msgstr ""
+
+#: ../ViewModels/SafeLockViewModel.cs:51
+msgid "Continue without safe"
 msgstr ""
 
 #. {0} is the save name, {1} the technical error message
@@ -83,8 +115,33 @@ msgctxt "save slot"
 msgid "Empty"
 msgstr ""
 
+#: ../Views/EndSessionView.axaml:19
+msgid "End Session"
+msgstr ""
+
 #: ../Views/WelcomeView.axaml:64
 msgid "Exit"
+msgstr ""
+
+#: ../ViewModels/GameCompleteViewModel.cs:41 ../Views/GameCompleteView.axaml:25
+msgid "Export Outfit Video"
+msgstr ""
+
+#: ../ViewModels/GameCompleteViewModel.cs:53
+msgid "Export Safe Combination"
+msgstr ""
+
+#: ../Views/GameCompleteView.axaml:32
+msgid "Export Safe Combination Photo"
+msgstr ""
+
+#: ../Views/GameCompleteView.axaml:47
+msgid "Finish and Free Slot"
+msgstr ""
+
+#: ../ViewModels/CameraSetupViewModel.cs:38
+#, csharp-format
+msgid "Frame your work area for: {0}"
 msgstr ""
 
 #: ../ViewModels/LoadGameViewModel.cs:144
@@ -109,6 +166,14 @@ msgstr ""
 msgid "No Free Slots"
 msgstr ""
 
+#: ../Views/Dialogs/WebcamCaptureDialog.axaml:65
+msgid "No webcam detected."
+msgstr ""
+
+#: ../Views/Controls/WebcamPreviewControl.axaml:10
+msgid "No webcam signal"
+msgstr ""
+
 #: ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
 msgstr ""
@@ -123,10 +188,107 @@ msgctxt "safe"
 msgid "Open"
 msgstr ""
 
+#: ../ViewModels/GameCompleteViewModel.cs:48
+msgid "Outfit video exported."
+msgstr ""
+
+#: ../ViewModels/GameCompleteViewModel.cs:53
+msgid "PNG Image"
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:25
+msgid ""
+"Place your distracting object inside the safe.\n"
+"Point the camera at the combination without looking at it."
+msgstr ""
+
 #: ../Views/WelcomeView.axaml:30
 msgid "Please, come in. The door is unlocked. It always is... at first."
 msgstr ""
 
+#: ../ViewModels/SafeLockViewModel.cs:49
+msgid "Point the camera at the combination, then press Capture."
+msgstr ""
+
+#: ../Views/CameraSetupView.axaml:16
+msgid "Position the camera"
+msgstr ""
+
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
+msgid "Record (5s)"
+msgstr ""
+
+#: ../Views/Dialogs/WebcamCaptureDialog.axaml:47
+msgid "Recording... Strike a pose."
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:54
+msgid "Retry Capture"
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:19
+msgid "Safe Lock"
+msgstr ""
+
+#: ../ViewModels/GameCompleteViewModel.cs:61
+msgid "Safe combination photo exported."
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:48
+msgid "Safe locked!"
+msgstr ""
+
+#: ../Views/GameCompleteView.axaml:15
+msgid "Service Complete"
+msgstr ""
+
 #: ../Views/WelcomeView.axaml:59
 msgid "Settings"
+msgstr ""
+
+#: ../Views/EndSessionView.axaml:28
+msgid "Show Safe Combination and Close"
+msgstr ""
+
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:45
+msgid "Skip"
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:32
+msgid "Skip (no safe)"
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:28
+msgid "Start Camera"
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:50
+msgid "Start Session"
+msgstr ""
+
+#: ../Views/EndSessionView.axaml:75
+msgid "The combination has been saved alongside your session media."
+msgstr ""
+
+#: ../ViewModels/SafeLockViewModel.cs:50
+msgid ""
+"The combination photo cannot be captured. You can continue without locking "
+"the safe."
+msgstr ""
+
+#: ../Views/SafeLockView.axaml:42
+msgid ""
+"The combination photo has been encrypted and stored. You will only see it "
+"again when the game is complete or you choose to unlock the safe. You can "
+"retry to take the combination photo if you are not sure of the first try."
+msgstr ""
+
+#: ../Views/EndSessionView.axaml:66
+msgid "Your Safe Combination"
+msgstr ""
+
+#: ../Views/GameCompleteView.axaml:19
+msgid ""
+"Your debt is paid in full. That will do very nicely indeed.\n"
+"You may export your session media before the save slot is freed."
 msgstr ""
