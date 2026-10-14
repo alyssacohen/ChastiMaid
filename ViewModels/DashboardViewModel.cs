@@ -18,10 +18,10 @@ namespace ChastiMaid.ViewModels;
 /// </summary>
 public partial class PermissionCardChipViewModel : ViewModelBase
 {
-    public PermissionCardChipViewModel(CardId id)
+    public PermissionCardChipViewModel(CardId id, ILocalizer l)
     {
         Id = id;
-        Name = CardDisplay.NameOf(id);
+        Name = CardDisplay.NameOf(id, l);
     }
 
     public CardId Id { get; }
@@ -566,7 +566,7 @@ public partial class DashboardViewModel : ViewModelBase
             .Distinct();
         foreach (var id in owned)
         {
-            AvailablePermissionCards.Add(new PermissionCardChipViewModel(id));
+            AvailablePermissionCards.Add(new PermissionCardChipViewModel(id, _mainVm.Localizer));
         }
 
         this.RaisePropertyChanged(nameof(HasAvailablePermissionCards));

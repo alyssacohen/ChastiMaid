@@ -13,12 +13,38 @@ msgstr ""
 msgid "(none)"
 msgstr ""
 
+#: ../Models/CardDisplay.cs:13
+#, csharp-format
+msgid "+{0} Minutes"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:14
+#, csharp-format
+msgid "+{0}%"
+msgstr ""
+
 #: ../ViewModels/StartSessionViewModel.cs:219
 msgid "A Word Before We Begin"
 msgstr ""
 
 #: ../Views/EndSessionView.axaml:36
 msgid "A daily interest will be applied until you resume your session."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:374
+msgid "A moment of uncharacteristic generosity. Do not grow accustomed to it."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:381
+msgid "A permission, somewhere, will be easier to earn than it deserves."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:382
+msgid "A permission, somewhere, will be harder to earn than you'd like."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:390
+msgid "A whim of mine, waiting to be indulged. You shall know it when it comes."
 msgstr ""
 
 #: ../ViewModels/GameCompleteViewModel.cs:41
@@ -35,16 +61,37 @@ msgid ""
 "before starting a new one."
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:140 ../ViewModels/ShopViewModel.cs:88
+msgid "Amount owed"
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:23
 msgid "Are you sure you want to end this session?"
 msgstr ""
 
-#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/LoadGameView.axaml:115
+#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/ShopView.axaml:14
 msgid "Back"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:397 ../ViewModels/FortuneDeckViewModel.cs:398
+msgid "Blank. Nothing changes hands — except, of course, your money."
+msgstr ""
+
+#: ../Views/ShopView.axaml:65
+msgid "Buy"
 msgstr ""
 
 #: ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/EndSessionView.axaml:47
 msgid "Cancel"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:17
+msgid "Cancel Punishment"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:394
+msgctxt "punishment"
+msgid "Cancelled"
 msgstr ""
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
@@ -57,6 +104,10 @@ msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:151 ../Views/ForcedOutfitPresetEditorView.axaml:165
 msgid "Clear"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:26
+msgid "Clears the cooldown standing between you and your next request."
 msgstr ""
 
 #: ../Views/LoadGameView.axaml:132
@@ -110,6 +161,10 @@ msgid ""
 "{1}"
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:140 ../ViewModels/ShopViewModel.cs:88
+msgid "Credit available"
+msgstr ""
+
 #: ../ViewModels/LoadGameViewModel.cs:40
 #, csharp-format
 msgid "Credit: £{0:F2}"
@@ -150,6 +205,15 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:118 ../ViewModels/ShopViewModel.cs:61
+#, csharp-format
+msgid "Draw — {0}"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:12
+msgid "Eager"
+msgstr ""
+
 #: ../Views/LoadGameView.axaml:86
 msgctxt "save slot"
 msgid "Empty"
@@ -179,6 +243,10 @@ msgstr ""
 msgid "Export Safe Combination Photo"
 msgstr ""
 
+#: ../Models/CardDisplay.cs:27
+msgid "Extends the duration of your next granted request."
+msgstr ""
+
 #: ../Views/GameCompleteView.axaml:47
 msgid "Finish and Free Slot"
 msgstr ""
@@ -198,6 +266,23 @@ msgid ""
 "confirm."
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:389
+msgid "Grant permission"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:15
+msgid "Guaranteed Approval"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:30
+msgid "Halves the severity of one pending punishment."
+msgstr ""
+
+#: ../ViewModels/ShopViewModel.cs:35
+#, csharp-format
+msgid "Held: {0}"
+msgstr ""
+
 #: ../Views/ForcedOutfitPresetEditorView.axaml:30
 msgid "Hours per severity"
 msgstr ""
@@ -206,9 +291,23 @@ msgstr ""
 msgid "I am ready, Madame"
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:396
+msgid ""
+"I have taken a closer look at one of your punishments, and was not pleased. "
+"It shows."
+msgstr ""
+
 #: ../Views/StartSessionView.axaml:27
 msgid ""
 "I have taken the liberty of choosing your attire. I am sure you will like it."
+msgstr ""
+
+#: ../Views/FortuneDeckView.axaml:20 ../Views/ShopView.axaml:86
+msgid "Il Ventaglio della Sorte"
+msgstr ""
+
+#: ../Models/CardDisplay.cs:28
+msgid "Improves your odds of approval on your next request."
 msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:155
@@ -243,6 +342,16 @@ msgstr ""
 
 #: ../ViewModels/StartSessionViewModel.cs:359
 msgid "Modify Outfit"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:394
+msgid "My good heart has struck a punishment from the ledger entirely."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:392
+msgid ""
+"My good heart has taken the edge off one of your punishments. Which one is "
+"for you to notice."
 msgstr ""
 
 #: ../Views/ForcedOutfitPresetEditorView.axaml:25
@@ -281,6 +390,19 @@ msgstr ""
 
 #: ../Views/Controls/WebcamPreviewControl.axaml:10
 msgid "No webcam signal"
+msgstr ""
+
+#: ../Views/ShopView.axaml:71
+msgid "None left"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:397 ../ViewModels/FortuneDeckViewModel.cs:398
+msgid "Nothing"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:396
+msgctxt "punishment"
+msgid "Noticed"
 msgstr ""
 
 #: ../ViewModels/LoadGameViewModel.cs:147 ../ViewModels/WelcomeViewModel.cs:38
@@ -354,6 +476,10 @@ msgid ""
 "new outfit replaces this one for good: there is no going back to it. Proceed?"
 msgstr ""
 
+#: ../Models/CardDisplay.cs:31
+msgid "Removes one pending punishment outright."
+msgstr ""
+
 #: ../Views/SafeLockView.axaml:54
 msgid "Retry Capture"
 msgstr ""
@@ -398,12 +524,34 @@ msgstr ""
 msgid "Skip (no safe)"
 msgstr ""
 
+#: ../Models/CardDisplay.cs:16
+msgid "Soften Punishment"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:392
+msgctxt "punishment"
+msgid "Softened"
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:387
+msgid "Some future permission will be cut shorter than expected."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:386
+msgid ""
+"Some future permission will last longer than granted. Enjoy it while it lasts."
+msgstr ""
+
 #: ../Views/SafeLockView.axaml:28
 msgid "Start Camera"
 msgstr ""
 
 #: ../Views/SafeLockView.axaml:50
 msgid "Start Session"
+msgstr ""
+
+#: ../Views/ShopView.axaml:20
+msgid "The Shop"
 msgstr ""
 
 #: ../Views/EndSessionView.axaml:75
@@ -428,6 +576,10 @@ msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:377
+msgid "This one has cost you rather dearly."
+msgstr ""
+
 #: ../Views/StartSessionView.axaml:23
 msgid "Today's Outfit"
 msgstr ""
@@ -440,6 +592,10 @@ msgstr ""
 msgid "Very well"
 msgstr ""
 
+#: ../Views/ShopView.axaml:88
+msgid "You wager, I collect. Do sit down — it will take but a moment."
+msgstr ""
+
 #: ../Views/EndSessionView.axaml:66
 msgid "Your Safe Combination"
 msgstr ""
@@ -448,6 +604,10 @@ msgstr ""
 msgid ""
 "Your debt is paid in full. That will do very nicely indeed.\n"
 "You may export your session media before the save slot is freed."
+msgstr ""
+
+#: ../Models/CardDisplay.cs:29
+msgid "Your next request is approved without question — this once."
 msgstr ""
 
 #: ../Views/ChangeOutfitView.axaml:28 ../Views/ChangeOutfitView.axaml:37 ../Views/ChangeOutfitView.axaml:46 ../Views/ChangeOutfitView.axaml:55 ../Views/ForcedOutfitPresetEditorView.axaml:52 ../Views/ForcedOutfitPresetEditorView.axaml:61 ../Views/ForcedOutfitPresetEditorView.axaml:70
@@ -485,6 +645,11 @@ msgctxt "outfit item"
 msgid "unavailable"
 msgstr ""
 
+#: ../ViewModels/FortuneDeckViewModel.cs:384
+#, csharp-format
+msgid "{0} Min"
+msgstr ""
+
 #. {0} and {1} are lists of clothing item names
 #: ../ViewModels/OutfitRuleValidator.cs:40
 #, csharp-format
@@ -515,4 +680,9 @@ msgstr ""
 #: ../ViewModels/OutfitRuleValidator.cs:83
 #, csharp-format
 msgid "{0} requires one of: {1}. {2} selected — requirement satisfied."
+msgstr ""
+
+#: ../ViewModels/FortuneDeckViewModel.cs:379
+#, csharp-format
+msgid "{0}%"
 msgstr ""

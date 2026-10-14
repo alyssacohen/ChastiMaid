@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:ShopViewModel"
@@ -10,19 +11,19 @@
         <!-- Header -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
             <Button Grid.Column="0"
-                    Content="{conv:Tr ShopBack}"
+                    Content="{l:Tr 'Back'}"
                     Command="{Binding BackCommand}"
                     Classes="Ghost" />
 
             <TextBlock Grid.Column="1"
                        Classes="PageTitle"
-                       Text="{conv:Tr ShopTitle}"
+                       Text="{l:Tr 'The Shop'}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Bottom" />
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
                 <TextBlock Classes="LabelUI"
-                           Text="{Binding CurrentDebt, Converter={x:Static conv:BalanceLabelConverter.Instance}, ConverterParameter=ShopCurrentDebt|ShopCurrentCredit|upper}"
+                           Text="{Binding DebtLabel, Converter={x:Static conv:UpperCaseConverter.Instance}}"
                            VerticalAlignment="Center" />
                 <TextBlock Classes="NumberLarge"
                            Text="{Binding CurrentDebtDisplay}"
@@ -61,13 +62,13 @@
                                                    Text="{Binding PriceDisplay}"
                                                    VerticalAlignment="Center" />
                                         <Button Grid.Column="1"
-                                                Content="{conv:Tr ShopBuy}"
+                                                Content="{l:Tr 'Buy'}"
                                                 Command="{Binding BuyCommand}"
                                                 IsEnabled="{Binding CanBuy}"
                                                 Classes="Primary compact" />
                                     </Grid>
                                     <TextBlock Classes="Caption"
-                                               Text="{conv:Tr ShopSoldOut}"
+                                               Text="{l:Tr 'None left'}"
                                                Foreground="{DynamicResource BrushEmergencyText}"
                                                IsVisible="{Binding !CanBuy}" />
                                 </StackPanel>
@@ -82,9 +83,9 @@
         <Border Grid.Row="2" Classes="card" Margin="0,16,0,0">
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Spacing="4">
-                    <TextBlock Classes="SectionTitle" Text="{conv:Tr ShopFortuneDeckTitle}" />
+                    <TextBlock Classes="SectionTitle" Text="{l:Tr 'Il Ventaglio della Sorte'}" />
                     <TextBlock Classes="BodySmall"
-                               Text="{conv:Tr ShopFortuneDeckSubtitle}"
+                               Text="{l:Tr 'You wager, I collect. Do sit down — it will take but a moment.'}"
                                Foreground="{DynamicResource TextSecondary}" />
                 </StackPanel>
                 <Button Grid.Column="1"

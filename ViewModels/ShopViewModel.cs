@@ -12,11 +12,14 @@ namespace ChastiMaid.ViewModels;
 /// <summary>One catalogue row: name, description, price and how many the player currently owns.</summary>
 public partial class ShopCardItemViewModel : ViewModelBase
 {
-    public ShopCardItemViewModel(CardId id, decimal price, Action<ShopCardItemViewModel> onBuy)
+    private readonly ILocalizer _l;
+
+    public ShopCardItemViewModel(CardId id, decimal price, Action<ShopCardItemViewModel> onBuy, ILocalizer l)
     {
+        _l = l;
         Id = id;
-        Name = CardDisplay.NameOf(id);
-        Description = CardDisplay.DescriptionOf(id);
+        Name = CardDisplay.NameOf(id, l);
+        Description = CardDisplay.DescriptionOf(id, l);
         PriceDisplay = CurrencyConverter.Format(price);
         BuyCommand = ReactiveCommand.Create(() => onBuy(this), this.WhenAnyValue(x => x.CanBuy));
     }
@@ -29,7 +32,7 @@ public partial class ShopCardItemViewModel : ViewModelBase
     [Reactive] private int _ownedCount;
     [Reactive] private bool _canBuy;
 
-    public string OwnedDisplay => string.Format(Resources.Get("ShopOwnedFormat"), OwnedCount);
+    public string OwnedDisplay => _l.T("Held: {0}", OwnedCount);
 
     public ICommand BuyCommand { get; }
 }
@@ -37,10 +40,12 @@ public partial class ShopCardItemViewModel : ViewModelBase
 public partial class ShopViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly SaveRepository _saveRepo;
 
     [Reactive] private decimal _currentDebt;
     [Reactive] private string _currentDebtDisplay = "";
+    [Reactive] private string _debtLabel = "";
 
     public ShopViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
     {
@@ -50,11 +55,10 @@ public partial class ShopViewModel : ViewModelBase
         var settings = saveRepo.GetGameSettings();
         foreach (var def in CardCatalog.All)
         {
-            Cards.Add(new ShopCardItemViewModel(def.Id, CardCatalog.PriceOf(def.Id, settings), OnBuy));
+            Cards.Add(new ShopCardItemViewModel(def.Id, CardCatalog.PriceOf(def.Id, settings), OnBuy, L));
         }
 
-        FortuneDrawButtonLabel = string.Format(
-            Resources.Get("ShopFortuneDeckDrawFormat"),
+        FortuneDrawButtonLabel = L.T("Draw — {0}",
             CurrencyConverter.Format(CardCatalog.FortuneDrawPrice(settings)));
 
         BackCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new DashboardViewModel(_mainVm, _saveRepo)));
@@ -81,6 +85,7 @@ public partial class ShopViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         CurrentDebt = state?.CurrentDebt ?? 0;
         CurrentDebtDisplay = CurrencyConverter.Format(Math.Abs(CurrentDebt));
+        DebtLabel = CurrentDebt < 0 ? L.T("Credit available") : L.T("Amount owed");
 
         var owned = _saveRepo.GetInventory();
         foreach (var card in Cards)

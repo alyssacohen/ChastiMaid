@@ -97,6 +97,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
 {
     private readonly FortuneDeck _deck;
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly SaveRepository _saveRepo;
 
     private double _containerWidth = 800;
@@ -105,6 +106,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
     [Reactive] private FortuneDeckDrawState _state = FortuneDeckDrawState.Idle;
     [Reactive] private decimal _currentDebt;
     [Reactive] private string _currentDebtDisplay = "";
+    [Reactive] private string _debtLabel = "";
 
     public FortuneDeckViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
     {
@@ -113,7 +115,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
         var settings = saveRepo.GetGameSettings();
         _deck = new FortuneDeck(saveRepo, settings);
         var stake = Converters.CurrencyConverter.Format(CardCatalog.FortuneDrawPrice(settings));
-        DrawButtonLabel = string.Format(Resources.Get("ShopFortuneDeckDrawFormat"), stake);
+        DrawButtonLabel = L.T("Draw — {0}", stake);
         RefreshDebtDisplay();
 
         var canDraw = this.WhenAnyValue(x => x.State,
@@ -135,6 +137,7 @@ public partial class FortuneDeckViewModel : ViewModelBase
         var state = _saveRepo.GetGameState();
         CurrentDebt = state?.CurrentDebt ?? 0;
         CurrentDebtDisplay = Converters.CurrencyConverter.Format(Math.Abs(CurrentDebt));
+        DebtLabel = CurrentDebt < 0 ? L.T("Credit available") : L.T("Amount owed");
     }
 
     /// <summary>
@@ -364,31 +367,35 @@ public partial class FortuneDeckViewModel : ViewModelBase
         return result.Kind switch
         {
             FortuneOutcomeKind.Collectible => (
-                CardDisplay.NameOf(result.Card!.Value),
-                CardDisplay.DescriptionOf(result.Card!.Value)),
+                CardDisplay.NameOf(result.Card!.Value, L),
+                CardDisplay.DescriptionOf(result.Card!.Value, L)),
             FortuneOutcomeKind.CashWin => (
                 SignedCurrencyTitle(stake * result.Value),
-                Resources.Get("FortuneOutcomeCashWinDesc")),
+                L.T("A moment of uncharacteristic generosity. Do not grow accustomed to it.")),
             FortuneOutcomeKind.CashLoss => (
                 SignedCurrencyTitle(stake * result.Value),
-                Resources.Get("FortuneOutcomeCashLossDesc")),
+                L.T("This one has cost you rather dearly.")),
             FortuneOutcomeKind.SuspendedProbability => (
-                string.Format(Resources.Get("FortuneOutcomePercentTitleFormat"), Signed(result.Value)),
-                Resources.Get(result.Value >= 0 ? "FortuneOutcomeProbabilityBuffDesc" : "FortuneOutcomeProbabilityDebuffDesc")),
+                L.T("{0}%", Signed(result.Value)),
+                result.Value >= 0
+                    ? L.T("A permission, somewhere, will be easier to earn than it deserves.")
+                    : L.T("A permission, somewhere, will be harder to earn than you'd like.")),
             FortuneOutcomeKind.SuspendedDuration => (
-                string.Format(Resources.Get("FortuneOutcomeMinutesTitleFormat"), Signed(result.Value)),
-                Resources.Get(result.Value >= 0 ? "FortuneOutcomeDurationBuffDesc" : "FortuneOutcomeDurationDebuffDesc")),
+                L.T("{0} Min", Signed(result.Value)),
+                result.Value >= 0
+                    ? L.T("Some future permission will last longer than granted. Enjoy it while it lasts.")
+                    : L.T("Some future permission will be cut shorter than expected.")),
             FortuneOutcomeKind.SuspendedGrant => (
-                Resources.Get("FortuneOutcomeGrantTitle"),
-                Resources.Get("FortuneOutcomeGrantDesc")),
+                L.T("Grant permission"),
+                L.T("A whim of mine, waiting to be indulged. You shall know it when it comes.")),
             FortuneOutcomeKind.SoftenRandom => (
-                Resources.Get("FortuneOutcomeSoftenTitle"), Resources.Get("FortuneOutcomeSoftenDesc")),
+                L.P("punishment", "Softened"), L.T("My good heart has taken the edge off one of your punishments. Which one is for you to notice.")),
             FortuneOutcomeKind.CancelRandom => (
-                Resources.Get("FortuneOutcomeCancelTitle"), Resources.Get("FortuneOutcomeCancelDesc")),
+                L.P("punishment", "Cancelled"), L.T("My good heart has struck a punishment from the ledger entirely.")),
             FortuneOutcomeKind.AggravateRandom => (
-                Resources.Get("FortuneOutcomeAggravateTitle"), Resources.Get("FortuneOutcomeAggravateDesc")),
-            FortuneOutcomeKind.Whiff => (Resources.Get("FortuneOutcomeWhiffTitle"), Resources.Get("FortuneOutcomeWhiffDesc")),
-            _ => (Resources.Get("FortuneOutcomeWhiffTitle"), Resources.Get("FortuneOutcomeWhiffDesc")),
+                L.P("punishment", "Noticed"), L.T("I have taken a closer look at one of your punishments, and was not pleased. It shows.")),
+            FortuneOutcomeKind.Whiff => (L.T("Nothing"), L.T("Blank. Nothing changes hands — except, of course, your money.")),
+            _ => (L.T("Nothing"), L.T("Blank. Nothing changes hands — except, of course, your money.")),
         };
     }
 }
