@@ -5,14 +5,15 @@
     xmlns:converters="using:ChastiMaid.Converters"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:vm="using:ChastiMaid.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:ChastiMaid.Localization">
 
     <Grid Margin="0,0,0,16" RowDefinitions="Auto,*">
         <StackPanel Grid.Row="0" Margin="24,0,32,0">
             <TextBlock
                 Classes="SectionTitle"
                 Margin="0,20,0,8"
-                Text="{converters:Tr SettingsTabPopups}" />
+                Text="{l:Tr 'Popups'}" />
             <Border
                 Background="{DynamicResource BrushBorderSubtle}"
                 Height="1"
@@ -22,13 +23,13 @@
             <StackPanel Margin="24,0,32,0" Spacing="16">
                 <!--  Frequency & Timeout  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingPopupTiming}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Popup Frequency &amp; Timeout'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="8">
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsPopupMin}"
+                                    Text="{l:Tr 'Popup minimum (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -41,7 +42,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsPopupMax}"
+                                    Text="{l:Tr 'Popup maximum (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -54,7 +55,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsPopupTimeout}"
+                                    Text="{l:Tr 'Popup timeout (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -70,21 +71,21 @@
 
                 <!--  Hydration Reminders  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingHydration}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Hydration Reminders'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsHydrationDescription}"
+                                Text="{l:Tr 'A parched maid is of no use to me. You need only pause and drink.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding HydrationEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsHydrationMinInterval}"
+                                    Text="{l:Tr 'Minimum hydration interval (minutes)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -99,21 +100,21 @@
 
                 <!--  Curtsy Video  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingCurtsyVideo}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Curtsy Video'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsCurtsyDescription}"
+                                Text="{l:Tr &quot;A moment's curtsy, recorded for the record — grace so rarely convinces without a witness.&quot;}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding CurtsyEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCurtsyVideoDuration}"
+                                    Text="{l:Tr 'Curtsy video duration (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -129,21 +130,21 @@
 
                 <!--  Quote Reading  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingQuoteReading}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Quote Reading'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsQuoteReadingDescription}"
+                                Text="{l:Tr 'You shall speak the words I require of you, clearly enough for the machine to believe them.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding QuoteReadingEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsQuoteListenTimeout}"
+                                    Text="{l:Tr 'Quote listening window (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -156,7 +157,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsQuoteRecognitionSensitivity}"
+                                    Text="{l:Tr 'Quote recognition sensitivity'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -168,7 +169,7 @@
                             </Grid>
                             <TextBlock
                                 Classes="BodySmall"
-                                Text="{converters:Tr SettingsTestQuoteInstructions}"
+                                Text="{l:Tr 'Try the settings — read the following phrase:'}"
                                 TextWrapping="Wrap" />
                             <Border Classes="statCard" HorizontalAlignment="Stretch">
                                 <TextBlock
@@ -182,12 +183,12 @@
                                 <Button
                                     Classes="Ghost compact"
                                     Command="{Binding StartTestQuoteListeningCommand}"
-                                    Content="{converters:Tr SettingsTestQuoteStartButton}"
+                                    Content="{l:Tr 'Start'}"
                                     ToolTip.Tip="{Binding TestQuoteUnavailableTooltip}" />
                                 <Button
                                     Classes="Ghost compact"
                                     Command="{Binding StopTestQuoteListeningCommand}"
-                                    Content="{converters:Tr SettingsTestQuoteStopButton}" />
+                                    Content="{l:Tr 'Stop'}" />
                             </StackPanel>
                             <StackPanel
                                 IsVisible="{Binding IsTestQuoteListening}"
@@ -197,18 +198,18 @@
                                     Fill="{DynamicResource BrushStatusIdle}"
                                     Height="10"
                                     Width="10" />
-                                <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsTestQuoteListeningLabel}" />
+                                <TextBlock Classes="BodySmall" Text="{l:Tr 'Listening…'}" />
                             </StackPanel>
                             <TextBlock
                                 Classes="BodySmall"
                                 IsVisible="{Binding ShowTestQuotePassResult}"
-                                Text="{Binding TestQuoteScore, StringFormat={converters:Tr SettingsTestQuoteRecognitionResultPass}}"
+                                Text="{Binding TestQuoteResultText}"
                                 TextWrapping="Wrap" />
                             <TextBlock
                                 Classes="BodySmall"
                                 Foreground="{DynamicResource BrushEmergencyText}"
                                 IsVisible="{Binding ShowTestQuoteFailResult}"
-                                Text="{Binding TestQuoteScore, StringFormat={converters:Tr SettingsTestQuoteRecognitionResultFail}}"
+                                Text="{Binding TestQuoteResultText}"
                                 TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
@@ -216,22 +217,22 @@
 
                 <!--  Kneel  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingKneel}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Kneel'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsKneelDescription}"
+                                Text="{l:Tr 'You shall kneel for exactly as long as I decide, and the camera shall keep proof of it.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding KneelEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
                                     Grid.Column="0"
-                                    Text="{converters:Tr SettingsKneelDurationLabel}"
+                                    Text="{l:Tr 'Duration minimum/maximum (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -251,7 +252,7 @@
                                 <TextBlock
                                     Classes="BodySmall"
                                     Grid.Column="0"
-                                    Text="{converters:Tr SettingsKneelPhotoIntervalLabel}"
+                                    Text="{l:Tr 'Photo interval minimum/maximum (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"

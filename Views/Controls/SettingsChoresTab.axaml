@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:converters="using:ChastiMaid.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
@@ -8,21 +9,21 @@
 
     <Grid RowDefinitions="Auto,*,Auto" Margin="0,0,0,16">
         <StackPanel Grid.Row="0" Margin="24,0,32,0">
-            <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabChores}" Margin="0,20,0,8" />
+            <TextBlock Classes="SectionTitle" Text="{l:Tr 'Chores'}" Margin="0,20,0,8" />
             <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,16" />
 
             <!--  Capture  -->
-            <TextBlock Classes="Heading" Margin="0,0,0,8" Text="{converters:Tr SettingsHeadingCapture}" />
+            <TextBlock Classes="Heading" Margin="0,0,0,8" Text="{l:Tr 'Capture'}" />
             <Border Classes="card" Margin="0,0,0,8">
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{converters:Tr SettingsCaptureDescription}"
+                        Text="{l:Tr 'While a chore is under way, the camera shall look in from time to time — quite without warning.'}"
                         TextWrapping="Wrap" />
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsCaptureMin}"
+                            Text="{l:Tr 'Shortest wait between photos (seconds)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -34,7 +35,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsCaptureMax}"
+                            Text="{l:Tr 'Longest wait between photos (seconds)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -55,38 +56,38 @@
                                 <StackPanel Grid.Column="0" Spacing="8">
                                     <Grid ColumnDefinitions="*,100,100,100">
                                         <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldName}}" />
-                                            <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{converters:Tr SettingsChoreNamePlaceholder}" />
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Name'}}" />
+                                            <TextBox Classes="underline" Text="{Binding Name}" PlaceholderText="{l:Tr 'Chore name'}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldValue}}" />
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Value (£)'}}" />
                                             <TextBox Classes="underline"
                                                      Text="{Binding Value, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
-                                                     PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                                     PlaceholderText="{l:Tr '0'}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="2" Spacing="2" Margin="0,0,8,0">
-                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldFreqDays}}" />
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Freq. (Days)'}}" />
                                             <TextBox Classes="underline"
                                                      Text="{Binding FrequencyDays, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=1}"
-                                                     PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                                     PlaceholderText="{l:Tr '0'}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Spacing="2">
-                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldMinCompletionMinutes}}" />
+                                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Minimum time (minutes)'}}" />
                                             <TextBox Classes="underline"
                                                      Text="{Binding MinCompletionMinutes, Converter={x:Static converters:NumericTextConverter.Instance}, ConverterParameter=0}"
-                                                     PlaceholderText="{converters:Tr SettingsPlaceholderZero}" />
+                                                     PlaceholderText="{l:Tr '0'}" />
                                         </StackPanel>
                                     </Grid>
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldDescription}}" />
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Description'}}" />
                                         <TextBox Classes="underline" Text="{Binding Description}"
-                                                 PlaceholderText="{converters:Tr SettingsOptionalDescriptionPlaceholder}" />
+                                                 PlaceholderText="{l:Tr 'Optional description'}" />
                                     </StackPanel>
                                 </StackPanel>
                                 <Button Grid.Column="1" Command="{Binding DeleteCommand}" Classes="Danger"
                                         VerticalAlignment="Center" Margin="12,0,0,0"
-                                        ToolTip.Tip="{converters:Tr Delete}"
-                                        AutomationProperties.Name="{converters:Tr Delete}">
+                                        ToolTip.Tip="{l:Tr 'Delete'}"
+                                        AutomationProperties.Name="{l:Tr 'Delete'}">
                                     <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
                                 </Button>
                             </Grid>
@@ -98,7 +99,7 @@
         <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add" Margin="24,8,32,0">
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                <TextBlock Text="{converters:Tr SettingsAddChore}" VerticalAlignment="Center" />
+                <TextBlock Text="{l:Tr 'Add Chore'}" VerticalAlignment="Center" />
             </StackPanel>
         </Button>
     </Grid>

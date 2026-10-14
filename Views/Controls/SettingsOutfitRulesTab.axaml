@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:converters="using:ChastiMaid.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
@@ -8,7 +9,7 @@
 
     <Grid RowDefinitions="Auto,*,Auto" Margin="0,0,0,16">
         <StackPanel Grid.Row="0" Margin="24,0,32,0">
-            <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabOutfitRules}" Margin="0,20,0,8" />
+            <TextBlock Classes="SectionTitle" Text="{l:Tr 'Outfit Rules'}" Margin="0,20,0,8" />
             <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
         </StackPanel>
         <ScrollViewer Grid.Row="1" Name="RulesScroll">
@@ -19,27 +20,27 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <Grid Grid.Column="0" ColumnDefinitions="*,160,*">
                                     <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
-                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldTag}}" />
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Tag'}}" />
                                         <ComboBox ItemsSource="{Binding TagSuggestions}"
                                                   IsEditable="True"
                                                   Text="{Binding SourceTag, Mode=TwoWay}"
                                                   SelectionChanged="OnSourceTagSelectionChanged"
-                                                  PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
+                                                  PlaceholderText="{l:Tr 'Select tag'}"
                                                   HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,8,0">
-                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelation}}" />
-                                        <ComboBox ItemsSource="{x:Static vm:OutfitRuleEditViewModel.RelationOptions}"
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Relation'}}" />
+                                        <ComboBox ItemsSource="{Binding RelationOptions}"
                                                   SelectedItem="{Binding RelationOption}"
                                                   HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsFieldRelatedTag}}" />
+                                        <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Related tag'}}" />
                                         <ComboBox ItemsSource="{Binding TagSuggestions}"
                                                   IsEditable="True"
                                                   Text="{Binding RelatedTag, Mode=TwoWay}"
                                                   SelectionChanged="OnRelatedTagSelectionChanged"
-                                                  PlaceholderText="{converters:Tr SettingsSelectTagPlaceholder}"
+                                                  PlaceholderText="{l:Tr 'Select tag'}"
                                                   HorizontalAlignment="Stretch" />
                                     </StackPanel>
                                 </Grid>
@@ -48,8 +49,8 @@
                                         Classes="Danger"
                                         VerticalAlignment="Center"
                                         Margin="12,0,0,0"
-                                        ToolTip.Tip="{converters:Tr Delete}"
-                                        AutomationProperties.Name="{converters:Tr Delete}">
+                                        ToolTip.Tip="{l:Tr 'Delete'}"
+                                        AutomationProperties.Name="{l:Tr 'Delete'}">
                                     <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
                                 </Button>
                             </Grid>
@@ -62,13 +63,13 @@
             <Button Command="{Binding AddOutfitRuleCommand}" Classes="Add">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
-                    <TextBlock Text="{converters:Tr SettingsAddRule}" VerticalAlignment="Center" />
+                    <TextBlock Text="{l:Tr 'Add Rule'}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button Command="{Binding TestRulesCommand}" Classes="Ghost">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <ic:SymbolIcon Symbol="Play" IconVariant="Regular" FontSize="18" />
-                    <TextBlock Text="{converters:Tr SettingsTestRules}" VerticalAlignment="Center" />
+                    <TextBlock Text="{l:Tr 'Test Rules'}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
         </StackPanel>

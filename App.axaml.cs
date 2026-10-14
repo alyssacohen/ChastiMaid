@@ -39,7 +39,8 @@ public class App : Application
             {
                 // First run (or a profile from before the selector dropped "System"): pin the resolved language.
                 settings.Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                settings.PlayerName = Localization.Resources.Get("DefaultPlayerName");
+                // translators: the player's default name
+                settings.PlayerName = Localizer.Current.T("Maid");
                 profileRepo.SaveGameSettings(settings);
             }
 

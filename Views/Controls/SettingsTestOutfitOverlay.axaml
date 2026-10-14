@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:conv="using:ChastiMaid.Converters"
-             xmlns:converters="using:ChastiMaid.Converters"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.SettingsTestOutfitOverlay">
 
@@ -16,7 +16,7 @@
             <StackPanel DataContext="{Binding TestOutfitDialog}" Spacing="{StaticResource SpacingMd}">
                 <TextBlock Classes="Heading"
                            HorizontalAlignment="Center"
-                           Text="{converters:Tr SettingsTestOutfitTitle}" />
+                           Text="{l:Tr 'Outfit Preview'}" />
 
                 <ScrollViewer MaxHeight="420" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl ItemsSource="{Binding OutfitVm.Layers}">
@@ -82,10 +82,10 @@
                             Spacing="8">
                     <Button Classes="Ghost"
                             Command="{Binding RegenerateCommand}"
-                            Content="{converters:Tr SettingsTestOutfitRegenerate}" />
+                            Content="{l:Tr 'Regenerate'}" />
                     <Button Classes="Primary"
                             Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).CloseTestOutfitDialogCommand}"
-                            Content="{converters:Tr Close}" />
+                            Content="{l:Tr 'Close'}" />
                 </StackPanel>
             </StackPanel>
         </Border>

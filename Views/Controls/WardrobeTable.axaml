@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:tagInput="clr-namespace:ChastiMaid.Views.Controls.TagInput"
@@ -30,16 +31,16 @@
                           MinWidth="44" MinHeight="44"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center" />
-                <TextBlock Grid.Column="1" Text="{conv:UpperCase {conv:Tr WardrobeColName}}"
+                <TextBlock Grid.Column="1" Text="{conv:UpperCase {l:Tr 'Name'}}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
-                <TextBlock Grid.Column="2" Text="{conv:UpperCase {conv:Tr WardrobeColLayers}}"
+                <TextBlock Grid.Column="2" Text="{conv:UpperCase {l:Tr 'Layers'}}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
-                <TextBlock Grid.Column="3" Text="{conv:UpperCase {conv:Tr WardrobeColSlots}}"
+                <TextBlock Grid.Column="3" Text="{conv:UpperCase {l:Tr 'Slots'}}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
-                <TextBlock Grid.Column="4" Text="{conv:UpperCase {conv:Tr WardrobeColTags}}"
+                <TextBlock Grid.Column="4" Text="{conv:UpperCase {l:Tr 'Tags'}}"
                            Classes="LabelUI"
                            VerticalAlignment="Center" />
             </Grid>
@@ -87,7 +88,7 @@
                                                 IsVisible="{Binding IsExpanded}"
                                                 VerticalAlignment="Center"
                                                 Margin="4,4">
-                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColName}}" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Name'}}" />
                                         <TextBox Classes="underline"
                                                  Text="{Binding Name}" />
                                     </StackPanel>
@@ -126,7 +127,7 @@
                                                 IsVisible="{Binding IsExpanded}"
                                                 Margin="0,4">
                                         <StackPanel Spacing="2">
-                                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColMultiplier}}" />
+                                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Multiplier'}}" />
                                             <NumericUpDown Classes="underline stacked-spinner"
                                                            Value="{Binding Multiplier, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                            FormatString="0.0"
@@ -135,7 +136,7 @@
                                                            Width="110" />
                                         </StackPanel>
                                         <StackPanel Spacing="2">
-                                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColWeight}}" />
+                                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Weight'}}" />
                                             <NumericUpDown Classes="underline stacked-spinner"
                                                            Value="{Binding Weight, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                            FormatString="0.0"
@@ -217,7 +218,7 @@
                                     Padding="40,8,8,8">
                                 <StackPanel Spacing="10">
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColLayers}}" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Layers'}}" />
                                         <ItemsControl ItemsSource="{Binding LayerToggles}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -236,17 +237,17 @@
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColSlots}}" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Slots'}}" />
                                         <tagInput:TagInput Tags="{Binding Slots}"
                                                            Suggestions="{Binding SlotSuggestions}"
-                                                           Placeholder="{conv:Tr WardrobePlaceholderAddSlot}" />
+                                                           Placeholder="{l:Tr 'add slot...'}" />
                                     </StackPanel>
 
                                     <StackPanel Spacing="2">
-                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColTags}}" />
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Tags'}}" />
                                         <tagInput:TagInput Tags="{Binding Tags}"
                                                            Suggestions="{Binding TagSuggestions}"
-                                                           Placeholder="{conv:Tr WardrobePlaceholderAddTag}" />
+                                                           Placeholder="{l:Tr 'add tag...'}" />
                                     </StackPanel>
 
                                     <Button Classes="Danger compact"
@@ -254,12 +255,12 @@
                                             HorizontalAlignment="Right">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                             <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="16" />
-                                            <TextBlock Text="{conv:Tr WardrobeDeleteItem}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{l:Tr 'Delete item'}" VerticalAlignment="Center" />
                                         </StackPanel>
                                     </Button>
                                     <TextBlock Classes="Caption"
                                                FontStyle="Italic"
-                                               Text="{conv:Tr WardrobeItemHelpText}" />
+                                               Text="{l:Tr 'Multiplier and weight affect outfit scoring. Tags are used by outfit rules.'}" />
                                 </StackPanel>
                             </Border>
 
@@ -282,7 +283,7 @@
 
                 <!-- Trigger button — visible when panel is closed -->
                 <Button Classes="Ghost compact"
-                        Content="{conv:Tr WardrobeAddItemTrigger}"
+                        Content="{l:Tr '+ Add Item'}"
                         Command="{Binding ShowAddItemPanelCommand}"
                         IsVisible="{Binding !IsAddingNewItem}"
                         Margin="12,6"
@@ -295,14 +296,14 @@
                         <!-- Name + Multiplier/Weight inline — mirrors Part A expanded row -->
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,12,0">
-                                <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColName}}" />
+                                <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Name'}}" />
                                 <TextBox Classes="underline"
                                          Text="{Binding NewItemName}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal"
                                         Spacing="12" VerticalAlignment="Bottom">
                                 <StackPanel Spacing="2">
-                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColMultiplier}}" />
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Multiplier'}}" />
                                     <NumericUpDown Classes="underline stacked-spinner"
                                                    Value="{Binding NewItemMultiplier, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                    FormatString="0.0"
@@ -311,7 +312,7 @@
                                                    Width="110" />
                                 </StackPanel>
                                 <StackPanel Spacing="2">
-                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColWeight}}" />
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Weight'}}" />
                                     <NumericUpDown Classes="underline stacked-spinner"
                                                    Value="{Binding NewItemWeight, Converter={x:Static conv:NullableNumericConverter.Instance}, ConverterParameter=0, Mode=TwoWay}"
                                                    FormatString="0.0"
@@ -322,7 +323,7 @@
                             </StackPanel>
                         </Grid>
                         <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColLayers}}" />
+                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Layers'}}" />
                             <ItemsControl ItemsSource="{Binding NewItemLayerToggles}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -340,29 +341,29 @@
                             </ItemsControl>
                         </StackPanel>
                         <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColSlots}}" />
+                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Slots'}}" />
                             <tagInput:TagInput Tags="{Binding NewItemSlots}"
                                                Suggestions="{Binding NewItemSlotSuggestions}"
-                                               Placeholder="{conv:Tr WardrobePlaceholderAddSlot}" />
+                                               Placeholder="{l:Tr 'add slot...'}" />
                         </StackPanel>
                         <StackPanel Spacing="2">
-                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {conv:Tr WardrobeColTags}}" />
+                            <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Tags'}}" />
                             <tagInput:TagInput Tags="{Binding NewItemTags}"
                                                Suggestions="{Binding NewItemTagSuggestions}"
-                                               Placeholder="{conv:Tr WardrobePlaceholderAddTag}" />
+                                               Placeholder="{l:Tr 'add tag...'}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
                             <Button Classes="Ghost compact"
-                                    Content="{conv:Tr WardrobeAddItemCancel}"
+                                    Content="{l:Tr 'Cancel'}"
                                     Command="{Binding CancelAddItemCommand}" />
                             <Button Classes="Primary compact"
-                                    Content="{conv:Tr WardrobeAddItemConfirm}"
+                                    Content="{l:Tr 'Add Item'}"
                                     Command="{Binding AddWardrobeItemCommand}" />
                         </StackPanel>
                         <TextBlock Classes="Caption"
                                    FontStyle="Italic"
-                                   Text="{conv:Tr WardrobeNewItemHelpText}" />
+                                   Text="{l:Tr 'Multiplier affects outfit scoring, Weight is the probability a clothing item is chosen.'}" />
                     </StackPanel>
                 </Border>
 

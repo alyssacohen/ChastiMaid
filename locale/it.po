@@ -13,9 +13,27 @@ msgstr ""
 msgid " (+{0} more)"
 msgstr " (+{0} altri)"
 
+#: ../ViewModels/SettingsViewModel.cs:368
+#, fuzzy
+msgid " Unsaved changes in Settings are not included."
+msgstr " Le modifiche non salvate nelle Impostazioni non sono incluse."
+
+#: ../ViewModels/SettingsViewModel.cs:557
+#, csharp-format
+msgid "\"{0}\" is over {1} characters and will be ignored."
+msgstr "\"{0}\" supera i {1} caratteri e verrà ignorato."
+
 #: ../Views/Controls/OutfitDrawer.axaml:109
 msgid "(none)"
 msgstr "(nessuno)"
+
+#: ../Views/Controls/WardrobeTable.axaml:286
+msgid "+ Add Item"
+msgstr "+ Aggiungi capo"
+
+#: ../Views/Controls/WardrobeToolbar.axaml:46
+msgid "+ Add item"
+msgstr ""
 
 #: ../Models/CardDisplay.cs:13
 #, csharp-format
@@ -26,6 +44,10 @@ msgstr "+{0} Minuti"
 #, csharp-format
 msgid "+{0}%"
 msgstr "+{0}%"
+
+#: ../Views/Controls/SettingsChoresTab.axaml:66 ../Views/Controls/SettingsChoresTab.axaml:72 ../Views/Controls/SettingsChoresTab.axaml:78
+msgid "0"
+msgstr "0"
 
 #: ../ViewModels/DashboardViewModel.cs:638
 msgid "A Matter Already Settled"
@@ -57,15 +79,41 @@ msgstr ""
 msgid "A household that cannot hear its staff is poorly managed. Speak."
 msgstr "Una casa che non ascolta la propria servitù è mal governata. Parlate."
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:191
+msgid "A line, copied faithfully, as many times as the occasion warrants."
+msgstr ""
+"Una riga, ricopiata fedelmente, tante volte quante l'occasione richiede."
+
 #: ../ViewModels/FortuneDeckViewModel.cs:374
 msgid "A moment of uncharacteristic generosity. Do not grow accustomed to it."
 msgstr "Un momento di insolita generosità. Non abituatevi."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:108
+msgid ""
+"A moment's curtsy, recorded for the record — grace so rarely convinces "
+"without a witness."
+msgstr ""
+"Un breve inchino, filmato per la cronaca — la grazia convince raramente senza "
+"un testimone."
 
 #: ../Models/Banks/HydrationReminderBank.cs:12
 msgid ""
 "A moment's pause for water is no idleness. Go and take five sips of your "
 "drink."
 msgstr "Una breve pausa per bere non è ozio. Ora bevete cinque sorsi."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:79
+msgid "A parched maid is of no use to me. You need only pause and drink."
+msgstr ""
+"Una cameriera assetata non mi è di alcuna utilità. Vi basterà una pausa per "
+"bere."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:57
+msgid ""
+"A period of stillness, in a corner of your choosing, observed by the camera."
+msgstr ""
+"Un periodo di immobilità, in un angolo di vostra scelta, osservato dalla "
+"camera."
 
 #: ../ViewModels/FortuneDeckViewModel.cs:381
 msgid "A permission, somewhere, will be easier to earn than it deserves."
@@ -100,6 +148,14 @@ msgstr ""
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:21
 msgid "A steady hand betrays a steady mind."
 msgstr "Una mano ferma tradisce una mente ferma."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:31
+msgid ""
+"A sum, added to the debt at once. Always in effect — there is no toggle for "
+"consequence."
+msgstr ""
+"Una somma, aggiunta subito al debito. Sempre attiva — per questa non v'è "
+"alcun interruttore."
 
 #: ../Models/Banks/EmployerPhraseBank.cs:23
 msgid "A task I begin in earnest is a task I count already half completed"
@@ -152,9 +208,25 @@ msgstr "Precisione"
 msgid "Add"
 msgstr "Aggiungi"
 
+#: ../Views/Controls/SettingsChoresTab.axaml:102
+msgid "Add Chore"
+msgstr "Aggiungi compito"
+
+#: ../Views/Controls/WardrobeTable.axaml:361
+msgid "Add Item"
+msgstr "Aggiungi capo"
+
 #: ../Views/Controls/DashboardAddTaskForm.axaml:15
 msgid "Add Occasional Task"
 msgstr "Aggiungi compito occasionale"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:397
+msgid "Add Outfit"
+msgstr "Aggiungi divisa"
+
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:66
+msgid "Add Rule"
+msgstr "Aggiungi regola"
 
 #: ../Views/DashboardView.axaml:80 ../Views/DashboardView.axaml:338
 msgid "Add task"
@@ -185,6 +257,10 @@ msgstr ""
 msgid "Amount owed"
 msgstr "Importo dovuto"
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:41
+msgid "Appellatives"
+msgstr "Appellativi"
+
 #: ../Models/Banks/ImpossibleQuestionBank.cs:24
 msgid "Are you content in your service?"
 msgstr "Siete contenta del vostro servizio?"
@@ -206,6 +282,14 @@ msgstr "Chiedi"
 msgid "Assigned {0}"
 msgstr "Assegnata il {0}"
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:61
+msgid "Auto-save (minutes)"
+msgstr "Salvataggio automatico (minuti)"
+
+#: ../ViewModels/SettingsViewModel.cs:444 ../ViewModels/SettingsViewModel.cs:446
+msgid "Available"
+msgstr "Disponibile"
+
 #: ../Models/Banks/ImpossibleQuestionBank.cs:29
 msgid "Awaiting instruction shows admirable restraint."
 msgstr "Attendere istruzioni denota un'ammirevole compostezza."
@@ -214,7 +298,7 @@ msgstr "Attendere istruzioni denota un'ammirevole compostezza."
 msgid "Awaiting its turn"
 msgstr "In attesa del suo turno"
 
-#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/NewGameView.axaml:34 ../Views/ShopView.axaml:14
+#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/NewGameView.axaml:34 ../Views/SettingsView.axaml:137 ../Views/ShopView.axaml:14
 msgid "Back"
 msgstr "Indietro"
 
@@ -238,7 +322,7 @@ msgstr "Compra"
 msgid "CPM"
 msgstr "CPM"
 
-#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/EndSessionView.axaml:47
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/SettingsViewModel.cs:949 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeTable.axaml:358 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:225
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -256,7 +340,7 @@ msgctxt "punishment"
 msgid "Cancelled"
 msgstr "Annullata"
 
-#: ../ViewModels/WebcamCaptureDialogViewModel.cs:76
+#: ../ViewModels/WebcamCaptureDialogViewModel.cs:76 ../Views/Controls/SettingsChoresTab.axaml:16
 msgid "Capture"
 msgstr "Cattura"
 
@@ -268,13 +352,37 @@ msgstr "Richiamate alla mente quel momento. {0} compare in questa fotografia?"
 msgid "Caught you moving. Your corner grows longer by {0} seconds."
 msgstr "Vi ho colta in movimento. Il vostro castigo si allunga di {0} secondi."
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:225
+msgid ""
+"Certain accessories, once donned, do not come off again until I am satisfied "
+"they have served their purpose."
+msgstr ""
+"Certi accessori, una volta indossati, non si tolgono finché non giudico che "
+"abbiano assolto al loro scopo."
+
+#: ../ViewModels/SettingsViewModel.cs:947
+msgid "Change language"
+msgstr "Cambio lingua"
+
 #: ../Views/WritingLinesPunishmentView.axaml:84
 msgid "Char/min"
 msgstr "Car/min"
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:189
+msgid "Chastity Device"
+msgstr "Dispositivo di castità"
+
 #: ../ViewModels/ConfirmOutfitViewModel.cs:76
 msgid "Check yourself in the preview, then press Record."
 msgstr "Controllate l'anteprima, poi premete Registra."
+
+#: ../Views/Controls/SettingsChoresTab.axaml:60
+msgid "Chore name"
+msgstr "Nome compito"
+
+#: ../Views/Controls/SettingsChoresTab.axaml:12 ../Views/SettingsView.axaml:56
+msgid "Chores"
+msgstr "Compiti"
 
 #: ../ViewModels/PermissionTypeItemViewModel.cs:28
 msgid "Cigarette break"
@@ -288,7 +396,7 @@ msgstr "Svuota"
 msgid "Clears the cooldown standing between you and your next request."
 msgstr "Azzera l'attesa che vi separa dalla prossima richiesta."
 
-#: ../Views/Controls/DashboardPermissionsPanel.axaml:33 ../Views/Controls/DashboardPermissionsPanel.axaml:39 ../Views/Controls/DashboardPermissionsPanel.axaml:59 ../Views/Controls/DashboardPunishmentsPanel.axaml:30 ../Views/Controls/DashboardPunishmentsPanel.axaml:36 ../Views/Controls/DashboardPunishmentsPanel.axaml:55 ../Views/LoadGameView.axaml:132
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:33 ../Views/Controls/DashboardPermissionsPanel.axaml:39 ../Views/Controls/DashboardPermissionsPanel.axaml:59 ../Views/Controls/DashboardPunishmentsPanel.axaml:30 ../Views/Controls/DashboardPunishmentsPanel.axaml:36 ../Views/Controls/DashboardPunishmentsPanel.axaml:55 ../Views/Controls/SettingsTestOutfitOverlay.axaml:88 ../Views/LoadGameView.axaml:132
 msgid "Close"
 msgstr "Chiudi"
 
@@ -303,6 +411,14 @@ msgstr "Chiudi senza combinazione"
 #: ../Views/Controls/OutfitDrawer.axaml:53 ../Views/Controls/OutfitDrawer.axaml:54
 msgid "Close drawer"
 msgstr "Chiudi pannello"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:50
+msgid ""
+"Comma-separated. Used at random (along with Name) when you're summoned to a "
+"popup."
+msgstr ""
+"Separati da virgola. Usati a caso (insieme al Nome) quando venite convocata "
+"da un popup."
 
 #: ../Views/DashboardView.axaml:400
 msgid "Complete Game"
@@ -326,6 +442,10 @@ msgstr "Crea un outfit"
 msgid "Confidence in one's craft is admirable."
 msgstr "La fiducia nella propria arte è cosa ammirevole."
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:343
+msgid "Configured outfits"
+msgstr "Divise configurate"
+
 #: ../ViewModels/DashboardViewModel.cs:677 ../ViewModels/DashboardViewModel.cs:697 ../Views/CameraSetupView.axaml:36
 msgid "Confirm"
 msgstr "Conferma"
@@ -344,6 +464,15 @@ msgstr "Continua"
 msgid "Continue without safe"
 msgstr "Continua senza cassaforte"
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:358
+msgid "Contract"
+msgstr "Contratto"
+
+#: ../ViewModels/SettingsViewModel.cs:367
+#, fuzzy
+msgid "Contract exported."
+msgstr "Contratto esportato."
+
 #: ../Services/Contracts/ContractImportFlow.cs:77
 #, csharp-format, fuzzy
 msgid "Contract loaded: {0} wardrobe items, {1} outfit rules and {2} tasks."
@@ -354,7 +483,11 @@ msgstr "Contratto caricato: {0} capi, {1} regole di abbinamento e {2} task."
 msgid "Contract of Service"
 msgstr "Contratto di servizio"
 
-#: ../ViewModels/PunishmentItemViewModel.cs:17
+#: ../Views/Controls/SettingsPermissionsTab.axaml:37
+msgid "Cooldown (minutes)"
+msgstr "Cooldown (minuti)"
+
+#: ../ViewModels/PunishmentItemViewModel.cs:17 ../Views/Controls/SettingsPunishmentsTab.axaml:52
 msgid "Cornertime"
 msgstr "Angolo"
 
@@ -408,6 +541,18 @@ msgstr "Credito: £{0:F2}"
 msgid "Current Outfit"
 msgstr "Outfit attuale"
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:103
+msgid "Curtsy Video"
+msgstr "Video riverenza"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:117
+msgid "Curtsy video duration (seconds)"
+msgstr "Durata video riverenza (secondi)"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:110
+msgid "Daily interest rate"
+msgstr "Tasso di interesse giornaliero"
+
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:22
 msgid "Dawdling adds nothing but time."
 msgstr "Il tergiversare non aggiunge nulla, se non il tempo."
@@ -422,7 +567,7 @@ msgstr "Debito e interessi"
 msgid "Debt: £{0:F2}"
 msgstr "Debito: £{0:F2}"
 
-#: ../ViewModels/LoadGameViewModel.cs:161
+#: ../ViewModels/LoadGameViewModel.cs:161 ../Views/Controls/SettingsChoresTab.axaml:89 ../Views/Controls/SettingsChoresTab.axaml:90 ../Views/Controls/SettingsOutfitRulesTab.axaml:52 ../Views/Controls/SettingsOutfitRulesTab.axaml:53
 msgid "Delete"
 msgstr "Elimina"
 
@@ -449,6 +594,18 @@ msgstr "Eliminare \"{0}\"? Questa partita verrà contrassegnata come fallita."
 msgid "Delete Save"
 msgstr "Elimina salvataggio"
 
+#: ../Views/Controls/WardrobeTable.axaml:258
+msgid "Delete item"
+msgstr "Elimina capo"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:375 ../Views/Controls/SettingsPunishmentsTab.axaml:379
+msgid "Delete preset"
+msgstr "Elimina preset"
+
+#: ../Views/Controls/WardrobeBulkBar.axaml:27
+msgid "Delete selected"
+msgstr "Elimina selezionati"
+
 #: ../Models/Banks/PermissionPhraseBank.cs:19
 msgid "Denied. Ask again later, if you dare."
 msgstr "Negato. Riprovate più tardi, se ne avete il coraggio."
@@ -457,9 +614,21 @@ msgstr "Negato. Riprovate più tardi, se ne avete il coraggio."
 msgid "Denied. Discipline does not negotiate."
 msgstr "Negato. La disciplina non si negozia."
 
+#: ../Views/Controls/SettingsChoresTab.axaml:82
+msgid "Description"
+msgstr "Descrizione"
+
 #: ../Views/Controls/DashboardAddTaskForm.axaml:26
 msgid "Description (optional)"
 msgstr "Descrizione (facoltativa)"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:341
+msgid "Detected cameras"
+msgstr "Webcam rilevate"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:154
+msgid "Diaper Play"
+msgstr "Diaper Play"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:104
 #, csharp-format
@@ -481,9 +650,13 @@ msgstr "Il Diaper Play non è in vigore."
 msgid "Did you act on your own initiative today?"
 msgstr "Avete agito di vostra iniziativa, oggi?"
 
-#: ../Views/ForcedOutfitPresetEditorView.axaml:40
+#: ../Views/Controls/SettingsGeneralTab.axaml:163 ../Views/Controls/SettingsGeneralTab.axaml:229 ../Views/Controls/SettingsPopupsTab.axaml:83 ../Views/Controls/SettingsPopupsTab.axaml:112 ../Views/Controls/SettingsPopupsTab.axaml:142 ../Views/Controls/SettingsPopupsTab.axaml:229 ../Views/Controls/SettingsPunishmentsTab.axaml:61 ../Views/Controls/SettingsPunishmentsTab.axaml:177 ../Views/Controls/SettingsPunishmentsTab.axaml:195 ../Views/Controls/SettingsPunishmentsTab.axaml:253 ../Views/Controls/SettingsPunishmentsTab.axaml:287 ../Views/Controls/SettingsPunishmentsTab.axaml:328 ../Views/ForcedOutfitPresetEditorView.axaml:40
 msgid "Disabled"
 msgstr "Non attivo"
+
+#: ../Views/SettingsView.axaml:212
+msgid "Discard"
+msgstr "Scarta"
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:40
 msgid "Discipline of the mind must precede discipline of the hands."
@@ -522,9 +695,21 @@ msgstr "Pesca — {0}"
 msgid "Duly noted."
 msgstr "Ne prendo atto."
 
+#: ../Views/Controls/SettingsPermissionsTab.axaml:30
+msgid "Duration (minutes)"
+msgstr "Durata (minuti)"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:235
+msgid "Duration minimum/maximum (seconds)"
+msgstr "Durata minima/massima (secondi)"
+
 #: ../Models/CardDisplay.cs:12
 msgid "Eager"
 msgstr "Impaziente"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:362 ../Views/Controls/SettingsPunishmentsTab.axaml:367
+msgid "Edit preset"
+msgstr "Modifica preset"
 
 #: ../Views/NewGameView.axaml:40
 #, fuzzy
@@ -553,7 +738,7 @@ msgctxt "save slot"
 msgid "Empty"
 msgstr "Vuoto"
 
-#: ../Views/ForcedOutfitPresetEditorView.axaml:39
+#: ../Views/Controls/SettingsGeneralTab.axaml:164 ../Views/Controls/SettingsGeneralTab.axaml:230 ../Views/Controls/SettingsPopupsTab.axaml:84 ../Views/Controls/SettingsPopupsTab.axaml:113 ../Views/Controls/SettingsPopupsTab.axaml:143 ../Views/Controls/SettingsPopupsTab.axaml:230 ../Views/Controls/SettingsPunishmentsTab.axaml:62 ../Views/Controls/SettingsPunishmentsTab.axaml:178 ../Views/Controls/SettingsPunishmentsTab.axaml:196 ../Views/Controls/SettingsPunishmentsTab.axaml:254 ../Views/Controls/SettingsPunishmentsTab.axaml:288 ../Views/Controls/SettingsPunishmentsTab.axaml:329 ../Views/ForcedOutfitPresetEditorView.axaml:39
 msgid "Enabled"
 msgstr "Attivo"
 
@@ -595,9 +780,18 @@ msgid "Every line, faithfully copied. I have taken note of your penmanship."
 msgstr ""
 "Ogni riga, fedelmente ricopiata. Ho preso nota della vostra calligrafia."
 
+#: ../ViewModels/SettingsViewModel.cs:1470
+msgid "Excludes"
+msgstr "Esclude"
+
 #: ../Views/WelcomeView.axaml:64
 msgid "Exit"
 msgstr "Esci"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:369
+#, fuzzy
+msgid "Export Contract"
+msgstr "Esporta contratto"
 
 #: ../ViewModels/GameCompleteViewModel.cs:41 ../Views/GameCompleteView.axaml:25
 msgid "Export Outfit Video"
@@ -611,9 +805,36 @@ msgstr "Esporta combinazione cassaforte"
 msgid "Export Safe Combination Photo"
 msgstr "Esporta foto combinazione cassaforte"
 
+#: ../ViewModels/SettingsViewModel.cs:349
+#, fuzzy
+msgid "Export contract"
+msgstr "Esporta contratto"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:363
+#, fuzzy
+msgid ""
+"Export every game setting as a single contract file — including the wardrobe, "
+"outfit rules, tasks, punishments and permissions — or load one to replace "
+"your current terms outright. Your name, language, camera and autosave "
+"settings are never included."
+msgstr ""
+"Esportate tutte le impostazioni di gioco in un unico file contratto — "
+"compresi guardaroba, regole degli abbinamenti, task, punizioni e permessi — "
+"oppure caricatene uno per sostituire integralmente le condizioni attuali. "
+"Nome, lingua, fotocamera e salvataggio automatico non sono mai inclusi."
+
 #: ../Models/CardDisplay.cs:27
 msgid "Extends the duration of your next granted request."
 msgstr "Allunga la durata della vostra prossima richiesta concessa."
+
+#: ../Views/Controls/WardrobeToolbar.axaml:13
+msgid "Filter by name or tag…"
+msgstr "Filtra per nome o tag…"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:26
+msgctxt "punishment"
+msgid "Fine"
+msgstr "Multa"
 
 #: ../Views/GameCompleteView.axaml:47
 msgid "Finish and Free Slot"
@@ -675,7 +896,7 @@ msgstr "Per aver trattato un compito semplice come scusa per oziare."
 msgid "For unseemly haste in your duties."
 msgstr "Per un'indecorosa fretta nei vostri doveri."
 
-#: ../ViewModels/PunishmentItemViewModel.cs:19
+#: ../ViewModels/PunishmentItemViewModel.cs:19 ../Views/Controls/SettingsPunishmentsTab.axaml:319
 msgid "Forced Outfit"
 msgstr ""
 
@@ -713,6 +934,22 @@ msgstr ""
 msgid "Frame your work area for: {0}"
 msgstr "Inquadrate l'area di lavoro per: {0}"
 
+#: ../Views/Controls/SettingsChoresTab.axaml:69
+msgid "Freq. (Days)"
+msgstr "Freq. (giorni)"
+
+#: ../ViewModels/SettingsViewModel.cs:1249
+msgid "Full outfit"
+msgstr "Outfit completo"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:78
+msgid "Game Balance"
+msgstr "Bilanciamento di gioco"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:15 ../Views/SettingsView.axaml:49
+msgid "General"
+msgstr "Generali"
+
 #: ../Models/Banks/SummonPhraseBank.cs:12
 msgid "Get over here, {0}! You know better than keep me waiting."
 msgstr "Vieni qui, {0}! Sai bene che non dovresti farmi aspettare."
@@ -736,6 +973,14 @@ msgstr "Bene. Restate così."
 #: ../Models/Banks/CornertimeInstructionBank.cs:25
 msgid "Good. The clock is running — do not disappoint me."
 msgstr "Bene. L'orologio corre — non deludetemi."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:90
+msgid "Grace time before failure (seconds)"
+msgstr "Tolleranza prima del fallimento (secondi)"
+
+#: ../Views/Controls/SettingsPermissionsTab.axaml:23
+msgid "Grant chance %"
+msgstr "Probabilità % di concessione"
 
 #: ../ViewModels/FortuneDeckViewModel.cs:389
 msgid "Grant permission"
@@ -811,6 +1056,10 @@ msgstr "Quanto siete rispettabile."
 #: ../Models/Banks/ImpossibleQuestionBank.cs:23
 msgid "Humility is the first virtue of good service."
 msgstr "L'umiltà è la prima virtù di un buon servizio."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:74
+msgid "Hydration Reminders"
+msgstr "Promemoria idratazione"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:133
 #, csharp-format, fuzzy
@@ -926,6 +1175,18 @@ msgctxt "session status"
 msgid "Idle"
 msgstr "In pausa"
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:249
+msgid "Idle hands earn extra lines."
+msgstr "Le mani inoperose fruttano ulteriori righe."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:258
+msgid "Idle timeout (seconds)"
+msgstr "Tempo di inattività (secondi)"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:124
+msgid "Idle wage amount (£)"
+msgstr "Importo paga a riposo (£)"
+
 #: ../Models/Banks/PermissionPhraseBank.cs:13
 msgid "If you must. The clock is already ticking."
 msgstr "Se proprio dovete. Il tempo sta già scorrendo."
@@ -933,6 +1194,11 @@ msgstr "Se proprio dovete. Il tempo sta già scorrendo."
 #: ../Views/FortuneDeckView.axaml:20 ../Views/ShopView.axaml:86
 msgid "Il Ventaglio della Sorte"
 msgstr "Il Ventaglio della Sorte"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:373
+#, fuzzy
+msgid "Import Contract"
+msgstr "Importa contratto"
 
 #: ../Services/Contracts/ContractImportFlow.cs:33
 #, fuzzy
@@ -969,6 +1235,10 @@ msgstr ""
 "Gli interessi maturano ogni giorno al {0}%. Madame si rammarica che "
 "l'aritmetica non ammetta trattative."
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:280
+msgid "Interruptions"
+msgstr "Interruzioni"
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:17
 msgid "Into the corner, feet together, hands upon your knees, facing the wall."
 msgstr "Andate all'angolo, piedi uniti, mani sulle ginocchia, rivolta al muro."
@@ -991,9 +1261,21 @@ msgstr ""
 "seguenti regolino il periodo di servizio. Vogliate leggerli con attenzione. "
 "Non saranno letti ad alta voce."
 
+#: ../ViewModels/SettingsViewModel.cs:949
+msgid "Keep"
+msgstr "Conserva"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:220
+msgid "Kneel"
+msgstr "Inginocchiarsi"
+
 #: ../Models/Banks/KneelInstructionBank.cs:12
 msgid "Kneel where you stand, and remain a while with your humility."
 msgstr "Inginocchiatevi dove siete, dimostratemi un po' di umiltà."
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:292 ../Views/Controls/SettingsGeneralTab.axaml:298
+msgid "Language"
+msgstr "Lingua"
 
 #: ../ViewModels/TaskItemViewModel.cs:41
 #, csharp-format
@@ -1002,15 +1284,31 @@ msgid_plural "Last done: {0} days ago"
 msgstr[0] ""
 msgstr[1] ""
 
+#: ../Views/Controls/WardrobeToolbar.axaml:20
+msgid "Layer:"
+msgstr "Strato:"
+
+#: ../Views/Controls/WardrobeTable.axaml:37 ../Views/Controls/WardrobeTable.axaml:221 ../Views/Controls/WardrobeTable.axaml:326
+msgid "Layers"
+msgstr "Strati"
+
 #: ../Services/Contracts/ContractClauseBuilder.cs:218
 #, fuzzy
 msgid "Leave to attend to certain needs is granted at Madame's discretion:"
 msgstr "Il congedo per certe necessità è concesso a discrezione di Madame:"
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:270
+msgid "Lines added per timeout"
+msgstr "Righe aggiunte per inattività"
+
 #: ../Services/Contracts/ContractClauseBuilder.cs:196
 #, fuzzy
 msgid "Lines are not in force."
 msgstr "Le righe da scrivere non sono in vigore."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:200
+msgid "Lines per severity"
+msgstr "Righe per gravità"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:176
 #, csharp-format, fuzzy
@@ -1020,6 +1318,10 @@ msgid ""
 msgstr ""
 "Righe da scrivere: {0} righe per ogni punto di severità — almeno {1}, al più "
 "{2} — e {3} in più per ogni errore."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:201
+msgid "Listening…"
+msgstr "In ascolto…"
 
 #: ../ViewModels/LoadGameViewModel.cs:144
 msgid "Load Error"
@@ -1050,6 +1352,10 @@ msgstr ""
 msgctxt "safe"
 msgid "Locked"
 msgstr "Bloccata"
+
+#: ../Views/Controls/SettingsChoresTab.axaml:38
+msgid "Longest wait between photos (seconds)"
+msgstr "Attesa massima tra uno scatto e l'altro (secondi)"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:63
 #, csharp-format
@@ -1097,6 +1403,11 @@ msgstr "Madame narrerà ad alta voce il Cornertime della Cameriera."
 msgid "Madame will summon the Maid by name alone."
 msgstr "Madame convocherà la Cameriera con il solo nome."
 
+#. the player's default name
+#: ../App.axaml.cs:43 ../ViewModels/SettingsViewModel.cs:976 ../ViewModels/SettingsViewModel.cs:981
+msgid "Maid"
+msgstr "Cameriera"
+
 #: ../ViewModels/StartSessionViewModel.cs:360
 #, csharp-format
 msgid ""
@@ -1108,14 +1419,74 @@ msgstr ""
 "moltiplicatore base e bloccherà l'outfit in via definitiva: non sarà "
 "possibile ripensarci né tornare indietro. Procedere?"
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:97
+msgid "Max debt (£)"
+msgstr "Debito massimo (£)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:333
+msgid "Max hours"
+msgstr "Ore massime"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:304
+msgid "Maximum interval (seconds)"
+msgstr "Intervallo massimo (secondi)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:236
+msgid "Maximum lines"
+msgstr "Righe massime"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:274
+msgid "Maximum minutes"
+msgstr "Minuti massimi"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:163
+msgid "Maximum movement penalty (seconds)"
+msgstr "Penalità massima per movimento (secondi)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:126
+msgid "Maximum seconds between penalties"
+msgstr "Secondi massimi tra due penalità"
+
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:151
 msgid "May I be excused?"
 msgstr "Con permesso..."
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:84
+msgid "Min debt (£)"
+msgstr "Debito minimo (£)"
 
 #: ../Services/Contracts/ContractImportFlow.cs:106
 #, csharp-format, fuzzy
 msgid "Minimum and maximum swapped: {0}."
 msgstr "Minimo e massimo invertiti: {0}."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:88
+msgid "Minimum hydration interval (minutes)"
+msgstr "Intervallo minimo idratazione (minuti)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:292
+msgid "Minimum interval (seconds)"
+msgstr "Intervallo minimo (secondi)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:224
+msgid "Minimum lines"
+msgstr "Righe minime"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:266
+msgid "Minimum minutes"
+msgstr "Minuti minimi"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:151
+msgid "Minimum movement penalty (seconds)"
+msgstr "Penalità minima per movimento (secondi)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:114
+msgid "Minimum seconds between penalties"
+msgstr "Secondi minimi tra due penalità"
+
+#: ../Views/Controls/SettingsChoresTab.axaml:75
+msgid "Minimum time (minutes)"
+msgstr "Tempo minimo (minuti)"
 
 #: ../Views/WritingLinesPunishmentView.axaml:98
 msgid "Mistypes"
@@ -1139,6 +1510,29 @@ msgstr ""
 "Il movimento viene rilevato con una sensibilità del {0}% e aggiunge alla pena "
 "tra {1} e {2}, con una pausa compresa tra {3} e {4} prima che un altro possa "
 "essere conteggiato."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:138
+msgid "Movement sensitivity (%)"
+msgstr "Sensibilità al movimento (%)"
+
+#: ../Views/Controls/WardrobeTable.axaml:130 ../Views/Controls/WardrobeTable.axaml:306
+msgid "Multiplier"
+msgstr "Moltiplicatore"
+
+#: ../Views/Controls/WardrobeTable.axaml:366
+msgid ""
+"Multiplier affects outfit scoring, Weight is the probability a clothing item "
+"is chosen."
+msgstr ""
+"Il moltiplicatore influenza il punteggio dell'outfit, il peso è la "
+"probabilità che un capo venga scelto."
+
+#: ../Views/Controls/WardrobeTable.axaml:263
+msgid ""
+"Multiplier and weight affect outfit scoring. Tags are used by outfit rules."
+msgstr ""
+"Moltiplicatore e peso influenzano il punteggio dell'outfit. I tag sono usati "
+"dalle regole outfit."
 
 #: ../Models/Banks/EmployerPhraseBank.cs:24
 msgid "My discipline is merely devotion with its sleeves rolled up"
@@ -1165,7 +1559,7 @@ msgstr ""
 msgid "My untidiness is merely a decision I have yet to unmake"
 msgstr "Il mio disordine non è che una decisione che non ho ancora disfatto"
 
-#: ../Views/Controls/DashboardAddTaskForm.axaml:18 ../Views/ForcedOutfitPresetEditorView.axaml:25
+#: ../Views/Controls/DashboardAddTaskForm.axaml:18 ../Views/Controls/SettingsChoresTab.axaml:59 ../Views/Controls/SettingsGeneralTab.axaml:31 ../Views/Controls/WardrobeTable.axaml:34 ../Views/Controls/WardrobeTable.axaml:91 ../Views/Controls/WardrobeTable.axaml:299 ../Views/ForcedOutfitPresetEditorView.axaml:25
 msgid "Name"
 msgstr "Nome"
 
@@ -1189,6 +1583,10 @@ msgstr "No"
 #: ../ViewModels/WelcomeViewModel.cs:36
 msgid "No Free Slots"
 msgstr "Nessuno slot libero"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:246
+msgid "No Idle"
+msgstr "No-Idle"
 
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:109
 msgid "No bonus cards yet."
@@ -1241,7 +1639,7 @@ msgstr ""
 "Nessuna regola limita l'abbinamento dei capi. Madame ripone fiducia nel gusto "
 "della Cameriera — per il momento."
 
-#: ../ViewModels/StartSessionViewModel.cs:211
+#: ../ViewModels/SettingsViewModel.cs:448 ../ViewModels/StartSessionViewModel.cs:211
 msgid ""
 "No speech recognition engine is installed upon this machine. You will be "
 "asked to write out any spoken citation by hand instead."
@@ -1278,6 +1676,10 @@ msgstr "Esaurite"
 msgid "Not at present. The work does not pause for you — nor do I."
 msgstr "Non ora. Il lavoro non si ferma per voi, e nemmeno io."
 
+#: ../ViewModels/SettingsViewModel.cs:444 ../ViewModels/SettingsViewModel.cs:446
+msgid "Not available"
+msgstr "Non disponibile"
+
 #: ../ViewModels/FortuneDeckViewModel.cs:397 ../ViewModels/FortuneDeckViewModel.cs:398
 msgid "Nothing"
 msgstr "Nulla"
@@ -1301,6 +1703,10 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:283
+msgid "Occasional reminders, delivered without warning."
+msgstr "Richiami occasionali, recapitati senza preavviso."
+
 #: ../ViewModels/TaskItemViewModel.cs:45
 msgid "Occasional task"
 msgstr "Compito occasionale"
@@ -1321,15 +1727,42 @@ msgstr "Un momento — sto valutando quanto detto."
 msgid "One moment — preparations are underway..."
 msgstr "Un momento, si sta preparando tutto..."
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:194
+msgid ""
+"One of the marked pieces will be selected at random and locked upon you each "
+"session; the key waits in the safe, and only an open safe permits a change of "
+"company."
+msgstr ""
+"Uno dei capi contrassegnati verrà scelto a caso e chiuso su di voi ad ogni "
+"sessione; la chiave attende in cassaforte, e solo una cassaforte aperta "
+"consente di cambiare compagnia."
+
+#: ../ViewModels/SettingsViewModel.cs:551
+#, csharp-format
+msgid "Only the first {0} are used."
+msgstr "Solo i primi {0} vengono usati."
+
 #. state of the safe holding the key (feminine in Italian: "la cassaforte")
 #: ../ViewModels/LoadGameViewModel.cs:44
 msgctxt "safe"
 msgid "Open"
 msgstr "Aperta"
 
+#: ../Views/Controls/SettingsChoresTab.axaml:84
+msgid "Optional description"
+msgstr "Descrizione opzionale"
+
 #: ../Views/ConfirmOutfitView.axaml:24
 msgid "Outfit Confirmed"
 msgstr "Outfit confermato"
+
+#: ../Views/Controls/SettingsTestOutfitOverlay.axaml:19
+msgid "Outfit Preview"
+msgstr "Anteprima outfit"
+
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:12 ../Views/SettingsView.axaml:84
+msgid "Outfit Rules"
+msgstr "Regole outfit"
 
 #: ../ViewModels/GameCompleteViewModel.cs:48
 msgid "Outfit video exported."
@@ -1347,6 +1780,14 @@ msgstr "Debito residuo"
 msgid "PNG Image"
 msgstr "Immagine PNG"
 
+#: ../ViewModels/SettingsViewModel.cs:1249
+msgid "Partial outfit"
+msgstr "Outfit parziale"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:212
+msgid "Penalty lines per mistake"
+msgstr "Righe di penalità per errore"
+
 #: ../Views/Controls/DashboardPunishmentsPanel.axaml:27 ../Views/DashboardView.axaml:167 ../Views/DashboardView.axaml:429
 msgid "Pending Punishments"
 msgstr "Punizioni in sospeso"
@@ -1356,13 +1797,17 @@ msgid "Perfection belongs to the divine, not the domestic. Reconsider."
 msgstr ""
 "La perfezione appartiene al divino, non alla servitù domestica. Riconsiderate."
 
-#: ../Views/Controls/DashboardPermissionsPanel.axaml:30
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:30 ../Views/Controls/SettingsPermissionsTab.axaml:11 ../Views/SettingsView.axaml:91
 msgid "Permissions"
 msgstr "Permessi"
 
 #: ../Models/Banks/PermissionPhraseBank.cs:27
 msgid "Persistence will not change my mind — only my patience."
 msgstr "L'insistenza non cambierà la mia risposta — solo la mia pazienza."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:255
+msgid "Photo interval minimum/maximum (seconds)"
+msgstr "Intervallo foto minimo/massimo (secondi)"
 
 #: ../Views/SafeLockView.axaml:25
 msgid ""
@@ -1372,9 +1817,17 @@ msgstr ""
 "Riponete il vostro oggetto di distrazione dentro la cassaforte.\n"
 "Inquadrate la combinazione con la fotocamera senza guardarla."
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:25
+msgid "Player"
+msgstr "Profilo"
+
 #: ../Views/WelcomeView.axaml:30
 msgid "Please, come in. The door is unlocked. It always is... at first."
 msgstr "Accomodatevi pure. La porta è aperta... per ora."
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:220
+msgid "Plug & Play"
+msgstr "Plug & Play"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:97
 #, csharp-format
@@ -1395,6 +1848,26 @@ msgstr "Il Plug and Play non è in vigore."
 msgid "Point the camera at the combination, then press Capture."
 msgstr "Inquadrate la combinazione con la fotocamera, poi premete Cattura."
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:26
+msgid "Popup Frequency & Timeout"
+msgstr "Frequenza e scadenza popup"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:45
+msgid "Popup maximum (seconds)"
+msgstr "Popup massimo (secondi)"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:32
+msgid "Popup minimum (seconds)"
+msgstr "Popup minimo (secondi)"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:58
+msgid "Popup timeout (seconds)"
+msgstr "Timeout popup (secondi)"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:16 ../Views/SettingsView.axaml:63
+msgid "Popups"
+msgstr "Popup"
+
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:222
 msgid "Position confirmed"
 msgstr "Posizione confermata"
@@ -1407,6 +1880,10 @@ msgstr "Posizionate la fotocamera"
 msgid "Position the camera to frame where you shall kneel."
 msgstr ""
 "Posizionate la fotocamera per inquadrare il luogo dove vi inginocchierete."
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:36
+msgid "Pounds (£) per severity"
+msgstr "Sterline (£) per gravità"
 
 #: ../Views/WritingLinesPunishmentView.axaml:91
 msgid "Precision"
@@ -1441,9 +1918,25 @@ msgid "Punctuality is a courtesy I extend to no one more than myself"
 msgstr ""
 "La puntualità è una cortesia che non concedo a nessuno più che a me stessa"
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:16 ../Views/SettingsView.axaml:70
+msgid "Punishments"
+msgstr "Punizioni"
+
 #: ../Views/StartSessionView.axaml:149
 msgid "Quit"
 msgstr "Esci"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:133
+msgid "Quote Reading"
+msgstr "Lettura delle frasi"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:147
+msgid "Quote listening window (seconds)"
+msgstr "Finestra di ascolto citazione (secondi)"
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:160
+msgid "Quote recognition sensitivity"
+msgstr "Sensibilità riconoscimento citazione"
 
 #: ../ViewModels/WebcamCaptureDialogViewModel.cs:77
 msgid "Record (5s)"
@@ -1457,7 +1950,7 @@ msgstr "Sto registrando."
 msgid "Recording... Strike a pose."
 msgstr "Registrazione in corso... Mettetevi in posa."
 
-#: ../ViewModels/StartSessionViewModel.cs:322 ../Views/StartSessionView.axaml:141
+#: ../ViewModels/StartSessionViewModel.cs:322 ../Views/Controls/SettingsTestOutfitOverlay.axaml:85 ../Views/StartSessionView.axaml:141
 msgid "Regenerate"
 msgstr "Rigenera"
 
@@ -1474,6 +1967,14 @@ msgstr ""
 "Rigenerare ridurrà il vostro bonus al {0:F0}% del moltiplicatore base. Il "
 "nuovo outfit prenderà il posto di questo in via definitiva: non sarà "
 "possibile ripensarci né tornare indietro. Procedere?"
+
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:38
+msgid "Related tag"
+msgstr "Tag correlato"
+
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:32
+msgid "Relation"
+msgstr "Relazione"
 
 #: ../Views/Controls/DebtWidget.axaml.cs:94
 msgid "Remaining"
@@ -1507,10 +2008,26 @@ msgstr "Richiedi permesso"
 msgid "Requests for Leave"
 msgstr "Richieste di congedo"
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:102
+msgid "Required duration — maximum (seconds)"
+msgstr "Durata richiesta — massimo (secondi)"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:78
+msgid "Required duration — minimum (seconds)"
+msgstr "Durata richiesta — minimo (secondi)"
+
+#: ../ViewModels/SettingsViewModel.cs:1469
+msgid "Requires"
+msgstr "Richiede"
+
 #: ../Models/Banks/EmployerPhraseBank.cs:20
 msgid "Respect, once earned, is a debt I shall not fail to repay"
 msgstr ""
 "Il rispetto, una volta guadagnato, è un debito che non mancherò di ripagare"
+
+#: ../ViewModels/SettingsViewModel.cs:948
+msgid "Restore"
+msgstr "Ripristina"
 
 #: ../Views/SafeLockView.axaml:54
 msgid "Retry Capture"
@@ -1533,13 +2050,25 @@ msgstr "Foto della combinazione cassaforte esportata."
 msgid "Safe locked!"
 msgstr "Cassaforte bloccata!"
 
-#: ../Views/ForcedOutfitPresetEditorView.axaml:169
+#: ../Views/ForcedOutfitPresetEditorView.axaml:169 ../Views/SettingsView.axaml:116 ../Views/SettingsView.axaml:219
 msgid "Save"
 msgstr "Salva"
+
+#: ../Views/SettingsView.axaml:131
+msgid "Save & Back"
+msgstr "Salva e torna indietro"
 
 #: ../Views/ChangeOutfitView.axaml:157
 msgid "Save outfit"
 msgstr "Salva outfit"
+
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:66
+msgid "Seconds required per severity"
+msgstr "Secondi richiesti per gravità"
+
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:28 ../Views/Controls/SettingsOutfitRulesTab.axaml:43
+msgid "Select tag"
+msgstr "Seleziona tag"
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:38
 msgid "Self-sufficiency is a virtue much to be admired."
@@ -1553,7 +2082,7 @@ msgstr "Servizio completato"
 msgid "Set Down the Pen"
 msgstr "Posare la Penna"
 
-#: ../Views/WelcomeView.axaml:59
+#: ../Views/SettingsView.axaml:35 ../Views/WelcomeView.axaml:59
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -1564,6 +2093,10 @@ msgstr "Saldato"
 #: ../Views/DashboardView.axaml:213 ../Views/DashboardView.axaml:298
 msgid "Shop"
 msgstr "Negozio"
+
+#: ../Views/Controls/SettingsChoresTab.axaml:26
+msgid "Shortest wait between photos (seconds)"
+msgstr "Attesa minima tra uno scatto e l'altro (secondi)"
 
 #: ../Views/Controls/ContractDocument.axaml:54
 #, fuzzy
@@ -1581,6 +2114,14 @@ msgid_plural ""
 "Should the Maid leave the pen idle for {0}, {1} lines shall be added."
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:159
+msgid ""
+"Should the day's outfit call for such padding, I shall not excuse you to the "
+"water closet, and you will find yourself needing a drink rather more often."
+msgstr ""
+"Se la tenuta del giorno prevede tale imbottitura, non vi concederò di recarvi "
+"alla toilette, e scoprirete di aver bisogno di bere assai più spesso."
 
 #: ../Views/EndSessionView.axaml:28
 msgid "Show Safe Combination and Close"
@@ -1602,6 +2143,10 @@ msgstr "Salta (nessuna cassaforte)"
 #, csharp-format, fuzzy
 msgid "Skipped: {0}."
 msgstr "Scartati: {0}."
+
+#: ../Views/Controls/WardrobeTable.axaml:40 ../Views/Controls/WardrobeTable.axaml:240 ../Views/Controls/WardrobeTable.axaml:344
+msgid "Slots"
+msgstr "Slot"
 
 #: ../Models/Banks/CornertimeInstructionBank.cs:39
 msgid "So far, so good. I am watching."
@@ -1627,12 +2172,16 @@ msgstr ""
 "Uno dei prossimi permessi durerà più a lungo del previsto. Approfittatene "
 "finché dura."
 
+#: ../Views/Controls/SettingsGeneralTab.axaml:319
+msgid "Speech recognition"
+msgstr "Riconoscimento vocale"
+
 #: ../Services/Contracts/ContractClauseBuilder.cs:53
 #, fuzzy
 msgid "Standing Tasks"
 msgstr "Incombenze fisse"
 
-#: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
+#: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:186 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
 msgid "Start"
 msgstr ""
 
@@ -1655,6 +2204,10 @@ msgstr "L'immobilità vi dona. Non mettete alla prova la mia pazienza ora."
 #: ../ViewModels/CornertimePunishmentViewModel.cs:212
 msgid "Stillness, achieved. You may return to your duties."
 msgstr "Penitenza scontata. Potete tornare alle vostre mansioni."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:191
+msgid "Stop"
+msgstr "Ferma"
 
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:198
 msgid "Submit"
@@ -1686,6 +2239,14 @@ msgid "Suspicious. Silence most often conceals the loudest grievances."
 msgstr ""
 "Uhm.. strano. Il silenzio, il più delle volte, cela i lamenti più grandi."
 
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:23
+msgid "Tag"
+msgstr "Tag"
+
+#: ../Views/Controls/WardrobeTable.axaml:43 ../Views/Controls/WardrobeTable.axaml:247 ../Views/Controls/WardrobeTable.axaml:350
+msgid "Tags"
+msgstr "Tag"
+
 #: ../Views/Controls/DashboardAddTaskForm.axaml:21
 msgid "Task name"
 msgstr "Nome del compito"
@@ -1697,6 +2258,10 @@ msgstr "Compiti"
 #: ../ViewModels/PermissionTypeItemViewModel.cs:29
 msgid "Tea or coffee break"
 msgstr "Pausa tè o caffè"
+
+#: ../Views/Controls/SettingsOutfitRulesTab.axaml:72
+msgid "Test Rules"
+msgstr "Testa regole"
 
 #: ../Models/Banks/PermissionPhraseBank.cs:35
 msgid "That question answers itself, does it not?"
@@ -1801,6 +2366,14 @@ msgstr ""
 "La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra "
 "occasione."
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:324
+msgid ""
+"The chosen garments become mandatory, unbidden, for a number of subsequent "
+"sessions."
+msgstr ""
+"I capi prescelti diventano obbligatori, senza richiesta, per un numero di "
+"sessioni successive."
+
 #: ../ViewModels/DashboardViewModel.cs:640
 msgid "The chosen uniform"
 msgstr "L'outfit prescelto"
@@ -1832,6 +2405,11 @@ msgstr ""
 #, fuzzy
 msgid "The contract contains no usable wardrobe items."
 msgstr "Il contratto non contiene capi utilizzabili."
+
+#: ../ViewModels/SettingsViewModel.cs:362
+#, csharp-format, fuzzy
+msgid "The contract could not be written: {0}"
+msgstr "Non è stato possibile scrivere il contratto: {0}"
 
 #: ../Services/Contracts/ContractImportFlow.cs:90
 #, csharp-format, fuzzy
@@ -1870,6 +2448,18 @@ msgstr "L'inchiostro si secca, che scriviate o meno."
 #: ../Views/WritingLinesPunishmentView.axaml:24
 msgid "The line to copy"
 msgstr "La riga da ricopiare"
+
+#: ../ViewModels/SettingsViewModel.cs:539
+#, csharp-format
+msgid "The machine is satisfied — {0}% understood, well above what I require."
+msgstr ""
+
+#: ../ViewModels/SettingsViewModel.cs:540
+#, csharp-format
+msgid ""
+"The machine remains unconvinced — only {0}% understood. Speak again, and "
+"enunciate."
+msgstr ""
 
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:171
 msgid "The microphone is not to be found. You will write it instead."
@@ -1983,9 +2573,17 @@ msgstr "Moltiplicatore totale"
 msgid "Total incurred: {0}"
 msgstr ""
 
+#: ../Views/Controls/SettingsPopupsTab.axaml:172
+msgid "Try the settings — read the following phrase:"
+msgstr "Provate le impostazioni — leggete la frase seguente:"
+
 #: ../Views/Controls/DashboardIdlePopupOverlay.axaml:189
 msgid "Type the quotation here"
 msgstr "Digitate qui la citazione"
+
+#: ../ViewModels/SettingsViewModel.cs:857
+msgid "Unsaved Changes"
+msgstr "Modifiche non salvate"
 
 #: ../Services/Contracts/ContractImportFlow.cs:65
 #, fuzzy
@@ -2008,6 +2606,10 @@ msgstr "Usare la toilette (bisogno n.1)"
 #: ../ViewModels/PermissionTypeItemViewModel.cs:26
 msgid "Use the toilet (n.2)"
 msgstr "Usare la toilette (bisogno n.2)"
+
+#: ../Views/Controls/SettingsChoresTab.axaml:63
+msgid "Value (£)"
+msgstr "Valore (£)"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:70
 #, fuzzy
@@ -2046,6 +2648,14 @@ msgstr "Molto bene. Rimanete ferma, il castigo inizia adesso."
 msgid "Vigour becomes a good domestic."
 msgstr "Il vigore si addice a una buona domestica."
 
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:173
+msgid "Voice narration"
+msgstr "Narrazione vocale"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:137
+msgid "Wage interval (minutes)"
+msgstr "Intervallo paga (minuti)"
+
 #: ../ViewModels/DashboardViewModel.cs:132
 #, csharp-format
 msgid "Wage: £{0:F2} / {1} min"
@@ -2056,9 +2666,48 @@ msgstr "Paga: £{0:F2} / {1} min"
 msgid "Wages"
 msgstr "Salario"
 
+#: ../Views/SettingsView.axaml:77 ../Views/SettingsView.axaml:169
+msgid "Wardrobe"
+msgstr "Guardaroba"
+
+#: ../ViewModels/SettingsViewModel.cs:948
+msgid ""
+"Wardrobe, outfit rules, chores and gameplay settings are stored in the "
+"current language. Restore replaces them with the defaults of the new language "
+"when you save; your edits to them are lost. Keep leaves them unchanged."
+msgstr ""
+"Guardaroba, regole degli outfit, faccende e impostazioni di gioco sono "
+"salvati nella lingua attuale. «Ripristina» li sostituisce con i valori "
+"predefiniti della nuova lingua al salvataggio; le modifiche apportate "
+"andranno perse. «Conserva» li lascia invariati."
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:330
+msgid "Webcam"
+msgstr "Webcam"
+
+#: ../Views/Controls/SettingsGeneralTab.axaml:313
+msgid "Webcam & Speech Recognition"
+msgstr "Webcam e riconoscimento vocale"
+
+#: ../Views/Controls/WardrobeTable.axaml:139 ../Views/Controls/WardrobeTable.axaml:315
+msgid "Weight"
+msgstr "Peso"
+
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:930
 msgid "Well read — but I cannot overlook your tardiness."
 msgstr "Bene, ma non posso transigere sul vostro ritardo."
+
+#: ../ViewModels/SettingsViewModel.cs:528
+msgid "Well, isn't that lovely? A 100% success rate — obviously."
+msgstr "Bene, non è forse magnifico? Il 100% di successo — ovviamente."
+
+#: ../Views/Controls/SettingsChoresTab.axaml:21
+msgid ""
+"While a chore is under way, the camera shall look in from time to time — "
+"quite without warning."
+msgstr ""
+"Durante lo svolgimento di un compito, l'obiettivo darà un'occhiata di tanto "
+"in tanto — senza alcun preavviso."
 
 #: ../Services/Contracts/ContractImportFlow.cs:60
 #, fuzzy
@@ -2083,7 +2732,7 @@ msgstr ""
 "Durante le occupazioni della Cameriera, verranno scattate fotografie a "
 "intervalli compresi tra {0} e {1}."
 
-#: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/WritingLinesPunishmentView.axaml:20
+#: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/Controls/SettingsPunishmentsTab.axaml:186 ../Views/WritingLinesPunishmentView.axaml:20
 msgid "Writing Lines"
 msgstr "Righe di penitenza"
 
@@ -2115,6 +2764,14 @@ msgstr ""
 msgid "You have confessed to idleness most plainly."
 msgstr "Avete ammesso di essere pigra con fin troppa chiarezza."
 
+#: ../ViewModels/SettingsViewModel.cs:801
+msgid "You have unsaved changes in this tab."
+msgstr "Ci sono modifiche non salvate in questa scheda."
+
+#: ../ViewModels/SettingsViewModel.cs:844
+msgid "You have unsaved changes. What would you like to do?"
+msgstr "Ci sono modifiche non salvate. Cosa desiderate fare?"
+
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:608
 #, csharp-format
 msgid "You may now remove the {0}."
@@ -2135,6 +2792,22 @@ msgid ""
 msgstr ""
 "Avete posato la penna troppo presto. È stata aggiunta una multa, e le righe "
 "restano da scrivere."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:225
+msgid ""
+"You shall kneel for exactly as long as I decide, and the camera shall keep "
+"proof of it."
+msgstr ""
+"Starete in ginocchio per il tempo che stabilirò, e la fotocamera ne "
+"conserverà la prova."
+
+#: ../Views/Controls/SettingsPopupsTab.axaml:138
+msgid ""
+"You shall speak the words I require of you, clearly enough for the machine to "
+"believe them."
+msgstr ""
+"Pronuncerete le parole che vi richiedo, con chiarezza sufficiente a "
+"convincere la macchina."
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:568
 #, csharp-format
@@ -2205,6 +2878,14 @@ msgstr "È richiesta la vostra presenza. Presentatevi subito."
 msgid "Your writing"
 msgstr "La vostra scrittura"
 
+#: ../Views/Controls/WardrobeTable.axaml:243 ../Views/Controls/WardrobeTable.axaml:347
+msgid "add slot..."
+msgstr "aggiungi slot..."
+
+#: ../Views/Controls/WardrobeTable.axaml:250 ../Views/Controls/WardrobeTable.axaml:353
+msgid "add tag..."
+msgstr "aggiungi tag..."
+
 #: ../Views/ChangeOutfitView.axaml:28 ../Views/ChangeOutfitView.axaml:37 ../Views/ChangeOutfitView.axaml:46 ../Views/ChangeOutfitView.axaml:55 ../Views/ForcedOutfitPresetEditorView.axaml:52 ../Views/ForcedOutfitPresetEditorView.axaml:61 ../Views/ForcedOutfitPresetEditorView.axaml:70
 msgid "item"
 msgstr "capo"
@@ -2239,6 +2920,11 @@ msgstr "selezionato"
 msgctxt "outfit item"
 msgid "unavailable"
 msgstr "non disponibile"
+
+#: ../ViewModels/SettingsViewModel.cs:1247
+#, csharp-format
+msgid "{0:0.00}h/point · {1}"
+msgstr "{0:0.00}h/punto · {1}"
 
 #: ../ViewModels/FortuneDeckViewModel.cs:384
 #, csharp-format
@@ -2276,6 +2962,13 @@ msgstr[1] ""
 #, csharp-format
 msgid "{0} item"
 msgid_plural "{0} items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../ViewModels/SettingsViewModel.cs:663
+#, csharp-format
+msgid "{0} item selected"
+msgid_plural "{0} items selected"
 msgstr[0] ""
 msgstr[1] ""
 

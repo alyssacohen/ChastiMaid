@@ -7,7 +7,8 @@
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:views="using:ChastiMaid.Views.Controls"
     xmlns:vm="using:ChastiMaid.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:ChastiMaid.Localization">
 
     <UserControl.KeyBindings>
         <KeyBinding Command="{Binding QuickSaveCommand}" Gesture="Ctrl+S" />
@@ -31,7 +32,7 @@
                         <TextBlock
                             Classes="PageTitle"
                             Margin="16,0,16,12"
-                            Text="{converters:Tr SettingsPageTitle}" />
+                            Text="{l:Tr 'Settings'}" />
                         <Border
                             Background="{DynamicResource BrushBorderSubtle}"
                             Height="1"
@@ -45,49 +46,49 @@
                             Command="{Binding SetTabCommand}"
                             CommandParameter="0"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsGeneralDirty}" Text="{converters:Tr SettingsTabGeneral}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsGeneralDirty}" Text="{l:Tr 'General'}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="1"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsChoresDirty}" Text="{converters:Tr SettingsTabChores}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsChoresDirty}" Text="{l:Tr 'Chores'}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="2"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPopupsDirty}" Text="{converters:Tr SettingsTabPopups}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsPopupsDirty}" Text="{l:Tr 'Popups'}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="3"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{converters:Tr SettingsTabPunishments}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{l:Tr 'Punishments'}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="4"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsWardrobeDirty}" Text="{converters:Tr SettingsTabWardrobe}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsWardrobeDirty}" Text="{l:Tr 'Wardrobe'}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="5"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{converters:Tr SettingsTabOutfitRules}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{l:Tr 'Outfit Rules'}" />
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="6"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=6, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{converters:Tr SettingsTabPermissions}" />
+                            <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{l:Tr 'Permissions'}" />
                         </RadioButton>
                     </StackPanel>
 
@@ -112,7 +113,7 @@
                                     FontSize="16"
                                     IconVariant="Regular"
                                     Symbol="Save" />
-                                <TextBlock Text="{converters:Tr Save}" VerticalAlignment="Center" />
+                                <TextBlock Text="{l:Tr 'Save'}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                         <Button
@@ -127,13 +128,13 @@
                                     FontSize="16"
                                     IconVariant="Regular"
                                     Symbol="Save" />
-                                <TextBlock Text="{converters:Tr SettingsSaveAndBack}" VerticalAlignment="Center" />
+                                <TextBlock Text="{l:Tr 'Save &amp; Back'}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                         <Button
                             Classes="Ghost"
                             Command="{Binding BackCommand}"
-                            Content="{converters:Tr Back}"
+                            Content="{l:Tr 'Back'}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center" />
                     </StackPanel>
@@ -165,7 +166,7 @@
                         <TextBlock
                             Classes="SectionTitle"
                             Margin="0,20,0,8"
-                            Text="{converters:Tr SettingsTabWardrobe}" />
+                            Text="{l:Tr 'Wardrobe'}" />
                         <Border
                             Background="{DynamicResource BrushBorderSubtle}"
                             Height="1"
@@ -208,20 +209,20 @@
                         <Button
                             Classes="Ghost"
                             Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
-                            Content="{converters:Tr SettingsDiscard}" />
+                            Content="{l:Tr 'Discard'}" />
                         <Button Classes="Primary" Command="{Binding (vm:SaveDialogViewModel).SaveCommand}">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <ic:SymbolIcon
                                     FontSize="18"
                                     IconVariant="Regular"
                                     Symbol="Save" />
-                                <TextBlock Text="{converters:Tr Save}" VerticalAlignment="Center" />
+                                <TextBlock Text="{l:Tr 'Save'}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                         <Button
                             Classes="Ghost"
                             Command="{Binding (vm:SaveDialogViewModel).CancelCommand}"
-                            Content="{converters:Tr Cancel}" />
+                            Content="{l:Tr 'Cancel'}" />
                     </StackPanel>
                 </StackPanel>
             </Border>

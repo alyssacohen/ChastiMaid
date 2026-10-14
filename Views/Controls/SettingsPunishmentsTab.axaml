@@ -5,14 +5,15 @@
     xmlns:converters="using:ChastiMaid.Converters"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:vm="using:ChastiMaid.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:ChastiMaid.Localization">
 
     <Grid Margin="0,0,0,16" RowDefinitions="Auto,*">
         <StackPanel Grid.Row="0" Margin="24,0,32,0">
             <TextBlock
                 Classes="SectionTitle"
                 Margin="0,20,0,8"
-                Text="{converters:Tr SettingsTabPunishments}" />
+                Text="{l:Tr 'Punishments'}" />
             <Border
                 Background="{DynamicResource BrushBorderSubtle}"
                 Height="1"
@@ -22,17 +23,17 @@
             <StackPanel Margin="24,0,32,0" Spacing="16">
                 <!--  Fine — always active  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingFine}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Fine', Context='punishment'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsFineDescription}"
+                                Text="{l:Tr 'A sum, added to the debt at once. Always in effect — there is no toggle for consequence.'}"
                                 TextWrapping="Wrap" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsFineSeverityValue}"
+                                    Text="{l:Tr 'Pounds (£) per severity'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -48,21 +49,21 @@
 
                 <!--  Cornertime  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingCornertime}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Cornertime'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsCornertimeDescription}"
+                                Text="{l:Tr 'A period of stillness, in a corner of your choosing, observed by the camera.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding CornertimeEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeSeverityValue}"
+                                    Text="{l:Tr 'Seconds required per severity'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -74,7 +75,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeMinRequired}"
+                                    Text="{l:Tr 'Required duration — minimum (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -86,7 +87,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeMaxOverrun}"
+                                    Text="{l:Tr 'Grace time before failure (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -98,7 +99,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeMaxRequired}"
+                                    Text="{l:Tr 'Required duration — maximum (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -110,7 +111,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeCooldownMin}"
+                                    Text="{l:Tr 'Minimum seconds between penalties'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -122,7 +123,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeCooldownMax}"
+                                    Text="{l:Tr 'Maximum seconds between penalties'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -134,7 +135,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeSensitivity}"
+                                    Text="{l:Tr 'Movement sensitivity (%)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -147,7 +148,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeMovementPenaltyMin}"
+                                    Text="{l:Tr 'Minimum movement penalty (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -159,7 +160,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsCornertimeMovementPenaltyMax}"
+                                    Text="{l:Tr 'Maximum movement penalty (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -169,12 +170,12 @@
                                     Value="{Binding CornertimeMovementPenaltyMaxSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                             </Grid>
                             <Grid ColumnDefinitions="*,Auto">
-                                <TextBlock Classes="BodySmall" Text="{converters:Tr SettingsCornertimeVoiceEnabled}" />
+                                <TextBlock Classes="BodySmall" Text="{l:Tr 'Voice narration'}" />
                                 <ToggleSwitch
                                     Grid.Column="1"
                                     IsChecked="{Binding CornertimeVoiceEnabled}"
-                                    OffContent="{converters:Tr SettingsDisabled}"
-                                    OnContent="{converters:Tr SettingsEnabled}" />
+                                    OffContent="{l:Tr 'Disabled'}"
+                                    OnContent="{l:Tr 'Enabled'}" />
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -182,21 +183,21 @@
 
                 <!--  Writing Lines  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingWritingLines}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Writing Lines'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsWritingLinesDescription}"
+                                Text="{l:Tr 'A line, copied faithfully, as many times as the occasion warrants.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding WritingLinesEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesSeverityValue}"
+                                    Text="{l:Tr 'Lines per severity'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -208,7 +209,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesPenalty}"
+                                    Text="{l:Tr 'Penalty lines per mistake'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -220,7 +221,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesMinLines}"
+                                    Text="{l:Tr 'Minimum lines'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -232,7 +233,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesMaxLines}"
+                                    Text="{l:Tr 'Maximum lines'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -242,19 +243,19 @@
                                     Value="{Binding WritingLinesMaxLines, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                             </Grid>
 
-                            <TextBlock Classes="LabelUI" Text="{converters:Tr SettingsWritingLinesNoIdleHeading}" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'No Idle'}" />
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsWritingLinesNoIdleDescription}"
+                                Text="{l:Tr 'Idle hands earn extra lines.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding WritingLinesNoIdleEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesNoIdleTimeout}"
+                                    Text="{l:Tr 'Idle timeout (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -266,7 +267,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesNoIdleLinesToAdd}"
+                                    Text="{l:Tr 'Lines added per timeout'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -276,19 +277,19 @@
                                     Value="{Binding WritingLinesNoIdleLinesToAdd, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                             </Grid>
 
-                            <TextBlock Classes="LabelUI" Text="{converters:Tr SettingsWritingLinesInterruptionsHeading}" />
+                            <TextBlock Classes="LabelUI" Text="{l:Tr 'Interruptions'}" />
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsWritingLinesInterruptionsDescription}"
+                                Text="{l:Tr 'Occasional reminders, delivered without warning.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding WritingLinesInterruptionsEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesInterruptionMinInterval}"
+                                    Text="{l:Tr 'Minimum interval (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -300,7 +301,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsWritingLinesInterruptionMaxInterval}"
+                                    Text="{l:Tr 'Maximum interval (seconds)'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -315,21 +316,21 @@
 
                 <!--  Forced Outfit  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Classes="Heading" Text="{converters:Tr SettingsHeadingForcedOutfit}" />
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Forced Outfit'}" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{converters:Tr SettingsForcedOutfitDescription}"
+                                Text="{l:Tr 'The chosen garments become mandatory, unbidden, for a number of subsequent sessions.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding ForcedOutfitEnabled}"
-                                OffContent="{converters:Tr SettingsDisabled}"
-                                OnContent="{converters:Tr SettingsEnabled}" />
+                                OffContent="{l:Tr 'Disabled'}"
+                                OnContent="{l:Tr 'Enabled'}" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{converters:Tr SettingsForcedOutfitMaxHours}"
+                                    Text="{l:Tr 'Max hours'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -339,7 +340,7 @@
                                     Increment="0.5"
                                     Value="{Binding ForcedOutfitMaxHours, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.5}" />
                             </Grid>
-                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {converters:Tr SettingsForcedOutfitItems}}" />
+                            <TextBlock Classes="LabelUI" Text="{converters:UpperCase {l:Tr 'Configured outfits'}}" />
                             <ItemsControl ItemsSource="{Binding ForcedOutfitPresets}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="vm:ForcedOutfitPresetSummaryViewModel">
@@ -358,12 +359,12 @@
                                                     Margin="8,0"
                                                     VerticalAlignment="Center" />
                                                 <Button
-                                                    AutomationProperties.Name="{converters:Tr SettingsForcedOutfitPresetEdit}"
+                                                    AutomationProperties.Name="{l:Tr 'Edit preset'}"
                                                     Classes="Edit"
                                                     Command="{Binding EditCommand}"
                                                     Grid.Column="2"
                                                     Margin="4,0"
-                                                    ToolTip.Tip="{converters:Tr SettingsForcedOutfitPresetEdit}"
+                                                    ToolTip.Tip="{l:Tr 'Edit preset'}"
                                                     VerticalAlignment="Center">
                                                     <ic:SymbolIcon
                                                         FontSize="18"
@@ -371,11 +372,11 @@
                                                         Symbol="Edit" />
                                                 </Button>
                                                 <Button
-                                                    AutomationProperties.Name="{converters:Tr SettingsForcedOutfitPresetDelete}"
+                                                    AutomationProperties.Name="{l:Tr 'Delete preset'}"
                                                     Classes="Danger"
                                                     Command="{Binding DeleteCommand}"
                                                     Grid.Column="3"
-                                                    ToolTip.Tip="{converters:Tr SettingsForcedOutfitPresetDelete}"
+                                                    ToolTip.Tip="{l:Tr 'Delete preset'}"
                                                     VerticalAlignment="Center">
                                                     <ic:SymbolIcon
                                                         FontSize="18"
@@ -393,7 +394,7 @@
                                         FontSize="18"
                                         IconVariant="Regular"
                                         Symbol="Add" />
-                                    <TextBlock Text="{converters:Tr SettingsAddForcedOutfitPreset}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{l:Tr 'Add Outfit'}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>

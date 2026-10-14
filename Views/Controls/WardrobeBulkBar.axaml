@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:conv="using:ChastiMaid.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
@@ -13,7 +14,7 @@
               Margin="16,0">
 
             <TextBlock Grid.Column="0"
-                       Text="{Binding WardrobeSelectedCount, StringFormat={conv:Tr WardrobeBulkSelectedFormat}}"
+                       Text="{Binding WardrobeSelectedText}"
                        Foreground="{DynamicResource BrushWindowBackground}"
                        VerticalAlignment="Center" />
 
@@ -23,7 +24,7 @@
                     VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="16" />
-                    <TextBlock Text="{conv:Tr WardrobeBulkDeleteSelected}" VerticalAlignment="Center" />
+                    <TextBlock Text="{l:Tr 'Delete selected'}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 

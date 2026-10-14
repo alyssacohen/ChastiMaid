@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:converters="using:ChastiMaid.Converters"
              x:DataType="vm:SettingsViewModel"
@@ -7,7 +8,7 @@
 
     <Grid RowDefinitions="Auto,*" Margin="0,0,0,16">
         <StackPanel Grid.Row="0" Margin="24,0,32,0">
-            <TextBlock Classes="SectionTitle" Text="{converters:Tr SettingsTabPermissions}" Margin="0,20,0,8" />
+            <TextBlock Classes="SectionTitle" Text="{l:Tr 'Permissions'}" Margin="0,20,0,8" />
             <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
         </StackPanel>
         <ScrollViewer Grid.Row="1">
@@ -19,21 +20,21 @@
                                 <StackPanel Spacing="12">
                                     <TextBlock Classes="Heading" Text="{Binding Name}" />
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <TextBlock Classes="BodySmall" Text="{converters:Tr PermissionColumnProbability}"
+                                        <TextBlock Classes="BodySmall" Text="{l:Tr 'Grant chance %'}"
                                                    VerticalAlignment="Center" />
                                         <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
                                                        Value="{Binding BaseGrantPercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
                                                        Minimum="0" Maximum="100" FormatString="0" />
                                     </Grid>
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <TextBlock Classes="BodySmall" Text="{converters:Tr PermissionColumnDuration}"
+                                        <TextBlock Classes="BodySmall" Text="{l:Tr 'Duration (minutes)'}"
                                                    VerticalAlignment="Center" />
                                         <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
                                                        Value="{Binding DurationMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"
                                                        Minimum="1" FormatString="0" />
                                     </Grid>
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <TextBlock Classes="BodySmall" Text="{converters:Tr PermissionColumnCooldown}"
+                                        <TextBlock Classes="BodySmall" Text="{l:Tr 'Cooldown (minutes)'}"
                                                    VerticalAlignment="Center" />
                                         <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
                                                        Value="{Binding CooldownMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}"

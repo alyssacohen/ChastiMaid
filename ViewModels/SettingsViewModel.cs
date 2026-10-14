@@ -23,6 +23,7 @@ namespace ChastiMaid.ViewModels;
 public partial class SettingsViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
+    private ILocalizer L => _mainVm.Localizer;
     private readonly ProfileRepository _repo;
     private Func<ViewModelBase> _returnTo;
 
@@ -131,6 +132,7 @@ public partial class SettingsViewModel : ViewModelBase
     // --- Wardrobe filter & selection ---
     [Reactive] private string _wardrobeNameFilter = string.Empty;
     [Reactive] private int _wardrobeSelectedCount;
+    [Reactive] private string _wardrobeSelectedText = "";
 
     public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo,
         string? initialContentActionStatusMessage = null)
@@ -305,6 +307,7 @@ public partial class SettingsViewModel : ViewModelBase
             {
                 this.RaisePropertyChanged(nameof(ShowTestQuotePassResult));
                 this.RaisePropertyChanged(nameof(ShowTestQuoteFailResult));
+                this.RaisePropertyChanged(nameof(TestQuoteResultText));
             });
         BackCommand = ReactiveCommand.CreateFromTask(ConfirmBack);
         SetTabCommand = ReactiveCommand.Create<string?>(s =>
@@ -343,7 +346,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private async Task ExportContract()
     {
-        var path = await ContractFileDialogs.PickSaveAsync(Resources.Get("ContractExportDialogTitle"));
+        var path = await ContractFileDialogs.PickSaveAsync(L.T("Export contract"));
         if (path is null)
         {
             return;
@@ -356,13 +359,13 @@ public partial class SettingsViewModel : ViewModelBase
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            ContentActionStatusMessage = string.Format(Resources.Get("ContractExportFailedStatus"), e.Message);
+            ContentActionStatusMessage = L.T("The contract could not be written: {0}", e.Message);
             return;
         }
 
         // The contract is built from the saved profile, so pending edits in this screen are not in it.
-        ContentActionStatusMessage = Resources.Get("ContractExportedStatus") +
-                                     (IsDirty ? Resources.Get("ContractExportUnsavedNote") : "");
+        ContentActionStatusMessage = L.T("Contract exported.") +
+                                     (IsDirty ? L.T(" Unsaved changes in Settings are not included.") : "");
     }
 
     private async Task ImportContract()
@@ -438,12 +441,11 @@ public partial class SettingsViewModel : ViewModelBase
                 SelectedCamera = options[0]; // saved camera is gone: a real change for the user to save
             }
 
-            WebcamStatusDisplay = Resources.Get(availability.HasWebcam ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
+            WebcamStatusDisplay = availability.HasWebcam ? L.T("Available") : L.T("Not available");
             var speechAvailable = availability.HasSpeechRecognizer && availability.HasMicrophone;
-            SpeechRecognitionStatusDisplay = Resources.Get(
-                speechAvailable ? "HardwareStatusAvailable" : "HardwareStatusUnavailable");
+            SpeechRecognitionStatusDisplay = speechAvailable ? L.T("Available") : L.T("Not available");
             IsMicrophoneAvailableForTest = speechAvailable;
-            TestQuoteUnavailableTooltip = speechAvailable ? null : Resources.Get("HardwareCheckSpeechRecognizerMissing");
+            TestQuoteUnavailableTooltip = speechAvailable ? null : L.T("No speech recognition engine is installed upon this machine. You will be asked to write out any spoken citation by hand instead.");
         });
     }
 
@@ -474,10 +476,11 @@ public partial class SettingsViewModel : ViewModelBase
     public ObservableCollection<WardrobeEditViewModel> WardrobeItems { get; } = [];
     public ObservableCollection<OutfitRuleEditViewModel> OutfitRules { get; } = [];
 
+    // Each language under its own name (endonym), so it can be found whatever the current language.
     public IReadOnlyList<Option<string>> AvailableLanguages { get; } =
     [
-        new("en", Resources.Get("LanguageEnglish")),
-        new("it", Resources.Get("LanguageItalian")),
+        new("en", "English"),
+        new("it", "Italiano"),
     ];
 
     public ObservableCollection<string> NewItemSlots { get; } = [];
@@ -522,7 +525,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     /// <summary>A fixed phrase (not one from the in-game quote bank) chosen to exercise normalization: mixed
     /// case, an apostrophe, a question mark, a percentage, an em dash.</summary>
-    public string TestQuotePhrase => Resources.Get("SettingsTestQuoteFixedPhrase");
+    public string TestQuotePhrase => L.T("Well, isn't that lovely? A 100% success rate — obviously.");
 
     private bool HasTestQuoteResult => TestQuoteScore is not null && !IsTestQuoteListening;
 
@@ -532,6 +535,12 @@ public partial class SettingsViewModel : ViewModelBase
     public bool ShowTestQuotePassResult => HasTestQuoteResult && TestQuotePassed;
     public bool ShowTestQuoteFailResult => HasTestQuoteResult && !TestQuotePassed;
 
+    public string TestQuoteResultText => TestQuotePassed
+        ? L.T("The machine is satisfied — {0}% understood, well above what I require.", ScorePercent)
+        : L.T("The machine remains unconvinced — only {0}% understood. Speak again, and enunciate.", ScorePercent);
+
+    private int ScorePercent => (int)Math.Round((TestQuoteScore ?? 0) * 100);
+
     public string? AppellativesWarning
     {
         get
@@ -539,13 +548,13 @@ public partial class SettingsViewModel : ViewModelBase
             var raw = Appellatives.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             if (raw.Length > GameSettings.AppellativeMaxCount)
             {
-                return string.Format(Resources.Get("AppellativesWarningTooManyFormat"), GameSettings.AppellativeMaxCount);
+                return L.T("Only the first {0} are used.", GameSettings.AppellativeMaxCount);
             }
 
             var tooLong = raw.FirstOrDefault(a => a.Length > GameSettings.AppellativeMaxLength);
             return tooLong is null
                 ? null
-                : string.Format(Resources.Get("AppellativesWarningTooLongFormat"), tooLong, GameSettings.AppellativeMaxLength);
+                : L.T("\"{0}\" is over {1} characters and will be ignored.", tooLong, GameSettings.AppellativeMaxLength);
         }
     }
     public ICommand BackCommand { get; }
@@ -651,6 +660,7 @@ public partial class SettingsViewModel : ViewModelBase
     private void UpdateSelectedCount()
     {
         WardrobeSelectedCount = WardrobeItems.Count(x => x.IsSelected);
+        WardrobeSelectedText = L.N("{0} item selected", "{0} items selected", WardrobeSelectedCount, WardrobeSelectedCount);
     }
 
     private void AddWardrobeItemFromNewRow()
@@ -743,7 +753,7 @@ public partial class SettingsViewModel : ViewModelBase
     private OutfitRuleEditViewModel NewRuleVm(OutfitRule rule)
     {
         return WireChild(new OutfitRuleEditViewModel(rule, AllUsedTags,
-            id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule)), () => IsRulesDirty = true);
+            id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule), L), () => IsRulesDirty = true);
     }
 
     /// <summary>Saves <paramref name="model" /> and returns the Id the save assigned to it.</summary>
@@ -775,7 +785,7 @@ public partial class SettingsViewModel : ViewModelBase
         foreach (var p in _repo.GetForcedOutfitPresets())
         {
             ForcedOutfitPresets.Add(new ForcedOutfitPresetSummaryViewModel(p, _repo, OpenForcedOutfitPresetEditor,
-                id => RemoveFrom(ForcedOutfitPresets, id, _repo.DeleteForcedOutfitPreset)));
+                id => RemoveFrom(ForcedOutfitPresets, id, _repo.DeleteForcedOutfitPreset), L));
         }
     }
 
@@ -788,7 +798,7 @@ public partial class SettingsViewModel : ViewModelBase
             return;
         }
 
-        switch (await ShowSaveDialog(Resources.Get("SettingsUnsavedTabMessage")))
+        switch (await ShowSaveDialog(L.T("You have unsaved changes in this tab.")))
         {
             case SaveDialogResult.Save:
                 SaveInPlace();
@@ -831,7 +841,7 @@ public partial class SettingsViewModel : ViewModelBase
             return;
         }
 
-        switch (await ShowSaveDialog(Resources.Get("SettingsUnsavedGeneralMessage")))
+        switch (await ShowSaveDialog(L.T("You have unsaved changes. What would you like to do?")))
         {
             case SaveDialogResult.Save:
                 Save();
@@ -844,7 +854,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private async Task<SaveDialogResult> ShowSaveDialog(string message)
     {
-        var dialog = new SaveDialogViewModel(Resources.Get("SettingsUnsavedChangesTitle"), message);
+        var dialog = new SaveDialogViewModel(L.T("Unsaved Changes"), message);
         ActiveDialog = dialog;
         var result = await dialog.Result;
         ActiveDialog = null;
@@ -934,9 +944,9 @@ public partial class SettingsViewModel : ViewModelBase
             return;
         }
 
-        var dialog = new ConfirmDialogViewModel(Resources.Get("LanguageChangeTitle"),
-            Resources.Get("LanguageChangeMessage"), Resources.Get("LanguageChangeRestore"),
-            Resources.Get("Cancel"), Resources.Get("LanguageChangeKeep"));
+        var dialog = new ConfirmDialogViewModel(L.T("Change language"),
+            L.T("Wardrobe, outfit rules, chores and gameplay settings are stored in the current language. Restore replaces them with the defaults of the new language when you save; your edits to them are lost. Keep leaves them unchanged."), L.T("Restore"),
+            L.T("Cancel"), L.T("Keep"));
         if (!await ShowContractDialog(dialog))
         {
             _revertingLanguage = true;
@@ -961,11 +971,14 @@ public partial class SettingsViewModel : ViewModelBase
         _languageChanged = SelectedLanguage.Code != _repo.GetGameSettings().Language;
         if (_languageChanged)
         {
+            // A name still equal to the default (in English or in the language being left) follows the language;
+            // an edited one is left alone.
+            var isDefaultName = PlayerName == "Maid" || PlayerName == L.T("Maid");
             App.ApplyLanguage(SelectedLanguage.Code);
-            // A name still equal to a language's default follows the language; an edited one is left alone.
-            if (new[] { "en", "it" }.Any(l => PlayerName == Resources.Get("DefaultPlayerName", new CultureInfo(l))))
+            if (isDefaultName)
             {
-                PlayerName = Resources.Get("DefaultPlayerName");
+                // translators: the player's default name
+                PlayerName = L.T("Maid");
             }
         }
 
@@ -1226,14 +1239,14 @@ public partial class ForcedOutfitPresetSummaryViewModel : ViewModelBase
     [Reactive] private bool _isEnabled;
 
     public ForcedOutfitPresetSummaryViewModel(ForcedOutfitPreset preset, ProfileRepository repo,
-        Action<ForcedOutfitPresetSummaryViewModel> onEdit, Action<int> onDelete)
+        Action<ForcedOutfitPresetSummaryViewModel> onEdit, Action<int> onDelete, ILocalizer L)
     {
         Id = preset.Id;
         Name = preset.Name;
         _isEnabled = preset.IsEnabled;
-        SummaryLabel = string.Format(Resources.Get("SettingsForcedOutfitPresetSummaryFormat"),
+        SummaryLabel = L.T("{0:0.00}h/point · {1}",
             preset.HoursPerSeverityPoint,
-            Resources.Get(preset.IsFullOutfit ? "SettingsForcedOutfitFullBadge" : "SettingsForcedOutfitPartialBadge"));
+            preset.IsFullOutfit ? L.T("Full outfit") : L.T("Partial outfit"));
 
         this.WhenAnyValue(x => x.IsEnabled).Skip(1).Subscribe(enabled =>
         {
@@ -1448,8 +1461,14 @@ public partial class OutfitRuleEditViewModel : ViewModelBase
     [Reactive] private string _relatedTag;
     [Reactive] private Option<OutfitRelation> _relationOption = null!;
 
-    public OutfitRuleEditViewModel(OutfitRule rule, IEnumerable<string> tagSuggestions, Action<int> onDelete)
+    public OutfitRuleEditViewModel(OutfitRule rule, IEnumerable<string> tagSuggestions, Action<int> onDelete,
+        ILocalizer l)
     {
+        RelationOptions =
+        [
+            new(OutfitRelation.Requires, l.T("Requires")),
+            new(OutfitRelation.Incompatible, l.T("Excludes")),
+        ];
         Id = rule.Id;
         TagSuggestions = tagSuggestions;
         _sourceTag = rule.SourceTag;
@@ -1465,11 +1484,7 @@ public partial class OutfitRuleEditViewModel : ViewModelBase
 
     // Relation is stored internally as a compact enum code (OutfitRelation); the ComboBox
     // shows a localized label instead of the raw enum name via this display wrapper.
-    public static IReadOnlyList<Option<OutfitRelation>> RelationOptions { get; } =
-    [
-        new(OutfitRelation.Requires, Resources.Get("SettingsOutfitRelationRequires")),
-        new(OutfitRelation.Incompatible, Resources.Get("SettingsOutfitRelationExcludes")),
-    ];
+    public IReadOnlyList<Option<OutfitRelation>> RelationOptions { get; }
 
     public OutfitRule ToModel()
     {

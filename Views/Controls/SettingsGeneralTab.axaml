@@ -4,14 +4,15 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:converters="using:ChastiMaid.Converters"
     xmlns:vm="using:ChastiMaid.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:ChastiMaid.Localization">
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="24,0,32,24" Spacing="0">
             <TextBlock
                 Classes="SectionTitle"
                 Margin="0,20,0,8"
-                Text="{converters:Tr SettingsTabGeneral}" />
+                Text="{l:Tr 'General'}" />
             <Border
                 Background="{DynamicResource BrushBorderSubtle}"
                 Height="1"
@@ -21,13 +22,13 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,0,0,8"
-                Text="{converters:Tr SettingsHeadingPlayer}" />
+                Text="{l:Tr 'Player'}" />
             <Border Classes="card">
                 <StackPanel Spacing="8">
                     <Grid ColumnDefinitions="160,*">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsFieldName}"
+                            Text="{l:Tr 'Name'}"
                             VerticalAlignment="Center" />
                         <TextBox
                             Classes="underline"
@@ -37,7 +38,7 @@
                     <Grid ColumnDefinitions="160,*">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsFieldAppellatives}"
+                            Text="{l:Tr 'Appellatives'}"
                             VerticalAlignment="Center" />
                         <TextBox
                             Classes="underline"
@@ -46,7 +47,7 @@
                     </Grid>
                     <TextBlock
                         Classes="Caption"
-                        Text="{converters:Tr SettingsFieldAppellativesCaption}"
+                        Text="{l:Tr &quot;Comma-separated. Used at random (along with Name) when you're summoned to a popup.&quot;}"
                         TextWrapping="Wrap" />
                     <TextBlock
                         Classes="Caption"
@@ -57,7 +58,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsAutoSaveMin}"
+                            Text="{l:Tr 'Auto-save (minutes)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -74,13 +75,13 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingGameBalance}" />
+                Text="{l:Tr 'Game Balance'}" />
             <Border Classes="card">
                 <StackPanel Spacing="8">
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsMinDebt}"
+                            Text="{l:Tr 'Min debt (£)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -93,7 +94,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsMaxDebt}"
+                            Text="{l:Tr 'Max debt (£)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -106,7 +107,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsDailyInterestRate}"
+                            Text="{l:Tr 'Daily interest rate'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -120,7 +121,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsIdleWageAmount}"
+                            Text="{l:Tr 'Idle wage amount (£)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -133,7 +134,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsWageInterval}"
+                            Text="{l:Tr 'Wage interval (minutes)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
@@ -150,17 +151,17 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingDiaperPlay}" />
+                Text="{l:Tr 'Diaper Play'}" />
             <Border Classes="card">
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{converters:Tr SettingsDiaperPlayDescription}"
+                        Text="{l:Tr &quot;Should the day's outfit call for such padding, I shall not excuse you to the water closet, and you will find yourself needing a drink rather more often.&quot;}"
                         TextWrapping="Wrap" />
                     <ToggleSwitch
                         IsChecked="{Binding DiaperPlayEnabled}"
-                        OffContent="{converters:Tr SettingsDisabled}"
-                        OnContent="{converters:Tr SettingsEnabled}" />
+                        OffContent="{l:Tr 'Disabled'}"
+                        OnContent="{l:Tr 'Enabled'}" />
 
                     <ItemsControl ItemsSource="{Binding DiaperPlayItems}">
                         <ItemsControl.ItemsPanel>
@@ -185,12 +186,12 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingChastityDevice}" />
+                Text="{l:Tr 'Chastity Device'}" />
             <Border Classes="card">
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{converters:Tr SettingsChastityDeviceDescription}"
+                        Text="{l:Tr 'One of the marked pieces will be selected at random and locked upon you each session; the key waits in the safe, and only an open safe permits a change of company.'}"
                         TextWrapping="Wrap" />
 
                     <ItemsControl ItemsSource="{Binding ChastityDeviceItems}">
@@ -216,17 +217,17 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingPlugAndPlay}" />
+                Text="{l:Tr 'Plug &amp; Play'}" />
             <Border Classes="card">
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{converters:Tr SettingsPlugAndPlayDescription}"
+                        Text="{l:Tr 'Certain accessories, once donned, do not come off again until I am satisfied they have served their purpose.'}"
                         TextWrapping="Wrap" />
                     <ToggleSwitch
                         IsChecked="{Binding PlugAndPlayEnabled}"
-                        OffContent="{converters:Tr SettingsDisabled}"
-                        OnContent="{converters:Tr SettingsEnabled}" />
+                        OffContent="{l:Tr 'Disabled'}"
+                        OnContent="{l:Tr 'Enabled'}" />
 
                     <ItemsControl ItemsSource="{Binding PlugAndPlayItems}">
                         <ItemsControl.ItemsPanel>
@@ -262,7 +263,7 @@
                                         Grid.Column="1"
                                         Margin="0,0,8,0"
                                         Spacing="2">
-                                        <TextBlock Classes="Caption" Text="{converters:Tr SettingsPlugAndPlayMinMinutes}" />
+                                        <TextBlock Classes="Caption" Text="{l:Tr 'Minimum minutes'}" />
                                         <NumericUpDown
                                             Classes="underline stacked-spinner"
                                             FormatString="0"
@@ -270,7 +271,7 @@
                                             Value="{Binding MinDurationMinutes, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Spacing="2">
-                                        <TextBlock Classes="Caption" Text="{converters:Tr SettingsPlugAndPlayMaxMinutes}" />
+                                        <TextBlock Classes="Caption" Text="{l:Tr 'Maximum minutes'}" />
                                         <NumericUpDown
                                             Classes="underline stacked-spinner"
                                             FormatString="0"
@@ -288,13 +289,13 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr LanguageHeading}" />
+                Text="{l:Tr 'Language'}" />
             <Border Classes="card">
                 <StackPanel Spacing="8">
                     <Grid ColumnDefinitions="160,*">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr LanguageFieldLabel}"
+                            Text="{l:Tr 'Language'}"
                             VerticalAlignment="Center" />
                         <ComboBox
                             Grid.Column="1"
@@ -309,13 +310,13 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingPopupHardware}" />
+                Text="{l:Tr 'Webcam &amp; Speech Recognition'}" />
             <Border Classes="card">
                 <StackPanel Spacing="8">
                     <Grid ColumnDefinitions="160,*">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsSpeechRecognitionStatus}"
+                            Text="{l:Tr 'Speech recognition'}"
                             VerticalAlignment="Center" />
                         <TextBlock
                             Classes="BodySmall"
@@ -326,7 +327,7 @@
                     <Grid ColumnDefinitions="160,*">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsWebcamStatus}"
+                            Text="{l:Tr 'Webcam'}"
                             VerticalAlignment="Center" />
                         <TextBlock
                             Classes="BodySmall"
@@ -337,7 +338,7 @@
                     <Grid ColumnDefinitions="160,*">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{converters:Tr SettingsDetectedCameras}"
+                            Text="{l:Tr 'Detected cameras'}"
                             VerticalAlignment="Top" />
                         <ItemsControl Grid.Column="1" ItemsSource="{Binding AvailableCameras}">
                             <ItemsControl.ItemTemplate>
@@ -354,22 +355,22 @@
             <TextBlock
                 Classes="Heading"
                 Margin="0,8,0,8"
-                Text="{converters:Tr SettingsHeadingContent}" />
+                Text="{l:Tr 'Contract'}" />
             <Border Classes="card">
                 <StackPanel Spacing="8">
                     <TextBlock
                         Classes="Caption"
-                        Text="{converters:Tr SettingsContractDescription}"
+                        Text="{l:Tr 'Export every game setting as a single contract file — including the wardrobe, outfit rules, tasks, punishments and permissions — or load one to replace your current terms outright. Your name, language, camera and autosave settings are never included.'}"
                         TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
                         <Button
                             Classes="Ghost"
                             Command="{Binding ExportContractCommand}"
-                            Content="{converters:Tr SettingsExportContract}" />
+                            Content="{l:Tr 'Export Contract'}" />
                         <Button
                             Classes="Ghost"
                             Command="{Binding ImportContractCommand}"
-                            Content="{converters:Tr SettingsImportContract}" />
+                            Content="{l:Tr 'Import Contract'}" />
                     </StackPanel>
                     <TextBlock
                         Classes="BodySmall"
