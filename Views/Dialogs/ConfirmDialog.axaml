@@ -28,7 +28,8 @@
                             Command="{Binding SecondaryCommand}"
                             Classes="Ghost"
                             IsVisible="{Binding HasSecondary}" />
-                    <Button Content="{Binding CancelLabel}"
+                    <Button Name="CancelButton"
+                            Content="{Binding CancelLabel}"
                             Command="{Binding CancelCommand}"
                             Classes="Ghost"
                             IsVisible="{Binding HasCancel}" />

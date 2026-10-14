@@ -541,22 +541,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private int ScorePercent => (int)Math.Round((TestQuoteScore ?? 0) * 100);
 
-    public string? AppellativesWarning
-    {
-        get
-        {
-            var raw = Appellatives.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (raw.Length > GameSettings.AppellativeMaxCount)
-            {
-                return L.T("Only the first {0} are used.", GameSettings.AppellativeMaxCount);
-            }
-
-            var tooLong = raw.FirstOrDefault(a => a.Length > GameSettings.AppellativeMaxLength);
-            return tooLong is null
-                ? null
-                : L.T("\"{0}\" is over {1} characters and will be ignored.", tooLong, GameSettings.AppellativeMaxLength);
-        }
-    }
+    public string? AppellativesWarning => GameSettings.AppellativesWarning(Appellatives, L);
     public ICommand BackCommand { get; }
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
@@ -944,9 +929,13 @@ public partial class SettingsViewModel : ViewModelBase
             return;
         }
 
-        var dialog = new ConfirmDialogViewModel(L.T("Change language"),
-            L.T("Wardrobe, outfit rules, chores and gameplay settings are stored in the current language. Restore replaces them with the defaults of the new language when you save; your edits to them are lost. Keep leaves them unchanged."), L.T("Restore"),
-            L.T("Cancel"), L.T("Keep"));
+        // In the chosen language, so the player who picked it can read the warning; Cancel has the focus and Esc
+        // cancels, so a language picked by mistake is easy to back out of.
+        var target = new Localizer();
+        target.SetLanguage(code);
+        var dialog = new ConfirmDialogViewModel(target.T("Change language"),
+            target.T("Wardrobe, outfit rules, chores and gameplay settings are stored in the current language. Restore replaces them with the defaults of the new language when you save; your edits to them are lost. Keep leaves them unchanged."),
+            target.T("Restore"), target.T("Cancel"), target.T("Keep")) { CancelIsDefault = true };
         if (!await ShowContractDialog(dialog))
         {
             _revertingLanguage = true;
@@ -971,15 +960,7 @@ public partial class SettingsViewModel : ViewModelBase
         _languageChanged = SelectedLanguage.Code != _repo.GetGameSettings().Language;
         if (_languageChanged)
         {
-            // A name still equal to the default (in English or in the language being left) follows the language;
-            // an edited one is left alone.
-            var isDefaultName = PlayerName == "Maid" || PlayerName == L.T("Maid");
             App.ApplyLanguage(SelectedLanguage.Code);
-            if (isDefaultName)
-            {
-                // translators: the player's default name
-                PlayerName = L.T("Maid");
-            }
         }
 
         SaveAll();

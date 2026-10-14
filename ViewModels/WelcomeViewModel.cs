@@ -41,6 +41,24 @@ public partial class WelcomeViewModel : ViewModelBase
                 return;
             }
 
+            // No name yet (first game, or never set in Settings): the player introduces themselves first.
+            var settings = _mainVm.ProfileRepository.GetGameSettings();
+            if (string.IsNullOrWhiteSpace(settings.PlayerName))
+            {
+                var intro = new PlayerIntroDialogViewModel(_mainVm.Localizer);
+                IntroDialog = intro;
+                var introduced = await intro.Result;
+                IntroDialog = null;
+                if (!introduced)
+                {
+                    return;
+                }
+
+                settings.PlayerName = intro.Name.Trim();
+                settings.Appellatives = intro.Appellatives.Trim();
+                _mainVm.ProfileRepository.SaveGameSettings(settings);
+            }
+
             _mainVm.NavigateTo(new NewGameViewModel(_mainVm));
         });
 
@@ -57,6 +75,15 @@ public partial class WelcomeViewModel : ViewModelBase
     }
 
     public bool HasActiveGame { get; }
+
+    private PlayerIntroDialogViewModel? _introDialog;
+
+    /// <summary>The "introduce yourself" dialog while it is open.</summary>
+    public PlayerIntroDialogViewModel? IntroDialog
+    {
+        get => _introDialog;
+        set => this.RaiseAndSetIfChanged(ref _introDialog, value);
+    }
 
     public ICommand ContinueCommand { get; }
     public ICommand LoadGameCommand { get; }

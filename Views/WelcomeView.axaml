@@ -74,6 +74,12 @@
 
         </StackPanel>
 
+        <views:PlayerIntroDialog
+            DataContext="{Binding IntroDialog}"
+            IsVisible="{Binding $parent[UserControl].((vm:WelcomeViewModel)DataContext).IntroDialog,
+                    Converter={x:Static ObjectConverters.IsNotNull},
+                    FallbackValue=False}" />
+
         <views:ConfirmDialog
             DataContext="{Binding ActiveDialog}"
             IsVisible="{Binding $parent[UserControl].((vm:WelcomeViewModel)DataContext).ActiveDialog,

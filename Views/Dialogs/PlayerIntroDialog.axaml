@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
+             xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             x:DataType="vm:PlayerIntroDialogViewModel"
+             x:Class="ChastiMaid.Views.Dialogs.PlayerIntroDialog">
+
+    <Panel Classes="dialogOverlay">
+        <Border Classes="dialogBox">
+            <StackPanel Spacing="16">
+
+                <TextBlock Classes="Heading"
+                           Text="{l:Tr 'Before We Begin'}"
+                           HorizontalAlignment="Center" />
+
+                <TextBlock Classes="EmployerVoice"
+                           Text="{l:Tr 'I make a point of knowing whom I employ. Your name, if you please — and, should you have any, the forms of address you would answer to.'}"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap" />
+
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Name'}}" />
+                    <TextBox Name="NameBox" Classes="underline" Text="{Binding Name}" />
+                </StackPanel>
+
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Forms of address (optional)'}}" />
+                    <TextBox Classes="underline" Text="{Binding Appellatives}" />
+                    <TextBlock Classes="Caption"
+                               Text="{l:Tr 'Comma-separated, e.g. “dear girl, little maid”.'}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Classes="Caption"
+                               Foreground="{DynamicResource BrushEmergencyText}"
+                               IsVisible="{Binding AppellativesWarning, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                               Text="{Binding AppellativesWarning}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="8"
+                            Margin="0,8,0,0">
+                    <Button Content="{l:Tr 'Continue'}"
+                            Command="{Binding ConfirmCommand}"
+                            IsDefault="True"
+                            Classes="Primary" />
+                    <Button Content="{l:Tr 'Cancel'}"
+                            Command="{Binding CancelCommand}"
+                            IsCancel="True"
+                            Classes="Ghost" />
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+    </Panel>
+
+</UserControl>

@@ -18,7 +18,7 @@ msgstr ""
 msgid " Unsaved changes in Settings are not included."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:557
+#: ../Models/GameSettings.cs:134
 #, csharp-format
 msgid "\"{0}\" is over {1} characters and will be ignored."
 msgstr ""
@@ -272,6 +272,10 @@ msgstr ""
 msgid "Base"
 msgstr ""
 
+#: ../Views/Dialogs/PlayerIntroDialog.axaml:14
+msgid "Before We Begin"
+msgstr ""
+
 #: ../Views/CornertimePunishmentView.axaml:34
 msgid "Begin"
 msgstr ""
@@ -292,7 +296,7 @@ msgstr ""
 msgid "CPM"
 msgstr ""
 
-#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:949 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeTable.axaml:358 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:225
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:938 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeTable.axaml:358 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:225
 msgid "Cancel"
 msgstr ""
 
@@ -322,7 +326,7 @@ msgstr ""
 msgid "Caught you moving. Your corner grows longer by {0} seconds."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:947
+#: ../ViewModels/SettingsViewModel.cs:936
 msgid "Change language"
 msgstr ""
 
@@ -374,6 +378,10 @@ msgstr ""
 msgid "Close drawer"
 msgstr ""
 
+#: ../Views/Dialogs/PlayerIntroDialog.axaml:31
+msgid "Comma-separated, e.g. “dear girl, little maid”."
+msgstr ""
+
 #: ../Views/Controls/SettingsGeneralTab.axaml:50
 msgid ""
 "Comma-separated. One is picked at random, along with the name, for popup "
@@ -414,7 +422,7 @@ msgstr ""
 msgid "Contentment breeds idleness. One must always strive for more."
 msgstr ""
 
-#: ../Views/WelcomeView.axaml:35
+#: ../Views/Dialogs/PlayerIntroDialog.axaml:44 ../Views/WelcomeView.axaml:35
 msgid "Continue"
 msgstr ""
 
@@ -727,7 +735,7 @@ msgstr ""
 msgid "Every line, faithfully copied. I have taken note of your penmanship."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:1474
+#: ../ViewModels/SettingsViewModel.cs:1455
 msgid "Excludes"
 msgstr ""
 
@@ -865,6 +873,10 @@ msgstr ""
 msgid "Forms of Address"
 msgstr ""
 
+#: ../Views/Dialogs/PlayerIntroDialog.axaml:28
+msgid "Forms of address (optional)"
+msgstr ""
+
 #: ../Views/CornertimePunishmentView.axaml:22
 msgid "Frame the corner in which you shall stand, then confirm when ready."
 msgstr ""
@@ -878,7 +890,7 @@ msgstr ""
 msgid "Freq. (Days)"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:1249
+#: ../ViewModels/SettingsViewModel.cs:1230
 msgid "Full outfit"
 msgstr ""
 
@@ -1064,6 +1076,12 @@ msgstr ""
 msgid "I know a task delayed is a task doubled, and I shall not double it"
 msgstr ""
 
+#: ../Views/Dialogs/PlayerIntroDialog.axaml:18
+msgid ""
+"I make a point of knowing whom I employ. Your name, if you please — and, "
+"should you have any, the forms of address you would answer to."
+msgstr ""
+
 #: ../Models/Banks/PoseForCameraInstructionBank.cs:12
 msgid "I require a photograph in which {0} may be clearly inspected. See to it."
 msgstr ""
@@ -1175,7 +1193,7 @@ msgid ""
 "will not be read aloud."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:949
+#: ../ViewModels/SettingsViewModel.cs:938
 msgid "Keep"
 msgstr ""
 
@@ -1304,11 +1322,6 @@ msgstr ""
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:65
 msgid "Madame will summon the Maid by name alone."
-msgstr ""
-
-#. the player's default name
-#: ../App.axaml.cs:43 ../ViewModels/SettingsViewModel.cs:976 ../ViewModels/SettingsViewModel.cs:981
-msgid "Maid"
 msgstr ""
 
 #: ../ViewModels/StartSessionViewModel.cs:360
@@ -1453,7 +1466,7 @@ msgstr ""
 msgid "My untidiness is merely a decision I have yet to unmake"
 msgstr ""
 
-#: ../Views/Controls/DashboardAddTaskForm.axaml:18 ../Views/Controls/SettingsChoresTab.axaml:59 ../Views/Controls/SettingsGeneralTab.axaml:31 ../Views/Controls/WardrobeTable.axaml:34 ../Views/Controls/WardrobeTable.axaml:91 ../Views/Controls/WardrobeTable.axaml:299 ../Views/ForcedOutfitPresetEditorView.axaml:25
+#: ../Views/Controls/DashboardAddTaskForm.axaml:18 ../Views/Controls/SettingsChoresTab.axaml:59 ../Views/Controls/SettingsGeneralTab.axaml:31 ../Views/Controls/WardrobeTable.axaml:34 ../Views/Controls/WardrobeTable.axaml:91 ../Views/Controls/WardrobeTable.axaml:299 ../Views/Dialogs/PlayerIntroDialog.axaml:23 ../Views/ForcedOutfitPresetEditorView.axaml:25
 msgid "Name"
 msgstr ""
 
@@ -1597,7 +1610,7 @@ msgstr ""
 msgid "One moment — preparations are underway..."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:551
+#: ../Models/GameSettings.cs:128
 #, csharp-format
 msgid "Only the first {0} are used."
 msgstr ""
@@ -1644,7 +1657,7 @@ msgstr ""
 msgid "PNG Image"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:1249
+#: ../ViewModels/SettingsViewModel.cs:1230
 msgid "Partial outfit"
 msgstr ""
 
@@ -1884,7 +1897,7 @@ msgstr ""
 msgid "Required duration — minimum (seconds)"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:1473
+#: ../ViewModels/SettingsViewModel.cs:1454
 msgid "Requires"
 msgstr ""
 
@@ -1892,7 +1905,7 @@ msgstr ""
 msgid "Respect, once earned, is a debt I shall not fail to repay"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:948
+#: ../ViewModels/SettingsViewModel.cs:938
 msgid "Restore"
 msgstr ""
 
@@ -2384,7 +2397,7 @@ msgstr ""
 msgid "Underwear"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:857
+#: ../ViewModels/SettingsViewModel.cs:842
 msgid "Unsaved Changes"
 msgstr ""
 
@@ -2468,7 +2481,7 @@ msgstr ""
 msgid "Wardrobe"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:948
+#: ../ViewModels/SettingsViewModel.cs:937
 msgid ""
 "Wardrobe, outfit rules, chores and gameplay settings are stored in the "
 "current language. Restore replaces them with the defaults of the new language "
@@ -2552,11 +2565,11 @@ msgstr ""
 msgid "You have confessed to idleness most plainly."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:801
+#: ../ViewModels/SettingsViewModel.cs:786
 msgid "You have unsaved changes in this tab."
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:844
+#: ../ViewModels/SettingsViewModel.cs:829
 msgid "You have unsaved changes. What would you like to do?"
 msgstr ""
 
@@ -2717,7 +2730,7 @@ msgctxt "outfit item"
 msgid "unavailable"
 msgstr ""
 
-#: ../ViewModels/SettingsViewModel.cs:1247
+#: ../ViewModels/SettingsViewModel.cs:1228
 #, csharp-format
 msgid "{0:0.00}h/point · {1}"
 msgstr ""
@@ -2761,7 +2774,7 @@ msgid_plural "{0} items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../ViewModels/SettingsViewModel.cs:663
+#: ../ViewModels/SettingsViewModel.cs:648
 #, csharp-format
 msgid "{0} item selected"
 msgid_plural "{0} items selected"

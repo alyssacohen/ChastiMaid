@@ -46,6 +46,9 @@ public class ConfirmDialogViewModel : ViewModelBase
     public bool SecondaryChosen { get; private set; }
     public ICommand SecondaryCommand { get; }
 
+    /// <summary>Cancel gets the focus when the dialog opens (Esc always cancels a dialog that has a Cancel button).</summary>
+    public bool CancelIsDefault { get; init; }
+
     public Task<bool> Result => _tcs.Task;
 
     public ICommand ConfirmCommand { get; }

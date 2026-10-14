@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using ChastiMaid.Localization;
 using LiteDB;
 
 namespace ChastiMaid.Models;
@@ -118,6 +119,21 @@ public class GameSettings
     // same rule both the Settings warning (SettingsViewModel.AppellativesWarning) and the runtime
     // summon phrase (DashboardViewModel.PlaySummonBell) use, so what the player is warned about
     // is exactly what gets excluded.
+    /// <summary>What <see cref="ParseAppellatives" /> will drop from <paramref name="appellatives" />; null when nothing.</summary>
+    public static string? AppellativesWarning(string? appellatives, ILocalizer l)
+    {
+        var raw = (appellatives ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (raw.Length > AppellativeMaxCount)
+        {
+            return l.T("Only the first {0} are used.", AppellativeMaxCount);
+        }
+
+        var tooLong = raw.FirstOrDefault(a => a.Length > AppellativeMaxLength);
+        return tooLong is null
+            ? null
+            : l.T("\"{0}\" is over {1} characters and will be ignored.", tooLong, AppellativeMaxLength);
+    }
+
     public IReadOnlyList<string> ParseAppellatives()
     {
         // ponytail: LiteDB round-trips an empty string field as null, so a freshly seeded profile
