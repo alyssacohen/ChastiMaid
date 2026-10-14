@@ -3,7 +3,6 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:models="using:ChastiMaid.Models"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:DataType="vm:WritingLinesPunishmentViewModel"
              x:Class="ChastiMaid.Views.WritingLinesPunishmentView"
              Background="{DynamicResource BrushWindowBackground}">
