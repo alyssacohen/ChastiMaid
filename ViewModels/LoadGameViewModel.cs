@@ -129,7 +129,7 @@ public partial class LoadGameViewModel : ViewModelBase
     {
         try
         {
-            ContractClauses = ContractClauseBuilder.Build(_mainVm.SaveSlotManager.ReadContract(slotName));
+            ContractClauses = new ContractClauseBuilder(_mainVm.Localizer).Build(_mainVm.SaveSlotManager.ReadContract(slotName));
         }
         catch (Exception ex)
         {

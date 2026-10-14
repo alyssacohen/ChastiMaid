@@ -9,6 +9,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../Services/Contracts/ContractImportFlow.cs:130
+#, csharp-format
+msgid " (+{0} more)"
+msgstr ""
+
 #: ../Views/Controls/OutfitDrawer.axaml:109
 msgid "(none)"
 msgstr ""
@@ -121,7 +126,11 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:90
+#: ../Views/NewGameView.axaml:43
+msgid "Accept the terms"
+msgstr ""
+
+#: ../Views/WritingLinesPunishmentView.axaml:89
 msgid "Accuracy"
 msgstr ""
 
@@ -139,6 +148,11 @@ msgstr ""
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:553
 msgid "Adequate contrition, for once."
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:101
+#, csharp-format
+msgid "Adjusted to the allowed range: {0}."
 msgstr ""
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:37
@@ -184,7 +198,7 @@ msgstr ""
 msgid "Awaiting its turn"
 msgstr ""
 
-#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/ShopView.axaml:14
+#: ../Views/ChangeOutfitView.axaml:153 ../Views/ForcedOutfitPresetEditorView.axaml:167 ../Views/FortuneDeckView.axaml:14 ../Views/LoadGameView.axaml:115 ../Views/NewGameView.axaml:34 ../Views/ShopView.axaml:14
 msgid "Back"
 msgstr ""
 
@@ -204,11 +218,11 @@ msgstr ""
 msgid "Buy"
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:83
+#: ../Views/WritingLinesPunishmentView.axaml:82
 msgid "CPM"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/EndSessionView.axaml:47
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/EndSessionView.axaml:47
 msgid "Cancel"
 msgstr ""
 
@@ -238,7 +252,7 @@ msgstr ""
 msgid "Caught you moving. Your corner grows longer by {0} seconds."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:85
+#: ../Views/WritingLinesPunishmentView.axaml:84
 msgid "Char/min"
 msgstr ""
 
@@ -312,8 +326,32 @@ msgstr ""
 msgid "Continue without safe"
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:77
+#, csharp-format
+msgid "Contract loaded: {0} wardrobe items, {1} outfit rules and {2} tasks."
+msgstr ""
+
+#: ../Views/Controls/ContractDocument.axaml:15
+msgid "Contract of Service"
+msgstr ""
+
 #: ../ViewModels/PunishmentItemViewModel.cs:17
 msgid "Cornertime"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:171
+msgid "Cornertime is not in force."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:161
+#, csharp-format
+msgid ""
+"Cornertime: the Maid shall stand perfectly still for {0} per point of "
+"severity — no less than {1}, no more than {2} — with {3} of grace beyond that."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:55
+msgid "Corrective Measures"
 msgstr ""
 
 #. {0} is the save name, {1} the technical error message
@@ -344,6 +382,10 @@ msgstr ""
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:22
 msgid "Dawdling adds nothing but time."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:40
+msgid "Debt and Interest"
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:41
@@ -385,6 +427,21 @@ msgstr ""
 msgid "Description (optional)"
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:104
+#, csharp-format
+msgid ""
+"Diaper Play is in force for {0} garment. While it is worn, the interval "
+"between hydration reminders is halved."
+msgid_plural ""
+"Diaper Play is in force for {0} garments. While one is worn, the interval "
+"between hydration reminders is halved."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:107
+msgid "Diaper Play is not in force."
+msgstr ""
+
 #: ../Models/Banks/ImpossibleQuestionBank.cs:27
 msgid "Did you act on your own initiative today?"
 msgstr ""
@@ -413,7 +470,7 @@ msgstr ""
 msgid "Do you have any complaints about your present conditions?"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:350 ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:129
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:350 ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:128
 msgid "Done"
 msgstr ""
 
@@ -434,6 +491,10 @@ msgstr ""
 msgid "Eager"
 msgstr ""
 
+#: ../Views/NewGameView.axaml:40
+msgid "Edit the terms"
+msgstr ""
+
 #: ../Models/Banks/EmployerPhraseBank.cs:18
 msgid "Effort I spare today is effort I shall owe tomorrow, with interest"
 msgstr ""
@@ -444,7 +505,7 @@ msgid ""
 "reflects particularly well."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:106
+#: ../Views/WritingLinesPunishmentView.axaml:105
 msgid "Elapsed"
 msgstr ""
 
@@ -469,7 +530,7 @@ msgstr ""
 msgid "End Session"
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:97
+#: ../Views/WritingLinesPunishmentView.axaml:96
 msgid "Errors"
 msgstr ""
 
@@ -483,6 +544,11 @@ msgstr ""
 
 #: ../Models/Banks/HydrationReminderBank.cs:13
 msgid "Even diligence requires fuel. Drink one cup."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:156
+#, csharp-format
+msgid "Every infraction carries a fine of {0} per point of severity."
 msgstr ""
 
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:339
@@ -571,8 +637,27 @@ msgstr ""
 msgid "Forced Outfit"
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:204
+msgid "Forced outfits are not in force."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:201
+#, csharp-format
+msgid ""
+"Forced outfits may be imposed for as long as {0}, drawn from the {1} outfit "
+"kept ready for the purpose."
+msgid_plural ""
+"Forced outfits may be imposed for as long as {0}, drawn from {1} outfits kept "
+"ready for the purpose."
+msgstr[0] ""
+msgstr[1] ""
+
 #: ../Views/Controls/DashboardPermissionsPanel.axaml:157
 msgid "Forgive My Impertinence"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:38
+msgid "Forms of Address"
 msgstr ""
 
 #: ../Views/CornertimePunishmentView.axaml:22
@@ -644,11 +729,11 @@ msgstr ""
 msgid "Held: {0}"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:90
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:89
 msgid "Hold still."
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:73
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:72
 msgid "Hold your pose."
 msgstr ""
 
@@ -680,6 +765,11 @@ msgstr ""
 msgid "Humility is the first virtue of good service."
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:133
+#, csharp-format
+msgid "Hydration reminders shall come no more often than once every {0}."
+msgstr ""
+
 #: ../ViewModels/DashboardViewModel.cs:474
 msgid ""
 "I accept the work, though at such a leisurely pace it earns but half its wage "
@@ -702,7 +792,7 @@ msgstr ""
 msgid "I am here"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:131
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:130
 msgid "I am listening."
 msgstr ""
 
@@ -783,6 +873,10 @@ msgstr ""
 msgid "Il Ventaglio della Sorte"
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:33
+msgid "Import contract"
+msgstr ""
+
 #: ../Models/CardDisplay.cs:28
 msgid "Improves your odds of approval on your next request."
 msgstr ""
@@ -804,6 +898,13 @@ msgstr ""
 msgid "Integrate Outfit"
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:44
+#, csharp-format
+msgid ""
+"Interest accrues daily at {0}%. Madame regrets that arithmetic is not open to "
+"negotiation."
+msgstr ""
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:17
 msgid "Into the corner, feet together, hands upon your knees, facing the wall."
 msgstr ""
@@ -811,6 +912,14 @@ msgstr ""
 #: ../Models/Banks/CornertimeInstructionBank.cs:13
 msgid ""
 "Into the corner. Feet together, hands clasped before you, eyes on the wall."
+msgstr ""
+
+#: ../Views/Controls/ContractDocument.axaml:19
+msgid ""
+"It is hereby agreed between the Lady of the House and the newest member of "
+"her staff — hereafter, with some optimism, “the Maid” — that the following "
+"terms shall govern the period of service. Kindly read them attentively. They "
+"will not be read aloud."
 msgstr ""
 
 #: ../Models/Banks/KneelInstructionBank.cs:12
@@ -824,6 +933,21 @@ msgid_plural "Last done: {0} days ago"
 msgstr[0] ""
 msgstr[1] ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:218
+msgid "Leave to attend to certain needs is granted at Madame's discretion:"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:196
+msgid "Lines are not in force."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:176
+#, csharp-format
+msgid ""
+"Lines: the Maid shall write {0} lines per point of severity — at least {1}, "
+"at most {2} — and {3} more for each mistake."
+msgstr ""
+
 #: ../ViewModels/LoadGameViewModel.cs:144
 msgid "Load Error"
 msgstr ""
@@ -832,10 +956,61 @@ msgstr ""
 msgid "Load Game"
 msgstr ""
 
+#: ../Views/NewGameView.axaml:37
+msgid "Load another contract"
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:57
+msgid ""
+"Loading this contract replaces your current settings, wardrobe, outfit rules, "
+"tasks, punishments and permissions. Your name, language, camera and autosave "
+"settings are kept."
+msgstr ""
+
 #. state of the safe holding the key (feminine in Italian: "la cassaforte")
 #: ../ViewModels/LoadGameViewModel.cs:44
 msgctxt "safe"
 msgid "Locked"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:63
+#, csharp-format
+msgid "Madame keeps {0} form of address in reserve for summoning the Maid."
+msgid_plural ""
+"Madame keeps {0} forms of address in reserve for summoning the Maid."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:189
+#, csharp-format
+msgid ""
+"Madame may interrupt the Maid's writing at intervals of between {0} and {1}."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:130
+#, csharp-format
+msgid ""
+"Madame may summon the Maid at intervals of between {0} and {1}; the Maid "
+"shall answer within {2}."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:123
+#, csharp-format
+msgid ""
+"Madame sets {0} standing task, paid upon completion. Were the Maid to "
+"complete it, they would earn {1}."
+msgid_plural ""
+"Madame sets {0} standing tasks, each paid upon completion. Were the Maid to "
+"complete every one, they would earn {1}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:60
+msgid "Madame shall narrate the Maid's Cornertime aloud."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:65
+msgid "Madame will summon the Maid by name alone."
 msgstr ""
 
 #: ../ViewModels/StartSessionViewModel.cs:360
@@ -850,7 +1025,12 @@ msgstr ""
 msgid "May I be excused?"
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:99
+#: ../Services/Contracts/ContractImportFlow.cs:106
+#, csharp-format
+msgid "Minimum and maximum swapped: {0}."
+msgstr ""
+
+#: ../Views/WritingLinesPunishmentView.axaml:98
 msgid "Mistypes"
 msgstr ""
 
@@ -860,6 +1040,14 @@ msgstr ""
 
 #: ../ViewModels/StartSessionViewModel.cs:359
 msgid "Modify Outfit"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:164
+#, csharp-format
+msgid ""
+"Movement is detected at a sensitivity of {0}% and adds between {1} and {2} to "
+"the sentence, with a pause of between {3} and {4} before another may be "
+"counted."
 msgstr ""
 
 #: ../Models/Banks/EmployerPhraseBank.cs:24
@@ -919,6 +1107,10 @@ msgid ""
 "observed will not be possible until one is connected."
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:138
+msgid "No curtsy will be required of the Maid."
+msgstr ""
+
 #: ../ViewModels/StartSessionViewModel.cs:215
 msgid ""
 "No microphone could be found. You will be asked to write out any spoken "
@@ -933,10 +1125,28 @@ msgstr ""
 msgid "No pending tasks"
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:213
+msgid ""
+"No provision has been made for leave of any kind. The Maid will plan "
+"accordingly."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:91
+msgid ""
+"No rules restrict how garments may be combined. Madame has faith in the "
+"Maid's taste — for the present."
+msgstr ""
+
 #: ../ViewModels/StartSessionViewModel.cs:211
 msgid ""
 "No speech recognition engine is installed upon this machine. You will be "
 "asked to write out any spoken citation by hand instead."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:122
+msgid ""
+"No standing tasks are set. Madame finds this improbable, and suspects an "
+"oversight."
 msgstr ""
 
 #: ../Views/Dialogs/WebcamCaptureDialog.axaml:65
@@ -963,6 +1173,10 @@ msgstr ""
 msgid "Nothing"
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:52
+msgid "Nothing was changed."
+msgstr ""
+
 #: ../ViewModels/FortuneDeckViewModel.cs:396
 msgctxt "punishment"
 msgid "Noticed"
@@ -986,7 +1200,7 @@ msgid ""
 "urgently."
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:161
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:160
 msgid "One moment — I am considering what was said."
 msgstr ""
 
@@ -1046,11 +1260,25 @@ msgstr ""
 msgid "Please, come in. The door is unlocked. It always is... at first."
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:97
+#, csharp-format
+msgid ""
+"Plug and Play is in force for {0} garment, to be worn for between {1} and {2}."
+msgid_plural ""
+"Plug and Play is in force for {0} garments, each to be worn for between {1} "
+"and {2}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:102
+msgid "Plug and Play is not in force."
+msgstr ""
+
 #: ../ViewModels/SafeLockViewModel.cs:49
 msgid "Point the camera at the combination, then press Capture."
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:223
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:222
 msgid "Position confirmed"
 msgstr ""
 
@@ -1058,15 +1286,15 @@ msgstr ""
 msgid "Position the camera"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:218
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:217
 msgid "Position the camera to frame where you shall kneel."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:92
+#: ../Views/WritingLinesPunishmentView.axaml:91
 msgid "Precision"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:103
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:102
 msgid "Prepare yourself."
 msgstr ""
 
@@ -1076,7 +1304,7 @@ msgid ""
 "confirm it."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:51
+#: ../Views/WritingLinesPunishmentView.axaml:50
 msgid "Previous lines"
 msgstr ""
 
@@ -1084,7 +1312,7 @@ msgstr ""
 msgid "Pride in one's work breeds complacency. Guard against it."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:76
+#: ../Views/WritingLinesPunishmentView.axaml:75
 msgid "Progress"
 msgstr ""
 
@@ -1100,7 +1328,7 @@ msgstr ""
 msgid "Record (5s)"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:120
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:119
 msgid "Recording now."
 msgstr ""
 
@@ -1136,8 +1364,20 @@ msgstr ""
 msgid "Removes one pending punishment outright."
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:69
+msgid "Replace"
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:68
+msgid "Replace the current terms?"
+msgstr ""
+
 #: ../Views/DashboardView.axaml:205 ../Views/DashboardView.axaml:290
 msgid "Request Permission"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:56
+msgid "Requests for Leave"
 msgstr ""
 
 #: ../Models/Banks/EmployerPhraseBank.cs:20
@@ -1180,7 +1420,7 @@ msgstr ""
 msgid "Service Complete"
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:111
+#: ../Views/WritingLinesPunishmentView.axaml:110
 msgid "Set Down the Pen"
 msgstr ""
 
@@ -1196,6 +1436,20 @@ msgstr ""
 msgid "Shop"
 msgstr ""
 
+#: ../Views/Controls/ContractDocument.axaml:54
+msgid ""
+"Should any of this displease you, the door remains where it has always been. "
+"It does tend to stick."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:181
+#, csharp-format
+msgid "Should the Maid leave the pen idle for {0}, {1} line shall be added."
+msgid_plural ""
+"Should the Maid leave the pen idle for {0}, {1} lines shall be added."
+msgstr[0] ""
+msgstr[1] ""
+
 #: ../Views/EndSessionView.axaml:28
 msgid "Show Safe Combination and Close"
 msgstr ""
@@ -1210,6 +1464,11 @@ msgstr ""
 
 #: ../Views/SafeLockView.axaml:32
 msgid "Skip (no safe)"
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:113
+#, csharp-format
+msgid "Skipped: {0}."
 msgstr ""
 
 #: ../Models/Banks/CornertimeInstructionBank.cs:39
@@ -1232,6 +1491,10 @@ msgstr ""
 #: ../ViewModels/FortuneDeckViewModel.cs:386
 msgid ""
 "Some future permission will last longer than granted. Enjoy it while it lasts."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:53
+msgid "Standing Tasks"
 msgstr ""
 
 #: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
@@ -1258,7 +1521,7 @@ msgstr ""
 msgid "Stillness, achieved. You may return to your duties."
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:199
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:198
 msgid "Submit"
 msgstr ""
 
@@ -1271,6 +1534,14 @@ msgstr[1] ""
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:594
 msgid "Suitably adorned. See that it stays that way."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:54
+msgid "Summons and Check-ins"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:57
+msgid "Sundry Provisions"
 msgstr ""
 
 #: ../Models/Banks/ImpossibleQuestionBank.cs:35
@@ -1310,8 +1581,53 @@ msgstr ""
 msgid "The Corner Awaits"
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:135
+msgid "The Maid is excused from hydration reminders."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:144
+#, csharp-format
+msgid ""
+"The Maid may be asked to kneel for between {0} and {1}, photographed at "
+"intervals of between {2} and {3}."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:140
+#, csharp-format
+msgid ""
+"The Maid may be given a motivational quotation to read aloud, with {0} in "
+"which to do so. Fidelity to the text of at least {1}% will satisfy Madame."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:137
+#, csharp-format
+msgid "The Maid may be required to curtsy, recorded on video for {0}."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:39
+msgid ""
+"The Maid shall address the Lady of the House as “Madame”, and by no other "
+"name."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:147
+msgid "The Maid shall not be asked to kneel."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:142
+msgid "The Maid shall not be asked to recite."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:61
+msgid "The Maid's Cornertime shall be observed in silence."
+msgstr ""
+
 #: ../Views/ShopView.axaml:20
 msgid "The Shop"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:52
+msgid "The Wardrobe"
 msgstr ""
 
 #: ../Models/Banks/HydrationReminderBank.cs:11
@@ -1348,6 +1664,15 @@ msgid ""
 "retry to take the combination photo if you are not sure of the first try."
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:91
+msgid "The contract contains no usable wardrobe items."
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:90
+#, csharp-format
+msgid "The contract is missing a section: {0}."
+msgstr ""
+
 #: ../Models/Banks/CornertimeInstructionBank.cs:12
 msgid ""
 "The corner awaits. Feet together, hands behind your back, facing the wall. Do "
@@ -1360,21 +1685,39 @@ msgid ""
 "wall."
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:46
+#, csharp-format
+msgid "The file could not be read: {0}"
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:92
+msgid "The file is not a valid contract."
+msgstr ""
+
 #: ../ViewModels/WritingLinesPunishmentViewModel.cs:19
 msgid "The ink dries whether you write or not."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:25
+#: ../Views/WritingLinesPunishmentView.axaml:24
 msgid "The line to copy"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:172
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:171
 msgid "The microphone is not to be found. You will write it instead."
 msgstr ""
 
 #: ../ViewModels/ConfirmOutfitViewModel.cs:77
 msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:71
+msgid ""
+"The severity of punishments is not fixed. It shall vary with the Maid's "
+"conduct: how faithfully the household's routines are kept, how many matters "
+"remain outstanding, how often Madame's choice of attire has been declined, "
+"and how much of the debt still stands. Madame does not disclose her methods. "
+"She merely observes."
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.cs:473
@@ -1388,6 +1731,13 @@ msgstr ""
 msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:88
+#, csharp-format
+msgid "The wardrobe comprises {0} garment: {1}."
+msgid_plural "The wardrobe comprises {0} garments: {1}."
+msgstr[0] ""
+msgstr[1] ""
+
 #: ../Models/Banks/ImpossibleQuestionBank.cs:23
 msgid "Then you have admitted failure. Most unsatisfactory."
 msgstr ""
@@ -1396,11 +1746,16 @@ msgstr ""
 msgid "Then you have clearly not been working hard enough."
 msgstr ""
 
+#: ../Services/Contracts/ContractImportFlow.cs:89
+#, csharp-format
+msgid "This contract uses an unsupported version ({0})."
+msgstr ""
+
 #: ../ViewModels/FortuneDeckViewModel.cs:377
 msgid "This one has cost you rather dearly."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:104
+#: ../Views/WritingLinesPunishmentView.axaml:103
 msgid "Time"
 msgstr ""
 
@@ -1441,8 +1796,19 @@ msgstr ""
 msgid "Total incurred: {0}"
 msgstr ""
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:190
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:189
 msgid "Type the quotation here"
+msgstr ""
+
+#: ../Services/Contracts/ContractImportFlow.cs:65
+msgid "Unsaved changes in Settings will be lost."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:42
+#, csharp-format
+msgid ""
+"Upon acceptance, Madame shall determine the Maid's debt, at her own "
+"discretion, at a sum between {0} and {1}."
 msgstr ""
 
 #: ../ViewModels/PermissionTypeItemViewModel.cs:25
@@ -1451,6 +1817,10 @@ msgstr ""
 
 #: ../ViewModels/PermissionTypeItemViewModel.cs:26
 msgid "Use the toilet (n.2)"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:70
+msgid "Variable Severity"
 msgstr ""
 
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:569 ../ViewModels/StartSessionViewModel.cs:221
@@ -1490,11 +1860,33 @@ msgstr ""
 msgid "Wage: £{0:F2} / {1} min"
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:47
+msgid "Wages"
+msgstr ""
+
 #: ../ViewModels/DashboardViewModel.IdlePopups.cs:930
 msgid "Well read — but I cannot overlook your tardiness."
 msgstr ""
 
-#: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/WritingLinesPunishmentView.axaml:21
+#: ../Services/Contracts/ContractImportFlow.cs:60
+msgid "While reading the file, some entries had to be corrected:"
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:49
+#, csharp-format
+msgid ""
+"While the Maid is idle, Madame shall pay her {0} every {1}. “Idle” is, in "
+"this household, a generously loose term."
+msgstr ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:148
+#, csharp-format
+msgid ""
+"While the Maid is occupied, photographs shall be taken at intervals of "
+"between {0} and {1}."
+msgstr ""
+
+#: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/WritingLinesPunishmentView.axaml:20
 msgid "Writing Lines"
 msgstr ""
 
@@ -1596,7 +1988,7 @@ msgstr ""
 msgid "Your presence is required. Attend at once."
 msgstr ""
 
-#: ../Views/WritingLinesPunishmentView.axaml:37
+#: ../Views/WritingLinesPunishmentView.axaml:36
 msgid "Your writing"
 msgstr ""
 
@@ -1653,7 +2045,14 @@ msgid_plural "{0} attempts remaining"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../ViewModels/PunishmentItemViewModel.cs:56
+#: ../Services/Contracts/ContractClauseBuilder.cs:112
+#, csharp-format
+msgid "{0} garment is designated as a chastity device."
+msgid_plural "{0} garments are designated as chastity devices."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:235 ../ViewModels/PunishmentItemViewModel.cs:56
 #, csharp-format
 msgid "{0} hour"
 msgid_plural "{0} hours"
@@ -1686,7 +2085,7 @@ msgstr[1] ""
 msgid "{0} min"
 msgstr ""
 
-#: ../ViewModels/PunishmentItemViewModel.cs:55
+#: ../Services/Contracts/ContractClauseBuilder.cs:236 ../ViewModels/PunishmentItemViewModel.cs:55
 #, csharp-format
 msgid "{0} minute"
 msgid_plural "{0} minutes"
@@ -1717,6 +2116,24 @@ msgstr ""
 msgid "{0} requires one of: {1}. {2} selected — requirement satisfied."
 msgstr ""
 
+#: ../Services/Contracts/ContractClauseBuilder.cs:92
+#, csharp-format
+msgid ""
+"{0} rule governs which garments may be worn together: {1} requiring, {2} "
+"forbidding."
+msgid_plural ""
+"{0} rules govern which garments may be worn together: {1} requiring, {2} "
+"forbidding."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:237
+#, csharp-format
+msgid "{0} second"
+msgid_plural "{0} seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 #: ../Models/Banks/SummonPhraseBank.cs:11
 msgid "{0}! Come here at once."
 msgstr ""
@@ -1740,3 +2157,8 @@ msgid "{0}/{1} line"
 msgid_plural "{0}/{1} lines"
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:219
+#, csharp-format
+msgid "{0}: granted {1}% of the time, for {2}, and not again for {3}."
+msgstr ""

@@ -31,7 +31,7 @@ public partial class NewGameViewModel : ViewModelBase
         _contract = _contracts.Build();
 
         _clauses = this.WhenAnyValue(x => x.Contract)
-            .Select(ContractClauseBuilder.Build)
+            .Select(new ContractClauseBuilder(mainVm.Localizer).Build)
             .ToProperty(this, x => x.Clauses);
 
         // Same as the former "Start Game": the debt is rolled from the profile settings at the moment of acceptance.
@@ -64,7 +64,7 @@ public partial class NewGameViewModel : ViewModelBase
 
     private async Task LoadContract()
     {
-        var outcome = await new ContractImportFlow(_contracts).RunAsync(ShowConfirmAsync);
+        var outcome = await new ContractImportFlow(_contracts, _mainVm.Localizer).RunAsync(ShowConfirmAsync);
 
         switch (outcome.Kind)
         {

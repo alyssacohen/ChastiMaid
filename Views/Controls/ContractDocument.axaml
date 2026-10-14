@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
              xmlns:contracts="using:ChastiMaid.Services.Contracts"
-             xmlns:conv="using:ChastiMaid.Converters"
              x:Class="ChastiMaid.Views.Controls.ContractDocument">
 
     <!-- The contract sheet: title, preamble, clauses and closing. DataContext is the clause list. -->
@@ -12,11 +12,11 @@
                        HorizontalAlignment="Center"
                        TextAlignment="Center"
                        TextWrapping="Wrap"
-                       Text="{conv:Tr ContractTitle}" />
+                       Text="{l:Tr 'Contract of Service'}" />
 
             <TextBlock Classes="EmployerVoice"
                        TextWrapping="Wrap"
-                       Text="{conv:Tr ContractPreamble}" />
+                       Text="{l:Tr 'It is hereby agreed between the Lady of the House and the newest member of her staff — hereafter, with some optimism, “the Maid” — that the following terms shall govern the period of service. Kindly read them attentively. They will not be read aloud.'}" />
 
             <ItemsControl ItemsSource="{ReflectionBinding}">
                 <ItemsControl.ItemsPanel>
@@ -51,7 +51,7 @@
 
             <TextBlock Classes="EmployerVoice"
                        TextWrapping="Wrap"
-                       Text="{conv:Tr ContractClosing}" />
+                       Text="{l:Tr 'Should any of this displease you, the door remains where it has always been. It does tend to stick.'}" />
 
         </StackPanel>
     </Border>

@@ -367,7 +367,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private async Task ImportContract()
     {
-        var outcome = await new ContractImportFlow(new GameContractService(_repo))
+        var outcome = await new ContractImportFlow(new GameContractService(_repo), _mainVm.Localizer)
             .RunAsync(ShowContractDialog, IsDirty);
 
         switch (outcome.Kind)

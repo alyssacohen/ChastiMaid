@@ -18,7 +18,7 @@ public record ContractImportOutcome(ContractImportOutcomeKind Kind, string Messa
 ///     The whole "load a contract file" interaction — pick, read, validate, confirm the replacement, apply,
 ///     report — shared by Settings and the contract screen so both behave identically.
 /// </summary>
-public class ContractImportFlow(GameContractService service)
+public class ContractImportFlow(GameContractService service, ILocalizer L)
 {
     private const int MaxSubjectsPerLine = 6;
 
@@ -30,7 +30,7 @@ public class ContractImportFlow(GameContractService service)
     public async Task<ContractImportOutcome> RunAsync(Func<ConfirmDialogViewModel, Task<bool>> confirm,
         bool hasUnsavedChanges = false)
     {
-        var path = await ContractFileDialogs.PickOpenAsync(Resources.Get("ContractImportDialogTitle"));
+        var path = await ContractFileDialogs.PickOpenAsync(L.T("Import contract"));
         if (path is null)
         {
             return new ContractImportOutcome(ContractImportOutcomeKind.Cancelled);
@@ -43,30 +43,30 @@ public class ContractImportFlow(GameContractService service)
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            return Failed(string.Format(Resources.Get("ContractReadFailedStatus"), e.Message));
+            return Failed(L.T("The file could not be read: {0}", e.Message));
         }
 
         var result = service.Validate(json);
         if (result.Contract is not { } contract)
         {
-            return Failed(Resources.Get("ContractRejectedStatus") + " " +
+            return Failed(L.T("Nothing was changed.") + " " +
                           string.Join(" ", result.Issues.Where(i => i.IsFatal).Select(DescribeFatal)));
         }
 
         var report = Describe(result.Issues);
-        var message = Resources.Get("ContractReplaceMessage");
+        var message = L.T("Loading this contract replaces your current settings, wardrobe, outfit rules, tasks, punishments and permissions. Your name, language, camera and autosave settings are kept.");
         if (report.Length > 0)
         {
-            message += "\n\n" + Resources.Get("ContractReplaceReportHeader") + "\n" + report;
+            message += "\n\n" + L.T("While reading the file, some entries had to be corrected:") + "\n" + report;
         }
 
         if (hasUnsavedChanges)
         {
-            message += "\n\n" + Resources.Get("ContractReplaceUnsavedNote");
+            message += "\n\n" + L.T("Unsaved changes in Settings will be lost.");
         }
 
-        var dialog = new ConfirmDialogViewModel(Resources.Get("ContractReplaceTitle"), message,
-            Resources.Get("ContractReplaceConfirm"), Resources.Get("Cancel"));
+        var dialog = new ConfirmDialogViewModel(L.T("Replace the current terms?"), message,
+            L.T("Replace"), L.T("Cancel"));
         if (!await confirm(dialog))
         {
             return new ContractImportOutcome(ContractImportOutcomeKind.Cancelled);
@@ -74,50 +74,60 @@ public class ContractImportFlow(GameContractService service)
 
         service.Apply(result);
 
-        var status = string.Format(Resources.Get("ContractLoadedStatus"),
+        var status = L.T("Contract loaded: {0} wardrobe items, {1} outfit rules and {2} tasks.",
             contract.Wardrobe!.Count, contract.OutfitRules!.Count, contract.Tasks!.Count);
         return new ContractImportOutcome(ContractImportOutcomeKind.Applied,
             report.Length > 0 ? status + "\n" + report : status);
     }
 
-    private static ContractImportOutcome Failed(string message) =>
+    private ContractImportOutcome Failed(string message) =>
         new(ContractImportOutcomeKind.Failed, message);
 
-    private static string DescribeFatal(ContractIssue issue) => issue.Kind switch
+    private string DescribeFatal(ContractIssue issue) => issue.Kind switch
     {
         ContractIssueKind.UnsupportedSchemaVersion =>
-            string.Format(Resources.Get("ContractFatalUnsupportedVersion"), issue.Subject),
-        ContractIssueKind.MissingSection => string.Format(Resources.Get("ContractFatalMissingSection"), issue.Subject),
-        ContractIssueKind.EmptyWardrobe => Resources.Get("ContractFatalEmptyWardrobe"),
-        _ => Resources.Get("ContractFatalInvalidFile"),
+            L.T("This contract uses an unsupported version ({0}).", issue.Subject),
+        ContractIssueKind.MissingSection => L.T("The contract is missing a section: {0}.", issue.Subject),
+        ContractIssueKind.EmptyWardrobe => L.T("The contract contains no usable wardrobe items."),
+        _ => L.T("The file is not a valid contract."),
     };
 
     /// <summary>One localized line per kind of adjustment (clamped, swapped, skipped); empty when nothing was touched.</summary>
-    private static string Describe(IReadOnlyList<ContractIssue> issues)
+    private string Describe(IReadOnlyList<ContractIssue> issues)
     {
         var lines = new List<string>();
-        AddLine(lines, "ContractReportClamped", issues.Where(i => i.Kind == ContractIssueKind.ValueClamped));
-        AddLine(lines, "ContractReportSwapped", issues.Where(i => i.Kind == ContractIssueKind.RangeSwapped));
-        AddLine(lines, "ContractReportDiscarded", issues.Where(i => i.Kind is ContractIssueKind.WardrobeItemDiscarded
-            or ContractIssueKind.OutfitRuleDiscarded or ContractIssueKind.TaskDiscarded
-            or ContractIssueKind.ConfigEntryDiscarded));
+        if (Subjects(issues.Where(i => i.Kind == ContractIssueKind.ValueClamped)) is { } clamped)
+        {
+            lines.Add(L.T("Adjusted to the allowed range: {0}.", clamped));
+        }
+
+        if (Subjects(issues.Where(i => i.Kind == ContractIssueKind.RangeSwapped)) is { } swapped)
+        {
+            lines.Add(L.T("Minimum and maximum swapped: {0}.", swapped));
+        }
+
+        if (Subjects(issues.Where(i => i.Kind is ContractIssueKind.WardrobeItemDiscarded
+                or ContractIssueKind.OutfitRuleDiscarded or ContractIssueKind.TaskDiscarded
+                or ContractIssueKind.ConfigEntryDiscarded)) is { } discarded)
+        {
+            lines.Add(L.T("Skipped: {0}.", discarded));
+        }
+
         return string.Join("\n", lines);
     }
 
-    private static void AddLine(List<string> lines, string key, IEnumerable<ContractIssue> issues)
+    /// <summary>The issues' subjects as a short comma-separated list; null when there are none.</summary>
+    private string? Subjects(IEnumerable<ContractIssue> issues)
     {
         var subjects = issues.Select(i => i.Subject).Distinct().ToList();
         if (subjects.Count == 0)
         {
-            return;
+            return null;
         }
 
         var shown = string.Join(", ", subjects.Take(MaxSubjectsPerLine));
-        if (subjects.Count > MaxSubjectsPerLine)
-        {
-            shown += string.Format(Resources.Get("ContractReportMore"), subjects.Count - MaxSubjectsPerLine);
-        }
-
-        lines.Add(string.Format(Resources.Get(key), shown));
+        return subjects.Count > MaxSubjectsPerLine
+            ? shown + L.T(" (+{0} more)", subjects.Count - MaxSubjectsPerLine)
+            : shown;
     }
 }

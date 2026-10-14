@@ -7,6 +7,9 @@ namespace ChastiMaid.Tests.Services.Contracts;
 
 public class ContractClauseBuilderTests : IDisposable
 {
+    // A localizer with no catalog loaded: every text comes out in English, the source language.
+    private static readonly ContractClauseBuilder Builder = new(new Localizer());
+
     private readonly CultureInfo _previousUiCulture = CultureInfo.CurrentUICulture;
 
     public ContractClauseBuilderTests()
@@ -47,20 +50,20 @@ public class ContractClauseBuilderTests : IDisposable
     [Fact]
     public void Build_NumbersClausesFromOne_AndEndsWithTheFixedSeverityClause()
     {
-        var clauses = ContractClauseBuilder.Build(Contract());
+        var clauses = Builder.Build(Contract());
 
         Assert.Equal(Enumerable.Range(1, clauses.Count), clauses.Select(c => c.Number));
         Assert.All(clauses, c => Assert.NotEmpty(c.Paragraphs));
-        Assert.Equal(Resources.Get("ContractAddressTitle"), clauses[0].Title);
-        Assert.Equal(Resources.Get("ContractSeverityTitle"), clauses[^1].Title);
-        Assert.Equal([Resources.Get("ContractSeverity")], clauses[^1].Paragraphs);
+        Assert.Equal("Forms of Address", clauses[0].Title);
+        Assert.Equal("Variable Severity", clauses[^1].Title);
+        Assert.StartsWith("The severity of punishments is not fixed.", Assert.Single(clauses[^1].Paragraphs));
     }
 
     [Fact]
     public void Build_SeverityClause_IsPresentAndIdenticalForAnyContract()
     {
-        var empty = ContractClauseBuilder.Build(new GameContract());
-        var full = ContractClauseBuilder.Build(Contract());
+        var empty = Builder.Build(new GameContract());
+        var full = Builder.Build(Contract());
 
         Assert.Equal(empty[^1].Title, full[^1].Title);
         Assert.Equal(empty[^1].Paragraphs, full[^1].Paragraphs);
@@ -69,7 +72,7 @@ public class ContractClauseBuilderTests : IDisposable
     [Fact]
     public void Build_InterpolatesNumbers_ButNeverTheAppellatives()
     {
-        var text = AllText(ContractClauseBuilder.Build(Contract()));
+        var text = AllText(Builder.Build(Contract()));
 
         Assert.Contains("£500.00", text);
         Assert.Contains("£1000.00", text);
@@ -81,7 +84,7 @@ public class ContractClauseBuilderTests : IDisposable
     [Fact]
     public void Build_SummarisesTheWardrobePerLayer()
     {
-        var text = AllText(ContractClauseBuilder.Build(Contract()));
+        var text = AllText(Builder.Build(Contract()));
 
         Assert.Contains("3 ", text);
         Assert.Contains("Base 1", text);
@@ -98,12 +101,12 @@ public class ContractClauseBuilderTests : IDisposable
         contract.Settings.WritingLinesEnabled = false;
         contract.Settings.KneelEnabled = false;
 
-        var text = AllText(ContractClauseBuilder.Build(contract));
+        var text = AllText(Builder.Build(contract));
 
-        Assert.Contains(Resources.Get("ContractCornertimeOff"), text);
-        Assert.Contains(Resources.Get("ContractWritingLinesOff"), text);
-        Assert.Contains(Resources.Get("ContractKneelOff"), text);
-        Assert.DoesNotContain(Resources.Get("ContractWritingNoIdle").Split('{')[0], text);
+        Assert.Contains("Cornertime is not in force.", text);
+        Assert.Contains("Lines are not in force.", text);
+        Assert.Contains("The Maid shall not be asked to kneel.", text);
+        Assert.DoesNotContain("Should the Maid leave the pen idle", text);
     }
 
     [Theory]
@@ -111,9 +114,8 @@ public class ContractClauseBuilderTests : IDisposable
     [InlineData("it")]
     public void Build_LeavesNoMissingKeysOrPlaceholders_InEitherLanguage(string language)
     {
-        var previous = CultureInfo.CurrentUICulture;
-        CultureInfo.CurrentUICulture = new CultureInfo(language);
-        try
+        var localizer = new Localizer();
+        localizer.SetLanguage(language);
         {
             var contract = Contract();
             contract.Settings!.PlugAndPlayEnabled = true;
@@ -122,17 +124,14 @@ public class ContractClauseBuilderTests : IDisposable
             contract.DiaperPlayItems = [new DiaperPlayItemConfig { ClothingItemId = 2 }];
             contract.ChastityDeviceItems = [new ChastityDeviceItemConfig { ClothingItemId = 3 }];
 
-            var paragraphs = ContractClauseBuilder.Build(contract).SelectMany(c => c.Paragraphs.Prepend(c.Title)).ToList();
+            var paragraphs = new ContractClauseBuilder(localizer).Build(contract)
+                .SelectMany(c => c.Paragraphs.Prepend(c.Title)).ToList();
 
             Assert.All(paragraphs, p =>
             {
                 Assert.DoesNotContain("{", p);
                 Assert.False(p.StartsWith("Contract", StringComparison.Ordinal) && !p.Contains(' '), p); // an unresolved key
             });
-        }
-        finally
-        {
-            CultureInfo.CurrentUICulture = previous;
         }
     }
 
@@ -148,7 +147,7 @@ public class ContractClauseBuilderTests : IDisposable
         var contract = Contract();
         contract.Settings!.PopupTimeoutSeconds = seconds;
 
-        var summons = ContractClauseBuilder.Build(contract).Single(c => c.Title == Resources.Get("ContractCheckinsTitle"))
+        var summons = Builder.Build(contract).Single(c => c.Title == "Summons and Check-ins")
             .Paragraphs[0];
 
         Assert.EndsWith($"within {expected}.", summons);

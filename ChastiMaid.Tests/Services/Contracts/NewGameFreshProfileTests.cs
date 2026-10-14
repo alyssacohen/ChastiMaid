@@ -1,3 +1,4 @@
+using ChastiMaid.Localization;
 using ChastiMaid.Repositories;
 using ChastiMaid.Services;
 using ChastiMaid.Services.Contracts;
@@ -42,7 +43,7 @@ public class NewGameFreshProfileTests : IDisposable
         Assert.NotNull(reread.ParseAppellatives()); // null Appellatives after the LiteDB round-trip must not throw
 
         var contract = new GameContractService(profile).Build();
-        var clauses = ContractClauseBuilder.Build(contract);
+        var clauses = new ContractClauseBuilder(new Localizer()).Build(contract);
         Assert.NotEmpty(clauses);
 
         var settings = profile.GetGameSettings();
