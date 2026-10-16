@@ -42,7 +42,9 @@ public partial class TranslationFileTests(ITestOutputHelper output)
             var expected = Placeholders(entry.Key.Id).Union(Placeholders(entry.Key.PluralId)).ToHashSet();
             foreach (var (form, index) in entry.Select((f, i) => (f, i)).Where(t => !string.IsNullOrEmpty(t.f)))
             {
-                if (!Placeholders(form).SetEquals(expected))
+                // A plural form may spell a count out ("una sola tenuta" for {1}), so it may leave a placeholder out.
+                var found = Placeholders(form).ToHashSet();
+                if (entry.Key.PluralId is null ? !found.SetEquals(expected) : !found.IsSubsetOf(expected))
                 {
                     errors.Add($"{Describe(entry.Key)} [form {index}]: expected {{{string.Join(", ", expected)}}}, " +
                                $"found {{{string.Join(", ", Placeholders(form))}}} in \"{form}\"");
