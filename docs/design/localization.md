@@ -84,16 +84,17 @@ what a placeholder holds, a length limit for a button, the gender of the noun a 
 2. Run the extraction from the repository root:
 
    ```powershell
-   dotnet run --project tools/ChastiMaid.L10n -- extract
+   ./l10n-refresh.ps1   # extract, then build so the .mo files are recompiled
    ```
 
-   It regenerates `locale/ChastiMaid.pot` (GetText.NET.Extractor for C#, plus the `{l:Tr}` labels and the
+   (`dotnet run --project tools/ChastiMaid.L10n -- extract` alone skips the build.) It regenerates `locale/ChastiMaid.pot` (GetText.NET.Extractor for C#, plus the `{l:Tr}` labels and the
    translator notes) and updates every `locale/*.po`: new messages are added untranslated, references and
    notes are refreshed, messages no longer in the code are dropped and listed in the output.
 3. Translate the new entries in Poedit (next section) and commit the code, the `.pot` and the `.po` together.
 
-Changing an English msgid makes it a new message: its old translation is dropped. When the change is only a
-correction, edit the msgid in each `.po` first (or re-enter the translation afterwards).
+Changing an English msgid makes it a new message. When the new text is at least 70% like a dropped one (same
+context and plural shape), its old translation moves over as **fuzzy** with the old English text as `#| msgid`,
+which Poedit shows as the previous source text; otherwise it is dropped and listed.
 
 ### Translating in Poedit
 

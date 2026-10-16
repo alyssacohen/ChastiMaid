@@ -131,16 +131,22 @@ public static partial class PotExtractor
             }
 
             var old = parsed.Catalog;
-            foreach (var dropped in old.OfType<IPOEntry>().Where(e => !entries.ContainsKey(e.Key) && e.Any(t => !string.IsNullOrEmpty(t))))
+            var dropped = old.OfType<IPOEntry>()
+                .Where(e => !entries.ContainsKey(e.Key) && e.Any(t => !string.IsNullOrEmpty(t))).ToList();
+            var carried = CarryOver(entries.Keys.Where(k => !old.Contains(k)), dropped);
+            foreach (var entry in dropped)
             {
-                Console.WriteLine($"locale/{name}: dropped \"{dropped.Key.Id}\" = \"{dropped.First()}\"");
+                var to = carried.FirstOrDefault(c => c.Value == entry).Key;
+                Console.WriteLine(to.Id is null
+                    ? $"locale/{name}: dropped \"{entry.Key.Id}\" = \"{entry.First()}\""
+                    : $"locale/{name}: \"{entry.Key.Id}\" -> \"{to.Id}\", translation kept as fuzzy");
             }
 
             Save(po, new POCatalog
             {
                 Encoding = old.Encoding, Language = old.Language, PluralFormCount = old.PluralFormCount,
                 PluralFormSelector = old.PluralFormSelector, HeaderComments = old.HeaderComments, Headers = old.Headers,
-            }, entries, old);
+            }, entries, old, carried);
             var translated = entries.Keys.Count(k => old.TryGetValue(k, out var e) && e.Any() && !e.Any(string.IsNullOrEmpty));
             Console.WriteLine($"locale/{name}: {translated} translated, {entries.Count - translated} to translate.");
         }
@@ -210,12 +216,17 @@ public static partial class PotExtractor
     ///     translations, the fuzzy flag and the translator's own notes from <paramref name="translations" />.
     /// </summary>
     private static void Save(string path, POCatalog catalog, SortedDictionary<POKey, Entry> entries,
-        POCatalog? translations)
+        POCatalog? translations, IReadOnlyDictionary<POKey, IPOEntry>? carried = null)
     {
         foreach (var (key, entry) in entries)
         {
             IPOEntry? old = null;
             translations?.TryGetValue(key, out old);
+            IPOEntry? previous = null;
+            if (old is null && carried?.TryGetValue(key, out previous) == true)
+            {
+                old = previous;
+            }
 
             var flags = new HashSet<string>();
             if (entry.CSharpFormat)
@@ -223,13 +234,15 @@ public static partial class PotExtractor
                 flags.Add("csharp-format");
             }
 
-            if (old?.Comments?.OfType<POFlagsComment>().Any(c => c.Flags.Contains("fuzzy")) ?? false)
+            if (previous is not null || (old?.Comments?.OfType<POFlagsComment>().Any(c => c.Flags.Contains("fuzzy")) ?? false))
             {
                 flags.Add("fuzzy");
             }
 
             List<POComment> comments =
             [
+                // The old source text, which Poedit shows next to the new one so the change is easy to spot.
+                .. previous is null ? [] : new POComment[] { new POPreviousValueComment { IdKind = POIdKind.Id, Value = previous.Key.Id } },
                 .. old?.Comments?.OfType<POTranslatorComment>() ?? [],
                 .. entry.Comments.Select(c => new POExtractedComment { Text = c }),
                 new POReferenceComment
@@ -304,6 +317,51 @@ public static partial class PotExtractor
         using var process = Process.Start(new ProcessStartInfo("dotnet", arguments) { WorkingDirectory = root })!;
         process.WaitForExit();
         return process.ExitCode == 0;
+    }
+
+    /// <summary>
+    ///     Pairs each new message with the dropped translation whose source text is closest (same context and
+    ///     plural shape, at least 70% alike), so editing a source string keeps its translation as fuzzy.
+    /// </summary>
+    public static Dictionary<POKey, IPOEntry> CarryOver(IEnumerable<POKey> added, IEnumerable<IPOEntry> dropped)
+    {
+        var pool = dropped.ToList();
+        var carried = new Dictionary<POKey, IPOEntry>();
+        foreach (var key in added)
+        {
+            var best = pool
+                .Where(e => e.Key.ContextId == key.ContextId && (e.Key.PluralId is null) == (key.PluralId is null))
+                .Select(e => (Entry: e, Score: Similarity(e.Key.Id, key.Id)))
+                .Where(m => m.Score >= 0.7)
+                .OrderByDescending(m => m.Score).Select(m => m.Entry).FirstOrDefault();
+            if (best is not null)
+            {
+                carried[key] = best;
+                pool.Remove(best);
+            }
+        }
+
+        return carried;
+    }
+
+    // 1 - Levenshtein distance / length of the longer text.
+    private static double Similarity(string a, string b)
+    {
+        var previous = Enumerable.Range(0, b.Length + 1).ToArray();
+        var current = new int[b.Length + 1];
+        for (var i = 1; i <= a.Length; i++)
+        {
+            current[0] = i;
+            for (var j = 1; j <= b.Length; j++)
+            {
+                current[j] = Math.Min(Math.Min(current[j - 1], previous[j]) + 1,
+                    previous[j - 1] + (a[i - 1] == b[j - 1] ? 0 : 1));
+            }
+
+            (previous, current) = (current, previous);
+        }
+
+        return 1.0 - previous[b.Length] / (double)Math.Max(1, Math.Max(a.Length, b.Length));
     }
 
     private sealed class Entry
