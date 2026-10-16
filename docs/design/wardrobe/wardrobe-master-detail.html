@@ -1,0 +1,792 @@
+<!doctype html>
+<!--
+  Wardrobe master/detail: reference mockup (design only, not production code).
+  Read it as a description of structure and behaviour; do not run or port it literally.
+  The script block at the bottom (renderVals) holds the logic: filter/sort pipeline, selection,
+  tri-state chips, mixed numeric values, delete/undo. All sample data and Italian strings are placeholders.
+  See the design spec in this folder for how to interpret it.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Guardaroba</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;500;600&display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:#FAF7F2}
+button,input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid #6B4F35;outline-offset:2px}
+.row-btn:hover{background:rgba(107,79,53,.07)}
+.ghost:hover{background:#F2EDE4}
+.ul{border:0;border-bottom:1px solid #C8B99A;background:transparent;outline:none}
+.ul:focus{border-bottom:2px solid #6B4F35;outline:none}
+.ul::placeholder{color:#7A6A58;font-style:italic}
+</style>
+</helmet>
+
+<div style="position:relative;width:100%;max-width:1440px;margin:0 auto;height:860px;box-sizing:border-box;padding:24px 24px 16px;display:flex;flex-direction:column;gap:12px;background:#FAF7F2;color:#2C2118">
+
+  <!-- Page header -->
+  <div style="display:flex;align-items:baseline;gap:16px;flex:none">
+    <h1 style="margin:0;font:600 48px/60px 'Cormorant Garamond',serif;color:#2C2118">Guardaroba</h1>
+    <span style="font-size:14px;line-height:20px;color:#6B5B4B">{{ totalText }}</span>
+  </div>
+
+  <!-- Toolbar -->
+  <div style="display:flex;gap:8px;align-items:center;flex:none">
+    <input type="text" aria-label="Cerca per nome, layer, slot o tag" placeholder="Cerca per nome, layer, slot o tag…" value="{{ query }}" onChange="{{ onQuery }}" style="flex:1 1 auto;min-width:200px;height:44px;box-sizing:border-box;padding:0 14px;border:1px solid #C8B99A;border-radius:6px;background:#FFFFFF;font-size:15px;color:#2C2118">
+
+    <div style="position:relative;flex:none">
+      <button type="button" class="ghost" aria-label="Filtra" title="Filtra" aria-haspopup="true" aria-expanded="{{ menuFilter }}" onClick="{{ openFilter }}" style="position:relative;width:44px;height:44px;border:1px solid #C8B99A;border-radius:6px;background:#FFFFFF;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+        <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 4px;box-sizing:border-box;border-radius:10px;background:#6B4F35;color:#FAF7F2;font-size:12px;line-height:20px;text-align:center">{{ filterCount }}</span>
+        </sc-if>
+      </button>
+      <sc-if value="{{ menuFilter }}" hint-placeholder-val="{{ false }}">
+        <div role="dialog" aria-label="Filtri" style="position:absolute;top:52px;right:0;z-index:6;width:440px;box-sizing:border-box;padding:16px;background:#FFFFFF;border:1px solid #C8B99A;border-radius:8px;box-shadow:0 8px 24px rgba(44,33,24,.14);display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="font-size:13px;line-height:18px;color:#6B5B4B;margin-bottom:8px">LAYER</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ fLayerChips }}" as="c" hint-placeholder-count="5">
+                <button type="button" aria-pressed="{{ c.aria }}" onClick="{{ c.click }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px;line-height:18px;color:#6B5B4B;margin-bottom:8px">SLOT</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ fSlotChips }}" as="c" hint-placeholder-count="6">
+                <button type="button" aria-pressed="{{ c.aria }}" onClick="{{ c.click }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px;line-height:18px;color:#6B5B4B;margin-bottom:8px">TAG</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ fTagChips }}" as="c" hint-placeholder-count="8">
+                <button type="button" aria-pressed="{{ c.aria }}" onClick="{{ c.click }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E6DCCB;padding-top:12px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between">
+            <button type="button" class="ghost" onClick="{{ resetFilters }}" style="height:32px;padding:0 12px;border:1px solid #C8B99A;border-radius:4px;background:transparent;color:#4A3F35;font-size:12px;font-weight:500;cursor:pointer">Azzera filtri</button>
+            <div style="display:flex;gap:16px">
+              <button type="button" onClick="{{ openManageSlot }}" style="min-height:44px;padding:0;border:0;background:transparent;color:#6B4F35;font-size:13px;line-height:18px;text-decoration:underline;text-underline-offset:2px;cursor:pointer">Gestisci slot</button>
+              <button type="button" onClick="{{ openManageTag }}" style="min-height:44px;padding:0;border:0;background:transparent;color:#6B4F35;font-size:13px;line-height:18px;text-decoration:underline;text-underline-offset:2px;cursor:pointer">Gestisci tag</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="position:relative;flex:none">
+      <button type="button" class="ghost" aria-label="{{ sortLabel }}" title="{{ sortLabel }}" aria-haspopup="true" aria-expanded="{{ menuSort }}" onClick="{{ openSort }}" style="position:relative;width:44px;height:44px;border:1px solid #C8B99A;border-radius:6px;background:#FFFFFF;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16"/><path d="M3 8l4-4 4 4"/><path d="M17 20V4"/><path d="M13 16l4 4 4-4"/></svg>
+      </button>
+      <sc-if value="{{ menuSort }}" hint-placeholder-val="{{ false }}">
+        <div role="dialog" aria-label="Ordinamento" style="position:absolute;top:52px;right:0;z-index:6;width:220px;box-sizing:border-box;padding:8px;background:#FFFFFF;border:1px solid #C8B99A;border-radius:8px;box-shadow:0 8px 24px rgba(44,33,24,.14);display:flex;flex-direction:column">
+          <sc-for list="{{ sortOptions }}" as="o" hint-placeholder-count="5">
+            <button type="button" class="ghost" onClick="{{ o.click }}" style="height:44px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#2C2118;font-size:15px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:{{ o.weight }}">
+              <span>{{ o.label }}</span><span aria-hidden="true">{{ o.mark }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+
+    <button type="button" class="ghost" onClick="{{ openRules }}" style="flex:none;height:44px;padding:0 16px;border:1px solid #C8B99A;border-radius:6px;background:#FFFFFF;color:#4A3F35;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
+      Regole
+    </button>
+
+    <button type="button" class="ghost" aria-label="{{ trashLabel }}" title="{{ trashLabel }}" disabled="{{ noTargets }}" onClick="{{ deleteTargets }}" style="flex:none;width:44px;height:44px;border:1px solid #C8B99A;border-radius:6px;background:#FFFFFF;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:{{ trashOpacity }}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B3A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+    </button>
+  </div>
+
+  <!-- Click-away layer for the menus -->
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <button type="button" aria-label="Chiudi menu" onClick="{{ closeMenu }}" style="position:absolute;inset:0;z-index:5;border:0;background:transparent;cursor:default"></button>
+  </sc-if>
+
+  <!-- Active filters -->
+  <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex:none">
+      <span style="font-size:13px;color:#6B5B4B">Filtri attivi:</span>
+      <sc-for list="{{ activeFilters }}" as="f" hint-placeholder-count="2">
+        <button type="button" onClick="{{ f.remove }}" aria-label="{{ f.aria }}" style="height:30px;padding:0 10px;border:1px solid #6B4F35;border-radius:4px;background:#F2EDE4;color:#6B4F35;font-size:12px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px">{{ f.text }}<span aria-hidden="true">×</span></button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <!-- Master / detail -->
+  <div style="flex:1 1 auto;min-height:0;display:flex;gap:16px">
+
+    <!-- Master: list -->
+    <section aria-label="Elenco capi" style="width:360px;flex:none;display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #C8B99A;border-radius:6px">
+      <div style="position:relative;flex:none;display:flex;align-items:center;border-bottom:1px solid #C8B99A;background:#FAF7F2;min-height:44px;border-radius:5px 5px 0 0">
+        <label style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;cursor:pointer">
+          <input type="checkbox" aria-label="Seleziona tutti i capi visibili" checked="{{ allChecked }}" onChange="{{ toggleAll }}" style="width:20px;height:20px;margin:0;accent-color:#6B4F35">
+        </label>
+        <button type="button" class="ghost" aria-label="Opzioni di selezione" title="Opzioni di selezione" aria-haspopup="true" aria-expanded="{{ menuSelect }}" onClick="{{ openSelect }}" style="flex:none;width:28px;height:44px;margin-left:-10px;border:0;border-radius:4px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <span style="margin-left:8px;font-size:13px;line-height:18px;color:#4A3F35">{{ listHeader }}</span>
+        <sc-if value="{{ menuSelect }}" hint-placeholder-val="{{ false }}">
+          <div role="dialog" aria-label="Selezione" style="position:absolute;top:48px;left:8px;z-index:6;width:280px;box-sizing:border-box;padding:8px;background:#FFFFFF;border:1px solid #C8B99A;border-radius:8px;box-shadow:0 8px 24px rgba(44,33,24,.14);display:flex;flex-direction:column">
+            <button type="button" class="ghost" onClick="{{ selectAllVisible }}" style="height:44px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#2C2118;font-size:15px;text-align:left;cursor:pointer">{{ selectAllText }}</button>
+            <button type="button" class="ghost" onClick="{{ invertSelection }}" style="height:44px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#2C2118;font-size:15px;text-align:left;cursor:pointer">Inverti selezione</button>
+            <button type="button" class="ghost" onClick="{{ clearSelection }}" style="height:44px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#2C2118;font-size:15px;text-align:left;cursor:pointer">Deseleziona tutti</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex:1 1 auto;min-height:0;overflow:auto">
+        <sc-for list="{{ rows }}" as="row" hint-placeholder-count="8">
+          <div style="{{ row.style }}">
+            <label style="flex:none;display:flex;align-items:center;justify-content:center;width:44px;height:48px;cursor:pointer">
+              <input type="checkbox" aria-label="{{ row.checkLabel }}" checked="{{ row.checked }}" onChange="{{ row.toggle }}" style="width:20px;height:20px;margin:0;accent-color:#6B4F35">
+            </label>
+            <sc-if value="{{ row.editing }}" hint-placeholder-val="{{ false }}">
+              <input type="text" class="ul" aria-label="Nome del capo" autoFocus="{{ true }}" value="{{ editText }}" onChange="{{ onEditText }}" onKeyDown="{{ row.editKey }}" onBlur="{{ row.editBlur }}" onFocus="{{ selectOnFocus }}" style="flex:1 1 auto;min-width:0;height:36px;margin:0 12px 0 0;padding:0 2px;font-size:16px;line-height:24px;color:#2C2118">
+            </sc-if>
+            <sc-if value="{{ row.notEditing }}" hint-placeholder-val="{{ true }}">
+              <button type="button" class="row-btn" onClick="{{ row.select }}" onDoubleClick="{{ row.edit }}" style="flex:1 1 auto;min-width:0;min-height:48px;padding:0 8px 0 0;border:0;background:transparent;text-align:left;cursor:pointer;display:flex;align-items:center;gap:8px;color:#2C2118">
+                <span style="flex:1 1 auto;min-width:0;font-size:16px;line-height:24px;font-weight:{{ row.nameWeight }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.name }}</span>
+                <sc-if value="{{ showMeta }}" hint-placeholder-val="{{ true }}">
+                  <span style="flex:none;max-width:150px;font-size:13px;line-height:18px;color:#6B5B4B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.layer }}</span>
+                </sc-if>
+              </button>
+            </sc-if>
+            <sc-if value="{{ row.pencil }}" hint-placeholder-val="{{ false }}">
+              <button type="button" class="ghost" aria-label="Rinomina capo" onClick="{{ row.edit }}" style="flex:none;width:44px;height:48px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B4F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;padding:24px 16px;font-size:14px;line-height:20px;color:#6B5B4B">Nessun capo corrisponde a ricerca e filtri.</p>
+        </sc-if>
+      </div>
+
+      <div style="flex:none;padding:12px;border-top:1px solid #C8B99A;display:flex;flex-direction:column;gap:8px;border-radius:0 0 5px 5px">
+        <button type="button" class="ghost" onClick="{{ addItem }}" style="width:100%;height:44px;border:1px solid #C8B99A;border-radius:6px;background:transparent;color:#4A3F35;font-size:14px;cursor:pointer">+ Nuovo indumento</button>
+        <span style="font-size:13px;line-height:18px;color:#6B5B4B">Doppio clic sul nome (o la matita) per rinominare.</span>
+      </div>
+    </section>
+
+    <!-- Detail -->
+    <section aria-label="Dettaglio" style="flex:1 1 auto;min-width:0;overflow:auto;background:#FFFFFF;border:1px solid #C8B99A;border-radius:6px;padding:24px;box-sizing:border-box">
+
+      <sc-if value="{{ noTargets }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:0;font-size:16px;line-height:24px;color:#6B5B4B">Selezionate un capo dall'elenco per modificarne i dettagli.</p>
+      </sc-if>
+
+      <sc-if value="{{ hasTargets }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:24px;max-width:720px">
+
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;color:#2C2118">{{ detailTitle }}</h2>
+            <sc-if value="{{ multi }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;font-size:14px;line-height:20px;color:#4A3F35">{{ namesPreview }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:12px;background:#FAF7F2;border-radius:6px">
+                <span style="font-size:13px;line-height:18px;color:#4A3F35">Legenda dei chip:</span>
+                <sc-for list="{{ legend }}" as="l" hint-placeholder-count="3">
+                  <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;line-height:18px;color:#4A3F35"><span style="{{ l.style }}">{{ l.sample }}</span>{{ l.text }}</span>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+
+          <div>
+            <div style="font-size:13px;line-height:18px;color:#6B5B4B;margin-bottom:8px">LAYER</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ layerChips }}" as="c" hint-placeholder-count="5">
+                <button type="button" aria-pressed="{{ c.aria }}" onClick="{{ c.click }}" style="{{ c.style }}">{{ c.label }}<sc-if value="{{ c.partial }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px">{{ c.count }}</span></sc-if></button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:13px;line-height:18px;color:#6B5B4B;margin-bottom:8px">SLOT</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ slotChips }}" as="c" hint-placeholder-count="6">
+                <button type="button" aria-pressed="{{ c.aria }}" onClick="{{ c.click }}" style="{{ c.style }}">{{ c.label }}<sc-if value="{{ c.partial }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px">{{ c.count }}</span></sc-if></button>
+              </sc-for>
+              <button type="button" aria-label="Aggiungi slot" title="Aggiungi slot" onClick="{{ addSlotOpen }}" style="{{ addChipStyle }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:13px;line-height:18px;color:#6B5B4B;margin-bottom:8px">TAG</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ tagChips }}" as="c" hint-placeholder-count="8">
+                <button type="button" aria-pressed="{{ c.aria }}" onClick="{{ c.click }}" style="{{ c.style }}">{{ c.label }}<sc-if value="{{ c.partial }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px">{{ c.count }}</span></sc-if></button>
+              </sc-for>
+              <button type="button" aria-label="Aggiungi tag" title="Aggiungi tag" onClick="{{ addTagOpen }}" style="{{ addChipStyle }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:32px">
+            <div style="display:flex;flex-direction:column;gap:4px;width:200px">
+              <label for="weightInput" style="font-size:13px;line-height:18px;color:#6B5B4B">PESO</label>
+              <div style="display:flex;align-items:center;gap:4px">
+                <input id="weightInput" type="text" inputmode="decimal" class="ul" value="{{ weight.shown }}" placeholder="Valori diversi" onChange="{{ onWeight }}" onBlur="{{ endDraft }}" style="flex:1 1 auto;min-width:0;height:44px;padding:0 2px;font-size:16px;color:#2C2118">
+                <div style="flex:none;display:flex;flex-direction:column;gap:2px">
+                  <button type="button" class="ghost" aria-label="{{ weight.upLabel }}" title="{{ weight.upLabel }}" disabled="{{ weight.stepOff }}" onClick="{{ weight.up }}" style="width:32px;height:21px;padding:0;border:0;border-radius:3px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ weight.stepOpacity }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+                  <button type="button" class="ghost" aria-label="{{ weight.downLabel }}" title="{{ weight.downLabel }}" disabled="{{ weight.stepOff }}" onClick="{{ weight.down }}" style="width:32px;height:21px;padding:0;border:0;border-radius:3px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ weight.stepOpacity }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+                </div>
+              </div>
+              <span style="font-size:13px;line-height:18px;color:#6B5B4B;min-height:18px">{{ weight.hint }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;width:200px">
+              <label for="valueInput" style="font-size:13px;line-height:18px;color:#6B5B4B">VALORE</label>
+              <div style="display:flex;align-items:center;gap:4px">
+                <input id="valueInput" type="text" inputmode="decimal" class="ul" value="{{ value.shown }}" placeholder="Valori diversi" onChange="{{ onValue }}" onBlur="{{ endDraft }}" style="flex:1 1 auto;min-width:0;height:44px;padding:0 2px;font-size:16px;color:#2C2118">
+                <div style="flex:none;display:flex;flex-direction:column;gap:2px">
+                  <button type="button" class="ghost" aria-label="{{ value.upLabel }}" title="{{ value.upLabel }}" disabled="{{ value.stepOff }}" onClick="{{ value.up }}" style="width:32px;height:21px;padding:0;border:0;border-radius:3px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ value.stepOpacity }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+                  <button type="button" class="ghost" aria-label="{{ value.downLabel }}" title="{{ value.downLabel }}" disabled="{{ value.stepOff }}" onClick="{{ value.down }}" style="width:32px;height:21px;padding:0;border:0;border-radius:3px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ value.stepOpacity }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A3F35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+                </div>
+              </div>
+              <span style="font-size:13px;line-height:18px;color:#6B5B4B;min-height:18px">{{ value.hint }}</span>
+            </div>
+          </div>
+
+          <sc-if value="{{ showRules }}" hint-placeholder-val="{{ true }}">
+            <div style="border-top:1px solid #E6DCCB;padding-top:16px;display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:13px;line-height:18px;color:#6B5B4B">REGOLE SUI TAG DI QUESTO CAPO</div>
+              <sc-for list="{{ ruleLines }}" as="r" hint-placeholder-count="2">
+                <div style="font-size:14px;line-height:20px;color:#4A3F35"><span style="font-weight:600">{{ r.a }}</span> {{ r.kind }} <span style="font-weight:600">{{ r.b }}</span></div>
+              </sc-for>
+              <sc-if value="{{ noRules }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:14px;line-height:20px;color:#6B5B4B">Nessuna regola coinvolge i tag di questo capo.</div>
+              </sc-if>
+              <button type="button" onClick="{{ openRules }}" style="align-self:flex-start;min-height:32px;padding:0;border:0;background:transparent;color:#6B4F35;font-size:13px;line-height:18px;text-decoration:underline;text-underline-offset:2px;cursor:pointer">Modifica regole</button>
+            </div>
+          </sc-if>
+
+          <div style="border-top:1px solid #E6DCCB;padding-top:16px">
+            <button type="button" onClick="{{ deleteTargets }}" style="height:44px;padding:0 16px;border:0;border-radius:6px;background:#8B3A2A;color:#FAF7F2;font-size:15px;cursor:pointer">{{ deleteTargetsText }}</button>
+          </div>
+        </div>
+      </sc-if>
+    </section>
+  </div>
+
+  <!-- Rules modal (stub): the content of the former "Regole outfit" tab will move here -->
+  <sc-if value="{{ rulesModal }}" hint-placeholder-val="{{ false }}">
+    <button type="button" aria-label="Chiudi finestra" onClick="{{ closeRules }}" style="position:absolute;inset:0;z-index:9;border:0;background:rgba(44,33,24,.4);cursor:default"></button>
+    <div role="dialog" aria-modal="true" aria-label="Regole outfit" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:480px;max-width:calc(100% - 48px);box-sizing:border-box;padding:24px;background:#FFFFFF;border:1px solid #C8B99A;border-radius:8px;box-shadow:0 12px 32px rgba(44,33,24,.24);display:flex;flex-direction:column;gap:16px">
+      <h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;color:#2C2118">Regole outfit</h2>
+      <p style="margin:0;font-size:16px;line-height:24px;color:#4A3F35">Finestra provvisoria. Qui verrà spostato il contenuto della scheda «Regole outfit» (tag A richiede / esclude tag B).</p>
+      <div style="display:flex;justify-content:flex-end">
+        <button type="button" onClick="{{ closeRules }}" style="height:44px;padding:0 16px;border:0;border-radius:6px;background:#6B4F35;color:#FAF7F2;font-size:15px;cursor:pointer">Chiudi</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Manage slots / tags modal -->
+  <sc-if value="{{ manageOpen }}" hint-placeholder-val="{{ false }}">
+    <button type="button" aria-label="Chiudi finestra" onClick="{{ closeManage }}" style="position:absolute;inset:0;z-index:9;border:0;background:rgba(44,33,24,.4);cursor:default"></button>
+    <div role="dialog" aria-modal="true" aria-label="{{ manageTitle }}" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:480px;max-width:calc(100% - 48px);max-height:calc(100% - 96px);box-sizing:border-box;padding:24px;background:#FFFFFF;border:1px solid #C8B99A;border-radius:8px;box-shadow:0 12px 32px rgba(44,33,24,.24);display:flex;flex-direction:column;gap:12px">
+      <h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;color:#2C2118">{{ manageTitle }}</h2>
+      <div style="display:flex;gap:8px;align-items:flex-end">
+        <input type="text" class="ul" aria-label="{{ addPlaceholder }}" placeholder="{{ addPlaceholder }}" value="{{ addText }}" onChange="{{ onAddText }}" onKeyDown="{{ addKeyManage }}" style="flex:1 1 auto;min-width:0;height:44px;padding:0 2px;font-size:16px;color:#2C2118">
+        <button type="button" onClick="{{ addFromManage }}" style="flex:none;height:44px;padding:0 16px;border:0;border-radius:6px;background:#6B4F35;color:#FAF7F2;font-size:15px;cursor:pointer">Aggiungi</button>
+      </div>
+      <span style="font-size:13px;line-height:18px;color:#8B3A2A;min-height:18px">{{ addError }}</span>
+      <div style="flex:1 1 auto;min-height:0;overflow:auto;border:1px solid #E6DCCB;border-radius:6px">
+        <sc-for list="{{ manageRows }}" as="m" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:12px;min-height:48px;padding:0 4px 0 16px;border-bottom:1px solid #E6DCCB">
+            <span style="flex:1 1 auto;min-width:0;font-size:16px;line-height:24px;color:#2C2118;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.name }}</span>
+            <span style="flex:none;font-size:13px;line-height:18px;color:#6B5B4B">{{ m.usage }}</span>
+            <button type="button" class="ghost" aria-label="{{ m.delLabel }}" title="{{ m.delLabel }}" onClick="{{ m.del }}" style="flex:none;width:44px;height:44px;border:0;border-radius:4px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B3A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noManageRows }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;padding:16px;font-size:14px;line-height:20px;color:#6B5B4B">Nessun elemento.</p>
+        </sc-if>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <button type="button" onClick="{{ closeManage }}" style="height:44px;padding:0 16px;border:0;border-radius:6px;background:#6B4F35;color:#FAF7F2;font-size:15px;cursor:pointer">Chiudi</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Generic dialog: add slot/tag, "no item uses it" and "delete" confirmations -->
+  <sc-if value="{{ dlg }}" hint-placeholder-val="{{ false }}">
+    <button type="button" aria-label="Chiudi finestra" onClick="{{ dlg.cancel }}" style="position:absolute;inset:0;z-index:11;border:0;background:rgba(44,33,24,.4);cursor:default"></button>
+    <div role="dialog" aria-modal="true" aria-label="{{ dlg.title }}" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:12;width:440px;max-width:calc(100% - 48px);box-sizing:border-box;padding:24px;background:#FFFFFF;border:1px solid #C8B99A;border-radius:8px;box-shadow:0 12px 32px rgba(44,33,24,.24);display:flex;flex-direction:column;gap:16px">
+      <h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;color:#2C2118">{{ dlg.title }}</h2>
+      <sc-if value="{{ dlg.isAdd }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <input type="text" class="ul" aria-label="{{ dlg.title }}" autoFocus="{{ true }}" placeholder="Nome" value="{{ addText }}" onChange="{{ onAddText }}" onKeyDown="{{ dlg.key }}" style="height:44px;padding:0 2px;font-size:16px;color:#2C2118">
+          <span style="font-size:13px;line-height:18px;color:#8B3A2A;min-height:18px">{{ dlg.error }}</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ dlg.text }}" hint-placeholder-val="{{ true }}">
+        <p style="margin:0;font-size:16px;line-height:24px;color:#4A3F35">{{ dlg.text }}</p>
+      </sc-if>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button type="button" class="ghost" onClick="{{ dlg.cancel }}" style="height:44px;padding:0 16px;border:1px solid #C8B99A;border-radius:6px;background:transparent;color:#4A3F35;font-size:15px;cursor:pointer">Annulla</button>
+        <button type="button" onClick="{{ dlg.confirm }}" style="height:44px;padding:0 16px;border:0;border-radius:6px;background:{{ dlg.confirmBg }};color:#FAF7F2;font-size:15px;cursor:pointer">{{ dlg.confirmLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Undo toast -->
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:8;display:flex;align-items:center;gap:16px;padding:8px 8px 8px 16px;background:#2C2118;color:#FAF7F2;border-radius:6px;font-size:14px;line-height:20px">
+      <span>{{ toast.text }}</span>
+      <sc-if value="{{ toast.canUndo }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ undoDelete }}" style="height:36px;padding:0 12px;border:1px solid #C8B99A;border-radius:4px;background:transparent;color:#FAF7F2;font-size:14px;cursor:pointer">Annulla</button></sc-if>
+      <button type="button" aria-label="Chiudi avviso" onClick="{{ dismissToast }}" style="width:36px;height:36px;border:0;background:transparent;color:#FAF7F2;font-size:18px;cursor:pointer">×</button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"showMeta":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [
+        { id: 1, name: 'Cuffia di pizzo', layers: ['Accessories'], slots: ['Head'], tags: ['maid', 'lace'], weight: 1, value: 1.1 },
+        { id: 2, name: 'Grembiule inamidato', layers: ['Outerwear'], slots: ['Torso', 'Legs'], tags: ['maid', 'classic'], weight: 1, value: 1.15 },
+        { id: 3, name: 'Camicia a collo alto', layers: ['Base'], slots: ['Torso', 'Arms', 'Neck'], tags: ['classic', 'cotton'], weight: 1, value: 1 },
+        { id: 4, name: 'Gonna lunga nera', layers: ['Base'], slots: ['Legs'], tags: ['maid', 'classic', 'wool', 'winter'], weight: 1, value: 1.05 },
+        { id: 5, name: 'Corsetto in raso', layers: ['Underwear'], slots: ['Torso', 'Waist'], tags: ['lingerie', 'classic'], weight: 0.6, value: 1.3 },
+        { id: 6, name: 'Sottoveste di cotone', layers: ['Underwear', 'Base'], slots: ['Torso', 'Legs'], tags: ['cotton', 'summer'], weight: 0.9, value: 0.95 },
+        { id: 7, name: 'Mutandoni di cotone', layers: ['Underwear'], slots: ['Crotch'], tags: ['cotton', 'classic'], weight: 1, value: 1 },
+        { id: 8, name: 'Calze di lana', layers: ['Base', 'Extra'], slots: ['Legs'], tags: ['wool', 'winter', 'stockings-attachable'], weight: 0.8, value: 1.05 },
+        { id: 9, name: 'Stivaletti abbottonati', layers: ['Outerwear'], slots: ['Feet'], tags: ['maid', 'classic'], weight: 1, value: 1.1 },
+        { id: 10, name: 'Guanti bianchi', layers: ['Accessories'], slots: ['Arms'], tags: ['classic', 'cotton'], weight: 0.5, value: 1.1 },
+        { id: 11, name: 'Mantella di lana', layers: ['Outerwear'], slots: ['Torso', 'Arms'], tags: ['wool', 'winter'], weight: 0.4, value: 1.2 },
+        { id: 12, name: 'Reggicalze', layers: ['Underwear'], slots: ['Waist'], tags: ['lingerie', 'garter-belt'], weight: 0.7, value: 1.25 },
+        { id: 13, name: 'Giacca da governante', layers: ['Outerwear', 'Base'], slots: ['Torso', 'Arms'], tags: ['maid', 'classic', 'wool'], weight: 0.5, value: 1.2 },
+        { id: 14, name: 'Camicetta estiva', layers: ['Base'], slots: ['Torso'], tags: ['cotton', 'summer', 'lace'], weight: 0.8, value: 0.9 }
+      ],
+      nextId: 15,
+      activeId: 2,
+      checked: {},
+      query: '',
+      fLayer: {}, fSlot: {}, fTag: {},
+      sortKey: 'name', sortDir: 1,
+      menu: null,
+      editingId: null, editText: '',
+      draft: null,
+      toast: null,
+      rulesModal: false,
+      slotList: this.K().SLOTS.slice(),
+      tagList: this.K().TAGS.slice(),
+      rules: this.K().RULES.slice(),
+      manage: null,
+      dialog: null,
+      addText: '',
+      addError: ''
+    };
+  }
+
+  K() {
+    return {
+      LAYERS: ['Underwear', 'Extra', 'Base', 'Outerwear', 'Accessories'],
+      SLOTS: ['Torso', 'Legs', 'Arms', 'Crotch', 'Waist', 'Head', 'Neck', 'Feet'],
+      TAGS: ['maid', 'classic', 'casual', 'lingerie', 'lace', 'cotton', 'wool', 'winter', 'summer', 'garter-belt', 'stockings-attachable'],
+      RULES: [
+        { a: 'garter-belt', kind: 'requires', b: 'stockings-attachable' },
+        { a: 'lace', kind: 'requires', b: 'maid' },
+        { a: 'summer', kind: 'incompatible', b: 'winter' }
+      ],
+      VERBS: { requires: 'richiede', incompatible: 'è incompatibile con' },
+      SORTS: { name: 'Nome', layer: 'Layer', slot: 'Slot', weight: 'Peso', value: 'Valore' }
+    };
+  }
+
+  chipStyle(st) {
+    const base = 'display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:4px;font-size:12px;font-weight:500;cursor:pointer;box-sizing:border-box;';
+    if (st === 'full') return base + 'background:#6B4F35;color:#FAF7F2;border:1px solid #6B4F35;';
+    if (st === 'partial') return base + 'background:rgba(107,79,53,.22);color:#2C2118;border:1px dashed #6B4F35;';
+    return base + 'background:#F2EDE4;color:#4A3F35;border:1px solid #F2EDE4;';
+  }
+
+  fmt(n) { return String(n).replace('.', ','); }
+
+  setNumber(field, text, ids) {
+    const n = parseFloat(String(text).replace(',', '.'));
+    const valid = !isNaN(n) && n >= 0;
+    this.setState({
+      draft: { field: field, text: text },
+      items: valid ? this.state.items.map(i => ids.has(i.id) ? Object.assign({}, i, { [field]: n }) : i) : this.state.items
+    });
+  }
+
+  stepNumber(field, delta, ids) {
+    this.setState({
+      draft: null,
+      items: this.state.items.map(i => ids.has(i.id) ? Object.assign({}, i, { [field]: Math.max(0, Math.round((i[field] + delta) * 100) / 100) }) : i)
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const K = this.K();
+    const keys = o => Object.keys(o).filter(k => o[k]);
+    const fl = keys(s.fLayer), fs = keys(s.fSlot), ft = keys(s.fTag);
+    const q = s.query.trim().toLowerCase();
+
+    // Visible rows: search + filters + sort
+    let vis = s.items.filter(i => {
+      if (q && !(i.name.toLowerCase().includes(q) || i.layers.some(x => x.toLowerCase().includes(q)) || i.slots.some(x => x.toLowerCase().includes(q)) || i.tags.some(t => t.toLowerCase().includes(q)))) return false;
+      if (fl.length && !i.layers.some(x => fl.includes(x))) return false;
+      if (fs.length && !i.slots.some(x => fs.includes(x))) return false;
+      if (ft.length && !i.tags.some(x => ft.includes(x))) return false;
+      return true;
+    });
+    const sortVal = {
+      name: i => i.name.toLowerCase(),
+      layer: i => (i.layers.length ? Math.min.apply(null, i.layers.map(x => K.LAYERS.indexOf(x))) : -1),
+      slot: i => (i.slots.length ? s.slotList.indexOf(i.slots[0]) : -1),
+      weight: i => i.weight,
+      value: i => i.value
+    }[s.sortKey];
+    vis = vis.slice().sort((a, b) => {
+      const x = sortVal(a), y = sortVal(b);
+      if (x < y) return -s.sortDir;
+      if (x > y) return s.sortDir;
+      return a.name.localeCompare(b.name, 'it');
+    });
+
+    // Selection
+    const checkedIds = s.items.filter(i => s.checked[i.id]).map(i => i.id);
+    const targets = checkedIds.length ? s.items.filter(i => s.checked[i.id]) : s.items.filter(i => i.id === s.activeId);
+    const ids = new Set(targets.map(t => t.id));
+    const multi = targets.length > 1;
+    const patch = fn => this.setState({ items: s.items.map(i => ids.has(i.id) ? fn(i) : i) });
+
+    // Detail chips: in all = full, in some = partial (faded, n/total), in none = off
+    const buildChips = (all, getter, onClick) => all.map(label => {
+      const n = targets.filter(t => getter(t).includes(label)).length;
+      const st = n === 0 ? 'none' : (n === targets.length ? 'full' : 'partial');
+      return {
+        label: label,
+        style: this.chipStyle(st),
+        aria: st === 'full' ? 'true' : (st === 'partial' ? 'mixed' : 'false'),
+        partial: st === 'partial',
+        count: n + '/' + targets.length,
+        click: () => onClick(label, st)
+      };
+    });
+    // kind ('slot' | 'tag'): when the last item loses a value, ask whether to delete it from the list
+    const toggleIn = (field, order, kind) => (label, st) => {
+      const next = s.items.map(i => {
+        if (!ids.has(i.id)) return i;
+        if (st === 'full') return Object.assign({}, i, { [field]: i[field].filter(x => x !== label) });
+        if (i[field].includes(label)) return i;
+        return Object.assign({}, i, { [field]: order.filter(x => i[field].includes(x) || x === label) });
+      });
+      const orphan = !!kind && st === 'full' && !next.some(i => i[field].includes(label));
+      this.setState({ items: next, dialog: orphan ? { type: 'unused', kind: kind, name: label } : s.dialog });
+    };
+    const layerChips = buildChips(K.LAYERS, t => t.layers, toggleIn('layers', K.LAYERS));
+    const slotChips = buildChips(s.slotList, t => t.slots, toggleIn('slots', s.slotList, 'slot'));
+    const tagChips = buildChips(s.tagList, t => t.tags, toggleIn('tags', s.tagList, 'tag'));
+
+    // Slot / tag catalogue helpers
+    const KIND = {
+      slot: { field: 'slots', list: 'slotList', filter: 'fSlot', the: 'lo slot', The: 'Lo slot', Title: 'Slot' },
+      tag: { field: 'tags', list: 'tagList', filter: 'fTag', the: 'il tag', The: 'Il tag', Title: 'Tag' }
+    };
+    const pl = (n, one, many) => n + ' ' + (n === 1 ? one : many);
+    const usage = (kind, name) => ({
+      n: s.items.filter(i => i[KIND[kind].field].includes(name)).length,
+      r: kind === 'tag' ? s.rules.filter(r => r.a === name || r.b === name).length : 0
+    });
+    const addName = (kind, raw, apply) => {
+      const k = KIND[kind];
+      const name = raw.trim();
+      if (!name) { this.setState({ addError: 'Inserisci un nome.' }); return; }
+      if (s[k.list].some(x => x.trim().toLowerCase() === name.toLowerCase())) { this.setState({ addError: 'Esiste già ' + k.the.replace('lo ', 'uno ').replace('il ', 'un ') + ' con questo nome.' }); return; }
+      const list = s[k.list].concat([name]);
+      this.setState({
+        [k.list]: list,
+        items: apply ? s.items.map(i => ids.has(i.id) ? Object.assign({}, i, { [k.field]: list.filter(x => i[k.field].includes(x) || x === name) }) : i) : s.items,
+        dialog: apply ? null : s.dialog,
+        addText: '', addError: ''
+      });
+    };
+    const removeName = (kind, name) => {
+      const k = KIND[kind];
+      this.setState({
+        items: s.items.map(i => i[k.field].includes(name) ? Object.assign({}, i, { [k.field]: i[k.field].filter(x => x !== name) }) : i),
+        [k.list]: s[k.list].filter(x => x !== name),
+        [k.filter]: Object.assign({}, s[k.filter], { [name]: false }),
+        rules: kind === 'tag' ? s.rules.filter(r => r.a !== name && r.b !== name) : s.rules,
+        dialog: null,
+        toast: { text: k.Title + ' «' + name + '» eliminato' }
+      });
+    };
+
+    // Numeric fields: common value or empty (placeholder "Valori diversi")
+    const numField = (f, step, label) => {
+      const vals = targets.map(t => t[f]);
+      const same = vals.length > 0 && vals.every(v => v === vals[0]);
+      const mixed = vals.length > 0 && !same;
+      const shown = s.draft && s.draft.field === f ? s.draft.text : (same ? this.fmt(vals[0]) : '');
+      return {
+        shown: shown,
+        hint: mixed ? 'da ' + this.fmt(Math.min.apply(null, vals)) + ' a ' + this.fmt(Math.max.apply(null, vals)) : '',
+        stepOff: !same,
+        stepOpacity: same ? 1 : 0.35,
+        upLabel: 'Aumenta ' + label,
+        downLabel: 'Diminuisci ' + label,
+        up: () => this.stepNumber(f, step, ids),
+        down: () => this.stepNumber(f, -step, ids)
+      };
+    };
+
+    // List rows
+    const rows = vis.map(i => {
+      const isChecked = !!s.checked[i.id];
+      const isActive = checkedIds.length === 0 && s.activeId === i.id;
+      const editing = s.editingId === i.id;
+      const commit = () => {
+        if (this.state.editingId !== i.id) return;
+        const name = this.state.editText.trim();
+        this.setState({
+          items: name ? this.state.items.map(x => x.id === i.id ? Object.assign({}, x, { name: name }) : x) : this.state.items,
+          editingId: null
+        });
+      };
+      return {
+        name: i.name,
+        layer: i.layers.join(' · '),
+        checked: isChecked,
+        editing: editing,
+        notEditing: !editing,
+        pencil: isActive && !editing,
+        nameWeight: isActive ? 600 : 400,
+        checkLabel: 'Seleziona ' + i.name,
+        style: 'display:flex;align-items:center;min-height:48px;box-sizing:border-box;border-bottom:1px solid #E6DCCB;border-left:3px solid ' + (isActive ? '#6B4F35' : 'transparent') + ';background:' + ((isChecked || isActive) ? '#F2EDE4' : '#FFFFFF') + ';',
+        toggle: () => this.setState({ checked: Object.assign({}, s.checked, { [i.id]: !isChecked }), draft: null, editingId: null }),
+        select: () => this.setState({ activeId: i.id, checked: {}, draft: null }),
+        edit: () => this.setState({ activeId: i.id, checked: {}, draft: null, editingId: i.id, editText: i.name }),
+        editKey: e => {
+          if (e.key === 'Enter') commit();
+          if (e.key === 'Escape') this.setState({ editingId: null });
+        },
+        editBlur: commit
+      };
+    });
+
+    // Filters
+    const filterChips = (all, obj, field) => all.map(label => {
+      const on = !!obj[label];
+      return {
+        label: label,
+        style: this.chipStyle(on ? 'full' : 'none'),
+        aria: on ? 'true' : 'false',
+        click: () => this.setState({ [field]: Object.assign({}, obj, { [label]: !on }) })
+      };
+    });
+    const activeFilters = []
+      .concat(fl.map(l => ({ text: 'Layer: ' + l, aria: 'Rimuovi filtro layer ' + l, remove: () => this.setState({ fLayer: Object.assign({}, s.fLayer, { [l]: false }) }) })))
+      .concat(fs.map(l => ({ text: 'Slot: ' + l, aria: 'Rimuovi filtro slot ' + l, remove: () => this.setState({ fSlot: Object.assign({}, s.fSlot, { [l]: false }) }) })))
+      .concat(ft.map(l => ({ text: 'Tag: ' + l, aria: 'Rimuovi filtro tag ' + l, remove: () => this.setState({ fTag: Object.assign({}, s.fTag, { [l]: false }) }) })));
+    const filterCount = activeFilters.length;
+
+    // Sort menu
+    const sortOptions = Object.keys(K.SORTS).map(k => {
+      const on = s.sortKey === k;
+      return {
+        label: K.SORTS[k],
+        mark: on ? (s.sortDir > 0 ? '↑' : '↓') : '',
+        weight: on ? 600 : 400,
+        click: () => this.setState(on ? { sortDir: -s.sortDir } : { sortKey: k, sortDir: 1 })
+      };
+    });
+
+    // Deleting
+    const deleteIds = idList => {
+      if (!idList.length) return;
+      const n = idList.length;
+      const gone = new Set(idList);
+      this.setState({
+        items: s.items.filter(i => !gone.has(i.id)),
+        checked: {},
+        menu: null,
+        draft: null,
+        toast: { text: n === 1 ? 'Capo eliminato' : n + ' capi eliminati', prev: s.items }
+      });
+    };
+
+    const single = targets.length === 1 ? targets[0] : null;
+    const ruleLines = single ? s.rules.reduce((acc, r) => {
+      if (single.tags.includes(r.a)) acc.push({ a: r.a, kind: K.VERBS[r.kind], b: r.b });
+      else if (r.kind === 'incompatible' && single.tags.includes(r.b)) acc.push({ a: r.b, kind: K.VERBS[r.kind], b: r.a });
+      return acc;
+    }, []) : [];
+    const checkedVisible = vis.filter(i => s.checked[i.id]).length;
+
+    // Generic confirmation / input dialog (add, unused, delete) shown above everything else
+    const cancelDialog = () => this.setState({ dialog: null, addText: '', addError: '' });
+    let dlg = null;
+    const d = s.dialog;
+    if (d) {
+      const k = KIND[d.kind];
+      const u = usage(d.kind, d.name);
+      const rulesNote = u.r ? ' Verranno eliminate anche le ' + pl(u.r, 'regola', 'regole') + ' che lo citano.' : '';
+      if (d.type === 'add') {
+        dlg = {
+          title: 'Aggiungi ' + d.kind, text: '', isAdd: true, error: s.addError, confirmLabel: 'Aggiungi', danger: false,
+          cancel: cancelDialog, confirm: () => addName(d.kind, s.addText, true),
+          key: e => { if (e.key === 'Enter') addName(d.kind, s.addText, true); if (e.key === 'Escape') cancelDialog(); }
+        };
+      } else if (d.type === 'unused') {
+        dlg = {
+          title: 'Eliminare ' + k.the + '?', isAdd: false, error: '', confirmLabel: 'Elimina', danger: true,
+          text: 'Nessun capo utilizza ' + k.the + ' «' + d.name + '». Vuoi eliminarlo?' + rulesNote,
+          cancel: cancelDialog, confirm: () => removeName(d.kind, d.name), key: () => {}
+        };
+      } else {
+        dlg = {
+          title: 'Eliminare ' + k.the + '?', isAdd: false, error: '', confirmLabel: 'Elimina', danger: true,
+          text: k.The + ' «' + d.name + '» è usato da ' + pl(u.n, 'capo', 'capi') + (d.kind === 'tag' ? ' e da ' + pl(u.r, 'regola', 'regole') : '') + '. Eliminandolo verrà tolto da tutti i capi' + (u.r ? ' e le regole che lo citano verranno eliminate' : '') + '. Vuoi continuare?',
+          cancel: cancelDialog, confirm: () => removeName(d.kind, d.name), key: () => {}
+        };
+      }
+    }
+
+    // "Manage slots / tags" modal
+    const mk = s.manage;
+    const manageRows = mk ? s[KIND[mk].list].map(name => {
+      const u = usage(mk, name);
+      return {
+        name: name,
+        usage: pl(u.n, 'capo', 'capi') + (mk === 'tag' ? ' · ' + pl(u.r, 'regola', 'regole') : ''),
+        delLabel: 'Elimina ' + KIND[mk].the + ' ' + name,
+        del: () => this.setState({ dialog: { type: 'delete', kind: mk, name: name } })
+      };
+    }) : [];
+    if (dlg) dlg.confirmBg = dlg.danger ? '#8B3A2A' : '#6B4F35';
+    const openManage = kind => () => this.setState({ menu: null, manage: kind, addText: '', addError: '' });
+    const openMenu = m => () => this.setState({ menu: s.menu === m ? null : m });
+
+    return {
+      showMeta: this.props.showMeta ?? true,
+      totalText: s.items.length + ' capi in guardaroba',
+      query: s.query,
+      onQuery: e => this.setState({ query: e.target.value }),
+
+      menuOpen: !!s.menu,
+      menuFilter: s.menu === 'filter',
+      menuSort: s.menu === 'sort',
+      menuSelect: s.menu === 'select',
+      openFilter: openMenu('filter'),
+      openSort: openMenu('sort'),
+      openSelect: openMenu('select'),
+      openRules: () => this.setState({ menu: null, rulesModal: true }),
+      closeRules: () => this.setState({ rulesModal: false }),
+      rulesModal: s.rulesModal,
+      closeMenu: () => this.setState({ menu: null }),
+
+      hasFilters: filterCount > 0,
+      filterCount: filterCount,
+      fLayerChips: filterChips(K.LAYERS, s.fLayer, 'fLayer'),
+      fSlotChips: filterChips(s.slotList, s.fSlot, 'fSlot'),
+      fTagChips: filterChips(s.tagList, s.fTag, 'fTag'),
+      activeFilters: activeFilters,
+      resetFilters: () => this.setState({ fLayer: {}, fSlot: {}, fTag: {} }),
+
+      sortLabel: 'Ordina: ' + K.SORTS[s.sortKey] + ' ' + (s.sortDir > 0 ? '↑' : '↓'),
+      sortOptions: sortOptions,
+
+      selectAllText: 'Seleziona tutti i visibili (' + vis.length + ')',
+      selectAllVisible: () => { const c = Object.assign({}, s.checked); vis.forEach(i => { c[i.id] = true; }); this.setState({ checked: c, menu: null, draft: null }); },
+      invertSelection: () => { const c = {}; vis.forEach(i => { c[i.id] = !s.checked[i.id]; }); this.setState({ checked: c, menu: null, draft: null }); },
+      clearSelection: () => this.setState({ checked: {}, menu: null, draft: null }),
+      trashLabel: multi ? 'Elimina i ' + targets.length + ' capi selezionati' : 'Elimina il capo selezionato',
+      trashOpacity: targets.length ? 1 : 0.4,
+
+      listHeader: vis.length + (vis.length === 1 ? ' capo' : ' capi') + (checkedIds.length ? ' · ' + checkedIds.length + ' selezionati' : ''),
+      allChecked: vis.length > 0 && checkedVisible === vis.length,
+      toggleAll: () => {
+        const c = Object.assign({}, s.checked);
+        const all = vis.length > 0 && checkedVisible === vis.length;
+        vis.forEach(i => { c[i.id] = !all; });
+        this.setState({ checked: c, draft: null });
+      },
+      rows: rows,
+      noRows: vis.length === 0,
+      editText: s.editText,
+      onEditText: e => this.setState({ editText: e.target.value }),
+      selectOnFocus: e => e.target.select(),
+      addItem: () => {
+        const id = s.nextId;
+        const layer = fl.length === 1 ? fl[0] : 'Base';
+        this.setState({
+          items: s.items.concat([{ id: id, name: 'Nuovo indumento', layers: [layer], slots: [], tags: [], weight: 1, value: 1 }]),
+          nextId: id + 1, activeId: id, checked: {}, query: '', fLayer: {}, fSlot: {}, fTag: {},
+          editingId: id, editText: 'Nuovo indumento', draft: null
+        });
+      },
+
+      noTargets: targets.length === 0,
+      hasTargets: targets.length > 0,
+      multi: multi,
+      detailTitle: multi ? targets.length + ' capi selezionati' : (single ? single.name : ''),
+      namesPreview: targets.slice(0, 3).map(t => t.name).join(', ') + (targets.length > 3 ? ' e altri ' + (targets.length - 3) : ''),
+      legend: [
+        { style: this.chipStyle('full'), sample: 'Tag', text: 'in tutti i capi' },
+        { style: this.chipStyle('partial'), sample: 'Tag 2/' + targets.length, text: 'solo in alcuni' },
+        { style: this.chipStyle('none'), sample: 'Tag', text: 'in nessuno' }
+      ],
+      layerChips: layerChips,
+      slotChips: slotChips,
+      tagChips: tagChips,
+      weight: numField('weight', 0.1, 'peso'),
+      value: numField('value', 0.05, 'valore'),
+      onWeight: e => this.setNumber('weight', e.target.value, ids),
+      onValue: e => this.setNumber('value', e.target.value, ids),
+      endDraft: () => this.setState({ draft: null }),
+
+      showRules: !!single,
+      ruleLines: ruleLines,
+      noRules: !!single && ruleLines.length === 0,
+
+      deleteTargetsText: multi ? 'Elimina ' + targets.length + ' capi' : 'Elimina capo',
+      deleteTargets: () => deleteIds(targets.map(t => t.id)),
+
+      dlg: dlg,
+      addText: s.addText,
+      onAddText: e => this.setState({ addText: e.target.value, addError: '' }),
+      addSlotOpen: () => this.setState({ dialog: { type: 'add', kind: 'slot' }, addText: '', addError: '' }),
+      addTagOpen: () => this.setState({ dialog: { type: 'add', kind: 'tag' }, addText: '', addError: '' }),
+      addChipStyle: this.chipStyle('none') + 'width:32px;padding:0;justify-content:center;',
+      openManageSlot: openManage('slot'),
+      openManageTag: openManage('tag'),
+      closeManage: () => this.setState({ manage: null, addText: '', addError: '' }),
+      manageOpen: !!mk,
+      manageTitle: mk ? 'Gestisci ' + mk : '',
+      addPlaceholder: mk === 'slot' ? 'Nome del nuovo slot' : 'Nome del nuovo tag',
+      addError: s.addError,
+      hasAddError: !!s.addError,
+      addFromManage: () => addName(mk, s.addText, false),
+      addKeyManage: e => { if (e.key === 'Enter') addName(mk, s.addText, false); },
+      manageRows: manageRows,
+      noManageRows: !!mk && manageRows.length === 0,
+
+      toast: s.toast ? { text: s.toast.text, canUndo: !!s.toast.prev } : null,
+      undoDelete: () => this.setState({ items: s.toast.prev, toast: null }),
+      dismissToast: () => this.setState({ toast: null })
+    };
+  }
+}
+</script>
+</body>
+</html>
