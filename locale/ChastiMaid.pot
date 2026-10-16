@@ -2753,13 +2753,6 @@ msgid_plural "{0} attempts remaining"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Services/Contracts/ContractClauseBuilder.cs:112
-#, csharp-format
-msgid "{0} garment is designated as a chastity device."
-msgid_plural "{0} garments are designated as chastity devices."
-msgstr[0] ""
-msgstr[1] ""
-
 #: ../Services/Contracts/ContractClauseBuilder.cs:235 ../ViewModels/PunishmentItemViewModel.cs:56
 #, csharp-format
 msgid "{0} hour"
@@ -2771,6 +2764,13 @@ msgstr[1] ""
 #, csharp-format
 msgid "{0} item"
 msgid_plural "{0} items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Services/Contracts/ContractClauseBuilder.cs:112
+#, csharp-format
+msgid "{0} item is designated as a chastity device."
+msgid_plural "{0} items are designated as chastity devices."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2871,15 +2871,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../Models/Banks/SummonPhraseBank.cs:11
-msgid "{0}! Come here at once."
+msgid "{0}! Come here at once!"
 msgstr ""
 
 #: ../Models/Banks/SummonPhraseBank.cs:13
-msgid "{0}! Do stop dawdling and come here."
+msgid "{0}! Do stop dawdling and come here!"
 msgstr ""
 
 #: ../Models/Banks/SummonPhraseBank.cs:14
-msgid "{0}! Here. Now."
+msgid "{0}! Here. Now!"
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:379

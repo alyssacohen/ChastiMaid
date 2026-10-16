@@ -109,8 +109,8 @@ public sealed class ContractClauseBuilder(ILocalizer L)
 
         if (chastity.Count > 0)
         {
-            paragraphs.Add(L.N("{0} garment is designated as a chastity device.",
-                "{0} garments are designated as chastity devices.", chastity.Count, chastity.Count));
+            paragraphs.Add(L.N("{0} item is designated as a chastity device.",
+                "{0} items are designated as chastity devices.", chastity.Count, chastity.Count));
         }
 
         return paragraphs;

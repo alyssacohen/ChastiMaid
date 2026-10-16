@@ -8,10 +8,10 @@ public static class SummonPhraseBank
 
     private static readonly List<string> PhraseKeys =
     [
-        Localizer.Mark("{0}! Come here at once."),
+        Localizer.Mark("{0}! Come here at once!"),
         Localizer.Mark("Get over here, {0}! You know better than keep me waiting."),
-        Localizer.Mark("{0}! Do stop dawdling and come here."),
-        Localizer.Mark("{0}! Here. Now.")
+        Localizer.Mark("{0}! Do stop dawdling and come here!"),
+        Localizer.Mark("{0}! Here. Now!")
     ];
 
     public static string GetRandom(Random? rng = null)
