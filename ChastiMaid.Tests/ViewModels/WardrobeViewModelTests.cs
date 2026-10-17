@@ -400,6 +400,29 @@ public class WardrobeViewModelTests
         Assert.Null(vm.EditingItem);
     }
 
+    [Fact]
+    public void ARefusedRename_KeepsItsRow_UntilTheNameIsFixed()
+    {
+        WardrobeEditViewModel apron = Item("apron", [Outerwear]), dress = Item("dress", [Outerwear]);
+        var vm = Create(apron, dress);
+        vm.BeginRename(dress);
+        vm.EditText = "apron";
+
+        vm.Activate(apron);
+        vm.BeginRename(apron);
+        vm.AddItem();
+
+        Assert.Same(dress, vm.ActiveItem);
+        Assert.Same(dress, vm.EditingItem);
+        Assert.Equal(2, _items.Count);
+
+        vm.EditText = "gown";
+        vm.Activate(apron);
+        Assert.Equal("gown", dress.Name);
+        Assert.Same(apron, vm.ActiveItem);
+        Assert.Null(vm.EditingItem);
+    }
+
     // ── Delete and undo ──────────────────────────────────────────────────
 
     [Fact]

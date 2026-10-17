@@ -42,6 +42,7 @@ public partial class WardrobeViewModel : ViewModelBase
     private readonly HashSet<string> _tagFilter = new(StringComparer.OrdinalIgnoreCase);
     private int _batch;
     private bool _editingNewItem;
+    private StringComparer _order = WardrobeCatalog.Order;
     private IReadOnlyList<WardrobeEditViewModel> _targets = [];
     private List<(int Index, WardrobeEditViewModel Item)>? _undoItems;
 
@@ -141,6 +142,7 @@ public partial class WardrobeViewModel : ViewModelBase
         OpenRulesCommand = ReactiveCommand.Create(() => { IsRulesDialogOpen = true; });
         CloseRulesCommand = ReactiveCommand.Create(() => { IsRulesDialogOpen = false; });
 
+        RefreshSort();
         RebuildEntryChips();
     }
 
@@ -199,9 +201,17 @@ public partial class WardrobeViewModel : ViewModelBase
 
     // ── Selection ────────────────────────────────────────────────────────
 
-    /// <summary>A click on a row: it becomes the active item and the checked set is cleared.</summary>
+    /// <summary>
+    ///     A click on a row: it becomes the active item and the checked set is cleared. A rename in progress on another
+    ///     row is committed first; if its name is refused, nothing changes and the rename goes on.
+    /// </summary>
     public void Activate(WardrobeEditViewModel item)
     {
+        if (EditingItem is not null && !ReferenceEquals(EditingItem, item) && !CommitRename())
+        {
+            return;
+        }
+
         Batch(() =>
         {
             ActiveItem = item;
@@ -285,6 +295,7 @@ public partial class WardrobeViewModel : ViewModelBase
     {
         SortAscending = key != SortKey || !SortAscending;
         SortKey = key;
+        RefreshSort();
         Refresh();
     }
 
@@ -349,14 +360,14 @@ public partial class WardrobeViewModel : ViewModelBase
             WardrobeSortKey.Layer => (a.Layers.Count > 0 ? a.Layers.Min() : -1)
                 .CompareTo(b.Layers.Count > 0 ? b.Layers.Min() : -1),
             // Items without a slot first, then by their first slot in catalogue order.
-            WardrobeSortKey.Slot => WardrobeCatalog.Order.Compare(a.Slots.Order(WardrobeCatalog.Order).FirstOrDefault(),
-                b.Slots.Order(WardrobeCatalog.Order).FirstOrDefault()),
+            WardrobeSortKey.Slot => _order.Compare(a.Slots.Order(_order).FirstOrDefault(),
+                b.Slots.Order(_order).FirstOrDefault()),
             WardrobeSortKey.Weight => a.Weight.CompareTo(b.Weight),
             WardrobeSortKey.Multiplier => a.Multiplier.CompareTo(b.Multiplier),
             _ => 0,
         };
         var directed = SortAscending ? byKey : -byKey;
-        return directed != 0 ? directed : WardrobeCatalog.Order.Compare(a.Name, b.Name);
+        return directed != 0 ? directed : _order.Compare(a.Name, b.Name);
     }
 
     // ── Detail chips ─────────────────────────────────────────────────────
@@ -601,7 +612,11 @@ public partial class WardrobeViewModel : ViewModelBase
     {
         if (ManageKind is not { } kind)
         {
-            ManageRows = [];
+            if (ManageRows.Count > 0)
+            {
+                ManageRows = [];
+            }
+
             return;
         }
 
@@ -667,6 +682,11 @@ public partial class WardrobeViewModel : ViewModelBase
     /// <summary>Adds an item on the single filtered layer (Base otherwise), makes it visible and active, and renames it.</summary>
     public void AddItem()
     {
+        if (EditingItem is not null && !CommitRename())
+        {
+            return;
+        }
+
         var layer = _layerFilter.Count == 1 ? _layerFilter.Single() : BaseLayer;
         var item = _createItem(new ClothingItem { Name = _l.T("New item"), Layers = [layer] });
         _slotFilter.Clear();
@@ -685,6 +705,11 @@ public partial class WardrobeViewModel : ViewModelBase
         if (!ReferenceEquals(ActiveItem, item))
         {
             Activate(item);
+        }
+
+        if (!ReferenceEquals(ActiveItem, item))
+        {
+            return; // another row's rename was refused and goes on
         }
 
         _editingNewItem = false;
@@ -998,6 +1023,7 @@ public partial class WardrobeViewModel : ViewModelBase
             return;
         }
 
+        _order = WardrobeCatalog.Order;
         Sync(VisibleItems, [.. Items.Where(Matches).Order(Comparer<WardrobeEditViewModel>.Create(CompareForSort))]);
 
         var visibleChecked = VisibleItems.Count(i => i.IsSelected);
@@ -1010,7 +1036,6 @@ public partial class WardrobeViewModel : ViewModelBase
             : visible + " · " + _l.N("{0} selected", "{0} selected", checkedCount, checkedCount);
         TotalText = _l.N("{0} wardrobe item", "{0} wardrobe items", Items.Count, Items.Count);
         SelectAllVisibleText = _l.T("Select all visible ({0})", VisibleItems.Count);
-        RefreshSort();
         RefreshDetail();
         RefreshManageRows();
     }
