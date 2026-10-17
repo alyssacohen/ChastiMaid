@@ -218,14 +218,9 @@ public partial class SettingsViewModel : ViewModelBase
         }
 
         var allWardrobe = _repo.GetWardrobe().ToList();
-
-        var initTags = allWardrobe.SelectMany(i => i.Tags).Distinct().OrderBy(s => s).ToList();
-        var initSlots = allWardrobe.SelectMany(i => i.Slots).Distinct().OrderBy(s => s).ToList();
         foreach (var w in allWardrobe)
         {
-            var vm = new WardrobeEditViewModel(w, RemoveWardrobeItem, L, initTags, initSlots, ExpandWardrobeItem);
-            WireWardrobeItem(vm);
-            WardrobeItems.Add(vm);
+            WardrobeItems.Add(NewWardrobeVm(w));
         }
 
         // Eligibility chip lists are derived from WardrobeItems (not the raw ClothingItem snapshot)
@@ -258,10 +253,14 @@ public partial class SettingsViewModel : ViewModelBase
             }
         }
 
-        foreach (var r in _repo.GetOutfitRules())
+        var allRules = _repo.GetOutfitRules();
+        foreach (var r in allRules)
         {
             OutfitRules.Add(NewRuleVm(r));
         }
+
+        Wardrobe = new WardrobeViewModel(WardrobeItems, OutfitRules,
+            WardrobeCatalog.Merge(_repo.GetWardrobeCatalog(), allWardrobe, allRules), NewWardrobeVm, L);
 
         // Filtered wardrobe view — reactive to filter controls and to add/remove on WardrobeItems
         this.WhenAnyValue(x => x.WardrobeNameFilter, x => x.WardrobeLayerFilter)
@@ -288,8 +287,18 @@ public partial class SettingsViewModel : ViewModelBase
         Changed.Subscribe(e => OnSettingChanged(e.PropertyName));
 
         Chores.CollectionChanged += (_, _) => IsChoresDirty = true;
-        WardrobeItems.CollectionChanged += (_, _) =>
+        WardrobeItems.CollectionChanged += (_, e) =>
         {
+            foreach (var item in e.OldItems?.OfType<WardrobeEditViewModel>() ?? [])
+            {
+                SyncEligibilityChips(item, removed: true);
+            }
+
+            foreach (var item in e.NewItems?.OfType<WardrobeEditViewModel>() ?? [])
+            {
+                SyncEligibilityChips(item);
+            }
+
             IsWardrobeDirty = true;
             UpdateSelectedCount();
         };
@@ -497,6 +506,9 @@ public partial class SettingsViewModel : ViewModelBase
         IsPermissionsDirty;
     public ObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems { get; } = [];
 
+    /// <summary>The master/detail Wardrobe screen, working on <see cref="WardrobeItems" /> and <see cref="OutfitRules" />.</summary>
+    public WardrobeViewModel Wardrobe { get; }
+
     public decimal DailyInterestRatePercent
     {
         get => Math.Round((decimal)DailyInterestRate * 100m, 2);
@@ -561,6 +573,19 @@ public partial class SettingsViewModel : ViewModelBase
     private IEnumerable<string> AllUsedTags => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);
     private IEnumerable<string> AllUsedSlots => WardrobeItems.SelectMany(w => w.Slots).Distinct().OrderBy(s => s);
 
+    /// <summary>
+    ///     Eligibility chips taken off their list (item deleted, layer removed). Their stored config is deleted on Save,
+    ///     so Discard and undo can still bring a chip back with its settings.
+    /// </summary>
+    private readonly List<EligibilityChipViewModel> _detachedChips = [];
+
+    private WardrobeEditViewModel NewWardrobeVm(ClothingItem item)
+    {
+        var vm = new WardrobeEditViewModel(item, RemoveWardrobeItem, L, AllUsedTags, AllUsedSlots, ExpandWardrobeItem);
+        WireWardrobeItem(vm);
+        return vm;
+    }
+
     private void WireWardrobeItem(WardrobeEditViewModel vm)
     {
         vm.PropertyChanged += (_, e) =>
@@ -614,23 +639,22 @@ public partial class SettingsViewModel : ViewModelBase
         var existingChip = chips.FirstOrDefault(c => ReferenceEquals(c.Source, item));
         if (shouldExist && existingChip is null)
         {
-            chips.Add(WireChild(factory(item), () => IsGeneralDirty = true));
+            var chip = _detachedChips.OfType<TChip>().FirstOrDefault(c => ReferenceEquals(c.Source, item))
+                       ?? WireChild(factory(item), () => IsGeneralDirty = true);
+            _detachedChips.Remove(chip);
+            chips.Add(chip);
         }
         else if (!shouldExist && existingChip is not null)
         {
             chips.Remove(existingChip);
-            existingChip.DeleteStoredConfig(_repo);
+            _detachedChips.Add(existingChip);
         }
     }
 
+    /// <summary>Removes the item from the screen; the database follows on Save (see <see cref="SaveAll" />).</summary>
     private void RemoveWardrobeItem(WardrobeEditViewModel item)
     {
         WardrobeItems.Remove(item);
-        SyncEligibilityChips(item, removed: true);
-        if (item.Id > 0)
-        {
-            _repo.DeleteClothingItem(item.Id);
-        }
     }
 
     /// <summary>Expands <paramref name="target" /> and collapses every other row; null collapses all.</summary>
@@ -660,10 +684,7 @@ public partial class SettingsViewModel : ViewModelBase
             Weight = (double)NewItemWeight,
         };
 
-        var vm = new WardrobeEditViewModel(item, RemoveWardrobeItem, L, AllUsedTags, AllUsedSlots, ExpandWardrobeItem);
-        WireWardrobeItem(vm);
-        WardrobeItems.Add(vm);
-        SyncEligibilityChips(vm);
+        WardrobeItems.Add(NewWardrobeVm(item));
 
         ResetNewItemPanel();
 
@@ -737,8 +758,9 @@ public partial class SettingsViewModel : ViewModelBase
 
     private OutfitRuleEditViewModel NewRuleVm(OutfitRule rule)
     {
+        // Deleted from the database on Save, like wardrobe items (see SaveAll).
         return WireChild(new OutfitRuleEditViewModel(rule, AllUsedTags,
-            id => RemoveFrom(OutfitRules, id, _repo.DeleteOutfitRule), L), () => IsRulesDirty = true);
+            id => RemoveFrom(OutfitRules, id, _ => { }), L), () => IsRulesDirty = true);
     }
 
     /// <summary>Saves <paramref name="model" /> and returns the Id the save assigned to it.</summary>
@@ -798,6 +820,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void SetTab(int index)
     {
+        Wardrobe.DismissNotice();
         _selectedTabIndex = index;
         this.RaisePropertyChanged(nameof(SelectedTabIndex));
     }
@@ -832,7 +855,11 @@ public partial class SettingsViewModel : ViewModelBase
                 Save();
                 NavigateAway(_returnTo());
                 break;
-            case SaveDialogResult.Discard: NavigateAway(_returnTo()); break;
+            case SaveDialogResult.Discard:
+                // The cached screen still holds the discarded edits; the next visit must reload the profile.
+                _mainVm.InvalidateSettingsCache();
+                NavigateAway(_returnTo());
+                break;
             case SaveDialogResult.Cancel: break;
         }
     }
@@ -955,6 +982,8 @@ public partial class SettingsViewModel : ViewModelBase
     /// </summary>
     private void Save()
     {
+        // Saving commits the deletes: an undo afterwards could no longer bring back the deleted eligibility configs.
+        Wardrobe.DismissNotice();
         _contentRestored = _restoreContentOnSave;
         _restoreContentOnSave = false;
         _languageChanged = SelectedLanguage.Code != _repo.GetGameSettings().Language;
@@ -1091,17 +1120,41 @@ public partial class SettingsViewModel : ViewModelBase
         s.ForcedOutfitMaxHours = ForcedOutfitMaxHours;
         _repo.SaveGameSettings(s);
 
+        var catalog = Wardrobe.NormalizeForSave();
+
+        // Wardrobe items and rules removed on screen leave the database only now. Done before the upserts below,
+        // which give new rows (Id 0) their real Id.
+        var keptItems = WardrobeItems.Select(w => w.Id).ToHashSet();
+        foreach (var gone in _repo.GetWardrobe().Where(i => !keptItems.Contains(i.Id)))
+        {
+            _repo.DeleteClothingItem(gone.Id);
+        }
+
+        var keptRules = OutfitRules.Select(r => r.Id).ToHashSet();
+        foreach (var gone in _repo.GetOutfitRules().Where(r => !keptRules.Contains(r.Id)))
+        {
+            _repo.DeleteOutfitRule(gone.Id);
+        }
+
         // Newly-added rows have Id 0 until the first save assigns a real one; writing it back keeps
         // every later save from upserting them again as fresh duplicates.
         foreach (var c in Chores) c.Id = Persist(c.ToModel(), _repo.SaveChore, m => m.Id);
         foreach (var w in WardrobeItems) w.Id = Persist(w.ToModel(), _repo.SaveClothingItem, m => m.Id);
         foreach (var p in PermissionTypes) p.Id = Persist(p.ToModel(), _repo.SavePermissionType, m => m.Id);
         foreach (var r in OutfitRules) r.Id = Persist(r.ToModel(), _repo.SaveOutfitRule, m => m.Id);
+        _repo.SaveWardrobeCatalog(catalog);
 
         foreach (var chip in PlugAndPlayItems.Concat<EligibilityChipViewModel>(DiaperPlayItems).Concat(ChastityDeviceItems))
         {
             chip.Persist(_repo);
         }
+
+        foreach (var chip in _detachedChips)
+        {
+            chip.DeleteStoredConfig(_repo);
+        }
+
+        _detachedChips.Clear();
     }
 }
 
@@ -1348,6 +1401,9 @@ public class ChastityDeviceItemEditViewModel(WardrobeEditViewModel source, Chast
 
 public partial class WardrobeEditViewModel : ViewModelBase
 {
+    /// <summary>The single item the Wardrobe detail pane shows (highlighted row); presentation only, never saved.</summary>
+    [Reactive] private bool _isActive;
+
     [Reactive] private bool _isExpanded;
     [Reactive] private bool _isSelected;
     [Reactive] private double _multiplier;
@@ -1376,7 +1432,11 @@ public partial class WardrobeEditViewModel : ViewModelBase
             .Select(layer => new LayerToggleVm(layer, item.Layers.Contains(layer.Order), OnLayerToggled, l))
             .ToList();
 
-        Layers.CollectionChanged += (_, _) => this.RaisePropertyChanged(nameof(LayerDisplayNames));
+        Layers.CollectionChanged += (_, _) =>
+        {
+            this.RaisePropertyChanged(nameof(LayerDisplayNames));
+            this.RaisePropertyChanged(nameof(LayerCaption));
+        };
 
         SlotSuggestions = slotSuggestions ?? [];
         TagSuggestions = tagSuggestions ?? [];
@@ -1406,6 +1466,9 @@ public partial class WardrobeEditViewModel : ViewModelBase
     public IReadOnlyList<LayerToggleVm> LayerToggles { get; }
     public IEnumerable<string> LayerDisplayNames =>
         Layers.Select(o => WardrobeLayer.FindByOrder(o) is { } layer ? _l.T(layer.DisplayName) : o.ToString());
+
+    /// <summary>The layers as one line for the Wardrobe list, e.g. "Underwear · Base".</summary>
+    public string LayerCaption => string.Join(" · ", LayerDisplayNames);
 
     public IEnumerable<string> SlotSuggestions { get; }
     public IEnumerable<string> TagSuggestions { get; }

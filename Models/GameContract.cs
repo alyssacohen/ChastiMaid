@@ -41,4 +41,10 @@ public class GameContract
 
     /// <summary>Per-kind permission tuning (grant chance, duration, cooldown).</summary>
     public List<PermissionTypeConfig>? PermissionTypes { get; set; }
+
+    /// <summary>
+    ///     Slot and tag lists, including entries no item uses. Optional (older files and the seeds have none):
+    ///     validation always completes it with the values the wardrobe and the rules use.
+    /// </summary>
+    public WardrobeCatalog? WardrobeCatalog { get; set; }
 }

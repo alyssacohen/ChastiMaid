@@ -29,6 +29,19 @@ public class ProfileRepository(LiteDatabase db)
     private ILiteCollection<PermissionTypeConfig> PermissionTypes =>
         db.GetCollection<PermissionTypeConfig>("permission_types");
 
+    private ILiteCollection<WardrobeCatalog> Catalog => db.GetCollection<WardrobeCatalog>("wardrobe_catalog");
+
+    /// <summary>The stored slot/tag lists, or null for a profile created before they were kept.</summary>
+    public WardrobeCatalog? GetWardrobeCatalog()
+    {
+        return Catalog.FindById(1);
+    }
+
+    public void SaveWardrobeCatalog(WardrobeCatalog catalog)
+    {
+        Catalog.Upsert(catalog);
+    }
+
     public List<ClothingItem> GetWardrobe()
     {
         return Wardrobe.FindAll().ToList();

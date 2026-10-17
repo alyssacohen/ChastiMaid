@@ -90,18 +90,24 @@ public class GameContractService(ProfileRepository profile)
         typeof(GameSettings).GetProperty(name) ?? throw new InvalidOperationException($"Unknown setting {name}");
 
     /// <summary>Builds a contract from the current profile: settings plus every collection a save snapshots.</summary>
-    public GameContract Build() => new()
+    public GameContract Build()
     {
-        Settings = profile.GetGameSettings(),
-        Wardrobe = profile.GetWardrobe(),
-        OutfitRules = profile.GetOutfitRules(),
-        Tasks = profile.GetChores(),
-        ForcedOutfitPresets = profile.GetForcedOutfitPresets(),
-        PlugAndPlayItems = profile.GetPlugAndPlayItems(),
-        DiaperPlayItems = profile.GetDiaperPlayItems(),
-        ChastityDeviceItems = profile.GetChastityDeviceItems(),
-        PermissionTypes = profile.GetPermissionTypes(),
-    };
+        var wardrobe = profile.GetWardrobe();
+        var rules = profile.GetOutfitRules();
+        return new GameContract
+        {
+            Settings = profile.GetGameSettings(),
+            Wardrobe = wardrobe,
+            OutfitRules = rules,
+            Tasks = profile.GetChores(),
+            ForcedOutfitPresets = profile.GetForcedOutfitPresets(),
+            PlugAndPlayItems = profile.GetPlugAndPlayItems(),
+            DiaperPlayItems = profile.GetDiaperPlayItems(),
+            ChastityDeviceItems = profile.GetChastityDeviceItems(),
+            PermissionTypes = profile.GetPermissionTypes(),
+            WardrobeCatalog = WardrobeCatalog.Merge(profile.GetWardrobeCatalog(), wardrobe, rules),
+        };
+    }
 
     /// <summary>Serializes a contract to human-readable JSON.</summary>
     public string Serialize(GameContract contract) => JsonSerializer.Serialize(contract, ContentJsonOptions.Options);
@@ -197,6 +203,7 @@ public class GameContractService(ProfileRepository profile)
         contract.DiaperPlayItems = diaperPlay;
         contract.ChastityDeviceItems = chastity;
         contract.PermissionTypes = permissions;
+        contract.WardrobeCatalog = WardrobeCatalog.Merge(contract.WardrobeCatalog, wardrobe, rules);
         return new ContractValidationResult(contract, issues);
     }
 
@@ -228,6 +235,8 @@ public class GameContractService(ProfileRepository profile)
         profile.ReplaceDiaperPlayItems(contract.DiaperPlayItems!);
         profile.ReplaceChastityDeviceItems(contract.ChastityDeviceItems!);
         profile.ReplacePermissionTypes(contract.PermissionTypes!);
+        profile.SaveWardrobeCatalog(contract.WardrobeCatalog
+                                    ?? WardrobeCatalog.Merge(null, contract.Wardrobe!, contract.OutfitRules!));
     }
 
     private static ContractValidationResult Fatal(ContractIssueKind kind, string subject) =>

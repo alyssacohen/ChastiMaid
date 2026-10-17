@@ -387,4 +387,29 @@ public class GameContractServiceTests : IDisposable
         Assert.Empty(_profile.GetOutfitRules());
         Assert.Empty(_profile.GetChores());
     }
+
+    [Fact]
+    public void WardrobeCatalog_SurvivesARoundTrip_WithUnusedEntries()
+    {
+        _profile.SaveWardrobeCatalog(new WardrobeCatalog { Slots = ["neck"], Tags = ["unused"] });
+
+        _service.Apply(_service.Validate(_service.Serialize(_service.Build())));
+
+        var stored = _profile.GetWardrobeCatalog()!;
+        Assert.Equal(["legs", "neck", "torso"], stored.Slots);
+        Assert.Equal(["dress", "stockings", "unused"], stored.Tags);
+    }
+
+    [Fact]
+    public void WardrobeCatalog_MissingFromTheFile_IsDerivedFromTheWardrobe()
+    {
+        var contract = ValidContract();
+        contract.WardrobeCatalog = null;
+
+        var result = _service.Validate(contract);
+
+        Assert.True(result.IsValid);
+        Assert.Equal(["legs", "torso"], result.Contract!.WardrobeCatalog!.Slots);
+        Assert.Equal(["dress", "stockings"], result.Contract.WardrobeCatalog.Tags);
+    }
 }
