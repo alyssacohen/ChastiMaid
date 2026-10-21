@@ -1,6 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:globalization="using:System.Globalization">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Previewer samples of the Wardrobe states: chip full / partial / none, number field with a value / mixed -->
     <Design.PreviewWith>
@@ -17,9 +16,9 @@
                     <ToggleButton Classes="filterChip" IsChecked="False" Content="lace" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingXl}">
-                    <NumericUpDown Classes="underline stacked-spinner invariant compact" Value="1.2"
+                    <NumericUpDown Classes="underline stacked-spinner compact" Value="1.2"
                                    FormatString="0.0#" Increment="0.1" Minimum="0" />
-                    <NumericUpDown Classes="underline stacked-spinner invariant compact"
+                    <NumericUpDown Classes="underline stacked-spinner compact"
                                    FormatString="0.0#" Increment="0.1" Minimum="0" PlaceholderText="Different values" />
                 </StackPanel>
             </StackPanel>
@@ -329,12 +328,6 @@
         <Setter Property="FontStyle" Value="Italic" />
     </Style>
 
-    <!-- NumericUpDown.invariant — decimal point whatever the language (Wardrobe Weight and Multiplier). Parsed as
-         Float: the default Any takes "," as a thousands separator, so "1,5" would become 15; now it is refused. -->
-    <Style Selector="NumericUpDown.invariant">
-        <Setter Property="NumberFormat" Value="{x:Static globalization:NumberFormatInfo.InvariantInfo}" />
-        <Setter Property="ParsingNumberStyle" Value="Float" />
-    </Style>
 
     <!-- ──────────────────────────────────────────────────────────
        NumericUpDown.compact — fixed narrow width, right-aligned digits.
@@ -348,6 +341,12 @@
     </Style>
     <Style Selector="NumericUpDown.compact TextBox">
         <Setter Property="TextAlignment" Value="Right" />
+    </Style>
+
+    <!-- Every NumericUpDown parses as Float in the current culture: the default Any also reads the thousands separator,
+         so on an Italian Windows "1.5" became 15; now the wrong separator is refused and the previous value comes back. -->
+    <Style Selector="NumericUpDown">
+        <Setter Property="ParsingNumberStyle" Value="Float" />
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────

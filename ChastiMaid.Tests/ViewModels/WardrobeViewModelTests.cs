@@ -305,7 +305,7 @@ public class WardrobeViewModelTests
         a.IsSelected = b.IsSelected = true;
         Assert.Null(vm.Weight.Value);
         Assert.True(vm.Weight.IsMixed);
-        Assert.Equal("from 0.5 to 1.0", vm.Weight.RangeText);
+        Assert.Equal($"from {0.5:0.0#} to {1.0:0.0#}", vm.Weight.RangeText); // current culture, like the field
         Assert.Equal(1m, vm.Multiplier.Value);
     }
 

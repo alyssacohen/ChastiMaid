@@ -7,8 +7,8 @@ using ReactiveUI.SourceGenerators;
 namespace ChastiMaid.ViewModels;
 
 /// <summary>
-///     Weight or Multiplier of the Wardrobe targets: the value they share, or nothing when they differ. Numbers are
-///     shown in the invariant format (decimal point) whatever the language.
+///     Weight or Multiplier of the Wardrobe targets: the value they share, or nothing when they differ. Numbers follow
+///     the current culture (Windows regional format), like every number field of the app.
 /// </summary>
 public partial class WardrobeNumberFieldViewModel : ViewModelBase
 {
@@ -91,8 +91,8 @@ public partial class WardrobeNumberFieldViewModel : ViewModelBase
         IsMixed = mixed;
         RangeText = mixed
             // translators: under a number field when the selected items differ, e.g. "from 0.5 to 1.0"
-            ? _l.T("from {0} to {1}", values.Min().ToString(Format, CultureInfo.InvariantCulture),
-                values.Max().ToString(Format, CultureInfo.InvariantCulture))
+            ? _l.T("from {0} to {1}", values.Min().ToString(Format, CultureInfo.CurrentCulture),
+                values.Max().ToString(Format, CultureInfo.CurrentCulture))
             : "";
         this.RaisePropertyChanged(nameof(Placeholder));
 

@@ -173,7 +173,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 | `Buttons.axaml`    | `Styles`             | `Button.*` style classes                                                                                               |
 | `Chips.axaml`      | `Styles`             | `Border.chip` + `TextBlock.chip-label` styles                                                                          |
 | `Tables.axaml`     | `Styles`             | `Grid.TableRow.*` styles                                                                                               |
-| `Components.axaml` | `Styles`             | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip` (`:indeterminate` = partial, `TextBlock.chip-count`), `Button.slotCard`, `NumericUpDown.invariant` |
+| `Components.axaml` | `Styles`             | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip` (`:indeterminate` = partial, `TextBlock.chip-count`), `Button.slotCard` |
 
 **Colors.axaml** is always loaded first (others reference its brushes). `Colors.axaml` must stay first in
 `MergedDictionaries`.
