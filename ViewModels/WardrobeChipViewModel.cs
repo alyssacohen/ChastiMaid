@@ -30,6 +30,9 @@ public partial class WardrobeChipViewModel : ViewModelBase
     public void Toggle()
     {
         _toggle();
+        // The ToggleButton has already flipped itself; re-announcing the state puts it back on what the ViewModel
+        // decided, also when nothing changed (e.g. removing an item's last layer is refused).
+        this.RaisePropertyChanged(nameof(IsChecked));
     }
 
     /// <summary>Sets the state from how many of <paramref name="total" /> targets have the value.</summary>

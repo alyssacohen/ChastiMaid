@@ -173,7 +173,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 | `Buttons.axaml`    | `Styles`             | `Button.*` style classes                                                                                               |
 | `Chips.axaml`      | `Styles`             | `Border.chip` + `TextBlock.chip-label` styles                                                                          |
 | `Tables.axaml`     | `Styles`             | `Grid.TableRow.*` styles                                                                                               |
-| `Components.axaml` | `Styles`             | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip`, `Button.slotCard` |
+| `Components.axaml` | `Styles`             | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip` (`:indeterminate` = partial, `TextBlock.chip-count`), `Button.slotCard`, `NumericUpDown.invariant` |
 
 **Colors.axaml** is always loaded first (others reference its brushes). `Colors.axaml` must stay first in
 `MergedDictionaries`.
@@ -218,7 +218,7 @@ Modifier: `compact` (reduces height to 32px; combinable: `Classes="Danger compac
 **Text:** `TextPrimary` · `TextSecondary` · `TextMuted` · `TextAccent`
 
 **Interactive:** `BrushButtonPrimary` · `BrushButtonPrimaryText` · `BrushButtonDanger` · `BrushBorderSubtle` ·
-`BrushChipDefault` · `BrushChipSelected` · `BrushChipRequired`
+`BrushChipDefault` · `BrushChipSelected` · `BrushChipRequired` · `BrushChipPartial` (chip held by only some of the edited items)
 
 **Semantic:** `BrushAmber` · `BrushAmberBackground` · `BrushAmberText` · `BrushStatusIdle` · `BrushEmergencyText`
 

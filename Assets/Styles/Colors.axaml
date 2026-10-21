@@ -76,6 +76,8 @@
     <Color x:Key="ColorNavItemBorder">#312B28</Color>
     <SolidColorBrush x:Key="BrushNavItemSelected" Color="{StaticResource ColorNavItemSelected}" />
     <SolidColorBrush x:Key="BrushNavItemBorder" Color="{StaticResource ColorNavItemBorder}" />
+    <!-- Chip held by only some of the edited items: the selected brown faded, which is the nav-item tint -->
+    <SolidColorBrush x:Key="BrushChipPartial" Color="{StaticResource ColorNavItemSelected}" />
 
     <!-- ═══════════════════════════════════════════
        BRUSHES — SEMANTIC

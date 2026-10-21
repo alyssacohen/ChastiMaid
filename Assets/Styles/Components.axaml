@@ -1,5 +1,30 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:globalization="using:System.Globalization">
+
+    <!-- Previewer samples of the Wardrobe states: chip full / partial / none, number field with a value / mixed -->
+    <Design.PreviewWith>
+        <Border Background="{DynamicResource BrushSurfaceBase}" Padding="{DynamicResource SpacingXlThickness}">
+            <StackPanel Spacing="{DynamicResource SpacingLg}">
+                <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}">
+                    <ToggleButton Classes="filterChip" IsChecked="True" Content="maid" />
+                    <ToggleButton Classes="filterChip" IsChecked="{x:Null}">
+                        <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingXs}">
+                            <TextBlock Text="wool" />
+                            <TextBlock Classes="chip-count" Text="2/5" />
+                        </StackPanel>
+                    </ToggleButton>
+                    <ToggleButton Classes="filterChip" IsChecked="False" Content="lace" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingXl}">
+                    <NumericUpDown Classes="underline stacked-spinner invariant compact" Value="1.2"
+                                   FormatString="0.0#" Increment="0.1" Minimum="0" />
+                    <NumericUpDown Classes="underline stacked-spinner invariant compact"
+                                   FormatString="0.0#" Increment="0.1" Minimum="0" PlaceholderText="Different values" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
 
     <!-- dialogOverlay — full-screen semi-transparent backdrop -->
     <Style Selector="Panel.dialogOverlay">
@@ -121,6 +146,20 @@
     <Style Selector="ToggleButton.filterChip:checked">
         <Setter Property="Background" Value="{DynamicResource BrushChipSelected}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
+    </Style>
+
+    <!-- filterChip partial (IsChecked = null): only some of the edited items have the value. Faded fill and an accent
+         border, plus an n/total counter (TextBlock.chip-count) in the content. Fluent styles this state on the
+         template's presenter, so the override goes there too. Not dashed: Avalonia's Border cannot draw dashes. -->
+    <Style Selector="ToggleButton.filterChip:indeterminate /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource BrushChipPartial}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipSelected}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+    <Style Selector="ToggleButton.filterChip TextBlock.chip-count">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────
@@ -275,6 +314,24 @@
     <!-- Restore symmetric padding so stacked buttons stay tap-friendly -->
     <Style Selector="NumericUpDown.stacked-spinner RepeatButton">
         <Setter Property="Padding" Value="4,2" />
+    </Style>
+
+    <!-- ──────────────────────────────────────────────────────────
+       Underline field left empty on purpose (PlaceholderText, e.g.
+       "Different values" when the edited items differ): the
+       placeholder is italic and muted. Fluent binds no FontStyle on
+       PART_Placeholder, so it is set on the part itself.
+  ────────────────────────────────────────────────────────────── -->
+    <Style Selector="NumericUpDown.underline TextBox">
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextMuted}" />
+    </Style>
+    <Style Selector="NumericUpDown.underline TextBox /template/ TextBlock#PART_Placeholder">
+        <Setter Property="FontStyle" Value="Italic" />
+    </Style>
+
+    <!-- NumericUpDown.invariant — decimal point whatever the language (Wardrobe Weight and Multiplier) -->
+    <Style Selector="NumericUpDown.invariant">
+        <Setter Property="NumberFormat" Value="{x:Static globalization:NumberFormatInfo.InvariantInfo}" />
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────

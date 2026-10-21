@@ -208,9 +208,13 @@ public class WardrobeViewModelTests
         Chip(vm.LayerChips, "Outerwear").Toggle();
         Assert.Equal([Base], a.Layers);
 
+        var announced = 0;
+        Chip(vm.LayerChips, "Base").PropertyChanged += (_, e) =>
+            announced += e.PropertyName == nameof(WardrobeChipViewModel.IsChecked) ? 1 : 0;
         Chip(vm.LayerChips, "Base").Toggle();
         Assert.Equal([Base], a.Layers);
         Assert.NotNull(vm.LayerError);
+        Assert.Equal(1, announced); // the refused click still re-announces "checked" to the flipped ToggleButton
     }
 
     // ── Slots and tags ───────────────────────────────────────────────────
