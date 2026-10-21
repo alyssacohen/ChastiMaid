@@ -21,7 +21,7 @@ public class NumericTextConverter : IValueConverter
     {
         var underlying = Nullable.GetUnderlyingType(targetType) ?? targetType;
 
-        var result = value is string s && decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d)
+        var result = value is string s && decimal.TryParse(s, NumberStyles.Any, culture, out var d)
             ? d
             : parameter is string p
                 ? decimal.Parse(p, NumberStyles.Any, CultureInfo.InvariantCulture)

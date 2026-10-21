@@ -154,7 +154,7 @@
                                     Minimum="5"
                                     Value="{Binding QuoteListenTimeout, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=5}" />
                             </Grid>
-                            <Grid ColumnDefinitions="*,Auto">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
                                     Text="{l:Tr 'Quote recognition sensitivity'}"
@@ -166,6 +166,7 @@
                                     Maximum="100"
                                     Minimum="1"
                                     Value="{Binding QuoteMatchMinSimilarityPercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                                <TextBlock Classes="BodySmall unitSuffix" Grid.Column="2" Text="%" />
                             </Grid>
                             <TextBlock
                                 Classes="BodySmall"

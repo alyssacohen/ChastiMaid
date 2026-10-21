@@ -180,7 +180,7 @@ msgstr ""
 msgid "Add Occasional Task"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:397
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:398
 msgid "Add Outfit"
 msgstr ""
 
@@ -334,7 +334,7 @@ msgstr ""
 msgid "Char/min"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:189
+#: ../Views/Controls/SettingsGeneralTab.axaml:190
 msgid "Chastity Device"
 msgstr ""
 
@@ -410,7 +410,7 @@ msgstr ""
 msgid "Confidence in one's craft is admirable."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:343
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:344
 msgid "Configured outfits"
 msgstr ""
 
@@ -430,7 +430,7 @@ msgstr ""
 msgid "Continue without safe"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:358
+#: ../Views/Controls/SettingsGeneralTab.axaml:359
 msgid "Contract"
 msgstr ""
 
@@ -448,7 +448,7 @@ msgstr ""
 msgid "Contract of Service"
 msgstr ""
 
-#: ../Views/Controls/SettingsPermissionsTab.axaml:37
+#: ../Views/Controls/SettingsPermissionsTab.axaml:38
 msgid "Cooldown (minutes)"
 msgstr ""
 
@@ -548,7 +548,7 @@ msgstr ""
 msgid "Delete item"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:375 ../Views/Controls/SettingsPunishmentsTab.axaml:379
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:376 ../Views/Controls/SettingsPunishmentsTab.axaml:380
 msgid "Delete preset"
 msgstr ""
 
@@ -572,11 +572,11 @@ msgstr ""
 msgid "Description (optional)"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:341
+#: ../Views/Controls/SettingsGeneralTab.axaml:342
 msgid "Detected cameras"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:154
+#: ../Views/Controls/SettingsGeneralTab.axaml:155
 msgid "Diaper Play"
 msgstr ""
 
@@ -599,7 +599,7 @@ msgstr ""
 msgid "Did you act on your own initiative today?"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:163 ../Views/Controls/SettingsGeneralTab.axaml:229 ../Views/Controls/SettingsPopupsTab.axaml:83 ../Views/Controls/SettingsPopupsTab.axaml:112 ../Views/Controls/SettingsPopupsTab.axaml:142 ../Views/Controls/SettingsPopupsTab.axaml:229 ../Views/Controls/SettingsPunishmentsTab.axaml:61 ../Views/Controls/SettingsPunishmentsTab.axaml:177 ../Views/Controls/SettingsPunishmentsTab.axaml:195 ../Views/Controls/SettingsPunishmentsTab.axaml:253 ../Views/Controls/SettingsPunishmentsTab.axaml:287 ../Views/Controls/SettingsPunishmentsTab.axaml:328 ../Views/ForcedOutfitPresetEditorView.axaml:40
+#: ../Views/Controls/SettingsGeneralTab.axaml:164 ../Views/Controls/SettingsGeneralTab.axaml:230 ../Views/Controls/SettingsPopupsTab.axaml:83 ../Views/Controls/SettingsPopupsTab.axaml:112 ../Views/Controls/SettingsPopupsTab.axaml:142 ../Views/Controls/SettingsPopupsTab.axaml:230 ../Views/Controls/SettingsPunishmentsTab.axaml:61 ../Views/Controls/SettingsPunishmentsTab.axaml:178 ../Views/Controls/SettingsPunishmentsTab.axaml:196 ../Views/Controls/SettingsPunishmentsTab.axaml:254 ../Views/Controls/SettingsPunishmentsTab.axaml:288 ../Views/Controls/SettingsPunishmentsTab.axaml:329 ../Views/ForcedOutfitPresetEditorView.axaml:40
 msgid "Disabled"
 msgstr ""
 
@@ -644,11 +644,11 @@ msgstr ""
 msgid "Duly noted."
 msgstr ""
 
-#: ../Views/Controls/SettingsPermissionsTab.axaml:30
+#: ../Views/Controls/SettingsPermissionsTab.axaml:31
 msgid "Duration (minutes)"
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:235
+#: ../Views/Controls/SettingsPopupsTab.axaml:236
 msgid "Duration minimum/maximum (seconds)"
 msgstr ""
 
@@ -657,7 +657,7 @@ msgstr ""
 msgid "Dusting"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:194
+#: ../Views/Controls/SettingsGeneralTab.axaml:195
 msgid ""
 "Each session one of the marked items is chosen at random and must be worn. It "
 "can only be changed while the safe is open."
@@ -667,7 +667,7 @@ msgstr ""
 msgid "Eager"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:362 ../Views/Controls/SettingsPunishmentsTab.axaml:367
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:363 ../Views/Controls/SettingsPunishmentsTab.axaml:368
 msgid "Edit preset"
 msgstr ""
 
@@ -694,7 +694,7 @@ msgctxt "save slot"
 msgid "Empty"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:164 ../Views/Controls/SettingsGeneralTab.axaml:230 ../Views/Controls/SettingsPopupsTab.axaml:84 ../Views/Controls/SettingsPopupsTab.axaml:113 ../Views/Controls/SettingsPopupsTab.axaml:143 ../Views/Controls/SettingsPopupsTab.axaml:230 ../Views/Controls/SettingsPunishmentsTab.axaml:62 ../Views/Controls/SettingsPunishmentsTab.axaml:178 ../Views/Controls/SettingsPunishmentsTab.axaml:196 ../Views/Controls/SettingsPunishmentsTab.axaml:254 ../Views/Controls/SettingsPunishmentsTab.axaml:288 ../Views/Controls/SettingsPunishmentsTab.axaml:329 ../Views/ForcedOutfitPresetEditorView.axaml:39
+#: ../Views/Controls/SettingsGeneralTab.axaml:165 ../Views/Controls/SettingsGeneralTab.axaml:231 ../Views/Controls/SettingsPopupsTab.axaml:84 ../Views/Controls/SettingsPopupsTab.axaml:113 ../Views/Controls/SettingsPopupsTab.axaml:143 ../Views/Controls/SettingsPopupsTab.axaml:231 ../Views/Controls/SettingsPunishmentsTab.axaml:62 ../Views/Controls/SettingsPunishmentsTab.axaml:179 ../Views/Controls/SettingsPunishmentsTab.axaml:197 ../Views/Controls/SettingsPunishmentsTab.axaml:255 ../Views/Controls/SettingsPunishmentsTab.axaml:289 ../Views/Controls/SettingsPunishmentsTab.axaml:330 ../Views/ForcedOutfitPresetEditorView.axaml:39
 msgid "Enabled"
 msgstr ""
 
@@ -743,7 +743,7 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:369
+#: ../Views/Controls/SettingsGeneralTab.axaml:370
 msgid "Export Contract"
 msgstr ""
 
@@ -763,7 +763,7 @@ msgstr ""
 msgid "Export contract"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:363
+#: ../Views/Controls/SettingsGeneralTab.axaml:364
 msgid ""
 "Export every game setting as a single contract file — including the wardrobe, "
 "outfit rules, tasks, punishments and permissions — or load one to replace "
@@ -846,7 +846,7 @@ msgstr ""
 msgid "For unseemly haste in your duties."
 msgstr ""
 
-#: ../ViewModels/PunishmentItemViewModel.cs:19 ../Views/Controls/SettingsPunishmentsTab.axaml:319
+#: ../ViewModels/PunishmentItemViewModel.cs:19 ../Views/Controls/SettingsPunishmentsTab.axaml:320
 msgid "Forced Outfit"
 msgstr ""
 
@@ -929,7 +929,7 @@ msgid "Grace time before failure (seconds)"
 msgstr ""
 
 #: ../Views/Controls/SettingsPermissionsTab.axaml:23
-msgid "Grant chance %"
+msgid "Grant chance"
 msgstr ""
 
 #: ../ViewModels/FortuneDeckViewModel.cs:389
@@ -1116,15 +1116,15 @@ msgctxt "session status"
 msgid "Idle"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:249
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:250
 msgid "Idle hands earn extra lines."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:258
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:259
 msgid "Idle timeout (seconds)"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:124
+#: ../Views/Controls/SettingsGeneralTab.axaml:125
 msgid "Idle wage amount (£)"
 msgstr ""
 
@@ -1136,7 +1136,7 @@ msgstr ""
 msgid "Il Ventaglio della Sorte"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:373
+#: ../Views/Controls/SettingsGeneralTab.axaml:374
 msgid "Import Contract"
 msgstr ""
 
@@ -1172,7 +1172,7 @@ msgid ""
 "negotiation."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:280
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:281
 msgid "Interruptions"
 msgstr ""
 
@@ -1197,11 +1197,11 @@ msgstr ""
 msgid "Keep"
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:220
+#: ../Views/Controls/SettingsPopupsTab.axaml:221
 msgid "Kneel"
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:225
+#: ../Views/Controls/SettingsPopupsTab.axaml:226
 msgid "Kneel for a random duration while the camera takes photos."
 msgstr ""
 
@@ -1209,7 +1209,7 @@ msgstr ""
 msgid "Kneel where you stand, and remain a while with your humility."
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:292 ../Views/Controls/SettingsGeneralTab.axaml:298
+#: ../Views/Controls/SettingsGeneralTab.axaml:293 ../Views/Controls/SettingsGeneralTab.axaml:299
 msgid "Language"
 msgstr ""
 
@@ -1232,7 +1232,7 @@ msgstr ""
 msgid "Leave to attend to certain needs is granted at Madame's discretion:"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:270
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:271
 msgid "Lines added per timeout"
 msgstr ""
 
@@ -1240,7 +1240,7 @@ msgstr ""
 msgid "Lines are not in force."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:200
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:201
 msgid "Lines per severity"
 msgstr ""
 
@@ -1251,7 +1251,7 @@ msgid ""
 "at most {2} — and {3} more for each mistake."
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:201
+#: ../Views/Controls/SettingsPopupsTab.axaml:202
 msgid "Listening…"
 msgstr ""
 
@@ -1336,23 +1336,23 @@ msgstr ""
 msgid "Max debt (£)"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:333
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:334
 msgid "Max hours"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:304
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:305
 msgid "Maximum interval (seconds)"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:236
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:237
 msgid "Maximum lines"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:274
+#: ../Views/Controls/SettingsGeneralTab.axaml:275
 msgid "Maximum minutes"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:163
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:164
 msgid "Maximum movement penalty (seconds)"
 msgstr ""
 
@@ -1364,7 +1364,7 @@ msgstr ""
 msgid "May I be excused?"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:283
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:284
 msgid "Messages shown at random intervals while writing."
 msgstr ""
 
@@ -1381,19 +1381,19 @@ msgstr ""
 msgid "Minimum hydration interval (minutes)"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:292
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:293
 msgid "Minimum interval (seconds)"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:224
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:225
 msgid "Minimum lines"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:266
+#: ../Views/Controls/SettingsGeneralTab.axaml:267
 msgid "Minimum minutes"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:151
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:152
 msgid "Minimum movement penalty (seconds)"
 msgstr ""
 
@@ -1426,7 +1426,7 @@ msgid ""
 msgstr ""
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:138
-msgid "Movement sensitivity (%)"
+msgid "Movement sensitivity"
 msgstr ""
 
 #: ../Views/Controls/WardrobeTable.axaml:130 ../Views/Controls/WardrobeTable.axaml:306
@@ -1491,7 +1491,7 @@ msgstr ""
 msgid "No Free Slots"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:246
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:247
 msgid "No Idle"
 msgstr ""
 
@@ -1661,7 +1661,7 @@ msgstr ""
 msgid "Partial outfit"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:212
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:213
 msgid "Penalty lines per mistake"
 msgstr ""
 
@@ -1685,7 +1685,7 @@ msgstr ""
 msgid "Persistence will not change my mind — only my patience."
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:255
+#: ../Views/Controls/SettingsPopupsTab.axaml:256
 msgid "Photo interval minimum/maximum (seconds)"
 msgstr ""
 
@@ -1703,7 +1703,7 @@ msgstr ""
 msgid "Please, come in. The door is unlocked. It always is... at first."
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:220
+#: ../Views/Controls/SettingsGeneralTab.axaml:221
 msgid "Plug & Play"
 msgstr ""
 
@@ -1949,7 +1949,7 @@ msgstr ""
 msgid "Select tag"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:225
+#: ../Views/Controls/SettingsGeneralTab.axaml:226
 msgid ""
 "Selected accessories must be worn for a random duration before they can be "
 "removed."
@@ -2044,7 +2044,7 @@ msgid ""
 "Some future permission will last longer than granted. Enjoy it while it lasts."
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:319
+#: ../Views/Controls/SettingsGeneralTab.axaml:320
 msgid "Speech recognition"
 msgstr ""
 
@@ -2056,7 +2056,7 @@ msgstr ""
 msgid "Standing Tasks"
 msgstr ""
 
-#: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:186 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
+#: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:187 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
 msgid "Start"
 msgstr ""
 
@@ -2080,7 +2080,7 @@ msgstr ""
 msgid "Stillness, achieved. You may return to your duties."
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:191
+#: ../Views/Controls/SettingsPopupsTab.axaml:192
 msgid "Stop"
 msgstr ""
 
@@ -2135,7 +2135,7 @@ msgstr ""
 msgid "Test Rules"
 msgstr ""
 
-#: ../Views/Controls/SettingsPopupsTab.axaml:172
+#: ../Views/Controls/SettingsPopupsTab.axaml:173
 msgid "Test speech recognition by reading this phrase:"
 msgstr ""
 
@@ -2295,7 +2295,7 @@ msgid ""
 "The outfit video cannot be recorded. You can skip this step and continue."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:324
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:325
 msgid "The selected items become mandatory for a number of following sessions."
 msgstr ""
 
@@ -2384,7 +2384,7 @@ msgstr ""
 msgid "Total incurred: {0}"
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:191
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:192
 msgid "Type a sentence repeatedly, without mistakes."
 msgstr ""
 
@@ -2460,11 +2460,11 @@ msgstr ""
 msgid "Vigour becomes a good domestic."
 msgstr ""
 
-#: ../Views/Controls/SettingsPunishmentsTab.axaml:173
+#: ../Views/Controls/SettingsPunishmentsTab.axaml:174
 msgid "Voice narration"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:137
+#: ../Views/Controls/SettingsGeneralTab.axaml:138
 msgid "Wage interval (minutes)"
 msgstr ""
 
@@ -2488,11 +2488,11 @@ msgid ""
 "when you save; your edits to them are lost. Keep leaves them unchanged."
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:330
+#: ../Views/Controls/SettingsGeneralTab.axaml:331
 msgid "Webcam"
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:313
+#: ../Views/Controls/SettingsGeneralTab.axaml:314
 msgid "Webcam & Speech Recognition"
 msgstr ""
 
@@ -2508,7 +2508,7 @@ msgstr ""
 msgid "Well, isn't that lovely? A 100% success rate — obviously."
 msgstr ""
 
-#: ../Views/Controls/SettingsGeneralTab.axaml:159
+#: ../Views/Controls/SettingsGeneralTab.axaml:160
 msgid ""
 "When the outfit includes one of the marked items, toilet requests are refused "
 "and hydration reminders come twice as often."
@@ -2537,7 +2537,7 @@ msgid ""
 "between {0} and {1}."
 msgstr ""
 
-#: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/Controls/SettingsPunishmentsTab.axaml:186 ../Views/WritingLinesPunishmentView.axaml:20
+#: ../ViewModels/PunishmentItemViewModel.cs:18 ../Views/Controls/SettingsPunishmentsTab.axaml:187 ../Views/WritingLinesPunishmentView.axaml:20
 msgid "Writing Lines"
 msgstr ""
 
