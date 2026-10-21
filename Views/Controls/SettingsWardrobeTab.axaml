@@ -169,12 +169,12 @@
             </Grid>
 
             <!-- ── Active filters ─────────────────────────────────────── -->
-            <StackPanel Grid.Row="2"
-                        Orientation="Horizontal"
-                        Spacing="{StaticResource SpacingSm}"
-                        IsVisible="{Binding HasFilters}">
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="Auto,*"
+                  ColumnSpacing="{StaticResource SpacingSm}"
+                  IsVisible="{Binding HasFilters}">
                 <TextBlock Classes="Caption" Text="{l:Tr 'Active filters:'}" VerticalAlignment="Center" />
-                <ItemsControl ItemsSource="{Binding ActiveFilters}">
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding ActiveFilters}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}" />
@@ -194,7 +194,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </StackPanel>
+            </Grid>
 
             <!-- ── Master / detail ────────────────────────────────────── -->
             <Grid Grid.Row="3" ColumnSpacing="{StaticResource SpacingLg}">
@@ -490,18 +490,6 @@
             </Grid>
         </Grid>
 
-        <!-- ══ Undo notice ═══════════════════════════════════════════════════════════════ -->
-        <Border Classes="notice" IsVisible="{Binding Notice, Converter={x:Static ObjectConverters.IsNotNull}}">
-            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingLg}">
-                <TextBlock Text="{Binding Notice}" AutomationProperties.LiveSetting="Polite" />
-                <Button Content="{l:Tr 'Undo'}" Command="{Binding UndoDeleteCommand}" IsVisible="{Binding CanUndo}" />
-                <Button Content="×"
-                        Command="{Binding DismissNoticeCommand}"
-                        ToolTip.Tip="{l:Tr 'Close notice'}"
-                        AutomationProperties.Name="{l:Tr 'Close notice'}" />
-            </StackPanel>
-        </Border>
-
         <!-- ══ Rules (stub until the rules editor moves here) ════════════════════════════ -->
         <Panel Classes="dialogOverlay" IsVisible="{Binding IsRulesDialogOpen}">
             <Border Classes="dialogBox">
@@ -602,6 +590,18 @@
                 </StackPanel>
             </Border>
         </Panel>
+
+        <!-- ══ Notice (Undo, entry deleted): above the dialogs it may come from ════════════ -->
+        <Border Classes="notice" IsVisible="{Binding Notice, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingLg}">
+                <TextBlock Text="{Binding Notice}" AutomationProperties.LiveSetting="Polite" />
+                <Button Content="{l:Tr 'Undo'}" Command="{Binding UndoDeleteCommand}" IsVisible="{Binding CanUndo}" />
+                <Button Content="×"
+                        Command="{Binding DismissNoticeCommand}"
+                        ToolTip.Tip="{l:Tr 'Close notice'}"
+                        AutomationProperties.Name="{l:Tr 'Close notice'}" />
+            </StackPanel>
+        </Border>
 
         <!-- ══ Confirmations (unused entry, delete entry): above every other dialog ══════ -->
         <dialogs:ConfirmDialog DataContext="{Binding Confirmation}"
