@@ -654,6 +654,13 @@ public partial class SettingsViewModel : ViewModelBase
     // --- Tab change interception ---
     private async Task TryChangeTab(int newIndex)
     {
+        // A name being typed in the Wardrobe is committed first; a refused (duplicate) one keeps the tab and its box.
+        if (!Wardrobe.CommitRename())
+        {
+            this.RaisePropertyChanged(nameof(SelectedTabIndex));
+            return;
+        }
+
         if (!IsDirty)
         {
             SetTab(newIndex);
@@ -707,8 +714,11 @@ public partial class SettingsViewModel : ViewModelBase
         switch (await ShowSaveDialog(L.T("You have unsaved changes. What would you like to do?")))
         {
             case SaveDialogResult.Save:
-                Save();
-                NavigateAway(_returnTo());
+                if (Save())
+                {
+                    NavigateAway(_returnTo());
+                }
+
                 break;
             case SaveDialogResult.Discard:
                 // The cached screen still holds the discarded edits; the next visit must reload the profile.
@@ -833,10 +843,16 @@ public partial class SettingsViewModel : ViewModelBase
 
     /// <summary>
     ///     Saves everything; when the user chose to restore defaults for a new language, the profile is also
-    ///     reseeded (<see cref="_contentRestored" /> tells the caller to rebuild the screen).
+    ///     reseeded (<see cref="_contentRestored" /> tells the caller to rebuild the screen). A Wardrobe rename in
+    ///     progress is committed first; when its name is refused (duplicate) nothing is saved and false is returned.
     /// </summary>
-    private void Save()
+    private bool Save()
     {
+        if (!Wardrobe.CommitRename())
+        {
+            return false;
+        }
+
         // Saving commits the deletes: an undo afterwards could no longer bring back the deleted eligibility configs.
         Wardrobe.DismissNotice();
         _contentRestored = _restoreContentOnSave;
@@ -857,12 +873,17 @@ public partial class SettingsViewModel : ViewModelBase
         TakeSnapshot();
         IsGeneralDirty = IsChoresDirty = IsPopupsDirty = IsPunishmentsDirty = IsWardrobeDirty = IsRulesDirty =
             IsPermissionsDirty = false;
+        return true;
     }
 
     /// <summary>Save without leaving: rebuilds the screen when the content was reseeded or the language changed.</summary>
     private void SaveInPlace()
     {
-        Save();
+        if (!Save())
+        {
+            return;
+        }
+
         if (_contentRestored || _languageChanged)
         {
             RebuildScreen();
@@ -871,7 +892,11 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void SaveAndBack()
     {
-        Save();
+        if (!Save())
+        {
+            return;
+        }
+
         if (_languageChanged)
         {
             // Texts are resolved when a screen is built, so drop the cached one built in the old language.
