@@ -329,9 +329,11 @@
         <Setter Property="FontStyle" Value="Italic" />
     </Style>
 
-    <!-- NumericUpDown.invariant — decimal point whatever the language (Wardrobe Weight and Multiplier) -->
+    <!-- NumericUpDown.invariant — decimal point whatever the language (Wardrobe Weight and Multiplier). Parsed as
+         Float: the default Any takes "," as a thousands separator, so "1,5" would become 15; now it is refused. -->
     <Style Selector="NumericUpDown.invariant">
         <Setter Property="NumberFormat" Value="{x:Static globalization:NumberFormatInfo.InvariantInfo}" />
+        <Setter Property="ParsingNumberStyle" Value="Float" />
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────
