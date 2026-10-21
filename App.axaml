@@ -16,7 +16,6 @@
         <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Chips.axaml" />
         <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Tables.axaml" />
         <StyleInclude Source="avares://ChastiMaid/Assets/Styles/Components.axaml" />
-        <StyleInclude Source="avares://ChastiMaid/Views/Controls/TagInput/TagInputTheme.axaml" />
     </Application.Styles>
 
     <Application.Resources>

@@ -41,7 +41,6 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private double _dailyInterestRate;
     [Reactive] private decimal _idleWageAmount;
     [Reactive] private int _idleWageInterval;
-    [Reactive] private bool _isAddingNewItem;
     [Reactive] private bool _isChoresDirty;
     [Reactive] private string? _contentActionStatusMessage;
     [Reactive] private bool _plugAndPlayEnabled;
@@ -93,11 +92,6 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private bool _isPermissionsDirty;
     [Reactive] private decimal _maxDebt;
     [Reactive] private decimal _minDebt;
-    [Reactive] private decimal _newItemMultiplier = 1.0m;
-
-    // --- New-item panel state ---
-    [Reactive] private string _newItemName = string.Empty;
-    [Reactive] private decimal _newItemWeight = 1.0m;
 
     // --- General tab fields ---
     [Reactive] private int _curtsyVideoDuration;
@@ -127,18 +121,11 @@ public partial class SettingsViewModel : ViewModelBase
 
     // Snapshot for General tab dirty detection
     private (string, string, int, decimal, decimal, double, decimal, int, CameraOption, Option<string>) _snapshot;
-    [Reactive] private int? _wardrobeLayerFilter;
-
-    // --- Wardrobe filter & selection ---
-    [Reactive] private string _wardrobeNameFilter = string.Empty;
-    [Reactive] private int _wardrobeSelectedCount;
-    [Reactive] private string _wardrobeSelectedText = "";
 
     public SettingsViewModel(MainWindowViewModel mainVm, Func<ViewModelBase> returnTo,
         string? initialContentActionStatusMessage = null)
     {
         _mainVm = mainVm;
-        NewItemLayerToggles = [.. WardrobeLayer.All.Select(l => new LayerToggleVm(l, false, _ => { }, L))];
         _repo = mainVm.ProfileRepository;
         _returnTo = returnTo;
         _contentActionStatusMessage = initialContentActionStatusMessage;
@@ -262,27 +249,7 @@ public partial class SettingsViewModel : ViewModelBase
         Wardrobe = new WardrobeViewModel(WardrobeItems, OutfitRules,
             WardrobeCatalog.Merge(_repo.GetWardrobeCatalog(), allWardrobe, allRules), NewWardrobeVm, L);
 
-        // Filtered wardrobe view — reactive to filter controls and to add/remove on WardrobeItems
-        this.WhenAnyValue(x => x.WardrobeNameFilter, x => x.WardrobeLayerFilter)
-            .Subscribe(_ => RefreshFilteredWardrobe());
-        WardrobeItems.CollectionChanged += (_, _) => RefreshFilteredWardrobe();
-
         TakeSnapshot();
-
-        LayerFilterChips = new LayerFilterChipVm[] { new(null, L.T("All"), () => WardrobeLayerFilter = null) }
-            .Concat(WardrobeLayer.All.Select(l =>
-                new LayerFilterChipVm(l.Order, L.T(l.DisplayName),
-                    () => WardrobeLayerFilter = WardrobeLayerFilter == l.Order ? null : l.Order)))
-            .ToList();
-
-        this.WhenAnyValue(x => x.WardrobeLayerFilter)
-            .Subscribe(filter =>
-            {
-                foreach (var chip in LayerFilterChips)
-                {
-                    chip.IsActive = chip.Key == filter;
-                }
-            });
 
         Changed.Subscribe(e => OnSettingChanged(e.PropertyName));
 
@@ -300,7 +267,6 @@ public partial class SettingsViewModel : ViewModelBase
             }
 
             IsWardrobeDirty = true;
-            UpdateSelectedCount();
         };
         OutfitRules.CollectionChanged += (_, _) => IsRulesDirty = true;
 
@@ -328,10 +294,6 @@ public partial class SettingsViewModel : ViewModelBase
             }
         });
         AddChoreCommand = ReactiveCommand.Create(() => Chores.Add(NewChoreVm(new Chore())));
-        ShowAddItemPanelCommand = ReactiveCommand.Create(() => IsAddingNewItem = true);
-        CancelAddItemCommand = ReactiveCommand.Create(ResetNewItemPanel);
-        var canAddWardrobe = this.WhenAnyValue(x => x.NewItemName, name => !string.IsNullOrWhiteSpace(name));
-        AddWardrobeItemCommand = ReactiveCommand.Create(AddWardrobeItemFromNewRow, canAddWardrobe);
         AddOutfitRuleCommand = ReactiveCommand.Create(() => OutfitRules.Add(NewRuleVm(new OutfitRule())));
         AddForcedOutfitPresetCommand = ReactiveCommand.Create(() => OpenForcedOutfitPresetEditor(new ForcedOutfitPreset()));
         TestRulesCommand = ReactiveCommand.Create(() =>
@@ -339,17 +301,6 @@ public partial class SettingsViewModel : ViewModelBase
                 WardrobeItems.Select(w => w.ToModel()).ToList(),
                 OutfitRules.Select(r => r.ToModel()).ToList(), L));
         CloseTestOutfitDialogCommand = ReactiveCommand.Create(() => TestOutfitDialog = null);
-        DeleteSelectedWardrobeItemsCommand = ReactiveCommand.Create(
-            DeleteSelectedWardrobeItems,
-            this.WhenAnyValue(x => x.WardrobeSelectedCount, n => n > 0));
-        CollapseExpandedWardrobeItemCommand = ReactiveCommand.Create(() =>
-        {
-            ExpandWardrobeItem(null);
-            if (IsAddingNewItem)
-            {
-                ResetNewItemPanel();
-            }
-        });
         ExportContractCommand = ReactiveCommand.CreateFromTask(ExportContract);
         ImportContractCommand = ReactiveCommand.CreateFromTask(ImportContract);
     }
@@ -493,18 +444,9 @@ public partial class SettingsViewModel : ViewModelBase
         new("it", "Italiano"),
     ];
 
-    public ObservableCollection<string> NewItemSlots { get; } = [];
-    public ObservableCollection<string> NewItemTags { get; } = [];
-
-    public IReadOnlyList<LayerToggleVm> NewItemLayerToggles { get; }
-
-    public IEnumerable<string> NewItemSlotSuggestions => AllUsedSlots;
-    public IEnumerable<string> NewItemTagSuggestions => AllUsedTags;
-
     public bool IsDirty =>
         IsGeneralDirty || IsChoresDirty || IsPopupsDirty || IsPunishmentsDirty || IsWardrobeDirty || IsRulesDirty ||
         IsPermissionsDirty;
-    public ObservableCollection<WardrobeEditViewModel> FilteredWardrobeItems { get; } = [];
 
     /// <summary>The master/detail Wardrobe screen, working on <see cref="WardrobeItems" /> and <see cref="OutfitRules" />.</summary>
     public WardrobeViewModel Wardrobe { get; }
@@ -514,8 +456,6 @@ public partial class SettingsViewModel : ViewModelBase
         get => Math.Round((decimal)DailyInterestRate * 100m, 2);
         set => DailyInterestRate = (double)(value / 100m);
     }
-
-    public IReadOnlyList<LayerFilterChipVm> LayerFilterChips { get; } = [];
 
     public int SelectedTabIndex
     {
@@ -557,21 +497,15 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand BackCommand { get; }
     public ICommand SetTabCommand { get; }
     public ICommand AddChoreCommand { get; }
-    public ICommand ShowAddItemPanelCommand { get; }
-    public ICommand CancelAddItemCommand { get; }
-    public ICommand AddWardrobeItemCommand { get; }
     public ICommand AddOutfitRuleCommand { get; }
     public ICommand TestRulesCommand { get; }
     public ICommand CloseTestOutfitDialogCommand { get; }
     public ICommand AddForcedOutfitPresetCommand { get; }
-    public ICommand DeleteSelectedWardrobeItemsCommand { get; }
-    public ICommand CollapseExpandedWardrobeItemCommand { get; }
     public ICommand ExportContractCommand { get; }
     public ICommand ImportContractCommand { get; }
 
     // --- Wardrobe helpers ---
     private IEnumerable<string> AllUsedTags => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);
-    private IEnumerable<string> AllUsedSlots => WardrobeItems.SelectMany(w => w.Slots).Distinct().OrderBy(s => s);
 
     /// <summary>
     ///     Eligibility chips taken off their list (item deleted, layer removed). Their stored config is deleted on Save,
@@ -581,7 +515,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private WardrobeEditViewModel NewWardrobeVm(ClothingItem item)
     {
-        var vm = new WardrobeEditViewModel(item, RemoveWardrobeItem, L, AllUsedTags, AllUsedSlots, ExpandWardrobeItem);
+        var vm = new WardrobeEditViewModel(item, L);
         WireWardrobeItem(vm);
         return vm;
     }
@@ -592,9 +526,6 @@ public partial class SettingsViewModel : ViewModelBase
         {
             switch (e.PropertyName)
             {
-                case nameof(WardrobeEditViewModel.IsSelected):
-                    UpdateSelectedCount();
-                    break;
                 case nameof(WardrobeEditViewModel.Name):
                 case nameof(WardrobeEditViewModel.Multiplier):
                 case nameof(WardrobeEditViewModel.Weight):
@@ -648,82 +579,6 @@ public partial class SettingsViewModel : ViewModelBase
         {
             chips.Remove(existingChip);
             _detachedChips.Add(existingChip);
-        }
-    }
-
-    /// <summary>Removes the item from the screen; the database follows on Save (see <see cref="SaveAll" />).</summary>
-    private void RemoveWardrobeItem(WardrobeEditViewModel item)
-    {
-        WardrobeItems.Remove(item);
-    }
-
-    /// <summary>Expands <paramref name="target" /> and collapses every other row; null collapses all.</summary>
-    private void ExpandWardrobeItem(WardrobeEditViewModel? target)
-    {
-        foreach (var item in WardrobeItems)
-        {
-            item.IsExpanded = ReferenceEquals(item, target);
-        }
-    }
-
-    private void UpdateSelectedCount()
-    {
-        WardrobeSelectedCount = WardrobeItems.Count(x => x.IsSelected);
-        WardrobeSelectedText = L.N("{0} item selected", "{0} items selected", WardrobeSelectedCount, WardrobeSelectedCount);
-    }
-
-    private void AddWardrobeItemFromNewRow()
-    {
-        var item = new ClothingItem
-        {
-            Name = NewItemName,
-            Layers = [.. NewItemLayerToggles.Where(t => t.IsChecked).Select(t => t.Order)],
-            Slots = [.. NewItemSlots],
-            Tags = [.. NewItemTags],
-            Multiplier = (double)NewItemMultiplier,
-            Weight = (double)NewItemWeight,
-        };
-
-        WardrobeItems.Add(NewWardrobeVm(item));
-
-        ResetNewItemPanel();
-
-        IsWardrobeDirty = true;
-    }
-
-    private void ResetNewItemPanel()
-    {
-        NewItemName = string.Empty;
-        NewItemMultiplier = 1.0m;
-        NewItemWeight = 1.0m;
-        foreach (var t in NewItemLayerToggles) t.IsChecked = false;
-        NewItemSlots.Clear();
-        NewItemTags.Clear();
-        IsAddingNewItem = false;
-    }
-
-    private void DeleteSelectedWardrobeItems()
-    {
-        foreach (var item in WardrobeItems.Where(x => x.IsSelected).ToList())
-        {
-            RemoveWardrobeItem(item);
-        }
-    }
-
-    private static bool MatchesWardrobeFilter(WardrobeEditViewModel item, string nameFilter, int? layerFilter)
-    {
-        return (string.IsNullOrEmpty(nameFilter)
-                || item.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)
-                || item.Tags.Any(t => t.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)))
-               && (layerFilter is null || item.Layers.Any(l => l == layerFilter.Value));
-    }
-
-    private void RefreshFilteredWardrobe()
-    {
-        FilteredWardrobeItems.Clear();
-        foreach (var item in WardrobeItems.Where(i => MatchesWardrobeFilter(i, WardrobeNameFilter, WardrobeLayerFilter)))
-        {
-            FilteredWardrobeItems.Add(item);
         }
     }
 
@@ -1167,43 +1022,6 @@ public record Option<T>(T Code, string DisplayName)
     }
 }
 
-public class LayerFilterChipVm(int? key, string displayName, Action onSelect) : ReactiveObject
-{
-    private bool _isActive;
-    public int? Key { get; } = key;
-    public string DisplayName { get; } = displayName;
-
-    public bool IsActive
-    {
-        get => _isActive;
-        set => this.RaiseAndSetIfChanged(ref _isActive, value);
-    }
-
-    public ICommand SelectCommand { get; } = ReactiveCommand.Create(onSelect);
-}
-
-public class LayerToggleVm : ReactiveObject
-{
-    private bool _isChecked;
-
-    public LayerToggleVm(WardrobeLayer layer, bool initiallyChecked, Action<LayerToggleVm> onChanged, ILocalizer l)
-    {
-        Order = layer.Order;
-        DisplayName = l.T(layer.DisplayName);
-        _isChecked = initiallyChecked;
-        this.WhenAnyValue(x => x.IsChecked).Subscribe(_ => onChanged(this));
-    }
-
-    public int Order { get; }
-    public string DisplayName { get; }
-
-    public bool IsChecked
-    {
-        get => _isChecked;
-        set => this.RaiseAndSetIfChanged(ref _isChecked, value);
-    }
-}
-
 public partial class ChoreEditViewModel : ViewModelBase
 {
     [Reactive] private string _description = "";
@@ -1404,19 +1222,16 @@ public partial class WardrobeEditViewModel : ViewModelBase
     /// <summary>The single item the Wardrobe detail pane shows (highlighted row); presentation only, never saved.</summary>
     [Reactive] private bool _isActive;
 
-    [Reactive] private bool _isExpanded;
+    /// <summary>The row shows the rename box; presentation only, never saved.</summary>
+    [Reactive] private bool _isEditing;
+
+    /// <summary>Ticked in the Wardrobe list (the checked set); presentation only, never saved.</summary>
     [Reactive] private bool _isSelected;
     [Reactive] private double _multiplier;
     [Reactive] private string _name = "";
     [Reactive] private double _weight;
 
-    public WardrobeEditViewModel(
-        ClothingItem item,
-        Action<WardrobeEditViewModel> onDelete,
-        ILocalizer l,
-        IEnumerable<string>? tagSuggestions = null,
-        IEnumerable<string>? slotSuggestions = null,
-        Action<WardrobeEditViewModel?>? onExpandRequest = null)
+    public WardrobeEditViewModel(ClothingItem item, ILocalizer l)
     {
         _l = l;
         Id = item.Id;
@@ -1428,31 +1243,11 @@ public partial class WardrobeEditViewModel : ViewModelBase
         Slots = new ObservableCollection<string>(item.Slots);
         Tags = new ObservableCollection<string>(item.Tags);
 
-        LayerToggles = WardrobeLayer.All
-            .Select(layer => new LayerToggleVm(layer, item.Layers.Contains(layer.Order), OnLayerToggled, l))
-            .ToList();
-
         Layers.CollectionChanged += (_, _) =>
         {
             this.RaisePropertyChanged(nameof(LayerDisplayNames));
             this.RaisePropertyChanged(nameof(LayerCaption));
         };
-
-        SlotSuggestions = slotSuggestions ?? [];
-        TagSuggestions = tagSuggestions ?? [];
-
-        DeleteCommand = ReactiveCommand.Create(() => onDelete(this));
-        ToggleExpandedCommand = ReactiveCommand.Create(() =>
-        {
-            if (!IsExpanded)
-            {
-                onExpandRequest?.Invoke(this);
-            }
-            else
-            {
-                IsExpanded = false;
-            }
-        });
     }
 
     public int Id { get; internal set; }
@@ -1463,30 +1258,11 @@ public partial class WardrobeEditViewModel : ViewModelBase
 
     private readonly ILocalizer _l;
 
-    public IReadOnlyList<LayerToggleVm> LayerToggles { get; }
     public IEnumerable<string> LayerDisplayNames =>
         Layers.Select(o => WardrobeLayer.FindByOrder(o) is { } layer ? _l.T(layer.DisplayName) : o.ToString());
 
     /// <summary>The layers as one line for the Wardrobe list, e.g. "Underwear · Base".</summary>
     public string LayerCaption => string.Join(" · ", LayerDisplayNames);
-
-    public IEnumerable<string> SlotSuggestions { get; }
-    public IEnumerable<string> TagSuggestions { get; }
-
-    public ICommand ToggleExpandedCommand { get; }
-    public ICommand DeleteCommand { get; }
-
-    private void OnLayerToggled(LayerToggleVm toggle)
-    {
-        if (toggle.IsChecked && !Layers.Contains(toggle.Order))
-        {
-            Layers.Add(toggle.Order);
-        }
-        else if (!toggle.IsChecked)
-        {
-            Layers.Remove(toggle.Order);
-        }
-    }
 
     public ClothingItem ToModel()
     {

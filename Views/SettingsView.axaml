@@ -17,7 +17,11 @@
     <Panel>
 
         <!--  ══ Root grid: nav column | content column ══════════════  -->
-        <Grid ColumnDefinitions="320,*">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{StaticResource NavPanelWidthGridLength}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
             <!--  ── LEFT NAV PANEL ───────────────────────────────────  -->
             <Border
@@ -158,24 +162,10 @@
                 <views:SettingsPunishmentsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3}" />
 
                 <!--  ==================== WARDROBE ====================  -->
-                <Grid
-                    IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}"
-                    Margin="0,0,0,8"
-                    RowDefinitions="Auto,Auto,*,Auto">
-                    <StackPanel Grid.Row="0" Margin="16,0,16,0">
-                        <TextBlock
-                            Classes="SectionTitle"
-                            Margin="0,20,0,8"
-                            Text="{l:Tr 'Wardrobe'}" />
-                        <Border
-                            Background="{DynamicResource BrushBorderSubtle}"
-                            Height="1"
-                            Margin="0,0,0,8" />
-                    </StackPanel>
-                    <views:WardrobeToolbar Grid.Row="1" Margin="16,0,16,8" />
-                    <views:WardrobeTable Grid.Row="2" />
-                    <views:WardrobeBulkBar Grid.Row="3" Margin="16,8,16,0" />
-                </Grid>
+                <!--  Wrapped so the visibility binding still reads SettingsViewModel, not the tab's own DataContext  -->
+                <Panel IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4}">
+                    <views:SettingsWardrobeTab DataContext="{Binding Wardrobe}" />
+                </Panel>
 
                 <!--  ==================== OUTFIT RULES ====================  -->
                 <views:SettingsOutfitRulesTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5}" />

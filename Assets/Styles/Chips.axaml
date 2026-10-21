@@ -96,6 +96,13 @@
         <Setter Property="Opacity" Value="0.28" />
     </Style>
 
+    <!-- Button.chip.icon — square icon-only chip, e.g. the "+" that adds a slot or a tag -->
+    <Style Selector="Button.chip.icon">
+        <Setter Property="Width" Value="{DynamicResource ChipHeight}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
     <!-- Locked (chastity device) — comes after .selected so its background wins on the locked+selected chip -->
     <Style Selector="Button.chip.locked">
         <Setter Property="Background" Value="{DynamicResource BrushAmberBackground}" />

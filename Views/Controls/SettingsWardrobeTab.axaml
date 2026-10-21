@@ -1,0 +1,611 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:ChastiMaid.Localization"
+             xmlns:vm="using:ChastiMaid.ViewModels"
+             xmlns:conv="using:ChastiMaid.Converters"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
+             xmlns:behaviors="using:ChastiMaid.Views.Behaviors"
+             x:DataType="vm:WardrobeViewModel"
+             x:Class="ChastiMaid.Views.Controls.SettingsWardrobeTab">
+
+    <!-- A layer, slot or tag chip: checked = every target has it, null = only some (n/total counter), unchecked = none.
+         IsChecked is one way: the ViewModel decides what a click does and re-announces the state. -->
+    <UserControl.DataTemplates>
+        <DataTemplate x:DataType="vm:WardrobeChipViewModel">
+            <ToggleButton Classes="filterChip"
+                          IsChecked="{Binding IsChecked, Mode=OneWay}"
+                          Command="{Binding ToggleCommand}"
+                          AutomationProperties.Name="{Binding Label}">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingXs}">
+                    <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
+                    <TextBlock Classes="chip-count"
+                               Text="{Binding CountText}"
+                               IsVisible="{Binding CountText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                </StackPanel>
+            </ToggleButton>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <Panel>
+
+        <!-- ══ Landscape layout ══════════════════════════════════════════════════════════
+             The only layout so far. A portrait twin (Golden Rule 6) would be a sibling Grid
+             toggled by IsLandscape, reusing the same ViewModel and the templates above. -->
+        <Grid Name="LandscapeLayout"
+              RowDefinitions="Auto,Auto,Auto,*"
+              RowSpacing="{StaticResource SpacingMd}"
+              Margin="{StaticResource SpacingXlThickness}">
+
+            <!-- ── Header ─────────────────────────────────────────────── -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="{StaticResource SpacingLg}">
+                <TextBlock Classes="SectionTitle" Text="{l:Tr 'Wardrobe'}" VerticalAlignment="Bottom" />
+                <TextBlock Classes="Caption" Text="{Binding TotalText}" VerticalAlignment="Bottom" />
+            </StackPanel>
+
+            <!-- ── Toolbar: search, filter, sort, rules, delete ─────────── -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="{StaticResource SpacingSm}">
+                <TextBox Grid.Column="0"
+                         Text="{Binding SearchText}"
+                         PlaceholderText="{l:Tr 'Search by name, layer, slot or tag…'}"
+                         AutomationProperties.Name="{l:Tr 'Search by name, layer, slot or tag…'}"
+                         MinHeight="{StaticResource TouchTargetMin}"
+                         VerticalContentAlignment="Center" />
+
+                <Button Grid.Column="1"
+                        Name="FilterButton"
+                        Classes="Ghost"
+                        ToolTip.Tip="{l:Tr 'Filter'}"
+                        AutomationProperties.Name="{l:Tr 'Filter'}">
+                    <Panel>
+                        <ic:SymbolIcon Symbol="Filter" IconVariant="Regular" FontSize="20" />
+                        <Border Classes="badge" IsVisible="{Binding HasFilters}">
+                            <TextBlock Text="{Binding FilterCount}" />
+                        </Border>
+                    </Panel>
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedRight" FlyoutPresenterClasses="popover">
+                            <StackPanel Spacing="{StaticResource SpacingLg}">
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Layers'}}" />
+                                    <ItemsControl ItemsSource="{Binding LayerFilterChips}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel ItemSpacing="{StaticResource SpacingSm}"
+                                                           LineSpacing="{StaticResource SpacingSm}" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Slots'}}" />
+                                    <ItemsControl ItemsSource="{Binding SlotFilterChips}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel ItemSpacing="{StaticResource SpacingSm}"
+                                                           LineSpacing="{StaticResource SpacingSm}" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Tags'}}" />
+                                    <ItemsControl ItemsSource="{Binding TagFilterChips}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel ItemSpacing="{StaticResource SpacingSm}"
+                                                           LineSpacing="{StaticResource SpacingSm}" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                                <Border Classes="paneFooter">
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="{StaticResource SpacingLg}">
+                                        <Button Grid.Column="0"
+                                                Classes="SmallGhost"
+                                                Content="{l:Tr 'Reset filters'}"
+                                                Command="{Binding ResetFiltersCommand}"
+                                                VerticalAlignment="Center" />
+                                        <Button Grid.Column="2"
+                                                Classes="Link"
+                                                Command="{Binding OpenManageCommand}"
+                                                CommandParameter="{x:Static vm:WardrobeEntryKind.Slot}"
+                                                Click="OnManageClick">
+                                            <TextBlock Classes="linkText" Text="{l:Tr 'Manage slots'}" />
+                                        </Button>
+                                        <Button Grid.Column="3"
+                                                Classes="Link"
+                                                Command="{Binding OpenManageCommand}"
+                                                CommandParameter="{x:Static vm:WardrobeEntryKind.Tag}"
+                                                Click="OnManageClick">
+                                            <TextBlock Classes="linkText" Text="{l:Tr 'Manage tags'}" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button Grid.Column="2"
+                        Classes="Ghost"
+                        ToolTip.Tip="{Binding SortLabel}"
+                        AutomationProperties.Name="{Binding SortLabel}">
+                    <ic:SymbolIcon Symbol="ArrowSort" IconVariant="Regular" FontSize="20" />
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedRight" FlyoutPresenterClasses="popover">
+                            <ItemsControl ItemsSource="{Binding SortOptions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:WardrobeSortOption">
+                                        <Button Classes="menuItem"
+                                                Classes.active="{Binding IsActive}"
+                                                Command="{Binding SelectCommand}">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingLg}">
+                                                <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Mark}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button Grid.Column="3" Classes="Ghost" Command="{Binding OpenRulesCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <ic:SymbolIcon Symbol="TaskListSquare" IconVariant="Regular" FontSize="20" />
+                        <TextBlock Text="{l:Tr 'Rules'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Column="4"
+                        Classes="Danger"
+                        Command="{Binding DeleteTargetsCommand}"
+                        ToolTip.Tip="{Binding DeleteToolTip}"
+                        AutomationProperties.Name="{Binding DeleteToolTip}">
+                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="20" />
+                </Button>
+            </Grid>
+
+            <!-- ── Active filters ─────────────────────────────────────── -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        Spacing="{StaticResource SpacingSm}"
+                        IsVisible="{Binding HasFilters}">
+                <TextBlock Classes="Caption" Text="{l:Tr 'Active filters:'}" VerticalAlignment="Center" />
+                <ItemsControl ItemsSource="{Binding ActiveFilters}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:WardrobeActiveFilter">
+                            <Button Classes="chip"
+                                    Command="{Binding RemoveCommand}"
+                                    ToolTip.Tip="{Binding RemoveName}"
+                                    AutomationProperties.Name="{Binding RemoveName}">
+                                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingXs}">
+                                    <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
+                                    <TextBlock Text="×" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- ── Master / detail ────────────────────────────────────── -->
+            <Grid Grid.Row="3" ColumnSpacing="{StaticResource SpacingLg}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource WardrobeListPanelWidthGridLength}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Master: the list -->
+                <Border Grid.Column="0" Classes="pane">
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <Border Grid.Row="0" Classes="paneHeader">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Classes="rowCheck"
+                                          IsChecked="{Binding AllVisibleChecked, Mode=OneWay}"
+                                          Command="{Binding ToggleAllVisibleCommand}"
+                                          AutomationProperties.Name="{l:Tr 'Select all visible items'}" />
+                                <Button Classes="Edit"
+                                        ToolTip.Tip="{l:Tr 'Selection options'}"
+                                        AutomationProperties.Name="{l:Tr 'Selection options'}">
+                                    <ic:SymbolIcon Symbol="ChevronDown" IconVariant="Regular" FontSize="14" />
+                                    <Button.Flyout>
+                                        <MenuFlyout Placement="BottomEdgeAlignedLeft" FlyoutPresenterClasses="popover">
+                                            <MenuItem Header="{Binding SelectAllVisibleText}" Command="{Binding SelectAllVisibleCommand}" />
+                                            <MenuItem Header="{l:Tr 'Invert selection'}" Command="{Binding InvertSelectionCommand}" />
+                                            <MenuItem Header="{l:Tr 'Clear selection'}" Command="{Binding ClearSelectionCommand}" />
+                                        </MenuFlyout>
+                                    </Button.Flyout>
+                                </Button>
+                                <TextBlock Classes="BodySmall" Text="{Binding ListHeaderText}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+
+                        <ScrollViewer Grid.Row="1">
+                            <Panel>
+                                <ItemsControl ItemsSource="{Binding VisibleItems}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:WardrobeEditViewModel">
+                                            <Border Classes="wardrobeRow"
+                                                    Classes.checked="{Binding IsSelected}"
+                                                    Classes.active="{Binding IsActive}">
+                                                <Border Classes="rowAccent">
+                                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                                        <CheckBox Grid.Column="0"
+                                                                  Classes="rowCheck"
+                                                                  IsChecked="{Binding IsSelected}"
+                                                                  AutomationProperties.Name="{Binding Name}" />
+
+                                                        <Button Grid.Column="1"
+                                                                Classes="rowButton"
+                                                                IsVisible="{Binding !IsEditing}"
+                                                                Command="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).ActivateCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                DoubleTapped="OnRowDoubleTapped"
+                                                                AutomationProperties.Name="{Binding Name}">
+                                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
+                                                                <TextBlock Classes="Body rowName"
+                                                                           Text="{Binding Name}"
+                                                                           TextTrimming="CharacterEllipsis"
+                                                                           VerticalAlignment="Center" />
+                                                                <TextBlock Grid.Column="1"
+                                                                           Classes="Caption listCaption"
+                                                                           Text="{Binding LayerCaption}" />
+                                                            </Grid>
+                                                        </Button>
+
+                                                        <StackPanel Grid.Column="1"
+                                                                    IsVisible="{Binding IsEditing}"
+                                                                    VerticalAlignment="Center">
+                                                            <TextBox Name="RenameBox"
+                                                                     Classes="underline"
+                                                                     Text="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).EditText}"
+                                                                     AutomationProperties.Name="{l:Tr 'Item name'}"
+                                                                     KeyDown="OnRenameKeyDown"
+                                                                     LostFocus="OnRenameLostFocus" />
+                                                            <TextBlock Classes="fieldError"
+                                                                       Text="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).RenameError}"
+                                                                       IsVisible="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).RenameError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                                        </StackPanel>
+
+                                                        <Button Grid.Column="2"
+                                                                Classes="Edit"
+                                                                Command="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).BeginRenameCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                ToolTip.Tip="{l:Tr 'Rename item'}"
+                                                                AutomationProperties.Name="{l:Tr 'Rename item'}">
+                                                            <Button.IsVisible>
+                                                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                                    <Binding Path="IsActive" />
+                                                                    <Binding Path="!IsEditing" />
+                                                                </MultiBinding>
+                                                            </Button.IsVisible>
+                                                            <ic:SymbolIcon Symbol="Edit" IconVariant="Regular" FontSize="18" />
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Classes="BodySmall"
+                                           Margin="{StaticResource SpacingLgThickness}"
+                                           TextWrapping="Wrap"
+                                           Text="{l:Tr 'No item matches search and filters.'}"
+                                           IsVisible="{Binding VisibleItems.Count, Converter={x:Static conv:IntEqualityConverter.Instance}, ConverterParameter=0}" />
+                            </Panel>
+                        </ScrollViewer>
+
+                        <Border Grid.Row="2" Classes="paneFooter">
+                            <StackPanel Spacing="{StaticResource SpacingSm}">
+                                <Button Classes="Add"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Content="{l:Tr '+ Add Item'}"
+                                        Command="{Binding AddItemCommand}" />
+                                <TextBlock Classes="Caption"
+                                           TextWrapping="Wrap"
+                                           Text="{l:Tr 'Double-click the name (or the pencil) to rename.'}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Detail: edits every target at once -->
+                <Border Grid.Column="1" Classes="pane">
+                    <ScrollViewer>
+                        <Panel Margin="{StaticResource SpacingXlThickness}">
+                            <TextBlock Classes="Body"
+                                       TextWrapping="Wrap"
+                                       Text="{l:Tr 'Select an item to edit its details.'}"
+                                       IsVisible="{Binding !HasTargets}" />
+
+                            <StackPanel Spacing="{StaticResource SpacingXl}"
+                                        MaxWidth="{StaticResource WardrobeDetailMaxWidth}"
+                                        HorizontalAlignment="Left"
+                                        IsVisible="{Binding HasTargets}">
+
+                                <!-- Title; with several targets, the first names and the chip legend -->
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="Heading" Text="{Binding DetailTitle}" TextWrapping="Wrap" />
+                                    <TextBlock Classes="BodySmall"
+                                               Text="{Binding NamesPreview}"
+                                               TextWrapping="Wrap"
+                                               IsVisible="{Binding IsMultiTarget}" />
+                                    <Border Classes="legend" IsVisible="{Binding IsMultiTarget}">
+                                        <WrapPanel ItemSpacing="{StaticResource SpacingLg}" LineSpacing="{StaticResource SpacingSm}">
+                                            <TextBlock Classes="Caption" Text="{l:Tr 'Chip legend:'}" VerticalAlignment="Center" />
+                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                                <ToggleButton Classes="filterChip legendChip" IsChecked="True" Content="{l:Tr 'Tag'}" />
+                                                <TextBlock Classes="Caption" Text="{l:Tr 'in all items'}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                                <ToggleButton Classes="filterChip legendChip" IsChecked="{x:Null}">
+                                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingXs}">
+                                                        <TextBlock Text="{l:Tr 'Tag'}" VerticalAlignment="Center" />
+                                                        <TextBlock Classes="chip-count" Text="1/2" />
+                                                    </StackPanel>
+                                                </ToggleButton>
+                                                <TextBlock Classes="Caption" Text="{l:Tr 'only in some'}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                                <ToggleButton Classes="filterChip legendChip" IsChecked="False" Content="{l:Tr 'Tag'}" />
+                                                <TextBlock Classes="Caption" Text="{l:Tr 'in none'}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </WrapPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Layers -->
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Layers'}}" />
+                                    <ItemsControl ItemsSource="{Binding LayerChips}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                    <TextBlock Classes="fieldError"
+                                               Text="{Binding LayerError}"
+                                               IsVisible="{Binding LayerError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </StackPanel>
+
+                                <!-- Slots, then the "+" that adds one -->
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Slots'}}" />
+                                    <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}">
+                                        <ItemsControl ItemsSource="{Binding SlotChips}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <Button Classes="chip icon"
+                                                Command="{Binding OpenAddEntryCommand}"
+                                                CommandParameter="{x:Static vm:WardrobeEntryKind.Slot}"
+                                                ToolTip.Tip="{l:Tr 'Add slot'}"
+                                                AutomationProperties.Name="{l:Tr 'Add slot'}">
+                                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="14" />
+                                        </Button>
+                                    </WrapPanel>
+                                </StackPanel>
+
+                                <!-- Tags, then the "+" that adds one -->
+                                <StackPanel Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Tags'}}" />
+                                    <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}">
+                                        <ItemsControl ItemsSource="{Binding TagChips}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel ItemSpacing="{StaticResource SpacingSm}" LineSpacing="{StaticResource SpacingSm}" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <Button Classes="chip icon"
+                                                Command="{Binding OpenAddEntryCommand}"
+                                                CommandParameter="{x:Static vm:WardrobeEntryKind.Tag}"
+                                                ToolTip.Tip="{l:Tr 'Add tag'}"
+                                                AutomationProperties.Name="{l:Tr 'Add tag'}">
+                                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="14" />
+                                        </Button>
+                                    </WrapPanel>
+                                </StackPanel>
+
+                                <!-- Weight and Multiplier: empty with a placeholder when the targets differ. Value is a
+                                     decimal? on purpose, so it binds without NullableNumericConverter (null = no change). -->
+                                <WrapPanel ItemSpacing="{StaticResource SpacingXl}" LineSpacing="{StaticResource SpacingLg}">
+                                    <StackPanel x:DataType="vm:WardrobeNumberFieldViewModel"
+                                                DataContext="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).Weight}"
+                                                Width="{StaticResource WardrobeNumberFieldWidth}"
+                                                Spacing="{StaticResource SpacingXs}">
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Weight'}}" />
+                                        <NumericUpDown Classes="underline stacked-spinner"
+                                                       Value="{Binding Value}"
+                                                       PlaceholderText="{Binding Placeholder}"
+                                                       FormatString="{x:Static vm:WardrobeNumberFieldViewModel.Format}"
+                                                       Minimum="0"
+                                                       behaviors:SpinCommands.Increase="{Binding StepUpCommand}"
+                                                       behaviors:SpinCommands.Decrease="{Binding StepDownCommand}"
+                                                       LostFocus="OnNumberLostFocus"
+                                                       AutomationProperties.Name="{l:Tr 'Weight'}" />
+                                        <TextBlock Classes="Caption" Text="{Binding RangeText}" />
+                                    </StackPanel>
+                                    <StackPanel x:DataType="vm:WardrobeNumberFieldViewModel"
+                                                DataContext="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).Multiplier}"
+                                                Width="{StaticResource WardrobeNumberFieldWidth}"
+                                                Spacing="{StaticResource SpacingXs}">
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Multiplier'}}" />
+                                        <NumericUpDown Classes="underline stacked-spinner"
+                                                       Value="{Binding Value}"
+                                                       PlaceholderText="{Binding Placeholder}"
+                                                       FormatString="{x:Static vm:WardrobeNumberFieldViewModel.Format}"
+                                                       Minimum="0"
+                                                       behaviors:SpinCommands.Increase="{Binding StepUpCommand}"
+                                                       behaviors:SpinCommands.Decrease="{Binding StepDownCommand}"
+                                                       LostFocus="OnNumberLostFocus"
+                                                       AutomationProperties.Name="{l:Tr 'Multiplier'}" />
+                                        <TextBlock Classes="Caption" Text="{Binding RangeText}" />
+                                    </StackPanel>
+                                </WrapPanel>
+
+                                <!-- Rules involving the item's tags (single item only) -->
+                                <Border Classes="paneFooter" IsVisible="{Binding ShowItemRules}">
+                                    <StackPanel Spacing="{StaticResource SpacingSm}">
+                                        <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr &quot;Rules on this item's tags&quot;}}" />
+                                        <ItemsControl ItemsSource="{Binding ItemRules}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <TextBlock Classes="BodySmall" Text="{Binding}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Classes="BodySmall"
+                                                   Text="{l:Tr &quot;No rule involves this item's tags.&quot;}"
+                                                   IsVisible="{Binding ItemRules.Count, Converter={x:Static conv:IntEqualityConverter.Instance}, ConverterParameter=0}" />
+                                        <Button Classes="Link" Command="{Binding OpenRulesCommand}" HorizontalAlignment="Left">
+                                            <TextBlock Classes="linkText" Text="{l:Tr 'Edit rules'}" />
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Classes="paneFooter">
+                                    <Button Classes="Danger"
+                                            HorizontalAlignment="Left"
+                                            Content="{Binding DeleteText}"
+                                            Command="{Binding DeleteTargetsCommand}" />
+                                </Border>
+                            </StackPanel>
+                        </Panel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- ══ Undo notice ═══════════════════════════════════════════════════════════════ -->
+        <Border Classes="notice" IsVisible="{Binding Notice, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingLg}">
+                <TextBlock Text="{Binding Notice}" AutomationProperties.LiveSetting="Polite" />
+                <Button Content="{l:Tr 'Undo'}" Command="{Binding UndoDeleteCommand}" IsVisible="{Binding CanUndo}" />
+                <Button Content="×"
+                        Command="{Binding DismissNoticeCommand}"
+                        ToolTip.Tip="{l:Tr 'Close notice'}"
+                        AutomationProperties.Name="{l:Tr 'Close notice'}" />
+            </StackPanel>
+        </Border>
+
+        <!-- ══ Rules (stub until the rules editor moves here) ════════════════════════════ -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding IsRulesDialogOpen}">
+            <Border Classes="dialogBox">
+                <StackPanel Spacing="{StaticResource SpacingLg}">
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Outfit Rules'}" />
+                    <TextBlock Classes="Body dialogMessage"
+                               TextWrapping="Wrap"
+                               Text="{l:Tr 'The rules will be edited here. Until then, use the Outfit Rules tab.'}" />
+                    <Button Name="RulesCloseButton"
+                            Classes="Primary"
+                            HorizontalAlignment="Right"
+                            Content="{l:Tr 'Close'}"
+                            Command="{Binding CloseRulesCommand}" />
+                </StackPanel>
+            </Border>
+        </Panel>
+
+        <!-- ══ Manage slots / tags ═══════════════════════════════════════════════════════ -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding ManageKind, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Border Classes="dialogBox">
+                <StackPanel Spacing="{StaticResource SpacingMd}">
+                    <TextBlock Classes="Heading" Text="{Binding ManageTitle}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
+                        <TextBox Name="ManageBox"
+                                 Classes="underline"
+                                 Text="{Binding EntryText}"
+                                 PlaceholderText="{Binding ManagePlaceholder}"
+                                 AutomationProperties.Name="{Binding ManagePlaceholder}"
+                                 KeyDown="OnEntryKeyDown"
+                                 VerticalAlignment="Bottom" />
+                        <Button Grid.Column="1" Classes="Primary" Content="{l:Tr 'Add'}" Command="{Binding ManageAddCommand}" />
+                    </Grid>
+                    <TextBlock Classes="fieldError"
+                               Text="{Binding EntryError}"
+                               IsVisible="{Binding EntryError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                    <Border Classes="pane">
+                        <ScrollViewer MaxHeight="{StaticResource WardrobeManageListMaxHeight}">
+                            <Panel>
+                                <ItemsControl ItemsSource="{Binding ManageRows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:WardrobeEntryRow">
+                                            <Border Classes="wardrobeRow">
+                                                <Grid ColumnDefinitions="*,Auto,Auto"
+                                                      ColumnSpacing="{StaticResource SpacingMd}"
+                                                      Margin="{StaticResource SpacingLgThickness}">
+                                                    <TextBlock Classes="Body"
+                                                               Text="{Binding Name}"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Column="1" Classes="Caption" Text="{Binding Usage}" VerticalAlignment="Center" />
+                                                    <Button Grid.Column="2"
+                                                            Classes="Edit"
+                                                            Command="{Binding DeleteCommand}"
+                                                            ToolTip.Tip="{Binding DeleteName}"
+                                                            AutomationProperties.Name="{Binding DeleteName}">
+                                                        <ic:SymbolIcon Symbol="Delete"
+                                                                       IconVariant="Regular"
+                                                                       FontSize="18"
+                                                                       Foreground="{DynamicResource BrushButtonDanger}" />
+                                                    </Button>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Classes="BodySmall"
+                                           Margin="{StaticResource SpacingLgThickness}"
+                                           Text="{l:Tr 'No entries.'}"
+                                           IsVisible="{Binding ManageRows.Count, Converter={x:Static conv:IntEqualityConverter.Instance}, ConverterParameter=0}" />
+                            </Panel>
+                        </ScrollViewer>
+                    </Border>
+                    <Button Classes="Primary" HorizontalAlignment="Right" Content="{l:Tr 'Close'}" Command="{Binding CloseManageCommand}" />
+                </StackPanel>
+            </Border>
+        </Panel>
+
+        <!-- ══ Add slot / tag (from the "+" chips: applied to every target) ═══════════════ -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding AddEntryKind, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Border Classes="dialogBox">
+                <StackPanel Spacing="{StaticResource SpacingLg}">
+                    <TextBlock Classes="Heading" Text="{Binding AddEntryTitle}" />
+                    <StackPanel Spacing="{StaticResource SpacingXs}">
+                        <TextBox Name="EntryBox"
+                                 Classes="underline"
+                                 Text="{Binding EntryText}"
+                                 PlaceholderText="{l:Tr 'Name'}"
+                                 AutomationProperties.Name="{Binding AddEntryTitle}"
+                                 KeyDown="OnEntryKeyDown" />
+                        <TextBlock Classes="fieldError"
+                                   Text="{Binding EntryError}"
+                                   IsVisible="{Binding EntryError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="{StaticResource SpacingSm}">
+                        <Button Classes="Ghost" Content="{l:Tr 'Cancel'}" Command="{Binding CancelAddEntryCommand}" />
+                        <Button Classes="Primary" Content="{l:Tr 'Add'}" Command="{Binding ConfirmAddEntryCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Panel>
+
+        <!-- ══ Confirmations (unused entry, delete entry): above every other dialog ══════ -->
+        <dialogs:ConfirmDialog DataContext="{Binding Confirmation}"
+                               IsVisible="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).Confirmation, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}" />
+    </Panel>
+
+</UserControl>

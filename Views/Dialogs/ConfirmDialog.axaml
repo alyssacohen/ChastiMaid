@@ -23,7 +23,8 @@
                             Margin="0,8,0,0">
                     <Button Content="{Binding ConfirmLabel}"
                             Command="{Binding ConfirmCommand}"
-                            Classes="Primary" />
+                            Classes.Primary="{Binding !IsDestructive}"
+                            Classes.Danger="{Binding IsDestructive}" />
                     <Button Content="{Binding SecondaryLabel}"
                             Command="{Binding SecondaryCommand}"
                             Classes="Ghost"

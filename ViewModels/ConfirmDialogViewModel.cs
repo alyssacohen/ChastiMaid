@@ -49,6 +49,9 @@ public class ConfirmDialogViewModel : ViewModelBase
     /// <summary>Cancel gets the focus when the dialog opens (Esc always cancels a dialog that has a Cancel button).</summary>
     public bool CancelIsDefault { get; init; }
 
+    /// <summary>The confirm button deletes something: drawn with the Danger style instead of Primary.</summary>
+    public bool IsDestructive { get; init; }
+
     public Task<bool> Result => _tcs.Task;
 
     public ICommand ConfirmCommand { get; }

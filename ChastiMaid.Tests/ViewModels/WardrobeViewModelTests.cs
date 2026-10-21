@@ -22,7 +22,7 @@ public class WardrobeViewModelTests
         {
             Name = name, Layers = [.. layers], Slots = [.. slots ?? []], Tags = [.. tags ?? []], Weight = weight,
             Multiplier = multiplier,
-        }, _ => { }, _l);
+        }, _l);
 
     private void Rule(string source, OutfitRelation relation, string related) =>
         _rules.Add(new OutfitRuleEditViewModel(
@@ -37,7 +37,7 @@ public class WardrobeViewModelTests
 
         return new WardrobeViewModel(_items, _rules,
             WardrobeCatalog.Merge(null, items.Select(i => i.ToModel()), _rules.Select(r => r.ToModel())),
-            m => new WardrobeEditViewModel(m, _ => { }, _l), _l);
+            m => new WardrobeEditViewModel(m, _l), _l);
     }
 
     private static string[] Names(IEnumerable<WardrobeEditViewModel> items) => [.. items.Select(i => i.Name)];

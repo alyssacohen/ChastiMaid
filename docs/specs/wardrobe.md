@@ -61,9 +61,12 @@ the final outfit.
 
 ## Slot System
 
-Slots represent body areas. Two items cannot occupy the same slot on the same layer. Available slots:
-
-- `torso`, `legs`, `arms`, `crotch`, `waist`, `head`, `neck`, `feet`
+Slots represent body areas. Two items cannot occupy the same slot on the same layer. Slots and tags are
+**user-defined** (e.g. `torso`, `legs`, `arms`, `waist`, `feet`; the seeds use their own per-language list): Settings ›
+Wardrobe adds and deletes them, and keeps them in a catalogue (`WardrobeCatalog`, profile collection
+`wardrobe_catalog`, optional `wardrobeCatalog` section of the contract) even while no item uses an entry. The
+catalogue is always completed with every value the items (and, for tags, the rules) use. Names are compared ignoring
+case and lower-cased on save; deleting a tag also deletes the rules that cite it.
 
 ## OutfitBuilder Algorithm
 

@@ -168,6 +168,8 @@ public partial class WardrobeViewModel : ViewModelBase
 
     public bool ShowItemRules => _targets.Count == 1;
 
+    public bool HasFilters => FilterCount > 0;
+
     public string AddEntryTitle => AddEntryKind == WardrobeEntryKind.Slot ? _l.T("Add slot") : _l.T("Add tag");
     public string ManageTitle => ManageKind == WardrobeEntryKind.Slot ? _l.T("Manage slots") : _l.T("Manage tags");
 
@@ -229,6 +231,8 @@ public partial class WardrobeViewModel : ViewModelBase
     {
         var check = !VisibleItems.All(i => i.IsSelected);
         Batch(() => SetChecked(VisibleItems, check));
+        // The CheckBox has flipped itself; put it back on the computed state (it may not have changed).
+        this.RaisePropertyChanged(nameof(AllVisibleChecked));
     }
 
     public void SelectAllVisible()
@@ -334,6 +338,7 @@ public partial class WardrobeViewModel : ViewModelBase
                 .Select(t => ActiveFilter(_l.T("Tag: {0}", t), () => ToggleTagFilter(t))),
         ];
         FilterCount = ActiveFilters.Count;
+        this.RaisePropertyChanged(nameof(HasFilters));
         Refresh();
     }
 
@@ -466,7 +471,7 @@ public partial class WardrobeViewModel : ViewModelBase
 
         Confirm(new ConfirmDialogViewModel(
             kind == WardrobeEntryKind.Slot ? _l.T("Delete the slot?") : _l.T("Delete the tag?"),
-            message, _l.T("Delete"), _l.T("Cancel")), () => RemoveEntry(kind, value));
+            message, _l.T("Delete"), _l.T("Cancel")) { IsDestructive = true }, () => RemoveEntry(kind, value));
     }
 
     private WardrobeChipViewModel LayerChip(WardrobeLayer layer, Action toggle) => new(_l.T(layer.DisplayName), toggle);
@@ -605,7 +610,7 @@ public partial class WardrobeViewModel : ViewModelBase
                 value, items, _l.N("{0} rule", "{0} rules", ruleCount, ruleCount));
         Confirm(new ConfirmDialogViewModel(
             kind == WardrobeEntryKind.Slot ? _l.T("Delete the slot?") : _l.T("Delete the tag?"),
-            message, _l.T("Delete"), _l.T("Cancel")), () => RemoveEntry(kind, value));
+            message, _l.T("Delete"), _l.T("Cancel")) { IsDestructive = true }, () => RemoveEntry(kind, value));
     }
 
     private void RefreshManageRows()
@@ -714,6 +719,7 @@ public partial class WardrobeViewModel : ViewModelBase
 
         _editingNewItem = false;
         EditingItem = item;
+        item.IsEditing = true;
         EditText = item.Name;
         RenameError = null;
     }
@@ -766,6 +772,11 @@ public partial class WardrobeViewModel : ViewModelBase
 
     private void EndRename()
     {
+        if (EditingItem is not null)
+        {
+            EditingItem.IsEditing = false;
+        }
+
         EditingItem = null;
         _editingNewItem = false;
         RenameError = null;
