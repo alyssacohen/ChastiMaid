@@ -312,6 +312,25 @@ public class WardrobeViewModelTests
         Assert.True(vm.IsModalOpen);
     }
 
+    [Fact]
+    public void OpeningADialog_AnnouncesItBeforeTheBackgroundIsDisabled()
+    {
+        var vm = Create(Item("a", [Base]));
+        bool? modalWhenAnnounced = null;
+        vm.PropertyChanging += (_, e) =>
+        {
+            if (e.PropertyName == nameof(WardrobeViewModel.ManageKind))
+            {
+                modalWhenAnnounced = vm.IsModalOpen;
+            }
+        };
+
+        vm.OpenManage(WardrobeEntryKind.Tag);
+
+        Assert.False(modalWhenAnnounced); // the views read the focused control here, while it is still enabled
+        Assert.True(vm.IsModalOpen);
+    }
+
     // ── Weight and Multiplier ────────────────────────────────────────────
 
     [Fact]

@@ -21,13 +21,24 @@ public partial class SettingsView : UserControl
         base.OnDataContextChanged(e);
         if (_wardrobe is not null)
         {
+            _wardrobe.PropertyChanging -= OnWardrobeChanging;
             _wardrobe.PropertyChanged -= OnWardrobeChanged;
         }
 
         _wardrobe = (DataContext as SettingsViewModel)?.Wardrobe;
         if (_wardrobe is not null)
         {
+            _wardrobe.PropertyChanging += OnWardrobeChanging;
             _wardrobe.PropertyChanged += OnWardrobeChanged;
+        }
+    }
+
+    /// <summary>Remembers the focused control before the rules dialog opens (the background is then disabled).</summary>
+    private void OnWardrobeChanging(object? sender, PropertyChangingEventArgs e)
+    {
+        if (e.PropertyName == nameof(WardrobeViewModel.IsRulesDialogOpen) && _wardrobe is { IsRulesDialogOpen: false })
+        {
+            _focusBeforeRules = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
         }
     }
 
@@ -41,7 +52,6 @@ public partial class SettingsView : UserControl
 
         if (_wardrobe.IsRulesDialogOpen)
         {
-            _focusBeforeRules = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
             Dispatcher.UIThread.Post(() => RulesCloseButton.Focus(NavigationMethod.Tab), DispatcherPriority.Loaded);
             return;
         }

@@ -12,12 +12,12 @@ using ChastiMaid.ViewModels;
 namespace ChastiMaid.Views.Controls;
 
 /// <summary>
-///     Settings › Wardrobe (master/detail). Only focus and keyboard handling live here: the rename box, the dialog
-///     fields and the number fields; every decision is the <see cref="WardrobeViewModel" />'s.
+///     Settings › Wardrobe (master/detail). Only focus and keyboard handling live here: the rename box, the number
+///     fields and the touch cells; every decision is the <see cref="WardrobeViewModel" />'s. Its dialogs are
+///     <see cref="WardrobeDialogs" />.
 /// </summary>
 public partial class SettingsWardrobeTab : UserControl
 {
-    private IInputElement? _focusBeforeDialog;
     private WardrobeViewModel? _vm;
 
     public SettingsWardrobeTab()
@@ -42,62 +42,12 @@ public partial class SettingsWardrobeTab : UserControl
         }
     }
 
-    /// <summary>
-    ///     Esc closes the topmost Wardrobe dialog (the confirmation dialog handles its own Esc, the rules dialog lives in
-    ///     SettingsView).
-    /// </summary>
-    protected override void OnKeyDown(KeyEventArgs e)
-    {
-        if (e.Key == Key.Escape && _vm is not null && _vm.Confirmation is null)
-        {
-            if (_vm.AddEntryKind is not null)
-            {
-                _vm.CancelAddEntryCommand.Execute(null);
-                e.Handled = true;
-            }
-            else if (_vm.ManageKind is not null)
-            {
-                _vm.CloseManageCommand.Execute(null);
-                e.Handled = true;
-            }
-        }
-
-        base.OnKeyDown(e);
-    }
-
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        switch (e.PropertyName)
+        if (e.PropertyName == nameof(WardrobeViewModel.EditingItem) && _vm?.EditingItem is not null)
         {
-            case nameof(WardrobeViewModel.EditingItem) when _vm?.EditingItem is not null:
-                FocusRenameBox();
-                break;
-            case nameof(WardrobeViewModel.AddEntryKind):
-                OnDialogToggled(_vm?.AddEntryKind is not null, EntryBox);
-                break;
-            case nameof(WardrobeViewModel.ManageKind):
-                OnDialogToggled(_vm?.ManageKind is not null, ManageBox);
-                break;
+            FocusRenameBox();
         }
-    }
-
-    /// <summary>Focus moves into a dialog when it opens and back to where it was when it closes.</summary>
-    private void OnDialogToggled(bool open, Control target)
-    {
-        if (open)
-        {
-            _focusBeforeDialog = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
-            Dispatcher.UIThread.Post(() =>
-            {
-                target.Focus(NavigationMethod.Tab);
-                (target as TextBox)?.SelectAll();
-            }, DispatcherPriority.Loaded);
-            return;
-        }
-
-        var previous = _focusBeforeDialog;
-        _focusBeforeDialog = null;
-        Dispatcher.UIThread.Post(() => previous?.Focus(NavigationMethod.Tab), DispatcherPriority.Loaded);
     }
 
     // ── Rename ───────────────────────────────────────────────────────────
@@ -151,26 +101,7 @@ public partial class SettingsWardrobeTab : UserControl
         }, DispatcherPriority.Loaded);
     }
 
-    // ── Dialog fields, number fields, popovers ───────────────────────────
-
-    private void OnEntryKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key != Key.Enter || _vm is null)
-        {
-            return;
-        }
-
-        if (ReferenceEquals(sender, ManageBox))
-        {
-            _vm.ManageAdd();
-        }
-        else
-        {
-            _vm.ConfirmAddEntry();
-        }
-
-        e.Handled = true;
-    }
+    // ── Number fields, popovers, touch cells ─────────────────────────────
 
     /// <summary>Whatever was typed and not applied (an empty field, a refused separator) gives way to the real value.</summary>
     private void OnNumberLostFocus(object? sender, RoutedEventArgs e)

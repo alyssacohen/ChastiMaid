@@ -42,8 +42,8 @@
     <x:Double x:Key="WardrobeDetailMaxWidth">720</x:Double>
     <x:Double x:Key="WardrobeNumberFieldWidth">180</x:Double>
     <x:Double x:Key="WardrobeManageListMaxHeight">360</x:Double>
-    <!-- Outfit rules dialog (opened from the Wardrobe): width, and the height its rule list scrolls past -->
-    <x:Double x:Key="RulesDialogWidth">720</x:Double>
+    <!-- Wide dialogs (outfit rules, Manage slots / tags); the rules list scrolls past RulesDialogListMaxHeight -->
+    <x:Double x:Key="DialogWideWidth">720</x:Double>
     <x:Double x:Key="RulesDialogListMaxHeight">440</x:Double>
 
 </ResourceDictionary>

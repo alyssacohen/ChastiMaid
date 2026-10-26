@@ -17,20 +17,19 @@
     <Panel>
 
         <!--  ══ Root grid: nav column | content column ══════════════  -->
-        <Grid>
+        <!--  Disabled while a Wardrobe dialog is open, so neither clicks nor Tab reach what is behind it  -->
+        <Grid IsEnabled="{Binding !Wardrobe.IsModalOpen}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource NavPanelWidthGridLength}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!--  ── LEFT NAV PANEL ───────────────────────────────────  -->
-            <!--  Disabled while a Wardrobe dialog is open: those dialogs only cover the content column  -->
             <Border
                 Background="{DynamicResource BrushSurfaceMuted}"
                 BorderBrush="{DynamicResource BrushBorderSubtle}"
                 BorderThickness="0,0,1,0"
-                Grid.Column="0"
-                IsEnabled="{Binding !Wardrobe.IsModalOpen}">
+                Grid.Column="0">
                 <Grid RowDefinitions="Auto,*,Auto">
 
                     <!--  Nav header  -->
@@ -228,7 +227,7 @@
             <Panel.KeyBindings>
                 <KeyBinding Command="{Binding Wardrobe.CloseRulesCommand}" Gesture="Escape" />
             </Panel.KeyBindings>
-            <Border Classes="dialogBox fit" Width="{StaticResource RulesDialogWidth}">
+            <Border Classes="dialogBox fit" Width="{StaticResource DialogWideWidth}">
                 <StackPanel Spacing="{StaticResource SpacingLg}">
                     <TextBlock Classes="Heading" Text="{l:Tr 'Outfit Rules'}" />
                     <views:OutfitRulesEditor />
@@ -241,6 +240,9 @@
                 </StackPanel>
             </Border>
         </Panel>
+
+        <!--  Wardrobe dialogs (Add / Manage slots and tags, confirmations) and its notice  -->
+        <views:WardrobeDialogs DataContext="{Binding Wardrobe}" />
 
         <views:SettingsTestOutfitOverlay />
 
