@@ -104,19 +104,20 @@
                             Minimum="0"
                             Value="{Binding MaxDebt, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
                         <TextBlock
                             Classes="BodySmall"
                             Text="{l:Tr 'Daily interest rate'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
-                            FormatString="0.0'%'"
+                            FormatString="0.0"
                             Grid.Column="1"
                             Increment="0.5"
                             Maximum="10.0"
                             Minimum="0.5"
                             Value="{Binding DailyInterestRatePercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0.5}" />
+                        <TextBlock Classes="BodySmall unitSuffix" Grid.Column="2" Text="%" />
                     </Grid>
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock

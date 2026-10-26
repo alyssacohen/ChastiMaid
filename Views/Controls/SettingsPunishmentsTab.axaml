@@ -132,10 +132,10 @@
                                     Minimum="1"
                                     Value="{Binding CornertimeMovementCooldownMaxSeconds, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                             </Grid>
-                            <Grid ColumnDefinitions="*,Auto">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
                                 <TextBlock
                                     Classes="BodySmall"
-                                    Text="{l:Tr 'Movement sensitivity (%)'}"
+                                    Text="{l:Tr 'Movement sensitivity'}"
                                     VerticalAlignment="Center" />
                                 <NumericUpDown
                                     Classes="underline stacked-spinner compact"
@@ -144,6 +144,7 @@
                                     Maximum="100"
                                     Minimum="1"
                                     Value="{Binding CornertimeMovementSensitivityPercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                                <TextBlock Classes="BodySmall unitSuffix" Grid.Column="2" Text="%" />
                             </Grid>
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock

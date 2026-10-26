@@ -19,12 +19,13 @@
                             <Border Classes="card" Margin="0,0,0,12">
                                 <StackPanel Spacing="12">
                                     <TextBlock Classes="Heading" Text="{Binding Name}" />
-                                    <Grid ColumnDefinitions="*,Auto">
-                                        <TextBlock Classes="BodySmall" Text="{l:Tr 'Grant chance %'}"
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <TextBlock Classes="BodySmall" Text="{l:Tr 'Grant chance'}"
                                                    VerticalAlignment="Center" />
                                         <NumericUpDown Grid.Column="1" Classes="underline stacked-spinner compact"
                                                        Value="{Binding BaseGrantPercent, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=0}"
                                                        Minimum="0" Maximum="100" FormatString="0" />
+                                        <TextBlock Classes="BodySmall unitSuffix" Grid.Column="2" Text="%" />
                                     </Grid>
                                     <Grid ColumnDefinitions="*,Auto">
                                         <TextBlock Classes="BodySmall" Text="{l:Tr 'Duration (minutes)'}"
