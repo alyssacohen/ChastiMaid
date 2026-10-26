@@ -337,35 +337,13 @@
                                         HorizontalAlignment="Left"
                                         IsVisible="{Binding HasTargets}">
 
-                                <!-- Title; with several targets, the first names and the chip legend -->
+                                <!-- Title; with several targets, the first names -->
                                 <StackPanel Spacing="{StaticResource SpacingSm}">
                                     <TextBlock Classes="Heading" Text="{Binding DetailTitle}" TextWrapping="Wrap" />
                                     <TextBlock Classes="BodySmall"
                                                Text="{Binding NamesPreview}"
                                                TextWrapping="Wrap"
                                                IsVisible="{Binding IsMultiTarget}" />
-                                    <Border Classes="legend" IsVisible="{Binding IsMultiTarget}">
-                                        <WrapPanel ItemSpacing="{StaticResource SpacingLg}" LineSpacing="{StaticResource SpacingSm}">
-                                            <TextBlock Classes="Caption" Text="{l:Tr 'Chip legend:'}" VerticalAlignment="Center" />
-                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
-                                                <ToggleButton Classes="filterChip legendChip" IsChecked="True" Content="{l:Tr 'Tag'}" />
-                                                <TextBlock Classes="Caption" Text="{l:Tr 'in all items'}" VerticalAlignment="Center" />
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
-                                                <ToggleButton Classes="filterChip legendChip" IsChecked="{x:Null}">
-                                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingXs}">
-                                                        <TextBlock Text="{l:Tr 'Tag'}" VerticalAlignment="Center" />
-                                                        <TextBlock Classes="chip-count" Text="1/2" />
-                                                    </StackPanel>
-                                                </ToggleButton>
-                                                <TextBlock Classes="Caption" Text="{l:Tr 'only in some'}" VerticalAlignment="Center" />
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
-                                                <ToggleButton Classes="filterChip legendChip" IsChecked="False" Content="{l:Tr 'Tag'}" />
-                                                <TextBlock Classes="Caption" Text="{l:Tr 'in none'}" VerticalAlignment="Center" />
-                                            </StackPanel>
-                                        </WrapPanel>
-                                    </Border>
                                 </StackPanel>
 
                                 <!-- Layers -->

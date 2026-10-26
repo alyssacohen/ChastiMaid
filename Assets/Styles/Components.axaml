@@ -137,6 +137,7 @@
     </Style>
 
     <!-- filterChip — ToggleButton chip for layer filters (WardrobeToolbar) -->
+    <!-- Same footprint as before (ChipHeight 30): 1 px margin + 28 px chip, whose 1 px border takes 1 px of padding -->
     <Style Selector="ToggleButton.filterChip">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceMuted}" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
@@ -144,9 +145,19 @@
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="Padding" Value="10,0" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipBorder}" />
+    </Style>
+    <!-- Fluent recolours the border per state on the template's presenter: keep the chip border in every state
+         (unselected, hover, disabled); checked and partial set their own below -->
+    <Style Selector="ToggleButton.filterChip /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipBorder}" />
+    </Style>
+    <Style Selector="ToggleButton.filterChip:checked /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipSelected}" />
     </Style>
 
     <Style Selector="ToggleButton.filterChip:checked">
@@ -413,20 +424,6 @@
         <Setter Property="Foreground" Value="{DynamicResource BrushWindowBackground}" />
     </Style>
 
-    <!-- legend — the band explaining the three chip states when several items are edited -->
-    <Style Selector="Border.legend">
-        <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}" />
-        <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Padding" Value="{DynamicResource SpacingMdThickness}" />
-    </Style>
-
-    <!-- legendChip — a chip drawn as a sample in the multi-selection legend: not interactive, hidden from screen
-         readers (the legend text says the same) -->
-    <Style Selector="ToggleButton.filterChip.legendChip">
-        <Setter Property="IsHitTestVisible" Value="False" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="AutomationProperties.AccessibilityView" Value="Raw" />
-    </Style>
 
     <!-- ──────────────────────────────────────────────────────────
        TextBox.underline — bottom border only, same visual as TagInput
@@ -510,14 +507,10 @@
         <Setter Property="Padding" Value="4,2" />
     </Style>
 
-    <!-- NumericUpDown.touch — finger-sized: the field is a full touch target tall, each stacked chevron is 44 wide and
-         half of it tall ((44 - 2 spacing) / 2), and touch keyboards open their number layout -->
-    <Style Selector="NumericUpDown.touch">
-        <Setter Property="MinHeight" Value="{DynamicResource TouchTargetMin}" />
-    </Style>
+    <!-- NumericUpDown.touch — easier to use by finger without growing taller (compact layout): the stacked chevrons
+         are a full touch target wide, and touch keyboards open their number layout -->
     <Style Selector="NumericUpDown.touch RepeatButton">
         <Setter Property="MinWidth" Value="{DynamicResource TouchTargetMin}" />
-        <Setter Property="MinHeight" Value="21" />
     </Style>
     <Style Selector="NumericUpDown.touch TextBox">
         <Setter Property="TextInputOptions.ContentType" Value="Number" />

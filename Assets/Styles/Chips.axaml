@@ -1,27 +1,37 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- Every chip keeps a 30 px footprint (ChipHeight): 1 px margin around a 28 px chip with a 1 px border that takes
+         1 px of the padding. Unselected (and disabled) chips show the slightly darker BrushChipBorder; the coloured
+         states paint the border like their fill. -->
+
     <!-- chip — default unselected state -->
     <Style Selector="Border.chip">
         <Setter Property="Background" Value="{DynamicResource BrushChipDefault}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="Padding" Value="8,0" />
-        <Setter Property="Height" Value="30" />
+        <Setter Property="Padding" Value="6,0" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Margin" Value="1" />
     </Style>
 
     <!-- chip.selected — user-selected value -->
     <Style Selector="Border.chip.selected">
         <Setter Property="Background" Value="{DynamicResource BrushChipSelected}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipSelected}" />
     </Style>
 
     <!-- chip.required — forced/required value -->
     <Style Selector="Border.chip.required">
         <Setter Property="Background" Value="{DynamicResource BrushChipRequired}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipRequired}" />
     </Style>
 
     <!-- chip.locked — chastity device already worn, non-toggleable -->
     <Style Selector="Border.chip.locked">
         <Setter Property="Background" Value="{DynamicResource BrushAmberBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushAmberBackground}" />
     </Style>
 
     <!-- chip-label — inner text for all chip states -->
@@ -56,9 +66,9 @@
     <!-- chip.info — two-line display chip (outfit proposal/confirm); auto height -->
     <Style Selector="Border.chip.info">
         <Setter Property="Height" Value="NaN" />
-        <Setter Property="MinHeight" Value="30" />
-        <Setter Property="Padding" Value="8,6" />
-        <Setter Property="Margin" Value="4, 0" />
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="Padding" Value="7,5" />
+        <Setter Property="Margin" Value="5,1" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 
@@ -77,18 +87,22 @@
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="Padding" Value="10,0" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipBorder}" />
     </Style>
 
     <Style Selector="Button.chip.selected">
         <Setter Property="Background" Value="{DynamicResource BrushChipSelected}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipSelected}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
     </Style>
 
     <Style Selector="Button.chip.required">
         <Setter Property="Background" Value="{DynamicResource BrushChipRequired}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushChipRequired}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushButtonPrimaryText}" />
     </Style>
 
@@ -96,9 +110,9 @@
         <Setter Property="Opacity" Value="0.28" />
     </Style>
 
-    <!-- Button.chip.icon — square icon-only chip, e.g. the "+" that adds a slot or a tag -->
+    <!-- Button.chip.icon — square icon-only chip, e.g. the "+" that adds a slot or a tag (as wide as a chip is tall) -->
     <Style Selector="Button.chip.icon">
-        <Setter Property="Width" Value="{DynamicResource ChipHeight}" />
+        <Setter Property="Width" Value="28" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
@@ -106,6 +120,7 @@
     <!-- Locked (chastity device) — comes after .selected so its background wins on the locked+selected chip -->
     <Style Selector="Button.chip.locked">
         <Setter Property="Background" Value="{DynamicResource BrushAmberBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushAmberBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushAmberText}" />
     </Style>
 

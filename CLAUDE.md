@@ -218,7 +218,7 @@ Modifier: `compact` (reduces height to 32px; combinable: `Classes="Danger compac
 **Text:** `TextPrimary` · `TextSecondary` · `TextMuted` · `TextAccent`
 
 **Interactive:** `BrushButtonPrimary` · `BrushButtonPrimaryText` · `BrushButtonDanger` · `BrushBorderSubtle` ·
-`BrushChipDefault` · `BrushChipSelected` · `BrushChipRequired` · `BrushChipPartial` (chip held by only some of the edited items) · `BrushRowHover` (hover veil on list rows)
+`BrushChipDefault` · `BrushChipSelected` · `BrushChipRequired` · `BrushChipPartial` (chip held by only some of the edited items) · `BrushChipBorder` (border of unselected/disabled chips) · `BrushRowHover` (hover veil on list rows)
 
 **Semantic:** `BrushAmber` · `BrushAmberBackground` · `BrushAmberText` · `BrushStatusIdle` · `BrushEmergencyText`
 
