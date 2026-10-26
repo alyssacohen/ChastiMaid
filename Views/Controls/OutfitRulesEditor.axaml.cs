@@ -7,9 +7,9 @@ using ChastiMaid.ViewModels;
 
 namespace ChastiMaid.Views.Controls;
 
-public partial class SettingsOutfitRulesTab : UserControl
+public partial class OutfitRulesEditor : UserControl
 {
-    public SettingsOutfitRulesTab()
+    public OutfitRulesEditor()
     {
         InitializeComponent();
     }

@@ -240,14 +240,14 @@ public partial class SettingsViewModel : ViewModelBase
             }
         }
 
+        // The Wardrobe first: its tag list feeds the rules' suggestions.
         var allRules = _repo.GetOutfitRules();
+        Wardrobe = new WardrobeViewModel(WardrobeItems, OutfitRules,
+            WardrobeCatalog.Merge(_repo.GetWardrobeCatalog(), allWardrobe, allRules), NewWardrobeVm, L);
         foreach (var r in allRules)
         {
             OutfitRules.Add(NewRuleVm(r));
         }
-
-        Wardrobe = new WardrobeViewModel(WardrobeItems, OutfitRules,
-            WardrobeCatalog.Merge(_repo.GetWardrobeCatalog(), allWardrobe, allRules), NewWardrobeVm, L);
 
         TakeSnapshot();
 
@@ -505,7 +505,6 @@ public partial class SettingsViewModel : ViewModelBase
     public ICommand ImportContractCommand { get; }
 
     // --- Wardrobe helpers ---
-    private IEnumerable<string> AllUsedTags => WardrobeItems.SelectMany(w => w.Tags).Distinct().OrderBy(s => s);
 
     /// <summary>
     ///     Eligibility chips taken off their list (item deleted, layer removed). Their stored config is deleted on Save,
@@ -613,9 +612,11 @@ public partial class SettingsViewModel : ViewModelBase
 
     private OutfitRuleEditViewModel NewRuleVm(OutfitRule rule)
     {
-        // Deleted from the database on Save, like wardrobe items (see SaveAll).
-        return WireChild(new OutfitRuleEditViewModel(rule, AllUsedTags,
-            id => RemoveFrom(OutfitRules, id, _ => { }), L), () => IsRulesDirty = true);
+        // Removed by reference (new rules all have Id 0); the database follows on Save, like wardrobe items (SaveAll).
+        OutfitRuleEditViewModel vm = null!;
+        vm = WireChild(new OutfitRuleEditViewModel(rule, Wardrobe.Tags, _ => OutfitRules.Remove(vm), L),
+            () => IsRulesDirty = true);
+        return vm;
     }
 
     /// <summary>Saves <paramref name="model" /> and returns the Id the save assigned to it.</summary>

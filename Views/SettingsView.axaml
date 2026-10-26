@@ -80,20 +80,21 @@
                             Command="{Binding SetTabCommand}"
                             CommandParameter="4"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsWardrobeDirty}" Text="{l:Tr 'Wardrobe'}" />
+                            <!--  The outfit rules are edited from the Wardrobe, so their changes mark it too  -->
+                            <views:DirtyTabHeader Text="{l:Tr 'Wardrobe'}">
+                                <views:DirtyTabHeader.IsDirty>
+                                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                                        <Binding Path="IsWardrobeDirty" />
+                                        <Binding Path="IsRulesDirty" />
+                                    </MultiBinding>
+                                </views:DirtyTabHeader.IsDirty>
+                            </views:DirtyTabHeader>
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="5"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsRulesDirty}" Text="{l:Tr 'Outfit Rules'}" />
-                        </RadioButton>
-                        <RadioButton
-                            Classes="navItem"
-                            Command="{Binding SetTabCommand}"
-                            CommandParameter="6"
-                            IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=6, Mode=OneWay}">
                             <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{l:Tr 'Permissions'}" />
                         </RadioButton>
                     </StackPanel>
@@ -169,11 +170,8 @@
                     <views:SettingsWardrobeTab DataContext="{Binding Wardrobe}" />
                 </Panel>
 
-                <!--  ==================== OUTFIT RULES ====================  -->
-                <views:SettingsOutfitRulesTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5}" />
-
                 <!--  ==================== PERMISSIONS ====================  -->
-                <views:SettingsPermissionsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=6}" />
+                <views:SettingsPermissionsTab IsVisible="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5}" />
 
             </Panel>
 
@@ -224,6 +222,25 @@
         <dialogs:ConfirmDialog
             DataContext="{Binding ContractDialog}"
             IsVisible="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).ContractDialog, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}" />
+
+        <!--  Outfit rules, opened from the Wardrobe (toolbar Rules, "Edit rules"); Test Rules opens above it  -->
+        <Panel Classes="dialogOverlay" IsVisible="{Binding Wardrobe.IsRulesDialogOpen}">
+            <Panel.KeyBindings>
+                <KeyBinding Command="{Binding Wardrobe.CloseRulesCommand}" Gesture="Escape" />
+            </Panel.KeyBindings>
+            <Border Classes="dialogBox fit" Width="{StaticResource RulesDialogWidth}">
+                <StackPanel Spacing="{StaticResource SpacingLg}">
+                    <TextBlock Classes="Heading" Text="{l:Tr 'Outfit Rules'}" />
+                    <views:OutfitRulesEditor />
+                    <Button
+                        Classes="Primary"
+                        Command="{Binding Wardrobe.CloseRulesCommand}"
+                        Content="{l:Tr 'Close'}"
+                        HorizontalAlignment="Right"
+                        Name="RulesCloseButton" />
+                </StackPanel>
+            </Border>
+        </Panel>
 
         <views:SettingsTestOutfitOverlay />
 

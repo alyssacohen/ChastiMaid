@@ -5,15 +5,12 @@
              xmlns:converters="using:ChastiMaid.Converters"
              xmlns:ic="using:FluentIcons.Avalonia"
              x:DataType="vm:SettingsViewModel"
-             x:Class="ChastiMaid.Views.Controls.SettingsOutfitRulesTab">
+             x:Class="ChastiMaid.Views.Controls.OutfitRulesEditor">
 
-    <Grid RowDefinitions="Auto,*,Auto" Margin="0,0,0,16">
-        <StackPanel Grid.Row="0" Margin="24,0,32,0">
-            <TextBlock Classes="SectionTitle" Text="{l:Tr 'Outfit Rules'}" Margin="0,20,0,8" />
-            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,8" />
-        </StackPanel>
-        <ScrollViewer Grid.Row="1" Name="RulesScroll">
-            <ItemsControl ItemsSource="{Binding OutfitRules}" Margin="24,0,32,0">
+    <!-- The outfit rules (tag A requires / excludes tag B), edited in the Wardrobe's Rules dialog -->
+    <Grid RowDefinitions="*,Auto" RowSpacing="{StaticResource SpacingMd}">
+        <ScrollViewer Grid.Row="0" Name="RulesScroll" MaxHeight="{StaticResource RulesDialogListMaxHeight}">
+            <ItemsControl ItemsSource="{Binding OutfitRules}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:OutfitRuleEditViewModel">
                         <Border Classes="card">
@@ -59,7 +56,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="24,8,32,0">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
             <Button Command="{Binding AddOutfitRuleCommand}" Classes="Add">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />

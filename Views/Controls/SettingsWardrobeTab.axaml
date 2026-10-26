@@ -494,23 +494,6 @@
             </Grid>
         </Grid>
 
-        <!-- ══ Rules (stub until the rules editor moves here) ════════════════════════════ -->
-        <Panel Classes="dialogOverlay" IsVisible="{Binding IsRulesDialogOpen}">
-            <Border Classes="dialogBox">
-                <StackPanel Spacing="{StaticResource SpacingLg}">
-                    <TextBlock Classes="Heading" Text="{l:Tr 'Outfit Rules'}" />
-                    <TextBlock Classes="Body dialogMessage"
-                               TextWrapping="Wrap"
-                               Text="{l:Tr 'The rules will be edited here. Until then, use the Outfit Rules tab.'}" />
-                    <Button Name="RulesCloseButton"
-                            Classes="Primary"
-                            HorizontalAlignment="Right"
-                            Content="{l:Tr 'Close'}"
-                            Command="{Binding CloseRulesCommand}" />
-                </StackPanel>
-            </Border>
-        </Panel>
-
         <!-- ══ Manage slots / tags ═══════════════════════════════════════════════════════ -->
         <Panel Classes="dialogOverlay" IsVisible="{Binding ManageKind, Converter={x:Static ObjectConverters.IsNotNull}}">
             <Border Classes="dialogBox">

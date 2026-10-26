@@ -42,7 +42,10 @@ public partial class SettingsWardrobeTab : UserControl
         }
     }
 
-    /// <summary>Esc closes the topmost Wardrobe dialog (the confirmation dialog handles its own Esc).</summary>
+    /// <summary>
+    ///     Esc closes the topmost Wardrobe dialog (the confirmation dialog handles its own Esc, the rules dialog lives in
+    ///     SettingsView).
+    /// </summary>
     protected override void OnKeyDown(KeyEventArgs e)
     {
         if (e.Key == Key.Escape && _vm is not null && _vm.Confirmation is null)
@@ -55,11 +58,6 @@ public partial class SettingsWardrobeTab : UserControl
             else if (_vm.ManageKind is not null)
             {
                 _vm.CloseManageCommand.Execute(null);
-                e.Handled = true;
-            }
-            else if (_vm.IsRulesDialogOpen)
-            {
-                _vm.CloseRulesCommand.Execute(null);
                 e.Handled = true;
             }
         }
@@ -79,9 +77,6 @@ public partial class SettingsWardrobeTab : UserControl
                 break;
             case nameof(WardrobeViewModel.ManageKind):
                 OnDialogToggled(_vm?.ManageKind is not null, ManageBox);
-                break;
-            case nameof(WardrobeViewModel.IsRulesDialogOpen):
-                OnDialogToggled(_vm?.IsRulesDialogOpen == true, RulesCloseButton);
                 break;
         }
     }
