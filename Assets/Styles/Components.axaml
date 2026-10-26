@@ -420,10 +420,12 @@
         <Setter Property="Padding" Value="{DynamicResource SpacingMdThickness}" />
     </Style>
 
-    <!-- legendChip — a chip drawn as a sample in the multi-selection legend: not interactive -->
+    <!-- legendChip — a chip drawn as a sample in the multi-selection legend: not interactive, hidden from screen
+         readers (the legend text says the same) -->
     <Style Selector="ToggleButton.filterChip.legendChip">
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Focusable" Value="False" />
+        <Setter Property="AutomationProperties.AccessibilityView" Value="Raw" />
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────
@@ -506,6 +508,19 @@
     <!-- Restore symmetric padding so stacked buttons stay tap-friendly -->
     <Style Selector="NumericUpDown.stacked-spinner RepeatButton">
         <Setter Property="Padding" Value="4,2" />
+    </Style>
+
+    <!-- NumericUpDown.touch — finger-sized: the field is a full touch target tall, each stacked chevron is 44 wide and
+         half of it tall ((44 - 2 spacing) / 2), and touch keyboards open their number layout -->
+    <Style Selector="NumericUpDown.touch">
+        <Setter Property="MinHeight" Value="{DynamicResource TouchTargetMin}" />
+    </Style>
+    <Style Selector="NumericUpDown.touch RepeatButton">
+        <Setter Property="MinWidth" Value="{DynamicResource TouchTargetMin}" />
+        <Setter Property="MinHeight" Value="21" />
+    </Style>
+    <Style Selector="NumericUpDown.touch TextBox">
+        <Setter Property="TextInputOptions.ContentType" Value="Number" />
     </Style>
 
     <!-- ──────────────────────────────────────────────────────────

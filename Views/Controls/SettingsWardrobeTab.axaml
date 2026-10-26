@@ -104,7 +104,7 @@
                                 <Border Classes="paneFooter">
                                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="{StaticResource SpacingLg}">
                                         <Button Grid.Column="0"
-                                                Classes="SmallGhost"
+                                                Classes="Ghost"
                                                 Content="{l:Tr 'Reset filters'}"
                                                 Command="{Binding ResetFiltersCommand}"
                                                 VerticalAlignment="Center" />
@@ -164,6 +164,7 @@
                 <Button Grid.Column="4"
                         Classes="Danger"
                         Command="{Binding DeleteTargetsCommand}"
+                        ToolTip.ShowOnDisabled="True"
                         ToolTip.Tip="{Binding DeleteToolTip}"
                         AutomationProperties.Name="{Binding DeleteToolTip}">
                     <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="20" />
@@ -432,7 +433,7 @@
                                                 Width="{StaticResource WardrobeNumberFieldWidth}"
                                                 Spacing="{StaticResource SpacingXs}">
                                         <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Weight'}}" />
-                                        <NumericUpDown Classes="underline stacked-spinner"
+                                        <NumericUpDown Classes="underline stacked-spinner touch"
                                                        Value="{Binding Value}"
                                                        PlaceholderText="{Binding Placeholder}"
                                                        FormatString="{x:Static vm:WardrobeNumberFieldViewModel.Format}"
@@ -448,7 +449,7 @@
                                                 Width="{StaticResource WardrobeNumberFieldWidth}"
                                                 Spacing="{StaticResource SpacingXs}">
                                         <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr 'Multiplier'}}" />
-                                        <NumericUpDown Classes="underline stacked-spinner"
+                                        <NumericUpDown Classes="underline stacked-spinner touch"
                                                        Value="{Binding Value}"
                                                        PlaceholderText="{Binding Placeholder}"
                                                        FormatString="{x:Static vm:WardrobeNumberFieldViewModel.Format}"

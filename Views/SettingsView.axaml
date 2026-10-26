@@ -24,11 +24,13 @@
             </Grid.ColumnDefinitions>
 
             <!--  ── LEFT NAV PANEL ───────────────────────────────────  -->
+            <!--  Disabled while a Wardrobe dialog is open: those dialogs only cover the content column  -->
             <Border
                 Background="{DynamicResource BrushSurfaceMuted}"
                 BorderBrush="{DynamicResource BrushBorderSubtle}"
                 BorderThickness="0,0,1,0"
-                Grid.Column="0">
+                Grid.Column="0"
+                IsEnabled="{Binding !Wardrobe.IsModalOpen}">
                 <Grid RowDefinitions="Auto,*,Auto">
 
                     <!--  Nav header  -->

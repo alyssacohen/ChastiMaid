@@ -290,6 +290,28 @@ public class WardrobeViewModelTests
         Assert.DoesNotContain(vm.ManageRows, r => r.Name == "winter");
     }
 
+    [Fact]
+    public void IsModalOpen_FollowsEveryDialog()
+    {
+        var vm = Create(Item("a", [Base], ["legs"]));
+        Assert.False(vm.IsModalOpen);
+
+        vm.OpenAddEntry(WardrobeEntryKind.Tag);
+        Assert.True(vm.IsModalOpen);
+        vm.CancelAddEntryCommand.Execute(null);
+        Assert.False(vm.IsModalOpen);
+
+        vm.OpenManage(WardrobeEntryKind.Slot);
+        vm.AskDeleteEntry(WardrobeEntryKind.Slot, "legs");
+        vm.Confirmation!.CancelCommand.Execute(null);
+        Assert.True(vm.IsModalOpen); // the Manage dialog is still there
+        vm.CloseManageCommand.Execute(null);
+        Assert.False(vm.IsModalOpen);
+
+        vm.OpenRulesCommand.Execute(null);
+        Assert.True(vm.IsModalOpen);
+    }
+
     // ── Weight and Multiplier ────────────────────────────────────────────
 
     [Fact]

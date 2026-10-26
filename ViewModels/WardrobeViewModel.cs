@@ -64,6 +64,9 @@ public partial class WardrobeViewModel : ViewModelBase
     [Reactive] private int _filterCount;
     [Reactive] private bool _hasTargets;
     [Reactive] private bool _isMultiTarget;
+
+    /// <summary>A Wardrobe dialog is open: Settings disables its navigation meanwhile (the dialogs only cover the tab).</summary>
+    [Reactive] private bool _isModalOpen;
     [Reactive] private bool _isRulesDialogOpen;
     [Reactive] private IReadOnlyList<WardrobeRuleLine> _itemRules = [];
     [Reactive] private string? _layerError;
@@ -120,6 +123,9 @@ public partial class WardrobeViewModel : ViewModelBase
         this.WhenAnyValue(x => x.SearchText).Subscribe(_ => Refresh());
         this.WhenAnyValue(x => x.EditText).Subscribe(_ => RenameError = null);
         this.WhenAnyValue(x => x.EntryText).Subscribe(_ => EntryError = null);
+        this.WhenAnyValue(x => x.AddEntryKind, x => x.ManageKind, x => x.IsRulesDialogOpen, x => x.Confirmation,
+                (add, manage, rules, confirm) => add is not null || manage is not null || rules || confirm is not null)
+            .Subscribe(open => IsModalOpen = open);
 
         var hasTargets = this.WhenAnyValue(x => x.HasTargets);
         ActivateCommand = ReactiveCommand.Create<WardrobeEditViewModel>(Activate);
