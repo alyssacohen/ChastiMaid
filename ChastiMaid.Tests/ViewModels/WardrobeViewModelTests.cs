@@ -462,12 +462,29 @@ public class WardrobeViewModelTests
 
         vm.Activate(belt);
 
-        Assert.Equal(["garter-belt requires one of: stockings, tights.", "winter excludes summer"], vm.ItemRules);
+        Assert.Equal(["garter-belt requires one of: stockings, tights", "winter excludes summer"],
+            vm.ItemRules.Select(l => l.Text));
         Assert.True(vm.ShowItemRules);
 
         _items[1].IsSelected = belt.IsSelected = true;
         Assert.Empty(vm.ItemRules);
         Assert.False(vm.ShowItemRules);
+    }
+
+    [Fact]
+    public void ItemRules_ShowWhoRequiresTheItem_WithTagsSplitFromWords()
+    {
+        Rule("garter-belt", OutfitRelation.Requires, "stockings");
+        Rule("lace", OutfitRelation.Requires, "Stockings");
+        var stockings = Item("stockings", [Base], tags: ["stockings"]);
+        var vm = Create(stockings);
+
+        vm.Activate(stockings);
+
+        var line = Assert.Single(vm.ItemRules);
+        Assert.Equal("stockings is required by garter-belt, lace", line.Text);
+        Assert.Equal([("stockings", true), ("is required by", false), ("garter-belt", true), ("lace", true)],
+            line.Parts.Select(p => (p.Text, p.IsTag)));
     }
 
     // ── Saving ───────────────────────────────────────────────────────────

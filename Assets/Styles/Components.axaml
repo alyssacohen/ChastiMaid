@@ -1,6 +1,13 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Styles.Resources>
+        <ResourceDictionary>
+            <!-- Filter funnel (FluentIcons only has a lines "Filter" glyph, easy to take for a descending sort) -->
+            <StreamGeometry x:Key="IconFunnel">M22 3H2l8 9.46V19l4 2v-8.54L22 3z</StreamGeometry>
+        </ResourceDictionary>
+    </Styles.Resources>
+
     <!-- Previewer samples of the Wardrobe states: chip full / partial / none, number field with a value / mixed -->
     <Design.PreviewWith>
         <Border Background="{DynamicResource BrushSurfaceBase}" Padding="{DynamicResource SpacingXlThickness}">
@@ -240,8 +247,8 @@
         <Setter Property="Padding" Value="{DynamicResource SpacingMdThickness}" />
     </Style>
 
-    <!-- wardrobeRow — a list row; checked rows are tinted, the active one looks like the checked Settings nav item
-         (tint + left accent bar on the inner rowAccent border, semi-bold name) -->
+    <!-- wardrobeRow — a list row; checked rows are tinted, the active one has the checked nav-item tint and a
+         semi-bold name. Hover shows rowHover, a veil under the whole row (checkbox and pencil included). -->
     <Style Selector="Border.wardrobeRow">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
         <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
@@ -254,12 +261,8 @@
     <Style Selector="Border.wardrobeRow.active">
         <Setter Property="Background" Value="{DynamicResource BrushNavItemSelected}" />
     </Style>
-    <Style Selector="Border.rowAccent">
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="3,0,0,0" />
-    </Style>
-    <Style Selector="Border.wardrobeRow.active Border.rowAccent">
-        <Setter Property="BorderBrush" Value="{DynamicResource BrushNavItemBorder}" />
+    <Style Selector="Border.wardrobeRow:pointerover Border.rowHover">
+        <Setter Property="Background" Value="{DynamicResource BrushRowHover}" />
     </Style>
     <Style Selector="Border.wardrobeRow.active TextBlock.rowName">
         <Setter Property="FontWeight" Value="SemiBold" />
@@ -275,17 +278,20 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     </Style>
-    <Style Selector="Button.rowButton /template/ ContentPresenter">
+    <Style Selector="Button.rowButton /template/ ContentPresenter,
+                     Button.rowButton:pointerover /template/ ContentPresenter,
+                     Button.rowButton:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="Transparent" />
     </Style>
-    <Style Selector="Button.rowButton:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource BrushSurfaceSubtle}" />
-    </Style>
 
-    <!-- rowCheck — a checkbox with a full touch target -->
-    <Style Selector="CheckBox.rowCheck">
-        <Setter Property="MinWidth" Value="{DynamicResource TouchTargetMin}" />
+    <!-- checkCell — a touch-sized cell around a checkbox kept at its natural size, so the box stays centred;
+         a tap anywhere in the cell toggles it (see SettingsWardrobeTab.OnCheckCellTapped) -->
+    <Style Selector="Panel.checkCell">
+        <Setter Property="Width" Value="{DynamicResource TouchTargetMin}" />
         <Setter Property="MinHeight" Value="{DynamicResource TouchTargetMin}" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Panel.checkCell CheckBox">
         <Setter Property="Padding" Value="0" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -296,6 +302,15 @@
         <Setter Property="MaxWidth" Value="{DynamicResource WardrobeListCaptionMaxWidth}" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!-- iconPath — a stroked Path icon drawn like the FluentIcons "Regular" glyphs, in the button's text colour -->
+    <Style Selector="Path.iconPath">
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="StrokeThickness" Value="1.5" />
+        <Setter Property="StrokeJoin" Value="Round" />
     </Style>
 
     <!-- badge — small count on an icon button (active filters) -->
@@ -351,6 +366,8 @@
 
     <!-- popover — the panel of a Flyout / MenuFlyout opened from the toolbar (FlyoutPresenterClasses="popover") -->
     <Style Selector="FlyoutPresenter.popover">
+        <!-- No horizontal scrolling: the width is capped, so chip lists wrap -->
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
         <Setter Property="BorderBrush" Value="{DynamicResource BrushBorderSubtle}" />
         <Setter Property="BorderThickness" Value="1" />

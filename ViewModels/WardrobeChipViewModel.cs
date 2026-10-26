@@ -49,5 +49,14 @@ public record WardrobeActiveFilter(string Text, string RemoveName, ICommand Remo
 /// <summary>An entry of the sort menu; <see cref="Mark" /> is the direction arrow of the active key.</summary>
 public record WardrobeSortOption(string Label, bool IsActive, string Mark, ICommand SelectCommand);
 
+/// <summary>
+///     A rule of the item's tags in the detail pane: <see cref="Text" /> is the plain sentence (screen readers),
+///     <see cref="Parts" /> the same sentence split so the tags can be drawn as chips.
+/// </summary>
+public record WardrobeRuleLine(string Text, IReadOnlyList<WardrobeRulePart> Parts);
+
+/// <summary>A word run or a tag of a <see cref="WardrobeRuleLine" />.</summary>
+public record WardrobeRulePart(string Text, bool IsTag);
+
 /// <summary>A row of the Manage slots / Manage tags dialog.</summary>
 public record WardrobeEntryRow(string Name, string Usage, string DeleteName, ICommand DeleteCommand);

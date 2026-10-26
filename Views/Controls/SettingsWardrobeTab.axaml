@@ -58,7 +58,9 @@
                         ToolTip.Tip="{l:Tr 'Filter'}"
                         AutomationProperties.Name="{l:Tr 'Filter'}">
                     <Panel>
-                        <ic:SymbolIcon Symbol="Filter" IconVariant="Regular" FontSize="20" />
+                        <Path Classes="iconPath"
+                              Data="{StaticResource IconFunnel}"
+                              Stroke="{Binding $parent[Button].Foreground}" />
                         <Border Classes="badge" IsVisible="{Binding HasFilters}">
                             <TextBlock Text="{Binding FilterCount}" />
                         </Border>
@@ -208,10 +210,11 @@
                     <Grid RowDefinitions="Auto,*,Auto">
                         <Border Grid.Row="0" Classes="paneHeader">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox Classes="rowCheck"
-                                          IsChecked="{Binding AllVisibleChecked, Mode=OneWay}"
-                                          Command="{Binding ToggleAllVisibleCommand}"
-                                          AutomationProperties.Name="{l:Tr 'Select all visible items'}" />
+                                <Panel Classes="checkCell" Tapped="OnCheckCellTapped">
+                                    <CheckBox IsChecked="{Binding AllVisibleChecked, Mode=OneWay}"
+                                              Command="{Binding ToggleAllVisibleCommand}"
+                                              AutomationProperties.Name="{l:Tr 'Select all visible items'}" />
+                                </Panel>
                                 <Button Classes="Edit"
                                         ToolTip.Tip="{l:Tr 'Selection options'}"
                                         AutomationProperties.Name="{l:Tr 'Selection options'}">
@@ -236,61 +239,62 @@
                                             <Border Classes="wardrobeRow"
                                                     Classes.checked="{Binding IsSelected}"
                                                     Classes.active="{Binding IsActive}">
-                                                <Border Classes="rowAccent">
-                                                    <Grid ColumnDefinitions="Auto,*,Auto">
-                                                        <CheckBox Grid.Column="0"
-                                                                  Classes="rowCheck"
-                                                                  IsChecked="{Binding IsSelected}"
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                                    <!-- Hover veil, under everything else so the whole row lights up -->
+                                                    <Border Grid.ColumnSpan="3" Classes="rowHover" IsHitTestVisible="False" />
+
+                                                    <Panel Grid.Column="0" Classes="checkCell" Tapped="OnCheckCellTapped">
+                                                        <CheckBox IsChecked="{Binding IsSelected}"
                                                                   AutomationProperties.Name="{Binding Name}" />
+                                                    </Panel>
 
-                                                        <Button Grid.Column="1"
-                                                                Classes="rowButton"
-                                                                IsVisible="{Binding !IsEditing}"
-                                                                Command="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).ActivateCommand}"
-                                                                CommandParameter="{Binding}"
-                                                                DoubleTapped="OnRowDoubleTapped"
-                                                                AutomationProperties.Name="{Binding Name}">
-                                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
-                                                                <TextBlock Classes="Body rowName"
-                                                                           Text="{Binding Name}"
-                                                                           TextTrimming="CharacterEllipsis"
-                                                                           VerticalAlignment="Center" />
-                                                                <TextBlock Grid.Column="1"
-                                                                           Classes="Caption listCaption"
-                                                                           Text="{Binding LayerCaption}" />
-                                                            </Grid>
-                                                        </Button>
+                                                    <Button Grid.Column="1"
+                                                            Classes="rowButton"
+                                                            IsVisible="{Binding !IsEditing}"
+                                                            Command="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).ActivateCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            DoubleTapped="OnRowDoubleTapped"
+                                                            AutomationProperties.Name="{Binding Name}">
+                                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
+                                                            <TextBlock Classes="BodySmall rowName"
+                                                                       Text="{Binding Name}"
+                                                                       TextTrimming="CharacterEllipsis"
+                                                                       VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="1"
+                                                                       Classes="Caption listCaption"
+                                                                       Text="{Binding LayerCaption}" />
+                                                        </Grid>
+                                                    </Button>
 
-                                                        <StackPanel Grid.Column="1"
-                                                                    IsVisible="{Binding IsEditing}"
-                                                                    VerticalAlignment="Center">
-                                                            <TextBox Name="RenameBox"
-                                                                     Classes="underline"
-                                                                     Text="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).EditText}"
-                                                                     AutomationProperties.Name="{l:Tr 'Item name'}"
-                                                                     KeyDown="OnRenameKeyDown"
-                                                                     LostFocus="OnRenameLostFocus" />
-                                                            <TextBlock Classes="fieldError"
-                                                                       Text="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).RenameError}"
-                                                                       IsVisible="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).RenameError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                                                        </StackPanel>
+                                                    <StackPanel Grid.Column="1"
+                                                                IsVisible="{Binding IsEditing}"
+                                                                VerticalAlignment="Center">
+                                                        <TextBox Name="RenameBox"
+                                                                 Classes="underline"
+                                                                 Text="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).EditText}"
+                                                                 AutomationProperties.Name="{l:Tr 'Item name'}"
+                                                                 KeyDown="OnRenameKeyDown"
+                                                                 LostFocus="OnRenameLostFocus" />
+                                                        <TextBlock Classes="fieldError"
+                                                                   Text="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).RenameError}"
+                                                                   IsVisible="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).RenameError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                                    </StackPanel>
 
-                                                        <Button Grid.Column="2"
-                                                                Classes="Edit"
-                                                                Command="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).BeginRenameCommand}"
-                                                                CommandParameter="{Binding}"
-                                                                ToolTip.Tip="{l:Tr 'Rename item'}"
-                                                                AutomationProperties.Name="{l:Tr 'Rename item'}">
-                                                            <Button.IsVisible>
-                                                                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                                                    <Binding Path="IsActive" />
-                                                                    <Binding Path="!IsEditing" />
-                                                                </MultiBinding>
-                                                            </Button.IsVisible>
-                                                            <ic:SymbolIcon Symbol="Edit" IconVariant="Regular" FontSize="18" />
-                                                        </Button>
-                                                    </Grid>
-                                                </Border>
+                                                    <Button Grid.Column="2"
+                                                            Classes="Edit"
+                                                            Command="{Binding $parent[UserControl].((vm:WardrobeViewModel)DataContext).BeginRenameCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            ToolTip.Tip="{l:Tr 'Rename item'}"
+                                                            AutomationProperties.Name="{l:Tr 'Rename item'}">
+                                                        <Button.IsVisible>
+                                                            <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                                <Binding Path="IsActive" />
+                                                                <Binding Path="!IsEditing" />
+                                                            </MultiBinding>
+                                                        </Button.IsVisible>
+                                                        <ic:SymbolIcon Symbol="Edit" IconVariant="Regular" FontSize="18" />
+                                                    </Button>
+                                                </Grid>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -461,10 +465,31 @@
                                 <Border Classes="paneFooter" IsVisible="{Binding ShowItemRules}">
                                     <StackPanel Spacing="{StaticResource SpacingSm}">
                                         <TextBlock Classes="LabelUI" Text="{conv:UpperCase {l:Tr &quot;Rules on this item's tags&quot;}}" />
+                                        <!-- Each rule as words and tag chips, so the tags stand out from the text -->
                                         <ItemsControl ItemsSource="{Binding ItemRules}">
                                             <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="x:String">
-                                                    <TextBlock Classes="BodySmall" Text="{Binding}" TextWrapping="Wrap" />
+                                                <DataTemplate x:DataType="vm:WardrobeRuleLine">
+                                                    <ItemsControl ItemsSource="{Binding Parts}" AutomationProperties.Name="{Binding Text}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel ItemSpacing="{StaticResource SpacingXs}"
+                                                                           LineSpacing="{StaticResource SpacingXs}" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate x:DataType="vm:WardrobeRulePart">
+                                                                <Panel VerticalAlignment="Center">
+                                                                    <Border Classes="chip" IsVisible="{Binding IsTag}">
+                                                                        <TextBlock Classes="chip-label" Text="{Binding Text}" />
+                                                                    </Border>
+                                                                    <TextBlock Classes="BodySmall"
+                                                                               Text="{Binding Text}"
+                                                                               IsVisible="{Binding !IsTag}"
+                                                                               VerticalAlignment="Center" />
+                                                                </Panel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>

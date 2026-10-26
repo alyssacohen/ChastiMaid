@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Models;
@@ -63,7 +65,7 @@ public partial class WardrobeViewModel : ViewModelBase
     [Reactive] private bool _hasTargets;
     [Reactive] private bool _isMultiTarget;
     [Reactive] private bool _isRulesDialogOpen;
-    [Reactive] private IReadOnlyList<string> _itemRules = [];
+    [Reactive] private IReadOnlyList<WardrobeRuleLine> _itemRules = [];
     [Reactive] private string? _layerError;
     [Reactive] private string _listHeaderText = "";
     [Reactive] private WardrobeEntryKind? _manageKind;
@@ -1135,39 +1137,80 @@ public partial class WardrobeViewModel : ViewModelBase
 
     /// <summary>
     ///     The rules that involve the item's tags. Requires rules are grouped by source tag (several of them mean "one
-    ///     of"); an Incompatible rule is listed from whichever of its tags the item has, since it works both ways.
+    ///     of") and listed again, as "required by", on the items carrying the required tag; an Incompatible rule is
+    ///     listed from whichever of its tags the item has, since it works both ways.
     /// </summary>
-    private List<string> RulesFor(WardrobeEditViewModel item)
+    private List<WardrobeRuleLine> RulesFor(WardrobeEditViewModel item)
     {
         var rules = Rules.Select(r => r.ToModel()).ToList();
+        var requires = rules.Where(r => r.Relation == OutfitRelation.Requires).ToList();
         bool Has(string tag) => item.Tags.Any(t => OutfitRuleEngine.TagsEqual(t, tag));
+        List<string> Distinct(IEnumerable<string> tags) => [.. tags.Distinct(StringComparer.OrdinalIgnoreCase)];
 
-        var lines = new List<string>();
-        foreach (var group in rules.Where(r => r.Relation == OutfitRelation.Requires && Has(r.SourceTag))
-                     .GroupBy(r => r.SourceTag, StringComparer.OrdinalIgnoreCase))
+        var lines = new List<WardrobeRuleLine>();
+        foreach (var group in requires.Where(r => Has(r.SourceTag)).GroupBy(r => r.SourceTag, StringComparer.OrdinalIgnoreCase))
         {
-            var related = group.Select(r => r.RelatedTag).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            var related = Distinct(group.Select(r => r.RelatedTag));
             lines.Add(related.Count == 1
-                // translators: an outfit rule; {0} and {1} are tags
-                ? _l.T("{0} requires {1}", group.Key, related[0])
-                : _l.T("{0} requires one of: {1}.", group.Key, string.Join(", ", related)));
+                // translators: an outfit rule; {0} and {1} are tags, shown as chips
+                ? RuleLine(_l.T("{0} requires {1}"), [group.Key], related)
+                // translators: an outfit rule; {0} is a tag, {1} a list of tags, all shown as chips
+                : RuleLine(_l.T("{0} requires one of: {1}"), [group.Key], related));
+        }
+
+        foreach (var group in requires.Where(r => Has(r.RelatedTag)).GroupBy(r => r.RelatedTag, StringComparer.OrdinalIgnoreCase))
+        {
+            // translators: an outfit rule seen from the required tag {0}; {1} lists the tags that require it (chips)
+            lines.Add(RuleLine(_l.T("{0} is required by {1}"), [group.Key], Distinct(group.Select(r => r.SourceTag))));
         }
 
         foreach (var rule in rules.Where(r => r.Relation == OutfitRelation.Incompatible))
         {
-            if (Has(rule.SourceTag))
+            var (own, other) = Has(rule.SourceTag) ? (rule.SourceTag, rule.RelatedTag)
+                : Has(rule.RelatedTag) ? (rule.RelatedTag, rule.SourceTag)
+                : (null, null);
+            if (own is not null)
             {
-                // translators: an outfit rule; {0} and {1} are tags that cannot be worn together
-                lines.Add(_l.T("{0} excludes {1}", rule.SourceTag, rule.RelatedTag));
-            }
-            else if (Has(rule.RelatedTag))
-            {
-                lines.Add(_l.T("{0} excludes {1}", rule.RelatedTag, rule.SourceTag));
+                // translators: an outfit rule; {0} and {1} are tags that cannot be worn together, shown as chips
+                lines.Add(RuleLine(_l.T("{0} excludes {1}"), [own], [other!]));
             }
         }
 
         return lines;
     }
+
+    /// <summary>
+    ///     Fills a translated rule sentence: <paramref name="tags" />[i] replaces {i}, as one chip per tag in
+    ///     <see cref="WardrobeRuleLine.Parts" /> and as a comma-separated list in <see cref="WardrobeRuleLine.Text" />.
+    /// </summary>
+    private static WardrobeRuleLine RuleLine(string template, params IReadOnlyList<string>[] tags)
+    {
+        var parts = new List<WardrobeRulePart>();
+        var at = 0;
+        foreach (Match match in Placeholder().Matches(template))
+        {
+            AddWords(template[at..match.Index]);
+            parts.AddRange(tags[int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture)]
+                .Select(tag => new WardrobeRulePart(tag, true)));
+            at = match.Index + match.Length;
+        }
+
+        AddWords(template[at..]);
+        var text = string.Format(CultureInfo.InvariantCulture, template,
+            tags.Select(t => (object)string.Join(", ", t)).ToArray());
+        return new WardrobeRuleLine(text, parts);
+
+        void AddWords(string words)
+        {
+            if (words.Trim() is { Length: > 0 } trimmed)
+            {
+                parts.Add(new WardrobeRulePart(trimmed, false));
+            }
+        }
+    }
+
+    [GeneratedRegex(@"\{(\d+)\}")]
+    private static partial Regex Placeholder();
 
     /// <summary>Makes <paramref name="target" /> match <paramref name="source" /> with moves, so the list keeps its rows.</summary>
     private static void Sync<T>(ObservableCollection<T> target, IReadOnlyList<T> source)

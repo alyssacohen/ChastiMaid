@@ -78,6 +78,8 @@
     <SolidColorBrush x:Key="BrushNavItemBorder" Color="{StaticResource ColorNavItemBorder}" />
     <!-- Chip held by only some of the edited items: the selected brown faded, which is the nav-item tint -->
     <SolidColorBrush x:Key="BrushChipPartial" Color="{StaticResource ColorNavItemSelected}" />
+    <!-- Hover veil over a list row, whatever its state: the primary text colour, barely visible -->
+    <SolidColorBrush x:Key="BrushRowHover" Color="{StaticResource ColorTextPrimary}" Opacity="0.06" />
 
     <!-- ═══════════════════════════════════════════
        BRUSHES — SEMANTIC

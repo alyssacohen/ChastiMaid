@@ -1,4 +1,7 @@
 using System.ComponentModel;
+using Avalonia;
+using Avalonia.Automation.Peers;
+using Avalonia.Automation.Provider;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -180,9 +183,21 @@ public partial class SettingsWardrobeTab : UserControl
         ((sender as Control)?.DataContext as WardrobeNumberFieldViewModel)?.EndEdit();
     }
 
-    /// <summary>The Manage dialogs open from the filter popover, which must not stay on top of them.</summary>
+    /// <summary>
+    ///     The Manage dialogs open from the filter popover, which must not stay on top of them. Hidden after the click,
+    ///     not during it: a hidden popover loses its DataContext and the button's command would never run.
+    /// </summary>
     private void OnManageClick(object? sender, RoutedEventArgs e)
     {
-        FilterButton.Flyout?.Hide();
+        Dispatcher.UIThread.Post(() => FilterButton.Flyout?.Hide());
+    }
+
+    /// <summary>A tap in a checkbox's touch cell but outside the box toggles it like a click on the box would.</summary>
+    private void OnCheckCellTapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is Panel { Children: [CheckBox box] } && (e.Source as Visual)?.FindAncestorOfType<CheckBox>(true) is null)
+        {
+            (ControlAutomationPeer.CreatePeerForElement(box) as IToggleProvider)?.Toggle();
+        }
     }
 }
