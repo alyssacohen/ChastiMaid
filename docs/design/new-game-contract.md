@@ -183,7 +183,7 @@ Reuses `card` conventions, `Primary`/`Ghost`, `dialogOverlay`/`dialogBox` and ex
 - `Button.Quiet` (`Buttons.axaml`) — borderless, muted, still 44 px tall
 - `ContractPaperMaxWidth` (`Spacing.axaml`)
 
-Touch: every action is at least 44 px tall; the bar wraps in portrait; nothing depends on hover.
+Touch: every action is at least 44 px tall; the bar wraps when space runs out; nothing depends on hover.
 
 ## Localization
 

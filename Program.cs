@@ -5,13 +5,11 @@ namespace ChastiMaid;
 
 internal sealed class Program
 {
-    public static bool ForcePortrait { get; private set; }
     public static bool ForceLandscape { get; private set; }
 
     [STAThread]
     public static void Main(string[] args)
     {
-        ForcePortrait = args.Contains("--portrait");
         ForceLandscape = args.Contains("--landscape");
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }

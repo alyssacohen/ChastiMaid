@@ -24,18 +24,14 @@ public partial class DashboardView : UserControl
             }
         };
 
-        // Mirror Bounds.Width to IsLandscape, and Bounds.Height to the idle-popup responsive
-        // sizing (shared by every popup with a live webcam preview), on the ViewModel —
-        // recalculated on every resize so the popup never overflows the window regardless of
-        // orientation.
+        // Size the idle popups (shared by every popup with a live webcam preview) from Bounds.Height,
+        // recalculated on every resize so the popup never overflows the window.
         this.GetObservable(BoundsProperty).Subscribe(bounds =>
         {
             if (DataContext is not DashboardViewModel vm)
             {
                 return;
             }
-
-            vm.IsLandscape = bounds.Width > 900;
 
             const double verticalMargin = 64; // breathing room from the window's top/bottom edges
             const double chromeReserve = 300; // countdown/instructions/button/camera-selector, padding, spacing

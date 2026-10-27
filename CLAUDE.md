@@ -37,7 +37,7 @@ Full keyboard and mouse, large screen. Used for development and testing.
 - Screen: 1800×1200 (10"), typically used at 150% DPI scaling → effective ~1200×800
 - Input: touch-first; mouse and type cover optional. All interactive elements must be
   large enough for finger tap (minimum 44×44px hit target).
-- Orientation: primarily landscape, but portrait must not break layouts.
+- Orientation: landscape only. Portrait is not supported (the webcam feed comes out rotated 90°).
 - Performance: low-power Intel Pentium Gold / 4 GB RAM — avoid heavy background work
   on the UI thread; keep animations simple.
 - Cameras: **two cameras** (front-facing and rear-facing). `WebcamPreviewService` supports camera

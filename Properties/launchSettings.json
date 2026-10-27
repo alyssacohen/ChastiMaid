@@ -7,10 +7,6 @@
         "ChastiMaid — Landscape (1200×800 · Surface Go)": {
             "commandName": "Project",
             "commandLineArgs": "--landscape"
-        },
-        "ChastiMaid — Portrait (800×1200 · Surface Go)": {
-            "commandName": "Project",
-            "commandLineArgs": "--portrait"
         }
     }
 }

@@ -12,444 +12,225 @@
     xmlns:l="using:ChastiMaid.Localization">
 
     <Panel>
-        <Grid IsVisible="{Binding IsIdle}">
+        <!--  ── IDLE layout ──  -->
+        <Grid IsVisible="{Binding IsIdle}" RowDefinitions="Auto,*,Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{StaticResource NavPanelWidthGridLength}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <!--  ── PORTRAIT layout ──  -->
-            <Grid IsVisible="{Binding !IsLandscape}" RowDefinitions="Auto,*,Auto">
-
-                <!--  Status bar  -->
-                <Border
-                    Background="{DynamicResource BrushSurfaceBase}"
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,0,0,1"
-                    Grid.Row="0"
-                    Height="50"
-                    Padding="16,0">
-                    <Grid ColumnDefinitions="Auto,*,Auto">
-                        <StackPanel
-                            Grid.Column="0"
-                            Orientation="Horizontal"
-                            Spacing="8"
-                            VerticalAlignment="Center">
-                            <Ellipse
-                                Fill="{DynamicResource BrushStatusIdle}"
-                                Height="10"
-                                Width="10" />
-                            <TextBlock
-                                Classes="BodySmall"
-                                Text="{l:Tr 'Idle', Context='session status'}"
-                                VerticalAlignment="Center" />
-                        </StackPanel>
-                        <Button
-                            Classes="SmallGhost"
-                            Command="{Binding ToggleOutfitDrawerCommand}"
-                            Content="{l:Tr 'Outfit ▸'}"
-                            Grid.Column="2"
+            <!--  Status bar (spans both columns)  -->
+            <Border
+                Background="{DynamicResource BrushSurfaceBase}"
+                BorderBrush="{DynamicResource BrushBorderSubtle}"
+                BorderThickness="0,0,0,1"
+                Grid.ColumnSpan="2"
+                Grid.Row="0"
+                Height="50"
+                Padding="16,0">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <StackPanel
+                        Grid.Column="0"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        VerticalAlignment="Center">
+                        <Ellipse
+                            Fill="{DynamicResource BrushStatusIdle}"
+                            Height="10"
+                            Width="10" />
+                        <TextBlock
+                            Classes="BodySmall"
+                            Text="{l:Tr 'Idle', Context='session status'}"
                             VerticalAlignment="Center" />
-                    </Grid>
-                </Border>
-
-                <!--  Scrollable content  -->
-                <ScrollViewer Grid.Row="1">
-                    <StackPanel Margin="16,16,16,0" Spacing="20">
-
-                        <controls:DebtWidget DebtSettled="{Binding DebtSettled}" DebtTotal="{Binding DebtTotal}" />
-
-                        <!--  Tasks section  -->
-                        <StackPanel Spacing="0">
-                            <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8">
-                                <TextBlock
-                                    Classes="SectionTitle"
-                                    Grid.Column="0"
-                                    Text="{l:Tr 'Tasks'}"
-                                    VerticalAlignment="Center" />
-                                <Border
-                                    Background="{DynamicResource BrushSurfaceBase}"
-                                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                                    BorderThickness="1"
-                                    CornerRadius="10"
-                                    Grid.Column="1"
-                                    Margin="0,0,8,0"
-                                    Padding="8,2"
-                                    VerticalAlignment="Center">
-                                    <TextBlock Classes="Caption" Text="{Binding Tasks.Count}" />
-                                </Border>
-                                <Button
-                                    Classes="Add compact"
-                                    Command="{Binding OpenAddTaskFormCommand}"
-                                    Content="{l:Tr 'Add task'}"
-                                    Grid.Column="2"
-                                    VerticalAlignment="Center" />
-                            </Grid>
-
-                            <Border Background="{DynamicResource BrushBorderSubtle}" Height="1" />
-
-                            <ItemsControl ItemsSource="{Binding Tasks}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:TaskItemViewModel">
-                                        <StackPanel>
-                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
-                                                <Ellipse
-                                                    Fill="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
-                                                    Grid.Column="0"
-                                                    Height="8"
-                                                    Margin="0,0,10,0"
-                                                    VerticalAlignment="Center"
-                                                    Width="8" />
-                                                <TextBlock
-                                                    Classes="Body"
-                                                    Grid.Column="1"
-                                                    Text="{Binding Name}"
-                                                    VerticalAlignment="Center" />
-                                                <Button
-                                                    Classes="SmallGhost"
-                                                    Command="{Binding ToggleExpandedCommand}"
-                                                    Grid.Column="2"
-                                                    Margin="0,0,4,0"
-                                                    VerticalAlignment="Center">
-                                                    <ic:SymbolIcon
-                                                        FontSize="14"
-                                                        IconVariant="Regular"
-                                                        Symbol="ChevronDown" />
-                                                </Button>
-                                                <Button
-                                                    Classes="Primary compact"
-                                                    Command="{Binding StartCommand}"
-                                                    Content="{l:Tr 'Start'}"
-                                                    Grid.Column="3"
-                                                    MinHeight="44"
-                                                    VerticalAlignment="Center" />
-                                            </Grid>
-                                            <StackPanel
-                                                IsVisible="{Binding IsExpanded}"
-                                                Margin="18,0,0,10"
-                                                Spacing="2">
-                                                <TextBlock
-                                                    Classes="Caption"
-                                                    Foreground="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
-                                                    Text="{Binding LastCompletedLabel}" />
-                                                <TextBlock Classes="Caption" Text="{Binding FrequencyLabel}" />
-                                            </StackPanel>
-                                            <Border Background="{DynamicResource BrushBorderSubtle}" Height="0.5" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <TextBlock
-                                Classes="Caption"
-                                HorizontalAlignment="Center"
-                                Margin="0,16"
-                                Text="{l:Tr 'No pending tasks'}">
-                                <TextBlock.IsVisible>
-                                    <Binding
-                                        Converter="{x:Static ObjectConverters.IsNull}"
-                                        FallbackValue="False"
-                                        Path="Tasks.Count" />
-                                </TextBlock.IsVisible>
-                            </TextBlock>
-
-                        </StackPanel>
-
-                        <!--  Punishment button  -->
-                        <Button
-                            Classes="Amber"
-                            Command="{Binding OpenPunishmentsCommand}"
-                            CornerRadius="6"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            IsEnabled="{Binding HasPendingPunishments}"
-                            Padding="16,14">
-                            <Grid ColumnDefinitions="*,Auto">
-                                <TextBlock
-                                    Classes="Body"
-                                    Grid.Column="0"
-                                    Text="{l:Tr 'Pending Punishments'}"
-                                    VerticalAlignment="Center" />
-                                <Border
-                                    Background="{DynamicResource BrushAmberText}"
-                                    CornerRadius="12"
-                                    Grid.Column="1"
-                                    Height="24"
-                                    IsVisible="{Binding HasPendingPunishments}"
-                                    MinWidth="24"
-                                    Padding="6,0"
-                                    VerticalAlignment="Center">
-                                    <TextBlock
-                                        Classes="Caption"
-                                        Foreground="{DynamicResource BrushWindowBackground}"
-                                        HorizontalAlignment="Center"
-                                        Text="{Binding PendingPunishmentsCount}"
-                                        VerticalAlignment="Center" />
-                                </Border>
-                            </Grid>
-                        </Button>
-
-                        <Border Height="16" />
-
                     </StackPanel>
-                </ScrollViewer>
+                    <Button
+                        Classes="SmallGhost"
+                        Command="{Binding ToggleOutfitDrawerCommand}"
+                        Content="{l:Tr 'Outfit ▸'}"
+                        Grid.Column="2"
+                        VerticalAlignment="Center" />
+                </Grid>
+            </Border>
 
-                <!--  Action bar (pinned bottom)  -->
-                <Border
-                    Background="{DynamicResource BrushSurfaceBase}"
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,1,0,0"
-                    Grid.Row="2"
-                    Padding="8,8">
-                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
+            <!--  Left rail  -->
+            <Border
+                Background="{DynamicResource BrushWindowBackground}"
+                BorderBrush="{DynamicResource BrushBorderSubtle}"
+                BorderThickness="0,0,1,0"
+                Grid.Column="0"
+                Grid.Row="1"
+                Grid.RowSpan="2"
+                Padding="12">
+                <DockPanel>
+                    <StackPanel Spacing="8">
+                        <controls:DebtWidget
+                            DebtSettled="{Binding DebtSettled}"
+                            DebtTotal="{Binding DebtTotal}"
+                            Margin="0,0,0,12" />
 
                         <Button
                             Classes="Ghost compact"
                             Command="{Binding RequestPermissionCommand}"
                             Content="{l:Tr 'Request Permission'}"
-                            Grid.Column="0"
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center" />
+                            HorizontalContentAlignment="Center"
+                            MinHeight="44" />
 
                         <Button
                             Classes="Ghost compact"
                             Command="{Binding OpenShopCommand}"
                             Content="{l:Tr 'Shop'}"
-                            Grid.Column="1"
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center" />
+                            HorizontalContentAlignment="Center"
+                            MinHeight="44" />
 
                         <Button
                             Classes="Danger compact"
                             Command="{Binding EndSessionCommand}"
                             Content="{l:Tr 'End Session'}"
-                            Grid.Column="2"
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center" />
+                            HorizontalContentAlignment="Center"
+                            MinHeight="44" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
 
-                    </Grid>
-                </Border>
+            <!--  Right: scrollable tasks + punishment  -->
+            <ScrollViewer Grid.Column="1" Grid.Row="1">
+                <StackPanel Margin="16,16,16,0" Spacing="20">
 
-            </Grid>
-
-            <!--  ── LANDSCAPE layout ──  -->
-            <Grid IsVisible="{Binding IsLandscape}" RowDefinitions="Auto,*,Auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource NavPanelWidthGridLength}" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <!--  Status bar (spans both columns)  -->
-                <Border
-                    Background="{DynamicResource BrushSurfaceBase}"
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,0,0,1"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="0"
-                    Height="50"
-                    Padding="16,0">
-                    <Grid ColumnDefinitions="Auto,*,Auto">
-                        <StackPanel
+                    <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8">
+                        <TextBlock
+                            Classes="SectionTitle"
                             Grid.Column="0"
-                            Orientation="Horizontal"
-                            Spacing="8"
+                            Text="{l:Tr 'Tasks'}"
+                            VerticalAlignment="Center" />
+                        <Border
+                            Background="{DynamicResource BrushSurfaceBase}"
+                            BorderBrush="{DynamicResource BrushBorderSubtle}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Grid.Column="1"
+                            Margin="0,0,8,0"
+                            Padding="8,2"
                             VerticalAlignment="Center">
-                            <Ellipse
-                                Fill="{DynamicResource BrushStatusIdle}"
-                                Height="10"
-                                Width="10" />
-                            <TextBlock
-                                Classes="BodySmall"
-                                Text="{l:Tr 'Idle', Context='session status'}"
-                                VerticalAlignment="Center" />
-                        </StackPanel>
+                            <TextBlock Classes="Caption" Text="{Binding Tasks.Count}" />
+                        </Border>
                         <Button
-                            Classes="SmallGhost"
-                            Command="{Binding ToggleOutfitDrawerCommand}"
-                            Content="{l:Tr 'Outfit ▸'}"
+                            Classes="Add compact"
+                            Command="{Binding OpenAddTaskFormCommand}"
+                            Content="{l:Tr 'Add task'}"
                             Grid.Column="2"
                             VerticalAlignment="Center" />
                     </Grid>
-                </Border>
 
-                <!--  Left rail  -->
-                <Border
-                    Background="{DynamicResource BrushWindowBackground}"
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,0,1,0"
-                    Grid.Column="0"
-                    Grid.Row="1"
-                    Grid.RowSpan="2"
-                    Padding="12">
-                    <DockPanel>
-                        <StackPanel Spacing="8">
-                            <controls:DebtWidget
-                                DebtSettled="{Binding DebtSettled}"
-                                DebtTotal="{Binding DebtTotal}"
-                                Margin="0,0,0,12" />
+                    <Border Background="{DynamicResource BrushBorderSubtle}" Height="1" />
 
-                            <Button
-                                Classes="Ghost compact"
-                                Command="{Binding RequestPermissionCommand}"
-                                Content="{l:Tr 'Request Permission'}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                MinHeight="44" />
-
-                            <Button
-                                Classes="Ghost compact"
-                                Command="{Binding OpenShopCommand}"
-                                Content="{l:Tr 'Shop'}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                MinHeight="44" />
-
-                            <Button
-                                Classes="Danger compact"
-                                Command="{Binding EndSessionCommand}"
-                                Content="{l:Tr 'End Session'}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                MinHeight="44" />
-                        </StackPanel>
-                    </DockPanel>
-                </Border>
-
-                <!--  Right: scrollable tasks + punishment  -->
-                <ScrollViewer Grid.Column="1" Grid.Row="1">
-                    <StackPanel Margin="16,16,16,0" Spacing="20">
-
-                        <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8">
-                            <TextBlock
-                                Classes="SectionTitle"
-                                Grid.Column="0"
-                                Text="{l:Tr 'Tasks'}"
-                                VerticalAlignment="Center" />
-                            <Border
-                                Background="{DynamicResource BrushSurfaceBase}"
-                                BorderBrush="{DynamicResource BrushBorderSubtle}"
-                                BorderThickness="1"
-                                CornerRadius="10"
-                                Grid.Column="1"
-                                Margin="0,0,8,0"
-                                Padding="8,2"
-                                VerticalAlignment="Center">
-                                <TextBlock Classes="Caption" Text="{Binding Tasks.Count}" />
-                            </Border>
-                            <Button
-                                Classes="Add compact"
-                                Command="{Binding OpenAddTaskFormCommand}"
-                                Content="{l:Tr 'Add task'}"
-                                Grid.Column="2"
-                                VerticalAlignment="Center" />
-                        </Grid>
-
-                        <Border Background="{DynamicResource BrushBorderSubtle}" Height="1" />
-
-                        <ItemsControl ItemsSource="{Binding Tasks}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vm:TaskItemViewModel">
-                                    <StackPanel>
-                                        <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
-                                            <Ellipse
-                                                Fill="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
-                                                Grid.Column="0"
-                                                Height="8"
-                                                Margin="0,0,10,0"
-                                                VerticalAlignment="Center"
-                                                Width="8" />
-                                            <TextBlock
-                                                Classes="Body"
-                                                Grid.Column="1"
-                                                Text="{Binding Name}"
-                                                VerticalAlignment="Center" />
-                                            <Button
-                                                Classes="SmallGhost"
-                                                Command="{Binding ToggleExpandedCommand}"
-                                                Grid.Column="2"
-                                                Margin="0,0,4,0"
-                                                VerticalAlignment="Center">
-                                                <ic:SymbolIcon
-                                                    FontSize="14"
-                                                    IconVariant="Regular"
-                                                    Symbol="ChevronDown" />
-                                            </Button>
-                                            <Button
-                                                Classes="Primary compact"
-                                                Command="{Binding StartCommand}"
-                                                Content="{l:Tr 'Start'}"
-                                                Grid.Column="3"
-                                                MinHeight="44"
-                                                VerticalAlignment="Center" />
-                                        </Grid>
-                                        <StackPanel
-                                            IsVisible="{Binding IsExpanded}"
-                                            Margin="18,0,0,10"
-                                            Spacing="2">
-                                            <TextBlock
-                                                Classes="Caption"
-                                                Foreground="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
-                                                Text="{Binding LastCompletedLabel}" />
-                                            <TextBlock Classes="Caption" Text="{Binding FrequencyLabel}" />
-                                        </StackPanel>
-                                        <Border Background="{DynamicResource BrushBorderSubtle}" Height="0.5" />
+                    <ItemsControl ItemsSource="{Binding Tasks}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:TaskItemViewModel">
+                                <StackPanel>
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" MinHeight="56">
+                                        <Ellipse
+                                            Fill="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
+                                            Grid.Column="0"
+                                            Height="8"
+                                            Margin="0,0,10,0"
+                                            VerticalAlignment="Center"
+                                            Width="8" />
+                                        <TextBlock
+                                            Classes="Body"
+                                            Grid.Column="1"
+                                            Text="{Binding Name}"
+                                            VerticalAlignment="Center" />
+                                        <Button
+                                            Classes="SmallGhost"
+                                            Command="{Binding ToggleExpandedCommand}"
+                                            Grid.Column="2"
+                                            Margin="0,0,4,0"
+                                            VerticalAlignment="Center">
+                                            <ic:SymbolIcon
+                                                FontSize="14"
+                                                IconVariant="Regular"
+                                                Symbol="ChevronDown" />
+                                        </Button>
+                                        <Button
+                                            Classes="Primary compact"
+                                            Command="{Binding StartCommand}"
+                                            Content="{l:Tr 'Start'}"
+                                            Grid.Column="3"
+                                            MinHeight="44"
+                                            VerticalAlignment="Center" />
+                                    </Grid>
+                                    <StackPanel
+                                        IsVisible="{Binding IsExpanded}"
+                                        Margin="18,0,0,10"
+                                        Spacing="2">
+                                        <TextBlock
+                                            Classes="Caption"
+                                            Foreground="{Binding StatusBrushKey, Converter={x:Static conv:ResourceBrushKeyConverter.Instance}}"
+                                            Text="{Binding LastCompletedLabel}" />
+                                        <TextBlock Classes="Caption" Text="{Binding FrequencyLabel}" />
                                     </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                                    <Border Background="{DynamicResource BrushBorderSubtle}" Height="0.5" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                        <Button
-                            Classes="Primary"
-                            Command="{Binding CompleteGameCommand}"
-                            Content="{l:Tr 'Complete Game'}"
-                            HorizontalAlignment="Center"
-                            IsVisible="{Binding CanComplete}"
-                            Margin="0,8,0,16" />
-
-                    </StackPanel>
-                </ScrollViewer>
-
-                <!--  Punishment bar (pinned bottom, right column only)  -->
-                <Border
-                    Background="{DynamicResource BrushSurfaceBase}"
-                    BorderBrush="{DynamicResource BrushBorderSubtle}"
-                    BorderThickness="0,1,0,0"
-                    Grid.Column="1"
-                    Grid.Row="2"
-                    Padding="16,12">
                     <Button
-                        Classes="Amber"
-                        Command="{Binding OpenPunishmentsCommand}"
-                        CornerRadius="6"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        IsEnabled="{Binding HasPendingPunishments}"
-                        Padding="16,14">
-                        <Grid ColumnDefinitions="*,Auto">
+                        Classes="Primary"
+                        Command="{Binding CompleteGameCommand}"
+                        Content="{l:Tr 'Complete Game'}"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding CanComplete}"
+                        Margin="0,8,0,16" />
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--  Punishment bar (pinned bottom, right column only)  -->
+            <Border
+                Background="{DynamicResource BrushSurfaceBase}"
+                BorderBrush="{DynamicResource BrushBorderSubtle}"
+                BorderThickness="0,1,0,0"
+                Grid.Column="1"
+                Grid.Row="2"
+                Padding="16,12">
+                <Button
+                    Classes="Amber"
+                    Command="{Binding OpenPunishmentsCommand}"
+                    CornerRadius="6"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    IsEnabled="{Binding HasPendingPunishments}"
+                    Padding="16,14">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock
+                            Classes="Body"
+                            Foreground="{DynamicResource BrushWindowBackground}"
+                            Grid.Column="0"
+                            Text="{l:Tr 'Pending Punishments'}"
+                            VerticalAlignment="Center" />
+                        <Border
+                            Background="{DynamicResource BrushAmberText}"
+                            CornerRadius="12"
+                            Grid.Column="1"
+                            Height="24"
+                            IsVisible="{Binding HasPendingPunishments}"
+                            MinWidth="24"
+                            Padding="6,0"
+                            VerticalAlignment="Center">
                             <TextBlock
-                                Classes="Body"
+                                Classes="Caption"
                                 Foreground="{DynamicResource BrushWindowBackground}"
-                                Grid.Column="0"
-                                Text="{l:Tr 'Pending Punishments'}"
+                                HorizontalAlignment="Center"
+                                Text="{Binding PendingPunishmentsCount}"
                                 VerticalAlignment="Center" />
-                            <Border
-                                Background="{DynamicResource BrushAmberText}"
-                                CornerRadius="12"
-                                Grid.Column="1"
-                                Height="24"
-                                IsVisible="{Binding HasPendingPunishments}"
-                                MinWidth="24"
-                                Padding="6,0"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    Classes="Caption"
-                                    Foreground="{DynamicResource BrushWindowBackground}"
-                                    HorizontalAlignment="Center"
-                                    Text="{Binding PendingPunishmentsCount}"
-                                    VerticalAlignment="Center" />
-                            </Border>
-                        </Grid>
-                    </Button>
-                </Border>
-
-            </Grid>
-
+                        </Border>
+                    </Grid>
+                </Button>
+            </Border>
         </Grid>
 
         <!--

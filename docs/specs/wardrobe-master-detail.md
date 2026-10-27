@@ -61,7 +61,6 @@ chips in the detail pane change state; select items with different weights and l
     NumericUpDown, buttons, table rows, nav-item accent bar, dialogs, ...) and map each mockup element to it.
 - **The Settings `NavPanel`** (the 320 px panel used to move between Settings tabs). The mockup shows
   only the content area of the Wardrobe tab; in the app the NavPanel sits to its left (see 11).
-- A portrait / Surface Go twin layout (landscape only, see section 10).
 - The real rules modal (only a stub is shown, see section 9).
 
 ---
@@ -337,9 +336,7 @@ Constraints:
 - Touch targets: primary buttons and rows ≥ 44 px (rows 48 = `TableRowHeight`), chips ≥ `ChipHeight`.
   The stacked spinner must stay comfortably tappable (see the touch padding in its doc).
   No hover-only or right-click-only features.
-- The mockup is **landscape only**. A portrait layout is out of scope here; when it is tackled, follow
-  Golden Rule 6 (twin layout via `IsLandscape`, not fluid breakpoints). Structure the new view so adding a
-  second subtree later is straightforward.
+- Landscape only, like the whole app.
 - Search, rename and number fields must work with the existing virtual-keyboard handling.
 - The pencil button exists precisely because double-click is awkward on touch.
 

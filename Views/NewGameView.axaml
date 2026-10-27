@@ -26,7 +26,7 @@
                                IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                                Text="{Binding StatusMessage}" />
 
-                    <!-- Back sits apart and quiet; the three actions wrap under it in portrait -->
+                    <!-- Back sits apart and quiet; the three actions wrap under it when space runs out -->
                     <WrapPanel HorizontalAlignment="Center"
                                ItemSpacing="{StaticResource SpacingSm}"
                                LineSpacing="{StaticResource SpacingSm}">

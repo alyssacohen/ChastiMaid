@@ -31,7 +31,7 @@ msgstr "\"{0}\" supera i {1} caratteri e verrà ignorato."
 msgid "(none)"
 msgstr "(nessuno)"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:316
+#: ../Views/Controls/SettingsWardrobeTab.axaml:312
 msgid "+ Add Item"
 msgstr "+ Aggiungi capo"
 
@@ -49,7 +49,7 @@ msgstr "+{0}%"
 msgid "0"
 msgstr "0"
 
-#: ../ViewModels/DashboardViewModel.cs:638
+#: ../ViewModels/DashboardViewModel.cs:635
 msgid "A Matter Already Settled"
 msgstr "Una questione già decisa"
 
@@ -142,7 +142,7 @@ msgstr "Esiste già un tag con questo nome."
 msgid "A task I begin in earnest is a task I count already half completed"
 msgstr "Un compito che intraprendo con serietà lo considero già a metà"
 
-#: ../ViewModels/DashboardViewModel.cs:459
+#: ../ViewModels/DashboardViewModel.cs:456
 msgid ""
 "A task declared complete in mere moments is no task completed at all — I "
 "shall mark it void, and you shall answer for it."
@@ -188,7 +188,7 @@ msgstr "Accessori"
 msgid "Accuracy"
 msgstr "Precisione"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:179
+#: ../Views/Controls/SettingsWardrobeTab.axaml:175
 msgid "Active filters:"
 msgstr "Filtri attivi:"
 
@@ -212,15 +212,15 @@ msgstr "Aggiungi divisa"
 msgid "Add Rule"
 msgstr "Aggiungi regola"
 
-#: ../ViewModels/WardrobeViewModel.cs:181 ../Views/Controls/SettingsWardrobeTab.axaml:378 ../Views/Controls/SettingsWardrobeTab.axaml:379
+#: ../ViewModels/WardrobeViewModel.cs:181 ../Views/Controls/SettingsWardrobeTab.axaml:374 ../Views/Controls/SettingsWardrobeTab.axaml:375
 msgid "Add slot"
 msgstr "Aggiungi slot"
 
-#: ../ViewModels/WardrobeViewModel.cs:181 ../Views/Controls/SettingsWardrobeTab.axaml:399 ../Views/Controls/SettingsWardrobeTab.axaml:400
+#: ../ViewModels/WardrobeViewModel.cs:181 ../Views/Controls/SettingsWardrobeTab.axaml:395 ../Views/Controls/SettingsWardrobeTab.axaml:396
 msgid "Add tag"
 msgstr "Aggiungi tag"
 
-#: ../Views/DashboardView.axaml:80 ../Views/DashboardView.axaml:338
+#: ../Views/DashboardView.axaml:122
 msgid "Add task"
 msgstr "Aggiungi compito"
 
@@ -330,16 +330,16 @@ msgstr "Compra"
 msgid "CPM"
 msgstr "CPM"
 
-#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:678 ../ViewModels/DashboardViewModel.cs:698 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:831 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeDialogs.axaml:94 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:214
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:675 ../ViewModels/DashboardViewModel.cs:695 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:831 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeDialogs.axaml:94 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:214
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../ViewModels/DashboardViewModel.cs:696
+#: ../ViewModels/DashboardViewModel.cs:693
 #, csharp-format
 msgid "Cancel \"{0}\" outright?"
 msgstr "Annullare del tutto \"{0}\"?"
 
-#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:695 ../Views/Controls/DashboardPunishmentsPanel.axaml:110
+#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:692 ../Views/Controls/DashboardPunishmentsPanel.axaml:108
 msgid "Cancel Punishment"
 msgstr "Annulla Punizione"
 
@@ -392,7 +392,7 @@ msgstr "Pausa sigaretta"
 msgid "Clear"
 msgstr "Svuota"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:227
+#: ../Views/Controls/SettingsWardrobeTab.axaml:223
 msgid "Clear selection"
 msgstr "Deseleziona tutti"
 
@@ -400,7 +400,7 @@ msgstr "Deseleziona tutti"
 msgid "Clears the cooldown standing between you and your next request."
 msgstr "Azzera l'attesa che vi separa dalla prossima richiesta."
 
-#: ../Views/Controls/DashboardPermissionsPanel.axaml:33 ../Views/Controls/DashboardPermissionsPanel.axaml:39 ../Views/Controls/DashboardPermissionsPanel.axaml:59 ../Views/Controls/DashboardPunishmentsPanel.axaml:30 ../Views/Controls/DashboardPunishmentsPanel.axaml:36 ../Views/Controls/DashboardPunishmentsPanel.axaml:55 ../Views/Controls/SettingsTestOutfitOverlay.axaml:88 ../Views/Controls/WardrobeDialogs.axaml:72 ../Views/LoadGameView.axaml:132 ../Views/SettingsView.axaml:237
+#: ../Views/Controls/DashboardPermissionsPanel.axaml:33 ../Views/Controls/DashboardPermissionsPanel.axaml:39 ../Views/Controls/DashboardPermissionsPanel.axaml:59 ../Views/Controls/DashboardPunishmentsPanel.axaml:28 ../Views/Controls/DashboardPunishmentsPanel.axaml:34 ../Views/Controls/DashboardPunishmentsPanel.axaml:53 ../Views/Controls/SettingsTestOutfitOverlay.axaml:88 ../Views/Controls/WardrobeDialogs.axaml:72 ../Views/LoadGameView.axaml:132 ../Views/SettingsView.axaml:237
 msgid "Close"
 msgstr "Chiudi"
 
@@ -432,7 +432,7 @@ msgstr ""
 "Separati da virgola. Ne viene scelto uno a caso, insieme al nome, per le "
 "convocazioni dei popup."
 
-#: ../Views/DashboardView.axaml:400
+#: ../Views/DashboardView.axaml:184
 msgid "Complete Game"
 msgstr "Completa partita"
 
@@ -458,7 +458,7 @@ msgstr "La fiducia nella propria arte è cosa ammirevole."
 msgid "Configured outfits"
 msgstr "Divise configurate"
 
-#: ../ViewModels/DashboardViewModel.cs:677 ../ViewModels/DashboardViewModel.cs:697 ../Views/CameraSetupView.axaml:36
+#: ../ViewModels/DashboardViewModel.cs:674 ../ViewModels/DashboardViewModel.cs:694 ../Views/CameraSetupView.axaml:36
 msgid "Confirm"
 msgstr "Conferma"
 
@@ -570,7 +570,7 @@ msgstr "Il tergiversare non aggiunge nulla, se non il tempo."
 msgid "Debt and Interest"
 msgstr "Debito e interessi"
 
-#: ../ViewModels/DashboardViewModel.cs:269 ../ViewModels/LoadGameViewModel.cs:42
+#: ../ViewModels/DashboardViewModel.cs:266 ../ViewModels/LoadGameViewModel.cs:42
 #, csharp-format
 msgid "Debt: {0}"
 msgstr "Debito: {0}"
@@ -729,7 +729,7 @@ msgstr "Avete lamentele riguardo alle vostre condizioni attuali?"
 msgid "Done"
 msgstr "Fatto"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:320
+#: ../Views/Controls/SettingsWardrobeTab.axaml:316
 msgid "Double-click the name (or the pencil) to rename."
 msgstr "Doppio clic sul nome (o la matita) per rinominare."
 
@@ -775,7 +775,7 @@ msgstr "Impaziente"
 msgid "Edit preset"
 msgstr "Modifica preset"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:479
+#: ../Views/Controls/SettingsWardrobeTab.axaml:475
 msgid "Edit rules"
 msgstr "Modifica regole"
 
@@ -813,11 +813,11 @@ msgstr "Attivo"
 msgid "End Break"
 msgstr "Fine pausa"
 
-#: ../Views/DashboardView.axaml:492
+#: ../Views/DashboardView.axaml:273
 msgid "End Chore"
 msgstr "Termina compito"
 
-#: ../Views/DashboardView.axaml:221 ../Views/DashboardView.axaml:306 ../Views/EndSessionView.axaml:19
+#: ../Views/DashboardView.axaml:90 ../Views/EndSessionView.axaml:19
 msgid "End Session"
 msgstr "Termina sessione"
 
@@ -903,7 +903,7 @@ msgstr "Allunga la durata della vostra prossima richiesta concessa."
 msgid "Extra"
 msgstr "Extra"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:58 ../Views/Controls/SettingsWardrobeTab.axaml:59
+#: ../Views/Controls/SettingsWardrobeTab.axaml:54 ../Views/Controls/SettingsWardrobeTab.axaml:55
 msgid "Filter"
 msgstr "Filtra"
 
@@ -916,7 +916,7 @@ msgstr "Multa"
 msgid "Finish and Free Slot"
 msgstr "Termina e libera slot"
 
-#: ../ViewModels/DashboardViewModel.cs:460
+#: ../ViewModels/DashboardViewModel.cs:457
 msgid ""
 "Finished already? Either the work was poor, or none was done at all — this "
 "waste of my time shall not go unanswered."
@@ -1077,7 +1077,7 @@ msgstr "Concesso — brevemente."
 msgid "Guaranteed Approval"
 msgstr "Approvazione Garantita"
 
-#: ../ViewModels/DashboardViewModel.cs:676
+#: ../ViewModels/DashboardViewModel.cs:673
 #, csharp-format
 msgid "Halve the severity of \"{0}\"?"
 msgstr "Dimezzare la severità di \"{0}\"?"
@@ -1150,7 +1150,7 @@ msgid "Hydration reminders shall come no more often than once every {0}."
 msgstr ""
 "I richiami all'idratazione non giungeranno più spesso di una volta ogni {0}."
 
-#: ../ViewModels/DashboardViewModel.cs:474
+#: ../ViewModels/DashboardViewModel.cs:471
 msgid ""
 "I accept the work, though at such a leisurely pace it earns but half its wage "
 "— and the dawdling shall not go unanswered."
@@ -1261,7 +1261,7 @@ msgstr ""
 "Mostro grazia sotto un modesto peso, e la chiamo il segno più autentico della "
 "buona educazione"
 
-#: ../Views/DashboardView.axaml:40 ../Views/DashboardView.axaml:259
+#: ../Views/DashboardView.axaml:43
 msgctxt "session status"
 msgid "Idle"
 msgstr "In pausa"
@@ -1302,7 +1302,7 @@ msgstr "Migliora le probabilità che la vostra prossima richiesta sia approvata.
 msgid "Industry becomes you."
 msgstr "L'operosità vi si addice."
 
-#: ../ViewModels/DashboardViewModel.cs:126
+#: ../ViewModels/DashboardViewModel.cs:123
 #, csharp-format
 msgid "Initial: {0}"
 msgstr "Iniziale: {0}"
@@ -1337,7 +1337,7 @@ msgid ""
 "Into the corner. Feet together, hands clasped before you, eyes on the wall."
 msgstr "All'angolo. Piedi uniti, mani giunte sul grembo, faccia al muro."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:226
+#: ../Views/Controls/SettingsWardrobeTab.axaml:222
 msgid "Invert selection"
 msgstr "Inverti selezione"
 
@@ -1353,7 +1353,7 @@ msgstr ""
 "seguenti regolino il periodo di servizio. Vogliate leggerli con attenzione. "
 "Non saranno letti ad alta voce."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:276
+#: ../Views/Controls/SettingsWardrobeTab.axaml:272
 msgid "Item name"
 msgstr "Nome del capo"
 
@@ -1394,7 +1394,7 @@ msgstr "Strato"
 msgid "Layer: {0}"
 msgstr "Strato: {0}"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:72 ../Views/Controls/SettingsWardrobeTab.axaml:351
+#: ../Views/Controls/SettingsWardrobeTab.axaml:68 ../Views/Controls/SettingsWardrobeTab.axaml:347
 msgid "Layers"
 msgstr "Strati"
 
@@ -1507,11 +1507,11 @@ msgstr "Madame narrerà ad alta voce il Cornertime della Cameriera."
 msgid "Madame will summon the Maid by name alone."
 msgstr "Madame convocherà la Cameriera con il solo nome."
 
-#: ../ViewModels/WardrobeViewModel.cs:182 ../Views/Controls/SettingsWardrobeTab.axaml:116
+#: ../ViewModels/WardrobeViewModel.cs:182 ../Views/Controls/SettingsWardrobeTab.axaml:112
 msgid "Manage slots"
 msgstr "Gestisci slot"
 
-#: ../ViewModels/WardrobeViewModel.cs:182 ../Views/Controls/SettingsWardrobeTab.axaml:123
+#: ../ViewModels/WardrobeViewModel.cs:182 ../Views/Controls/SettingsWardrobeTab.axaml:119
 msgid "Manage tags"
 msgstr "Gestisci tag"
 
@@ -1626,7 +1626,7 @@ msgstr ""
 msgid "Movement sensitivity"
 msgstr "Sensibilità al movimento"
 
-#: ../ViewModels/WardrobeViewModel.cs:1071 ../Views/Controls/SettingsWardrobeTab.axaml:429 ../Views/Controls/SettingsWardrobeTab.axaml:438
+#: ../ViewModels/WardrobeViewModel.cs:1071 ../Views/Controls/SettingsWardrobeTab.axaml:425 ../Views/Controls/SettingsWardrobeTab.axaml:434
 msgid "Multiplier"
 msgstr "Moltiplicatore"
 
@@ -1679,7 +1679,7 @@ msgstr "Nome del nuovo slot"
 msgid "New tag name"
 msgstr "Nome del nuovo tag"
 
-#: ../ViewModels/DashboardViewModel.cs:332
+#: ../ViewModels/DashboardViewModel.cs:329
 #, csharp-format
 msgid "Next wage in {0:D2}:{1:D2}"
 msgstr "Prossima paga tra {0:D2}:{1:D2}"
@@ -1717,7 +1717,7 @@ msgstr "Alla Cameriera non sarà richiesta alcuna riverenza."
 msgid "No entries."
 msgstr "Nessun elemento."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:306
+#: ../Views/Controls/SettingsWardrobeTab.axaml:302
 msgid "No item matches search and filters."
 msgstr "Nessun capo corrisponde a ricerca e filtri."
 
@@ -1739,13 +1739,9 @@ msgstr ""
 "Non è stato rilevato alcun microfono. Vi sarà chiesto di scrivere a mano "
 "qualunque citazione, anziché pronunciarla."
 
-#: ../ViewModels/DashboardViewModel.cs:127
+#: ../ViewModels/DashboardViewModel.cs:124
 msgid "No outfit set"
 msgstr "Nessun outfit impostato"
-
-#: ../Views/DashboardView.axaml:143
-msgid "No pending tasks"
-msgstr "Nessun compito in sospeso"
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:213
 msgid ""
@@ -1754,7 +1750,7 @@ msgid ""
 msgstr ""
 "Non è previsto alcun congedo di sorta. La Cameriera si regoli di conseguenza."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:476
+#: ../Views/Controls/SettingsWardrobeTab.axaml:472
 msgid "No rule involves this item's tags."
 msgstr "Nessuna regola coinvolge i tag di questo capo."
 
@@ -1824,7 +1820,7 @@ msgid "Now kneel, look down, and reflect upon your failings."
 msgstr ""
 "Ora inginocchiatevi, guardate a terra e riflettete sui vostri fallimenti."
 
-#: ../ViewModels/DashboardViewModel.cs:642 ../ViewModels/LoadGameViewModel.cs:148 ../ViewModels/WelcomeViewModel.cs:38
+#: ../ViewModels/DashboardViewModel.cs:639 ../ViewModels/LoadGameViewModel.cs:148 ../ViewModels/WelcomeViewModel.cs:38
 msgid "OK"
 msgstr "OK"
 
@@ -1883,7 +1879,7 @@ msgstr "Regole outfit"
 msgid "Outfit video exported."
 msgstr "Video outfit esportato."
 
-#: ../Views/DashboardView.axaml:46 ../Views/DashboardView.axaml:265
+#: ../Views/DashboardView.axaml:49
 msgid "Outfit ▸"
 msgstr "Outfit ▸"
 
@@ -1903,7 +1899,7 @@ msgstr "Outfit parziale"
 msgid "Penalty lines per mistake"
 msgstr "Righe di penalità per errore"
 
-#: ../Views/Controls/DashboardPunishmentsPanel.axaml:27 ../Views/DashboardView.axaml:167 ../Views/DashboardView.axaml:429
+#: ../Views/Controls/DashboardPunishmentsPanel.axaml:25 ../Views/DashboardView.axaml:213
 msgid "Pending Punishments"
 msgstr "Punizioni in sospeso"
 
@@ -2132,7 +2128,7 @@ msgstr "Rimosso"
 msgid "Removes one pending punishment outright."
 msgstr "Rimuove del tutto una punizione pendente."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:288 ../Views/Controls/SettingsWardrobeTab.axaml:289
+#: ../Views/Controls/SettingsWardrobeTab.axaml:284 ../Views/Controls/SettingsWardrobeTab.axaml:285
 msgid "Rename item"
 msgstr "Rinomina capo"
 
@@ -2144,7 +2140,7 @@ msgstr "Sostituisci"
 msgid "Replace the current terms?"
 msgstr "Sostituire le condizioni attuali?"
 
-#: ../Views/DashboardView.axaml:205 ../Views/DashboardView.axaml:290
+#: ../Views/DashboardView.axaml:74
 msgid "Request Permission"
 msgstr "Richiedi permesso"
 
@@ -2164,7 +2160,7 @@ msgstr "Durata richiesta — minimo (secondi)"
 msgid "Requires"
 msgstr "Richiede"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:108
+#: ../Views/Controls/SettingsWardrobeTab.axaml:104
 msgid "Reset filters"
 msgstr "Azzera filtri"
 
@@ -2186,11 +2182,11 @@ msgid "Rise, and offer me a proper curtsy. See that it is done with grace."
 msgstr ""
 "Offritemi una riverenza appropriata. Fate in modo che sia eseguita con grazia."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:160
+#: ../Views/Controls/SettingsWardrobeTab.axaml:156
 msgid "Rules"
 msgstr "Regole"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:446
+#: ../Views/Controls/SettingsWardrobeTab.axaml:442
 msgid "Rules on this item's tags"
 msgstr "Regole sui tag di questo capo"
 
@@ -2218,7 +2214,7 @@ msgstr "Salva e torna indietro"
 msgid "Save outfit"
 msgstr "Salva outfit"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:50 ../Views/Controls/SettingsWardrobeTab.axaml:51
+#: ../Views/Controls/SettingsWardrobeTab.axaml:46 ../Views/Controls/SettingsWardrobeTab.axaml:47
 msgid "Search by name, layer, slot or tag…"
 msgstr "Cerca per nome, strato, slot o tag…"
 
@@ -2231,11 +2227,11 @@ msgstr "Secondi richiesti per gravità"
 msgid "Select all visible ({0})"
 msgstr "Seleziona tutti i visibili ({0})"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:217
+#: ../Views/Controls/SettingsWardrobeTab.axaml:213
 msgid "Select all visible items"
 msgstr "Seleziona tutti i capi visibili"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:332
+#: ../Views/Controls/SettingsWardrobeTab.axaml:328
 msgid "Select an item to edit its details."
 msgstr "Selezionare un capo per modificarne i dettagli."
 
@@ -2251,7 +2247,7 @@ msgstr ""
 "Gli accessori selezionati vanno indossati per una durata casuale prima di "
 "poterli togliere."
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:220 ../Views/Controls/SettingsWardrobeTab.axaml:221
+#: ../Views/Controls/SettingsWardrobeTab.axaml:216 ../Views/Controls/SettingsWardrobeTab.axaml:217
 msgid "Selection options"
 msgstr "Opzioni di selezione"
 
@@ -2275,7 +2271,7 @@ msgstr "Impostazioni"
 msgid "Settled"
 msgstr "Saldato"
 
-#: ../Views/DashboardView.axaml:213 ../Views/DashboardView.axaml:298
+#: ../Views/DashboardView.axaml:82
 msgid "Shop"
 msgstr "Negozio"
 
@@ -2337,7 +2333,7 @@ msgstr "Slot «{0}» eliminato"
 msgid "Slot: {0}"
 msgstr "Slot: {0}"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:83 ../Views/Controls/SettingsWardrobeTab.axaml:366
+#: ../Views/Controls/SettingsWardrobeTab.axaml:79 ../Views/Controls/SettingsWardrobeTab.axaml:362
 msgid "Slots"
 msgstr "Slot"
 
@@ -2345,7 +2341,7 @@ msgstr "Slot"
 msgid "So far, so good. I am watching."
 msgstr "Per ora va bene. Vi sto osservando."
 
-#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:675 ../Views/Controls/DashboardPunishmentsPanel.axaml:103
+#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:672 ../Views/Controls/DashboardPunishmentsPanel.axaml:101
 msgid "Soften Punishment"
 msgstr "Mitiga Punizione"
 
@@ -2383,7 +2379,7 @@ msgstr "Restare immobili in un angolo mentre la fotocamera rileva i movimenti."
 msgid "Standing Tasks"
 msgstr "Incombenze fisse"
 
-#: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:187 ../Views/DashboardView.axaml:118 ../Views/DashboardView.axaml:376
+#: ../ViewModels/PunishmentItemViewModel.cs:43 ../Views/Controls/SettingsPopupsTab.axaml:187 ../Views/DashboardView.axaml:160
 msgid "Start"
 msgstr "Inizia"
 
@@ -2453,7 +2449,7 @@ msgstr "Tag «{0}» eliminato"
 msgid "Tag: {0}"
 msgstr "Tag: {0}"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:94 ../Views/Controls/SettingsWardrobeTab.axaml:387
+#: ../Views/Controls/SettingsWardrobeTab.axaml:90 ../Views/Controls/SettingsWardrobeTab.axaml:383
 msgid "Tags"
 msgstr "Tag"
 
@@ -2461,7 +2457,7 @@ msgstr "Tag"
 msgid "Task name"
 msgstr "Nome del compito"
 
-#: ../Views/DashboardView.axaml:64 ../Views/DashboardView.axaml:322
+#: ../Views/DashboardView.axaml:106
 msgid "Tasks"
 msgstr "Compiti"
 
@@ -2575,7 +2571,7 @@ msgstr ""
 "La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra "
 "occasione."
 
-#: ../ViewModels/DashboardViewModel.cs:640
+#: ../ViewModels/DashboardViewModel.cs:637
 msgid "The chosen uniform"
 msgstr "L'outfit prescelto"
 
@@ -2705,7 +2701,7 @@ msgstr ""
 "Il tag «{0}» è usato da {1} e da {2}. Eliminandolo verrà tolto da tutti i "
 "capi e verranno eliminate le regole che lo citano. Continuare?"
 
-#: ../ViewModels/DashboardViewModel.cs:473
+#: ../ViewModels/DashboardViewModel.cs:470
 msgid ""
 "The task is done, if hardly with diligence — half the wage for half the zeal, "
 "and you shall answer to me for the dawdling."
@@ -2713,7 +2709,7 @@ msgstr ""
 "Il compito è svolto, se non proprio con diligenza — metà salario per metà "
 "zelo, e dell'ozio mi renderete conto."
 
-#: ../ViewModels/DashboardViewModel.cs:639
+#: ../ViewModels/DashboardViewModel.cs:636
 #, csharp-format
 msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
 msgstr "L'outfit «{0}» sarà obbligatorio per le prossime {1}."
@@ -2881,7 +2877,7 @@ msgstr "Narrazione vocale"
 msgid "Wage interval (minutes)"
 msgstr "Intervallo paga (minuti)"
 
-#: ../ViewModels/DashboardViewModel.cs:132
+#: ../ViewModels/DashboardViewModel.cs:129
 #, csharp-format
 msgid "Wage: {0} / {1} min"
 msgstr "Paga: {0} / {1} min"
@@ -2890,7 +2886,7 @@ msgstr "Paga: {0} / {1} min"
 msgid "Wages"
 msgstr "Salario"
 
-#: ../Views/Controls/SettingsWardrobeTab.axaml:42 ../Views/SettingsView.axaml:83
+#: ../Views/Controls/SettingsWardrobeTab.axaml:38 ../Views/SettingsView.axaml:83
 msgid "Wardrobe"
 msgstr "Guardaroba"
 
@@ -2913,7 +2909,7 @@ msgstr "Webcam"
 msgid "Webcam & Speech Recognition"
 msgstr "Webcam e riconoscimento vocale"
 
-#: ../ViewModels/WardrobeViewModel.cs:1070 ../Views/Controls/SettingsWardrobeTab.axaml:413 ../Views/Controls/SettingsWardrobeTab.axaml:422
+#: ../ViewModels/WardrobeViewModel.cs:1070 ../Views/Controls/SettingsWardrobeTab.axaml:409 ../Views/Controls/SettingsWardrobeTab.axaml:418
 msgid "Weight"
 msgstr "Peso"
 

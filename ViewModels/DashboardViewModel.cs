@@ -66,9 +66,6 @@ public partial class DashboardViewModel : ViewModelBase
     [Reactive] private bool _isBusy;
     [Reactive] private bool _isIdle = true;
 
-    // --- Orientation ---
-    [Reactive] private bool _isLandscape;
-
     // --- Outfit drawer ---
     [Reactive] private bool _isOutfitDrawerOpen;
 

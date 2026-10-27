@@ -29,11 +29,7 @@
 
     <Panel>
 
-        <!-- ══ Landscape layout ══════════════════════════════════════════════════════════
-             The only layout so far. A portrait twin (Golden Rule 6) would be a sibling Grid
-             toggled by IsLandscape, reusing the same ViewModel and the templates above. -->
-        <Grid Name="LandscapeLayout"
-              RowDefinitions="Auto,Auto,Auto,*"
+        <Grid RowDefinitions="Auto,Auto,Auto,*"
               RowSpacing="{StaticResource SpacingMd}"
               Margin="{StaticResource SpacingXlThickness}">
 

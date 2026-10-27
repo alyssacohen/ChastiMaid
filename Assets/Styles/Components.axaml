@@ -61,15 +61,13 @@
         <Setter Property="MaxWidth" Value="432" />
     </Style>
 
-    <!-- punishmentDrawer — bottom-anchored drawer inside a dialogOverlay; .landscape offsets it past the left nav rail -->
+    <!-- punishmentDrawer — bottom-anchored drawer inside a dialogOverlay, offset past the left nav rail -->
     <Style Selector="Border.punishmentDrawer">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />
         <Setter Property="CornerRadius" Value="8,8,0,0" />
         <Setter Property="BoxShadow" Value="0 -8 32 0 #30000000" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
-    </Style>
-    <Style Selector="Border.punishmentDrawer.landscape">
         <Setter Property="Margin" Value="{DynamicResource NavPanelWidthThickness}" />
     </Style>
 

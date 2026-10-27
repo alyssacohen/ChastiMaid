@@ -96,20 +96,12 @@ public class App : Application
 
     /// <summary>
     ///     Applies startup window size based on command-line flags.
-    ///     --portrait   800×1200  (Surface Go portrait,  150% DPI logical pixels)
-    ///     --landscape  1200×800  (Surface Go landscape, 150% DPI logical pixels)
-    ///     No flag      normal startup (maximized or last saved state)
+    ///     --landscape  1200×800  (Surface Go, 150% DPI logical pixels)
+    ///     No flag      normal startup (fullscreen)
     /// </summary>
     private static void ApplyWindowGeometry(Window window)
     {
-        if (Program.ForcePortrait)
-        {
-            window.Width = 800;
-            window.Height = 1200;
-            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            window.WindowState = WindowState.Normal;
-        }
-        else if (Program.ForceLandscape)
+        if (Program.ForceLandscape)
         {
             window.Width = 1200;
             window.Height = 800;

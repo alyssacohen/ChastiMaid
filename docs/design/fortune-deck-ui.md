@@ -101,9 +101,9 @@ var rotationDegrees = thetaDegrees;
 
 This keeps the arc's peak at the center (highest point) and both ends level with each other at the baseline, producing the "minor arc" shape validated in the mockup — not a full semicircle.
 
-### Orientation and screen size
+### Screen size
 
-- The arc's radius and total width must scale with the available width of the draw screen, since the Surface Go is used in both portrait and landscape. Compute `arcRadius` from a fraction of the container's actual width at layout time rather than a fixed pixel constant, so the ribbon never overflows the visible area in portrait mode.
+- The arc's radius and total width must scale with the available width of the draw screen (desktop vs. Surface Go). Compute `arcRadius` from a fraction of the container's actual width at layout time rather than a fixed pixel constant, so the ribbon never overflows the visible area.
 - Card size (and therefore the visible "sliver" width in the ribbon) should also scale down proportionally on narrower layouts, rather than reducing the arc's angular sweep — changing the sweep angle would alter the silhouette of the gesture; changing card scale preserves it.
 
 ### Performance notes (Surface Go)

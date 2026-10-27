@@ -4,10 +4,9 @@
 
 | File                      | Describes                          |
 |---------------------------|------------------------------------|
-| `wireframe-portrait.svg`  | Dashboard in portrait orientation  |
-| `wireframe-landscape.svg` | Dashboard in landscape orientation |
-| `wireframe-drawer.svg`    | Outfit drawer open (portrait)      |
-| `wireframe-dialog.svg`    | Punishment list dialog (portrait)  |
+| `wireframe-landscape.svg` | Dashboard                          |
+| `wireframe-drawer.svg`    | Outfit drawer open                 |
+| `wireframe-dialog.svg`    | Punishment list dialog             |
 
 ---
 
@@ -76,46 +75,26 @@ ViewModels/
 
 ## 4. DashboardView layout
 
-### Portrait (see `wireframe-portrait.svg`)
+Landscape only (see `wireframe-landscape.svg`). Two columns under a full-width status bar:
 
-Top-to-bottom, single column:
-
-1. **Status bar** — fixed height ~50px, `ColorSurface` background, thin warm bottom border.
+1. **Status bar** — full width, fixed height ~50px, `ColorSurface` background, thin warm bottom border.
    Left: green dot + "Idle" label.
    Right: "Outfit ▸" button (opens the drawer).
 
-2. **Scrollable area** (`ScrollViewer` filling remaining height):
-    - `DebtWidget` UserControl (16px side margin, 16px top margin)
-    - **Tasks section**: header row ("Tasks" label + count badge) + divider +
-      `ItemsControl` of task rows. Each row: name + estimated duration (left),
-      "Start" dark button (right). `MinHeight="56"` per row. Thin divider between rows.
-    - **Punishment button**: full-width, amber styling (`ColorAmberBackground` fill,
-      `ColorAmber` border), count badge (amber circle, white number) on the right.
-      Active only when `HasPendingPunishments = true`; disabled and unstyled otherwise.
+2. **Left rail** (~260px wide, `ColorSurface` background, right border):
+   DebtWidget card, then Request Permission, Shop and **End Session** (`Danger` styling: leads to the
+   safe-combination reveal / abandon-game flow), stacked.
 
-3. **Action bar** — pinned at bottom, `ColorSurface` background, thin warm top border.
-   Three buttons in a row (left to right):
-    - Request Permission
-    - Shop
-    - **End Session** — `Danger` styling (destructive: leads to the safe-combination
-      reveal / abandon-game flow).
+3. **Right area** (remaining width, scrollable): **Tasks section** — header row ("Tasks" label + count
+   badge) + divider + `ItemsControl` of task rows. Each row: name (left), "Start" dark button (right).
+   `MinHeight="56"` per row. Thin divider between rows.
 
-4. **OutfitDrawer** — renders as the topmost child of the root `Panel`, overlaying
+4. **Punishment bar** — pinned at the bottom of the right column: full-width button, amber styling
+   (`ColorAmberBackground` fill, `ColorAmber` border), count badge (amber circle, white number) on the right.
+   Active only when `HasPendingPunishments = true`; disabled and unstyled otherwise.
+
+5. **OutfitDrawer** — renders as the topmost child of the root `Panel`, overlaying
    everything. Hidden when closed. See §6.
-
-### Landscape (see `wireframe-landscape.svg`)
-
-Two-column layout triggered when `Bounds.Width` exceeds a threshold (~900 device px):
-
-- **Left rail** (~260px wide, `ColorSurface` background, right border):
-  Top: DebtWidget card.
-  Middle: Request Permission, Shop, End Session buttons (stacked).
-  Bottom: "Current Outfit ▸" button (replaces the portrait status bar shortcut).
-
-- **Right area** (remaining width, scrollable):
-  Tasks header + task rows + Punishment button — same structure as portrait.
-
-- **Status bar** remains full-width at the top in both orientations.
 
 ---
 
@@ -279,7 +258,7 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 | Tap **Start** on a task                 | Navigate to active task view                                      |
 | Tap **Punishments** button              | Open `PunishmentListDialog`                                       |
 | Tap **Start** inside punishment dialog  | Close dialog, navigate to punishment execution view               |
-| Tap **Outfit ▸** / **Current Outfit ▸** | Toggle `IsOutfitDrawerOpen`                                       |
+| Tap **Outfit ▸**                        | Toggle `IsOutfitDrawerOpen`                                       |
 | Tap scrim while drawer is open          | Close drawer (same toggle command)                                |
 | Tap **Request Permission**              | Open permission request dialog (spec TBD)                         |
 | Tap **Shop**                            | Open shop dialog (spec TBD)                                       |
@@ -291,7 +270,6 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 
 | Element                            | Empty state                                                                       |
 |------------------------------------|-----------------------------------------------------------------------------------|
-| Tasks list (0 tasks)               | Centered `TextBlock`: "No pending tasks", `CaptionFontSize`, `TextHint`           |
 | Punishments button (0 punishments) | `IsEnabled=false`, amber styling hidden, badge hidden                             |
 | Outfit layer with no item          | "(none)" in `TextHint` — handled in `OutfitLayerViewModel`                        |
 | Debt at zero                       | Progress bar shows empty track, numbers show "0 pts" — no special handling needed |
@@ -302,6 +280,6 @@ Tapping "Start" closes the dialog and returns the selected punishment.
 
 - Minimum tappable height: **44px** for all interactive elements
 - Task rows: `MinHeight="56"` (comfortable finger tap)
-- Action bar buttons: `Height="42"` (full width makes them easy to tap)
+- Left rail buttons: `MinHeight="44"`, full rail width
 - Close buttons (drawer, dialogs): **32×32px** minimum
 - Punishment "Start" buttons: `Height="34"`, `MinHeight="44"` via padding
