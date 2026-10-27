@@ -4,7 +4,9 @@ namespace ChastiMaid.Services;
 
 /// <summary>
 ///     Randomly snaps a photo or short video at random intervals (bounded by <see cref="GameSettings.BusyCaptureMinIntervalSeconds" />
-///     / <see cref="GameSettings.BusyCaptureMaxIntervalSeconds" />) until cancelled. Shared by any "busy mode"
+///     / <see cref="GameSettings.BusyCaptureMaxIntervalSeconds" />; videos last between
+///     <see cref="GameSettings.BusyCaptureVideoMinSeconds" /> and <see cref="GameSettings.BusyCaptureVideoMaxSeconds" />)
+///     until cancelled. Shared by any "busy mode"
 ///     screen (chores, Writing Lines) that needs unattended presence evidence. Webcam failures are swallowed —
 ///     missing hardware never interrupts the activity in progress.
 /// </summary>
@@ -38,7 +40,8 @@ public static class SilentCaptureLoop
                     }
                     else
                     {
-                        var duration = random.Next(3, 11);
+                        var duration = random.Next(settings.BusyCaptureVideoMinSeconds,
+                            settings.BusyCaptureVideoMaxSeconds + 1);
                         var path = Path.Combine(dir, $"{filePrefix}_{timestamp}.avi");
                         await WebcamPreviewService.RecordVideoStandaloneAsync(path, duration, ct: ct,
                             cameraIndex: cameraIndex);

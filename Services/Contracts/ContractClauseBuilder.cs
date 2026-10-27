@@ -145,8 +145,9 @@ public sealed class ContractClauseBuilder(ILocalizer L)
                 Span(s.KneelMinDurationSeconds), Span(s.KneelMaxDurationSeconds),
                 Span(s.KneelPhotoMinIntervalSeconds), Span(s.KneelPhotoMaxIntervalSeconds))
             : L.T("The Maid shall not be asked to kneel."),
-        L.T("While the Maid is occupied, photographs shall be taken at intervals of between {0} and {1}.",
-            Span(s.BusyCaptureMinIntervalSeconds), Span(s.BusyCaptureMaxIntervalSeconds)),
+        L.T("While the Maid is occupied, photographs or videos of between {2} and {3} shall be taken at intervals of between {0} and {1}.",
+            Span(s.BusyCaptureMinIntervalSeconds), Span(s.BusyCaptureMaxIntervalSeconds),
+            Span(s.BusyCaptureVideoMinSeconds), Span(s.BusyCaptureVideoMaxSeconds)),
     ];
 
     private List<string> PunishmentParagraphs(GameSettings s, List<ForcedOutfitPreset> presets)

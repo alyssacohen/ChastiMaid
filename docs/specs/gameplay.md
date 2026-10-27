@@ -136,8 +136,9 @@ The app will show a page with the following elements:
 * Footer
     - End chore button
 
-In this mode, the user is "busy", the app checks if she is working by silently taking pictures or short videos (3 to 10
-seconds) at random intervals between a min and a max configured in the settings.
+In this mode, the user is "busy", the app checks if she is working by silently taking pictures or short videos at random
+intervals between a min and a max configured in the settings; video length is also random between a configured min and
+max (default 3 to 10 seconds).
 When the chore is finished, the user can click the button and the value will be subtracted from the debt.
 
 Each time a chore is started, a target completion time is rolled: a random value between -15% and +15% of the

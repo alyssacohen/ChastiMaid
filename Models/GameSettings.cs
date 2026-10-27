@@ -55,6 +55,8 @@ public class GameSettings
     // Busy mode capture
     public int BusyCaptureMinIntervalSeconds { get; set; } = 300;
     public int BusyCaptureMaxIntervalSeconds { get; set; } = 600;
+    public int BusyCaptureVideoMinSeconds { get; set; } = 3;
+    public int BusyCaptureVideoMaxSeconds { get; set; } = 10;
 
     // Kneel popup — total duration range (spec: 1-5 minutes) and verification-photo interval
     public bool KneelEnabled { get; set; } = true;

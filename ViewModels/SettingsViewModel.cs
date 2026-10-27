@@ -38,6 +38,8 @@ public partial class SettingsViewModel : ViewModelBase
     [Reactive] private int _autoSaveInterval;
     [Reactive] private int _captureMaxInterval;
     [Reactive] private int _captureMinInterval;
+    [Reactive] private int _captureVideoMax;
+    [Reactive] private int _captureVideoMin;
     [Reactive] private double _dailyInterestRate;
     [Reactive] private decimal _idleWageAmount;
     [Reactive] private int _idleWageInterval;
@@ -151,6 +153,8 @@ public partial class SettingsViewModel : ViewModelBase
         _quoteMatchMinSimilarityPercent = s.QuoteMatchMinSimilarityPercent;
         _captureMinInterval = s.BusyCaptureMinIntervalSeconds;
         _captureMaxInterval = s.BusyCaptureMaxIntervalSeconds;
+        _captureVideoMin = s.BusyCaptureVideoMinSeconds;
+        _captureVideoMax = s.BusyCaptureVideoMaxSeconds;
         _kneelEnabled = s.KneelEnabled;
         _kneelMinDuration = s.KneelMinDurationSeconds;
         _kneelMaxDuration = s.KneelMaxDurationSeconds;
@@ -782,7 +786,8 @@ public partial class SettingsViewModel : ViewModelBase
             case nameof(PlugAndPlayEnabled) or nameof(DiaperPlayEnabled):
                 IsGeneralDirty = true;
                 break;
-            case nameof(CaptureMinInterval) or nameof(CaptureMaxInterval):
+            case nameof(CaptureMinInterval) or nameof(CaptureMaxInterval)
+                or nameof(CaptureVideoMin) or nameof(CaptureVideoMax):
                 IsChoresDirty = true;
                 break;
             case nameof(FineSeverityValue):
@@ -964,6 +969,8 @@ public partial class SettingsViewModel : ViewModelBase
         s.QuoteMatchMinSimilarityPercent = QuoteMatchMinSimilarityPercent;
         s.BusyCaptureMinIntervalSeconds = CaptureMinInterval;
         s.BusyCaptureMaxIntervalSeconds = CaptureMaxInterval;
+        s.BusyCaptureVideoMinSeconds = CaptureVideoMin;
+        s.BusyCaptureVideoMaxSeconds = CaptureVideoMax;
         s.KneelEnabled = KneelEnabled;
         s.KneelMinDurationSeconds = KneelMinDuration;
         s.KneelMaxDurationSeconds = KneelMaxDuration;

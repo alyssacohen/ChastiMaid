@@ -19,6 +19,8 @@
     "quoteMatchMinSimilarityPercent": 82,
     "busyCaptureMinIntervalSeconds": 300,
     "busyCaptureMaxIntervalSeconds": 600,
+    "busyCaptureVideoMinSeconds": 3,
+    "busyCaptureVideoMaxSeconds": 10,
     "kneelEnabled": true,
     "kneelMinDurationSeconds": 60,
     "kneelMaxDurationSeconds": 300,

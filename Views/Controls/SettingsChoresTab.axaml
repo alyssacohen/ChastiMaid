@@ -18,31 +18,49 @@
                 <StackPanel Spacing="12">
                     <TextBlock
                         Classes="EmployerVoice"
-                        Text="{l:Tr 'While a chore is in progress, the camera takes photos at random intervals.'}"
+                        Text="{l:Tr 'While a chore is in progress, the camera takes photos or short videos at random intervals.'}"
                         TextWrapping="Wrap" />
-                    <Grid ColumnDefinitions="*,Auto">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{l:Tr 'Shortest wait between photos (seconds)'}"
+                            Grid.Column="0"
+                            Text="{l:Tr 'Wait minimum/maximum (seconds)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
                             FormatString="0"
                             Grid.Column="1"
+                            Margin="0,0,8,0"
                             Minimum="1"
                             Value="{Binding CaptureMinInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                        <NumericUpDown
+                            Classes="underline stacked-spinner compact"
+                            FormatString="0"
+                            Grid.Column="2"
+                            Minimum="1"
+                            Value="{Binding CaptureMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
                         <TextBlock
                             Classes="BodySmall"
-                            Text="{l:Tr 'Longest wait between photos (seconds)'}"
+                            Grid.Column="0"
+                            Text="{l:Tr 'Video duration minimum/maximum (seconds)'}"
                             VerticalAlignment="Center" />
                         <NumericUpDown
                             Classes="underline stacked-spinner compact"
                             FormatString="0"
                             Grid.Column="1"
+                            Margin="0,0,8,0"
+                            Maximum="60"
                             Minimum="1"
-                            Value="{Binding CaptureMaxInterval, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                            Value="{Binding CaptureVideoMin, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
+                        <NumericUpDown
+                            Classes="underline stacked-spinner compact"
+                            FormatString="0"
+                            Grid.Column="2"
+                            Maximum="60"
+                            Minimum="1"
+                            Value="{Binding CaptureVideoMax, Converter={x:Static converters:NullableNumericConverter.Instance}, ConverterParameter=1}" />
                     </Grid>
                 </StackPanel>
             </Border>
