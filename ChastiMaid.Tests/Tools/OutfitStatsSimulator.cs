@@ -89,7 +89,7 @@ public static class OutfitStatsSimulator
             if (shouldAccept(session, outfit))
             {
                 acceptedCount++;
-                foreach (var item in outfit.Items)
+                foreach (var item in outfit.Items.Where(i => i.Weight > 0))
                 {
                     item.Weight = Math.Max(
                         WardrobeBalance.AcceptWeightFloor,
@@ -102,7 +102,7 @@ public static class OutfitStatsSimulator
             }
             else
             {
-                foreach (var item in outfit.Items)
+                foreach (var item in outfit.Items.Where(i => i.Weight > 0))
                 {
                     item.Weight += WardrobeBalance.RejectWeightIncrement;
                     item.RejectionCount++;
@@ -219,7 +219,7 @@ public static class OutfitStatsSimulator
             if (accept)
             {
                 acceptedCount++;
-                foreach (var item in outfit.Items)
+                foreach (var item in outfit.Items.Where(i => i.Weight > 0))
                 {
                     item.Weight = Math.Max(
                         WardrobeBalance.AcceptWeightFloor,
@@ -232,7 +232,7 @@ public static class OutfitStatsSimulator
             }
             else
             {
-                foreach (var item in outfit.Items)
+                foreach (var item in outfit.Items.Where(i => i.Weight > 0))
                 {
                     item.Weight += WardrobeBalance.RejectWeightIncrement;
                     item.RejectionCount++;

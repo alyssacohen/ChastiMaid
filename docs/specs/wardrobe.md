@@ -91,6 +91,10 @@ case and lower-cased on save; deleting a tag also deletes the rules that cite it
 Items are chosen randomly with probability proportional to their `Weight` value.
 `Weight` vary when items are accepted or rejected.
 
+An item with `Weight` 0 is never a random pick: it only enters an outfit as a seed (forced outfit, Plug & Play,
+chastity device, items kept while modifying), or when a seed's "requires" rule has no other match. Accepting or
+rejecting it changes neither its `Weight` nor its rejection count, so it stays at 0.
+
 To keep the accept/reject drift from collapsing the whole wardrobe to the floor or growing it
 unbounded over a long game, every `RescaleEveryNRejections` (10) rejected outfits, all item `Weight`
 values are rescaled so their total returns to what it was at new-game time — preserving each item's

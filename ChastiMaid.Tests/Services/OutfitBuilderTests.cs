@@ -147,6 +147,31 @@ public class OutfitBuilderTests
     }
 
     [Fact]
+    public void Build_ZeroWeightItem_NeverPickedAsFiller()
+    {
+        // Different slots: once the weight-1 item is used up, the zero-weight one is the only candidate left.
+        var bonnet = MakeItem(1, "bonnet", [4], ["head"]);
+        var gloves = MakeItem(2, "gloves", [4], ["arms"], weight: 0);
+
+        for (var seed = 0; seed < 50; seed++)
+        {
+            var outfit = new OutfitBuilder([bonnet, gloves], [], seed).Build();
+            Assert.DoesNotContain(outfit.Items, i => i.Id == 2);
+        }
+    }
+
+    [Fact]
+    public void Build_ZeroWeightSeed_IsStillPlaced()
+    {
+        var gloves = MakeItem(1, "gloves", [4], ["arms"], weight: 0);
+
+        var builder = new OutfitBuilder([gloves], [], 0);
+        builder.AddSeedItems([gloves]);
+
+        Assert.Contains(builder.Build().Items, i => i.Id == 1);
+    }
+
+    [Fact]
     public void Build_TotalMultiplier_IsProductOfItemMultipliers()
     {
         var item1 = new ClothingItem

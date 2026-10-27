@@ -50,8 +50,9 @@ public class OutfitBuilder
     {
         ResolveRequiredRules();
 
+        // Weight 0 = never a random pick: such items only enter as seeds (forced outfits, Plug & Play).
         var remaining = _allItems
-            .Where(i => !_pickingList.Contains(i))
+            .Where(i => !_pickingList.Contains(i) && i.Weight > 0)
             .ToDictionary(i => i.Id);
 
         var unplaced = new List<ClothingItem>(_pickingList);

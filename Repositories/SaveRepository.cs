@@ -93,9 +93,10 @@ public class SaveRepository(LiteDatabase db)
     }
 
     // --- Wardrobe weight adjustments ---
+    // Weight-0 items stay out of the economy, or accepting/rejecting them would make them random picks.
     public void AcceptItems(IEnumerable<ClothingItem> items)
     {
-        foreach (var item in items)
+        foreach (var item in items.Where(i => i.Weight > 0))
         {
             item.Weight = Math.Max(
                 WardrobeBalance.AcceptWeightFloor,
@@ -111,7 +112,7 @@ public class SaveRepository(LiteDatabase db)
 
     public void RejectItems(IEnumerable<ClothingItem> items)
     {
-        foreach (var item in items)
+        foreach (var item in items.Where(i => i.Weight > 0))
         {
             item.Weight += WardrobeBalance.RejectWeightIncrement;
             item.RejectionCount++;
