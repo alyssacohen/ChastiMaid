@@ -41,12 +41,6 @@ public partial class DashboardViewModel
     [Reactive] private bool _isPoseForCameraPopupActive;
     [Reactive] private int _poseCountdown;
     [Reactive] private Bitmap? _capturedPosePhoto;
-
-    // Responsive sizing, recalculated on window resize (see DashboardView.axaml.cs) — shared by
-    // every idle popup that shows a live webcam preview (Pose for Camera, Curtsy, ...)
-    [Reactive] private double _popupDialogMaxHeight = 420;
-    [Reactive] private double _popupPreviewWidth = 280;
-    [Reactive] private double _popupPreviewHeight = 420;
     private DispatcherTimer? _poseCountdownTimer;
     private ClothingItem? _currentPoseItem;
 

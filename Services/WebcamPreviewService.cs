@@ -14,20 +14,21 @@ namespace ChastiMaid.Services;
 
 /// <summary>
 ///     Manages the webcam: live preview on a WriteableBitmap plus video recording and photo capture
-///     from the same open VideoCapture. Implements INotifyPropertyChanged via ReactiveObject.
+///     from the same open VideoCapture. Photos and videos keep the camera's full frame, resolution and
+///     orientation; only the preview is shrunk. Implements INotifyPropertyChanged via ReactiveObject.
 /// </summary>
 public partial class WebcamPreviewService : ReactiveObject, IDisposable
 {
-    private const int PixelateRegionWidth = 240;
-    private const int PixelateRegionHeight = 80;
-    private const int PixelateBlockSize = 20;
+    // Same share of the visible picture as the old 240×80 box over the 320-px-wide preview crop.
+    private const double PixelateWidthRatio = 0.75;
+    private const double PixelateHeightRatio = 1.0 / 6;
+    private const int PixelateBlocksAcross = 12;
 
-    /// <summary>
-    /// Target width/height ratio (2:3 portrait) that captured photos/videos are center-cropped to,
-    /// matching the UniformToFill + ClipToBounds visual crop every WebcamPreviewControl consumer uses
-    /// (see WebcamCaptureDialog.axaml, CornertimePunishmentView.axaml, DashboardIdlePopupOverlay.axaml).
-    /// </summary>
-    public const double CaptureAspectRatio = 320.0 / 480.0;
+    /// <summary>Longest side of the preview frames: about the largest box the preview gets on the Surface Go.</summary>
+    private const int PreviewMaxSide = 960;
+
+    /// <summary>Longest side movement detection works at: the old default 640×480 the sensitivity was tuned on.</summary>
+    private const int MovementAnalysisMaxSide = 640;
 
     private VideoCapture? _capture;
     private int _currentCameraIndex = -1;
@@ -51,10 +52,9 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     private int _movementPenaltyCount;
 
     /// <summary>
-    ///     When true, a centered 240x80 region of the preview frame is heavily pixelated before display,
+    ///     When true, a centered strip of the preview frame is heavily pixelated before display,
     ///     so the user can frame a shot (e.g. a safe combination) without being able to read it.
-    ///     Only affects the live preview bitmap — frames captured via CaptureFrameAsync are read fresh
-    ///     from the camera and are never pixelated.
+    ///     Only affects the shrunk preview copy — captured photos and videos are never pixelated.
     /// </summary>
     public bool PixelateCenterOverlay { get; set; }
 
@@ -138,7 +138,7 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             return true;
         }
 
-        var cap = new VideoCapture(cameraIndex);
+        var cap = OpenCamera(cameraIndex);
         if (!cap.IsOpened())
         {
             cap.Dispose();
@@ -204,8 +204,9 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
             return;
         }
 
+        using var small = Shrink(frame, MovementAnalysisMaxSide);
         using var fgMask = new Mat();
-        _bgSubtractor.Apply(frame, fgMask);
+        _bgSubtractor.Apply(small, fgMask);
 
         if (_bgSubtractorWarmupFramesRemaining > 0)
         {
@@ -267,14 +268,15 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
     private void CopyFrameToBitmap(Mat frame)
     {
+        using var preview = Shrink(frame, PreviewMaxSide);
         if (PixelateCenterOverlay)
         {
-            PixelateCenter(frame);
+            PixelateCenter(preview);
         }
 
         // Convert BGR → BGRA and copy pixels into a byte[] on the current (background) thread
         using var bgra = new Mat();
-        Cv2.CvtColor(frame, bgra, ColorConversionCodes.BGR2BGRA);
+        Cv2.CvtColor(preview, bgra, ColorConversionCodes.BGR2BGRA);
 
         var w = bgra.Width;
         var h = bgra.Height;
@@ -301,8 +303,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
     /// <summary>Heavily pixelates a centered region of the frame in place, in-frame only (preview never persisted).</summary>
     private static void PixelateCenter(Mat frame)
     {
-        var w = Math.Min(PixelateRegionWidth, frame.Width);
-        var h = Math.Min(PixelateRegionHeight, frame.Height);
+        var w = (int)(frame.Width * PixelateWidthRatio);
+        var h = (int)(frame.Height * PixelateHeightRatio);
         if (w <= 0 || h <= 0)
         {
             return;
@@ -313,7 +315,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         using var roi = new Mat(frame, new OpenCvSharp.Rect(x, y, w, h));
         using var small = new Mat();
-        var smallSize = new Size(Math.Max(1, w / PixelateBlockSize), Math.Max(1, h / PixelateBlockSize));
+        var blockSize = Math.Max(1, w / PixelateBlocksAcross);
+        var smallSize = new Size(Math.Max(1, w / blockSize), Math.Max(1, h / blockSize));
 
         Cv2.Resize(roi, small, smallSize, interpolation: InterpolationFlags.Linear);
         Cv2.Resize(small, roi, roi.Size(), interpolation: InterpolationFlags.Nearest);
@@ -323,21 +326,75 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         Cv2.Rectangle(frame, new OpenCvSharp.Rect(x, y, w, h), Scalar.White, thickness: 1);
     }
 
-    private static Size ComputeCroppedSize(Size source, double targetAspect)
+    /// <summary>Returns a copy of the frame shrunk so its longer side is at most <paramref name="maxSide" /> (never enlarged).</summary>
+    private static Mat Shrink(Mat frame, int maxSide)
     {
-        var currentAspect = (double)source.Width / source.Height;
-        return currentAspect > targetAspect
-            ? new Size(Math.Max(1, (int)Math.Round(source.Height * targetAspect)), source.Height)
-            : new Size(source.Width, Math.Max(1, (int)Math.Round(source.Width / targetAspect)));
+        var scale = Math.Min(1.0, (double)maxSide / Math.Max(frame.Width, frame.Height));
+        var result = new Mat();
+        Cv2.Resize(frame, result, new Size(), scale, scale, InterpolationFlags.Area);
+        return result;
     }
 
-    /// <summary>Center-crops a frame to the given width/height ratio (returns an owned clone).</summary>
-    private static Mat CropToAspectRatio(Mat frame, double targetAspect)
+    /// <summary>
+    ///     Opens a camera at its highest resolution: asking for more than any mode offers makes the driver
+    ///     fall back to its largest one.
+    /// </summary>
+    private static VideoCapture OpenCamera(int cameraIndex)
     {
-        var size = ComputeCroppedSize(new Size(frame.Width, frame.Height), targetAspect);
-        var x = (frame.Width - size.Width) / 2;
-        var y = (frame.Height - size.Height) / 2;
-        return new Mat(frame, new OpenCvSharp.Rect(x, y, size.Width, size.Height)).Clone();
+        var cap = new VideoCapture(cameraIndex);
+        if (cap.IsOpened())
+        {
+            cap.Set(VideoCaptureProperties.FrameWidth, 10_000);
+            cap.Set(VideoCaptureProperties.FrameHeight, 10_000);
+        }
+
+        return cap;
+    }
+
+    /// <summary>Records <paramref name="durationSeconds" /> of MJPG video at the frames' own size.</summary>
+    private static void Record(VideoCapture cap, string outputPath, int durationSeconds, IProgress<int>? progress,
+        Action<Mat>? onFrame, CancellationToken ct)
+    {
+        var fps = cap.Fps > 0 ? cap.Fps : 30.0;
+        var totalFrames = (int)(fps * durationSeconds);
+        var delay = (int)(1000.0 / fps);
+
+        using var frame = new Mat();
+        VideoWriter? writer = null;
+        try
+        {
+            for (var i = 0; i < totalFrames; i++)
+            {
+                ct.ThrowIfCancellationRequested();
+                cap.Read(frame);
+                if (frame.Empty())
+                {
+                    continue;
+                }
+
+                // Sized from a real frame: a writer whose size differs from the frames silently drops them all.
+                writer ??= new VideoWriter(outputPath, FourCC.MJPG, fps, frame.Size());
+                writer.Write(frame);
+                onFrame?.Invoke(frame);
+
+                var elapsed = (int)(i / fps);
+                progress?.Report(durationSeconds - elapsed);
+
+                Thread.Sleep(delay);
+            }
+        }
+        finally
+        {
+            writer?.Dispose();
+        }
+    }
+
+    /// <summary>Reads one frame and saves it as an image.</summary>
+    private static bool SaveFrame(VideoCapture cap, string outputPath)
+    {
+        using var frame = new Mat();
+        cap.Read(frame);
+        return !frame.Empty() && Cv2.ImWrite(outputPath, frame);
     }
 
     /// <summary>Stops the preview loop and waits for it to finish. The VideoCapture stays open.</summary>
@@ -385,43 +442,11 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
+        var cap = _capture;
         try
         {
-            await Task.Run(() =>
-            {
-                var fps = _capture.Fps > 0 ? _capture.Fps : 30.0;
-                var croppedSize = ComputeCroppedSize(new Size(_capture.FrameWidth, _capture.FrameHeight),
-                    CaptureAspectRatio);
-
-                using var writer = new VideoWriter(outputPath, FourCC.MJPG, fps, croppedSize);
-                using var frame = new Mat();
-
-                var totalFrames = (int)(fps * durationSeconds);
-                var delay = (int)(1000.0 / fps);
-
-                for (var i = 0; i < totalFrames; i++)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    _capture.Read(frame);
-                    if (frame.Empty())
-                    {
-                        continue;
-                    }
-
-                    using (var cropped = CropToAspectRatio(frame, CaptureAspectRatio))
-                    {
-                        writer.Write(cropped);
-                    }
-
-                    // Keep the preview updated during recording (uncropped — the visual crop is XAML Stretch/Clip)
-                    CopyFrameToBitmap(frame);
-
-                    var elapsed = (int)(i / fps);
-                    progress?.Report(durationSeconds - elapsed);
-
-                    Thread.Sleep(delay);
-                }
-            }, ct);
+            // The preview keeps updating during recording
+            await Task.Run(() => Record(cap, outputPath, durationSeconds, progress, CopyFrameToBitmap, ct), ct);
         }
         finally
         {
@@ -442,21 +467,10 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
+        var cap = _capture;
         try
         {
-            return await Task.Run(() =>
-            {
-                using var frame = new Mat();
-                _capture.Read(frame);
-                if (frame.Empty())
-                {
-                    return false;
-                }
-
-                using var cropped = CropToAspectRatio(frame, CaptureAspectRatio);
-                Cv2.ImWrite(outputPath, cropped);
-                return true;
-            }, ct);
+            return await Task.Run(() => SaveFrame(cap, outputPath), ct);
         }
         finally
         {
@@ -606,41 +620,13 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         await Task.Run(() =>
         {
-            using var cap = new VideoCapture(cameraIndex);
+            using var cap = OpenCamera(cameraIndex);
             if (!cap.IsOpened())
             {
                 throw new InvalidOperationException("Webcam not available.");
             }
 
-            var fps = cap.Fps > 0 ? cap.Fps : 30.0;
-            var croppedSize = ComputeCroppedSize(new Size(cap.FrameWidth, cap.FrameHeight), CaptureAspectRatio);
-            var fourcc = FourCC.MJPG;
-
-            using var writer = new VideoWriter(outputPath, fourcc, fps, croppedSize);
-            using var frame = new Mat();
-
-            var totalFrames = (int)(fps * durationSeconds);
-            var delay = (int)(1000.0 / fps);
-
-            for (var i = 0; i < totalFrames; i++)
-            {
-                ct.ThrowIfCancellationRequested();
-                cap.Read(frame);
-                if (frame.Empty())
-                {
-                    continue;
-                }
-
-                using (var cropped = CropToAspectRatio(frame, CaptureAspectRatio))
-                {
-                    writer.Write(cropped);
-                }
-
-                var elapsed = (int)(i / fps);
-                progress?.Report(durationSeconds - elapsed);
-
-                Thread.Sleep(delay);
-            }
+            Record(cap, outputPath, durationSeconds, progress, null, ct);
         }, ct);
     }
 
@@ -655,22 +641,8 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
 
         return await Task.Run(() =>
         {
-            using var cap = new VideoCapture(cameraIndex);
-            if (!cap.IsOpened())
-            {
-                return false;
-            }
-
-            using var frame = new Mat();
-            cap.Read(frame);
-            if (frame.Empty())
-            {
-                return false;
-            }
-
-            using var cropped = CropToAspectRatio(frame, CaptureAspectRatio);
-            Cv2.ImWrite(outputPath, cropped);
-            return true;
+            using var cap = OpenCamera(cameraIndex);
+            return cap.IsOpened() && SaveFrame(cap, outputPath);
         }, ct);
     }
 }

@@ -1,12 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
-             x:Class="ChastiMaid.Views.Controls.WebcamPreviewControl"
-             x:Name="Root">
+             x:Class="ChastiMaid.Views.Controls.WebcamPreviewControl">
 
     <Border Background="{DynamicResource PageBackgroundBrush}" CornerRadius="4" ClipToBounds="True">
         <Panel>
-            <Image x:Name="PreviewImage" Stretch="{Binding #Root.Stretch}" />
+            <Image x:Name="PreviewImage" Stretch="Uniform" />
             <TextBlock Text="{l:Tr 'No webcam signal'}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"

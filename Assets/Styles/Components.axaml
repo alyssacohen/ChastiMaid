@@ -61,6 +61,23 @@
         <Setter Property="MaxWidth" Value="432" />
     </Style>
 
+    <!-- cameraMedia — camera preview or captured photo. Put it in a Grid "*" row (never in a StackPanel):
+         it then takes all the height the texts and buttons leave, keeping the picture's own proportions -->
+    <Style Selector=":is(Control).cameraMedia">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,0,16" />
+    </Style>
+    <!-- .between — a cameraMedia with texts above it too (full-page camera screens) -->
+    <Style Selector=":is(Control).cameraMedia.between">
+        <Setter Property="Margin" Value="0,16" />
+    </Style>
+
+    <!-- cameraText — texts and buttons around a cameraMedia, kept at dialog width while the picture can grow wider -->
+    <Style Selector="StackPanel.cameraText">
+        <Setter Property="MaxWidth" Value="452" />
+        <Setter Property="Spacing" Value="16" />
+    </Style>
+
     <!-- punishmentDrawer — bottom-anchored drawer inside a dialogOverlay, offset past the left nav rail -->
     <Style Selector="Border.punishmentDrawer">
         <Setter Property="Background" Value="{DynamicResource BrushSurfaceBase}" />

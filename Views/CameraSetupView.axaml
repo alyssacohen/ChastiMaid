@@ -6,41 +6,44 @@
              x:DataType="vm:CameraSetupViewModel"
              x:Class="ChastiMaid.Views.CameraSetupView">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MaxWidth="600"
-                Margin="40"
-                Spacing="16">
+    <!-- The preview fills the "*" row, so the page never needs to scroll -->
+    <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Margin="40"
+          RowDefinitions="Auto,*,Auto">
 
-        <TextBlock Classes="PageTitle"
-                   Text="{l:Tr 'Position the camera'}"
-                   HorizontalAlignment="Center" />
+        <StackPanel Classes="cameraText">
+            <TextBlock Classes="PageTitle"
+                       Text="{l:Tr 'Position the camera'}"
+                       HorizontalAlignment="Center" />
 
-        <TextBlock Classes="Body"
-                   Text="{Binding FramingPrompt}"
-                   HorizontalAlignment="Center" />
-
-        <v:WebcamPreviewControl Service="{Binding Webcam}"
-                                Width="480" Height="360"
-                                HorizontalAlignment="Center" />
-
-        <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                  ItemsSource="{Binding Webcam.AvailableCameras}"
-                  SelectedItem="{Binding Webcam.SelectedCamera}"
-                  HorizontalAlignment="Center"
-                  MinWidth="240" />
-
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Spacing="8">
-            <Button Content="{l:Tr 'Confirm'}"
-                    Command="{Binding ConfirmCommand}"
-                    Classes="Primary" />
-            <Button Content="{l:Tr 'Cancel'}"
-                    Command="{Binding CancelCommand}"
-                    Classes="Ghost" />
+            <TextBlock Classes="Body"
+                       Text="{Binding FramingPrompt}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" />
         </StackPanel>
 
-    </StackPanel>
+        <v:WebcamPreviewControl Classes="cameraMedia between" Grid.Row="1" Service="{Binding Webcam}" />
+
+        <StackPanel Classes="cameraText" Grid.Row="2">
+            <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                      ItemsSource="{Binding Webcam.AvailableCameras}"
+                      SelectedItem="{Binding Webcam.SelectedCamera}"
+                      HorizontalAlignment="Center"
+                      MinWidth="240" />
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="8">
+                <Button Content="{l:Tr 'Confirm'}"
+                        Command="{Binding ConfirmCommand}"
+                        Classes="Primary" />
+                <Button Content="{l:Tr 'Cancel'}"
+                        Command="{Binding CancelCommand}"
+                        Classes="Ghost" />
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
 
 </UserControl>

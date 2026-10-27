@@ -8,59 +8,60 @@
              x:Class="ChastiMaid.Views.Dialogs.WebcamCaptureDialog">
 
     <Panel Classes="dialogOverlay">
-        <Border Classes="dialogBox" MaxWidth="560">
-            <StackPanel Spacing="{StaticResource SpacingMd}">
+        <Border Classes="dialogBox fit" Margin="{StaticResource SpacingXxlThickness}">
+            <Panel>
 
                 <!-- Preview: webcam + Capture/Record -->
-                <StackPanel Spacing="{StaticResource SpacingMd}"
-                            IsVisible="{Binding IsPreviewing}"
-                            HorizontalAlignment="Center">
-                    <TextBlock Classes="Caption"
-                               Text="{Binding PreviewMessage}"
-                               HorizontalAlignment="Center"
-                               TextAlignment="Center" />
-                    <v:WebcamPreviewControl Service="{Binding Webcam}" Width="320" Height="480" Stretch="UniformToFill" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <Button Classes="Primary"
-                            Command="{Binding CaptureCommand}"
-                            HorizontalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <ic:SymbolIcon Symbol="{Binding CaptureIcon}" IconVariant="Regular" FontSize="16" />
-                            <TextBlock Text="{Binding CaptureLabel}" />
-                        </StackPanel>
-                    </Button>
-                    <Button Classes="Ghost"
-                            Content="{Binding SkipLabel}"
-                            Command="{Binding SkipCommand}"
-                            HorizontalAlignment="Center"
-                            Opacity="0.6" />
-                </StackPanel>
+                <Grid IsVisible="{Binding IsPreviewing}" RowDefinitions="Auto,*,Auto">
+                    <StackPanel Classes="cameraText">
+                        <TextBlock Classes="Caption"
+                                   Text="{Binding PreviewMessage}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                    <v:WebcamPreviewControl Classes="cameraMedia between" Grid.Row="1" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="2">
+                        <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                                  ItemsSource="{Binding Webcam.AvailableCameras}"
+                                  SelectedItem="{Binding Webcam.SelectedCamera}"
+                                  HorizontalAlignment="Stretch" />
+                        <Button Classes="Primary"
+                                Command="{Binding CaptureCommand}"
+                                HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <ic:SymbolIcon Symbol="{Binding CaptureIcon}" IconVariant="Regular" FontSize="16" />
+                                <TextBlock Text="{Binding CaptureLabel}" />
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="Ghost"
+                                Content="{Binding SkipLabel}"
+                                Command="{Binding SkipCommand}"
+                                HorizontalAlignment="Center"
+                                Opacity="0.6" />
+                    </StackPanel>
+                </Grid>
 
                 <!-- Recording state: countdown + live preview -->
-                <StackPanel Spacing="{StaticResource SpacingMd}"
-                            IsVisible="{Binding IsRecording}"
-                            HorizontalAlignment="Center">
+                <Grid IsVisible="{Binding IsRecording}" RowDefinitions="Auto,*,Auto">
                     <TextBlock Classes="Body"
                                Text="{l:Tr 'Recording... Strike a pose.'}"
                                HorizontalAlignment="Center" />
-                    <v:WebcamPreviewControl Service="{Binding Webcam}" Width="320" Height="480" Stretch="UniformToFill" />
-                    <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                              IsEnabled="False"
-                              ItemsSource="{Binding Webcam.AvailableCameras}"
-                              SelectedItem="{Binding Webcam.SelectedCamera}"
-                              HorizontalAlignment="Stretch" />
-                    <TextBlock Classes="NumberLarge"
-                               Text="{Binding Countdown, StringFormat={}{0}s}"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
+                    <v:WebcamPreviewControl Classes="cameraMedia between" Grid.Row="1" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="2">
+                        <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                                  IsEnabled="False"
+                                  ItemsSource="{Binding Webcam.AvailableCameras}"
+                                  SelectedItem="{Binding Webcam.SelectedCamera}"
+                                  HorizontalAlignment="Stretch" />
+                        <TextBlock Classes="NumberLarge"
+                                   Text="{Binding Countdown, StringFormat={}{0}s}"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
 
                 <!-- No webcam state -->
-                <StackPanel Spacing="{StaticResource SpacingMd}"
-                            IsVisible="{Binding NoWebcam}"
-                            HorizontalAlignment="Center">
+                <StackPanel Classes="cameraText" IsVisible="{Binding NoWebcam}">
                     <TextBlock Classes="Body"
                                Text="{l:Tr 'No webcam detected.'}"
                                HorizontalAlignment="Center" />
@@ -74,7 +75,7 @@
                             HorizontalAlignment="Center" />
                 </StackPanel>
 
-            </StackPanel>
+            </Panel>
         </Border>
     </Panel>
 

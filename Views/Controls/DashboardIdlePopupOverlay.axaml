@@ -7,123 +7,116 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="using:ChastiMaid.Localization">
 
+    <!-- Popups with a camera picture are a Grid: the picture fills the "*" row, so it gets every pixel the
+         texts below leave on screen and the box never needs to scroll. -->
     <Panel
         Classes="dialogOverlay"
         IsVisible="{Binding IsPopupVisible}"
         PointerPressed="OnOverlayPointerPressed">
         <Border
-            Classes="dialogBox"
-            MaxHeight="{Binding PopupDialogMaxHeight}"
-            MaxWidth="500"
+            Classes="dialogBox fit"
+            Margin="{StaticResource SpacingXxlThickness}"
             PointerPressed="OnDialogBoxPointerPressed">
             <Panel>
-                <StackPanel IsVisible="{Binding IsShowingQuestionPanel}" Spacing="16">
-                    <!-- Camera list outlives the popup that filled it, so the selector must share the preview's gate. -->
-                    <StackPanel IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}" Spacing="16">
+                <Grid IsVisible="{Binding IsShowingQuestionPanel}" RowDefinitions="*,Auto">
+                    <Panel>
                         <controls:WebcamPreviewControl
-                            Height="{Binding PopupPreviewHeight}"
-                            HorizontalAlignment="Center"
-                            Service="{Binding Webcam}"
-                            Stretch="UniformToFill"
-                            Width="{Binding PopupPreviewWidth}" />
+                            Classes="cameraMedia"
+                            IsVisible="{Binding IsWebcamPreviewNeededInQuestionPanel}"
+                            Service="{Binding Webcam}" />
+                        <Image
+                            Classes="cameraMedia"
+                            IsVisible="{Binding IsSelfCheckPopupActive}"
+                            Source="{Binding SelfCheckPhoto}"
+                            Stretch="Uniform" />
+                    </Panel>
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <!-- Camera list outlives the popup that filled it, so the selector must share the preview's gate. -->
                         <ComboBox
                             HorizontalAlignment="Stretch"
-                            IsVisible="{Binding Webcam.HasMultipleCameras}"
                             ItemsSource="{Binding Webcam.AvailableCameras}"
-                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                            SelectedItem="{Binding Webcam.SelectedCamera}">
+                            <ComboBox.IsVisible>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <Binding Path="IsWebcamPreviewNeededInQuestionPanel" />
+                                    <Binding Path="Webcam.HasMultipleCameras" />
+                                </MultiBinding>
+                            </ComboBox.IsVisible>
+                        </ComboBox>
+                        <TextBlock
+                            Classes="Body"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupQuestion}"
+                            TextWrapping="Wrap" />
+                        <ItemsControl ItemsSource="{Binding PopupAnswers}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Button
+                                        Classes="Ghost"
+                                        Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="{Binding}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,4" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
-                    <Image
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        IsVisible="{Binding IsSelfCheckPopupActive}"
-                        Source="{Binding SelfCheckPhoto}"
-                        Stretch="Uniform"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <TextBlock
-                        Classes="Body"
-                        HorizontalAlignment="Center"
-                        Text="{Binding PopupQuestion}"
-                        TextWrapping="Wrap" />
-                    <ItemsControl ItemsSource="{Binding PopupAnswers}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <Button
-                                    Classes="Ghost"
-                                    Command="{Binding $parent[ItemsControl].((vm:DashboardViewModel)DataContext).AnswerCommand}"
-                                    CommandParameter="{Binding}"
-                                    Content="{Binding}"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    Margin="0,4" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <StackPanel IsVisible="{Binding IsPoseCountdownActive}" Spacing="16">
-                    <controls:WebcamPreviewControl
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        Service="{Binding Webcam}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <TextBlock
-                        Classes="EmployerVoice"
-                        HorizontalAlignment="Center"
-                        Text="{l:Tr 'Hold your pose.'}"
-                        TextAlignment="Center" />
-                    <TextBlock
-                        Classes="NumberLarge"
-                        HorizontalAlignment="Center"
-                        Text="{Binding PoseCountdown}" />
-                </StackPanel>
-                <StackPanel IsVisible="{Binding IsPoseCapturing}" Spacing="16">
-                    <controls:WebcamPreviewControl
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        Service="{Binding Webcam}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <TextBlock
-                        Classes="EmployerVoice"
-                        HorizontalAlignment="Center"
-                        Text="{l:Tr 'Hold still.'}"
-                        TextAlignment="Center" />
-                </StackPanel>
-                <StackPanel IsVisible="{Binding IsCurtsyCountdownActive}" Spacing="16">
-                    <controls:WebcamPreviewControl
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        Service="{Binding Webcam}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <TextBlock
-                        Classes="EmployerVoice"
-                        HorizontalAlignment="Center"
-                        Text="{l:Tr 'Prepare yourself.'}"
-                        TextAlignment="Center" />
-                    <TextBlock
-                        Classes="NumberLarge"
-                        HorizontalAlignment="Center"
-                        Text="{Binding CurtsyCountdown}" />
-                </StackPanel>
-                <StackPanel IsVisible="{Binding IsCurtsyRecordingActive}" Spacing="16">
-                    <controls:WebcamPreviewControl
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        Service="{Binding Webcam}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <TextBlock
-                        Classes="EmployerVoice"
-                        HorizontalAlignment="Center"
-                        Text="{l:Tr 'Recording now.'}"
-                        TextAlignment="Center" />
-                    <TextBlock
-                        Classes="NumberLarge"
-                        HorizontalAlignment="Center"
-                        Text="{Binding CurtsyRecordingSecondsLeft}" />
-                </StackPanel>
-                <StackPanel IsVisible="{Binding IsQuoteListeningActive}" Spacing="16">
+                </Grid>
+                <Grid IsVisible="{Binding IsPoseCountdownActive}" RowDefinitions="*,Auto">
+                    <controls:WebcamPreviewControl Classes="cameraMedia" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{l:Tr 'Hold your pose.'}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PoseCountdown}" />
+                    </StackPanel>
+                </Grid>
+                <Grid IsVisible="{Binding IsPoseCapturing}" RowDefinitions="*,Auto">
+                    <controls:WebcamPreviewControl Classes="cameraMedia" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{l:Tr 'Hold still.'}"
+                            TextAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+                <Grid IsVisible="{Binding IsCurtsyCountdownActive}" RowDefinitions="*,Auto">
+                    <controls:WebcamPreviewControl Classes="cameraMedia" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{l:Tr 'Prepare yourself.'}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurtsyCountdown}" />
+                    </StackPanel>
+                </Grid>
+                <Grid IsVisible="{Binding IsCurtsyRecordingActive}" RowDefinitions="*,Auto">
+                    <controls:WebcamPreviewControl Classes="cameraMedia" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{l:Tr 'Recording now.'}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Classes="NumberLarge"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurtsyRecordingSecondsLeft}" />
+                    </StackPanel>
+                </Grid>
+                <StackPanel Classes="cameraText" IsVisible="{Binding IsQuoteListeningActive}">
                     <TextBlock
                         Classes="EmployerVoice"
                         HorizontalAlignment="Center"
@@ -164,7 +157,7 @@
                         HorizontalAlignment="Center"
                         Text="{Binding QuoteAttemptsRemainingText}" />
                 </StackPanel>
-                <StackPanel IsVisible="{Binding IsQuoteTypingActive}" Spacing="16">
+                <StackPanel Classes="cameraText" IsVisible="{Binding IsQuoteTypingActive}">
                     <TextBlock
                         Classes="EmployerVoice"
                         HorizontalAlignment="Center"
@@ -199,31 +192,28 @@
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center" />
                 </StackPanel>
-                <StackPanel IsVisible="{Binding IsKneelFramingActive}" Spacing="16">
-                    <controls:WebcamPreviewControl
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
-                        Service="{Binding Webcam}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <ComboBox
-                        HorizontalAlignment="Stretch"
-                        IsVisible="{Binding Webcam.HasMultipleCameras}"
-                        ItemsSource="{Binding Webcam.AvailableCameras}"
-                        SelectedItem="{Binding Webcam.SelectedCamera}" />
-                    <TextBlock
-                        Classes="EmployerVoice"
-                        HorizontalAlignment="Center"
-                        Text="{l:Tr 'Position the camera to frame where you shall kneel.'}"
-                        TextAlignment="Center" />
-                    <Button
-                        Classes="Ghost"
-                        Command="{Binding ConfirmKneelFramingCommand}"
-                        Content="{l:Tr 'Position confirmed'}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center" />
-                </StackPanel>
-                <StackPanel IsVisible="{Binding IsKneelActive}" Spacing="16">
+                <Grid IsVisible="{Binding IsKneelFramingActive}" RowDefinitions="*,Auto">
+                    <controls:WebcamPreviewControl Classes="cameraMedia" Service="{Binding Webcam}" />
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsVisible="{Binding Webcam.HasMultipleCameras}"
+                            ItemsSource="{Binding Webcam.AvailableCameras}"
+                            SelectedItem="{Binding Webcam.SelectedCamera}" />
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{l:Tr 'Position the camera to frame where you shall kneel.'}"
+                            TextAlignment="Center" />
+                        <Button
+                            Classes="Ghost"
+                            Command="{Binding ConfirmKneelFramingCommand}"
+                            Content="{l:Tr 'Position confirmed'}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+                <StackPanel Classes="cameraText" IsVisible="{Binding IsKneelActive}">
                     <TextBlock
                         Classes="EmployerVoice"
                         HorizontalAlignment="Center"
@@ -235,21 +225,21 @@
                         HorizontalAlignment="Center"
                         Text="{Binding KneelCountdown}" />
                 </StackPanel>
-                <StackPanel IsVisible="{Binding IsShowingPopupOutcome}" Spacing="16">
+                <Grid IsVisible="{Binding IsShowingPopupOutcome}" RowDefinitions="*,Auto">
                     <Image
-                        Height="{Binding PopupPreviewHeight}"
-                        HorizontalAlignment="Center"
+                        Classes="cameraMedia"
                         IsVisible="{Binding CapturedPosePhoto, Converter={x:Static ObjectConverters.IsNotNull}}"
                         Source="{Binding CapturedPosePhoto}"
-                        Stretch="UniformToFill"
-                        Width="{Binding PopupPreviewWidth}" />
-                    <TextBlock
-                        Classes="EmployerVoice"
-                        HorizontalAlignment="Center"
-                        Text="{Binding PopupOutcomeMessage}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                        Stretch="Uniform" />
+                    <StackPanel Classes="cameraText" Grid.Row="1">
+                        <TextBlock
+                            Classes="EmployerVoice"
+                            HorizontalAlignment="Center"
+                            Text="{Binding PopupOutcomeMessage}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
             </Panel>
         </Border>
     </Panel>

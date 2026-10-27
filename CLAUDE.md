@@ -92,7 +92,10 @@ contract is the only import/export format (no separate content export). See `doc
 - `AutoSaveService` — `TriggerSave()` for event-driven saves + a periodic timer; `Bind`/`Unbind` the active
   `SaveRepository`.
 - `WebcamPreviewService` — webcam capture (OpenCvSharp) for the photo/video check-ins, including camera enumeration
-  and selection; `CryptoService` encrypts captured media and the safe-combination photo.
+  and selection; `CryptoService` encrypts captured media and the safe-combination photo. Photos and videos keep the
+  camera's whole frame at its highest resolution and own orientation (no crop); only the live preview is shrunk.
+  A preview or captured photo goes in a Grid `*` row with class `cameraMedia` (texts in `StackPanel.cameraText`),
+  so it fills the free height with its own proportions and nothing scrolls.
 
 **OutfitBuilder** builds a randomized outfit from snapshot wardrobe items, honoring requires/incompatible rules, layer
 probabilities, per-layer slot exclusivity, and weighted selection. Accepting an outfit lowers item `Weight`; rejecting
@@ -173,7 +176,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 | `Buttons.axaml`    | `Styles`             | `Button.*` style classes                                                                                               |
 | `Chips.axaml`      | `Styles`             | `Border.chip` + `TextBlock.chip-label` styles                                                                          |
 | `Tables.axaml`     | `Styles`             | `Grid.TableRow.*` styles                                                                                               |
-| `Components.axaml` | `Styles`             | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip` (`:indeterminate` = partial, `TextBlock.chip-count`), `Button.slotCard`; Wardrobe: `Border.pane`, `Border.wardrobeRow`, `Button.Link`, `Border.notice`, `FlyoutPresenter.popover` |
+| `Components.axaml` | `Styles`             | Layout classes: `Panel.dialogOverlay`, `Border.dialogBox`, `Border.card`, `ToggleButton.filterChip` (`:indeterminate` = partial, `TextBlock.chip-count`), `Button.slotCard`, `cameraMedia` (`.between`), `StackPanel.cameraText`; Wardrobe: `Border.pane`, `Border.wardrobeRow`, `Button.Link`, `Border.notice`, `FlyoutPresenter.popover` |
 
 **Colors.axaml** is always loaded first (others reference its brushes). `Colors.axaml` must stay first in
 `MergedDictionaries`.

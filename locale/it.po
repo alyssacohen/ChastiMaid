@@ -168,7 +168,7 @@ msgstr "Un'allieva volenterosa è una gioia da istruire."
 msgid "AVI Video"
 msgstr "Video AVI"
 
-#: ../Views/CornertimePunishmentView.axaml:55
+#: ../Views/CornertimePunishmentView.axaml:59
 msgid "Abandon"
 msgstr "Abbandona"
 
@@ -224,7 +224,7 @@ msgstr "Aggiungi tag"
 msgid "Add task"
 msgstr "Aggiungi compito"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:553
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:547
 msgid "Adequate contrition, for once."
 msgstr "Pentimento adeguato, per una volta."
 
@@ -310,7 +310,7 @@ msgstr "Base"
 msgid "Before We Begin"
 msgstr "Prima di cominciare"
 
-#: ../Views/CornertimePunishmentView.axaml:34
+#: ../Views/CornertimePunishmentView.axaml:33
 msgid "Begin"
 msgstr "Inizia"
 
@@ -330,7 +330,7 @@ msgstr "Compra"
 msgid "CPM"
 msgstr "CPM"
 
-#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:675 ../ViewModels/DashboardViewModel.cs:695 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:831 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/CameraSetupView.axaml:39 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeDialogs.axaml:94 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:214
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:675 ../ViewModels/DashboardViewModel.cs:695 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:831 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/CameraSetupView.axaml:41 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeDialogs.axaml:94 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:47 ../Views/SettingsView.axaml:214
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -458,7 +458,7 @@ msgstr "La fiducia nella propria arte è cosa ammirevole."
 msgid "Configured outfits"
 msgstr "Divise configurate"
 
-#: ../ViewModels/DashboardViewModel.cs:674 ../ViewModels/DashboardViewModel.cs:694 ../Views/CameraSetupView.axaml:36
+#: ../ViewModels/DashboardViewModel.cs:674 ../ViewModels/DashboardViewModel.cs:694 ../Views/CameraSetupView.axaml:38
 msgid "Confirm"
 msgstr "Conferma"
 
@@ -725,7 +725,7 @@ msgstr "Ritenete di aver bisogno di ulteriori istruzioni?"
 msgid "Do you have any complaints about your present conditions?"
 msgstr "Avete lamentele riguardo alle vostre condizioni attuali?"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:350 ../Views/CornertimePunishmentView.axaml:67 ../Views/WritingLinesPunishmentView.axaml:128
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:344 ../Views/CornertimePunishmentView.axaml:75 ../Views/WritingLinesPunishmentView.axaml:128
 msgid "Done"
 msgstr "Fatto"
 
@@ -742,7 +742,7 @@ msgstr "A terra, sulle ginocchia. L'immobilità vi si addice."
 msgid "Draw — {0}"
 msgstr "Pesca — {0}"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:617
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:611
 msgid "Duly noted."
 msgstr "Ne prendo atto."
 
@@ -1104,11 +1104,11 @@ msgstr "Avete nutrito pensieri sconvenienti, oggi?"
 msgid "Held: {0}"
 msgstr "Possedute: {0}"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:89
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:87
 msgid "Hold still."
 msgstr "Non muovetevi."
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:72
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:73
 msgid "Hold your pose."
 msgstr "Mantenete la posa."
 
@@ -1170,19 +1170,19 @@ msgstr "Oggi mi sento generosa. Ma non mettetemi alla prova."
 msgid "I am fortunate indeed to be so thoroughly looked after"
 msgstr "Sono fortunata invero ad essere così premurosamente seguita"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:452
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:446
 msgid "I am here"
 msgstr "Sono qui"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:130
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:123
 msgid "I am listening."
 msgstr "Sto ascoltando."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:380 ../ViewModels/DashboardViewModel.IdlePopups.cs:447
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:374 ../ViewModels/DashboardViewModel.IdlePopups.cs:441
 msgid "I am ready"
 msgstr "Sono pronta"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:440 ../Views/ConfirmOutfitView.axaml:134
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:434 ../Views/ConfirmOutfitView.axaml:134
 msgid "I am ready, Madame"
 msgstr "Sono pronta, Madame"
 
@@ -1684,7 +1684,7 @@ msgstr "Nome del nuovo tag"
 msgid "Next wage in {0:D2}:{1:D2}"
 msgstr "Prossima paga tra {0:D2}:{1:D2}"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:343 ../ViewModels/DashboardViewModel.IdlePopups.cs:425
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:337 ../ViewModels/DashboardViewModel.IdlePopups.cs:419
 msgid "No"
 msgstr "No"
 
@@ -1778,11 +1778,11 @@ msgstr ""
 "Non è stata fissata alcuna incombenza. Madame lo ritiene improbabile e "
 "sospetta una svista."
 
-#: ../Views/Dialogs/WebcamCaptureDialog.axaml:65
+#: ../Views/Dialogs/WebcamCaptureDialog.axaml:66
 msgid "No webcam detected."
 msgstr "Nessuna webcam rilevata."
 
-#: ../Views/Controls/WebcamPreviewControl.axaml:10
+#: ../Views/Controls/WebcamPreviewControl.axaml:9
 msgid "No webcam signal"
 msgstr "Nessun segnale webcam"
 
@@ -1836,7 +1836,7 @@ msgstr ""
 "Al contrario — chi si crede al di là di ogni correzione ne ha il bisogno più "
 "urgente."
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:160
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:153
 msgid "One moment — I am considering what was said."
 msgstr "Un momento — sto valutando quanto detto."
 
@@ -1986,15 +1986,15 @@ msgstr "Timeout popup (secondi)"
 msgid "Popups"
 msgstr "Popup"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:222
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:211
 msgid "Position confirmed"
 msgstr "Posizione confermata"
 
-#: ../Views/CameraSetupView.axaml:16
+#: ../Views/CameraSetupView.axaml:17
 msgid "Position the camera"
 msgstr "Posizionate la fotocamera"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:217
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:206
 msgid "Position the camera to frame where you shall kneel."
 msgstr ""
 "Posizionate la fotocamera per inquadrare il luogo dove vi inginocchierete."
@@ -2007,7 +2007,7 @@ msgstr "Sterline (£) per gravità"
 msgid "Precision"
 msgstr "Esattezza"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:102
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:97
 msgid "Prepare yourself."
 msgstr "Preparatevi."
 
@@ -2076,11 +2076,11 @@ msgstr "Riconosciuto: {0}%. Soglia raggiunta."
 msgid "Record (5s)"
 msgstr "Registra (5s)"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:119
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:111
 msgid "Recording now."
 msgstr "Sto registrando."
 
-#: ../Views/Dialogs/WebcamCaptureDialog.axaml:47
+#: ../Views/Dialogs/WebcamCaptureDialog.axaml:48
 msgid "Recording... Strike a pose."
 msgstr "Registrazione in corso... Mettetevi in posa."
 
@@ -2119,7 +2119,7 @@ msgstr "Rimanente"
 msgid "Remove filter {0}"
 msgstr "Rimuovi il filtro {0}"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:609
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:603
 msgctxt "accessory"
 msgid "Removed"
 msgstr "Rimosso"
@@ -2407,7 +2407,7 @@ msgstr "Penitenza scontata. Potete tornare alle vostre mansioni."
 msgid "Stop"
 msgstr "Ferma"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:198
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:191
 msgid "Submit"
 msgstr "Invia"
 
@@ -2418,7 +2418,7 @@ msgid_plural "Suggested every {0} days"
 msgstr[0] "Consigliato ogni {0} giorno"
 msgstr[1] "Consigliato ogni {0} giorni"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:594
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:588
 msgid "Suitably adorned. See that it stays that way."
 msgstr "Adeguatamente adornata. Fate in modo che resti così."
 
@@ -2481,7 +2481,7 @@ msgstr "La domanda si risponde da sola, non credete?"
 msgid "That was not stillness. {0} seconds have been added."
 msgstr "Quella non era immobilità. Sono stati aggiunti {0} secondi."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:937
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:931
 msgid ""
 "That was not what I asked to hear. See that you attend more closely next time."
 msgstr ""
@@ -2561,11 +2561,11 @@ msgstr ""
 "Il corpo, come la casa, richiede giusta manutenzione. Andate a bere mezzo "
 "bicchiere."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:463 ../ViewModels/DashboardViewModel.IdlePopups.cs:554
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:457 ../ViewModels/DashboardViewModel.IdlePopups.cs:548
 msgid "The camera saw nothing of your penance. A pity."
 msgstr "La fotocamera non ha visto nulla della vostra penitenza. Peccato."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:652 ../ViewModels/DashboardViewModel.IdlePopups.cs:705 ../ViewModels/DashboardViewModel.IdlePopups.cs:810
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:646 ../ViewModels/DashboardViewModel.IdlePopups.cs:699 ../ViewModels/DashboardViewModel.IdlePopups.cs:804
 msgid "The camera was not cooperative. We shall try again another time."
 msgstr ""
 "La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra "
@@ -2644,7 +2644,7 @@ msgstr "L'inchiostro si secca, che scriviate o meno."
 msgid "The line to copy"
 msgstr "La riga da ricopiare"
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:171
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:164
 msgid "The microphone is not to be found. You will write it instead."
 msgstr "Il microfono non si trova. Dovrete scriverlo invece."
 
@@ -2791,7 +2791,7 @@ msgstr "Totale contratto: {0}"
 msgid "Type a sentence repeatedly, without mistakes."
 msgstr "Scrivere una frase più volte, senza errori."
 
-#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:189
+#: ../Views/Controls/DashboardIdlePopupOverlay.axaml:182
 msgid "Type the quotation here"
 msgstr "Digitate qui la citazione"
 
@@ -2837,15 +2837,15 @@ msgstr "Valore (£)"
 msgid "Variable Severity"
 msgstr "Severità variabile"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:569 ../ViewModels/StartSessionViewModel.cs:221
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:563 ../ViewModels/StartSessionViewModel.cs:221
 msgid "Very well"
 msgstr "Molto bene"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:931
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:925
 msgid "Very well spoken."
 msgstr "Ben detto."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:968
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:962
 msgid "Very well."
 msgstr "Molto bene."
 
@@ -2853,11 +2853,11 @@ msgstr "Molto bene."
 msgid "Very well. See that it does not become a habit."
 msgstr "Sia pure. Che non diventi un'abitudine."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:809
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:803
 msgid "Very well. The curtsy has been recorded."
 msgstr "Molto bene. La riverenza è stata registrata."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:704
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:698
 msgid "Very well. The photograph has been taken."
 msgstr "Molto bene. La fotografia è stata scattata."
 
@@ -2913,7 +2913,7 @@ msgstr "Webcam e riconoscimento vocale"
 msgid "Weight"
 msgstr "Peso"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:930
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:924
 msgid "Well read — but I cannot overlook your tardiness."
 msgstr "Bene, ma non posso transigere sul vostro ritardo."
 
@@ -2962,7 +2962,7 @@ msgstr ""
 msgid "Writing Lines"
 msgstr "Righe di penitenza"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:343 ../ViewModels/DashboardViewModel.IdlePopups.cs:425
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:337 ../ViewModels/DashboardViewModel.IdlePopups.cs:419
 msgid "Yes"
 msgstr "Sì"
 
@@ -2998,7 +2998,7 @@ msgstr "Ci sono modifiche non salvate in questa scheda."
 msgid "You have unsaved changes. What would you like to do?"
 msgstr "Ci sono modifiche non salvate. Come procedere?"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:608
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:602
 #, csharp-format
 msgid "You may now remove the {0}."
 msgstr "Potete ora rimuovere {0}."
@@ -3019,7 +3019,7 @@ msgstr ""
 "Avete posato la penna troppo presto. È stata aggiunta una multa, e le righe "
 "restano da scrivere."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:568
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:562
 #, csharp-format
 msgid "You shall wear the {0} until further notice."
 msgstr "Indosserete {0} fino a nuovo ordine."
@@ -3045,7 +3045,7 @@ msgstr ""
 msgid "You will pose for the camera. {0} must appear in the frame as proof."
 msgstr "Poserete per una foto. {0} deve comparire nell'inquadratura."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:446
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:440
 msgid "You will read the following aloud, that I may hear it spoken:"
 msgstr "Leggete quanto segue ad alta voce, affinché io possa udirlo:"
 
@@ -3053,12 +3053,12 @@ msgstr "Leggete quanto segue ad alta voce, affinché io possa udirlo:"
 msgid "Your Safe Combination"
 msgstr "Ecco la combinazione della cassaforte"
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:758
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:752
 msgid "Your account does not tally with my records. This will not do."
 msgstr ""
 "Il vostro resoconto non coincide con i miei registri. Questo non va bene."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:757
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:751
 msgid "Your account tallies. Very well."
 msgstr "Il vostro resoconto coincide. Molto bene."
 
@@ -3080,7 +3080,7 @@ msgstr ""
 "La vostra prossima richiesta sarà approvata senza obiezioni — solo questa "
 "volta."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:452
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:446
 msgid "Your presence is required. Attend at once."
 msgstr "È richiesta la vostra presenza. Presentatevi subito."
 
@@ -3189,7 +3189,7 @@ msgstr "{0} Min"
 msgid "{0} and {1} cannot be worn together."
 msgstr "{0} e {1} non possono essere indossati insieme."
 
-#: ../ViewModels/DashboardViewModel.IdlePopups.cs:86
+#: ../ViewModels/DashboardViewModel.IdlePopups.cs:80
 #, csharp-format
 msgid "{0} attempt remaining"
 msgid_plural "{0} attempts remaining"

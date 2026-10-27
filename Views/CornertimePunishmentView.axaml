@@ -7,38 +7,42 @@
              x:Class="ChastiMaid.Views.CornertimePunishmentView"
              Background="{DynamicResource BrushWindowBackground}">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MaxWidth="600"
-                Margin="40"
-                Spacing="16">
+    <Panel Margin="40">
 
-        <!-- Framing -->
-        <StackPanel IsVisible="{Binding IsFraming}" Spacing="16">
-            <TextBlock Classes="PageTitle"
-                       Text="{l:Tr 'The Corner Awaits'}"
-                       HorizontalAlignment="Center" />
-            <TextBlock Classes="Body"
-                       Text="{l:Tr 'Frame the corner in which you shall stand, then confirm when ready.'}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap" />
-            <v:WebcamPreviewControl Service="{Binding Webcam}"
-                                    Width="320" Height="480"
-                                    Stretch="UniformToFill"
-                                    HorizontalAlignment="Center" />
-            <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
-                      ItemsSource="{Binding Webcam.AvailableCameras}"
-                      SelectedItem="{Binding Webcam.SelectedCamera}"
-                      HorizontalAlignment="Center"
-                      MinWidth="240" />
-            <Button Content="{l:Tr 'Begin'}"
-                    Command="{Binding ConfirmFramingCommand}"
-                    Classes="Primary"
-                    HorizontalAlignment="Center" />
-        </StackPanel>
+        <!-- Framing: the preview fills the "*" row, so the page never needs to scroll -->
+        <Grid IsVisible="{Binding IsFraming}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              RowDefinitions="Auto,*,Auto">
+            <StackPanel Classes="cameraText">
+                <TextBlock Classes="PageTitle"
+                           Text="{l:Tr 'The Corner Awaits'}"
+                           HorizontalAlignment="Center" />
+                <TextBlock Classes="Body"
+                           Text="{l:Tr 'Frame the corner in which you shall stand, then confirm when ready.'}"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+            <v:WebcamPreviewControl Classes="cameraMedia between" Grid.Row="1" Service="{Binding Webcam}" />
+            <StackPanel Classes="cameraText" Grid.Row="2">
+                <ComboBox IsVisible="{Binding Webcam.HasMultipleCameras}"
+                          ItemsSource="{Binding Webcam.AvailableCameras}"
+                          SelectedItem="{Binding Webcam.SelectedCamera}"
+                          HorizontalAlignment="Center"
+                          MinWidth="240" />
+                <Button Content="{l:Tr 'Begin'}"
+                        Command="{Binding ConfirmFramingCommand}"
+                        Classes="Primary"
+                        HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
 
         <!-- Active -->
-        <StackPanel IsVisible="{Binding IsActive}" Spacing="16">
+        <StackPanel IsVisible="{Binding IsActive}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="600"
+                    Spacing="16">
             <TextBlock Classes="EmployerVoice"
                        Text="{Binding NarrationText}"
                        HorizontalAlignment="Center"
@@ -59,7 +63,11 @@
         </StackPanel>
 
         <!-- Result -->
-        <StackPanel IsVisible="{Binding IsResult}" Spacing="16">
+        <StackPanel IsVisible="{Binding IsResult}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="600"
+                    Spacing="16">
             <TextBlock Classes="EmployerVoice"
                        Text="{Binding ResultMessage}"
                        HorizontalAlignment="Center"
@@ -70,6 +78,6 @@
                     HorizontalAlignment="Center" />
         </StackPanel>
 
-    </StackPanel>
+    </Panel>
 
 </UserControl>
