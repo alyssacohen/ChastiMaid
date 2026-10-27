@@ -387,6 +387,11 @@ public partial class WebcamPreviewService : ReactiveObject, IDisposable
         {
             writer?.Dispose();
         }
+
+        if (writer is null)
+        {
+            throw new InvalidOperationException("The webcam delivered no frame.");
+        }
     }
 
     /// <summary>Reads one frame and saves it as an image.</summary>
