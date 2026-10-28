@@ -140,6 +140,9 @@ relative proportions without a hard floor/ceiling. The effective earning multipl
   clearing the field silently resets it to that minimum instead of crashing:
   - `NumericUpDown.Value` → `Converter={x:Static converters:NullableNumericConverter.Instance}`
   - `TextBox.Text` → `Converter={x:Static converters:NumericTextConverter.Instance}`
+- **Min/max pairs push each other.** A new minimum/maximum pair of fields goes into the `LinkedRanges` list in
+  `SettingsViewModel` (its own `LinkedRanges` for a per-item ViewModel) and into `GameContractService.Pairs`: once
+  an edit ends, the side edited last pushes the other one.
 
 ### Localization (gettext)
 

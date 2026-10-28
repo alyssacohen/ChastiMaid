@@ -14,6 +14,16 @@ public partial class SettingsView : UserControl
     public SettingsView()
     {
         InitializeComponent();
+
+        // A min/max pair is put back in order once an edit ends, not on every keystroke (see LinkedRanges).
+        // The spin handler runs after the field's own increment; spinner buttons may not move the focus.
+        AddHandler(LostFocusEvent, (_, _) => CommitRanges());
+        AddHandler(Spinner.SpinEvent, (_, _) => CommitRanges(), handledEventsToo: true);
+    }
+
+    private void CommitRanges()
+    {
+        (DataContext as SettingsViewModel)?.CommitRanges();
     }
 
     protected override void OnDataContextChanged(EventArgs e)

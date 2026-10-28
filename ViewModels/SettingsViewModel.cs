@@ -25,6 +25,7 @@ public partial class SettingsViewModel : ViewModelBase
     private readonly MainWindowViewModel _mainVm;
     private ILocalizer L => _mainVm.Localizer;
     private readonly ProfileRepository _repo;
+    private readonly LinkedRanges _ranges;
     private Func<ViewModelBase> _returnTo;
 
     // --- Dialog ---
@@ -254,6 +255,20 @@ public partial class SettingsViewModel : ViewModelBase
         }
 
         TakeSnapshot();
+
+        // The same pairs as GameContractService.Pairs, by ViewModel name.
+        _ranges = new LinkedRanges(this,
+            (nameof(MinDebt), nameof(MaxDebt)),
+            (nameof(PopupMinInterval), nameof(PopupMaxInterval)),
+            (nameof(CaptureMinInterval), nameof(CaptureMaxInterval)),
+            (nameof(CaptureVideoMin), nameof(CaptureVideoMax)),
+            (nameof(KneelMinDuration), nameof(KneelMaxDuration)),
+            (nameof(KneelPhotoMinInterval), nameof(KneelPhotoMaxInterval)),
+            (nameof(CornertimeMinRequiredSeconds), nameof(CornertimeMaxRequiredSeconds)),
+            (nameof(CornertimeMovementCooldownMinSeconds), nameof(CornertimeMovementCooldownMaxSeconds)),
+            (nameof(CornertimeMovementPenaltyMinSeconds), nameof(CornertimeMovementPenaltyMaxSeconds)),
+            (nameof(WritingLinesMinLines), nameof(WritingLinesMaxLines)),
+            (nameof(WritingLinesInterruptionMinIntervalSeconds), nameof(WritingLinesInterruptionMaxIntervalSeconds)));
 
         Changed.Subscribe(e => OnSettingChanged(e.PropertyName));
 
@@ -854,6 +869,7 @@ public partial class SettingsViewModel : ViewModelBase
     /// </summary>
     private bool Save()
     {
+        CommitRanges();
         if (!Wardrobe.CommitRename())
         {
             return false;
@@ -942,6 +958,19 @@ public partial class SettingsViewModel : ViewModelBase
         finally
         {
             IsTestQuoteListening = false;
+        }
+    }
+
+    /// <summary>
+    ///     An edit ended (focus left a field, a spinner step, a save): every min/max pair out of order is put back in
+    ///     order, the side edited last pushing the other one.
+    /// </summary>
+    public void CommitRanges()
+    {
+        _ranges.Commit();
+        foreach (var item in PlugAndPlayItems)
+        {
+            item.Ranges.Commit();
         }
     }
 
@@ -1201,11 +1230,20 @@ public abstract partial class EligibilityChipViewModel : ViewModelBase
     }
 }
 
-public partial class PlugAndPlayItemEditViewModel(WardrobeEditViewModel source, PlugAndPlayItemConfig? existing)
-    : EligibilityChipViewModel(source, existing?.Id)
+public partial class PlugAndPlayItemEditViewModel : EligibilityChipViewModel
 {
-    [Reactive] private int _minDurationMinutes = existing?.MinDurationMinutes ?? 30;
-    [Reactive] private int _maxDurationMinutes = existing?.MaxDurationMinutes ?? 120;
+    [Reactive] private int _minDurationMinutes;
+    [Reactive] private int _maxDurationMinutes;
+
+    public PlugAndPlayItemEditViewModel(WardrobeEditViewModel source, PlugAndPlayItemConfig? existing)
+        : base(source, existing?.Id)
+    {
+        _minDurationMinutes = existing?.MinDurationMinutes ?? 30;
+        _maxDurationMinutes = existing?.MaxDurationMinutes ?? 120;
+        Ranges = new LinkedRanges(this, (nameof(MinDurationMinutes), nameof(MaxDurationMinutes)));
+    }
+
+    public LinkedRanges Ranges { get; }
 
     protected override int SaveConfig(ProfileRepository repo)
     {
