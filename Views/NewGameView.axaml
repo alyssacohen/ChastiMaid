@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -31,14 +31,26 @@
                                ItemSpacing="{StaticResource SpacingSm}"
                                LineSpacing="{StaticResource SpacingSm}">
                         <Button Classes="Quiet"
-                                Content="{l:Tr 'Back'}"
-                                Command="{Binding BackCommand}" />
+                                Command="{Binding BackCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ArrowLeft}" />
+                                <TextBlock Text="{l:Tr 'Back'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                         <Button Classes="Ghost"
-                                Content="{l:Tr 'Load another contract'}"
-                                Command="{Binding LoadContractCommand}" />
+                                Command="{Binding LoadContractCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.FolderOpen}" />
+                                <TextBlock Text="{l:Tr 'Load another contract'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                         <Button Classes="Ghost"
-                                Content="{l:Tr 'Edit the terms'}"
-                                Command="{Binding EditCommand}" />
+                                Command="{Binding EditCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.PencilLine}" />
+                                <TextBlock Text="{l:Tr 'Edit the terms'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                         <Button Classes="Primary"
                                 Content="{l:Tr 'Accept the terms'}"
                                 Command="{Binding AcceptCommand}" />

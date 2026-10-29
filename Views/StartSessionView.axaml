@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -138,13 +138,21 @@
                         Content="{l:Tr 'Accept'}"
                         Command="{Binding AcceptCommand}" />
                 <Button Classes="Ghost"
-                        Content="{l:Tr 'Regenerate'}"
                         Command="{Binding RegenerateCommand}"
-                        IsEnabled="{Binding CanRegenOrModify}" />
+                        IsEnabled="{Binding CanRegenOrModify}">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.RefreshCw}" />
+                        <TextBlock Text="{l:Tr 'Regenerate'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
                 <Button Classes="Ghost"
-                        Content="{l:Tr 'Modify'}"
                         Command="{Binding ModifyCommand}"
-                        IsEnabled="{Binding CanRegenOrModify}" />
+                        IsEnabled="{Binding CanRegenOrModify}">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.PencilLine}" />
+                        <TextBlock Text="{l:Tr 'Modify'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
                 <Button Classes="Ghost"
                         Content="{l:Tr 'Quit'}"
                         Command="{Binding QuitCommand}" />

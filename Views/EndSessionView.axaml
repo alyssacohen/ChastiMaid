@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -25,12 +25,17 @@
                        TextAlignment="Center" />
 
             <StackPanel Spacing="12">
-                <Button Content="{l:Tr 'Show Safe Combination and Close'}"
+                <Button
                         Command="{Binding ShowComboAndCloseCommand}"
                         IsVisible="{Binding HasSafeCombo}"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
-                        Classes="Amber" />
+                        Classes="Amber">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.LockOpen}" />
+                        <TextBlock Text="{l:Tr 'Show Safe Combination and Close'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
 
                 <TextBlock Classes="Caption"
                            Text="{l:Tr 'A daily interest will be applied until you resume your session.'}"
@@ -76,10 +81,15 @@
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
 
-            <Button Content="{l:Tr 'Close Application'}"
+            <Button
                     Command="{Binding ConfirmCloseCommand}"
                     HorizontalAlignment="Center"
-                    Classes="Primary" />
+                    Classes="Primary">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Power}" />
+                    <TextBlock Text="{l:Tr 'Close Application'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
         </StackPanel>
 

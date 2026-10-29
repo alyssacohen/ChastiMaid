@@ -1,4 +1,4 @@
-<UserControl
+<UserControl xmlns:ic="using:ChastiMaid.Views"
     x:Class="ChastiMaid.Views.Controls.SettingsGeneralTab"
     x:DataType="vm:SettingsViewModel"
     xmlns="https://github.com/avaloniaui"
@@ -366,12 +366,20 @@
                     <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
                         <Button
                             Classes="Ghost"
-                            Command="{Binding ExportContractCommand}"
-                            Content="{l:Tr 'Export Contract'}" />
+                            Command="{Binding ExportContractCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.FileDown}" />
+                                <TextBlock Text="{l:Tr 'Export Contract'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                         <Button
                             Classes="Ghost"
-                            Command="{Binding ImportContractCommand}"
-                            Content="{l:Tr 'Import Contract'}" />
+                            Command="{Binding ImportContractCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.FileUp}" />
+                                <TextBlock Text="{l:Tr 'Import Contract'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                     <TextBlock
                         Classes="BodySmall"

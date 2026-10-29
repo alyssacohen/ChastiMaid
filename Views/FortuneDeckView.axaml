@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -11,9 +11,13 @@
         <!-- Header -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
             <Button Grid.Column="0"
-                    Content="{l:Tr 'Back'}"
                     Command="{Binding BackCommand}"
-                    Classes="Ghost" />
+                    Classes="Ghost">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ArrowLeft}" />
+                    <TextBlock Text="{l:Tr 'Back'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <TextBlock Grid.Column="1"
                        Classes="PageTitle"
@@ -104,8 +108,12 @@
                 HorizontalAlignment="Center"
                 HorizontalContentAlignment="Center"
                 MinWidth="200"
-                Margin="0,16,0,0"
-                Content="{Binding DrawButtonLabel}" />
+                Margin="0,16,0,0">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Dices}" />
+                <TextBlock Text="{Binding DrawButtonLabel}" VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
 
     </Grid>
 

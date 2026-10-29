@@ -3,7 +3,7 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:converters="using:ChastiMaid.Converters"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.SettingsChoresTab">
 
@@ -106,7 +106,7 @@
                                         VerticalAlignment="Center" Margin="12,0,0,0"
                                         ToolTip.Tip="{l:Tr 'Delete'}"
                                         AutomationProperties.Name="{l:Tr 'Delete'}">
-                                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
+                                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Trash}" />
                                 </Button>
                             </Grid>
                         </Border>
@@ -115,8 +115,8 @@
             </ItemsControl>
         </ScrollViewer>
         <Button Grid.Row="2" Command="{Binding AddChoreCommand}" Classes="Add" Margin="24,8,32,0">
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Plus}" />
                 <TextBlock Text="{l:Tr 'Add Chore'}" VerticalAlignment="Center" />
             </StackPanel>
         </Button>

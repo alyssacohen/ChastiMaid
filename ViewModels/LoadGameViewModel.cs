@@ -5,7 +5,7 @@ using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
 using ChastiMaid.Services.Contracts;
-using FluentIcons.Common;
+using ChastiMaid.Views;
 using ReactiveUI;
 
 namespace ChastiMaid.ViewModels;
@@ -61,7 +61,7 @@ public class SlotCardViewModel : ViewModelBase
     public string BalanceLabel { get; }
     public string SafeStatus { get; }
     public bool IsSafeLocked { get; }
-    public Symbol SafeIcon => IsSafeLocked ? Symbol.LockClosed : Symbol.LockOpen;
+    public string SafeIcon => IsSafeLocked ? LucideIcon.Lock : LucideIcon.LockOpen;
     public bool IsCompleted { get; }
     public string CompletedLabel { get; }
 

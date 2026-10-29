@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -56,10 +56,15 @@
             <TextBlock Classes="Caption"
                        Text="{Binding MaxDisplay, StringFormat='max {0} if you keep moving'}"
                        HorizontalAlignment="Center" />
-            <Button Content="{l:Tr 'Abandon'}"
+            <Button
                     Command="{Binding AbandonCommand}"
                     Classes="Danger compact"
-                    HorizontalAlignment="Center" />
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.X}" />
+                    <TextBlock Text="{l:Tr 'Abandon'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!-- Result -->

@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              xmlns:conv="using:ChastiMaid.Converters"
              x:Class="ChastiMaid.Views.Controls.OutfitDrawer"
              x:Name="DrawerRoot">
@@ -52,9 +52,7 @@
                                 VerticalAlignment="Center"
                                 ToolTip.Tip="{l:Tr 'Close drawer'}"
                                 AutomationProperties.Name="{l:Tr 'Close drawer'}">
-                            <ic:SymbolIcon Symbol="Dismiss" IconVariant="Regular" FontSize="14"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" />
+                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.X}" />
                         </Button>
                     </Grid>
                 </Border>

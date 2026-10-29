@@ -3,7 +3,7 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:conv="using:ChastiMaid.Converters"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
              xmlns:behaviors="using:ChastiMaid.Views.Behaviors"
              x:DataType="vm:WardrobeViewModel"
@@ -54,9 +54,7 @@
                         ToolTip.Tip="{l:Tr 'Filter'}"
                         AutomationProperties.Name="{l:Tr 'Filter'}">
                     <Panel>
-                        <Path Classes="iconPath"
-                              Data="{StaticResource IconFunnel}"
-                              Stroke="{Binding $parent[Button].Foreground}" />
+                        <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Filter}" />
                         <Border Classes="badge" IsVisible="{Binding HasFilters}">
                             <TextBlock Text="{Binding FilterCount}" />
                         </Border>
@@ -101,9 +99,13 @@
                                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="{StaticResource SpacingLg}">
                                         <Button Grid.Column="0"
                                                 Classes="Ghost"
-                                                Content="{l:Tr 'Reset filters'}"
                                                 Command="{Binding ResetFiltersCommand}"
-                                                VerticalAlignment="Center" />
+                                                VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.FilterX}" />
+                                                <TextBlock Text="{l:Tr 'Reset filters'}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
                                         <Button Grid.Column="2"
                                                 Classes="Link"
                                                 Command="{Binding OpenManageCommand}"
@@ -129,7 +131,7 @@
                         Classes="Ghost"
                         ToolTip.Tip="{Binding SortLabel}"
                         AutomationProperties.Name="{Binding SortLabel}">
-                    <ic:SymbolIcon Symbol="ArrowSort" IconVariant="Regular" FontSize="20" />
+                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.ArrowUpDown}" />
                     <Button.Flyout>
                         <Flyout Placement="BottomEdgeAlignedRight" FlyoutPresenterClasses="popover">
                             <ItemsControl ItemsSource="{Binding SortOptions}">
@@ -152,7 +154,7 @@
 
                 <Button Grid.Column="3" Classes="Ghost" Command="{Binding OpenRulesCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
-                        <ic:SymbolIcon Symbol="TaskListSquare" IconVariant="Regular" FontSize="20" />
+                        <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.ListChecks}" />
                         <TextBlock Text="{l:Tr 'Rules'}" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
@@ -163,7 +165,7 @@
                         ToolTip.ShowOnDisabled="True"
                         ToolTip.Tip="{Binding DeleteToolTip}"
                         AutomationProperties.Name="{Binding DeleteToolTip}">
-                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="20" />
+                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Trash}" />
                 </Button>
             </Grid>
 
@@ -187,7 +189,7 @@
                                     AutomationProperties.Name="{Binding RemoveName}">
                                 <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingXs}">
                                     <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
-                                    <TextBlock Text="×" VerticalAlignment="Center" />
+                                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.X}" />
                                 </StackPanel>
                             </Button>
                         </DataTemplate>
@@ -215,7 +217,7 @@
                                 <Button Classes="Edit"
                                         ToolTip.Tip="{l:Tr 'Selection options'}"
                                         AutomationProperties.Name="{l:Tr 'Selection options'}">
-                                    <ic:SymbolIcon Symbol="ChevronDown" IconVariant="Regular" FontSize="14" />
+                                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ChevronDown}" />
                                     <Button.Flyout>
                                         <MenuFlyout Placement="BottomEdgeAlignedLeft" FlyoutPresenterClasses="popover">
                                             <MenuItem Header="{Binding SelectAllVisibleText}" Command="{Binding SelectAllVisibleCommand}" />
@@ -289,7 +291,7 @@
                                                                 <Binding Path="!IsEditing" />
                                                             </MultiBinding>
                                                         </Button.IsVisible>
-                                                        <ic:SymbolIcon Symbol="Edit" IconVariant="Regular" FontSize="18" />
+                                                        <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.PencilLine}" />
                                                     </Button>
                                                 </Grid>
                                             </Border>
@@ -309,8 +311,12 @@
                                 <Button Classes="Add"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
-                                        Content="{l:Tr '+ Add Item'}"
-                                        Command="{Binding AddItemCommand}" />
+                                        Command="{Binding AddItemCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                        <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Plus}" />
+                                        <TextBlock Text="{l:Tr 'Add Item'}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
                                 <TextBlock Classes="Caption"
                                            TextWrapping="Wrap"
                                            Text="{l:Tr 'Double-click the name (or the pencil) to rename.'}" />
@@ -373,7 +379,7 @@
                                                 CommandParameter="{x:Static vm:WardrobeEntryKind.Slot}"
                                                 ToolTip.Tip="{l:Tr 'Add slot'}"
                                                 AutomationProperties.Name="{l:Tr 'Add slot'}">
-                                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="14" />
+                                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Plus}" />
                                         </Button>
                                     </WrapPanel>
                                 </StackPanel>
@@ -394,7 +400,7 @@
                                                 CommandParameter="{x:Static vm:WardrobeEntryKind.Tag}"
                                                 ToolTip.Tip="{l:Tr 'Add tag'}"
                                                 AutomationProperties.Name="{l:Tr 'Add tag'}">
-                                            <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="14" />
+                                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Plus}" />
                                         </Button>
                                     </WrapPanel>
                                 </StackPanel>

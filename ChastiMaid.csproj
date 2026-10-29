@@ -35,7 +35,6 @@
     <PackageReference Include="System.Reactive" Version="7.0.0" />
     <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260627" />
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.13.0.20260627" />
-    <PackageReference Include="FluentIcons.Avalonia" Version="2.1.335" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
     <PackageReference Include="GetText.NET" Version="10.0.1" />
   </ItemGroup>

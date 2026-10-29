@@ -3,7 +3,7 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:d="using:ChastiMaid.Views.Dialogs"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              x:DataType="vm:SafeLockViewModel"
              x:Class="ChastiMaid.Views.SafeLockView">
 
@@ -25,10 +25,15 @@
                            Text="{l:Tr 'Place your distracting object inside the safe.&#10;Point the camera at the combination without looking at it.'}"
                            HorizontalAlignment="Center"
                            TextAlignment="Center" />
-                <Button Content="{l:Tr 'Start Camera'}"
+                <Button
                         Command="{Binding StartCameraCommand}"
                         HorizontalAlignment="Center"
-                        Classes="Primary" />
+                        Classes="Primary">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Camera}" />
+                        <TextBlock Text="{l:Tr 'Start Camera'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
                 <Button Content="{l:Tr 'Skip (no safe)'}"
                         Command="{Binding SkipCommand}"
                         Classes="Ghost"
@@ -43,18 +48,28 @@
                         TextWrapping="Wrap"
                         HorizontalAlignment="Center"
                         TextAlignment="Center" />
-                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                    <ic:SymbolIcon Symbol="LockClosed" IconVariant="Regular" FontSize="16" />
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}" HorizontalAlignment="Center">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Lock}" />
                     <TextBlock Classes="Body" Text="{l:Tr 'Safe locked!'}" />
                 </StackPanel>
-                <Button Content="{l:Tr 'Start Session'}"
+                <Button
                         Command="{Binding ContinueCommand}"
                         HorizontalAlignment="Center"
-                        Classes="Primary" />
-                <Button Content="{l:Tr 'Retry Capture'}"
+                        Classes="Primary">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Play}" />
+                        <TextBlock Text="{l:Tr 'Start Session'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
                         Command="{Binding StartCameraCommand}"
                         HorizontalAlignment="Center"
-                        Classes="Ghost" />
+                        Classes="Ghost">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.RefreshCw}" />
+                        <TextBlock Text="{l:Tr 'Retry Capture'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
 
         </StackPanel>

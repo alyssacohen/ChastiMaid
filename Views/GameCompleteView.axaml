@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -22,19 +22,29 @@
 
         <!-- Export buttons -->
         <StackPanel Spacing="12">
-            <Button Content="{l:Tr 'Export Outfit Video'}"
+            <Button
                     Command="{Binding ExportOutfitVideoCommand}"
                     IsVisible="{Binding HasOutfitVideo}"
                     Classes="Ghost"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
+                    HorizontalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Video}" />
+                    <TextBlock Text="{l:Tr 'Export Outfit Video'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
-            <Button Content="{l:Tr 'Export Safe Combination Photo'}"
+            <Button
                     Command="{Binding ExportSafePhotoCommand}"
                     IsVisible="{Binding HasSafePhoto}"
                     Classes="Ghost"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
+                    HorizontalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Image}" />
+                    <TextBlock Text="{l:Tr 'Export Safe Combination Photo'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!-- Status message -->
@@ -44,10 +54,15 @@
                    IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
         <!-- Finish -->
-        <Button Content="{l:Tr 'Finish and Free Slot'}"
+        <Button
                 Command="{Binding FinishCommand}"
                 HorizontalAlignment="Center"
-                Classes="Primary" />
+                Classes="Primary">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.CheckCircle}" />
+                <TextBlock Text="{l:Tr 'Finish and Free Slot'}" VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
 
     </StackPanel>
 

@@ -3,7 +3,7 @@
     x:DataType="vm:SettingsViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:converters="using:ChastiMaid.Converters"
-    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:ic="using:ChastiMaid.Views"
     xmlns:vm="using:ChastiMaid.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="using:ChastiMaid.Localization">
@@ -184,12 +184,20 @@
                                 <Button
                                     Classes="Ghost compact"
                                     Command="{Binding StartTestQuoteListeningCommand}"
-                                    Content="{l:Tr 'Start'}"
-                                    ToolTip.Tip="{Binding TestQuoteUnavailableTooltip}" />
+                                    ToolTip.Tip="{Binding TestQuoteUnavailableTooltip}">
+                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Mic}" />
+                                        <TextBlock Text="{l:Tr 'Start'}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
                                 <Button
                                     Classes="Ghost compact"
-                                    Command="{Binding StopTestQuoteListeningCommand}"
-                                    Content="{l:Tr 'Stop'}" />
+                                    Command="{Binding StopTestQuoteListeningCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.MicOff}" />
+                                        <TextBlock Text="{l:Tr 'Stop'}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                             <StackPanel
                                 IsVisible="{Binding IsTestQuoteListening}"

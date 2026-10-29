@@ -3,7 +3,7 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:v="using:ChastiMaid.Views.Controls"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              x:DataType="vm:WebcamCaptureDialogViewModel"
              x:Class="ChastiMaid.Views.Dialogs.WebcamCaptureDialog">
 
@@ -29,8 +29,8 @@
                         <Button Classes="Primary"
                                 Command="{Binding CaptureCommand}"
                                 HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <ic:SymbolIcon Symbol="{Binding CaptureIcon}" IconVariant="Regular" FontSize="16" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{Binding CaptureIcon}" />
                                 <TextBlock Text="{Binding CaptureLabel}" />
                             </StackPanel>
                         </Button>

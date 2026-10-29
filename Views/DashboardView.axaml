@@ -5,7 +5,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="using:ChastiMaid.Views.Controls"
     xmlns:conv="using:ChastiMaid.Converters"
-    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:ic="using:ChastiMaid.Views"
     xmlns:v="using:ChastiMaid.Views.Dialogs"
     xmlns:vm="using:ChastiMaid.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -46,9 +46,14 @@
                     <Button
                         Classes="SmallGhost"
                         Command="{Binding ToggleOutfitDrawerCommand}"
-                        Content="{l:Tr 'Outfit ▸'}"
                         Grid.Column="2"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Shirt}" />
+                            <TextBlock Text="{l:Tr 'Outfit'}" VerticalAlignment="Center" />
+                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ChevronRight}" />
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </Border>
 
@@ -71,26 +76,38 @@
                         <Button
                             Classes="Ghost compact"
                             Command="{Binding RequestPermissionCommand}"
-                            Content="{l:Tr 'Request Permission'}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
-                            MinHeight="44" />
+                            MinHeight="44">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Hand}" />
+                                <TextBlock Text="{l:Tr 'Request Permission'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
 
                         <Button
                             Classes="Ghost compact"
                             Command="{Binding OpenShopCommand}"
-                            Content="{l:Tr 'Shop'}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
-                            MinHeight="44" />
+                            MinHeight="44">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Store}" />
+                                <TextBlock Text="{l:Tr 'Shop'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
 
                         <Button
                             Classes="Danger compact"
                             Command="{Binding EndSessionCommand}"
-                            Content="{l:Tr 'End Session'}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
-                            MinHeight="44" />
+                            MinHeight="44">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.LogOut}" />
+                                <TextBlock Text="{l:Tr 'End Session'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -119,9 +136,13 @@
                         <Button
                             Classes="Add compact"
                             Command="{Binding OpenAddTaskFormCommand}"
-                            Content="{l:Tr 'Add task'}"
                             Grid.Column="2"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Plus}" />
+                                <TextBlock Text="{l:Tr 'Add task'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </Grid>
 
                     <Border Background="{DynamicResource BrushBorderSubtle}" Height="1" />
@@ -149,18 +170,19 @@
                                             Grid.Column="2"
                                             Margin="0,0,4,0"
                                             VerticalAlignment="Center">
-                                            <ic:SymbolIcon
-                                                FontSize="14"
-                                                IconVariant="Regular"
-                                                Symbol="ChevronDown" />
+                                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ChevronDown}" />
                                         </Button>
                                         <Button
                                             Classes="Primary compact"
                                             Command="{Binding StartCommand}"
-                                            Content="{l:Tr 'Start'}"
                                             Grid.Column="3"
                                             MinHeight="44"
-                                            VerticalAlignment="Center" />
+                                            VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Play}" />
+                                                <TextBlock Text="{l:Tr 'Start'}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
                                     </Grid>
                                     <StackPanel
                                         IsVisible="{Binding IsExpanded}"
@@ -181,10 +203,14 @@
                     <Button
                         Classes="Primary"
                         Command="{Binding CompleteGameCommand}"
-                        Content="{l:Tr 'Complete Game'}"
                         HorizontalAlignment="Center"
                         IsVisible="{Binding CanComplete}"
-                        Margin="0,8,0,16" />
+                        Margin="0,8,0,16">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Trophy}" />
+                            <TextBlock Text="{l:Tr 'Complete Game'}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
 
                 </StackPanel>
             </ScrollViewer>
@@ -206,12 +232,17 @@
                     IsEnabled="{Binding HasPendingPunishments}"
                     Padding="16,14">
                     <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock
-                            Classes="Body"
-                            Foreground="{DynamicResource BrushWindowBackground}"
-                            Grid.Column="0"
-                            Text="{l:Tr 'Pending Punishments'}"
-                            VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                            <TextBlock
+                                Classes="icon"
+                                Foreground="{DynamicResource BrushWindowBackground}"
+                                Text="{x:Static ic:LucideIcon.Gavel}" />
+                            <TextBlock
+                                Classes="Body"
+                                Foreground="{DynamicResource BrushWindowBackground}"
+                                Text="{l:Tr 'Pending Punishments'}"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
                         <Border
                             Background="{DynamicResource BrushAmberText}"
                             CornerRadius="12"
@@ -270,10 +301,14 @@
             <Button
                 Classes="Primary"
                 Command="{Binding EndChoreCommand}"
-                Content="{l:Tr 'End Chore'}"
                 Grid.Row="3"
                 HorizontalAlignment="Center"
-                Margin="0,0,0,24" />
+                Margin="0,0,0,24">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Square}" />
+                    <TextBlock Text="{l:Tr 'End Chore'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
         </Grid>
 
         <!--  ##    POPUP OVERLAY    ##  -->

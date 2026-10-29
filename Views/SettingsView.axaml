@@ -4,7 +4,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:converters="using:ChastiMaid.Converters"
     xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
-    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:ic="using:ChastiMaid.Views"
     xmlns:views="using:ChastiMaid.Views.Controls"
     xmlns:vm="using:ChastiMaid.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -51,28 +51,40 @@
                             Command="{Binding SetTabCommand}"
                             CommandParameter="0"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=0, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsGeneralDirty}" Text="{l:Tr 'General'}" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMd}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.SlidersHorizontal}" />
+                                <views:DirtyTabHeader IsDirty="{Binding IsGeneralDirty}" Text="{l:Tr 'General'}" />
+                            </StackPanel>
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="1"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=1, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsChoresDirty}" Text="{l:Tr 'Chores'}" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMd}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ListTodo}" />
+                                <views:DirtyTabHeader IsDirty="{Binding IsChoresDirty}" Text="{l:Tr 'Chores'}" />
+                            </StackPanel>
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="2"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=2, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPopupsDirty}" Text="{l:Tr 'Popups'}" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMd}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.BellRing}" />
+                                <views:DirtyTabHeader IsDirty="{Binding IsPopupsDirty}" Text="{l:Tr 'Popups'}" />
+                            </StackPanel>
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="3"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=3, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{l:Tr 'Punishments'}" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMd}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Gavel}" />
+                                <views:DirtyTabHeader IsDirty="{Binding IsPunishmentsDirty}" Text="{l:Tr 'Punishments'}" />
+                            </StackPanel>
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
@@ -80,21 +92,27 @@
                             CommandParameter="4"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=4, Mode=OneWay}">
                             <!--  The outfit rules are edited from the Wardrobe, so their changes mark it too  -->
-                            <views:DirtyTabHeader Text="{l:Tr 'Wardrobe'}">
-                                <views:DirtyTabHeader.IsDirty>
-                                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
-                                        <Binding Path="IsWardrobeDirty" />
-                                        <Binding Path="IsRulesDirty" />
-                                    </MultiBinding>
-                                </views:DirtyTabHeader.IsDirty>
-                            </views:DirtyTabHeader>
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMd}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Shirt}" />
+                                <views:DirtyTabHeader Text="{l:Tr 'Wardrobe'}">
+                                    <views:DirtyTabHeader.IsDirty>
+                                        <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                                            <Binding Path="IsWardrobeDirty" />
+                                            <Binding Path="IsRulesDirty" />
+                                        </MultiBinding>
+                                    </views:DirtyTabHeader.IsDirty>
+                                </views:DirtyTabHeader>
+                            </StackPanel>
                         </RadioButton>
                         <RadioButton
                             Classes="navItem"
                             Command="{Binding SetTabCommand}"
                             CommandParameter="5"
                             IsChecked="{Binding SelectedTabIndex, Converter={x:Static converters:IntEqualityConverter.Instance}, ConverterParameter=5, Mode=OneWay}">
-                            <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{l:Tr 'Permissions'}" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMd}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Hand}" />
+                                <views:DirtyTabHeader IsDirty="{Binding IsPermissionsDirty}" Text="{l:Tr 'Permissions'}" />
+                            </StackPanel>
                         </RadioButton>
                     </StackPanel>
 
@@ -114,11 +132,8 @@
                             <StackPanel
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal"
-                                Spacing="8">
-                                <ic:SymbolIcon
-                                    FontSize="16"
-                                    IconVariant="Regular"
-                                    Symbol="Save" />
+                                Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Save}" />
                                 <TextBlock Text="{l:Tr 'Save'}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
@@ -129,20 +144,21 @@
                             <StackPanel
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal"
-                                Spacing="8">
-                                <ic:SymbolIcon
-                                    FontSize="16"
-                                    IconVariant="Regular"
-                                    Symbol="Save" />
+                                Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Save}" />
                                 <TextBlock Text="{l:Tr 'Save &amp; Back'}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                         <Button
                             Classes="Ghost"
                             Command="{Binding BackCommand}"
-                            Content="{l:Tr 'Back'}"
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center" />
+                            HorizontalContentAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ArrowLeft}" />
+                                <TextBlock Text="{l:Tr 'Back'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
                 </Grid>
@@ -197,14 +213,15 @@
                         Spacing="8">
                         <Button
                             Classes="Ghost"
-                            Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}"
-                            Content="{l:Tr 'Discard'}" />
+                            Command="{Binding (vm:SaveDialogViewModel).DiscardCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.X}" />
+                                <TextBlock Text="{l:Tr 'Discard'}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                         <Button Classes="Primary" Command="{Binding (vm:SaveDialogViewModel).SaveCommand}">
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <ic:SymbolIcon
-                                    FontSize="18"
-                                    IconVariant="Regular"
-                                    Symbol="Save" />
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Save}" />
                                 <TextBlock Text="{l:Tr 'Save'}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>

@@ -1,7 +1,7 @@
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
-using FluentIcons.Common;
+using ChastiMaid.Views;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -75,7 +75,7 @@ public partial class WebcamCaptureDialogViewModel : ViewModelBase
     public string CaptureLabel => Mode == WebcamCaptureMode.Photo
         ? L.T("Capture")
         : L.T("Record (5s)");
-    public Symbol CaptureIcon => Mode == WebcamCaptureMode.Photo ? Symbol.Camera : Symbol.Record;
+    public string CaptureIcon => Mode == WebcamCaptureMode.Photo ? LucideIcon.Camera : LucideIcon.CircleDot;
 
     public ICommand CaptureCommand { get; }
     public ICommand SkipCommand { get; }

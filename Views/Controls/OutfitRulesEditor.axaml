@@ -3,7 +3,7 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:converters="using:ChastiMaid.Converters"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              x:DataType="vm:SettingsViewModel"
              x:Class="ChastiMaid.Views.Controls.OutfitRulesEditor">
 
@@ -48,7 +48,7 @@
                                         Margin="12,0,0,0"
                                         ToolTip.Tip="{l:Tr 'Delete'}"
                                         AutomationProperties.Name="{l:Tr 'Delete'}">
-                                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="18" />
+                                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Trash}" />
                                 </Button>
                             </Grid>
                         </Border>
@@ -58,14 +58,14 @@
         </ScrollViewer>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
             <Button Command="{Binding AddOutfitRuleCommand}" Classes="Add">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <ic:SymbolIcon Symbol="Add" IconVariant="Regular" FontSize="18" />
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Plus}" />
                     <TextBlock Text="{l:Tr 'Add Rule'}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button Command="{Binding TestRulesCommand}" Classes="Ghost">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <ic:SymbolIcon Symbol="Play" IconVariant="Regular" FontSize="18" />
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Play}" />
                     <TextBlock Text="{l:Tr 'Test Rules'}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>

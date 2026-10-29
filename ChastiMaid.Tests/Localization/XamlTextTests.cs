@@ -18,7 +18,6 @@ public class XamlTextTests
     private static readonly Dictionary<string, string> Allowed = new()
     {
         ["ChastiMaid"] = "the app's name",
-        ["×"] = "glyph",
     };
 
     [Fact]

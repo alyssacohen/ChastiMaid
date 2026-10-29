@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              xmlns:vm="using:ChastiMaid.ViewModels"
              x:DataType="vm:DashboardViewModel"
              x:Class="ChastiMaid.Views.Controls.DashboardPunishmentsPanel">
@@ -34,13 +34,7 @@
                             ToolTip.Tip="{l:Tr 'Close'}"
                             VerticalAlignment="Center"
                             Width="44">
-                            <ic:SymbolIcon
-                                FontSize="14"
-                                Foreground="{DynamicResource BrushAmberText}"
-                                HorizontalAlignment="Center"
-                                IconVariant="Regular"
-                                Symbol="Dismiss"
-                                VerticalAlignment="Center" />
+                            <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.X}" Foreground="{DynamicResource BrushAmberText}" />
                         </Button>
                     </Grid>
                 </Border>

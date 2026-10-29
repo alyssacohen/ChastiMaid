@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
@@ -32,15 +32,23 @@
             <Button Classes="Primary"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="{l:Tr 'Continue'}"
-                    Command="{Binding ContinueCommand}" />
+                    Command="{Binding ContinueCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Play}" />
+                    <TextBlock Text="{l:Tr 'Continue'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button Classes="Primary"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Margin="0,12,0,0"
-                    Content="{l:Tr 'New Game'}"
-                    Command="{Binding NewGameCommand}" />
+                    Command="{Binding NewGameCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ScrollText}" />
+                    <TextBlock Text="{l:Tr 'New Game'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Border Height="1"
                     Background="{DynamicResource BrushBorderSubtle}"
@@ -49,15 +57,23 @@
             <Button Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="{l:Tr 'Load Game'}"
-                    Command="{Binding LoadGameCommand}" />
+                    Command="{Binding LoadGameCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.FolderOpen}" />
+                    <TextBlock Text="{l:Tr 'Load Game'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button Classes="Ghost"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Margin="0,12,0,0"
-                    Content="{l:Tr 'Settings'}"
-                    Command="{Binding SettingsCommand}" />
+                    Command="{Binding SettingsCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Settings}" />
+                    <TextBlock Text="{l:Tr 'Settings'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <TextBlock Name="ExitLabel"
                        Classes="BodySmall"

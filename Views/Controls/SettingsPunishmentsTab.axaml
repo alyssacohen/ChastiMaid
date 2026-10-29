@@ -3,7 +3,7 @@
     x:DataType="vm:SettingsViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:converters="using:ChastiMaid.Converters"
-    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:ic="using:ChastiMaid.Views"
     xmlns:vm="using:ChastiMaid.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="using:ChastiMaid.Localization">
@@ -367,10 +367,7 @@
                                                     Margin="4,0"
                                                     ToolTip.Tip="{l:Tr 'Edit preset'}"
                                                     VerticalAlignment="Center">
-                                                    <ic:SymbolIcon
-                                                        FontSize="18"
-                                                        IconVariant="Regular"
-                                                        Symbol="Edit" />
+                                                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.PencilLine}" />
                                                 </Button>
                                                 <Button
                                                     AutomationProperties.Name="{l:Tr 'Delete preset'}"
@@ -379,10 +376,7 @@
                                                     Grid.Column="3"
                                                     ToolTip.Tip="{l:Tr 'Delete preset'}"
                                                     VerticalAlignment="Center">
-                                                    <ic:SymbolIcon
-                                                        FontSize="18"
-                                                        IconVariant="Regular"
-                                                        Symbol="Delete" />
+                                                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Trash}" />
                                                 </Button>
                                             </Grid>
                                         </Border>
@@ -390,11 +384,8 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <Button Classes="Add" Command="{Binding AddForcedOutfitPresetCommand}">
-                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <ic:SymbolIcon
-                                        FontSize="18"
-                                        IconVariant="Regular"
-                                        Symbol="Add" />
+                                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                    <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Plus}" />
                                     <TextBlock Text="{l:Tr 'Add Outfit'}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>

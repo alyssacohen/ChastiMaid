@@ -3,7 +3,7 @@
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:conv="using:ChastiMaid.Converters"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              xmlns:dialogs="using:ChastiMaid.Views.Dialogs"
              x:DataType="vm:WardrobeViewModel"
              x:Class="ChastiMaid.Views.Controls.WardrobeDialogs">
@@ -52,10 +52,7 @@
                                                             Command="{Binding DeleteCommand}"
                                                             ToolTip.Tip="{Binding DeleteName}"
                                                             AutomationProperties.Name="{Binding DeleteName}">
-                                                        <ic:SymbolIcon Symbol="Delete"
-                                                                       IconVariant="Regular"
-                                                                       FontSize="18"
-                                                                       Foreground="{DynamicResource BrushButtonDanger}" />
+                                                        <TextBlock Classes="icon" Text="{x:Static ic:LucideIcon.Trash}" Foreground="{DynamicResource BrushButtonDanger}" />
                                                     </Button>
                                                 </Grid>
                                             </Border>
@@ -102,11 +99,17 @@
         <Border Classes="notice" IsVisible="{Binding Notice, Converter={x:Static ObjectConverters.IsNotNull}}">
             <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingLg}">
                 <TextBlock Text="{Binding Notice}" AutomationProperties.LiveSetting="Polite" />
-                <Button Content="{l:Tr 'Undo'}" Command="{Binding UndoDeleteCommand}" IsVisible="{Binding CanUndo}" />
-                <Button Content="×"
-                        Command="{Binding DismissNoticeCommand}"
+                <Button Command="{Binding UndoDeleteCommand}" IsVisible="{Binding CanUndo}">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Undo}" />
+                        <TextBlock Text="{l:Tr 'Undo'}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding DismissNoticeCommand}"
                         ToolTip.Tip="{l:Tr 'Close notice'}"
-                        AutomationProperties.Name="{l:Tr 'Close notice'}" />
+                        AutomationProperties.Name="{l:Tr 'Close notice'}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.X}" />
+                </Button>
             </StackPanel>
         </Border>
 

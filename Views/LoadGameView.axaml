@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ChastiMaid.ViewModels"
              xmlns:views="using:ChastiMaid.Views.Dialogs"
-             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:ic="using:ChastiMaid.Views"
              xmlns:controls="using:ChastiMaid.Views.Controls"
              xmlns:conv="using:ChastiMaid.Converters"
              xmlns:l="using:ChastiMaid.Localization"
@@ -66,7 +66,7 @@
                                                            Foreground="{Binding CurrentDebt, Converter={x:Static conv:BalanceBrushConverter.Instance}}"
                                                            Opacity="0.85" />
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
-                                                    <ic:SymbolIcon Symbol="{Binding SafeIcon}" IconVariant="Regular" FontSize="14" />
+                                                    <TextBlock Classes="icon small" Text="{Binding SafeIcon}" />
                                                     <TextBlock Classes="BodySmall"
                                                                Text="{Binding SafeStatus}"
                                                                Opacity="0.85" />
@@ -76,7 +76,7 @@
                                                         Spacing="4"
                                                         IsVisible="{Binding IsCompleted}"
                                                         Margin="0,6,0,0">
-                                                <ic:SymbolIcon Symbol="Checkmark" IconVariant="Regular" FontSize="14" />
+                                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Check}" />
                                                 <TextBlock Classes="Caption" Text="{Binding CompletedLabel}" />
                                             </StackPanel>
                                         </StackPanel>
@@ -98,12 +98,16 @@
                                         ZIndex="1"
                                         IsVisible="{Binding !IsEmpty}">
                                 <Button Command="{Binding InfoCommand}"
-                                        Classes="Ghost">
-                                    <ic:SymbolIcon Symbol="Info" IconVariant="Regular" FontSize="27" />
+                                        Classes="Ghost"
+                                        ToolTip.Tip="{l:Tr 'Contract'}"
+                                        AutomationProperties.Name="{l:Tr 'Contract'}">
+                                    <TextBlock Classes="icon large" Text="{x:Static ic:LucideIcon.Info}" />
                                 </Button>
                                 <Button Command="{Binding DeleteCommand}"
-                                        Classes="Danger">
-                                    <ic:SymbolIcon Symbol="Delete" IconVariant="Regular" FontSize="27" />
+                                        Classes="Danger"
+                                        ToolTip.Tip="{l:Tr 'Delete'}"
+                                        AutomationProperties.Name="{l:Tr 'Delete'}">
+                                    <TextBlock Classes="icon large" Text="{x:Static ic:LucideIcon.Trash}" />
                                 </Button>
                             </StackPanel>
 
@@ -112,10 +116,15 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <Button Content="{l:Tr 'Back'}"
+            <Button
                     Command="{Binding BackCommand}"
                     Classes="Ghost"
-                    HorizontalAlignment="Center" />
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ArrowLeft}" />
+                    <TextBlock Text="{l:Tr 'Back'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
         </StackPanel>
 

@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:ic="using:ChastiMaid.Views" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="using:ChastiMaid.Localization"
              xmlns:vm="using:ChastiMaid.ViewModels"
@@ -11,9 +11,13 @@
         <!-- Header -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
             <Button Grid.Column="0"
-                    Content="{l:Tr 'Back'}"
                     Command="{Binding BackCommand}"
-                    Classes="Ghost" />
+                    Classes="Ghost">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                    <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ArrowLeft}" />
+                    <TextBlock Text="{l:Tr 'Back'}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <TextBlock Grid.Column="1"
                        Classes="PageTitle"
@@ -62,10 +66,14 @@
                                                    Text="{Binding PriceDisplay}"
                                                    VerticalAlignment="Center" />
                                         <Button Grid.Column="1"
-                                                Content="{l:Tr 'Buy'}"
                                                 Command="{Binding BuyCommand}"
                                                 IsEnabled="{Binding CanBuy}"
-                                                Classes="Primary compact" />
+                                                Classes="Primary compact">
+                                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                                                <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.ShoppingBag}" />
+                                                <TextBlock Text="{l:Tr 'Buy'}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
                                     </Grid>
                                     <TextBlock Classes="Caption"
                                                Text="{l:Tr 'None left'}"
@@ -91,8 +99,12 @@
                 <Button Grid.Column="1"
                         Command="{Binding OpenFortuneDeckCommand}"
                         Classes="Amber"
-                        VerticalAlignment="Center"
-                        Content="{Binding FortuneDrawButtonLabel}" />
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSm}">
+                        <TextBlock Classes="icon small" Text="{x:Static ic:LucideIcon.Dices}" />
+                        <TextBlock Text="{Binding FortuneDrawButtonLabel}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
             </Grid>
         </Border>
 

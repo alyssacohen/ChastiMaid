@@ -199,7 +199,7 @@ Style files live in `Assets/Styles/` and are loaded by `App.axaml`:
 
 ### Typography classes (`TextBlock`)
 
-`PageTitle` · `SectionTitle` · `Heading` · `Subheading` · `Body` · `BodySmall` · `Caption` · `LabelUI` · `NumberLarge` ·
+`PageTitle` · `SectionTitle` · `Heading` · `Subheading` · `Body` · `BodySmall` · `Caption` · `LabelUI` · `NumberLarge` · `icon` (`.small` / `.large`) ·
 `EmployerVoice`
 
 `LabelUI` text is written in natural case; uppercasing is applied at render time via `{conv:UpperCase {l:Tr '...'}}`
@@ -228,7 +228,8 @@ Modifier: `compact` (reduces height to 32px; combinable: `Classes="Danger compac
 
 **Semantic:** `BrushAmber` · `BrushAmberBackground` · `BrushAmberText` · `BrushStatusIdle` · `BrushEmergencyText`
 
-Icons via `FluentIcons.Avalonia`.
+Icons: Lucide font (`Assets/Fonts/Lucide`), drawn with `TextBlock.icon` (`.small` / `.large`) and
+`Text="{x:Static ic:LucideIcon.Name}"` (`xmlns:ic="using:ChastiMaid.Views"`); code points live in `Views/LucideIcon.cs`.
 
 ### Migration status
 

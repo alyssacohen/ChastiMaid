@@ -1,13 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Styles.Resources>
-        <ResourceDictionary>
-            <!-- Filter funnel (FluentIcons only has a lines "Filter" glyph, easy to take for a descending sort) -->
-            <StreamGeometry x:Key="IconFunnel">M22 3H2l8 9.46V19l4 2v-8.54L22 3z</StreamGeometry>
-        </ResourceDictionary>
-    </Styles.Resources>
-
     <!-- Previewer samples of the Wardrobe states: chip full / partial / none, number field with a value / mixed -->
     <Design.PreviewWith>
         <Border Background="{DynamicResource BrushSurfaceBase}" Padding="{DynamicResource SpacingXlThickness}">
@@ -228,8 +221,14 @@
     <Style Selector="RadioButton.navItem TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
         <Setter Property="FontFamily" Value="Inter" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
         <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+    <!-- Icons keep the Lucide font. No :not(.icon) above: it would raise that rule's priority over the Typography classes -->
+    <Style Selector="RadioButton.navItem TextBlock.icon">
+        <Setter Property="FontFamily" Value="avares://ChastiMaid/Assets/Fonts/Lucide#lucide" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Normal" />
     </Style>
 
     <Style Selector="RadioButton.navItem:pointerover, RadioButton.navItem:focus">
@@ -328,15 +327,6 @@
         <Setter Property="MaxWidth" Value="{DynamicResource WardrobeListCaptionMaxWidth}" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-
-    <!-- iconPath — a stroked Path icon drawn like the FluentIcons "Regular" glyphs, in the button's text colour -->
-    <Style Selector="Path.iconPath">
-        <Setter Property="Width" Value="20" />
-        <Setter Property="Height" Value="20" />
-        <Setter Property="Stretch" Value="Uniform" />
-        <Setter Property="StrokeThickness" Value="1.5" />
-        <Setter Property="StrokeJoin" Value="Round" />
     </Style>
 
     <!-- badge — small count on an icon button (active filters) -->
