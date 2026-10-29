@@ -85,8 +85,13 @@ public partial class ChangeOutfitViewModel : ViewModelBase
 
     [Reactive] private string _statusMessage = "";
 
+    /// <param name="returnTo">
+    ///     The outfit proposal screen this composer was opened from. Back shows that same instance again, so the
+    ///     bonus already lowered by Modify, the regeneration count and the drawn chastity device all survive, and
+    ///     its constructor's one-off work (daily interest, hardware notice) does not run twice.
+    /// </param>
     public ChangeOutfitViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit currentOutfit,
-        double bonusPercent)
+        double bonusPercent, ViewModelBase returnTo)
     {
         _mainVm = mainVm;
         _saveRepo = saveRepo;
@@ -123,8 +128,7 @@ public partial class ChangeOutfitViewModel : ViewModelBase
         IntegrateCommand = ReactiveCommand.Create(Integrate);
         SaveOutfitCommand = ReactiveCommand.Create(SaveOutfit);
         ClearCommand = ReactiveCommand.Create(_composer.ClearSelection);
-        BackCommand = ReactiveCommand.Create(() =>
-            _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, _saveRepo, _currentOutfit)));
+        BackCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(returnTo));
     }
 
     public ObservableCollection<LayerGroupViewModel> Layers => _composer.Layers;

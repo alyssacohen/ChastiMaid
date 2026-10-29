@@ -175,7 +175,9 @@ Items are shown as chips per layer, with states: selected, required (by a rule),
 
 - **Integrate Outfit**: lets the generator complete the selection.
 - **Save outfit**: locks the composed outfit.
-- **Clear** and **Back** are also available.
+- **Clear** empties the selection.
+- **Back** returns to the proposal as it was. The bonus stays at the value Modify already lowered, and the
+  count of regenerations is kept, so going back never restores a penalty.
 
 ### 6.3 Outfit Confirmed
 
@@ -583,10 +585,10 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
    video, busy-mode captures and pose/kneel/curtsy/cornertime files are plain PNG/AVI. `CLAUDE.md` says
    "CryptoService encrypts captured media and the safe-combination photo". The revealed combination is
    also left in clear as `safe_combo.png`. This matters for privacy wording in the manual.
-3. **Back from "Compose an outfit" restores the full bonus.** The Modify dialog says there is "no
-   changing your mind or going back". `ChangeOutfitViewModel` Back builds a new `StartSessionViewModel`,
-   whose bonus starts again at 1.0 (`StartSessionViewModel.cs:18`). This also undoes earlier
-   regenerations' halving and their count.
+3. ~~**Back from "Compose an outfit" restores the full bonus.**~~ Resolved: Back returns to the same
+   proposal screen instead of rebuilding it, so the lowered bonus, the regeneration count and the drawn
+   chastity device are kept, and daily interest is no longer applied a second time. No persisted data
+   changes.
 4. ~~**Forced Outfit description in Settings.**~~ Resolved: it now reads "The selected items become
    mandatory for a number of hours of play." (IT: "…per un certo numero di ore di gioco."), matching the
    real-time hours in the code and `punishments.md`. Three code comments that spoke of sessions were

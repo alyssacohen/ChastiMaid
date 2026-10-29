@@ -31,7 +31,7 @@ public partial class StartSessionViewModel : ViewModelBase
     [Reactive] private string _itemCountDisplay = "";
     private int _regenCount;
 
-    public StartSessionViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo, Outfit? outfit = null)
+    public StartSessionViewModel(MainWindowViewModel mainVm, SaveRepository saveRepo)
     {
         _mainVm = mainVm;
         _saveRepo = saveRepo;
@@ -101,7 +101,7 @@ public partial class StartSessionViewModel : ViewModelBase
                         builder.AddSeedItems([chastityDeviceItem]);
                     }
 
-                    _outfit = outfit ?? builder.Build();
+                    _outfit = builder.Build();
                 }
 
                 _proposedOutfit = _outfit.ToString();
@@ -121,7 +121,7 @@ public partial class StartSessionViewModel : ViewModelBase
                         builder.AddSeedItems([chastityDeviceItem]);
                     }
 
-                    _outfit = outfit ?? builder.Build();
+                    _outfit = builder.Build();
                     _proposedOutfit = _outfit.ToString();
                 }
                 else
@@ -144,7 +144,7 @@ public partial class StartSessionViewModel : ViewModelBase
                         }
                     }
 
-                    _outfit = outfit ?? builder.Build();
+                    _outfit = builder.Build();
                     _proposedOutfit = _outfit.ToString();
 
                     // Resume the paused Plug & Play countdown if the seed was actually placed
@@ -368,7 +368,7 @@ public partial class StartSessionViewModel : ViewModelBase
         }
 
         _currentBonus = resultBonus;
-        _mainVm.NavigateTo(new ChangeOutfitViewModel(_mainVm, _saveRepo, _outfit, _currentBonus));
+        _mainVm.NavigateTo(new ChangeOutfitViewModel(_mainVm, _saveRepo, _outfit, _currentBonus, this));
     }
 
     private void LockAndProceed()
