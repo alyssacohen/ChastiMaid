@@ -60,6 +60,12 @@ public partial class MainWindowViewModel : ViewModelBase
         return repo;
     }
 
+    /// <summary>The screen an opened save resumes on: the completion screen once the game is over, otherwise the outfit.</summary>
+    public ViewModelBase ResumePage(SaveRepository saveRepo) =>
+        saveRepo.GetGameState()?.IsCompleted == true
+            ? new GameCompleteViewModel(this, saveRepo)
+            : new StartSessionViewModel(this, saveRepo);
+
     /// <summary>Closes the active save DB (if any).</summary>
     public void CloseActiveSave()
     {

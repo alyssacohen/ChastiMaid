@@ -60,6 +60,23 @@ public class SaveRepository(LiteDatabase db)
         GameStates.Upsert(state);
     }
 
+    /// <summary>
+    ///     Marks the game as completed, so it can only reopen on the completion screen. Returns true only the
+    ///     first time, letting the caller count the completion once.
+    /// </summary>
+    public bool MarkGameCompleted()
+    {
+        var state = GetGameState();
+        if (state is null || state.IsCompleted)
+        {
+            return false;
+        }
+
+        state.IsCompleted = true;
+        SaveGameState(state);
+        return true;
+    }
+
     // --- GameSettings ---
     public GameSettings GetGameSettings()
     {

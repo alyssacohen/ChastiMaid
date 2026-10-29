@@ -140,7 +140,7 @@ msgstr ""
 msgid "A willing student is a joy to instruct."
 msgstr ""
 
-#: ../ViewModels/GameCompleteViewModel.cs:41
+#: ../ViewModels/GameCompleteViewModel.cs:49
 msgid "AVI Video"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "After all this time? How deeply disappointing."
 msgstr ""
 
-#: ../ViewModels/WelcomeViewModel.cs:37
+#: ../ViewModels/WelcomeViewModel.cs:38
 msgid ""
 "All 5 save slots are occupied. Please complete or delete an existing game "
 "before starting a new one."
@@ -308,7 +308,7 @@ msgstr ""
 msgid "CPM"
 msgstr ""
 
-#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:675 ../ViewModels/DashboardViewModel.cs:695 ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/SettingsViewModel.cs:851 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/CameraSetupView.axaml:46 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeDialogs.axaml:91 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:52 ../Views/SettingsView.axaml:231
+#: ../Services/Contracts/ContractImportFlow.cs:69 ../ViewModels/DashboardViewModel.cs:677 ../ViewModels/DashboardViewModel.cs:697 ../ViewModels/LoadGameViewModel.cs:164 ../ViewModels/SettingsViewModel.cs:851 ../ViewModels/StartSessionViewModel.cs:323 ../ViewModels/StartSessionViewModel.cs:362 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/CameraSetupView.axaml:46 ../Views/Controls/DashboardAddTaskForm.axaml:45 ../Views/Controls/WardrobeDialogs.axaml:91 ../Views/Dialogs/PlayerIntroDialog.axaml:48 ../Views/EndSessionView.axaml:52 ../Views/SettingsView.axaml:231
 msgid "Cancel"
 msgstr ""
 
@@ -413,7 +413,7 @@ msgid "Complete Game"
 msgstr ""
 
 #. a finished game (feminine in Italian: "la partita")
-#: ../ViewModels/LoadGameViewModel.cs:48
+#: ../ViewModels/LoadGameViewModel.cs:47
 msgctxt "game"
 msgid "Completed"
 msgstr ""
@@ -492,7 +492,7 @@ msgid "Corrective Measures"
 msgstr ""
 
 #. {0} is the save name, {1} the technical error message
-#: ../ViewModels/LoadGameViewModel.cs:147
+#: ../ViewModels/LoadGameViewModel.cs:145
 #, csharp-format
 msgid ""
 "Could not load \"{0}\". The save file may be corrupted.\n"
@@ -508,7 +508,7 @@ msgstr ""
 msgid "Credit available"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:41
+#: ../ViewModels/LoadGameViewModel.cs:40
 #, csharp-format
 msgid "Credit: {0}"
 msgstr ""
@@ -537,16 +537,16 @@ msgstr ""
 msgid "Debt and Interest"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:266 ../ViewModels/LoadGameViewModel.cs:42
+#: ../ViewModels/DashboardViewModel.cs:268 ../ViewModels/LoadGameViewModel.cs:41
 #, csharp-format
 msgid "Debt: {0}"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:162 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/Controls/OutfitRulesEditor.axaml:49 ../Views/Controls/OutfitRulesEditor.axaml:50 ../Views/Controls/SettingsChoresTab.axaml:107 ../Views/Controls/SettingsChoresTab.axaml:108 ../Views/LoadGameView.axaml:108 ../Views/LoadGameView.axaml:109
+#: ../ViewModels/LoadGameViewModel.cs:163 ../ViewModels/WardrobeViewModel.cs:482 ../ViewModels/WardrobeViewModel.cs:621 ../Views/Controls/OutfitRulesEditor.axaml:49 ../Views/Controls/OutfitRulesEditor.axaml:50 ../Views/Controls/SettingsChoresTab.axaml:107 ../Views/Controls/SettingsChoresTab.axaml:108 ../Views/LoadGameView.axaml:108 ../Views/LoadGameView.axaml:109
 msgid "Delete"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:156
+#: ../ViewModels/LoadGameViewModel.cs:155
 #, csharp-format
 msgid ""
 "Delete \"{0}\"?\n"
@@ -555,12 +555,19 @@ msgid ""
 "encrypted combination photo. The combination will be lost forever."
 msgstr ""
 
+#: ../ViewModels/LoadGameViewModel.cs:156
+#, csharp-format
+msgid ""
+"Delete \"{0}\"? This completed game and its media will be removed for good. "
+"Open it first if you wish to export the outfit video or the safe combination."
+msgstr ""
+
 #: ../ViewModels/LoadGameViewModel.cs:157
 #, csharp-format
 msgid "Delete \"{0}\"? This game will be marked as failed."
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:160
+#: ../ViewModels/LoadGameViewModel.cs:161
 msgid "Delete Save"
 msgstr ""
 
@@ -819,11 +826,11 @@ msgstr ""
 msgid "Export Contract"
 msgstr ""
 
-#: ../ViewModels/GameCompleteViewModel.cs:41 ../Views/GameCompleteView.axaml:33
+#: ../ViewModels/GameCompleteViewModel.cs:49 ../Views/GameCompleteView.axaml:33
 msgid "Export Outfit Video"
 msgstr ""
 
-#: ../ViewModels/GameCompleteViewModel.cs:53
+#: ../ViewModels/GameCompleteViewModel.cs:61
 msgid "Export Safe Combination"
 msgstr ""
 
@@ -1341,7 +1348,7 @@ msgstr ""
 msgid "Listening…"
 msgstr ""
 
-#: ../ViewModels/LoadGameViewModel.cs:145
+#: ../ViewModels/LoadGameViewModel.cs:143
 msgid "Load Error"
 msgstr ""
 
@@ -1361,7 +1368,7 @@ msgid ""
 msgstr ""
 
 #. state of the safe holding the key (feminine in Italian: "la cassaforte")
-#: ../ViewModels/LoadGameViewModel.cs:45
+#: ../ViewModels/LoadGameViewModel.cs:44
 msgctxt "safe"
 msgid "Locked"
 msgstr ""
@@ -1578,7 +1585,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: ../ViewModels/WelcomeViewModel.cs:36
+#: ../ViewModels/WelcomeViewModel.cs:37
 msgid "No Free Slots"
 msgstr ""
 
@@ -1697,7 +1704,7 @@ msgstr ""
 msgid "Now kneel, look down, and reflect upon your failings."
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:639 ../ViewModels/LoadGameViewModel.cs:148 ../ViewModels/WelcomeViewModel.cs:38
+#: ../ViewModels/DashboardViewModel.cs:641 ../ViewModels/LoadGameViewModel.cs:146 ../ViewModels/WelcomeViewModel.cs:39
 msgid "OK"
 msgstr ""
 
@@ -1725,7 +1732,7 @@ msgid "Only the first {0} are used."
 msgstr ""
 
 #. state of the safe holding the key (feminine in Italian: "la cassaforte")
-#: ../ViewModels/LoadGameViewModel.cs:45
+#: ../ViewModels/LoadGameViewModel.cs:44
 msgctxt "safe"
 msgid "Open"
 msgstr ""
@@ -1754,7 +1761,7 @@ msgstr ""
 msgid "Outfit Rules"
 msgstr ""
 
-#: ../ViewModels/GameCompleteViewModel.cs:48
+#: ../ViewModels/GameCompleteViewModel.cs:56
 msgid "Outfit video exported."
 msgstr ""
 
@@ -1762,7 +1769,7 @@ msgstr ""
 msgid "Outstanding Balance"
 msgstr ""
 
-#: ../ViewModels/GameCompleteViewModel.cs:53
+#: ../ViewModels/GameCompleteViewModel.cs:61
 msgid "PNG Image"
 msgstr ""
 
@@ -2051,7 +2058,7 @@ msgstr ""
 msgid "Safe Lock"
 msgstr ""
 
-#: ../ViewModels/GameCompleteViewModel.cs:61
+#: ../ViewModels/GameCompleteViewModel.cs:69
 msgid "Safe combination photo exported."
 msgstr ""
 

@@ -15,13 +15,14 @@ public partial class WelcomeViewModel : ViewModelBase
 
         var slots = mainVm.SaveSlotManager.ListSlots();
         var latest = slots.MaxBy(s => s.LastSessionAt);
-        HasActiveGame = latest is not null && !latest.IsCompleted;
+        // A completed game still counts until its slot is freed: Continue reopens its completion screen.
+        HasActiveGame = latest is not null;
 
         ContinueCommand = ReactiveCommand.Create(
             () =>
             {
                 var saveRepo = mainVm.OpenSaveSlot(latest!.SlotName);
-                _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, saveRepo));
+                _mainVm.NavigateTo(_mainVm.ResumePage(saveRepo));
             },
             this.WhenAnyValue(x => x.HasActiveGame));
 

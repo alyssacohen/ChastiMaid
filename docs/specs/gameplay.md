@@ -31,6 +31,7 @@ either way, so locking it is always at least as good as leaving it open.
 
 2.1 Continue game
 Active if there is a started but not finished game. It continue the last played session.
+If the last played game is already completed (its slot not yet freed), it reopens the completion screen instead.
 If selected, the app load last played session data, calculates remaining debt + interests, generates and proposes an
 outfit for the session (it change every day but not within the same day).
 The user can accept or change it, then when the user is ready, the session starts.
@@ -42,7 +43,8 @@ The user can start the game with these values, or go to Settings to adjust them 
 When confirmed, the session starts like in 2.1, with proposed outfit etc.
 
 2.3 Load Game
-Show a list of up to 5 saved games to load and continue.
+Show a list of up to 5 saved games to load and continue. A completed game is marked as such and only reopens
+its completion screen, where its media can be exported and its slot freed.
 Here the user can delete unwanted saves with warning and confirm request, because the progresses and the encrypted
 picture with the safe combination could be lost forever.
 

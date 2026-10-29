@@ -26,6 +26,14 @@ public partial class GameCompleteViewModel : ViewModelBase
         _mainVm = mainVm;
         _saveRepo = saveRepo;
 
+        // Reaching this screen ends the game for good: from now on the slot only reopens here.
+        if (saveRepo.MarkGameCompleted())
+        {
+            var stats = mainVm.ProfileRepository.GetStats();
+            stats.GamesCompleted++;
+            mainVm.ProfileRepository.SaveStats(stats);
+        }
+
         var state = saveRepo.GetGameState();
         _slotName = state?.SlotName ?? "unknown";
 
@@ -73,10 +81,6 @@ public partial class GameCompleteViewModel : ViewModelBase
 
     private void Finish()
     {
-        var stats = _mainVm.ProfileRepository.GetStats();
-        stats.GamesCompleted++;
-        _mainVm.ProfileRepository.SaveStats(stats);
-
         // Close the save DB before deleting the slot
         _mainVm.AutoSaveService.Unbind();
         _mainVm.CloseActiveSave();

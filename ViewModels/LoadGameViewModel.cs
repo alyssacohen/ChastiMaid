@@ -1,6 +1,5 @@
 using ChastiMaid.Converters;
 using System.Collections.ObjectModel;
-using System.Reactive.Linq;
 using System.Windows.Input;
 using ChastiMaid.Localization;
 using ChastiMaid.Services;
@@ -47,8 +46,7 @@ public class SlotCardViewModel : ViewModelBase
         // translators: a finished game (feminine in Italian: "la partita")
         CompletedLabel = slot.IsCompleted ? l.P("game", "Completed") : "";
 
-        var canLoad = Observable.Return(!slot.IsCompleted);
-        LoadCommand = ReactiveCommand.CreateFromTask(() => parent.LoadSlot(slot.SlotName), canLoad);
+        LoadCommand = ReactiveCommand.CreateFromTask(() => parent.LoadSlot(slot.SlotName));
         InfoCommand = ReactiveCommand.CreateFromTask(() => parent.ShowContract(slot.SlotName));
         DeleteCommand = ReactiveCommand.CreateFromTask(() => parent.ConfirmDeleteSlot(this));
     }
@@ -118,7 +116,7 @@ public partial class LoadGameViewModel : ViewModelBase
         try
         {
             var saveRepo = _mainVm.OpenSaveSlot(slotName);
-            _mainVm.NavigateTo(new StartSessionViewModel(_mainVm, saveRepo));
+            _mainVm.NavigateTo(_mainVm.ResumePage(saveRepo));
         }
         catch (Exception ex)
         {
@@ -152,9 +150,12 @@ public partial class LoadGameViewModel : ViewModelBase
     public async Task ConfirmDeleteSlot(SlotCardViewModel slot)
     {
         var l = _mainVm.Localizer;
-        var message = slot.IsSafeLocked
-            ? l.T("Delete \"{0}\"?\n\nWARNING: The safe is locked. Deleting this save will permanently destroy the encrypted combination photo. The combination will be lost forever.", slot.SlotName)
-            : l.T("Delete \"{0}\"? This game will be marked as failed.", slot.SlotName);
+        var message = slot switch
+        {
+            { IsSafeLocked: true } => l.T("Delete \"{0}\"?\n\nWARNING: The safe is locked. Deleting this save will permanently destroy the encrypted combination photo. The combination will be lost forever.", slot.SlotName),
+            { IsCompleted: true } => l.T("Delete \"{0}\"? This completed game and its media will be removed for good. Open it first if you wish to export the outfit video or the safe combination.", slot.SlotName),
+            _ => l.T("Delete \"{0}\"? This game will be marked as failed.", slot.SlotName),
+        };
 
         var dialog = new ConfirmDialogViewModel(
             l.T("Delete Save"),
@@ -171,9 +172,13 @@ public partial class LoadGameViewModel : ViewModelBase
 
         _mainVm.SaveSlotManager.DeleteSlot(slot.SlotName);
 
-        var stats = _mainVm.ProfileRepository.GetStats();
-        stats.GamesFailed++;
-        _mainVm.ProfileRepository.SaveStats(stats);
+        // A completed game was already counted when it was completed; only an unfinished one is a failure.
+        if (!slot.IsCompleted)
+        {
+            var stats = _mainVm.ProfileRepository.GetStats();
+            stats.GamesFailed++;
+            _mainVm.ProfileRepository.SaveStats(stats);
+        }
 
         RefreshSlots();
     }

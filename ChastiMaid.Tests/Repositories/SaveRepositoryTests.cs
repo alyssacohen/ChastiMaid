@@ -749,4 +749,20 @@ public class SaveRepositoryTests : IDisposable
 
         Assert.Equal(currentDebt, _repo.GetGameState()!.CurrentDebt);
     }
+
+    [Fact]
+    public void MarkGameCompleted_FirstTime_PersistsTheFlag()
+    {
+        Assert.True(_repo.MarkGameCompleted());
+        Assert.True(_repo.GetGameState()!.IsCompleted);
+    }
+
+    [Fact]
+    public void MarkGameCompleted_Again_ReportsNothingNew()
+    {
+        _repo.MarkGameCompleted();
+
+        // Reopening the completion screen must not count the same game twice.
+        Assert.False(_repo.MarkGameCompleted());
+    }
 }

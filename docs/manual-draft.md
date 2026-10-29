@@ -95,7 +95,7 @@ The main menu shows: **Continue**, **New Game**, **Load Game**, **Settings**, **
 
 | Button | Behaviour |
 |---|---|
-| Continue | Enabled when the most recently played save is not completed. Opens that save at the outfit screen (§6.1). |
+| Continue | Enabled when at least one save exists. Opens the most recently played save at the outfit screen (§6.1), or at *Service Complete* (§7.10) if that game is completed. |
 | New Game | With 5 saves already, shows "No Free Slots" and stops. If no player name is set, first asks for a **name** and optional **forms of address** (comma-separated), then opens the contract (§5). |
 | Load Game | List of saves (§5.3). |
 | Settings | Profile settings (§10). |
@@ -130,11 +130,13 @@ locked the balance does not change between sessions.
 
 Up to 5 slots, each showing the debt (or "Credit"), safe status (Locked/Open) and buttons:
 
-- **Load**: opens the save at the outfit screen. A load error shows "Load Error" with the reason.
+- **Load**: opens the save at the outfit screen, or at *Service Complete* (§7.10) for a game marked
+  "Completed". A load error shows "Load Error" with the reason.
 - **Contract**: shows the terms that save was started with (read-only). Escape closes it.
 - **Delete**: asks for confirmation. If the safe is locked the warning says the encrypted combination
-  photo will be destroyed for good. Deleting removes the save database and its media folder, and counts
-  the game as failed in the profile statistics.
+  photo will be destroyed for good; for a completed game it suggests opening it first to export its
+  media. Deleting removes the save database and its media folder. An unfinished game is counted as
+  failed in the profile statistics; a completed one is not.
 
 ---
 
@@ -321,11 +323,12 @@ The odds are not shown in the app.
 ### 7.10 Game complete
 
 When the debt is zero or less and every punishment has been served or cancelled, **Complete Game**
-opens *Service Complete*:
+opens *Service Complete*. From that moment the game is **completed**: it is counted once in the profile
+statistics, shows "Completed" in Load Game, and Load or Continue only reopen this screen.
 
 - **Export Outfit Video**: saves the save's outfit video with a file dialog.
 - **Export Safe Combination Photo**: decrypts the combination photo and saves it with a file dialog.
-- **Finish and Free Slot**: counts the game as completed and **deletes the save and all its media**.
+- **Finish and Free Slot**: **deletes the save and all its media** and returns to the main menu.
 
 ---
 
@@ -604,9 +607,10 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 
 10. **Statistics.** `PlayerStats` (`GamesCompleted`, `GamesFailed`, `TotalSessions`) are stored, but no
     screen shows them, and `TotalSessions` is never incremented.
-11. **`GameState.IsCompleted` is never set to true.** The "Completed" label in Load Game and the Continue
-    check depend on it, but finishing a game deletes the slot instead. If the player leaves *Service
-    Complete* without pressing **Finish and Free Slot**, the save stays as an ordinary, loadable game.
+11. ~~**`GameState.IsCompleted` is never set to true.**~~ Resolved: reaching *Service Complete* marks the
+    game completed (`SaveRepository.MarkGameCompleted`) and counts it once. Load and Continue reopen
+    *Service Complete* for a completed slot, and deleting one is not counted as a failure. No migration
+    needed: no existing save had the flag set.
 
 ### C. Not verified (need a real-device test)
 
