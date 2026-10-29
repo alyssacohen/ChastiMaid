@@ -593,9 +593,9 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
    fine **and** assigns an escalation punishment (movements + 3 if abandoned) of any enabled type.
 8. ~~**Chastity Device** documentation.~~ Resolved: documented as a feature (README, CHANGELOG). It is
    still not described in `gameplay.md`, only in `wardrobe.md` and `new-game-contract.md`.
-9. **Whisper variant.** `Download-SpeechModels.ps1 -WhisperVariant tiny|small|medium` is offered, but the
-   app always loads `base` (`SherpaOnnxSttService.cs:41`). Any other variant leaves speech recognition
-   unavailable.
+9. ~~**Whisper variant.**~~ Resolved: `Download-SpeechModels.ps1` no longer takes `-WhisperVariant` and
+   always downloads `base`, the only variant the app loads (`SherpaOnnxSttService.cs:41`). It also leaves
+   out the unused `*.int8.onnx` files and `test_wavs` (about 150 MB less in the release).
 
 ### B. Recorded but not visible / unused
 

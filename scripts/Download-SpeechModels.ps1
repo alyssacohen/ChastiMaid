@@ -7,17 +7,14 @@
     releases. Run once after cloning/building, before `dotnet publish`. Idempotent — safe to
     re-run, overwrites any partial/previous download.
 
-.PARAMETER WhisperVariant
-    Which multilingual Whisper STT model to download (tiny, base, small, medium). Default: base
-    (~200 MB, good compromise for a short read-aloud phrase on modest hardware). Use "small" for
-    higher accuracy at ~600 MB.
+    Speech recognition uses the multilingual Whisper "base" model (~200 MB), a good compromise for a
+    short read-aloud phrase on modest hardware.
 #>
-param(
-    [ValidateSet("tiny", "base", "small", "medium")]
-    [string]$WhisperVariant = "base"
-)
 
 $ErrorActionPreference = "Stop"
+
+# Must match SherpaOnnxSttService.WhisperVariant: the app only loads the "base-*" files.
+$WhisperVariant = "base"
 
 # ponytail: pin to the Windows-native bsdtar explicitly — an MSYS/Git-Bash tar earlier on PATH
 # mis-parses a "C:\..." destination as a remote "host:path" spec and fails.
@@ -36,7 +33,9 @@ function Get-AndExtract {
     param(
         [string]$Url,
         [string]$ArchiveName,
-        [string]$Destination
+        [string]$Destination,
+        # Names (wildcards allowed) of archive entries the app never loads, left out of $Destination
+        [string[]]$Exclude = @()
     )
 
     Write-Host "Downloading $ArchiveName ..."
@@ -57,7 +56,7 @@ function Get-AndExtract {
     $sourceDir = if ($topLevel.Count -eq 1 -and $topLevel[0].PSIsContainer) { $topLevel[0].FullName } else { $extractDir }
 
     New-Item -ItemType Directory -Path $Destination -Force | Out-Null
-    Get-ChildItem $sourceDir | ForEach-Object {
+    Get-ChildItem $sourceDir -Exclude $Exclude | ForEach-Object {
         Copy-Item $_.FullName -Destination $Destination -Recurse -Force
     }
 }
@@ -76,7 +75,8 @@ try {
     Get-AndExtract `
         -Url "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-$WhisperVariant.tar.bz2" `
         -ArchiveName "sherpa-onnx-whisper-$WhisperVariant.tar.bz2" `
-        -Destination $sttDir
+        -Destination $sttDir `
+        -Exclude "*.int8.onnx", "test_wavs"
 }
 finally {
     Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
