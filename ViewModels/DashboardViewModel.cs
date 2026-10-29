@@ -135,6 +135,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             PendingPunishmentsCount = Punishments.Count;
             this.RaisePropertyChanged(nameof(HasPendingPunishments));
+            this.RaisePropertyChanged(nameof(CanComplete));
         };
         PendingPunishmentsCount = Punishments.Count;
 
@@ -220,7 +221,8 @@ public partial class DashboardViewModel : ViewModelBase
     public string InitialDebtDisplay { get; }
     public string OutfitMultiplierDisplay { get; }
 
-    public bool CanComplete => CurrentDebt <= 0;
+    // The game ends only once the debt is cleared and every punishment is served or cancelled.
+    public bool CanComplete => CurrentDebt <= 0 && !HasPendingPunishments;
     public decimal DebtRemaining => DebtTotal - DebtSettled;
     public double DebtProgress => DebtTotal > 0 ? Math.Clamp((double)(DebtSettled / DebtTotal), 0.0, 1.0) : 0.0;
     public bool HasPendingPunishments => PendingPunishmentsCount > 0;
