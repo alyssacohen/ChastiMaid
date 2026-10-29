@@ -110,7 +110,8 @@ The main menu shows: **Continue**, **New Game**, **Load Game**, **Settings**, **
 The New Game screen shows the current profile as a numbered contract (debt range, interest, wages,
 check-ins, punishments, wardrobe and so on), plus a fixed clause on variable severity.
 
-- **Accept the terms**: creates a save named `save_YYYYMMDD_HHMM`, rolls the initial debt at random
+- **Accept the terms**: creates a save named `save_YYYYMMDD_HHMM` (with `_2`, `_3`… added when another
+  game was started in the same minute), rolls the initial debt at random
   between the configured minimum and maximum (rounded to whole pounds), and goes to the outfit screen.
 - **Edit the terms**: opens Settings; coming back rebuilds the contract from the edited profile.
 - **Load another contract**: imports a contract file, replacing the profile after a confirmation (§11.3).
@@ -625,8 +626,9 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     progress. The contract treats them as device settings (`[JsonIgnore]`). Intended?
 18. **Wage rule vs spec.** `gameplay.md` says the wage is paid "without missing a popup". Popups can't be
     missed (they never close on their own); the code skips the wage after a *negative outcome* instead.
-19. **Two new games in the same minute** get the same slot name `save_YYYYMMDD_HHMM`. Behaviour not
-    tested.
+19. ~~**Two new games in the same minute.**~~ Resolved: `SaveSlotManager.NewSlotName` adds a `_2`, `_3`…
+    suffix when the name is taken (before, the second game reopened the first file and failed on
+    duplicate keys). Existing saves keep their names; no migration needed.
 
 ### D. Release / legal
 
