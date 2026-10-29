@@ -41,7 +41,7 @@ msgstr ""
 msgid "0"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:635
+#: ../ViewModels/DashboardViewModel.cs:637
 msgid "A Matter Already Settled"
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 msgid "A task I begin in earnest is a task I count already half completed"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:456
+#: ../ViewModels/DashboardViewModel.cs:458
 msgid ""
 "A task declared complete in mere moments is no task completed at all — I "
 "shall mark it void, and you shall answer for it."
@@ -312,12 +312,12 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:693
+#: ../ViewModels/DashboardViewModel.cs:695
 #, csharp-format
 msgid "Cancel \"{0}\" outright?"
 msgstr ""
 
-#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:692 ../Views/Controls/DashboardPunishmentsPanel.axaml:102
+#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:694 ../Views/Controls/DashboardPunishmentsPanel.axaml:102
 msgid "Cancel Punishment"
 msgstr ""
 
@@ -434,7 +434,7 @@ msgstr ""
 msgid "Configured outfits"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:674 ../ViewModels/DashboardViewModel.cs:694 ../Views/CameraSetupView.axaml:43
+#: ../ViewModels/DashboardViewModel.cs:676 ../ViewModels/DashboardViewModel.cs:696 ../Views/CameraSetupView.axaml:43
 msgid "Confirm"
 msgstr ""
 
@@ -864,7 +864,7 @@ msgstr ""
 msgid "Finish and Free Slot"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:457
+#: ../ViewModels/DashboardViewModel.cs:459
 msgid ""
 "Finished already? Either the work was poor, or none was done at all — this "
 "waste of my time shall not go unanswered."
@@ -1016,7 +1016,7 @@ msgstr ""
 msgid "Guaranteed Approval"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:673
+#: ../ViewModels/DashboardViewModel.cs:675
 #, csharp-format
 msgid "Halve the severity of \"{0}\"?"
 msgstr ""
@@ -1087,7 +1087,7 @@ msgstr ""
 msgid "Hydration reminders shall come no more often than once every {0}."
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:471
+#: ../ViewModels/DashboardViewModel.cs:473
 msgid ""
 "I accept the work, though at such a leisurely pace it earns but half its wage "
 "— and the dawdling shall not go unanswered."
@@ -1569,7 +1569,7 @@ msgstr ""
 msgid "New tag name"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:329
+#: ../ViewModels/DashboardViewModel.cs:331
 #, csharp-format
 msgid "Next wage in {0:D2}:{1:D2}"
 msgstr ""
@@ -2187,7 +2187,7 @@ msgstr ""
 msgid "So far, so good. I am watching."
 msgstr ""
 
-#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:672 ../Views/Controls/DashboardPunishmentsPanel.axaml:95
+#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:674 ../Views/Controls/DashboardPunishmentsPanel.axaml:95
 msgid "Soften Punishment"
 msgstr ""
 
@@ -2399,7 +2399,7 @@ msgstr ""
 msgid "The camera was not cooperative. We shall try again another time."
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:637
+#: ../ViewModels/DashboardViewModel.cs:639
 msgid "The chosen uniform"
 msgstr ""
 
@@ -2480,7 +2480,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:325
-msgid "The selected items become mandatory for a number of following sessions."
+msgid "The selected items become mandatory for a number of hours of play."
 msgstr ""
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:71
@@ -2508,13 +2508,13 @@ msgid ""
 "and deletes the rules that cite it. Continue?"
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:470
+#: ../ViewModels/DashboardViewModel.cs:472
 msgid ""
 "The task is done, if hardly with diligence — half the wage for half the zeal, "
 "and you shall answer to me for the dawdling."
 msgstr ""
 
-#: ../ViewModels/DashboardViewModel.cs:636
+#: ../ViewModels/DashboardViewModel.cs:638
 #, csharp-format
 msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
 msgstr ""

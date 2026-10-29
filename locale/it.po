@@ -45,7 +45,7 @@ msgstr "+{0}%"
 msgid "0"
 msgstr "0"
 
-#: ../ViewModels/DashboardViewModel.cs:635
+#: ../ViewModels/DashboardViewModel.cs:637
 msgid "A Matter Already Settled"
 msgstr "Una questione già decisa"
 
@@ -138,7 +138,7 @@ msgstr "Esiste già un tag con questo nome."
 msgid "A task I begin in earnest is a task I count already half completed"
 msgstr "Un compito che intraprendo con serietà lo considero già a metà"
 
-#: ../ViewModels/DashboardViewModel.cs:456
+#: ../ViewModels/DashboardViewModel.cs:458
 msgid ""
 "A task declared complete in mere moments is no task completed at all — I "
 "shall mark it void, and you shall answer for it."
@@ -334,12 +334,12 @@ msgstr "CPM"
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../ViewModels/DashboardViewModel.cs:693
+#: ../ViewModels/DashboardViewModel.cs:695
 #, csharp-format
 msgid "Cancel \"{0}\" outright?"
 msgstr "Annullare del tutto \"{0}\"?"
 
-#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:692 ../Views/Controls/DashboardPunishmentsPanel.axaml:102
+#: ../Models/CardDisplay.cs:17 ../ViewModels/DashboardViewModel.cs:694 ../Views/Controls/DashboardPunishmentsPanel.axaml:102
 msgid "Cancel Punishment"
 msgstr "Annulla Punizione"
 
@@ -458,7 +458,7 @@ msgstr "La fiducia nella propria arte è cosa ammirevole."
 msgid "Configured outfits"
 msgstr "Divise configurate"
 
-#: ../ViewModels/DashboardViewModel.cs:674 ../ViewModels/DashboardViewModel.cs:694 ../Views/CameraSetupView.axaml:43
+#: ../ViewModels/DashboardViewModel.cs:676 ../ViewModels/DashboardViewModel.cs:696 ../Views/CameraSetupView.axaml:43
 msgid "Confirm"
 msgstr "Conferma"
 
@@ -916,7 +916,7 @@ msgstr "Multa"
 msgid "Finish and Free Slot"
 msgstr "Termina e libera slot"
 
-#: ../ViewModels/DashboardViewModel.cs:457
+#: ../ViewModels/DashboardViewModel.cs:459
 msgid ""
 "Finished already? Either the work was poor, or none was done at all — this "
 "waste of my time shall not go unanswered."
@@ -1077,7 +1077,7 @@ msgstr "Concesso — brevemente."
 msgid "Guaranteed Approval"
 msgstr "Approvazione Garantita"
 
-#: ../ViewModels/DashboardViewModel.cs:673
+#: ../ViewModels/DashboardViewModel.cs:675
 #, csharp-format
 msgid "Halve the severity of \"{0}\"?"
 msgstr "Dimezzare la severità di \"{0}\"?"
@@ -1150,7 +1150,7 @@ msgid "Hydration reminders shall come no more often than once every {0}."
 msgstr ""
 "I richiami all'idratazione non giungeranno più spesso di una volta ogni {0}."
 
-#: ../ViewModels/DashboardViewModel.cs:471
+#: ../ViewModels/DashboardViewModel.cs:473
 msgid ""
 "I accept the work, though at such a leisurely pace it earns but half its wage "
 "— and the dawdling shall not go unanswered."
@@ -1675,7 +1675,7 @@ msgstr "Nome del nuovo slot"
 msgid "New tag name"
 msgstr "Nome del nuovo tag"
 
-#: ../ViewModels/DashboardViewModel.cs:329
+#: ../ViewModels/DashboardViewModel.cs:331
 #, csharp-format
 msgid "Next wage in {0:D2}:{1:D2}"
 msgstr "Prossima paga tra {0:D2}:{1:D2}"
@@ -2333,7 +2333,7 @@ msgstr "Slot"
 msgid "So far, so good. I am watching."
 msgstr "Per ora va bene. Vi sto osservando."
 
-#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:672 ../Views/Controls/DashboardPunishmentsPanel.axaml:95
+#: ../Models/CardDisplay.cs:16 ../ViewModels/DashboardViewModel.cs:674 ../Views/Controls/DashboardPunishmentsPanel.axaml:95
 msgid "Soften Punishment"
 msgstr "Mitiga Punizione"
 
@@ -2563,7 +2563,7 @@ msgstr ""
 "La macchina fotografica non si è mostrata collaborativa. Riproveremo in altra "
 "occasione."
 
-#: ../ViewModels/DashboardViewModel.cs:637
+#: ../ViewModels/DashboardViewModel.cs:639
 msgid "The chosen uniform"
 msgstr "L'outfit prescelto"
 
@@ -2655,9 +2655,9 @@ msgstr[0] "Verrà eliminata anche la regola che lo cita."
 msgstr[1] "Verranno eliminate anche le {0} regole che lo citano."
 
 #: ../Views/Controls/SettingsPunishmentsTab.axaml:325
-msgid "The selected items become mandatory for a number of following sessions."
+msgid "The selected items become mandatory for a number of hours of play."
 msgstr ""
-"I capi selezionati diventano obbligatori per alcune sessioni successive."
+"I capi selezionati diventano obbligatori per un certo numero di ore di gioco."
 
 #: ../Services/Contracts/ContractClauseBuilder.cs:71
 msgid ""
@@ -2693,7 +2693,7 @@ msgstr ""
 "Il tag «{0}» è usato da {1} e da {2}. Eliminandolo verrà tolto da tutti i "
 "capi e verranno eliminate le regole che lo citano. Continuare?"
 
-#: ../ViewModels/DashboardViewModel.cs:470
+#: ../ViewModels/DashboardViewModel.cs:472
 msgid ""
 "The task is done, if hardly with diligence — half the wage for half the zeal, "
 "and you shall answer to me for the dawdling."
@@ -2701,7 +2701,7 @@ msgstr ""
 "Il compito è svolto, se non proprio con diligenza — metà salario per metà "
 "zelo, e dell'ozio mi renderete conto."
 
-#: ../ViewModels/DashboardViewModel.cs:636
+#: ../ViewModels/DashboardViewModel.cs:638
 #, csharp-format
 msgid "The uniform «{0}» shall present itself, unbidden, for the next {1}."
 msgstr "L'outfit «{0}» sarà obbligatorio per le prossime {1}."

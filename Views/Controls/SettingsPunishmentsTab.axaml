@@ -322,7 +322,7 @@
                         <StackPanel Spacing="12">
                             <TextBlock
                                 Classes="EmployerVoice"
-                                Text="{l:Tr 'The selected items become mandatory for a number of following sessions.'}"
+                                Text="{l:Tr 'The selected items become mandatory for a number of hours of play.'}"
                                 TextWrapping="Wrap" />
                             <ToggleSwitch
                                 IsChecked="{Binding ForcedOutfitEnabled}"

@@ -687,12 +687,12 @@ public class SaveRepository(LiteDatabase db)
 
     /// <summary>
     ///     Scales the quantity that represents the punishment's severity (writing lines, cornertime seconds, or
-    ///     forced-outfit total sessions — always recomputed from the original total, never from what's left) by
+    ///     forced-outfit required seconds — always recomputed from the original total, never from what's left) by
     ///     <paramref name="factor" />, rounding up and re-clamping to the kind's configured limits, and scales
     ///     <see cref="ActivePunishment.Severity" /> (the failure fine) along with it. Whatever exceeds the kind's
     ///     maximum spills into a new pending punishment of the same kind and configuration — or into a fine, when it
     ///     is too small to reach the kind's minimum — taking its proportional share of the severity. A forced-outfit
-    ///     punishment whose recalculated total falls at or below its completed session count is marked resolved.
+    ///     punishment whose recalculated total falls at or below the time already credited is marked resolved.
     ///     Never touches the outfit already in effect for the current session (see docs/specs/shop.md
     ///     "Forced-Outfit Timing Rules") — StartSessionViewModel only reads this state at the next session's start.
     /// </summary>

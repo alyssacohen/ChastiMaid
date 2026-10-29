@@ -583,8 +583,10 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
    changing your mind or going back". `ChangeOutfitViewModel` Back builds a new `StartSessionViewModel`,
    whose bonus starts again at 1.0 (`StartSessionViewModel.cs:18`). This also undoes earlier
    regenerations' halving and their count.
-4. **Forced Outfit description in Settings** says "mandatory for a number of following sessions". The
-   code and `punishments.md` use real-time hours ("Max hours", "Hours per severity").
+4. ~~**Forced Outfit description in Settings.**~~ Resolved: it now reads "The selected items become
+   mandatory for a number of hours of play." (IT: "…per un certo numero di ore di gioco."), matching the
+   real-time hours in the code and `punishments.md`. Three code comments that spoke of sessions were
+   corrected too.
 5. **Popup interval.** `gameplay.md` says every 3 to 10 minutes; the defaults are 180–1200 s (3–20 min).
 6. **Settings tabs.** `gameplay.md` lists an "Outfit Rules" tab and no Popups/Permissions tabs. The code
    has General, Chores, Popups, Punishments, Wardrobe and Permissions; rules are an overlay inside
