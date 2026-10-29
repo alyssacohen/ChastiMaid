@@ -153,8 +153,8 @@ and the **Total Multiplier** (outfit multiplier × bonus).
   of its current value.
 - **Quit**: back to the main menu.
 
-The outfit is chosen **once per day**: reopening the game the same day shows the locked outfit with
-Accept only.
+The outfit is chosen **once per day** (a day starts at local midnight): reopening the game the same day
+shows the locked outfit with Accept only.
 
 Regenerate and Modify are not available when:
 
@@ -619,8 +619,9 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     Behaviour (blank preview? capture errors?) not verified.
 15. **Touch keyboard.** The app relies on Windows to show the touch keyboard in tablet mode; whether it
     pops up for every text field (Writing Lines in particular) on the Surface Go was not verified.
-16. **Daily outfit lock uses the UTC date** (`OutfitLockedDate?.Date == DateTime.UtcNow.Date`). In Italy
-    "a new day" starts at 01:00 or 02:00 local time, not midnight. Intended?
+16. ~~**Daily outfit lock uses the UTC date.**~~ Resolved: the outfit lock and the refusal forgiveness now
+    compare local calendar days (`GameDay.IsSameDay`), so a new day starts at local midnight. Dates are
+    still stored in UTC; existing saves need no migration.
 17. **Name, forms of address and auto-save are frozen per save.** The dashboard reads them from the save's
     snapshot (`DashboardViewModel.cs:109`), so changing them in Settings does not affect a game in
     progress. The contract treats them as device settings (`[JsonIgnore]`). Intended?

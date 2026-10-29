@@ -608,7 +608,7 @@ public class SaveRepository(LiteDatabase db)
     public void ForgiveOutfitRefusals()
     {
         var state = GetGameState();
-        if (state is null || state.OutfitRefusalDate?.Date == DateTime.UtcNow.Date)
+        if (state is null || (state.OutfitRefusalDate is { } refusedAt && GameDay.IsSameDay(refusedAt, DateTime.UtcNow)))
         {
             return;
         }

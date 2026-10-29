@@ -120,7 +120,9 @@ Separately from the per-item count above, the save keeps a single tally of garme
 
 ### Daily Lock Mechanic
 
-- The outfit is locked once per day (based on `OutfitLockedDate`)
+- The outfit is locked once per day (based on `OutfitLockedDate`). A day is the player's local calendar
+  day, starting at local midnight (`GameDay.IsSameDay`); the same rule decides whether accepting an outfit
+  forgives earlier refusals.
 - If the player returns on the same day, the previously locked outfit is shown (no changes allowed)
 - On a new day, a fresh outfit is generated
 

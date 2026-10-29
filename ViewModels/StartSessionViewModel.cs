@@ -44,7 +44,7 @@ public partial class StartSessionViewModel : ViewModelBase
 
         DebtDisplay = $"Debt: {CurrencyConverter.Format(state?.CurrentDebt ?? 0)}";
 
-        if (state?.OutfitLockedDate?.Date == DateTime.UtcNow.Date)
+        if (state?.OutfitLockedDate is { } lockedAt && GameDay.IsSameDay(lockedAt, DateTime.UtcNow))
         {
             _outfit = new Outfit();
             _proposedOutfit = state.CurrentOutfit ?? "";
