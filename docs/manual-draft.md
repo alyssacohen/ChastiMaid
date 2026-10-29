@@ -633,5 +633,6 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     Their licenses (typically SIL OFL / ISC) usually require shipping the license text.
 22. **Third-party model licenses.** The Piper voices and Whisper model come with their own model cards
     (`MODEL_CARD` is present in the TTS folders). Their terms are not reflected anywhere in the repo.
-23. **No version number.** The `.csproj` has no `<Version>`, so the assembly reports 1.0.0. The repo
-    also carries a tag `v1-pre-reset`.
+23. ~~**No version number.**~~ Resolved: `Directory.Build.props` sets `<Version>0.1.0</Version>` for the
+    app and the launcher (tracked through a `.gitignore` exception). Not shown in the UI yet. The tag
+    `v1-pre-reset` is left as it is.

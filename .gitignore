@@ -101,6 +101,8 @@ csx/
 *.runtimeconfig.dev.json
 *.deps.json
 *.props
+# The shared build settings (version) are tracked
+!/Directory.Build.props
 *.targets
 *.dbmdl
 *.dbproj.schemaview

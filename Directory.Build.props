@@ -1,0 +1,7 @@
+<Project>
+  <!-- Imported automatically by every project below this folder (app, launcher, tests, tools),
+       so the release version is set in one place. -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+</Project>
