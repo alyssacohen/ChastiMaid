@@ -26,11 +26,11 @@ Only what can be verified from the project:
 |---|---|---|
 | Operating system | Windows 10 version 1809 (build 17763) or later; Windows 11 | `SupportedOSPlatformVersion` 10.0.17763.0, target `net10.0-windows10.0.26100.0` |
 | Architecture | x64 (the speech engine ships only a `win-x64` native runtime) | `org.k2fsa.sherpa.onnx.runtime.win-x64` |
-| .NET | .NET 10 SDK to build. The published app in `Bin/` is framework-dependent, so it most likely needs the .NET 10 Desktop Runtime (see uncertain items) | `publish.ps1` |
+| .NET | Nothing to install with `ChastiMaid-<version>-win-x64.zip`, which includes the .NET 10 runtime. `ChastiMaid-<version>-win-x64-framework-dependent.zip` needs the .NET 10 Runtime (x64). Building needs the .NET 10 SDK | `publish.ps1` |
 | Display | Landscape only. Designed for 1200×800 logical pixels and larger | `App.axaml.cs`, commit `d0ec141` |
 | Webcam | Optional. Without it, camera-based check-ins are skipped (§9) | `HardwareAvailability` |
 | Microphone + speech models | Optional. Without them, read-aloud quotes are typed instead (§9) | `HardwareAvailability`, `SherpaOnnxSttService` |
-| Disk space | Speech models: Whisper `base` is about 200 MB (script description); captured photos/videos accumulate per save | `scripts/Download-SpeechModels.ps1` |
+| Disk space | About 760 MB extracted (self-contained) or 615 MB (framework-dependent), of which 435 MB are speech models; captured photos and videos accumulate per save | `publish.ps1` output |
 
 Target form factors (from project notes, not test results): Windows 11 desktop with mouse and keyboard;
 Surface Go (Windows 10, tablet mode, 1800×1200 at 150% scaling, two cameras).
@@ -41,27 +41,40 @@ Surface Go (Windows 10, tablet mode, 1800×1200 at 150% scaling, two cameras).
 
 ### 3.1 Release layout
 
-`publish.ps1` produces this folder (`dist/Root/`):
+`publish.ps1` produces two zips in `dist/`:
+
+| Zip | Size | Needs |
+|---|---|---|
+| `ChastiMaid-<version>-win-x64.zip` | ~410 MB | Nothing: includes the .NET 10 runtime |
+| `ChastiMaid-<version>-win-x64-framework-dependent.zip` | ~360 MB | The .NET 10 Runtime (x64) installed |
+
+Both contain one `ChastiMaid-<version>` folder:
 
 ```
-ChastiMaid.exe   launcher (self-contained, single file)
-Bin/             the application itself
-Content/         seed contracts (en, it) and speech models
+ChastiMaid.exe          launcher (single file)
+Bin/                    the application itself
+Content/                seed contracts (en, it), translations and speech models
+LICENSE                 GPL-3.0 text
+THIRD-PARTY-NOTICES.md  third-party components and their licences
+SOURCE.txt              where to obtain the source code
+licenses/               licence texts of the third-party components
 ```
 
 Starting `ChastiMaid.exe` launches `Bin/ChastiMaid.exe` and tells it to store data next to the launcher,
 so user data ends up in `data/` beside `ChastiMaid.exe` (§11). There is no installer: the folder can be
-copied anywhere the user can write.
+extracted anywhere the user can write.
 
 ### 3.2 Speech models
 
-Speech models are not included in the source repository. `scripts/Download-SpeechModels.ps1` downloads them
-from the k2-fsa/sherpa-onnx GitHub releases into `Content/Speech/`:
+The release zips include the speech models, so nothing has to be downloaded:
 
 - Speech recognition: Whisper `base` (multilingual).
-- Voice: Piper `it_IT-paola-medium` (Italian) and `en_US-amy-medium` (English).
+- Voice: Piper `it_IT-paola-medium` (Italian) and `en_US-amy-medium` (English), each with its
+  `espeak-ng-data`. The voices keep their own terms (see `THIRD-PARTY-NOTICES.md`).
 
-Run the script before `publish.ps1` so the models are copied into the release.
+The models are not in the source repository. When building from source, `scripts/Download-SpeechModels.ps1`
+downloads them from the k2-fsa/sherpa-onnx GitHub releases into `Content/Speech/`. `publish.ps1` stops
+with a list of the missing files if they are not there.
 
 ### 3.3 Start-up options
 
@@ -516,6 +529,17 @@ Per type: **Grant chance**, **Duration (minutes)**, **Cooldown (minutes)**. Defa
 
 ## 11. Data, privacy, import/export
 
+**Privacy and stored data.**
+- Everything stays on this computer, in the `data/` folder next to `ChastiMaid.exe`. Nothing is sent over the
+  network; speech recognition and voices run offline.
+- **Encrypted:** the safe combination photo, and the two databases (profile and saves). Both use a key built
+  into the program: this deters casual browsing only. Anyone who has the program and the files can decrypt them.
+- **Not encrypted:** every other photo and video the game takes (outfit video, check-in photos and videos,
+  busy-mode captures, Cornertime evidence), and the combination photo once it has been revealed
+  (`safe_combo.png`). They are plain image and video files under `data/saves/`, readable by anyone with
+  access to the folder.
+- Deleting a save, or finishing a game with **Finish and Free Slot**, deletes its database and its media folder.
+
 ### 11.1 Where data is stored
 
 All under `data/` next to the program (next to the launcher in a release; under `bin/` when run with
@@ -581,10 +605,9 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 
 1. ~~**Game completion ignores pending punishments.**~~ Fixed: `CanComplete` now also requires no pending
    punishment (`DashboardViewModel.cs:224`), as `gameplay.md` and `CLAUDE.md` describe.
-2. **Captured media is not encrypted.** Only `safe_combo.enc` goes through `CryptoService`. The outfit
-   video, busy-mode captures and pose/kneel/curtsy/cornertime files are plain PNG/AVI. `CLAUDE.md` says
-   "CryptoService encrypts captured media and the safe-combination photo". The revealed combination is
-   also left in clear as `safe_combo.png`. This matters for privacy wording in the manual.
+2. ~~**Captured media is not encrypted.**~~ Resolved (by design): only the safe combination photo (and the
+   databases) are encrypted; every other photo and video stays a plain file in `data/`. Stated in §11
+   "Privacy and stored data" and in the README. (`CLAUDE.md` still says otherwise.)
 3. ~~**Back from "Compose an outfit" restores the full bonus.**~~ Resolved: Back returns to the same
    proposal screen instead of rebuilding it, so the lowered bonus, the regeneration count and the drawn
    chastity device are kept, and daily interest is no longer applied a second time. No persisted data
@@ -616,8 +639,9 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 
 ### C. Not verified (need a real-device test)
 
-12. **.NET runtime on the target PC.** The app in `Bin/` is published framework-dependent. Does a release
-    require installing the .NET 10 Desktop Runtime, or should `publish.ps1` make it self-contained?
+12. ~~**.NET runtime on the target PC.**~~ Resolved: `publish.ps1` builds a self-contained zip (nothing to
+    install) and a framework-dependent zip (needs the .NET 10 Runtime x64). Replacing the `NAudio`
+    meta-package with `NAudio.Core` + `NAudio.WinMM` removed the need for the Desktop Runtime.
 13. **Camera or microphone blocked by Windows privacy settings.** The microphone check only lists audio
     devices (`DeviceInformation.FindAllAsync`). A blocked microphone would probably be reported as present
     and then fail when listening. The camera behaviour when blocked was not traced.
@@ -639,11 +663,14 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 
 ### D. Release / legal
 
-20. **No `LICENSE`.** The project license is undecided.
-21. **Bundled fonts without license files:** Cormorant Infant, Special Elite and Lucide (`Assets/Fonts/`).
-    Their licenses (typically SIL OFL / ISC) usually require shipping the license text.
-22. **Third-party model licenses.** The Piper voices and Whisper model come with their own model cards
-    (`MODEL_CARD` is present in the TTS folders). Their terms are not reflected anywhere in the repo.
+20. ~~**No `LICENSE`.**~~ Resolved: GPL-3.0-or-later (chosen because espeak-ng, GPL-3.0-or-later, is statically linked),
+    `LICENSE` with the unmodified GPL-3.0 text from gnu.org, "Copyright (C) 2026 Alyssa C.".
+21. ~~**Bundled fonts without license files.**~~ Resolved: OFL-1.1 (Inter, Cormorant Infant), Apache-2.0
+    (Special Elite) and ISC + MIT (Lucide 1.63.0) are in `licenses/` and `THIRD-PARTY-NOTICES.md`.
+22. ~~**Third-party model licenses.**~~ Resolved: Whisper (MIT) and `espeak-ng-data` (GPL) are listed in
+    `THIRD-PARTY-NOTICES.md`. Both voices are kept: their MODEL_CARDs only say "License: See URL", and the
+    notices say they keep their own terms, which may restrict commercial use. Details:
+    `docs/release/license-audit.md`.
 23. ~~**No version number.**~~ Resolved: `Directory.Build.props` sets `<Version>0.1.0</Version>` for the
     app and the launcher (tracked through a `.gitignore` exception). Not shown in the UI yet. The tag
     `v1-pre-reset` is left as it is.

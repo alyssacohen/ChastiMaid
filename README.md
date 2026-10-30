@@ -47,28 +47,36 @@ The [user manual draft](docs/manual-draft.md) describes every screen and setting
 - Windows 10 version 1809 or later, or Windows 11, on x64.
 - A landscape display. The layout is designed for 1200×800 logical pixels and up, with touch-sized
   controls for tablets.
+- Nothing else to install with the standard release: it includes the .NET runtime and the speech models.
 - Optional:
   - a webcam, for photo and video check-ins, Cornertime, the outfit video and the safe photo;
-  - a microphone, for reading quotes aloud;
-  - the speech models (see below).
+  - a microphone, for reading quotes aloud.
 
   Without them, the related check-ins are skipped or replaced by typing.
 
 ## Installing and running
 
-There is no installer. A release is a folder produced by `publish.ps1`:
+There is no installer. Each release comes as two zips; pick one:
+
+| Zip | Size | Needs |
+|---|---|---|
+| `ChastiMaid-<version>-win-x64.zip` | ~410 MB | Nothing: the .NET runtime is included |
+| `ChastiMaid-<version>-win-x64-framework-dependent.zip` | ~360 MB | The .NET 10 Runtime (x64) installed |
+
+Both contain a `ChastiMaid-<version>` folder:
 
 ```
-ChastiMaid.exe   launcher: start the game from here
-Bin/             the application
-Content/         seed contracts and speech models
+ChastiMaid.exe          launcher: start the game from here
+Bin/                    the application
+Content/                seed contracts and speech models
+LICENSE, THIRD-PARTY-NOTICES.md, SOURCE.txt, licenses/
 ```
 
-Copy the folder anywhere you can write to and run `ChastiMaid.exe`. Your data is created in `data/` next
+Extract the folder anywhere you can write to and run `ChastiMaid.exe`. Your data is created in `data/` next
 to it. Keep that folder to keep your saves.
 
-<!-- TODO: Bin/ is published framework-dependent. Decide whether a release requires the .NET 10 Desktop
-     Runtime to be installed, or make publish.ps1 self-contained, and state it here. -->
+Only the photo of the safe combination is encrypted. The other photos and videos the game takes are plain
+files under `data/`. See the [user manual draft](docs/manual-draft.md).
 
 ## Building from source
 
@@ -86,11 +94,11 @@ dotnet run                    # full-screen
 dotnet run -- --landscape     # 1200×800 window, simulates a Surface Go
 dotnet test                   # unit tests
 
-.\publish.ps1                 # release folder in dist/Root/
+.\publish.ps1                 # both release zips in dist/
 ```
 
 Speech models are not tracked in git because of their size. Run the download script before
-`publish.ps1` so they are copied into the release.
+`publish.ps1`: it stops with a list of the missing files otherwise.
 
 Translations live in `locale/*.po` and are compiled on every build. After changing user-facing strings,
 run `.\l10n-refresh.ps1`. See [docs/design/localization.md](docs/design/localization.md).
@@ -122,6 +130,12 @@ Contribution guidelines have not been defined yet.
 
 ## License
 
-<!-- TODO: no LICENSE file yet. Choose a license and add it, together with the license texts of the
-     bundled fonts (Cormorant Infant, Special Elite, Lucide) and speech models. -->
-**TODO:** no license has been chosen yet.
+Copyright (C) 2026 Alyssa C.
+
+ChastiMaid is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version. See [LICENSE](LICENSE).
+
+The releases include third-party libraries, fonts and speech models under their own licences; see
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) and the `licenses/` folder. The two speech voices keep their
+own terms: they are not covered by this project's licence and may restrict commercial use.
