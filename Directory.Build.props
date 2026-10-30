@@ -3,5 +3,8 @@
        so the release version is set in one place. -->
   <PropertyGroup>
     <Version>0.1.0</Version>
+    <Authors>Alyssa C.</Authors>
+    <!-- Shown in the file properties of every built .exe/.dll. The licence is GPL-3.0-or-later (see LICENSE). -->
+    <Copyright>Copyright (C) 2026 Alyssa C.</Copyright>
   </PropertyGroup>
 </Project>
