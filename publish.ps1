@@ -1,21 +1,80 @@
-# Publishes ChastiMaid into a clean Root/{ChastiMaid.exe, Data, Content, Bin} layout.
-# Data/ is not created here: DatabaseService creates it under AppPaths.Root on first run.
+# Builds the two release zips of ChastiMaid:
+#   dist\ChastiMaid-<version>-win-x64.zip                       self-contained: includes the .NET runtime
+#   dist\ChastiMaid-<version>-win-x64-framework-dependent.zip   needs the .NET 10 runtime (x64) installed
+# Each zip holds one ChastiMaid-<version>\ folder: ChastiMaid.exe (launcher), Bin\, Content\ and the licence files.
+# Data\ is not created here: DatabaseService creates it under AppPaths.Root on first run.
 $ErrorActionPreference = "Stop"
 
-$distRoot = Join-Path $PSScriptRoot "dist\Root"
-$appPublish = Join-Path $PSScriptRoot "dist\_app-publish"
-$launcherPublish = Join-Path $PSScriptRoot "dist\_launcher-publish"
+$root = $PSScriptRoot
+$dist = Join-Path $root "dist"
 
-Remove-Item $distRoot, $appPublish, $launcherPublish -Recurse -Force -ErrorAction SilentlyContinue
+# The version comes from Directory.Build.props, the single place it is set.
+[xml]$props = Get-Content (Join-Path $root "Directory.Build.props")
+$version = @($props.Project.PropertyGroup | ForEach-Object { $_.Version } | Where-Object { $_ })[0]
+if (-not $version) { throw "No <Version> found in Directory.Build.props." }
 
-dotnet publish (Join-Path $PSScriptRoot "ChastiMaid.csproj") -c Release -o $appPublish
-dotnet publish (Join-Path $PSScriptRoot "ChastiMaid.Launcher\ChastiMaid.Launcher.csproj") -c Release -o $launcherPublish `
-    -r win-x64 --self-contained true -p:PublishSingleFile=true
+# Refuse to build an incomplete release: the speech models are not in git (scripts\Download-SpeechModels.ps1).
+$speech = Join-Path $root "Content\Speech"
+$required = @(
+    "STT\base-encoder.onnx", "STT\base-decoder.onnx", "STT\base-tokens.txt",
+    "TTS\en\en_US-amy-medium.onnx", "TTS\en\en_US-amy-medium.onnx.json", "TTS\en\tokens.txt", "TTS\en\MODEL_CARD",
+    "TTS\it\it_IT-paola-medium.onnx", "TTS\it\it_IT-paola-medium.onnx.json", "TTS\it\tokens.txt", "TTS\it\MODEL_CARD"
+)
+foreach ($lang in "en", "it") {
+    # The files espeak-ng cannot start without.
+    foreach ($f in "phontab", "phondata", "phonindex", "intonations") { $required += "TTS\$lang\espeak-ng-data\$f" }
+}
+$missing = $required | Where-Object { -not (Test-Path (Join-Path $speech $_)) }
+if ($missing) {
+    throw "Speech models or espeak-ng-data missing under Content\Speech (run scripts\Download-SpeechModels.ps1):`n  " +
+        ($missing -join "`n  ")
+}
 
-New-Item -ItemType Directory -Force -Path (Join-Path $distRoot "Bin") | Out-Null
+function Invoke-Dotnet([string[]]$arguments) {
+    & dotnet @arguments
+    if ($LASTEXITCODE -ne 0) { throw "dotnet $($arguments -join ' ') failed with exit code $LASTEXITCODE" }
+}
 
-Move-Item (Join-Path $appPublish "Content") (Join-Path $distRoot "Content")
-Move-Item (Join-Path $appPublish "*") (Join-Path $distRoot "Bin")
-Copy-Item (Join-Path $launcherPublish "ChastiMaid.exe") (Join-Path $distRoot "ChastiMaid.exe")
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 
-Write-Host "Published to $distRoot"
+function New-Release([string]$suffix, [bool]$selfContained) {
+    $work = Join-Path $dist "_work$suffix"
+    $folder = Join-Path $work "ChastiMaid-$version"
+    $appOut = Join-Path $work "_app"
+    $launcherOut = Join-Path $work "_launcher"
+    $zip = Join-Path $dist "ChastiMaid-$version-win-x64$suffix.zip"
+    Remove-Item $work, $zip -Recurse -Force -ErrorAction SilentlyContinue
+
+    # App: Windows x64 only (drops the Linux/macOS/Android native libraries), ReadyToRun for a faster start-up
+    # on low-power devices. No trimming: Avalonia and reflection make it unsafe.
+    Invoke-Dotnet @("publish", (Join-Path $root "ChastiMaid.csproj"), "-c", "Release", "-o", $appOut,
+        "-r", "win-x64", "--self-contained", "$selfContained".ToLower(), "-p:PublishReadyToRun=true")
+
+    # Launcher: one exe. The self-contained one carries its own trimmed runtime (it only starts a process).
+    $launcherArgs = @("publish", (Join-Path $root "ChastiMaid.Launcher\ChastiMaid.Launcher.csproj"), "-c", "Release",
+        "-o", $launcherOut, "-r", "win-x64", "--self-contained", "$selfContained".ToLower(), "-p:PublishSingleFile=true")
+    if ($selfContained) { $launcherArgs += "-p:PublishTrimmed=true" }
+    Invoke-Dotnet $launcherArgs
+
+    # Not shipped: debug symbols, and the FFmpeg plugin of OpenCV (videos are MJPG/AVI, written without it).
+    Get-ChildItem $appOut -Recurse -Include "*.pdb", "opencv_videoio_ffmpeg*.dll" | Remove-Item -Force
+
+    New-Item -ItemType Directory -Force -Path (Join-Path $folder "Bin") | Out-Null
+    Move-Item (Join-Path $appOut "Content") (Join-Path $folder "Content")
+    Move-Item (Join-Path $appOut "*") (Join-Path $folder "Bin")
+    Copy-Item (Join-Path $launcherOut "ChastiMaid.exe") $folder
+    foreach ($f in "LICENSE", "THIRD-PARTY-NOTICES.md", "SOURCE.txt", "licenses") {
+        Copy-Item (Join-Path $root $f) $folder -Recurse
+    }
+
+    # includeBaseDirectory = true: the zip contains the ChastiMaid-<version> folder itself.
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($folder, $zip, [System.IO.Compression.CompressionLevel]::Optimal, $true)
+    Remove-Item $work -Recurse -Force
+
+    $mb = [math]::Round((Get-Item $zip).Length / 1MB, 1)
+    Write-Host "Created $zip ($mb MB)"
+}
+
+New-Item -ItemType Directory -Force -Path $dist | Out-Null
+New-Release "" $true
+New-Release "-framework-dependent" $false
