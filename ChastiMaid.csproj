@@ -23,7 +23,10 @@
     <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.1" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.1" />
-    <PackageReference Include="NAudio" Version="3.0.0" />
+    <!-- Only the parts the app uses: the NAudio meta-package also pulls NAudio.WinForms, which drags in the
+         Windows Desktop runtime (WinForms). -->
+    <PackageReference Include="NAudio.Core" Version="3.0.0" />
+    <PackageReference Include="NAudio.WinMM" Version="3.0.0" />
     <PackageReference Include="org.k2fsa.sherpa.onnx" Version="1.13.5" />
     <PackageReference Include="org.k2fsa.sherpa.onnx.runtime.win-x64" Version="1.13.5" />
     <PackageReference Include="ReactiveUI" Version="24.1.0" />
