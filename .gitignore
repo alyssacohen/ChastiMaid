@@ -41,6 +41,8 @@ _ReSharper*/
 [Oo]bj/
 [Dd]ebug*/
 [Rr]elease*/
+# Release documentation (licence audit) is tracked
+!/docs/release/
 artifacts/
 bld/
 [Ll]og/
