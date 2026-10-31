@@ -15,9 +15,12 @@ To motivate the user, she has to put a reward item in a safe with a combination 
 combination is stored inside the app (encrypted), and when she wants to have the item back she has to
 complete the game, or ask at the end of a session to get the combination.
 In this case, the app will decrypt the picture and show it to the user, but the safe stays unlocked from then on: daily
-interest accrues every session start while it is unlocked, growing any outstanding debt and eroding any accumulated
+interest accrues while it is unlocked, growing any outstanding debt and eroding any accumulated
 credit (from overpaying past zero) back toward zero — never past it. Keeping the safe locked freezes the balance
 either way, so locking it is always at least as good as leaving it open.
+Interest is applied at most once per local calendar day, at the first session start of that day, whatever the number
+of days skipped. Days started with the safe locked are recorded without charge, so they never accumulate; a save
+without a recorded day, or a clock moved backwards, records today without charging.
 
 ## Application flow
 

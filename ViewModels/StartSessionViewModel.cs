@@ -38,7 +38,7 @@ public partial class StartSessionViewModel : ViewModelBase
 
         // Daily interest: accrues only while the safe is open — grows debt, erodes credit toward zero.
         // Locked safe freezes the balance either way.
-        saveRepo.ApplyDailyInterest(DateTime.UtcNow);
+        saveRepo.ApplyDailyInterest(TimeProvider.System);
 
         var state = saveRepo.GetGameState();
 

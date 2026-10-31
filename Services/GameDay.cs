@@ -11,7 +11,10 @@ public static class GameDay
     public static bool IsSameDay(DateTime a, DateTime b) => IsSameDay(a, b, TimeZoneInfo.Local);
 
     /// <summary>True when both instants fall on the same calendar day in <paramref name="zone" />.</summary>
-    public static bool IsSameDay(DateTime a, DateTime b, TimeZoneInfo zone) =>
-        // ConvertTime honours each value's Kind (Utc, or Local as LiteDB returns it without the app's mapper).
-        TimeZoneInfo.ConvertTime(a, zone).Date == TimeZoneInfo.ConvertTime(b, zone).Date;
+    public static bool IsSameDay(DateTime a, DateTime b, TimeZoneInfo zone) => LocalDate(a, zone) == LocalDate(b, zone);
+
+    /// <summary>The calendar day <paramref name="instant" /> falls on in <paramref name="zone" />.</summary>
+    public static DateOnly LocalDate(DateTime instant, TimeZoneInfo zone) =>
+        // ConvertTime honours the value's Kind (Utc, or Local as LiteDB returns it without the app's mapper).
+        DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(instant, zone));
 }

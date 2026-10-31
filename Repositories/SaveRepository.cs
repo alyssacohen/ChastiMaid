@@ -408,27 +408,32 @@ public class SaveRepository(LiteDatabase db)
     }
 
     /// <summary>
-    ///     Applies daily compound interest for every full day since LastSessionAt, only while the safe is unlocked:
-    ///     grows a positive debt, erodes a negative credit toward (never past) zero. No-op if the safe is locked or
-    ///     CurrentDebt is already zero — leaving the safe locked always freezes the balance either way.
+    ///     Settles the daily interest at session start: at most once per local calendar day, and only while the safe
+    ///     is open. On the first start of a new day it applies the daily rate once, however many days were skipped:
+    ///     a positive debt grows, a credit erodes toward (never past) zero. The day is recorded even when nothing is
+    ///     charged (safe locked, zero balance), so days with the safe locked never accumulate. A save without a
+    ///     recorded day (created before this rule) and a clock moved backwards are not charged; both just record
+    ///     today. The new balance and the day are saved in one write, so a crash cannot charge the same day twice.
     /// </summary>
-    public void ApplyDailyInterest(DateTime now)
+    public void ApplyDailyInterest(TimeProvider clock)
     {
         var state = GetGameState();
-        if (state is null || state.IsSafeLocked || state.CurrentDebt == 0)
+        if (state is null)
         {
             return;
         }
 
-        var days = (int)(now - state.LastSessionAt).TotalDays;
-        if (days <= 0)
+        var now = clock.GetUtcNow().UtcDateTime;
+        var today = GameDay.LocalDate(now, clock.LocalTimeZone);
+        DateOnly? lastDay = state.LastInterestDayAt is { } last ? GameDay.LocalDate(last, clock.LocalTimeZone) : null;
+        if (lastDay == today)
         {
             return;
         }
 
-        var rate = (decimal)state.DailyInterestRate;
-        for (var i = 0; i < days; i++)
+        if (lastDay < today && !state.IsSafeLocked)
         {
+            var rate = (decimal)state.DailyInterestRate;
             state.CurrentDebt = state.CurrentDebt switch
             {
                 > 0 => state.CurrentDebt + Math.Round(state.CurrentDebt * rate, 0),
@@ -437,6 +442,7 @@ public class SaveRepository(LiteDatabase db)
             };
         }
 
+        state.LastInterestDayAt = now;
         SaveGameState(state);
     }
 

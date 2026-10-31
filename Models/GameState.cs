@@ -11,6 +11,11 @@ public class GameState
     public double DailyInterestRate { get; set; }
     public DateTime StartedAt { get; set; }
     public DateTime LastSessionAt { get; set; }
+
+    // UTC instant of the session start that last settled the daily interest; its local date is the last
+    // "interest day". Null for saves created before the once-per-day rule, until their first session start.
+    public DateTime? LastInterestDayAt { get; set; }
+
     public bool IsCompleted { get; set; }
     public bool IsSafeLocked { get; set; }
     public string? OutfitVideoPath { get; set; }

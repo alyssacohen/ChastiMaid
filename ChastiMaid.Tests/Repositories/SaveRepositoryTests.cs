@@ -691,63 +691,134 @@ public class SaveRepositoryTests : IDisposable
         Assert.Equal(-50, _repo.GetGameState()!.CurrentDebt);
     }
 
-    [Fact]
-    public void ApplyDailyInterest_UnlockedSafeWithDebt_CompoundsItUpward()
+    // --- Daily interest: at most once per local calendar day, only while the safe is open ---
+
+    private static readonly TimeZoneInfo Rome = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+
+    /// <summary>A clock the test moves by hand; local time is Rome's (UTC+1 in winter).</summary>
+    private sealed class FakeClock(DateTime utcNow) : TimeProvider
     {
+        public DateTime UtcNow { get; set; } = utcNow;
+        public override DateTimeOffset GetUtcNow() => new(UtcNow, TimeSpan.Zero);
+        public override TimeZoneInfo LocalTimeZone => Rome;
+    }
+
+    private static DateTime Utc(int day, int hour, int minute = 0) => new(2026, 1, day, hour, minute, 0, DateTimeKind.Utc);
+
+    private void SaveInterestState(decimal debt, bool safeLocked, DateTime? lastInterestDayAt) =>
         _repo.SaveGameState(new GameState
         {
-            CurrentDebt = 100, IsSafeLocked = false, DailyInterestRate = 0.1,
-            LastSessionAt = DateTime.UtcNow.AddDays(-2),
+            CurrentDebt = debt, IsSafeLocked = safeLocked, DailyInterestRate = 0.1, LastInterestDayAt = lastInterestDayAt,
         });
 
-        _repo.ApplyDailyInterest(DateTime.UtcNow);
+    [Fact]
+    public void ApplyDailyInterest_SaveWithoutRecordedDay_RecordsTodayWithoutCharging()
+    {
+        SaveInterestState(100, safeLocked: false, lastInterestDayAt: null);
+        var clock = new FakeClock(Utc(15, 9));
 
-        // Day 1: 100 + 10 = 110. Day 2: 110 + 11 = 121.
-        Assert.Equal(121, _repo.GetGameState()!.CurrentDebt);
+        _repo.ApplyDailyInterest(clock);
+
+        var state = _repo.GetGameState()!;
+        Assert.Equal(100, state.CurrentDebt);
+        Assert.Equal(clock.UtcNow, state.LastInterestDayAt);
     }
 
     [Fact]
-    public void ApplyDailyInterest_UnlockedSafeWithCredit_ErodesItTowardZero()
+    public void ApplyDailyInterest_NewLocalDay_ChargesOnce_EvenLessThan24HoursLater()
     {
-        _repo.SaveGameState(new GameState
-        {
-            CurrentDebt = -50, IsSafeLocked = false, DailyInterestRate = 0.1,
-            LastSessionAt = DateTime.UtcNow.AddDays(-1),
-        });
+        SaveInterestState(100, safeLocked: false, lastInterestDayAt: Utc(14, 22)); // 23:00 local on the 14th
+        var clock = new FakeClock(Utc(14, 23, 30));                                // 00:30 local on the 15th
 
-        _repo.ApplyDailyInterest(DateTime.UtcNow);
+        _repo.ApplyDailyInterest(clock);
 
-        Assert.Equal(-45, _repo.GetGameState()!.CurrentDebt);
+        Assert.Equal(110, _repo.GetGameState()!.CurrentDebt);
     }
 
     [Fact]
-    public void ApplyDailyInterest_UnlockedSafeWithSmallCredit_NeverFlipsPastZeroIntoDebt()
+    public void ApplyDailyInterest_SecondStartOnTheSameDay_ChargesNothingMore()
     {
-        _repo.SaveGameState(new GameState
-        {
-            CurrentDebt = -1, IsSafeLocked = false, DailyInterestRate = 0.9,
-            LastSessionAt = DateTime.UtcNow.AddDays(-1),
-        });
+        SaveInterestState(100, safeLocked: false, lastInterestDayAt: Utc(14, 9));
+        var clock = new FakeClock(Utc(15, 8));
 
-        _repo.ApplyDailyInterest(DateTime.UtcNow);
+        _repo.ApplyDailyInterest(clock); // Continue
+        clock.UtcNow = Utc(15, 20);
+        _repo.ApplyDailyInterest(clock); // Quit, then Continue again the same evening
 
-        Assert.Equal(0, _repo.GetGameState()!.CurrentDebt);
+        Assert.Equal(110, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_SeveralDaysSkipped_ChargesOnlyOnce()
+    {
+        SaveInterestState(100, safeLocked: false, lastInterestDayAt: Utc(10, 9));
+
+        _repo.ApplyDailyInterest(new FakeClock(Utc(15, 9)));
+
+        Assert.Equal(110, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_LockedDaysNeverAccumulate()
+    {
+        SaveInterestState(100, safeLocked: true, lastInterestDayAt: Utc(10, 9));
+        var clock = new FakeClock(Utc(15, 9));
+
+        _repo.ApplyDailyInterest(clock); // locked: the 15th is recorded, nothing charged
+        var state = _repo.GetGameState()!;
+        Assert.Equal(100, state.CurrentDebt);
+        state.IsSafeLocked = false;      // combination revealed at the end of that session
+        _repo.SaveGameState(state);
+
+        _repo.ApplyDailyInterest(clock); // same day again: still nothing
+        Assert.Equal(100, _repo.GetGameState()!.CurrentDebt);
+
+        clock.UtcNow = Utc(16, 9);
+        _repo.ApplyDailyInterest(clock); // next day, safe open: one charge only
+        Assert.Equal(110, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_ClockMovedBackwards_ChargesNothingAndRecordsToday()
+    {
+        SaveInterestState(100, safeLocked: false, lastInterestDayAt: Utc(20, 9));
+        var clock = new FakeClock(Utc(15, 9));
+
+        _repo.ApplyDailyInterest(clock);
+
+        var state = _repo.GetGameState()!;
+        Assert.Equal(100, state.CurrentDebt);
+        Assert.Equal(clock.UtcNow, state.LastInterestDayAt);
     }
 
     [Theory]
-    [InlineData(100)]
-    [InlineData(-50)]
-    public void ApplyDailyInterest_LockedSafe_LeavesBalanceUnchanged(decimal currentDebt)
+    [InlineData(-50, 0.1, -45)]  // a credit erodes toward zero
+    [InlineData(-1, 0.9, 0)]     // but never flips into debt
+    [InlineData(0, 0.1, 0)]      // a zero balance stays zero
+    public void ApplyDailyInterest_CreditOrZero_ErodesTowardZeroAndNeverPastIt(decimal debt, double rate, decimal expected)
     {
         _repo.SaveGameState(new GameState
         {
-            CurrentDebt = currentDebt, IsSafeLocked = true, DailyInterestRate = 0.1,
-            LastSessionAt = DateTime.UtcNow.AddDays(-2),
+            CurrentDebt = debt, IsSafeLocked = false, DailyInterestRate = rate, LastInterestDayAt = Utc(14, 9),
         });
 
-        _repo.ApplyDailyInterest(DateTime.UtcNow);
+        _repo.ApplyDailyInterest(new FakeClock(Utc(15, 9)));
 
-        Assert.Equal(currentDebt, _repo.GetGameState()!.CurrentDebt);
+        Assert.Equal(expected, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
+    public void ApplyDailyInterest_SavesTheBalanceAndTheDayTogether()
+    {
+        SaveInterestState(100, safeLocked: false, lastInterestDayAt: Utc(14, 9));
+        var clock = new FakeClock(Utc(15, 9));
+
+        _repo.ApplyDailyInterest(clock);
+
+        // Both values come back from the same stored document: a crash leaves either both or neither.
+        var state = _repo.GetGameState()!;
+        Assert.Equal(110, state.CurrentDebt);
+        Assert.Equal(clock.UtcNow, state.LastInterestDayAt);
     }
 
     [Fact]

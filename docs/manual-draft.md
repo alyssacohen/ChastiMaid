@@ -135,9 +135,13 @@ permissions). Editing Settings later does not change games already started.
 
 ### 5.2 Daily interest and the safe
 
-Each time a save is opened, daily interest is applied **only if the safe is open**. Interest grows any
-outstanding debt and reduces any credit (negative debt) towards zero, never past it. While the safe is
-locked the balance does not change between sessions.
+Daily interest is applied **at most once per calendar day** (local date), on the first opening of a game
+that day, and **only if the safe is open**.
+- **Effect:** interest grows any outstanding debt and reduces any credit (negative debt) towards zero, never
+  past it.
+- **Skipped days:** after several days without playing, interest is applied once, not once per day.
+- **Locked safe:** days opened with the safe locked are recorded but never charged, not even later.
+- **Clock moved backwards:** nothing is charged.
 
 ### 5.3 Load Game
 
@@ -674,3 +678,11 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 23. ~~**No version number.**~~ Resolved: `Directory.Build.props` sets `<Version>0.1.0</Version>` for the
     app and the launcher (tracked through a `.gitignore` exception). Not shown in the UI yet. The tag
     `v1-pre-reset` is left as it is.
+
+### E. Found during release preparation
+
+24. ~~**Daily interest charged again on every opening.**~~ Resolved: interest was counted in 24-hour periods
+    since `LastSessionAt`, which is only updated by the dashboard, so Quit then Continue charged it again.
+    `SaveRepository.ApplyDailyInterest` now applies it at most once per local calendar day, only while the safe
+    is open, and records the day (`GameState.LastInterestDayAt`) in the same write as the balance. Older saves
+    record today without being charged.
