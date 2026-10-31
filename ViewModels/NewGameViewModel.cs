@@ -40,8 +40,7 @@ public partial class NewGameViewModel : ViewModelBase
             var settings = mainVm.ProfileRepository.GetGameSettings();
             var debt = settings.RollDebt();
             var slotName = mainVm.SaveSlotManager.NewSlotName();
-            var saveRepo = SaveRepository.CreateFromProfile(
-                mainVm.ProfileRepository, mainVm.DatabaseService, slotName, debt);
+            var saveRepo = mainVm.CreateSaveSlot(slotName, debt);
             mainVm.NavigateTo(new StartSessionViewModel(mainVm, saveRepo));
         });
 

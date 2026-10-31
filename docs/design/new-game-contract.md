@@ -199,8 +199,8 @@ marked **fuzzy** in `locale/it.po` until reviewed in Poedit. Known limits:
 - Italian review of the fuzzy contract strings in `locale/it.po`.
 - `docs/specs/fortune-deck.md` (≈ lines 71 and 76) is stale: it cites `ForcedOutfitMaxSessions`, which does not exist
   (the code uses `ForcedOutfitMaxHours`). Not touched here.
-- Starting a game has pre-existing quirks that *Accept* deliberately keeps: the save is created without going
-  through `MainWindowViewModel.OpenSaveSlot`, the slot name (`save_yyyyMMdd_HHmm`) can collide within a minute, and
-  the 5-slot limit is only checked in `WelcomeViewModel`.
+- Starting a game: the save is now created through `MainWindowViewModel.CreateSaveSlot` (tracked and closed like
+  `OpenSaveSlot`), and `SaveSlotManager.NewSlotName` adds a `_2`, `_3`… suffix when a minute's name is taken. The
+  5-slot limit is still only checked in `WelcomeViewModel`.
 - `SummonPhraseBank` strings break the tone guide (exclamation marks, informal Italian) and interpolate appellatives
   into sentences. Unrelated to the contract.

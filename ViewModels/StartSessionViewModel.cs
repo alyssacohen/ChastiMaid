@@ -181,7 +181,12 @@ public partial class StartSessionViewModel : ViewModelBase
         AcceptCommand = ReactiveCommand.Create(Accept);
         RegenerateCommand = ReactiveCommand.CreateFromTask(ConfirmRegenerate);
         ModifyCommand = ReactiveCommand.CreateFromTask(ConfirmModify);
-        QuitCommand = ReactiveCommand.Create(() => _mainVm.NavigateTo(new WelcomeViewModel(_mainVm)));
+        QuitCommand = ReactiveCommand.Create(() =>
+        {
+            // Close the save first: the main menu reopens every slot to list it, and an open file cannot be reopened.
+            _mainVm.CloseActiveSave();
+            _mainVm.NavigateTo(new WelcomeViewModel(_mainVm));
+        });
 
         ShowHardwareWarningIfNeeded(saveRepo);
     }

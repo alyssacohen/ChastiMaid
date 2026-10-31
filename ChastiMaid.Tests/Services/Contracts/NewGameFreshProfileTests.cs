@@ -21,8 +21,6 @@ public class NewGameFreshProfileTests : IDisposable
         _profileDb.Dispose();
         try
         {
-            // ponytail: the save's LiteDatabase (opened inside SaveRepository.CreateFromProfile) isn't
-            // reachable here to dispose explicitly; best-effort cleanup, the OS temp dir gets swept anyway.
             if (Directory.Exists(_root))
             {
                 Directory.Delete(_root, recursive: true);
@@ -52,7 +50,8 @@ public class NewGameFreshProfileTests : IDisposable
         // Own data dir rather than CHASTIMAID_ROOT: that env var is process-wide, so it would leak into
         // tests running in parallel, and a fresh dir per run means no leftover save to collide with.
         using var dbService = new DatabaseService(_root);
-        var save = SaveRepository.CreateFromProfile(profile, dbService, "test_slot", debt);
+        using var saveDb = dbService.OpenSave("test_slot");
+        var save = SaveRepository.CreateFromProfile(profile, saveDb, "test_slot", debt);
 
         Assert.NotNull(save.GetGameState());
     }

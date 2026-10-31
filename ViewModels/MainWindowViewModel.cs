@@ -60,6 +60,17 @@ public partial class MainWindowViewModel : ViewModelBase
         return repo;
     }
 
+    /// <summary>
+    ///     Creates a new save slot from the profile and tracks its DB like <see cref="OpenSaveSlot" />, so it is closed
+    ///     before the slot list is read again (LiteDB refuses to open a file that is already open).
+    /// </summary>
+    public SaveRepository CreateSaveSlot(string slotName, decimal initialDebt)
+    {
+        _activeSaveDb?.Dispose();
+        _activeSaveDb = DatabaseService.OpenSave(slotName);
+        return SaveRepository.CreateFromProfile(ProfileRepository, _activeSaveDb, slotName, initialDebt);
+    }
+
     /// <summary>The screen an opened save resumes on: the completion screen once the game is over, otherwise the outfit.</summary>
     public ViewModelBase ResumePage(SaveRepository saveRepo) =>
         saveRepo.GetGameState()?.IsCompleted == true

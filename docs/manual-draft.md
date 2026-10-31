@@ -689,3 +689,7 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 25. ~~**"Complete Game" left the dashboard running.**~~ Resolved: its wage and popup loops kept going behind the
     completion screen (bell and voice), and a popup firing after "Finish and Free Slot" read the closed save and
     crashed the app. The command now stops them first, like End Session.
+26. ~~**A save left open after Quit disappeared from the menu.**~~ Resolved: Quit on the outfit screen did not
+    close the save, and a new game's save was never tracked. LiteDB cannot reopen an open file, so the menu
+    silently skipped that slot (Continue disabled, 5-slot limit bypassable). Quit now closes it and New Game
+    opens it through `MainWindowViewModel.CreateSaveSlot`.

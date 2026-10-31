@@ -120,6 +120,8 @@ public partial class LoadGameViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+            // The slot may already be open (the failure came after opening it): close it, or the list skips it.
+            _mainVm.CloseActiveSave();
             await ShowLoadErrorAsync(slotName, ex);
         }
     }

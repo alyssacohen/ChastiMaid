@@ -945,15 +945,15 @@ public class SaveRepository(LiteDatabase db)
         return Sessions.FindAll().ToList();
     }
 
-    /// Creates a new save slot by snapshotting the current profile data.
+    /// Fills a new, empty save database by snapshotting the current profile data. The caller owns
+    /// <paramref name="saveDb" /> (in the app, <c>MainWindowViewModel.CreateSaveSlot</c>, which tracks and closes it).
     /// Profile changes after this point will not affect the save.
     public static SaveRepository CreateFromProfile(
         ProfileRepository profile,
-        DatabaseService dbService,
+        LiteDatabase saveDb,
         string slotName,
         decimal initialDebt)
     {
-        var saveDb = dbService.OpenSave(slotName);
         var save = new SaveRepository(saveDb);
 
         // Snapshot wardrobe
