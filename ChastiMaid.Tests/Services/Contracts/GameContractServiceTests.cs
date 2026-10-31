@@ -348,7 +348,7 @@ public class GameContractServiceTests : IDisposable
     public void Apply_ReplacesGameRules_ButKeepsDeviceLevelSettings()
     {
         var current = _profile.GetGameSettings();
-        current.PlayerName = "Alyssa";
+        current.PlayerName = "Margaret";
         current.Language = "it";
         current.SelectedCameraIndex = 2;
         current.AutoSaveIntervalMinutes = 7;
@@ -373,7 +373,7 @@ public class GameContractServiceTests : IDisposable
 
         var settings = _profile.GetGameSettings();
         Assert.Equal(42, settings.IdleWageAmount);
-        Assert.Equal("Alyssa", settings.PlayerName);
+        Assert.Equal("Margaret", settings.PlayerName);
         Assert.Equal("it", settings.Language);
         Assert.Equal(2, settings.SelectedCameraIndex);
         Assert.Equal(7, settings.AutoSaveIntervalMinutes);
