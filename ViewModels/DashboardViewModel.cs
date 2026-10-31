@@ -293,8 +293,10 @@ public partial class DashboardViewModel : ViewModelBase
         var activeForcedOutfitId = _saveRepo.GetActiveForcedOutfitPunishment()?.Id;
         foreach (var punishment in _saveRepo.GetActivePunishments())
         {
+            // In effect = first in the queue and already imposed by a session start (its clock has started);
+            // one assigned this session reads "Awaiting its turn" instead of a countdown that cannot move yet.
             var isActiveForcedOutfit = punishment.Kind == PunishmentKind.ForcedOutfit &&
-                punishment.Id == activeForcedOutfitId;
+                punishment.Id == activeForcedOutfitId && punishment.ForcedOutfitLastTickUtc is not null;
             Punishments.Add(new PunishmentItemViewModel(punishment, L, canSoften, canCancel, isActiveForcedOutfit));
         }
     }

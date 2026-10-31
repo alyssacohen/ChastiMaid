@@ -485,18 +485,21 @@ public class SaveRepositoryTests : IDisposable
     }
 
     [Fact]
-    public void TickForcedOutfitProgress_FirstTickOnlyEstablishesBaseline()
+    public void TickForcedOutfitProgress_NotYetImposed_CountsNothing()
     {
+        // Assigned mid-session: today's outfit is already locked, so the clock only starts when a later session
+        // start imposes it (StartSessionViewModel sets ForcedOutfitLastTickUtc then).
         _repo.SaveActivePunishment(new ActivePunishment
         {
             Id = 1, Kind = PunishmentKind.ForcedOutfit, Severity = 10, ForcedOutfitRequiredSeconds = 3600,
         });
 
         _repo.TickForcedOutfitProgress();
+        _repo.TickForcedOutfitProgress();
 
         var punishment = _repo.GetActivePunishments().Single(p => p.Id == 1);
         Assert.Equal(0, punishment.ForcedOutfitElapsedSeconds);
-        Assert.NotNull(punishment.ForcedOutfitLastTickUtc);
+        Assert.Null(punishment.ForcedOutfitLastTickUtc);
     }
 
     [Fact]

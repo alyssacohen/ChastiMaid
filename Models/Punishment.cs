@@ -38,12 +38,16 @@ public class ActivePunishment
     public double ForcedOutfitElapsedSeconds { get; set; }
 
     /// <summary>
-    ///     Seconds elapsed in the current continuous play stretch, reset to 0 every time the save is reopened. The
+    ///     Seconds elapsed in the current continuous play stretch, reset to 0 when a new day's session start imposes
+    ///     the outfit (StartSessionViewModel.Accept). The
     ///     first <c>ForcedOutfitGraceSeconds</c> of each stretch are not credited to <see cref="ForcedOutfitElapsedSeconds" />.
     /// </summary>
     public double ForcedOutfitRunElapsedSeconds { get; set; }
 
-    /// <summary>Baseline timestamp for the next progress tick. Null means the current stretch has no baseline yet.</summary>
+    /// <summary>
+    ///     Baseline timestamp for the next progress tick. Null means the outfit has not been imposed yet, so no time
+    ///     counts: only StartSessionViewModel.Accept sets it, when a session start imposes the outfit.
+    /// </summary>
     public DateTime? ForcedOutfitLastTickUtc { get; set; }
 
     public List<int>? ForcedClothingItemIds { get; set; }

@@ -220,22 +220,18 @@ public class SaveRepository(LiteDatabase db)
     /// <summary>
     ///     Advances the in-effect Forced Outfit punishment's real-time progress by the time elapsed since the last
     ///     tick. Call periodically (and at session lifecycle points) while the app is open — see AutoSaveService.
+    ///     Time counts only once the outfit is actually imposed: <c>StartSessionViewModel</c> starts the clock
+    ///     (<see cref="ActivePunishment.ForcedOutfitLastTickUtc" />) when the player accepts it at session start.
     /// </summary>
     public void TickForcedOutfitProgress()
     {
         var punishment = GetActiveForcedOutfitPunishment();
-        if (punishment is null)
+        if (punishment?.ForcedOutfitLastTickUtc is not { } lastTick)
         {
-            return;
+            return; // none in effect, or assigned this session and not worn yet
         }
 
         var now = DateTime.UtcNow;
-        if (punishment.ForcedOutfitLastTickUtc is not { } lastTick)
-        {
-            punishment.ForcedOutfitLastTickUtc = now;
-            SaveActivePunishment(punishment);
-            return;
-        }
 
         // ponytail: clamp against sleep/hibernate gaps being counted as played time; revisit if this causes false negatives
         var maxDelta = TimeSpan.FromMinutes(2 * GetGameSettings().AutoSaveIntervalMinutes).TotalSeconds;

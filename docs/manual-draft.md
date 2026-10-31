@@ -399,8 +399,9 @@ If the severity exceeds a type's maximum, the excess becomes further punishments
 **Forced Outfit.** A preset is drawn among the enabled ones. Its items are imposed at the next outfit
 choice (§6.1).
 
-- It is served in real time while the app is open. The first 30 minutes of each continuous stretch do
-  not count.
+- It is served in real time while the app is open, counted from the moment it is imposed: one assigned
+  during a session starts counting only at the next outfit choice. The first 30 minutes of each continuous
+  stretch do not count.
 - Several Forced Outfits queue up, one at a time.
 - **Start** on a Forced Outfit only shows how long remains.
 
@@ -696,3 +697,5 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     opens it through `MainWindowViewModel.CreateSaveSlot`.
 27. ~~**A 1-second delay produced a full punishment.**~~ Resolved: 0.5 severity rounds to 0, and a severity of 0
     was still raised to the minimum size of a punishment. `AssignPunishment` now does nothing at severity 0.
+28. ~~**Forced Outfit hours counted before it was worn.**~~ Resolved: one assigned mid-session started counting at
+    the next autosave. The clock now starts only when a session start imposes the outfit.
