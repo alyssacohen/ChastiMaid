@@ -6,7 +6,7 @@ ChastiMaid is free software under the GNU General Public License, version 3 or
 
 ChastiMaid
   Source code of this release (tag v0.1.0):
-  TODO: repository URL
+  https://github.com/alyssacohen/ChastiMaid/tree/v0.1.0
 
 GPL-licensed components shipped in this release
   espeak-ng 1.52.0.1 (statically linked into Bin\runtimes\win-x64\native\sherpa-onnx-c-api.dll)
@@ -15,8 +15,10 @@ GPL-licensed components shipped in this release
     https://github.com/k2-fsa/sherpa-onnx/tree/v1.13.5 (cmake/espeak-ng-for-piper.cmake)
 
   espeak-ng-data (Content\Speech\TTS\en\espeak-ng-data, Content\Speech\TTS\it\espeak-ng-data)
-    Taken from the sherpa-onnx voice archives:
+    Taken from the sherpa-onnx voice archives, which copy it from espeak-ng-data.tar.bz2
+    (uploaded 2023-11-29) in:
     https://github.com/k2-fsa/sherpa-onnx/releases/tag/tts-models
-    TODO: exact espeak-ng source of this data
+    TODO: exact espeak-ng commit that generated this data. The release and the export
+    script (.github/workflows/export-piper.yaml in sherpa-onnx) do not document it.
 
 Other components and their licences are listed in THIRD-PARTY-NOTICES.md.

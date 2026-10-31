@@ -47,6 +47,31 @@ framework-dependent release uses the .NET runtime installed on the computer.
 | simple-sentencepiece (statically linked) | 0.7 | Apache-2.0 | No copyright line in the upstream `LICENSE` | https://github.com/pkufool/simple-sentencepiece |
 | nlohmann/json (statically linked) | 3.12.0 | MIT | Copyright (c) 2013-2025 Niels Lohmann | https://github.com/nlohmann/json |
 
+### Inside OpenCV (`OpenCvSharpExtern.dll`)
+
+From the build configuration embedded in the DLL (OpenCV 4.13.0, opencv_contrib modules included) and
+from markers found in the binary.
+
+| Component | Version | Licence | Copyright | Upstream |
+|---|---|---|---|---|
+| zlib | 1.3.1 | Zlib (`licenses/Zlib.txt`) | (C) 1995-2024 Jean-loup Gailly and Mark Adler | https://github.com/madler/zlib |
+| libjpeg-turbo | TODO: exact version (binary: "Copyright (C) 1991-2025") | IJG, BSD-3-Clause, Zlib (`licenses/libjpeg-turbo.txt`) | Copyright (C) 1991-2025 The libjpeg-turbo Project and many others; IJG: copyright (C) 1991-2020, Thomas G. Lane, Guido Vollbeding | https://github.com/libjpeg-turbo/libjpeg-turbo |
+| libpng | 1.6.55 | libpng (`licenses/libpng.txt`) | Copyright (c) 1995-2026 The PNG Reference Library Authors. | https://github.com/pnggroup/libpng |
+| libtiff | 4.7.1 | libtiff (`licenses/libtiff.txt`) | Copyright © 1988-1997 Sam Leffler; Copyright © 1991-1997 Silicon Graphics, Inc. | https://gitlab.com/libtiff/libtiff |
+| libwebp | 1.6.0 | BSD-3-Clause (`licenses/BSD-3-Clause.txt`) | Copyright (c) 2010, Google Inc. All rights reserved. | https://github.com/webmproject/libwebp |
+| OpenJPEG | 2.5.3 | BSD-2-Clause (`licenses/OpenJPEG.txt`) | See `licenses/OpenJPEG.txt` (Université catholique de Louvain and others) | https://github.com/uclouvain/openjpeg |
+| OpenEXR | 2.3.0 | BSD-3-Clause | Copyright (c) 2006, Industrial Light & Magic, a division of Lucasfilm Entertainment Company Ltd. Portions contributed and copyright held by others as indicated. | https://github.com/AcademySoftwareFoundation/openexr |
+| Protocol Buffers | 3.19.1 | BSD-3-Clause | Copyright 2008 Google Inc. All rights reserved. | https://github.com/protocolbuffers/protobuf |
+| FlatBuffers | 25.9.23 | Apache-2.0 | No copyright line in the upstream `LICENSE` | https://github.com/google/flatbuffers |
+| WeChat QR code module (includes ZXing) | from opencv_contrib 4.13.0 | Apache-2.0 and others (`licenses/OpenCV-wechat_qrcode.txt`) | Copyright (C) 2021 THL A29 Limited, a Tencent company. All rights reserved. | https://github.com/opencv/opencv_contrib |
+| Intel ITT API | 3.25.4 | BSD-3-Clause | Copyright (c) 2019 Intel Corporation. All rights reserved. | https://github.com/intel/ittapi |
+| Intel IPP (ICV subset) and IPP IW | 2022.2.0 | Intel Simplified Software License, version October 2022 (`licenses/Intel-IPP-Simplified-Software-License.txt`) | Copyright (C) 1997 Intel Corporation | https://github.com/opencv/opencv_3rdparty (branch with `ippicv_2022.2.0_win_intel64_20250730_general.zip`) |
+| zstd (TIFF compression) | TODO: version | BSD-3-Clause | Copyright (c) Meta Platforms, Inc. and affiliates. All rights reserved. | https://github.com/meta/zstd |
+| liblzma (TIFF compression) | TODO: version | TODO: public domain or 0BSD, depending on the version | — | https://github.com/tukaani-project/xz |
+
+Not confirmed: whether the LERC library (TIFF compression) and quirc (QR decoding) are included. "LERC"
+appears only as a format name in the binary, and no quirc marker was found.
+
 ## Speech models and data
 
 | Component | Version | Licence | Copyright | Upstream |
