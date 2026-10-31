@@ -2,6 +2,11 @@
 
 > Become the perfect, chaste and humble maid you were always meant to be.
 
+> [!WARNING]
+> **18+ · Adults only.** ChastiMaid contains references to adult themes, such as chastity devices and diaper
+> play. It has no explicit images, video or audio, but it is intended for adults only. See the
+> [Disclaimer](#disclaimer).
+
 ChastiMaid is a full-screen Windows desktop game that turns household chores into a role-play. You are a
 maid working off a randomly generated virtual debt owed to your employer, Madame. Chores, attendance
 check-ins and punishments move the debt up or down; the game is over when it is paid in full and every punishment is served.
@@ -132,6 +137,18 @@ the contract file format and save files may change between versions.
 ## Contributing
 
 Issues and suggestions are welcome. For pull requests, please open an issue first to discuss the change.
+
+## Disclaimer
+
+ChastiMaid is intended for adults (18+, or the age of majority where you live). It refers to adult themes in
+text only.
+
+The software is provided "as is", without warranty of any kind, express or implied (see sections 15 and 16 of
+the [LICENSE](LICENSE)). You use it entirely at your own risk. The authors and contributors accept no
+liability for any harm, injury, loss or damage arising from its use or misuse, including from the physical
+activities it suggests, such as wearing garments or devices, kneeling, standing still or drinking water.
+Nothing in the game overrides your health, your safety or your judgement: stop whenever something feels
+unsafe.
 
 ## License
 
