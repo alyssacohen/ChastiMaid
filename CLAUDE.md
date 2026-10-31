@@ -65,7 +65,8 @@ profile DB, runs `DataSeeder.SeedIfEmpty` (first run only: applies the per-langu
 
 **Two-database persistence model (LiteDB, encrypted).**
 
-- `DatabaseService` opens AES-encrypted LiteDB files under `data/` (relative to the exe). Password is derived from a
+- `DatabaseService` opens AES-encrypted LiteDB files under `data/` in `AppPaths.Root` (the launcher's folder in a
+  release, passed through `CHASTIMAID_ROOT`; the exe's folder otherwise). Password is derived from a
   static `KeySource` — **do not change `KeySource`**, it breaks all existing saves.
 - **Profile DB** (`data/profile.db`, one): the master/editable data — wardrobe, chores, outfit rules, punishment
   templates. Accessed via `ProfileRepository`. Edited in Settings.
@@ -92,7 +93,8 @@ contract is the only import/export format (no separate content export). See `doc
 - `AutoSaveService` — `TriggerSave()` for event-driven saves + a periodic timer; `Bind`/`Unbind` the active
   `SaveRepository`.
 - `WebcamPreviewService` — webcam capture (OpenCvSharp) for the photo/video check-ins, including camera enumeration
-  and selection; `CryptoService` encrypts captured media and the safe-combination photo. Photos and videos keep the
+  and selection; `CryptoService` encrypts only the safe-combination photo: every other photo and video is a plain file
+  in the save's media folder, by design. Photos and videos keep the
   camera's whole frame at its highest resolution and own orientation (no crop); only the live preview is shrunk.
   A preview or captured photo goes in a Grid `*` row with class `cameraMedia` (texts in `StackPanel.cameraText`),
   so it fills the free height with its own proportions and nothing scrolls.
