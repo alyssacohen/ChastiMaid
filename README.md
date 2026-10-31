@@ -47,7 +47,8 @@ The [user manual draft](docs/manual-draft.md) describes every screen and setting
 - Windows 10 version 1809 or later, or Windows 11, on x64.
 - A landscape display. The layout is designed for 1200×800 logical pixels and up, with touch-sized
   controls for tablets.
-- Nothing else to install with the standard release: it includes the .NET runtime and the speech models.
+- With the self-contained zip, nothing else to install: it includes the .NET runtime and the speech models.
+  The framework-dependent zip needs the .NET 10 Runtime (x64), see below.
 - Optional:
   - a webcam, for photo and video check-ins, Cornertime, the outfit video and the safe photo;
   - a microphone, for reading quotes aloud.
@@ -56,12 +57,16 @@ The [user manual draft](docs/manual-draft.md) describes every screen and setting
 
 ## Installing and running
 
-There is no installer. Each release comes as two zips; pick one:
+There is no installer. Each release comes as two zips with the same game; pick one:
 
 | Zip | Size | Needs |
 |---|---|---|
-| `ChastiMaid-<version>-win-x64.zip` | ~410 MB | Nothing: the .NET runtime is included |
-| `ChastiMaid-<version>-win-x64-framework-dependent.zip` | ~360 MB | The .NET 10 Runtime (x64) installed |
+| `ChastiMaid-<version>-win-x64-self-contained.zip` | ~410 MB | Nothing: the .NET runtime is included. **Choose this one if unsure.** |
+| `ChastiMaid-<version>-win-x64-framework-dependent.zip` | ~360 MB | The [.NET 10 Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) (x64) installed on the computer |
+
+The framework-dependent zip is smaller because it uses the .NET installed on the computer. If .NET 10 is
+missing, Windows shows Microsoft's message "You must install or update .NET to run this application" with a
+link to download it; install the ".NET Runtime 10" for x64 and start the game again.
 
 Both contain a `ChastiMaid-<version>` folder:
 
@@ -83,7 +88,7 @@ files under `data/`. See the [user manual draft](docs/manual-draft.md).
 Requires the .NET 10 SDK on Windows.
 
 ```powershell
-git clone <repository-url>
+git clone https://github.com/alyssacohen/ChastiMaid.git
 cd ChastiMaid
 
 # Optional: download the speech models (Whisper, Piper voices) into Content/Speech/
@@ -94,11 +99,12 @@ dotnet run                    # full-screen
 dotnet run -- --landscape     # 1200×800 window, simulates a Surface Go
 dotnet test                   # unit tests
 
-.\publish.ps1                 # both release zips in dist/
+.\publish.ps1                 # both release zips in dist/ (self-contained and framework-dependent)
 ```
 
 Speech models are not tracked in git because of their size. Run the download script before
-`publish.ps1`: it stops with a list of the missing files otherwise.
+`publish.ps1`: it stops with a list of the missing files otherwise, and it checks each finished zip for the
+licence files, the speech models and the right runtime before reporting its size.
 
 Translations live in `locale/*.po` and are compiled on every build. After changing user-facing strings,
 run `.\l10n-refresh.ps1`. See [docs/design/localization.md](docs/design/localization.md).
@@ -125,8 +131,7 @@ the contract file format and save files may change between versions.
 
 ## Contributing
 
-<!-- TODO: decide on a contribution policy (no CONTRIBUTING.md yet). -->
-Contribution guidelines have not been defined yet.
+Issues and suggestions are welcome. For pull requests, please open an issue first to discuss the change.
 
 ## License
 

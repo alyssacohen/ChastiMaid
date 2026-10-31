@@ -1,6 +1,6 @@
 # ChastiMaid — User Manual (draft)
 
-> Factual draft compiled from the source code at commit `d6db8b6`. Tone, structure and the Italian
+> Factual draft compiled from the source code (first written at commit `e785dc4`, kept aligned since). Tone, structure and the Italian
 > version are to be refined separately. Items whose behaviour could not be confirmed, or where code and
 > specs disagree, are collected in [Uncertain / needs my decision](#uncertain--needs-my-decision) and are
 > **not** described in the main sections.
@@ -26,8 +26,8 @@ Only what can be verified from the project:
 |---|---|---|
 | Operating system | Windows 10 version 1809 (build 17763) or later; Windows 11 | `SupportedOSPlatformVersion` 10.0.17763.0, target `net10.0-windows10.0.26100.0` |
 | Architecture | x64 (the speech engine ships only a `win-x64` native runtime) | `org.k2fsa.sherpa.onnx.runtime.win-x64` |
-| .NET | Nothing to install with `ChastiMaid-<version>-win-x64.zip`, which includes the .NET 10 runtime. `ChastiMaid-<version>-win-x64-framework-dependent.zip` needs the .NET 10 Runtime (x64). Building needs the .NET 10 SDK | `publish.ps1` |
-| Display | Landscape only. Designed for 1200×800 logical pixels and larger | `App.axaml.cs`, commit `d0ec141` |
+| .NET | Nothing to install with `ChastiMaid-<version>-win-x64-self-contained.zip`, which includes the .NET 10 runtime. `ChastiMaid-<version>-win-x64-framework-dependent.zip` needs the .NET 10 Runtime (x64). Building needs the .NET 10 SDK | `publish.ps1` |
+| Display | Landscape only. Designed for 1200×800 logical pixels and larger | `App.axaml.cs`, commit `18bbcee` |
 | Webcam | Optional. Without it, camera-based check-ins are skipped (§9) | `HardwareAvailability` |
 | Microphone + speech models | Optional. Without them, read-aloud quotes are typed instead (§9) | `HardwareAvailability`, `SherpaOnnxSttService` |
 | Disk space | About 760 MB extracted (self-contained) or 615 MB (framework-dependent), of which 435 MB are speech models; captured photos and videos accumulate per save | `publish.ps1` output |
@@ -45,8 +45,11 @@ Surface Go (Windows 10, tablet mode, 1800×1200 at 150% scaling, two cameras).
 
 | Zip | Size | Needs |
 |---|---|---|
-| `ChastiMaid-<version>-win-x64.zip` | ~410 MB | Nothing: includes the .NET 10 runtime |
+| `ChastiMaid-<version>-win-x64-self-contained.zip` | ~410 MB | Nothing: includes the .NET 10 runtime |
 | `ChastiMaid-<version>-win-x64-framework-dependent.zip` | ~360 MB | The .NET 10 Runtime (x64) installed |
+
+Without .NET 10, the framework-dependent launcher shows Microsoft's standard message ("You must install or update
+.NET to run this application") with a link to download it.
 
 Both contain one `ChastiMaid-<version>` folder:
 

@@ -8,7 +8,7 @@ text is in `licenses/`, and the copyright lines are quoted from upstream.
 
 ## .NET runtime
 
-The first two rows apply to the self-contained release (`ChastiMaid-<version>-win-x64.zip`) only. The
+The first two rows apply to the self-contained release (`ChastiMaid-<version>-win-x64-self-contained.zip`) only. The
 framework-dependent release uses the .NET runtime installed on the computer.
 
 | Component | Version | Licence | Copyright | Upstream |
