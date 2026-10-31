@@ -22,7 +22,8 @@ Detailed domain specs live in `docs/specs/` (always-relevant design docs):
 dotnet build               # Build
 dotnet run                 # Run (fullscreen desktop app)
 dotnet test                # Run unit tests (ChastiMaid.Tests project)
-dotnet publish -c Release  # Publish
+.\publish.ps1              # Release: dist\ChastiMaid-<version>-win-x64-{self-contained,framework-dependent}.zip
+                           # (needs the speech models: scripts\Download-SpeechModels.ps1)
 ```
 
 ## Target Platforms

@@ -1,6 +1,6 @@
 # Builds the two release zips of ChastiMaid:
-#   dist\ChastiMaid-<version>-win-x64.zip                       self-contained: includes the .NET runtime
-#   dist\ChastiMaid-<version>-win-x64-framework-dependent.zip   needs the .NET 10 runtime (x64) installed
+#   dist\ChastiMaid-<version>-win-x64-self-contained.zip        includes the .NET runtime: nothing to install
+#   dist\ChastiMaid-<version>-win-x64-framework-dependent.zip   needs the .NET 10 Runtime (x64) installed
 # Each zip holds one ChastiMaid-<version>\ folder: ChastiMaid.exe (launcher), Bin\, Content\ and the licence files.
 # Data\ is not created here: DatabaseService creates it under AppPaths.Root on first run.
 $ErrorActionPreference = "Stop"
@@ -37,6 +37,34 @@ function Invoke-Dotnet([string[]]$arguments) {
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
+# Reopens a finished zip and fails unless it holds every shipped file (licences, speech models, espeak-ng-data)
+# and carries the .NET runtime exactly when it is the self-contained one.
+function Test-ReleaseZip([string]$zip, [bool]$selfContained) {
+    $prefix = "ChastiMaid-$version/"
+    $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+    try {
+        $names = [string[]]@($archive.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
+    }
+    finally {
+        $archive.Dispose()
+    }
+    $entries = [System.Collections.Generic.HashSet[string]]::new($names, [System.StringComparer]::OrdinalIgnoreCase)
+
+    $expected = @("ChastiMaid.exe", "Bin/ChastiMaid.exe", "Bin/ChastiMaid.dll", "LICENSE", "THIRD-PARTY-NOTICES.md", "SOURCE.txt")
+    foreach ($dir in "licenses", "Content\Speech") {
+        $expected += @(Get-ChildItem (Join-Path $root $dir) -Recurse -File |
+            ForEach-Object { $_.FullName.Substring($root.Length + 1).Replace('\', '/') })
+    }
+
+    $problems = @($expected | Where-Object { -not $entries.Contains($prefix + $_) } | ForEach-Object { "missing: $_" })
+    $hasRuntime = $entries.Contains("${prefix}Bin/coreclr.dll")
+    if ($selfContained -and -not $hasRuntime) { $problems += "missing: the .NET runtime (Bin/coreclr.dll)" }
+    if (-not $selfContained -and $hasRuntime) { $problems += "unexpected: the .NET runtime (Bin/coreclr.dll)" }
+    if ($problems) {
+        throw "$zip is not a complete release:`n  " + ($problems -join "`n  ")
+    }
+}
+
 function New-Release([string]$suffix, [bool]$selfContained) {
     $work = Join-Path $dist "_work$suffix"
     $folder = Join-Path $work "ChastiMaid-$version"
@@ -70,11 +98,12 @@ function New-Release([string]$suffix, [bool]$selfContained) {
     # includeBaseDirectory = true: the zip contains the ChastiMaid-<version> folder itself.
     [System.IO.Compression.ZipFile]::CreateFromDirectory($folder, $zip, [System.IO.Compression.CompressionLevel]::Optimal, $true)
     Remove-Item $work -Recurse -Force
+    Test-ReleaseZip $zip $selfContained
 
     $mb = [math]::Round((Get-Item $zip).Length / 1MB, 1)
     Write-Host "Created $zip ($mb MB)"
 }
 
 New-Item -ItemType Directory -Force -Path $dist | Out-Null
-New-Release "" $true
+New-Release "-self-contained" $true
 New-Release "-framework-dependent" $false
