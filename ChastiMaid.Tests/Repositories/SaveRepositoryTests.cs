@@ -111,6 +111,24 @@ public class SaveRepositoryTests : IDisposable
     }
 
     [Fact]
+    public void AssignPunishment_ZeroSeverity_CreatesNothingAndChargesNothing()
+    {
+        // 1 s late is 0.5 severity, which rounds to 0: it must not be raised to a kind's minimum size.
+        _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings
+        {
+            FineSeverityValue = 5, CornertimeEnabled = true, WritingLinesEnabled = true,
+        });
+
+        for (var i = 0; i < 30; i++)
+        {
+            _repo.AssignPunishment((0, 0), "TestReason", coefficient: 1);
+        }
+
+        Assert.Empty(_repo.GetActivePunishments());
+        Assert.Equal(100, _repo.GetGameState()!.CurrentDebt);
+    }
+
+    [Fact]
     public void AssignPunishment_WithCornertimeEnabled_EventuallyProducesASizedCornertimePunishment()
     {
         _db.GetCollection<GameSettings>("game_settings").Upsert(new GameSettings

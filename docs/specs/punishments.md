@@ -125,7 +125,8 @@ Not affected: penalty lines added *while writing* (mistakes, idling) still stop 
 
 The check-in popup shows no countdown and never closes itself on timeout — it stays open until the player
 responds. If the player responds later than `PopupTimeoutSeconds`, the resulting severity is
-`secondsLate × PopupLateSeverityPerSecond` (0.5 by default).
+`secondsLate × PopupLateSeverityPerSecond` (0.5 by default), rounded to the nearest point. A delay that rounds to
+0 (one second) is neither punished nor remarked on, and no infraction of severity 0 ever produces a punishment.
 
 For Impossible Question and Motivational Quote — the two popups with their own success/failure outcome —
 lateness is combined with the outcome instead of being punished separately:

@@ -30,6 +30,10 @@ public partial class DashboardViewModel
     private DispatcherTimer? _popupOutcomeTimer;
     private DateTime _popupShownAt;
     private int _popupSecondsLate;
+
+    /// <summary>Severity of the lateness alone; 0 when the delay rounds to nothing (1 s), which is not reproached.</summary>
+    private int LatenessSeverity => (int)Math.Round(_popupSecondsLate * InfractionSeverity.PopupLateSeverityPerSecond);
+
     private bool _pendingOutcomePositive;
     private IdlePopupKind _currentPopupKind;
     private DateTime _lastHydrationPopupAt = DateTime.MinValue;
@@ -920,7 +924,7 @@ public partial class DashboardViewModel
     {
         if (success)
         {
-            PopupOutcomeMessage = _popupSecondsLate > 0
+            PopupOutcomeMessage = LatenessSeverity > 0
                 ? L.T("Well read — but I cannot overlook your tardiness.")
                 : L.T("Very well spoken.");
         }
@@ -1023,10 +1027,9 @@ public partial class DashboardViewModel
         SelfCheckPhoto = null;
         _sessionLoop.ReportPopupResult(positive);
 
-        if (_popupSecondsLate > 0)
+        if (LatenessSeverity > 0)
         {
-            Punish((int)Math.Round(_popupSecondsLate * InfractionSeverity.PopupLateSeverityPerSecond),
-                "PunishmentReasonPopupLate");
+            Punish(LatenessSeverity, "PunishmentReasonPopupLate");
         }
     }
 }

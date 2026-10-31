@@ -507,6 +507,11 @@ public class SaveRepository(LiteDatabase db)
         var rolled = Random.Shared.Next(severityRange.Min, severityRange.Max + 1);
         var remaining = (int)Math.Round(
             rolled * (coefficient ?? RollSeverityCoefficient()), MidpointRounding.AwayFromZero);
+        if (remaining <= 0)
+        {
+            return; // nothing to punish (e.g. 1 s late rounds to 0); sizing would still raise it to a kind's minimum
+        }
+
         var settings = GetGameSettings();
 
         var candidates = new List<PunishmentKind?> { null }; // null = Fine

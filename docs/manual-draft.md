@@ -237,7 +237,8 @@ not skip it. Busy mode, punishments and breaks pause the wage clock, which resta
 At random intervals between *popup minimum* and *popup maximum* (defaults 180–1200 seconds) a desk bell
 rings and Madame summons the player by name or by one of the forms of address; the summons is also
 spoken when voice models are installed. The popup stays open until answered. Answering after
-*popup timeout* (default 15 s) costs 0.5 severity per second late.
+*popup timeout* (default 15 s) costs 0.5 severity per second late, rounded; a delay that rounds to 0 (1 s)
+is not punished.
 
 One popup is picked at random among those currently possible:
 
@@ -693,3 +694,5 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     close the save, and a new game's save was never tracked. LiteDB cannot reopen an open file, so the menu
     silently skipped that slot (Continue disabled, 5-slot limit bypassable). Quit now closes it and New Game
     opens it through `MainWindowViewModel.CreateSaveSlot`.
+27. ~~**A 1-second delay produced a full punishment.**~~ Resolved: 0.5 severity rounds to 0, and a severity of 0
+    was still raised to the minimum size of a punishment. `AssignPunishment` now does nothing at severity 0.
