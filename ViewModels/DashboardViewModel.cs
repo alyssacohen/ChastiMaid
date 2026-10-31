@@ -160,8 +160,14 @@ public partial class DashboardViewModel : ViewModelBase
         _countdownTimer.Tick += (_, _) => UpdateWageCountdown();
 
         EndSessionCommand = ReactiveCommand.Create(EndSession);
-        CompleteGameCommand =
-            ReactiveCommand.Create(() => _mainVm.NavigateTo(new GameCompleteViewModel(_mainVm, _saveRepo)));
+        CompleteGameCommand = ReactiveCommand.Create(() =>
+        {
+            // NavigateTo never disposes this page: without a stop, its wage and popup loops outlive the game and a
+            // popup firing after the slot is freed reads a closed database.
+            _sessionLoop.Stop();
+            _countdownTimer?.Stop();
+            _mainVm.NavigateTo(new GameCompleteViewModel(_mainVm, _saveRepo));
+        });
         AnswerCommand = ReactiveCommand.Create<string>(OnAnswer);
         DismissPopupOutcomeCommand = ReactiveCommand.Create(DismissPopupOutcome);
         DismissChoreResultCommand = ReactiveCommand.Create(DismissChoreResult);

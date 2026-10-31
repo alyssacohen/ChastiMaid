@@ -686,3 +686,6 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     `SaveRepository.ApplyDailyInterest` now applies it at most once per local calendar day, only while the safe
     is open, and records the day (`GameState.LastInterestDayAt`) in the same write as the balance. Older saves
     record today without being charged.
+25. ~~**"Complete Game" left the dashboard running.**~~ Resolved: its wage and popup loops kept going behind the
+    completion screen (bell and voice), and a popup firing after "Finish and Free Slot" read the closed save and
+    crashed the app. The command now stops them first, like End Session.
