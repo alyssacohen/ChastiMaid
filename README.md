@@ -128,6 +128,96 @@ run `.\l10n-refresh.ps1`. See [docs/design/localization.md](docs/design/localiza
 This is an early **0.x** release. Expect rough edges, and no stability guarantees: features, settings,
 the contract file format and save files may change between versions.
 
+## Known issues
+
+Version 0.1.0 is published with the issues below. They are known and not fixed yet, or not verified.
+
+**In the game**
+- The safe combination photo and the save databases are encrypted with a key built into the program, and
+  that key is visible in this public source code. The encryption only stops casual browsing: anyone with the
+  files can decrypt them, including the combination photo before the game shows it.
+- The periodic auto-save (every 10 minutes by default) runs on a background thread. Rarely, it can overwrite
+  a change made at the same instant, such as a chore's pay or the cancellation of the Forced Outfit in effect.
+- Before each popup in idle mode, the game checks the webcam up to three times, opening and closing it each
+  time, on the interface thread. The app can pause briefly and the camera light can flash, mostly on slow
+  tablets.
+- The *Service Complete* screen has no way back to the menu: its only button that leaves it, **Finish and
+  Free Slot**, deletes the game. To keep it, close the app instead.
+- Closing the app during Cornertime avoids its fine. An interrupted Writing Lines attempt is fined when the
+  game is reopened.
+- A Self-Check popup whose earlier photo is missing or unreadable does not open, but the photo stays queued,
+  so it can be picked again and use up later popups.
+- When a session ends (or the app is closed) and a new one starts on the same day, a Forced Outfit in effect
+  can count up to twice the auto-save interval of the time in between, and its 30-minute grace is not
+  restarted. The same amount of time can count if the computer sleeps during a session.
+- A Forced Outfit that imposes a whole outfit, assigned during a session and not worn yet, blocks the Plug &
+  Play popup for the rest of the day.
+- With **Pounds (£) per severity** at its minimum (0.5), a severity-1 fine rounds to zero.
+- Each attempt to read a quote aloud records for a fixed 6 seconds and does not stop when you finish
+  speaking. Whether the longest quotes fit in that time when read slowly has not been checked.
+- Loading a contract replaces the profile one part at a time, not in a single transaction: a database error
+  partway through leaves the profile partly replaced.
+- On the contract screen, a range whose two ends are equal still reads "between 1 and 1 lines", and the
+  decimal "lines per point of severity" has no singular or plural form.
+- If `Bin\ChastiMaid.exe` is missing (for example, when only the launcher was extracted), the launcher closes
+  with an error instead of a message.
+- The version number is not shown in the app.
+- Rare cases, not confirmed: a silent photo saved at the instant you press **Finish**; the **Complete**
+  button reachable with Tab behind a popup; the webcam left on if a popup opens while the punishment panel
+  is open.
+
+**Not verified**
+- Neither zip has been tried on a clean Windows installation, on Windows 10 (version 1809 is the declared
+  minimum) or on a Surface Go. The window that the framework-dependent launcher shows when .NET 10 is
+  missing has not been seen on screen.
+- Windows "N" editions: OpenCV links Windows Media Foundation directly, so without the Media Feature Pack
+  the camera features are expected to fail.
+- Camera or microphone blocked in the Windows privacy settings: a blocked microphone is probably reported as
+  present and then fails when listening; the camera case was not traced.
+- Starting a chore with no webcam connected.
+- Cornertime with no webcam connected: it can still be assigned and no movement can be detected, so it is
+  probably passed just by waiting.
+- Whether Windows shows the touch keyboard for every text field in tablet mode, Writing Lines in particular.
+
+**Behaviour that differs from the design notes in `docs/specs/`**
+- Popups come every 3 to 20 minutes by default; `gameplay.md` says 3 to 10.
+- The Settings tabs are General, Chores, Popups, Punishments, Wardrobe and Permissions, and outfit rules are
+  tag-based, inside Wardrobe; `gameplay.md` describes an older layout.
+- A failed Cornertime applies a fine **and** a further punishment; the Cornertime description in
+  `punishments.md` mentions the fine only.
+- The next idle wage is skipped after a popup with a negative outcome; `gameplay.md` says it is paid
+  "without missing a popup".
+
+**Open design points**
+- Game statistics (games completed and failed, sessions) are stored but not shown anywhere, and the session
+  count never increases.
+- Your name, forms of address and auto-save interval are copied into each save when the game starts:
+  changing them in Settings does not affect a game in progress. Whether this should stay is not decided.
+
+**Licences and third-party components**
+- The sherpa-onnx release that provides `espeak-ng-data` does not document which espeak-ng commit generated
+  it (see `SOURCE.txt`).
+- The two speech voices keep their own terms, which may restrict commercial use. The licence page that the
+  `en_US-amy-medium` voice points to does not describe that voice.
+- Inside `OpenCvSharpExtern.dll`, the versions of libarchive, giflib, lz4, zstd and liblzma could not be read,
+  Leptonica's (1.87.0) was decoded from the code rather than read from a string, and the licence of liblzma
+  depends on its version. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+- In the self-contained zip, part of the .NET runtime (`coreclr.dll` and the launcher's runtime) is under the
+  Microsoft .NET Library License, whose terms differ from the GPL.
+- Both zips include the Windows SDK projection (`Microsoft.Windows.SDK.NET.dll`), under Microsoft's Windows
+  SDK licence terms rather than an open-source licence.
+- How these two Microsoft licences fit with the GPL has not been assessed; the facts are in
+  [docs/release/license-audit.md](docs/release/license-audit.md).
+
+**For contributors**
+- The chore judging and pay logic lives in `DashboardViewModel`, without unit tests.
+- No test checks that starting a session starts the Forced Outfit clock (`StartSessionViewModel.Accept`).
+- `SaveRepository.GetPendingPoseChecks`, `GetPendingCurtsyChecks` and `GetPendingKneelChecks` are unused.
+- The numeric ranges checked when a contract is loaded (`GameContractService.Ranges`) repeat the limits of the
+  Settings fields by hand; nothing keeps the two in sync.
+- The spoken summons (`SummonPhraseBank`) do not follow the tone guide: every phrase ends with an
+  exclamation mark, and some put the form of address in the middle of a sentence.
+
 ## Documentation
 
 - [docs/manual-draft.md](docs/manual-draft.md): user manual (draft)

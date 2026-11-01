@@ -6,7 +6,7 @@ namespace ChastiMaid.Services;
 
 /// <summary>
 ///     Manages encrypted LiteDB connections for profile and save slot databases.
-///     All files are stored under data/ relative to the executable.
+///     All files are stored under data/ in AppPaths.Root (the launcher's folder in a release).
 /// </summary>
 public class DatabaseService : IDisposable
 {
@@ -48,7 +48,7 @@ public class DatabaseService : IDisposable
         return Convert.ToHexString(hash)[..32].ToLower();
     }
 
-    /// <summary>Returns 32 hex chars (16 bytes) used as the AES-256 key for encrypted files.</summary>
+    /// <summary>Returns 32 hex chars (16 bytes) used as the AES-128 key for encrypted files.</summary>
     internal static string DeriveEncryptionKey()
     {
         var hash = SHA256.HashData(Encoding.UTF8.GetBytes(KeySource));

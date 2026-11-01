@@ -9,7 +9,7 @@ ChastiMaid
   https://github.com/alyssacohen/ChastiMaid/tree/v0.1.0
 
 GPL-licensed components shipped in this release
-  espeak-ng 1.52.0.1 (statically linked into Bin\runtimes\win-x64\native\sherpa-onnx-c-api.dll)
+  espeak-ng 1.52.0.1 (statically linked into Bin\sherpa-onnx-c-api.dll)
     https://github.com/csukuangfj/espeak-ng/tree/ed530aa113046142eb5115cf2fc9157854d0ffe1
     Built as part of sherpa-onnx 1.13.5; build scripts:
     https://github.com/k2-fsa/sherpa-onnx/tree/v1.13.5 (cmake/espeak-ng-for-piper.cmake)
@@ -18,7 +18,9 @@ GPL-licensed components shipped in this release
     Taken from the sherpa-onnx voice archives, which copy it from espeak-ng-data.tar.bz2
     (uploaded 2023-11-29) in:
     https://github.com/k2-fsa/sherpa-onnx/releases/tag/tts-models
-    TODO: exact espeak-ng commit that generated this data. The release and the export
-    script (.github/workflows/export-piper.yaml in sherpa-onnx) do not document it.
+    No source is known for the exact espeak-ng commit that generated this data: neither
+    the release nor its export script (.github/workflows/export-piper.yaml in sherpa-onnx)
+    documents it. The espeak-ng source above is the closest documented one; it is not
+    confirmed to be the one that generated the data.
 
 Other components and their licences are listed in THIRD-PARTY-NOTICES.md.

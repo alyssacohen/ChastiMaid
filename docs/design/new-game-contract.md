@@ -187,8 +187,8 @@ Touch: every action is at least 44 px tall; the bar wraps when space runs out; n
 
 ## Localization
 
-English first, Italian drafted (gettext, see `docs/design/localization.md`). The Italian contract strings are
-marked **fuzzy** in `locale/it.po` until reviewed in Poedit. Known limits:
+English first, Italian translated (gettext, see `docs/design/localization.md`); `locale/it.po` has no fuzzy
+entries. Known limits:
 
 - counts (garments, rules, tasks, outfits, forms of address) and durations use gettext plurals; ranges such as
   "between 1 and 1 lines" are not special-cased, and the decimal "{0} lines per point of severity" has no plural;
@@ -196,11 +196,11 @@ marked **fuzzy** in `locale/it.po` until reviewed in Poedit. Known limits:
 
 ## Open items
 
-- Italian review of the fuzzy contract strings in `locale/it.po`.
-- `docs/specs/fortune-deck.md` (≈ lines 71 and 76) is stale: it cites `ForcedOutfitMaxSessions`, which does not exist
-  (the code uses `ForcedOutfitMaxHours`). Not touched here.
+- ~~Italian review of the fuzzy contract strings in `locale/it.po`.~~ Done: `it.po` has no fuzzy or untranslated
+  entries.
+- ~~`docs/specs/fortune-deck.md` cites `ForcedOutfitMaxSessions`.~~ Done: it now cites `ForcedOutfitMaxHours`.
 - Starting a game: the save is now created through `MainWindowViewModel.CreateSaveSlot` (tracked and closed like
   `OpenSaveSlot`), and `SaveSlotManager.NewSlotName` adds a `_2`, `_3`… suffix when a minute's name is taken. The
   5-slot limit is still only checked in `WelcomeViewModel`.
-- `SummonPhraseBank` strings break the tone guide (exclamation marks, informal Italian) and interpolate appellatives
-  into sentences. Unrelated to the contract.
+- `SummonPhraseBank` strings break the tone guide (every phrase ends with an exclamation mark; `tu` is allowed in
+  summons) and interpolate appellatives into sentences. Unrelated to the contract.

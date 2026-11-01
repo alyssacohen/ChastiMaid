@@ -49,28 +49,39 @@ framework-dependent release uses the .NET runtime installed on the computer.
 
 ### Inside OpenCV (`OpenCvSharpExtern.dll`)
 
-From the build configuration embedded in the DLL (OpenCV 4.13.0, opencv_contrib modules included) and
-from markers found in the binary.
+From the build configuration embedded in the DLL (OpenCV 4.13.0, opencv_contrib modules included), and
+from source paths, version strings and code found in the binary. A version marked "not confirmed" could not
+be read from a version string. The licence texts of libarchive, lz4 and zstd come from their current upstream
+files, and giflib's from giflib 5.2.2, because the exact versions are unknown.
 
 | Component | Version | Licence | Copyright | Upstream |
 |---|---|---|---|---|
 | zlib | 1.3.1 | Zlib (`licenses/Zlib.txt`) | (C) 1995-2024 Jean-loup Gailly and Mark Adler | https://github.com/madler/zlib |
-| libjpeg-turbo | TODO: exact version (binary: "Copyright (C) 1991-2025") | IJG, BSD-3-Clause, Zlib (`licenses/libjpeg-turbo.txt`) | Copyright (C) 1991-2025 The libjpeg-turbo Project and many others; IJG: copyright (C) 1991-2020, Thomas G. Lane, Guido Vollbeding | https://github.com/libjpeg-turbo/libjpeg-turbo |
+| libjpeg-turbo | 3.1.3 | IJG, BSD-3-Clause, Zlib (`licenses/libjpeg-turbo.txt`) | Copyright (C) 1991-2025 The libjpeg-turbo Project and many others; IJG: copyright (C) 1991-2020, Thomas G. Lane, Guido Vollbeding | https://github.com/libjpeg-turbo/libjpeg-turbo |
 | libpng | 1.6.55 | libpng (`licenses/libpng.txt`) | Copyright (c) 1995-2026 The PNG Reference Library Authors. | https://github.com/pnggroup/libpng |
 | libtiff | 4.7.1 | libtiff (`licenses/libtiff.txt`) | Copyright © 1988-1997 Sam Leffler; Copyright © 1991-1997 Silicon Graphics, Inc. | https://gitlab.com/libtiff/libtiff |
-| libwebp | 1.6.0 | BSD-3-Clause (`licenses/BSD-3-Clause.txt`) | Copyright (c) 2010, Google Inc. All rights reserved. | https://github.com/webmproject/libwebp |
+| libwebp | 1.6.0 | BSD-3-Clause (`licenses/libwebp.txt`) | Copyright (c) 2010, Google Inc. All rights reserved. | https://github.com/webmproject/libwebp |
 | OpenJPEG | 2.5.3 | BSD-2-Clause (`licenses/OpenJPEG.txt`) | See `licenses/OpenJPEG.txt` (Université catholique de Louvain and others) | https://github.com/uclouvain/openjpeg |
-| OpenEXR | 2.3.0 | BSD-3-Clause | Copyright (c) 2006, Industrial Light & Magic, a division of Lucasfilm Entertainment Company Ltd. Portions contributed and copyright held by others as indicated. | https://github.com/AcademySoftwareFoundation/openexr |
-| Protocol Buffers | 3.19.1 | BSD-3-Clause | Copyright 2008 Google Inc. All rights reserved. | https://github.com/protocolbuffers/protobuf |
+| OpenEXR | 2.3.0 | BSD-3-Clause (`licenses/OpenEXR.txt`) | Copyright (c) 2006-17, Industrial Light & Magic, a division of Lucasfilm Entertainment Company Ltd. Portions contributed and copyright held by others as indicated. | https://github.com/AcademySoftwareFoundation/openexr |
+| Protocol Buffers | 3.19.1 | BSD-3-Clause (`licenses/protobuf.txt`) | Copyright 2008 Google Inc. All rights reserved. | https://github.com/protocolbuffers/protobuf |
 | FlatBuffers | 25.9.23 | Apache-2.0 | No copyright line in the upstream `LICENSE` | https://github.com/google/flatbuffers |
 | WeChat QR code module (includes ZXing) | from opencv_contrib 4.13.0 | Apache-2.0 and others (`licenses/OpenCV-wechat_qrcode.txt`) | Copyright (C) 2021 THL A29 Limited, a Tencent company. All rights reserved. | https://github.com/opencv/opencv_contrib |
-| Intel ITT API | 3.25.4 | BSD-3-Clause | Copyright (c) 2019 Intel Corporation. All rights reserved. | https://github.com/intel/ittapi |
+| Intel ITT API | 3.25.4 | BSD-3-Clause (`licenses/ittapi.txt`) | Copyright (c) 2019 Intel Corporation. All rights reserved. | https://github.com/intel/ittapi |
 | Intel IPP (ICV subset) and IPP IW | 2022.2.0 | Intel Simplified Software License, version October 2022 (`licenses/Intel-IPP-Simplified-Software-License.txt`) | Copyright (C) 1997 Intel Corporation | https://github.com/opencv/opencv_3rdparty (branch with `ippicv_2022.2.0_win_intel64_20250730_general.zip`) |
-| zstd (TIFF compression) | TODO: version | BSD-3-Clause | Copyright (c) Meta Platforms, Inc. and affiliates. All rights reserved. | https://github.com/meta/zstd |
-| liblzma (TIFF compression) | TODO: version | TODO: public domain or 0BSD, depending on the version | — | https://github.com/tukaani-project/xz |
+| Tesseract OCR | 5.5.2 | Apache-2.0 (`licenses/Apache-2.0.txt`) | See the notices in the Tesseract source files | https://github.com/tesseract-ocr/tesseract |
+| Leptonica | 1.87.0, not confirmed (decoded from the code that prints its version, not from a string) | BSD-2-Clause (`licenses/Leptonica.txt`, from 1.87.0) | Copyright (C) 2001-2020 Leptonica. All rights reserved. | https://github.com/DanBloomberg/leptonica |
+| giflib (used by Leptonica) | Not confirmed (no version in the binary) | MIT (`licenses/giflib.txt`) | The GIFLIB distribution is Copyright (c) 1997 Eric S. Raymond | https://sourceforge.net/projects/giflib/ |
+| libarchive | Not confirmed (no version in the binary) | BSD-2-Clause, with a few files under other terms (`licenses/libarchive.txt`) | The libarchive distribution as a whole is Copyright by Tim Kientzle; see `licenses/libarchive.txt` | https://github.com/libarchive/libarchive |
+| libcurl | 8.18.0 | curl (`licenses/curl.txt`) | Copyright (c) 1996 - 2025, Daniel Stenberg, <daniel@haxx.se>, and many contributors | https://github.com/curl/curl |
+| OpenSSL (libcrypto) | 3.6.1 | Apache-2.0 (`licenses/Apache-2.0.txt`) | See the notices in the OpenSSL source files | https://github.com/openssl/openssl |
+| bzip2 | 1.0.8 | bzip2 (`licenses/bzip2.txt`) | Copyright (C) 1996-2019 Julian R Seward. All rights reserved. | https://sourceware.org/bzip2/ |
+| lz4 | Not confirmed (no version in the binary) | BSD-2-Clause (`licenses/lz4.txt`) | Copyright (c) 2011-2020, Yann Collet | https://github.com/lz4/lz4 |
+| zstd | Not confirmed (no version in the binary) | BSD-3-Clause (`licenses/zstd.txt`) | Copyright (c) Meta Platforms, Inc. and affiliates. All rights reserved. | https://github.com/meta/zstd |
+| liblzma (XZ Utils) | Not confirmed (no version in the binary) | Not confirmed: public domain up to XZ Utils 5.4.x, 0BSD from 5.6.0 | — | https://github.com/tukaani-project/xz |
 
-Not confirmed: whether the LERC library (TIFF compression) and quirc (QR decoding) are included. "LERC"
-appears only as a format name in the binary, and no quirc marker was found.
+Not included: the LERC library, whose TIFF codec is not compiled in (the binary has libtiff's LZMA and JPEG
+codecs but no LERC one), and quirc, which is not among the "3rdparty dependencies" in OpenCV's build
+information.
 
 ## Speech models and data
 

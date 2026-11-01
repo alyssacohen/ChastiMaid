@@ -16,7 +16,7 @@ publish output. It is not legal advice.
 | Component | Version | Licence | Where it ships | Obligation | Status |
 |---|---|---|---|---|---|
 | ChastiMaid (this project) | 0.1.0 | GPL-3.0-or-later (decided) | `Bin/ChastiMaid.dll`, `ChastiMaid.exe` (launcher) | Ship `LICENSE`; make the corresponding source available | `LICENSE` (GPL-3.0 text) in both zips |
-| .NET runtime | 10.0.11 (runtime pack `microsoft.netcore.app.runtime.win-x64`, commit `e2f47b0110ed`) | MIT + third-party notices. Per "License information for .NET on Windows", `coreclr.dll`, `Microsoft.DiaSymReader.Native.*.dll` and runtimes inside single-file binaries are under the Microsoft .NET Library License | Embedded in the launcher today; `Bin/` once the app is self-contained | Ship the runtime `LICENSE.TXT`, `THIRD-PARTY-NOTICES.TXT` and the .NET Library License | Texts in `licenses/` |
+| .NET runtime | 10.0.11 (runtime pack `microsoft.netcore.app.runtime.win-x64`, commit `e2f47b0110ed`) | MIT + third-party notices. Per "License information for .NET on Windows", `coreclr.dll`, `Microsoft.DiaSymReader.Native.*.dll` and runtimes inside single-file binaries are under the Microsoft .NET Library License | Self-contained zip only: in `Bin/` and inside the single-file launcher; the framework-dependent zip ships none | Ship the runtime `LICENSE.TXT`, `THIRD-PARTY-NOTICES.TXT` and the .NET Library License | Texts in `licenses/` |
 | Avalonia (`Avalonia`, `.Desktop`, `.Themes.Fluent`, `.Skia`, `.Win32`, `.X11`, `.Native`, `.FreeDesktop`, `.FreeDesktop.AtSpi`, `.HarfBuzz`, `.Remote.Protocol`) | 12.1.1 | MIT | `Bin/Avalonia*.dll` | Copyright + MIT text | Listed in `THIRD-PARTY-NOTICES.md` |
 | `Avalonia.Angle.Windows.Natives` (ANGLE) | 2.1.27548.20260419 (DLL 2.1.1, git `1c89805903c1`) | BSD-3-Clause style ("Copyright 2018 The ANGLE Project Authors", package `LICENSE` file) | `Bin/av_libglesv2.dll` | Copyright + licence text | Listed in `THIRD-PARTY-NOTICES.md` |
 | SkiaSharp (+ `NativeAssets.Win32`) | 3.119.4 | MIT; package ships `THIRD-PARTY-NOTICES.txt` (Skia, ANGLE and others) | `Bin/SkiaSharp.dll`, `libSkiaSharp.dll` | MIT text + the package's third-party notices | Listed in `THIRD-PARTY-NOTICES.md` |
@@ -32,7 +32,7 @@ publish output. It is not legal advice.
 | NAudio (`NAudio.Core`, `NAudio.WinMM`; the `NAudio` meta-package was replaced so WinForms is no longer pulled in) | 3.0.0 | MIT | `Bin/NAudio*.dll` | MIT text | Listed in `THIRD-PARTY-NOTICES.md` |
 | GetText.NET | 10.0.1 | MIT (package `LICENSE` file; includes "Copyright (c) 2012 Vitaly Zilnik", NGettext) | `Bin/GetText.dll` | MIT text with both copyright lines | Listed in `THIRD-PARTY-NOTICES.md` |
 | OpenCvSharp4 + `OpenCvSharp4.runtime.win` | 4.13.0.20260627 | Apache-2.0 | `Bin/OpenCvSharp.dll`, `OpenCvSharpExtern.dll` | Apache text | Listed in `THIRD-PARTY-NOTICES.md` |
-| OpenCV (inside `OpenCvSharpExtern.dll`) | 4.13.0 (commit `fe38fc6`, contrib `d99ad2a`) | Apache-2.0; bundles zlib, libjpeg-turbo, libpng, libtiff (+ zstd, liblzma), libwebp, OpenJPEG, OpenEXR, Protobuf, FlatBuffers, ZXing (wechat_qrcode), Intel ITT and Intel IPP (from the build configuration embedded in the DLL) | `OpenCvSharpExtern.dll` | Apache text + each bundled library's notice | Listed in `THIRD-PARTY-NOTICES.md`; TODO: versions of libjpeg-turbo, zstd, liblzma; LERC and quirc not confirmed |
+| OpenCV (inside `OpenCvSharpExtern.dll`) | 4.13.0 (commit `fe38fc6`, contrib `d99ad2a`) | Apache-2.0; bundles zlib, libjpeg-turbo, libpng, libtiff, libwebp, OpenJPEG, OpenEXR, Protobuf, FlatBuffers, ZXing (wechat_qrcode), Intel ITT and Intel IPP (from the build configuration embedded in the DLL), plus Tesseract 5.5.2 with Leptonica, giflib, libarchive, libcurl, OpenSSL (libcrypto), bzip2, lz4, zstd and liblzma (from vcpkg source paths, version strings and code in the binary) | `OpenCvSharpExtern.dll` | Apache text + each bundled library's notice | Listed in `THIRD-PARTY-NOTICES.md`. Versions not found in the binary (marked "not confirmed"): libarchive, giflib, lz4, zstd, liblzma; Leptonica 1.87.0 decoded from code, not confirmed; LERC and quirc not included |
 | FFmpeg (OpenCV videoio plugin) | 4.4.6 (DLL 2025.12.0), built with libaom, libopenh264, libvpx | "LGPL version 2.1 or later" (embedded string; no `--enable-gpl` / `--enable-nonfree`) | `Bin/opencv_videoio_ffmpeg4130_64.dll` | None if not shipped | Not shipped: `publish.ps1` removes it. Without it OpenCV writes the MJPG/AVI files with its built-in `CV_MJPEG` writer (checked with a probe); recording confirmed by the author on the development machine with the published build |
 | sherpa-onnx (managed + native) | 1.13.5, tag commit `3dc7c569f31ca2cd4a20ed6f7db780327e6714c5` (built Aug 11 2026) | Apache-2.0 | `Bin/sherpa-onnx.dll`, `sherpa-onnx-c-api.dll` | Apache text | Listed in `THIRD-PARTY-NOTICES.md` |
 | **espeak-ng**, statically linked into `sherpa-onnx-c-api.dll` | 1.52.0.1, `csukuangfj/espeak-ng` @ `ed530aa113046142eb5115cf2fc9157854d0ffe1` | GPL-3.0-or-later (plus BSD-2 `getopt.c`, `COPYING.APACHE`, `COPYING.UCD`) | `sherpa-onnx-c-api.dll` | GPL-3.0 text; corresponding source at that commit | **Confirmed** (evidence below) |
@@ -44,7 +44,7 @@ publish output. It is not legal advice.
 | Whisper `base` (sherpa-onnx ONNX export) | `sherpa-onnx-whisper-base` archive | MIT ("Copyright (c) 2022 OpenAI"; upstream README: "code and model weights are released under the MIT License") | `Content/Speech/STT/base-*.onnx`, `base-tokens.txt` | MIT text | Listed in `THIRD-PARTY-NOTICES.md` |
 | Piper voice `en_US-amy-medium` | piper_version 1.0.0 | MODEL_CARD: "License: See URL" (URL `https://github.com/MycroftAI/mimic3-voices`); "Finetuned from U.S. English lessac voice (medium quality)" | `Content/Speech/TTS/en/` | Unclear | Open issue 2 |
 | Piper voice `it_IT-paola-medium` | piper_version 1.0.0 | MODEL_CARD: "License: See URL" (URL `https://huggingface.co/datasets/paolapersico1/Voice-Dataset-Italian`); "Finetuned from U.S. English lessac voice (medium quality)" | `Content/Speech/TTS/it/` | Unclear | Open issue 2 |
-| `espeak-ng-data` (identical copy in both voice folders) | from `espeak-ng-data.tar.bz2` in the sherpa-onnx `tts-models` release (uploaded 2023-11-29); phondata version header `0x014801` | GPL-3.0-or-later (part of espeak-ng) | `Content/Speech/TTS/{en,it}/espeak-ng-data/` | GPL-3.0 text; source | TODO: the producing espeak-ng commit is not documented by the release or by sherpa-onnx's `export-piper.yaml` |
+| `espeak-ng-data` (identical copy in both voice folders) | from `espeak-ng-data.tar.bz2` in the sherpa-onnx `tts-models` release (uploaded 2023-11-29); phondata version header `0x014801` | GPL-3.0-or-later (part of espeak-ng) | `Content/Speech/TTS/{en,it}/espeak-ng-data/` | GPL-3.0 text; source | Listed in `THIRD-PARTY-NOTICES.md`. The producing espeak-ng commit is unknown: neither the release nor sherpa-onnx's `export-piper.yaml` documents it (stated in `SOURCE.txt`) |
 | Inter (inside `Avalonia.Fonts.Inter.dll`) | 3.019 | SIL OFL 1.1 ("Copyright 2020 The Inter Project Authors") | `Bin/Avalonia.Fonts.Inter.dll` | OFL text with the font | Listed in `THIRD-PARTY-NOTICES.md` |
 | Cormorant Infant | 4.001 | SIL OFL 1.1 ("Copyright 2015 The Cormorant Project Authors") | Embedded in `Bin/ChastiMaid.dll` (`Assets/Fonts`) | OFL text with the font | Licence text in `licenses/` |
 | Special Elite | 1.001 | Apache-2.0 ("Copyright (c) 2010 by Brian J. Bonislawsky DBA Astigmatic (AOETI)") | Embedded in `Bin/ChastiMaid.dll` | Apache text + copyright line | Licence text in `licenses/` |
@@ -65,15 +65,14 @@ publish output. It is not legal advice.
 
 ## Open issues
 
-Notices approach: one copy of each licence text in `licenses/` (MIT, Apache-2.0, BSD-3-Clause, BSD-2-Clause,
-ISC+MIT for Lucide, OFL-1.1, Unicode), all copyright lines in `THIRD-PARTY-NOTICES.md`, and the vendors' own
+Notices approach: one copy of each licence text in `licenses/` (`THIRD-PARTY-NOTICES.md` names the file for each
+component), all copyright lines in `THIRD-PARTY-NOTICES.md`, and the vendors' own
 notices files for the .NET runtime, SkiaSharp/HarfBuzzSharp and ONNX Runtime. GPL text: `LICENSE`.
 
 
-1. ~~**FFmpeg may be unnecessary.**~~ Resolved: removed from both zips; recording works without it (see table). Decision: leave it out of the release if video recording works without it
-   (to test in Phase 4). The app writes MJPG in `.avi` (`WebcamPreviewService.cs:376`), which
-   OpenCV can do without FFmpeg, and captures through Windows' own backends. Leaving
-   `opencv_videoio_ffmpeg4130_64.dll` out of the release would remove the LGPL/codec obligations. Not tested.
+1. ~~**FFmpeg may be unnecessary.**~~ Resolved: removed from both zips; recording works without it (see table).
+   The app writes MJPG in `.avi` (`WebcamPreviewService.cs:376`), which OpenCV can do without FFmpeg, and captures
+   through Windows' own backends. Leaving `opencv_videoio_ffmpeg4130_64.dll` out removes the LGPL/codec obligations.
    If FFmpeg ever comes back: check how OpenH264 was built into it (Cisco's patent terms concern Cisco's own binaries).
 2. **Voice licences unclear.** Decision: keep both voices, with a notice in `THIRD-PARTY-NOTICES.md` that
    they keep their own terms.
@@ -84,12 +83,13 @@ notices files for the .NET runtime, SkiaSharp/HarfBuzzSharp and ONNX Runtime. GP
      AGREEMENT".
 3. ~~**Lucide version and licence.**~~ Resolved: release 1.63.0, ISC + MIT (see table).
 4. ~~**Provenance of sounds, card back and `app.ico`.**~~ Resolved: the author's own work.
-5. ~~**Platform-specific clutter.**~~ Resolved: the `win-x64` publish ships Windows x64 libraries only, directly in `Bin/`. The current publish copies native libraries for Linux, macOS, Android,
-   win-x86 and win-arm64 (about 870 MB under `runtimes/`). A `win-x64` self-contained publish should drop them;
-   to confirm in Phase 4.
+5. ~~**Platform-specific clutter.**~~ Resolved: the `win-x64` publish ships Windows x64 libraries only, directly in
+   `Bin/`.
 6. **Still open:**
-   - the exact espeak-ng source of `espeak-ng-data` (TODO in `SOURCE.txt`);
-   - the versions of libjpeg-turbo, zstd and liblzma inside OpenCV, and whether LERC and quirc are included.
+   - the exact espeak-ng source of `espeak-ng-data` (unknown; stated in `SOURCE.txt`);
+   - inside OpenCV: the versions of libarchive, giflib, lz4, zstd and liblzma (not in the binary), and Leptonica
+     1.87.0 (decoded from code, not from a string). All are marked "not confirmed" in the notices and listed under
+     Known issues in the README. LERC and quirc are not included.
    Done: the Windows SDK projection (facts in the table), the notices of the libraries OpenCV bundles, the .NET
    runtime notices, the .NET Library License, and ONNX Runtime's notices.
 7. **Different terms for part of .NET.** The .NET Library License covers `coreclr.dll` and the single-file

@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2026-11-01
 
-First public release.
+First public release. Its known issues are listed in the [README](README.md#known-issues).
 
 ### Added
 
@@ -24,7 +24,7 @@ First public release.
 - Each game keeps its own copy of the terms, so later changes in Settings do not affect games already
   in progress.
 - Paying past zero leaves a credit that can be spent.
-- Daily interest applies only while the safe is open.
+- Daily interest applies at most once per calendar day, and only while the safe is open.
 - The game can be completed once the debt is cleared and no punishment is pending (served, or cancelled
   with a card).
 - Game completion screen: export the outfit video and the safe combination photo, then free the slot.
@@ -33,7 +33,7 @@ First public release.
 - Daily outfit proposed from your wardrobe, honouring layers, slots, weights and tag rules (requires /
   incompatible).
   - Regenerating halves the earning bonus; after two regenerations the outfit is locked.
-  - Composing the outfit by hand cuts the bonus to 20%.
+  - Composing the outfit by hand cuts the bonus to a fifth of its current value.
   - The outfit stays the same for the rest of the day.
 - Garments you refuse become more likely to be drawn. Items refused 5 times are imposed.
 - Outfit video recorded when the outfit is confirmed.
@@ -117,5 +117,5 @@ First public release.
 - `--landscape` start-up option that opens a 1200×800 window.
 - Release layout with a launcher (`ChastiMaid.exe`) that keeps all data in `data/` next to it.
 
-[Unreleased]: <repository-url>/compare/v0.1.0...HEAD
-[0.1.0]: <repository-url>/releases/tag/v0.1.0
+[Unreleased]: https://github.com/alyssacohen/ChastiMaid/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/alyssacohen/ChastiMaid/releases/tag/v0.1.0

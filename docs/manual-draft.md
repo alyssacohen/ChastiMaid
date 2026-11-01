@@ -2,8 +2,8 @@
 
 > Factual draft compiled from the source code (first written at commit `e785dc4`, kept aligned since). Tone, structure and the Italian
 > version are to be refined separately. Items whose behaviour could not be confirmed, or where code and
-> specs disagree, are collected in [Uncertain / needs my decision](#uncertain--needs-my-decision) and are
-> **not** described in the main sections.
+> specs disagree, are collected in [Review notes](#review-notes) and are **not** described in the main
+> sections. The open ones are also listed under [Known issues](../README.md#known-issues) in the README.
 
 ---
 
@@ -30,7 +30,7 @@ Only what can be verified from the project:
 | Display | Landscape only. Designed for 1200×800 logical pixels and larger | `App.axaml.cs`, commit `18bbcee` |
 | Webcam | Optional. Without it, camera-based check-ins are skipped (§9) | `HardwareAvailability` |
 | Microphone + speech models | Optional. Without them, read-aloud quotes are typed instead (§9) | `HardwareAvailability`, `SherpaOnnxSttService` |
-| Disk space | About 760 MB extracted (self-contained) or 615 MB (framework-dependent), of which 435 MB are speech models; captured photos and videos accumulate per save | `publish.ps1` output |
+| Disk space | About 735 MB extracted (self-contained) or 615 MB (framework-dependent), of which 435 MB are speech models; captured photos and videos accumulate per save | `publish.ps1` output |
 
 Target form factors (from project notes, not test results): Windows 11 desktop with mouse and keyboard;
 Surface Go (Windows 10, tablet mode, 1800×1200 at 150% scaling, two cameras).
@@ -210,7 +210,7 @@ Shown only when the safe is not already locked. The player puts a distracting ob
 phone) in a physical combination safe and points the camera at the combination **without looking at
 it**. The centre of the live preview is pixelated.
 
-- **Start Camera** → capture → the photo is encrypted (AES-256-GCM) and the plain copy deleted.
+- **Start Camera** → capture → the photo is encrypted (AES-128-GCM) and the plain copy deleted.
   **Retry Capture** allows another try; **Start Session** continues.
 - **Skip (no safe)**: continues without locking. The game remains playable, but daily interest applies (§5.2).
 
@@ -564,7 +564,7 @@ Media folder contents:
 
 | File | Encrypted |
 |---|---|
-| `safe_combo.enc` — the combination photo | **yes** (AES-256-GCM) |
+| `safe_combo.enc` — the combination photo | **yes** (AES-128-GCM) |
 | `outfit.avi` — outfit video | no |
 | busy-mode photos `*.png` and videos `*.avi` | no |
 | pose, kneel, curtsy, cornertime evidence `*.png` / `*.avi` | no |
@@ -608,15 +608,18 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
 
 ---
 
-## Uncertain / needs my decision
+## Review notes
+
+Points found while checking this manual against the code. Struck-through items are resolved; the open ones
+are also listed under [Known issues](../README.md#known-issues) in the README.
 
 ### A. Behaviour that differs from specs or project notes
 
-1. ~~**Game completion ignores pending punishments.**~~ Fixed: `CanComplete` now also requires no pending
-   punishment (`DashboardViewModel.cs:224`), as `gameplay.md` and `CLAUDE.md` describe.
+1. ~~**Game completion ignores pending punishments.**~~ Resolved: `CanComplete` now also requires no pending
+   punishment (`DashboardViewModel.cs:231`), as `gameplay.md` and `CLAUDE.md` describe.
 2. ~~**Captured media is not encrypted.**~~ Resolved (by design): only the safe combination photo (and the
    databases) are encrypted; every other photo and video stays a plain file in `data/`. Stated in §11
-   "Privacy and stored data" and in the README. (`CLAUDE.md` still says otherwise.)
+   "Privacy and stored data" and in the README.
 3. ~~**Back from "Compose an outfit" restores the full bonus.**~~ Resolved: Back returns to the same
    proposal screen instead of rebuilding it, so the lowered bonus, the regeneration count and the drawn
    chastity device are kept, and daily interest is no longer applied a second time. No persisted data
@@ -663,7 +666,8 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     still stored in UTC; existing saves need no migration.
 17. **Name, forms of address and auto-save are frozen per save.** The dashboard reads them from the save's
     snapshot (`DashboardViewModel.cs:109`), so changing them in Settings does not affect a game in
-    progress. The contract treats them as device settings (`[JsonIgnore]`). Intended?
+    progress. The contract treats them as device settings (`[JsonIgnore]`). Whether this should stay is
+    not decided.
 18. **Wage rule vs spec.** `gameplay.md` says the wage is paid "without missing a popup". Popups can't be
     missed (they never close on their own); the code skips the wage after a *negative outcome* instead.
 19. ~~**Two new games in the same minute.**~~ Resolved: `SaveSlotManager.NewSlotName` adds a `_2`, `_3`…
@@ -681,8 +685,7 @@ the wardrobe, outfit rules, chores, punishment presets and permissions.
     notices say they keep their own terms, which may restrict commercial use. Details:
     `docs/release/license-audit.md`.
 23. ~~**No version number.**~~ Resolved: `Directory.Build.props` sets `<Version>0.1.0</Version>` for the
-    app and the launcher (tracked through a `.gitignore` exception). Not shown in the UI yet. The tag
-    `v1-pre-reset` is left as it is.
+    app and the launcher (tracked through a `.gitignore` exception). Not shown in the UI yet.
 
 ### E. Found during release preparation
 
