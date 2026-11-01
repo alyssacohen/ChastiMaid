@@ -1,6 +1,7 @@
 # ChastiMaid
+[![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20coffee-Ko--fi-ff5e5b?s7tyle=flat&logo=ko-fi&logoColor=white)](https://ko-fi.com/alyssacoh)
 
-> Become the perfect, chaste and humble maid you were always meant to be.
+### *Become the perfect, chaste and humble maid you were always meant to be.*
 
 > [!WARNING]
 > **18+ · Adults only.** ChastiMaid contains references to adult themes, such as chastity devices and diaper
@@ -227,6 +228,12 @@ Version 0.1.0 is published with the issues below. They are known and not fixed y
 ## Contributing
 
 Issues and suggestions are welcome. For pull requests, please open an issue first to discuss the change.
+
+## Support the Project
+
+If you find this project useful and would like to support its development, you can buy me a coffee! Any support is greatly appreciated.
+
+[![Buy Me a Coffee](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/alyssacoh)
 
 ## Disclaimer
 
